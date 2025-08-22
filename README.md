@@ -1,5 +1,12 @@
 # Assiduous AI-Powered Real Estate Platform 🏠🤖
 
+[![Version](https://img.shields.io/badge/version-0.1.0-blue.svg)](https://github.com/SirsiMaster/Assiduous/releases)
+[![Changelog](https://img.shields.io/badge/changelog-Keep%20a%20Changelog-brightgreen.svg)](./CHANGELOG.md)
+[![PRD](https://img.shields.io/badge/PRD-Technical%20Blueprint-orange.svg)](./docs/ASSIDUOUS_TECHNICAL_BLUEPRINT.md)
+[![Contributing](https://img.shields.io/badge/contributing-guidelines-purple.svg)](./.github/CONTRIBUTING.md)
+[![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
+[![License](https://img.shields.io/badge/license-Proprietary-red.svg)](./LICENSE)
+
 **Assiduous** is an advanced AI-driven real estate platform that revolutionizes property transactions through intelligent matching algorithms, automated market analysis, and predictive analytics.
 
 ## 🚀 Overview
@@ -26,6 +33,9 @@ assiduous/
 │   │   └── main.js       # AI-powered functionality & state management
 │   └── images/           # Visual assets
 ├── docs/                  # Documentation
+├── scripts/               # Automation and tooling scripts
+├── CHANGELOG.md          # Version history
+├── ROLLBACK_REGISTRY.md  # Rollback procedures
 └── README.md             # Project documentation
 ```
 
@@ -80,7 +90,12 @@ assiduous/
    cd assiduous
    ```
 
-2. Start the development server:
+2. Install Git hooks (recommended):
+   ```bash
+   ./scripts/hooks/install.sh
+   ```
+
+3. Start the development server:
    ```bash
    python -m http.server 8080
    ```
@@ -89,7 +104,7 @@ assiduous/
    python serve.py
    ```
 
-3. Open your browser:
+4. Open your browser:
    ```
    http://localhost:8080/src/
    ```
@@ -119,12 +134,25 @@ Assiduous can be deployed as:
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please feel free to submit pull requests or open issues for:
-- Feature enhancements
-- AI model integrations
-- UI/UX improvements
-- Bug fixes
-- Documentation updates
+We welcome contributions to Assiduous! Please read our [Contributing Guidelines](./.github/CONTRIBUTING.md) before submitting pull requests.
+
+### Quick Links
+- 📋 [Technical Blueprint (PRD)](./docs/ASSIDUOUS_TECHNICAL_BLUEPRINT.md)
+- 📝 [Changelog](./CHANGELOG.md)
+- 🔄 [Rollback Registry](./ROLLBACK_REGISTRY.md)
+- 🛡️ [Branch Protection Rules](./docs/BRANCH_PROTECTION_RULES.md)
+- 🎯 [Issue Templates](./.github/ISSUE_TEMPLATE/)
+
+### Development Workflow
+1. Fork the repository
+2. Install Git hooks: `./scripts/hooks/install.sh`
+3. Create feature branch: `git checkout -b feature/amazing-feature`
+4. Commit changes: `git commit -m 'feat: add amazing feature'`
+5. Push to branch: `git push origin feature/amazing-feature`
+6. Open a Pull Request
+
+### Commit Convention
+We use [Conventional Commits](https://www.conventionalcommits.org/) for clear and consistent commit messages.
 
 ## 📝 License
 
