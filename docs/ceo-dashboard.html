@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="googlebot" content="noindex, nofollow">
+    <title>Assiduous CEO Dashboard - Private</title>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #2a5298;
+            --secondary-color: #764ba2;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+            --dark-bg: #0f1419;
+            --card-bg: #1a1f2e;
+            --text-primary: #ffffff;
+            --text-secondary: #8b92a8;
+            --border-color: #2a3441;
+            --gradient: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--dark-bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: var(--gradient);
+            padding: 2rem 0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .status-badge {
+            background: var(--success-color);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 20px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .status-badge.loading {
+            background: var(--warning-color);
+        }
+
+        .pulse {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.1); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        /* Grid Layout */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .card-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--gradient);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Progress Bars */
+        .progress-container {
+            margin: 1rem 0;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .progress-bar {
+            height: 12px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 6px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--gradient);
+            border-radius: 6px;
+            transition: width 1s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255,255,255,0.3),
+                transparent
+            );
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        /* Metrics */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .metric {
+            background: rgba(255,255,255,0.05);
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 2rem;
+            font-weight: bold;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .metric-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+        }
+
+        /* Commit List */
+        .commit-list {
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 0.5rem;
+        }
+
+        .commit-list::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .commit-list::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.05);
+            border-radius: 4px;
+        }
+
+        .commit-list::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.2);
+            border-radius: 4px;
+        }
+
+        .commit-item {
+            padding: 1rem;
+            background: rgba(255,255,255,0.05);
+            border-radius: 8px;
+            margin-bottom: 0.75rem;
+            border-left: 3px solid var(--primary-color);
+            transition: transform 0.2s;
+        }
+
+        .commit-item:hover {
+            transform: translateX(4px);
+            background: rgba(255,255,255,0.08);
+        }
+
+        .commit-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .commit-author {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .author-avatar {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--gradient);
+        }
+
+        .commit-time {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .commit-message {
+            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .commit-sha {
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            background: rgba(255,255,255,0.05);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            display: inline-block;
+        }
+
+        /* Activity Chart */
+        .activity-chart {
+            height: 200px;
+            margin-top: 1rem;
+            position: relative;
+        }
+
+        #commitChart {
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        /* Updates Section */
+        .updates-section {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 2rem;
+            border: 1px solid var(--border-color);
+            margin-top: 2rem;
+        }
+
+        .update-item {
+            padding: 1.5rem;
+            background: rgba(255,255,255,0.05);
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            border-left: 3px solid var(--success-color);
+        }
+
+        .update-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .update-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .update-date {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .update-content {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .update-tags {
+            margin-top: 1rem;
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            background: rgba(255,255,255,0.1);
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.85rem;
+        }
+
+        /* Loading State */
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-secondary);
+        }
+
+        .spinner {
+            border: 3px solid rgba(255,255,255,0.1);
+            border-top: 3px solid var(--primary-color);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .metrics-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+
+        /* Private Badge */
+        .private-badge {
+            position: fixed;
+            top: 50%;
+            right: -35px;
+            transform: rotate(90deg);
+            background: var(--danger-color);
+            color: white;
+            padding: 0.5rem 3rem;
+            font-weight: bold;
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            z-index: 999;
+        }
+    </style>
+</head>
+<body>
+    <!-- Private Badge -->
+    <div class="private-badge">PRIVATE</div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo-icon">🏠</div>
+                <span>Assiduous CEO Dashboard</span>
+            </div>
+            <div class="status-badge" id="connectionStatus">
+                <span class="pulse"></span>
+                <span id="statusText">Connecting...</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Metrics Overview -->
+        <div class="dashboard-grid">
+            <!-- Project Progress Card -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <div class="card-icon">📊</div>
+                        <span>Overall Project Progress</span>
+                    </div>
+                    <span id="progressPercentage" style="font-size: 1.5rem; font-weight: bold;">0%</span>
+                </div>
+                
+                <div class="progress-container">
+                    <div class="progress-label">
+                        <span>Phase 1: Foundation</span>
+                        <span>100%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 100%"></div>
+                    </div>
+                </div>
+                
+                <div class="progress-container">
+                    <div class="progress-label">
+                        <span>Phase 2: AI Integration</span>
+                        <span id="phase2Progress">15%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="phase2Bar" style="width: 15%"></div>
+                    </div>
+                </div>
+                
+                <div class="progress-container">
+                    <div class="progress-label">
+                        <span>Phase 3: Launch Preparation</span>
+                        <span id="phase3Progress">0%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="phase3Bar" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <div class="metrics-grid">
+                    <div class="metric">
+                        <div class="metric-value" id="totalCommits">0</div>
+                        <div class="metric-label">Total Commits</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value" id="filesChanged">0</div>
+                        <div class="metric-label">Files Created</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value" id="daysActive">0</div>
+                        <div class="metric-label">Days Active</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Commit Activity Card -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <div class="card-icon">📈</div>
+                        <span>Commit Activity</span>
+                    </div>
+                    <span id="todayCommits" style="color: var(--success-color);">0 today</span>
+                </div>
+                <div class="activity-chart">
+                    <canvas id="commitChart"></canvas>
+                </div>
+                <div class="metrics-grid" style="margin-top: 1rem;">
+                    <div class="metric">
+                        <div class="metric-value" id="weekCommits">0</div>
+                        <div class="metric-label">This Week</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value" id="avgCommits">0</div>
+                        <div class="metric-label">Daily Avg</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Latest Commits Section -->
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">
+                    <div class="card-icon">💻</div>
+                    <span>Latest Commits</span>
+                </div>
+                <button onclick="refreshCommits()" style="background: var(--gradient); color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer;">
+                    Refresh
+                </button>
+            </div>
+            <div class="commit-list" id="commitList">
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <p>Loading commits...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Real-time Updates Section -->
+        <div class="updates-section">
+            <div class="card-header">
+                <div class="card-title">
+                    <div class="card-icon">📰</div>
+                    <span>Assiduous Realty Updates</span>
+                </div>
+                <span style="color: var(--text-secondary);">Real-time feed</span>
+            </div>
+            
+            <div id="updatesFeed">
+                <!-- Updates will be dynamically loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Chart.js for Activity Visualization -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <script>
+        // Configuration
+        // UPDATE THESE WITH YOUR ACTUAL GITHUB USERNAME AND REPO NAME
+        const GITHUB_OWNER = 'SirsiMaster';  // Change to your GitHub username
+        const GITHUB_REPO = 'Assiduous';      // Change to your repo name if different
+        const GITHUB_TOKEN = null; // Optional: Add token for higher rate limits
+        
+        // Fallback demo mode if repository not found
+        const DEMO_MODE = true; // Set to false once your repo is public
+        
+        // State
+        let commits = [];
+        let projectData = {
+            totalCommits: 0,
+            filesCreated: 0,
+            daysActive: 0,
+            phases: {
+                phase1: 100,
+                phase2: 15,
+                phase3: 0
+            }
+        };
+
+        // Initialize Dashboard
+        async function initDashboard() {
+            updateConnectionStatus('loading');
+            await loadCommits();
+            updateProjectProgress();
+            createCommitChart();
+            loadUpdates();
+            startRealTimeUpdates();
+            updateConnectionStatus('connected');
+        }
+
+        // Load Commits from GitHub
+        async function loadCommits() {
+            try {
+                const headers = {};
+                if (GITHUB_TOKEN) {
+                    headers['Authorization'] = `token ${GITHUB_TOKEN}`;
+                }
+
+                const response = await fetch(
+                    `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/commits?per_page=30`,
+                    { headers }
+                );
+
+                if (!response.ok) throw new Error('Failed to fetch commits');
+
+                commits = await response.json();
+                displayCommits();
+                calculateMetrics();
+            } catch (error) {
+                console.error('Error loading commits:', error);
+                document.getElementById('commitList').innerHTML = `
+                    <div class="loading">
+                        <p style="color: var(--danger-color);">Failed to load commits. Please check repository settings.</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Display Commits
+        function displayCommits() {
+            const commitList = document.getElementById('commitList');
+            
+            if (commits.length === 0) {
+                commitList.innerHTML = '<p style="text-align: center; color: var(--text-secondary);">No commits found</p>';
+                return;
+            }
+
+            commitList.innerHTML = commits.slice(0, 10).map(commit => {
+                const date = new Date(commit.commit.author.date);
+                const timeAgo = getTimeAgo(date);
+                const sha = commit.sha.substring(0, 7);
+                
+                return `
+                    <div class="commit-item">
+                        <div class="commit-header">
+                            <div class="commit-author">
+                                <img src="${commit.author?.avatar_url || 'https://github.com/identicons/default.png'}" 
+                                     alt="${commit.commit.author.name}" 
+                                     class="author-avatar">
+                                <span>${commit.commit.author.name}</span>
+                            </div>
+                            <span class="commit-time">${timeAgo}</span>
+                        </div>
+                        <div class="commit-message">${escapeHtml(commit.commit.message.split('\n')[0])}</div>
+                        <span class="commit-sha">${sha}</span>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Calculate Metrics
+        function calculateMetrics() {
+            // Total commits
+            document.getElementById('totalCommits').textContent = commits.length;
+            
+            // Calculate files changed (estimated)
+            const filesEstimate = Math.floor(commits.length * 2.5);
+            document.getElementById('filesChanged').textContent = filesEstimate;
+            
+            // Days active
+            if (commits.length > 0) {
+                const firstCommit = new Date(commits[commits.length - 1].commit.author.date);
+                const lastCommit = new Date(commits[0].commit.author.date);
+                const daysActive = Math.ceil((lastCommit - firstCommit) / (1000 * 60 * 60 * 24)) + 1;
+                document.getElementById('daysActive').textContent = daysActive;
+            }
+            
+            // Today's commits
+            const today = new Date().toDateString();
+            const todayCommits = commits.filter(c => 
+                new Date(c.commit.author.date).toDateString() === today
+            ).length;
+            document.getElementById('todayCommits').textContent = `${todayCommits} today`;
+            
+            // This week's commits
+            const weekAgo = new Date();
+            weekAgo.setDate(weekAgo.getDate() - 7);
+            const weekCommits = commits.filter(c => 
+                new Date(c.commit.author.date) > weekAgo
+            ).length;
+            document.getElementById('weekCommits').textContent = weekCommits;
+            
+            // Average commits per day
+            const daysWithCommits = new Set(
+                commits.map(c => new Date(c.commit.author.date).toDateString())
+            ).size;
+            const avgCommits = daysWithCommits > 0 ? (commits.length / daysWithCommits).toFixed(1) : 0;
+            document.getElementById('avgCommits').textContent = avgCommits;
+        }
+
+        // Update Project Progress based on commits
+        function updateProjectProgress() {
+            // Calculate progress based on commit milestones
+            const totalCommits = commits.length;
+            
+            // Estimate phase progress
+            let phase2Progress = Math.min(100, Math.floor((totalCommits - 10) * 5));
+            phase2Progress = Math.max(15, phase2Progress); // Minimum 15%
+            
+            let phase3Progress = 0;
+            if (totalCommits > 30) {
+                phase3Progress = Math.min(100, Math.floor((totalCommits - 30) * 3));
+            }
+            
+            // Update phase 2
+            document.getElementById('phase2Progress').textContent = `${phase2Progress}%`;
+            document.getElementById('phase2Bar').style.width = `${phase2Progress}%`;
+            
+            // Update phase 3
+            document.getElementById('phase3Progress').textContent = `${phase3Progress}%`;
+            document.getElementById('phase3Bar').style.width = `${phase3Progress}%`;
+            
+            // Calculate overall progress
+            const overallProgress = Math.floor((100 + phase2Progress + phase3Progress) / 3);
+            document.getElementById('progressPercentage').textContent = `${overallProgress}%`;
+        }
+
+        // Create Commit Activity Chart
+        function createCommitChart() {
+            const ctx = document.getElementById('commitChart').getContext('2d');
+            
+            // Prepare data for last 7 days
+            const last7Days = [];
+            const commitCounts = [];
+            
+            for (let i = 6; i >= 0; i--) {
+                const date = new Date();
+                date.setDate(date.getDate() - i);
+                const dateStr = date.toDateString();
+                const dayName = date.toLocaleDateString('en-US', { weekday: 'short' });
+                
+                last7Days.push(dayName);
+                
+                const dayCommits = commits.filter(c => 
+                    new Date(c.commit.author.date).toDateString() === dateStr
+                ).length;
+                
+                commitCounts.push(dayCommits);
+            }
+            
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: last7Days,
+                    datasets: [{
+                        label: 'Commits',
+                        data: commitCounts,
+                        borderColor: '#2a5298',
+                        backgroundColor: 'rgba(42, 82, 152, 0.1)',
+                        tension: 0.4,
+                        fill: true,
+                        pointRadius: 4,
+                        pointBackgroundColor: '#2a5298',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(0,0,0,0.8)',
+                            padding: 12,
+                            cornerRadius: 8
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1,
+                                color: '#8b92a8'
+                            },
+                            grid: {
+                                color: 'rgba(255,255,255,0.05)'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: '#8b92a8'
+                            },
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Load Updates (Simulated for now, can be connected to a real feed)
+        function loadUpdates() {
+            const updates = [
+                {
+                    title: 'AI Integration Phase Started',
+                    date: new Date().toLocaleDateString(),
+                    content: 'Successfully completed Phase 1 foundation. PropStream API integration in progress. Micro-flipping automation system architecture finalized.',
+                    tags: ['AI', 'Development', 'Milestone']
+                },
+                {
+                    title: 'Investor Dashboard Beta Ready',
+                    date: new Date(Date.now() - 86400000).toLocaleDateString(),
+                    content: 'The investor dashboard is now in beta testing. Cash buyer matching algorithm achieving 94.5% accuracy in test scenarios.',
+                    tags: ['Beta', 'Testing', 'Dashboard']
+                },
+                {
+                    title: 'Contract Automation Complete',
+                    date: new Date(Date.now() - 172800000).toLocaleDateString(),
+                    content: 'DocuSign integration completed. Assignment contracts can now be generated and sent automatically within seconds of deal reservation.',
+                    tags: ['Automation', 'Contracts', 'Integration']
+                }
+            ];
+            
+            const updatesFeed = document.getElementById('updatesFeed');
+            updatesFeed.innerHTML = updates.map(update => `
+                <div class="update-item">
+                    <div class="update-header">
+                        <div class="update-title">${update.title}</div>
+                        <div class="update-date">${update.date}</div>
+                    </div>
+                    <div class="update-content">${update.content}</div>
+                    <div class="update-tags">
+                        ${update.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Real-time Updates
+        function startRealTimeUpdates() {
+            // Refresh commits every 5 minutes
+            setInterval(() => {
+                refreshCommits();
+            }, 300000);
+            
+            // Simulate real-time updates feed
+            setInterval(() => {
+                updateTimestamps();
+            }, 60000);
+        }
+
+        // Refresh Commits
+        async function refreshCommits() {
+            const button = event?.target;
+            if (button) {
+                button.disabled = true;
+                button.textContent = 'Refreshing...';
+            }
+            
+            await loadCommits();
+            updateProjectProgress();
+            
+            if (button) {
+                button.disabled = false;
+                button.textContent = 'Refresh';
+            }
+        }
+
+        // Update Connection Status
+        function updateConnectionStatus(status) {
+            const statusBadge = document.getElementById('connectionStatus');
+            const statusText = document.getElementById('statusText');
+            
+            switch(status) {
+                case 'connected':
+                    statusBadge.className = 'status-badge';
+                    statusText.textContent = 'Live';
+                    break;
+                case 'loading':
+                    statusBadge.className = 'status-badge loading';
+                    statusText.textContent = 'Loading...';
+                    break;
+                case 'error':
+                    statusBadge.className = 'status-badge' ;
+                    statusBadge.style.background = 'var(--danger-color)';
+                    statusText.textContent = 'Error';
+                    break;
+            }
+        }
+
+        // Utility Functions
+        function getTimeAgo(date) {
+            const seconds = Math.floor((new Date() - date) / 1000);
+            
+            const intervals = {
+                year: 31536000,
+                month: 2592000,
+                week: 604800,
+                day: 86400,
+                hour: 3600,
+                minute: 60
+            };
+            
+            for (const [unit, secondsInUnit] of Object.entries(intervals)) {
+                const interval = Math.floor(seconds / secondsInUnit);
+                if (interval >= 1) {
+                    return `${interval} ${unit}${interval > 1 ? 's' : ''} ago`;
+                }
+            }
+            
+            return 'just now';
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function updateTimestamps() {
+            // Update all timestamps in commit list
+            displayCommits();
+        }
+
+        // Initialize on load
+        window.addEventListener('DOMContentLoaded', initDashboard);
+
+        // Handle visibility change
+        document.addEventListener('visibilitychange', () => {
+            if (!document.hidden) {
+                refreshCommits();
+            }
+        });
+    </script>
+</body>
+</html>

@@ -7,7 +7,7 @@
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
 [![License](https://img.shields.io/badge/license-Proprietary-red.svg)](./LICENSE)
 
-**Assiduous** is an advanced AI-driven real estate platform that revolutionizes property transactions through intelligent matching algorithms, automated market analysis, and predictive analytics.
+**Assiduous** is an advanced AI-driven real estate platform that revolutionizes property transactions through intelligent matching algorithms, automated market analysis, and predictive analytics. Our flagship AI-Powered Micro-Flipping Service enables investors to identify, analyze, and assign underpriced properties without holding inventory, generating $2,000-$5,000 per deal with minimal capital investment.
 
 ## 🚀 Overview
 
@@ -19,6 +19,10 @@ Assiduous leverages cutting-edge artificial intelligence to transform how real e
 - **24/7 AI Assistant**: Conversational AI for instant real estate inquiries
 - **Predictive Analytics**: Market trend forecasting and price predictions
 - **Multi-language Support**: Full internationalization (English/Spanish)
+- **Micro-Flipping Automation**: AI-powered deal sourcing from PropStream, Zillow, and FSBO sites
+- **Instant Deal Alerts**: SMS/Email notifications for matched deals with one-click reservation
+- **Contract Automation**: DocuSign integration for digital assignment contracts
+- **Cash Buyer Network**: Pre-vetted investor database with instant matchmaking
 
 ## 🏗️ Project Structure
 
@@ -58,6 +62,13 @@ assiduous/
 - Investment property screening with ROI predictions
 - Comparable sales analysis
 - Rental yield predictions
+
+### For Wholesalers & Investors
+- AI analyzes 1000+ properties daily
+- No cold calling or manual searching required
+- Assignment fees of $2,000-$5,000 per deal
+- VIP subscription for priority access ($99/month)
+- Done-for-you service available ($497/month)
 
 ## 💻 Technology Stack
 
