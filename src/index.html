@@ -3,71 +3,352 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Assiduous - Web Development Project</title>
+    <title>Assiduous AI-Powered Real Estate System</title>
+    <meta name="description" content="Transform your real estate business with AI-powered automation, lead generation, and market analysis tools.">
     <link rel="stylesheet" href="../assets/css/styles.css">
 </head>
 <body>
-    <header>
-        <nav>
+    <header class="main-header">
+        <nav class="main-nav">
             <div class="container">
-                <h1 class="logo">Assiduous</h1>
+                <div class="nav-brand">
+                    <h1 class="logo">🏠 Assiduous Realty AI</h1>
+                </div>
                 <ul class="nav-links">
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#services">Services</a></li>
-                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="#home" class="nav-link active" data-i18n="nav.home">Home</a></li>
+                    <li><a href="#properties" class="nav-link" data-i18n="nav.properties">Properties</a></li>
+                    <li><a href="#buyers" class="nav-link" data-i18n="nav.buyers">For Buyers</a></li>
+                    <li><a href="#sellers" class="nav-link" data-i18n="nav.sellers">For Sellers</a></li>
+                    <li><a href="#ai-tools" class="nav-link" data-i18n="nav.aitools">AI Tools</a></li>
+                    <li><a href="#contact" class="nav-link" data-i18n="nav.contact">Contact</a></li>
+                    <li class="language-switcher">
+                        <button class="lang-btn active" onclick="switchLanguage('en')" id="lang-en">EN</button>
+                        <button class="lang-btn" onclick="switchLanguage('es')" id="lang-es">ES</button>
+                    </li>
                 </ul>
+                <button class="mobile-menu-toggle" aria-label="Toggle mobile menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
             </div>
         </nav>
     </header>
 
     <main>
-        <section id="home" class="hero">
-            <div class="container">
-                <h2>Welcome to Assiduous</h2>
-                <p>A dedicated space for web development and HTML page creation</p>
-                <button class="cta-button">Get Started</button>
-            </div>
-        </section>
-
-        <section id="about" class="about">
-            <div class="container">
-                <h2>About This Project</h2>
-                <p>Assiduous is a clean, modern web project designed for creating professional HTML pages and web applications. This project is completely separate from SirsiNexus and focuses on standalone web development.</p>
-            </div>
-        </section>
-
-        <section id="services" class="services">
-            <div class="container">
-                <h2>Features</h2>
-                <div class="feature-grid">
-                    <div class="feature-card">
-                        <h3>Responsive Design</h3>
-                        <p>Mobile-first approach with modern CSS techniques</p>
-                    </div>
-                    <div class="feature-card">
-                        <h3>Clean Code</h3>
-                        <p>Well-structured HTML with semantic markup</p>
-                    </div>
-                    <div class="feature-card">
-                        <h3>Modern JavaScript</h3>
-                        <p>ES6+ features and best practices</p>
+        <!-- Hero Section -->
+        <section id="home" class="hero-section">
+            <div class="hero-background">
+                <div class="container">
+                    <div class="hero-content">
+                        <h1 class="hero-title">Assiduous AI-Powered Real Estate</h1>
+                        <p class="hero-subtitle">Discover your perfect property with our advanced AI matching system. Get instant market analysis, automated property alerts, and personalized recommendations.</p>
+                        <div class="hero-actions">
+                            <button class="cta-button primary" onclick="showSection('properties')">Find Properties</button>
+                            <button class="cta-button secondary" onclick="showSection('ai-tools')">Get Market Analysis</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="contact" class="contact">
+        <!-- Intelligent Features Section -->
+        <section class="features-section">
             <div class="container">
-                <h2>Contact</h2>
-                <p>This is your dedicated development space for HTML projects.</p>
+                <h2 class="section-title">Intelligent Assiduous Features</h2>
+                <div class="feature-grid">
+                    <div class="feature-card" onclick="showSection('ai-tools')">
+                        <div class="feature-icon">🤖</div>
+                        <h3>AI Property Matching</h3>
+                        <p>Our smart algorithm learns your preferences and automatically suggests properties that match your criteria.</p>
+                    </div>
+                    <div class="feature-card" onclick="showSection('ai-tools')">
+                        <div class="feature-icon">📊</div>
+                        <h3>Instant Market Analysis</h3>
+                        <p>Get real-time property valuations, market trends, and investment potential analysis powered by AI.</p>
+                    </div>
+                    <div class="feature-card" onclick="showSection('buyers')">
+                        <div class="feature-icon">🔔</div>
+                        <h3>Smart Alerts</h3>
+                        <p>Never miss a deal with our AI-powered alert system that monitors the market 24/7 for your perfect match.</p>
+                    </div>
+                    <div class="feature-card" onclick="toggleChatbot()">
+                        <div class="feature-icon">💬</div>
+                        <h3>24/7 AI Assistant</h3>
+                        <p>Get instant answers to your real estate questions with our intelligent chatbot available around the clock.</p>
+                    </div>
+                    <div class="feature-card" onclick="showSection('properties')">
+                        <div class="feature-icon">📱</div>
+                        <h3>Mobile Experience</h3>
+                        <p>Access all features on the go with our responsive design and mobile-optimized interface.</p>
+                    </div>
+                    <div class="feature-card" onclick="showSection('sellers')">
+                        <div class="feature-icon">🎯</div>
+                        <h3>Lead Generation</h3>
+                        <p>Automated lead capture and nurturing system that converts visitors into clients efficiently.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Properties Section -->
+        <section id="properties" class="content-section hidden">
+            <div class="container">
+                <h2 class="section-title">AI-Curated Properties</h2>
+                <div class="search-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="location">Location</label>
+                            <input type="text" id="location" placeholder="Enter city or ZIP code">
+                        </div>
+                        <div class="form-group">
+                            <label for="priceRange">Price Range</label>
+                            <select id="priceRange">
+                                <option>$100K - $300K</option>
+                                <option>$300K - $500K</option>
+                                <option>$500K - $1M</option>
+                                <option>$1M+</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="propertyType">Property Type</label>
+                            <select id="propertyType">
+                                <option>Single Family</option>
+                                <option>Condo</option>
+                                <option>Multi-Family</option>
+                                <option>Commercial</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button class="cta-button primary" onclick="searchProperties()">Search with AI</button>
+                </div>
+                
+                <div class="property-grid" id="propertyResults">
+                    <!-- Properties will be populated by JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- For Buyers Section -->
+        <section id="buyers" class="content-section hidden">
+            <div class="container">
+                <h2 class="section-title">AI-Powered Buyer Services</h2>
+                <div class="ai-analysis">
+                    <h3>Smart Property Recommendations</h3>
+                    <div class="metrics-grid">
+                        <div class="metric-item">
+                            <span class="metric-label">Properties Analyzed Today</span>
+                            <span class="metric-value">1,247</span>
+                        </div>
+                        <div class="metric-item">
+                            <span class="metric-label">AI Match Score</span>
+                            <span class="metric-value">94.5%</span>
+                        </div>
+                        <div class="metric-item">
+                            <span class="metric-label">Average Days to Close</span>
+                            <span class="metric-value">18 days</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="search-form">
+                    <h3>Set Up AI Property Alerts</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="buyerEmail">Email Address</label>
+                            <input type="email" id="buyerEmail" placeholder="your@email.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="maxPrice">Max Budget</label>
+                            <input type="number" id="maxPrice" placeholder="500000">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="preferences">AI Learning Preferences</label>
+                        <input type="text" id="preferences" placeholder="Modern, good schools, walkable neighborhood...">
+                    </div>
+                    <button class="cta-button primary" onclick="setupAlerts()">Activate AI Alerts</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- For Sellers Section -->
+        <section id="sellers" class="content-section hidden">
+            <div class="container">
+                <h2 class="section-title">AI-Enhanced Seller Tools</h2>
+                <div class="search-form">
+                    <h3>Instant AI Property Valuation</h3>
+                    <div class="form-group">
+                        <label for="sellerAddress">Property Address</label>
+                        <input type="text" id="sellerAddress" placeholder="123 Main St, City, State">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="bedrooms">Bedrooms</label>
+                            <select id="bedrooms">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4+</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="bathrooms">Bathrooms</label>
+                            <select id="bathrooms">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4+</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="sqft">Square Feet</label>
+                            <input type="number" id="sqft" placeholder="1500">
+                        </div>
+                    </div>
+                    <button class="cta-button primary" onclick="getValuation()">Get AI Valuation</button>
+                </div>
+                
+                <div id="valuationResult" class="ai-analysis hidden">
+                    <h3>AI Valuation Report</h3>
+                    <div class="metrics-grid">
+                        <div class="metric-item">
+                            <span class="metric-label">Estimated Value</span>
+                            <span class="metric-value" id="estimatedValue">$425,000</span>
+                        </div>
+                        <div class="metric-item">
+                            <span class="metric-label">Market Trend</span>
+                            <span class="metric-value">↗ +3.2%</span>
+                        </div>
+                        <div class="metric-item">
+                            <span class="metric-label">Days on Market (Est.)</span>
+                            <span class="metric-value">24 days</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- AI Tools Section -->
+        <section id="ai-tools" class="content-section hidden">
+            <div class="container">
+                <h2 class="section-title">Advanced AI Analytics</h2>
+                <div class="analytics-grid">
+                    <div class="ai-analysis">
+                        <h3>Market Intelligence Dashboard</h3>
+                        <div class="metrics-grid">
+                            <div class="metric-item">
+                                <span class="metric-label">Active Listings Monitored</span>
+                                <span class="metric-value">15,432</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-label">Price Predictions Accuracy</span>
+                                <span class="metric-value">96.7%</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-label">Investment Opportunities Found</span>
+                                <span class="metric-value">127</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="ai-analysis">
+                        <h3>Deal Flow Analysis</h3>
+                        <div class="metrics-grid">
+                            <div class="metric-item">
+                                <span class="metric-label">Off-Market Deals This Week</span>
+                                <span class="metric-value">43</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-label">Average ROI Potential</span>
+                                <span class="metric-value">18.3%</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-label">Flip Opportunities</span>
+                                <span class="metric-value">12</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="search-form">
+                    <h3>Custom AI Analysis Request</h3>
+                    <div class="form-group">
+                        <label for="analysisType">Analysis Type</label>
+                        <select id="analysisType">
+                            <option>Market Trend Analysis</option>
+                            <option>Investment Property Screening</option>
+                            <option>Comparable Sales Analysis</option>
+                            <option>Rental Yield Prediction</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="analysisLocation">Target Area</label>
+                        <input type="text" id="analysisLocation" placeholder="Enter neighborhood or ZIP code">
+                    </div>
+                    <button class="cta-button primary" onclick="runAnalysis()">Generate AI Report</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="content-section hidden">
+            <div class="container">
+                <h2 class="section-title">Get Started Today</h2>
+                <div class="contact-form">
+                    <div class="search-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="contactName">Full Name</label>
+                                <input type="text" id="contactName" placeholder="Your Name">
+                            </div>
+                            <div class="form-group">
+                                <label for="contactEmail">Email Address</label>
+                                <input type="email" id="contactEmail" placeholder="your@email.com">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="contactPhone">Phone Number</label>
+                            <input type="tel" id="contactPhone" placeholder="(555) 123-4567">
+                        </div>
+                        <div class="form-group">
+                            <label for="contactInterest">I'm Interested In:</label>
+                            <select id="contactInterest">
+                                <option>Buying a Property</option>
+                                <option>Selling a Property</option>
+                                <option>Investment Opportunities</option>
+                                <option>AI Market Analysis</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="contactMessage">Tell Us About Your Goals</label>
+                            <textarea id="contactMessage" rows="4" placeholder="Describe what you're looking for..."></textarea>
+                        </div>
+                        <button class="cta-button primary full-width" onclick="submitContact()">Get Started with AI Real Estate</button>
+                    </div>
+                </div>
             </div>
         </section>
     </main>
 
+    <!-- AI Chatbot -->
+    <div class="chat-fab" onclick="toggleChatbot()" id="chatFab">💬</div>
+    <div id="chatbot" class="chatbot hidden">
+        <div class="chatbot-header">
+            <strong>🤖 Assiduous AI Assistant</strong>
+            <span onclick="toggleChatbot()" style="cursor: pointer; padding: 5px;">✕</span>
+        </div>
+        <div class="chatbot-body" id="chatMessages">
+            <div class="chat-bubble bot">Hi! I'm your AI real estate assistant. How can I help you today?</div>
+        </div>
+        <div class="chatbot-input">
+            <input type="text" id="chatInput" placeholder="Ask me anything about real estate..." onkeypress="handleChatInput(event)">
+        </div>
+    </div>
+
     <footer>
         <div class="container">
-            <p>&copy; 2025 Assiduous Project. All rights reserved.</p>
+            <p>&copy; 2025 Assiduous Real Estate AI System. Professional implementation by elite developers.</p>
         </div>
     </footer>
 
