@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assiduous Realty - AI-Powered Real Estate Platform</title>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2a5298;
+            --secondary: #764ba2;
+            --success: #28a745;
+            --danger: #dc3545;
+            --warning: #ffc107;
+            --light: #f8f9fa;
+            --dark: #1c2237;
+            --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: white;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        /* Navigation */
+        .navbar {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-link {
+            color: var(--dark);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-link:hover {
+            color: var(--primary);
+        }
+
+        .cta-button {
+            background: var(--gradient);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.3s;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: var(--gradient);
+            color: white;
+            padding: 8rem 2rem 4rem;
+            margin-top: 60px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+            cursor: pointer;
+            border: none;
+            font-size: 1rem;
+        }
+
+        .btn-white {
+            background: white;
+            color: var(--primary);
+        }
+
+        .btn-white:hover {
+            background: var(--light);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn-outline:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        /* Features Grid */
+        .features {
+            padding: 4rem 2rem;
+            background: var(--light);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-title {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+
+        .feature-description {
+            color: #666;
+        }
+
+        /* Demo Section */
+        .demo-section {
+            padding: 4rem 2rem;
+        }
+
+        .demo-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .demo-tabs {
+            display: flex;
+            background: var(--light);
+        }
+
+        .demo-tab {
+            flex: 1;
+            padding: 1rem;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .demo-tab.active {
+            background: white;
+            color: var(--primary);
+        }
+
+        .demo-content {
+            padding: 2rem;
+        }
+
+        .demo-panel {
+            display: none;
+        }
+
+        .demo-panel.active {
+            display: block;
+        }
+
+        /* Property Search Demo */
+        .search-demo {
+            padding: 1rem;
+            background: var(--light);
+            border-radius: 8px;
+            margin-bottom: 2rem;
+        }
+
+        .search-inputs {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-label {
+            font-size: 0.9rem;
+            margin-bottom: 0.25rem;
+            color: #666;
+        }
+
+        .form-input {
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+
+        .property-results {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .property-card {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+            transition: all 0.3s;
+        }
+
+        .property-card:hover {
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .property-image {
+            width: 150px;
+            height: 100px;
+            background: var(--gradient);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+        }
+
+        .property-details {
+            flex: 1;
+        }
+
+        .property-price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .property-address {
+            color: #666;
+            margin: 0.5rem 0;
+        }
+
+        .property-stats {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .property-roi {
+            background: var(--success);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        /* Stats Section */
+        .stats {
+            background: var(--gradient);
+            color: white;
+            padding: 4rem 2rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            text-align: center;
+        }
+
+        .stat-item {
+            padding: 1rem;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--dark);
+            color: white;
+            padding: 3rem 2rem 1rem;
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-link {
+            color: white;
+            text-decoration: none;
+            opacity: 0.8;
+        }
+
+        .footer-link:hover {
+            opacity: 1;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow: auto;
+        }
+
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2rem; }
+            .nav-links { display: none; }
+            .features-grid { grid-template-columns: 1fr; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">🏠 Assiduous Realty</div>
+            <ul class="nav-links">
+                <li><a href="#features" class="nav-link">Features</a></li>
+                <li><a href="#demo" class="nav-link">Demo</a></li>
+                <li><a href="#pricing" class="nav-link">Pricing</a></li>
+                <li><a href="./dashboard.html" class="nav-link">CEO Dashboard</a></li>
+            </ul>
+            <a href="#" class="cta-button" onclick="showSignup()">Get Started</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1 class="animate-in">AI-Powered Real Estate Revolution</h1>
+        <p class="animate-in">Find distressed properties, match with cash buyers, and automate contracts in seconds</p>
+        <div class="hero-buttons animate-in">
+            <button class="btn btn-white" onclick="startDemo()">Try Live Demo</button>
+            <button class="btn btn-outline" onclick="watchVideo()">Watch Video</button>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="features" id="features">
+        <div class="container">
+            <h2 class="section-title">Platform Features</h2>
+            <div class="features-grid">
+                <div class="feature-card" onclick="showFeatureDetail('propstream')">
+                    <div class="feature-icon">🔍</div>
+                    <h3 class="feature-title">PropStream Integration</h3>
+                    <p class="feature-description">Access nationwide property data, comps, and owner information instantly</p>
+                </div>
+                <div class="feature-card" onclick="showFeatureDetail('ai')">
+                    <div class="feature-icon">🤖</div>
+                    <h3 class="feature-title">AI Deal Analysis</h3>
+                    <p class="feature-description">Our AI analyzes 50+ factors to identify profitable deals in seconds</p>
+                </div>
+                <div class="feature-card" onclick="showFeatureDetail('matching')">
+                    <div class="feature-icon">🎯</div>
+                    <h3 class="feature-title">Cash Buyer Matching</h3>
+                    <p class="feature-description">Instantly match properties with verified cash buyers from our network</p>
+                </div>
+                <div class="feature-card" onclick="showFeatureDetail('contracts')">
+                    <div class="feature-icon">📄</div>
+                    <h3 class="feature-title">Automated Contracts</h3>
+                    <p class="feature-description">Generate and send assignment contracts with DocuSign integration</p>
+                </div>
+                <div class="feature-card" onclick="showFeatureDetail('roi')">
+                    <div class="feature-icon">💰</div>
+                    <h3 class="feature-title">ROI Calculator</h3>
+                    <p class="feature-description">Calculate profits, assignment fees, and ROI automatically</p>
+                </div>
+                <div class="feature-card" onclick="showFeatureDetail('dashboard')">
+                    <div class="feature-icon">📊</div>
+                    <h3 class="feature-title">Investor Dashboard</h3>
+                    <p class="feature-description">Track deals, manage pipeline, and monitor performance</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Demo Section -->
+    <section class="demo-section" id="demo">
+        <div class="container">
+            <h2 class="section-title">Live Platform Demo</h2>
+            <div class="demo-container">
+                <div class="demo-tabs">
+                    <button class="demo-tab active" onclick="switchTab('search')">Property Search</button>
+                    <button class="demo-tab" onclick="switchTab('analysis')">Deal Analysis</button>
+                    <button class="demo-tab" onclick="switchTab('buyers')">Buyer Matching</button>
+                    <button class="demo-tab" onclick="switchTab('contract')">Contract Generation</button>
+                </div>
+                <div class="demo-content">
+                    <!-- Property Search Panel -->
+                    <div class="demo-panel active" id="search-panel">
+                        <h3>Find Distressed Properties</h3>
+                        <div class="search-demo">
+                            <div class="search-inputs">
+                                <div class="form-group">
+                                    <label class="form-label">Location</label>
+                                    <input type="text" class="form-input" placeholder="City, State or ZIP" value="Austin, TX">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Max Price</label>
+                                    <input type="text" class="form-input" placeholder="$500,000" value="$300,000">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Property Type</label>
+                                    <select class="form-input">
+                                        <option>Single Family</option>
+                                        <option>Multi-Family</option>
+                                        <option>Condo</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Status</label>
+                                    <select class="form-input">
+                                        <option>Pre-Foreclosure</option>
+                                        <option>Foreclosure</option>
+                                        <option>Distressed</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button class="btn cta-button" onclick="searchProperties()">Search Properties</button>
+                        </div>
+                        <div class="property-results" id="property-results"></div>
+                    </div>
+
+                    <!-- Deal Analysis Panel -->
+                    <div class="demo-panel" id="analysis-panel">
+                        <h3>AI-Powered Deal Analysis</h3>
+                        <div style="padding: 2rem; background: #f8f9fa; border-radius: 8px; text-align: center;">
+                            <div style="font-size: 4rem; margin-bottom: 1rem;">🤖</div>
+                            <p style="margin-bottom: 1rem;">Our AI analyzes:</p>
+                            <ul style="list-style: none; padding: 0; text-align: left; max-width: 400px; margin: 0 auto;">
+                                <li>✅ Property condition and repair costs</li>
+                                <li>✅ Comparable sales in the area</li>
+                                <li>✅ Market trends and appreciation</li>
+                                <li>✅ Rental income potential</li>
+                                <li>✅ Assignment fee opportunities</li>
+                                <li>✅ Cash buyer demand in area</li>
+                            </ul>
+                            <button class="btn cta-button" style="margin-top: 2rem;" onclick="runAnalysis()">Analyze Deal</button>
+                        </div>
+                    </div>
+
+                    <!-- Buyer Matching Panel -->
+                    <div class="demo-panel" id="buyers-panel">
+                        <h3>Cash Buyer Network</h3>
+                        <div style="padding: 1rem;">
+                            <p style="margin-bottom: 1rem;">Connected to 10,000+ verified cash buyers nationwide</p>
+                            <div id="buyer-list"></div>
+                            <button class="btn cta-button" style="margin-top: 1rem;" onclick="findBuyers()">Find Buyers</button>
+                        </div>
+                    </div>
+
+                    <!-- Contract Panel -->
+                    <div class="demo-panel" id="contract-panel">
+                        <h3>Automated Contract Generation</h3>
+                        <div style="padding: 1rem; background: #f8f9fa; border-radius: 8px;">
+                            <div style="display: grid; gap: 1rem;">
+                                <div class="form-group">
+                                    <label class="form-label">Property Address</label>
+                                    <input type="text" class="form-input" value="123 Main St, Austin, TX 78701">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Purchase Price</label>
+                                    <input type="text" class="form-input" value="$250,000">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Assignment Fee</label>
+                                    <input type="text" class="form-input" value="$15,000">
+                                </div>
+                            </div>
+                            <button class="btn cta-button" style="margin-top: 1rem;" onclick="generateContract()">Generate Contract</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats -->
+    <section class="stats">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number" data-count="2500">0</div>
+                    <div class="stat-label">Properties Analyzed Daily</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-count="150">0</div>
+                    <div class="stat-label">Deals Closed This Month</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-count="94">0</div>
+                    <div class="stat-label">% Buyer Match Rate</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">$<span data-count="2.5">0</span>M</div>
+                    <div class="stat-label">Revenue Generated</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-links">
+            <a href="#" class="footer-link">About</a>
+            <a href="#" class="footer-link">Privacy</a>
+            <a href="#" class="footer-link">Terms</a>
+            <a href="./dashboard.html" class="footer-link">CEO Dashboard</a>
+            <a href="#" class="footer-link">Contact</a>
+        </div>
+        <p>&copy; 2025 Assiduous Realty. All rights reserved.</p>
+    </footer>
+
+    <!-- Feature Detail Modal -->
+    <div id="featureModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Feature Details</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBody"></div>
+        </div>
+    </div>
+
+    <script>
+        // Demo functionality
+        function switchTab(tab) {
+            document.querySelectorAll('.demo-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.demo-panel').forEach(p => p.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(`${tab}-panel`).classList.add('active');
+        }
+
+        function searchProperties() {
+            const results = document.getElementById('property-results');
+            results.innerHTML = `
+                <div class="property-card">
+                    <div class="property-image">🏚️</div>
+                    <div class="property-details">
+                        <div class="property-price">$185,000</div>
+                        <div class="property-address">456 Oak Street, Austin, TX 78702</div>
+                        <div class="property-stats">
+                            <span>3 bed • 2 bath • 1,450 sqft</span>
+                            <span class="property-roi">28% ROI</span>
+                        </div>
+                        <p style="margin-top: 0.5rem; color: #666;">Pre-foreclosure • Needs $30k repairs • ARV $285,000</p>
+                    </div>
+                </div>
+                <div class="property-card">
+                    <div class="property-image">🏠</div>
+                    <div class="property-details">
+                        <div class="property-price">$220,000</div>
+                        <div class="property-address">789 Pine Avenue, Austin, TX 78704</div>
+                        <div class="property-stats">
+                            <span>4 bed • 2 bath • 1,800 sqft</span>
+                            <span class="property-roi">22% ROI</span>
+                        </div>
+                        <p style="margin-top: 0.5rem; color: #666;">Distressed sale • Minor repairs • ARV $310,000</p>
+                    </div>
+                </div>
+                <div class="property-card">
+                    <div class="property-image">🏘️</div>
+                    <div class="property-details">
+                        <div class="property-price">$155,000</div>
+                        <div class="property-address">321 Elm Court, Austin, TX 78705</div>
+                        <div class="property-stats">
+                            <span>2 bed • 1 bath • 950 sqft</span>
+                            <span class="property-roi">35% ROI</span>
+                        </div>
+                        <p style="margin-top: 0.5rem; color: #666;">Foreclosure • Major renovation • ARV $250,000</p>
+                    </div>
+                </div>
+            `;
+            results.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function runAnalysis() {
+            alert('AI Analysis Complete!\n\nDeal Score: 92/100\nEstimated Profit: $45,000\nTime to Close: 14 days\nBuyer Match Confidence: 96%');
+        }
+
+        function findBuyers() {
+            const buyerList = document.getElementById('buyer-list');
+            buyerList.innerHTML = `
+                <div style="padding: 1rem; background: white; border-radius: 8px; margin-bottom: 1rem;">
+                    <strong>John Smith - Cash Buyer</strong><br>
+                    Interested in: Single Family, Austin Area<br>
+                    Budget: $200k-$500k<br>
+                    <span style="color: green;">✓ 95% Match</span>
+                </div>
+                <div style="padding: 1rem; background: white; border-radius: 8px; margin-bottom: 1rem;">
+                    <strong>ABC Investment Group</strong><br>
+                    Interested in: All property types<br>
+                    Budget: $100k-$1M<br>
+                    <span style="color: green;">✓ 88% Match</span>
+                </div>
+                <div style="padding: 1rem; background: white; border-radius: 8px; margin-bottom: 1rem;">
+                    <strong>Texas Home Buyers LLC</strong><br>
+                    Interested in: Distressed properties<br>
+                    Budget: $150k-$400k<br>
+                    <span style="color: green;">✓ 82% Match</span>
+                </div>
+            `;
+        }
+
+        function generateContract() {
+            alert('Contract Generated!\n\n✓ Assignment Agreement Created\n✓ DocuSign Envelope Prepared\n✓ Ready to Send to All Parties\n\nClick OK to preview contract...');
+        }
+
+        function showFeatureDetail(feature) {
+            const modal = document.getElementById('featureModal');
+            const modalBody = document.getElementById('modalBody');
+            const modalTitle = document.getElementById('modalTitle');
+            
+            const features = {
+                propstream: {
+                    title: 'PropStream Integration',
+                    content: `
+                        <h4>Complete Property Data Access</h4>
+                        <ul>
+                            <li>Access to 155+ million properties nationwide</li>
+                            <li>Owner contact information and mailing addresses</li>
+                            <li>Mortgage and lien information</li>
+                            <li>Comparable sales and rental data</li>
+                            <li>Pre-foreclosure and distressed property lists</li>
+                            <li>Skip tracing and lead generation tools</li>
+                        </ul>
+                        <p style="margin-top: 1rem;"><strong>API Status:</strong> <span style="color: green;">Ready for Integration</span></p>
+                    `
+                },
+                ai: {
+                    title: 'AI Deal Analysis Engine',
+                    content: `
+                        <h4>Intelligent Property Evaluation</h4>
+                        <p>Our proprietary AI model analyzes:</p>
+                        <ul>
+                            <li>Historical sales data and market trends</li>
+                            <li>Repair cost estimation using computer vision</li>
+                            <li>Neighborhood appreciation patterns</li>
+                            <li>Cash flow and rental income projections</li>
+                            <li>Optimal assignment fee calculation</li>
+                            <li>Risk assessment and deal scoring</li>
+                        </ul>
+                        <p style="margin-top: 1rem;"><strong>Accuracy Rate:</strong> 94.5% on test data</p>
+                    `
+                },
+                matching: {
+                    title: 'Cash Buyer Network',
+                    content: `
+                        <h4>Instant Buyer Matching</h4>
+                        <ul>
+                            <li>Database of 10,000+ verified cash buyers</li>
+                            <li>AI-powered matching algorithm</li>
+                            <li>Buyer preferences and criteria tracking</li>
+                            <li>Automated deal notifications</li>
+                            <li>Buyer reputation and closing history</li>
+                            <li>Direct messaging and negotiation platform</li>
+                        </ul>
+                        <p style="margin-top: 1rem;"><strong>Average Match Time:</strong> < 60 seconds</p>
+                    `
+                },
+                contracts: {
+                    title: 'Automated Contracts',
+                    content: `
+                        <h4>DocuSign Integration</h4>
+                        <ul>
+                            <li>Pre-filled assignment agreement templates</li>
+                            <li>State-specific contract compliance</li>
+                            <li>Automated document generation</li>
+                            <li>Electronic signature workflow</li>
+                            <li>Escrow and title company integration</li>
+                            <li>Deal tracking and status updates</li>
+                        </ul>
+                        <p style="margin-top: 1rem;"><strong>Time to Contract:</strong> < 5 minutes</p>
+                    `
+                },
+                roi: {
+                    title: 'ROI Calculator',
+                    content: `
+                        <h4>Comprehensive Financial Analysis</h4>
+                        <ul>
+                            <li>Purchase price and ARV calculation</li>
+                            <li>Repair cost estimation</li>
+                            <li>Assignment fee optimization</li>
+                            <li>Holding costs and timeline analysis</li>
+                            <li>Cash-on-cash return calculation</li>
+                            <li>Comparative market analysis</li>
+                        </ul>
+                        <p style="margin-top: 1rem;"><strong>Average Deal Profit:</strong> $15,000 - $45,000</p>
+                    `
+                },
+                dashboard: {
+                    title: 'Investor Dashboard',
+                    content: `
+                        <h4>Complete Deal Management</h4>
+                        <ul>
+                            <li>Real-time deal pipeline tracking</li>
+                            <li>Performance metrics and analytics</li>
+                            <li>Document management system</li>
+                            <li>Team collaboration tools</li>
+                            <li>Revenue and profit tracking</li>
+                            <li>Automated reporting and insights</li>
+                        </ul>
+                        <p style="margin-top: 1rem;"><strong>Dashboard Access:</strong> Web, iOS, Android</p>
+                    `
+                }
+            };
+            
+            const feature_data = features[feature];
+            modalTitle.textContent = feature_data.title;
+            modalBody.innerHTML = feature_data.content;
+            modal.style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('featureModal').style.display = 'none';
+        }
+
+        function showSignup() {
+            alert('Early Access Registration\n\nThank you for your interest!\nWe are currently in private beta.\n\nJoin the waitlist to get early access.');
+        }
+
+        function startDemo() {
+            document.getElementById('demo').scrollIntoView({ behavior: 'smooth' });
+            setTimeout(() => searchProperties(), 500);
+        }
+
+        function watchVideo() {
+            alert('Demo Video Coming Soon!\n\nOur product demo video is being produced.\nCheck back soon or try the live demo below.');
+        }
+
+        // Animate stats on scroll
+        function animateStats() {
+            const stats = document.querySelectorAll('[data-count]');
+            stats.forEach(stat => {
+                const target = parseFloat(stat.getAttribute('data-count'));
+                let current = 0;
+                const increment = target / 50;
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        current = target;
+                        clearInterval(timer);
+                    }
+                    if (target % 1 === 0) {
+                        stat.textContent = Math.floor(current);
+                    } else {
+                        stat.textContent = current.toFixed(1);
+                    }
+                }, 30);
+            });
+        }
+
+        // Intersection Observer for animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && entry.target.classList.contains('stats')) {
+                    animateStats();
+                    observer.unobserve(entry.target);
+                }
+            });
+        });
+
+        observer.observe(document.querySelector('.stats'));
+
+        // Modal close on outside click
+        document.getElementById('featureModal').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('featureModal')) {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>
