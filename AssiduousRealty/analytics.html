@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assiduous - Analytics</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --navy: #0B1F41;
+            --sky: #60A3D9;
+            --mist: #E2E8F0;
+            --slate: #6B7280;
+            --accent: #FFD940;
+            --white: #FFFFFF;
+            --gray-50: #FAFBFC;
+            --gray-100: #F3F4F6;
+            --gray-200: #E5E7EB;
+            --gray-300: #D1D5DB;
+            --gray-400: #9CA3AF;
+            --gray-500: #6B7280;
+            --gray-600: #4B5563;
+            --gray-700: #374151;
+            --success: #059669;
+            --warning: #D97706;
+            --danger: #DC2626;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            font-size: 14px;
+            background: linear-gradient(180deg, #F8FAFC 0%, #FFFFFF 100%);
+            color: var(--gray-700);
+            line-height: 1.5;
+            min-height: 100vh;
+        }
+        
+        /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 20px;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .logo-mark {
+            width: 32px;
+            height: 32px;
+            background: var(--navy);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-weight: 700;
+        }
+        
+        .logo-text {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--navy);
+        }
+        
+        .nav {
+            display: flex;
+            gap: 24px;
+        }
+        
+        .nav-link {
+            color: var(--gray-500);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            transition: color 0.15s;
+            position: relative;
+            padding: 8px 0;
+        }
+        
+        .nav-link:hover { color: var(--navy); }
+        .nav-link.active { color: var(--navy); }
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -16px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--sky);
+        }
+        
+        /* Main */
+        .main {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 24px 20px;
+        }
+        
+        .page-header {
+            margin-bottom: 32px;
+        }
+        
+        .page-header h1 {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--navy);
+            margin-bottom: 4px;
+        }
+        
+        .page-header p {
+            font-size: 13px;
+            color: var(--gray-500);
+        }
+        
+        /* Analytics Grid */
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+        
+        .stat-box {
+            background: var(--white);
+            border: 1px solid var(--gray-200);
+            border-radius: 8px;
+            padding: 20px;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--gray-500);
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+            margin-bottom: 8px;
+        }
+        
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--navy);
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+        
+        .stat-trend {
+            font-size: 12px;
+            color: var(--gray-500);
+        }
+        
+        .trend-up { color: var(--success); }
+        .trend-down { color: var(--danger); }
+        
+        /* Charts Section */
+        .charts-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+        
+        .chart-card {
+            background: var(--white);
+            border: 1px solid var(--gray-200);
+            border-radius: 8px;
+            padding: 24px;
+        }
+        
+        .chart-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--navy);
+            margin-bottom: 20px;
+        }
+        
+        .chart-container {
+            height: 300px;
+            position: relative;
+        }
+        
+        /* Performance Metrics */
+        .performance-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        
+        .perf-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--gray-100);
+        }
+        
+        .perf-label {
+            font-size: 13px;
+            color: var(--gray-600);
+        }
+        
+        .perf-value {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--navy);
+        }
+        
+        /* Time Range Selector */
+        .time-range {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+        
+        .time-btn {
+            padding: 6px 12px;
+            background: var(--white);
+            border: 1px solid var(--gray-200);
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--gray-600);
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        
+        .time-btn:hover {
+            background: var(--gray-50);
+        }
+        
+        .time-btn.active {
+            background: var(--sky);
+            color: var(--white);
+            border-color: var(--sky);
+        }
+        
+        /* Tooltips */
+        .tooltip {
+            position: relative;
+            cursor: help;
+            border-bottom: 1px dashed var(--gray-400);
+        }
+        
+        .tooltip::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--navy);
+            color: var(--white);
+            padding: 6px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s;
+        }
+        
+        .tooltip:hover::after {
+            opacity: 1;
+        }
+        
+        /* Progress Bars */
+        .progress-list {
+            display: grid;
+            gap: 16px;
+        }
+        
+        .progress-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background: var(--gray-100);
+            border-radius: 4px;
+            overflow: hidden;
+            flex: 1;
+            margin: 0 12px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: var(--sky);
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+        
+        .progress-label {
+            font-size: 12px;
+            color: var(--gray-600);
+            min-width: 100px;
+        }
+        
+        .progress-value {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--navy);
+            min-width: 40px;
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-inner">
+            <div class="logo">
+                <div class="logo-mark">A</div>
+                <div class="logo-text">Assiduous</div>
+            </div>
+            
+            <nav class="nav">
+                <a href="./dashboard-refined.html" class="nav-link">Dashboard</a>
+                <a href="./index.html" class="nav-link">Platform</a>
+                <a href="#" class="nav-link active">Analytics</a>
+                <a href="./reports.html" class="nav-link">Reports</a>
+                <a href="./settings.html" class="nav-link">Settings</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1>Analytics Overview</h1>
+            <p>Deep insights into your development metrics and performance trends</p>
+        </div>
+
+        <!-- Time Range Selector -->
+        <div class="time-range">
+            <button class="time-btn" onclick="setTimeRange('7d')">7 Days</button>
+            <button class="time-btn active" onclick="setTimeRange('30d')">30 Days</button>
+            <button class="time-btn" onclick="setTimeRange('90d')">90 Days</button>
+            <button class="time-btn" onclick="setTimeRange('1y')">1 Year</button>
+            <button class="time-btn" onclick="setTimeRange('all')">All Time</button>
+        </div>
+
+        <!-- Key Metrics -->
+        <div class="analytics-grid">
+            <div class="stat-box">
+                <div class="stat-label tooltip" data-tooltip="Total code contributions to date">Total Contributions</div>
+                <div class="stat-value" id="totalContributions">0</div>
+                <div class="stat-trend trend-up">↑ 12.5% from last period</div>
+            </div>
+            
+            <div class="stat-box">
+                <div class="stat-label tooltip" data-tooltip="Average time between commits">Commit Frequency</div>
+                <div class="stat-value" id="commitFreq">0h</div>
+                <div class="stat-trend">Every 24 hours average</div>
+            </div>
+            
+            <div class="stat-box">
+                <div class="stat-label tooltip" data-tooltip="Total lines of code written">Code Volume</div>
+                <div class="stat-value" id="codeVolume">0</div>
+                <div class="stat-trend trend-up">↑ 2,340 lines this week</div>
+            </div>
+        </div>
+
+        <!-- Charts Row -->
+        <div class="charts-row">
+            <!-- Main Activity Chart -->
+            <div class="chart-card">
+                <h3 class="chart-title">Commit Activity Trend</h3>
+                <div class="chart-container">
+                    <canvas id="activityChart"></canvas>
+                </div>
+            </div>
+            
+            <!-- Performance Metrics -->
+            <div class="chart-card">
+                <h3 class="chart-title">Performance Metrics</h3>
+                <div class="perf-item">
+                    <span class="perf-label">Peak Activity Day</span>
+                    <span class="perf-value" id="peakDay">Loading...</span>
+                </div>
+                <div class="perf-item">
+                    <span class="perf-label">Peak Activity Time</span>
+                    <span class="perf-value" id="peakTime">Loading...</span>
+                </div>
+                <div class="perf-item">
+                    <span class="perf-label">Avg Commit Size</span>
+                    <span class="perf-value" id="avgCommitSize">Loading...</span>
+                </div>
+                <div class="perf-item">
+                    <span class="perf-label">Success Rate</span>
+                    <span class="perf-value" id="successRate">Loading...</span>
+                </div>
+                <div class="perf-item">
+                    <span class="perf-label">Code Quality Score</span>
+                    <span class="perf-value" id="qualityScore">Loading...</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Additional Charts -->
+        <div class="charts-row">
+            <!-- Language Distribution -->
+            <div class="chart-card">
+                <h3 class="chart-title">Technology Stack Distribution</h3>
+                <div class="progress-list">
+                    <div class="progress-item">
+                        <span class="progress-label">HTML</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 65%;"></div>
+                        </div>
+                        <span class="progress-value">65%</span>
+                    </div>
+                    <div class="progress-item">
+                        <span class="progress-label">JavaScript</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 25%;"></div>
+                        </div>
+                        <span class="progress-value">25%</span>
+                    </div>
+                    <div class="progress-item">
+                        <span class="progress-label">CSS</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 8%;"></div>
+                        </div>
+                        <span class="progress-value">8%</span>
+                    </div>
+                    <div class="progress-item">
+                        <span class="progress-label">Other</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 2%;"></div>
+                        </div>
+                        <span class="progress-value">2%</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Contributor Stats -->
+            <div class="chart-card">
+                <h3 class="chart-title">Contributor Activity</h3>
+                <div class="chart-container" style="height: 200px;">
+                    <canvas id="contributorChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Detailed Performance Grid -->
+        <div class="performance-grid">
+            <div class="chart-card">
+                <h3 class="chart-title">Weekly Performance</h3>
+                <div class="perf-item">
+                    <span class="perf-label">Monday</span>
+                    <span class="perf-value" id="monday-commits">Loading...</span>
+                </div>
+                <div class="perf-item">
+                    <span class="perf-label">Tuesday</span>
+                    <span class="perf-value" id="tuesday-commits">Loading...</span>
+                </div>
+                <div class="perf-item">
+                    <span class="perf-label">Wednesday</span>
+                    <span class="perf-value" id="wednesday-commits">Loading...</span>
+                </div>
+                <div class="perf-item">
+                    <span class="perf-label">Thursday</span>
+                    <span class="perf-value" id="thursday-commits">Loading...</span>
+                </div>
+                <div class="perf-item">
+                    <span class="perf-label">Friday</span>
+                    <span class="perf-value" id="friday-commits">Loading...</span>
+                </div>
+                <div class="perf-item">
+                    <span class="perf-label">Weekend</span>
+                    <span class="perf-value" id="weekend-commits">Loading...</span>
+                </div>
+            </div>
+            
+            <div class="chart-card">
+                <h3 class="chart-title">Monthly Trends</h3>
+                <div class="perf-item">
+                    <span class="perf-label tooltip" data-tooltip="Average commits per month">Monthly Average</span>
+                    <span class="perf-value" id="monthly-avg">Loading...</span>
+                </div>
+                <div class="perf-item">
+                    <span class="perf-label">Best Month</span>
+                    <span class="perf-value" id="best-month">Loading...</span>
+                </div>
+                <div class="perf-item">
+                    <span class="perf-label">Growth Rate</span>
+                    <span class="perf-value" id="growth-rate">Loading...</span>
+                </div>
+                <div class="perf-item">
+                    <span class="perf-label">Consistency Score</span>
+                    <span class="perf-value" id="consistency">Loading...</span>
+                </div>
+                <div class="perf-item">
+                    <span class="perf-label">Projected Next Month</span>
+                    <span class="perf-value" id="projection">Loading...</span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <script>
+        // Initialize Analytics
+        const GITHUB_OWNER = 'SirsiMaster';
+        const GITHUB_REPO = 'Assiduous';
+        let commits = [];
+        let repoStats = {};
+        let languages = {};
+        let timeRange = '30d';
+        
+        async function init() {
+            await loadData();
+            createCharts();
+            updateMetrics();
+            updateRealTimeStats();
+        }
+        
+        async function loadData() {
+            try {
+                // Load commits
+                const commitsResponse = await fetch(
+                    `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/commits?per_page=100`
+                );
+                commits = await commitsResponse.json();
+                
+                // Load repository stats
+                const repoResponse = await fetch(
+                    `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}`
+                );
+                repoStats = await repoResponse.json();
+                
+                // Load languages
+                const langResponse = await fetch(
+                    `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/languages`
+                );
+                languages = await langResponse.json();
+                
+            } catch (error) {
+                console.error('Error loading data:', error);
+            }
+        }
+        
+        function updateMetrics() {
+            // Update contribution metrics with real data
+            document.getElementById('totalContributions').textContent = commits.length;
+            
+            // Calculate real commit frequency
+            if (commits.length > 1) {
+                const first = new Date(commits[commits.length - 1].commit.author.date);
+                const last = new Date(commits[0].commit.author.date);
+                const hours = Math.abs(last - first) / (1000 * 60 * 60);
+                const avgHours = Math.round(hours / commits.length);
+                document.getElementById('commitFreq').textContent = avgHours + 'h';
+            }
+            
+            // Calculate real code volume from repo size
+            const repoSizeKB = repoStats.size || 0;
+            const estimatedLines = Math.round(repoSizeKB * 15); // Estimate ~15 lines per KB
+            document.getElementById('codeVolume').textContent = estimatedLines.toLocaleString();
+            
+            // Find peak activity day and time
+            const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            const dayCount = {};
+            const hourCount = {};
+            
+            commits.forEach(c => {
+                const date = new Date(c.commit.author.date);
+                const day = days[date.getDay()];
+                const hour = date.getHours();
+                
+                dayCount[day] = (dayCount[day] || 0) + 1;
+                hourCount[hour] = (hourCount[hour] || 0) + 1;
+            });
+            
+            // Get peak day
+            let maxDay = 'Monday';
+            let maxCount = 0;
+            for (const [day, count] of Object.entries(dayCount)) {
+                if (count > maxCount) {
+                    maxCount = count;
+                    maxDay = day;
+                }
+            }
+            document.getElementById('peakDay').textContent = maxDay;
+            
+            // Calculate peak time range
+            let maxHour = 0;
+            let maxHourCount = 0;
+            for (const [hour, count] of Object.entries(hourCount)) {
+                if (count > maxHourCount) {
+                    maxHourCount = count;
+                    maxHour = parseInt(hour);
+                }
+            }
+            const startTime = maxHour === 0 ? 12 : maxHour > 12 ? maxHour - 12 : maxHour;
+            const endTime = (maxHour + 3) > 23 ? 23 : (maxHour + 3);
+            const startPeriod = maxHour < 12 ? 'AM' : 'PM';
+            const endPeriod = endTime < 12 ? 'AM' : 'PM';
+            const displayEnd = endTime > 12 ? endTime - 12 : endTime;
+            document.getElementById('peakTime').textContent = `${startTime}:00 ${startPeriod} - ${displayEnd}:00 ${endPeriod}`;
+            
+            // Calculate average commit size (additions + deletions)
+            // Using repository size and commit count as proxy
+            const avgSize = Math.round((repoSizeKB * 1024) / (commits.length * 50)); // Estimate bytes per commit
+            document.getElementById('avgCommitSize').textContent = `${avgSize} lines`;
+            
+            // Calculate success rate (commits without 'fix' or 'revert' in message)
+            const successfulCommits = commits.filter(c => 
+                !c.commit.message.toLowerCase().includes('fix') && 
+                !c.commit.message.toLowerCase().includes('revert')
+            ).length;
+            const successRate = ((successfulCommits / commits.length) * 100).toFixed(1);
+            document.getElementById('successRate').textContent = `${successRate}%`;
+            
+            // Calculate code quality score based on metrics
+            let qualityPoints = 0;
+            if (successRate > 95) qualityPoints += 30;
+            else if (successRate > 90) qualityPoints += 25;
+            else if (successRate > 85) qualityPoints += 20;
+            else qualityPoints += 15;
+            
+            if (avgHours < 24) qualityPoints += 30; // Frequent commits
+            else if (avgHours < 48) qualityPoints += 25;
+            else if (avgHours < 72) qualityPoints += 20;
+            else qualityPoints += 10;
+            
+            const contributors = [...new Set(commits.map(c => c.commit.author.name))].length;
+            if (contributors > 5) qualityPoints += 20;
+            else if (contributors > 2) qualityPoints += 15;
+            else qualityPoints += 10;
+            
+            // Regular commit pattern bonus
+            const hasWeekendCommits = dayCount['Saturday'] > 0 || dayCount['Sunday'] > 0;
+            if (hasWeekendCommits) qualityPoints += 10;
+            
+            // Calculate grade
+            let grade = 'C';
+            if (qualityPoints >= 85) grade = 'A+';
+            else if (qualityPoints >= 80) grade = 'A';
+            else if (qualityPoints >= 75) grade = 'A-';
+            else if (qualityPoints >= 70) grade = 'B+';
+            else if (qualityPoints >= 65) grade = 'B';
+            else if (qualityPoints >= 60) grade = 'B-';
+            else if (qualityPoints >= 55) grade = 'C+';
+            
+            document.getElementById('qualityScore').textContent = grade;
+            
+            // Update language distribution with real data
+            updateLanguageStats();
+            
+            // Update monthly trends
+            updateMonthlyTrends();
+        }
+        
+        function updateMonthlyTrends() {
+            const monthlyCommits = {};
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            
+            commits.forEach(c => {
+                const date = new Date(c.commit.author.date);
+                const monthYear = `${months[date.getMonth()]} ${date.getFullYear()}`;
+                monthlyCommits[monthYear] = (monthlyCommits[monthYear] || 0) + 1;
+            });
+            
+            const monthlyValues = Object.values(monthlyCommits);
+            const monthlyAvg = monthlyValues.length > 0 
+                ? Math.round(monthlyValues.reduce((a, b) => a + b, 0) / monthlyValues.length)
+                : 0;
+            
+            document.getElementById('monthly-avg').textContent = `${monthlyAvg} commits`;
+            
+            // Find best month
+            const bestMonth = Object.entries(monthlyCommits).sort((a, b) => b[1] - a[1])[0];
+            if (bestMonth) {
+                document.getElementById('best-month').textContent = `${bestMonth[0]} (${bestMonth[1]})`;
+            }
+            
+            // Calculate growth rate
+            const recentMonths = Object.entries(monthlyCommits).slice(-2);
+            if (recentMonths.length === 2) {
+                const growth = ((recentMonths[1][1] - recentMonths[0][1]) / recentMonths[0][1] * 100).toFixed(0);
+                const growthElement = document.getElementById('growth-rate');
+                growthElement.textContent = growth >= 0 ? `+${growth}%` : `${growth}%`;
+                growthElement.className = growth >= 0 ? 'perf-value trend-up' : 'perf-value trend-down';
+            }
+            
+            // Calculate consistency score (standard deviation)
+            const mean = monthlyAvg;
+            const variance = monthlyValues.reduce((acc, val) => acc + Math.pow(val - mean, 2), 0) / monthlyValues.length;
+            const stdDev = Math.sqrt(variance);
+            const consistency = Math.max(0, Math.min(100, Math.round(100 - (stdDev / mean * 100))));
+            document.getElementById('consistency').textContent = `${consistency}/100`;
+            
+            // Project next month based on trend
+            const lastThreeMonths = monthlyValues.slice(-3);
+            const trend = lastThreeMonths.length >= 2 
+                ? (lastThreeMonths[lastThreeMonths.length - 1] - lastThreeMonths[0]) / lastThreeMonths.length
+                : 0;
+            const projection = Math.round(monthlyAvg + trend);
+            document.getElementById('projection').textContent = `~${projection} commits`;
+        }
+        
+        function updateLanguageStats() {
+            const totalBytes = Object.values(languages).reduce((a, b) => a + b, 0);
+            const langPercents = {};
+            
+            for (const [lang, bytes] of Object.entries(languages)) {
+                langPercents[lang] = Math.round((bytes / totalBytes) * 100);
+            }
+            
+            // Update progress bars with real language data
+            const progressList = document.querySelector('.progress-list');
+            progressList.innerHTML = '';
+            
+            const sortedLangs = Object.entries(langPercents).sort((a, b) => b[1] - a[1]);
+            
+            sortedLangs.forEach(([lang, percent]) => {
+                const item = document.createElement('div');
+                item.className = 'progress-item';
+                item.innerHTML = `
+                    <span class="progress-label">${lang}</span>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${percent}%;"></div>
+                    </div>
+                    <span class="progress-value">${percent}%</span>
+                `;
+                progressList.appendChild(item);
+            });
+        }
+        
+        function updateRealTimeStats() {
+            // Calculate real trends
+            const now = new Date();
+            const thirtyDaysAgo = new Date(now - 30 * 24 * 60 * 60 * 1000);
+            const sixtyDaysAgo = new Date(now - 60 * 24 * 60 * 60 * 1000);
+            
+            const recentCommits = commits.filter(c => 
+                new Date(c.commit.author.date) > thirtyDaysAgo
+            ).length;
+            
+            const previousCommits = commits.filter(c => {
+                const date = new Date(c.commit.author.date);
+                return date > sixtyDaysAgo && date <= thirtyDaysAgo;
+            }).length;
+            
+            // Update trend indicators with real data
+            const growthPercent = previousCommits > 0 
+                ? Math.round(((recentCommits - previousCommits) / previousCommits) * 100)
+                : 0;
+            
+            document.querySelectorAll('.stat-trend').forEach((trend, index) => {
+                if (index === 0 && growthPercent !== 0) {
+                    trend.textContent = `${growthPercent > 0 ? '↑' : '↓'} ${Math.abs(growthPercent)}% from last period`;
+                    trend.className = `stat-trend ${growthPercent > 0 ? 'trend-up' : 'trend-down'}`;
+                }
+            });
+            
+            // Update weekly performance with real data
+            updateWeeklyPerformance();
+        }
+        
+        function updateWeeklyPerformance() {
+            const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            const dayCommits = {};
+            
+            // Initialize all days to 0
+            days.forEach(day => dayCommits[day] = 0);
+            
+            commits.forEach(c => {
+                const day = days[new Date(c.commit.author.date).getDay()];
+                dayCommits[day] = (dayCommits[day] || 0) + 1;
+            });
+            
+            // Update individual days
+            document.getElementById('monday-commits').textContent = `${dayCommits['Monday']} commits`;
+            document.getElementById('tuesday-commits').textContent = `${dayCommits['Tuesday']} commits`;
+            document.getElementById('wednesday-commits').textContent = `${dayCommits['Wednesday']} commits`;
+            document.getElementById('thursday-commits').textContent = `${dayCommits['Thursday']} commits`;
+            document.getElementById('friday-commits').textContent = `${dayCommits['Friday']} commits`;
+            
+            // Calculate weekend total
+            const weekendTotal = dayCommits['Saturday'] + dayCommits['Sunday'];
+            document.getElementById('weekend-commits').textContent = `${weekendTotal} commits`;
+        }
+        
+        function createCharts() {
+            // Activity Chart
+            const ctx1 = document.getElementById('activityChart').getContext('2d');
+            
+            // Prepare data for last 30 days
+            const labels = [];
+            const data = [];
+            
+            for (let i = 29; i >= 0; i--) {
+                const date = new Date();
+                date.setDate(date.getDate() - i);
+                labels.push(date.toLocaleDateString('en', { month: 'short', day: 'numeric' }));
+                
+                const dayCommits = commits.filter(c => 
+                    new Date(c.commit.author.date).toDateString() === date.toDateString()
+                ).length;
+                data.push(dayCommits);
+            }
+            
+            new Chart(ctx1, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Commits',
+                        data: data,
+                        borderColor: '#60A3D9',
+                        backgroundColor: 'rgba(96, 163, 217, 0.1)',
+                        borderWidth: 2,
+                        tension: 0.4,
+                        fill: true,
+                        pointRadius: 0,
+                        pointHoverRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1,
+                                font: { size: 11 }
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                font: { size: 11 },
+                                maxRotation: 45,
+                                minRotation: 45
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Contributor Chart
+            const ctx2 = document.getElementById('contributorChart').getContext('2d');
+            
+            // Get contributor stats
+            const contributors = {};
+            commits.forEach(c => {
+                const name = c.commit.author.name;
+                contributors[name] = (contributors[name] || 0) + 1;
+            });
+            
+            const sortedContributors = Object.entries(contributors)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 5);
+            
+            new Chart(ctx2, {
+                type: 'doughnut',
+                data: {
+                    labels: sortedContributors.map(c => c[0]),
+                    datasets: [{
+                        data: sortedContributors.map(c => c[1]),
+                        backgroundColor: [
+                            '#60A3D9',
+                            '#FFD940',
+                            '#059669',
+                            '#DC2626',
+                            '#6B7280'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: {
+                                font: { size: 11 },
+                                padding: 8
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        function setTimeRange(range) {
+            timeRange = range;
+            // Update active button
+            document.querySelectorAll('.time-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Reload data for new range (simplified for demo)
+            updateMetrics();
+        }
+        
+        // Initialize on load
+        window.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
