@@ -61,7 +61,7 @@ Assiduous is a next-generation AI-powered real estate platform that revolutioniz
 
 #### Phase 2: Frontend Website - COMPLETED
 - **Public Website** (`index.html`): Fully responsive, dynamic property search
-- **Executive Dashboard** (`dashboard-ultra.html`): Real-time analytics
+- **Executive Dashboard** (`dashboard-refined.html`): Real-time analytics
 - **Features Delivered**:
   - Dynamic property filtering with instant search
   - Market insights visualization

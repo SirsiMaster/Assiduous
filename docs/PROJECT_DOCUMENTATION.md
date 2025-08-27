@@ -32,7 +32,7 @@ Assiduous Realty now features a complete real estate management platform combini
 ```
 AssiduousRealty/
 ├── index.html                 # Main website with dynamic data integration
-├── dashboard-ultra.html       # Executive dashboard overview
+├── dashboard-refined.html       # Executive dashboard overview
 └── assets/                    # Static resources
 ```
 
@@ -226,7 +226,7 @@ All data is stored in localStorage with the following keys:
 ```
 AssiduousRealty/
 ├── index.html                    # Public website
-├── dashboard-ultra.html          # Executive dashboard
+├── dashboard-refined.html          # Executive dashboard
 ├── backend/
 │   ├── properties.html          # Property management
 │   ├── agents.html              # Agent management
