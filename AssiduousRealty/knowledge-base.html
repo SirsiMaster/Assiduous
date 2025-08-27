@@ -14,71 +14,74 @@
     <style>
         /* Knowledge Base page specific styles */
         
-        body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
+        /* Remove body override - use default from assiduous.css */
         
         .container {
             max-width: 1400px;
             margin: 0 auto;
+            padding: var(--space-5) var(--space-4);
+        }
+        
+        .kb-header {
             background: white;
-            border-radius: var(--radius-xl);
-            overflow: hidden;
-            box-shadow: var(--shadow-2xl);
-        }
-        
-        .header {
-            background: var(--dark);
-            color: white;
-            padding: var(--space-section);
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius-lg);
+            padding: var(--space-8);
             text-align: center;
+            margin-bottom: var(--space-6);
+            box-shadow: var(--shadow-sm);
         }
         
-        .header h1 {
-            font-size: 36px;
-            font-weight: 800;
-            margin-bottom: var(--space-sm);
+        .kb-header h1 {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: var(--space-2);
         }
         
-        .header p {
-            font-size: 18px;
-            opacity: 0.9;
+        .kb-header p {
+            font-size: 16px;
+            color: var(--gray-600);
         }
         
         .nav-tabs {
             display: flex;
-            background: rgba(28, 34, 55, 0.05);
-            padding: var(--space-sm);
-            gap: var(--space-sm);
+            background: var(--gray-50);
+            padding: var(--space-2);
+            gap: var(--space-2);
             overflow-x: auto;
+            border-radius: var(--radius-lg);
+            margin-bottom: var(--space-6);
         }
         
         .nav-tab {
-            padding: 12px 24px;
+            padding: var(--space-3) var(--space-5);
             background: white;
-            border: 2px solid transparent;
-            border-radius: var(--radius-md);
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius);
             cursor: pointer;
-            font-weight: 600;
-            color: var(--dark);
-            transition: all 0.3s;
+            font-weight: 500;
+            color: var(--gray-600);
+            transition: all 0.2s;
             white-space: nowrap;
         }
         
         .nav-tab:hover {
-            background: var(--light);
+            background: var(--gray-50);
+            color: var(--navy);
         }
         
         .nav-tab.active {
-            background: var(--primary);
+            background: var(--sky);
             color: white;
-            border-color: var(--primary);
+            border-color: var(--sky);
         }
         
         .content {
-            padding: var(--space-section);
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: var(--space-6);
+            box-shadow: var(--shadow-sm);
         }
         
         .section {
@@ -98,11 +101,11 @@
         }
         
         .accomplishment-card {
-            background: linear-gradient(135deg, var(--light), white);
+            background: white;
             border-radius: var(--radius-lg);
-            padding: var(--space-xl);
-            border: 1px solid var(--border);
-            transition: transform 0.3s, box-shadow 0.3s;
+            padding: var(--space-5);
+            border: 1px solid var(--gray-200);
+            transition: transform 0.2s, box-shadow 0.2s;
         }
         
         .accomplishment-card:hover {
@@ -331,7 +334,7 @@
 </head>
 <body>
     <div class="container">
-        <div class="header">
+        <div class="kb-header">
             <h1>🏢 Assiduous Realty Knowledge Base</h1>
             <p>Complete Documentation & Development Guide</p>
         </div>
