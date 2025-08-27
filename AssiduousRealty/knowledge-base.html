@@ -3,349 +3,440 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Assiduous Realty - Knowledge Base & Documentation</title>
+    <title>Assiduous Realty - Knowledge Base</title>
     
     <!-- Assiduous Design System -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assiduous.css">
     
     <style>
-        /* Knowledge Base page specific styles */
+        /* Knowledge Base - Dashboard Design System */
         
-        /* Remove body override - use default from assiduous.css */
-        
-        .container {
-            max-width: 1400px;
+        /* Main Container */
+        .main {
+            max-width: 1280px;
             margin: 0 auto;
-            padding: var(--space-5) var(--space-4);
+            padding: var(--space-6) var(--space-5);
+            position: relative;
+            z-index: 2;
         }
         
-        .kb-header {
-            background: white;
-            border: 1px solid var(--gray-200);
-            border-radius: var(--radius-lg);
-            padding: var(--space-8);
-            text-align: center;
+        /* Page Title - Matching Dashboard Style */
+        .page-title {
             margin-bottom: var(--space-6);
-            box-shadow: var(--shadow-sm);
         }
         
-        .kb-header h1 {
-            font-size: 32px;
-            font-weight: 700;
+        .page-title h1 {
+            font-size: var(--text-2xl);
+            font-weight: 600;
             color: var(--navy);
-            margin-bottom: var(--space-2);
+            margin-bottom: var(--space-1);
         }
         
-        .kb-header p {
-            font-size: 16px;
-            color: var(--gray-600);
+        .page-title p {
+            font-size: var(--text-sm);
+            color: var(--gray-500);
         }
         
+        /* Navigation Tabs - Refined */
         .nav-tabs {
             display: flex;
-            background: var(--gray-50);
-            padding: var(--space-2);
-            gap: var(--space-2);
-            overflow-x: auto;
-            border-radius: var(--radius-lg);
+            gap: var(--space-1);
             margin-bottom: var(--space-6);
+            padding: var(--space-1);
+            background: var(--gray-50);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--gray-200);
         }
         
         .nav-tab {
-            padding: var(--space-3) var(--space-5);
-            background: white;
-            border: 1px solid var(--gray-200);
+            padding: var(--space-2) var(--space-4);
+            background: transparent;
+            border: none;
             border-radius: var(--radius);
             cursor: pointer;
+            font-size: var(--text-sm);
             font-weight: 500;
             color: var(--gray-600);
-            transition: all 0.2s;
+            transition: all 0.15s;
             white-space: nowrap;
+            position: relative;
         }
         
         .nav-tab:hover {
-            background: var(--gray-50);
+            background: var(--white);
             color: var(--navy);
+            box-shadow: var(--shadow-sm);
         }
         
         .nav-tab.active {
-            background: var(--sky);
-            color: white;
-            border-color: var(--sky);
+            background: var(--white);
+            color: var(--sky);
+            box-shadow: var(--shadow);
         }
         
+        .nav-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: var(--space-4);
+            right: var(--space-4);
+            height: 2px;
+            background: var(--sky);
+        }
+        
+        /* Content Area */
         .content {
-            background: white;
+            background: var(--white);
+            border: 1px solid var(--gray-200);
             border-radius: var(--radius-lg);
-            padding: var(--space-6);
+            overflow: hidden;
             box-shadow: var(--shadow-sm);
         }
         
         .section {
             display: none;
+            padding: var(--space-5);
         }
         
         .section.active {
             display: block;
-            animation: fadeIn 0.5s;
+            animation: fadeIn 0.3s;
         }
         
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        /* Metrics Cards - Dashboard Style */
+        .metrics-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: var(--space-4);
+            margin-bottom: var(--space-6);
+        }
+        
+        .metric-card {
+            background: var(--white);
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius-lg);
+            padding: var(--space-4);
+            transition: all 0.2s;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .metric-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            box-shadow: var(--shadow);
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        
+        .metric-card:hover::before {
+            opacity: 1;
+        }
+        
+        .metric-card:hover {
+            transform: translateY(-1px);
+            border-color: var(--sky);
+        }
+        
+        .metric-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--sky);
+            transform: scaleX(0);
+            transition: transform 0.2s;
+        }
+        
+        .metric-card:hover::after {
+            transform: scaleX(1);
+        }
+        
+        .metric-label {
+            font-size: var(--text-xs);
+            font-weight: 500;
+            color: var(--gray-500);
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+            margin-bottom: var(--space-2);
+        }
+        
+        .metric-value {
+            font-size: var(--text-3xl);
+            font-weight: 700;
+            color: var(--navy);
+            line-height: 1;
+        }
+        
+        /* Cards - Clean Style */
+        .card {
+            background: var(--white);
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            margin-bottom: var(--space-5);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .card-header {
+            padding: var(--space-4) var(--space-5);
+            border-bottom: 1px solid var(--gray-100);
+            background: var(--gray-50);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .card-title {
+            font-size: var(--text-base);
+            font-weight: 600;
+            color: var(--navy);
+        }
+        
+        .card-body {
+            padding: var(--space-4);
+        }
+        
+        /* Feature Grid */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--space-4);
+            margin-top: var(--space-4);
+        }
+        
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-3);
+            padding: var(--space-3);
+            background: var(--gray-50);
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius);
+            transition: all 0.15s;
+        }
+        
+        .feature-item:hover {
+            background: var(--white);
+            border-color: var(--sky);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow);
+        }
+        
+        .feature-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--sky);
+            color: var(--white);
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: var(--text-xs);
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+        
+        .feature-content {
+            flex: 1;
+        }
+        
+        .feature-content strong {
+            display: block;
+            font-size: var(--text-sm);
+            color: var(--gray-700);
+            margin-bottom: var(--space-1);
+        }
+        
+        .feature-content small {
+            font-size: var(--text-xs);
+            color: var(--gray-500);
+        }
+        
+        /* Accomplishment Cards */
         .accomplishment-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: var(--space-lg);
-            margin: var(--space-2xl) 0;
+            gap: var(--space-4);
+            margin-top: var(--space-4);
         }
         
         .accomplishment-card {
-            background: white;
-            border-radius: var(--radius-lg);
-            padding: var(--space-5);
+            background: var(--white);
             border: 1px solid var(--gray-200);
-            transition: transform 0.2s, box-shadow 0.2s;
+            border-radius: var(--radius-lg);
+            padding: var(--space-4);
+            transition: all 0.15s;
         }
         
         .accomplishment-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-lg);
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
         }
         
         .accomplishment-card h3 {
-            color: var(--dark);
-            font-size: 20px;
-            margin-bottom: var(--space-md);
-            display: flex;
-            align-items: center;
-            gap: var(--space-sm);
+            font-size: var(--text-base);
+            font-weight: 600;
+            color: var(--navy);
+            margin-bottom: var(--space-3);
+            padding-bottom: var(--space-2);
+            border-bottom: 1px solid var(--gray-100);
         }
         
         .accomplishment-card ul {
             list-style: none;
-            color: var(--text-secondary);
+            padding: 0;
+            margin: 0;
         }
         
         .accomplishment-card li {
-            padding: var(--space-sm) 0;
-            border-bottom: 1px solid var(--border);
+            padding: var(--space-2) 0;
+            font-size: var(--text-sm);
+            color: var(--gray-600);
             display: flex;
             align-items: center;
-            gap: var(--space-sm);
+            gap: var(--space-2);
         }
         
-        .accomplishment-card li:last-child {
-            border: none;
-        }
-        
-        .feature-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: var(--space-md);
-            margin: var(--space-lg) 0;
-        }
-        
-        .feature-item {
-            background: white;
-            border: 2px solid var(--border);
-            border-radius: var(--radius-md);
-            padding: var(--space-md);
-            display: flex;
-            align-items: center;
-            gap: var(--space-sm);
-            transition: all 0.3s;
-        }
-        
-        .feature-item:hover {
-            border-color: var(--primary);
-            background: rgba(42, 82, 152, 0.05);
-        }
-        
-        .feature-icon {
-            width: 40px;
-            height: 40px;
-            background: var(--primary);
-            border-radius: var(--radius-md);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            color: white;
-        }
-        
-        .metric-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: var(--space-lg);
-            margin: var(--space-2xl) 0;
-        }
-        
-        .metric-card {
-            background: var(--gradient);
-            color: white;
-            border-radius: var(--radius-lg);
-            padding: var(--space-xl);
-            text-align: center;
-        }
-        
-        .metric-value {
-            font-size: 36px;
-            font-weight: 800;
-            margin: 10px 0;
-        }
-        
-        .metric-label {
-            font-size: 14px;
-            opacity: 0.9;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        
-        .roadmap-timeline {
-            position: relative;
-            padding-left: 40px;
-            margin: 30px 0;
-        }
-        
-        .roadmap-timeline::before {
+        .accomplishment-card li::before {
             content: '';
-            position: absolute;
-            left: 10px;
-            top: 0;
-            bottom: 0;
-            width: 2px;
-            background: var(--mist);
-        }
-        
-        .roadmap-item {
-            position: relative;
-            margin-bottom: 30px;
-            background: var(--white);
-            border: 1px solid var(--mist);
-            border-radius: 8px;
-            padding: 20px;
-        }
-        
-        .roadmap-item::before {
-            content: '';
-            position: absolute;
-            left: -35px;
-            top: 25px;
-            width: 20px;
-            height: 20px;
+            width: 5px;
+            height: 5px;
+            background: var(--success);
             border-radius: 50%;
-            background: var(--sky);
-            border: 4px solid var(--white);
-            box-shadow: 0 0 0 2px var(--mist);
+            flex-shrink: 0;
         }
         
-        .roadmap-item h4 {
-            color: var(--navy);
-            margin-bottom: 10px;
-        }
-        
+        /* Quick Links Grid */
         .quick-links {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin: 30px 0;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: var(--space-3);
+            margin-top: var(--space-4);
         }
         
         .quick-link {
+            padding: var(--space-3);
             background: var(--white);
-            border: 2px solid var(--mist);
-            border-radius: 10px;
-            padding: 20px;
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius);
             text-align: center;
             text-decoration: none;
-            color: var(--navy);
-            font-weight: 600;
-            transition: all 0.3s;
+            color: var(--gray-700);
+            font-size: var(--text-sm);
+            font-weight: 500;
+            transition: all 0.15s;
         }
         
         .quick-link:hover {
             background: var(--sky);
             color: var(--white);
             border-color: var(--sky);
-            transform: translateY(-3px);
+            transform: translateY(-1px);
         }
         
-        .status-badge {
-            display: inline-block;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-        
-        .status-complete {
-            background: rgba(5, 150, 105, 0.1);
-            color: var(--success);
-        }
-        
-        .status-progress {
-            background: rgba(255, 217, 64, 0.2);
-            color: var(--warning);
-        }
-        
-        .status-planned {
-            background: rgba(96, 163, 217, 0.1);
-            color: var(--sky);
-        }
-        
-        h2 {
-            color: var(--navy);
-            font-size: 28px;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid var(--mist);
-        }
-        
-        h3 {
-            color: var(--navy);
-            font-size: 20px;
-            margin: 25px 0 15px;
-        }
-        
-        code {
-            background: rgba(11, 31, 65, 0.05);
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-family: 'Courier New', monospace;
-            color: var(--navy);
-        }
-        
+        /* Alert Box */
         .alert {
-            background: rgba(255, 217, 64, 0.1);
-            border-left: 4px solid var(--accent);
-            padding: 15px 20px;
-            margin: 20px 0;
-            border-radius: 4px;
+            background: var(--gray-50);
+            border-left: 3px solid var(--accent);
+            border-radius: var(--radius);
+            padding: var(--space-3) var(--space-4);
+            margin-bottom: var(--space-4);
         }
         
         .alert-title {
+            font-size: var(--text-sm);
             font-weight: 600;
             color: var(--navy);
-            margin-bottom: 5px;
+            margin-bottom: var(--space-1);
+        }
+        
+        .alert p {
+            font-size: var(--text-sm);
+            color: var(--gray-600);
+            margin: 0;
+        }
+        
+        /* Section Headers */
+        h2 {
+            font-size: var(--text-xl);
+            font-weight: 600;
+            color: var(--navy);
+            margin-bottom: var(--space-4);
+        }
+        
+        h3 {
+            font-size: var(--text-base);
+            font-weight: 600;
+            color: var(--navy);
+            margin-top: var(--space-5);
+            margin-bottom: var(--space-3);
+        }
+        
+        /* Code Blocks */
+        code {
+            background: var(--gray-100);
+            padding: 2px 6px;
+            border-radius: var(--radius-sm);
+            font-family: 'Courier New', monospace;
+            font-size: var(--text-xs);
+            color: var(--navy);
+        }
+        
+        /* Lists */
+        ul {
+            padding-left: var(--space-5);
+        }
+        
+        ul li {
+            font-size: var(--text-sm);
+            color: var(--gray-600);
+            line-height: 1.6;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .metrics-row {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .nav-tabs {
+                overflow-x: auto;
+                flex-wrap: nowrap;
+            }
+            
+            .quick-links {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="kb-header">
-            <h1>🏢 Assiduous Realty Knowledge Base</h1>
+    <div class="main">
+        <div class="page-title">
+            <h1>Knowledge Base</h1>
             <p>Complete Documentation & Development Guide</p>
         </div>
         
         <div class="nav-tabs">
-            <div class="nav-tab active" onclick="showSection('overview')">Executive Overview</div>
-            <div class="nav-tab" onclick="showSection('accomplishments')">Accomplishments</div>
-            <div class="nav-tab" onclick="showSection('features')">System Features</div>
-            <div class="nav-tab" onclick="showSection('technical')">Technical Guide</div>
-            <div class="nav-tab" onclick="showSection('roadmap')">Future Roadmap</div>
-            <div class="nav-tab" onclick="showSection('quickstart')">Quick Start</div>
+            <div class="nav-tab active" onclick="showSection(event, 'overview')">Executive Overview</div>
+            <div class="nav-tab" onclick="showSection(event, 'accomplishments')">Accomplishments</div>
+            <div class="nav-tab" onclick="showSection(event, 'features')">System Features</div>
+            <div class="nav-tab" onclick="showSection(event, 'technical')">Technical Guide</div>
+            <div class="nav-tab" onclick="showSection(event, 'roadmap')">Future Roadmap</div>
+            <div class="nav-tab" onclick="showSection(event, 'quickstart')">Quick Start</div>
         </div>
         
         <div class="content">
@@ -354,17 +445,17 @@
                 <h2>Executive Overview</h2>
                 
                 <div class="alert">
-                    <div class="alert-title">🎯 Mission Accomplished</div>
+                    <div class="alert-title">Mission Accomplished</div>
                     <p>Assiduous Realty now operates a fully-integrated real estate management platform with zero external dependencies.</p>
                 </div>
                 
-                <div class="metric-cards">
+                <div class="metrics-row">
                     <div class="metric-card">
                         <div class="metric-label">Modules Built</div>
                         <div class="metric-value">6</div>
                     </div>
                     <div class="metric-card">
-                        <div class="metric-label">Code Lines</div>
+                        <div class="metric-label">Lines of Code</div>
                         <div class="metric-value">5K+</div>
                     </div>
                     <div class="metric-card">
@@ -378,32 +469,32 @@
                 </div>
                 
                 <h3>Business Impact</h3>
-                <div class="feature-list">
+                <div class="feature-grid">
                     <div class="feature-item">
-                        <div class="feature-icon">📈</div>
-                        <div>
-                            <strong>80% Efficiency Gain</strong><br>
+                        <div class="feature-icon">80%</div>
+                        <div class="feature-content">
+                            <strong>Efficiency Gain</strong>
                             <small>Reduced manual data entry</small>
                         </div>
                     </div>
                     <div class="feature-item">
-                        <div class="feature-icon">⚡</div>
-                        <div>
-                            <strong>Real-Time Analytics</strong><br>
+                        <div class="feature-icon">RT</div>
+                        <div class="feature-content">
+                            <strong>Real-Time Analytics</strong>
                             <small>Instant market insights</small>
                         </div>
                     </div>
                     <div class="feature-item">
-                        <div class="feature-icon">💰</div>
-                        <div>
-                            <strong>$1.3M+ Tracked</strong><br>
+                        <div class="feature-icon">$</div>
+                        <div class="feature-content">
+                            <strong>$1.3M+ Tracked</strong>
                             <small>Transaction volume managed</small>
                         </div>
                     </div>
                     <div class="feature-item">
-                        <div class="feature-icon">👥</div>
-                        <div>
-                            <strong>Complete CRM</strong><br>
+                        <div class="feature-icon">CRM</div>
+                        <div class="feature-content">
+                            <strong>Complete CRM</strong>
                             <small>Full client lifecycle tracking</small>
                         </div>
                     </div>
@@ -413,13 +504,13 @@
                 <p>The Assiduous Realty platform consists of two main components:</p>
                 
                 <div class="quick-links">
-                    <a href="index.html" class="quick-link">🌐 Public Website</a>
-                    <a href="dashboard-refined.html" class="quick-link">📊 Executive Dashboard</a>
-                    <a href="backend/properties.html" class="quick-link">🏠 Properties</a>
-                    <a href="backend/agents.html" class="quick-link">👥 Agents</a>
-                    <a href="backend/clients.html" class="quick-link">📋 Clients</a>
-                    <a href="backend/transactions.html" class="quick-link">💼 Transactions</a>
-                    <a href="backend/market.html" class="quick-link">📈 Market</a>
+                    <a href="index.html" class="quick-link">Public Website</a>
+                    <a href="dashboard.html" class="quick-link">Executive Dashboard</a>
+                    <a href="backend/properties.html" class="quick-link">Properties</a>
+                    <a href="backend/agents.html" class="quick-link">Agents</a>
+                    <a href="backend/clients.html" class="quick-link">Clients</a>
+                    <a href="backend/transactions.html" class="quick-link">Transactions</a>
+                    <a href="backend/market.html" class="quick-link">Market</a>
                 </div>
             </div>
             
@@ -429,68 +520,68 @@
                 
                 <div class="accomplishment-grid">
                     <div class="accomplishment-card">
-                        <h3>✅ Phase 1: Foundation</h3>
+                        <h3>Phase 1: Foundation</h3>
                         <ul>
-                            <li>✓ Brand identity established</li>
-                            <li>✓ Color scheme implemented</li>
-                            <li>✓ Typography system deployed</li>
-                            <li>✓ Logo design completed</li>
-                            <li>✓ Design system documented</li>
+                            <li>Brand identity established</li>
+                            <li>Color scheme implemented</li>
+                            <li>Typography system deployed</li>
+                            <li>Logo design completed</li>
+                            <li>Design system documented</li>
                         </ul>
                     </div>
                     
                     <div class="accomplishment-card">
-                        <h3>✅ Phase 2: Frontend</h3>
+                        <h3>Phase 2: Frontend</h3>
                         <ul>
-                            <li>✓ Responsive website built</li>
-                            <li>✓ Property search implemented</li>
-                            <li>✓ Agent showcase created</li>
-                            <li>✓ Market insights dashboard</li>
-                            <li>✓ Contact forms integrated</li>
+                            <li>Responsive website built</li>
+                            <li>Property search implemented</li>
+                            <li>Agent showcase created</li>
+                            <li>Market insights dashboard</li>
+                            <li>Contact forms integrated</li>
                         </ul>
                     </div>
                     
                     <div class="accomplishment-card">
-                        <h3>✅ Phase 3: Backend</h3>
+                        <h3>Phase 3: Backend</h3>
                         <ul>
-                            <li>✓ Property management system</li>
-                            <li>✓ Agent tracking platform</li>
-                            <li>✓ CRM implementation</li>
-                            <li>✓ Transaction pipeline</li>
-                            <li>✓ Market analytics tools</li>
+                            <li>Property management system</li>
+                            <li>Agent tracking platform</li>
+                            <li>CRM implementation</li>
+                            <li>Transaction pipeline</li>
+                            <li>Market analytics tools</li>
                         </ul>
                     </div>
                     
                     <div class="accomplishment-card">
-                        <h3>✅ Data Integration</h3>
+                        <h3>Data Integration</h3>
                         <ul>
-                            <li>✓ localStorage implementation</li>
-                            <li>✓ Cross-module data sync</li>
-                            <li>✓ Real-time updates</li>
-                            <li>✓ Export functionality</li>
-                            <li>✓ Data persistence</li>
+                            <li>localStorage implementation</li>
+                            <li>Cross-module data sync</li>
+                            <li>Real-time updates</li>
+                            <li>Export functionality</li>
+                            <li>Data persistence</li>
                         </ul>
                     </div>
                     
                     <div class="accomplishment-card">
-                        <h3>✅ User Experience</h3>
+                        <h3>User Experience</h3>
                         <ul>
-                            <li>✓ Intuitive navigation</li>
-                            <li>✓ Mobile responsiveness</li>
-                            <li>✓ Fast load times</li>
-                            <li>✓ Professional design</li>
-                            <li>✓ Accessibility features</li>
+                            <li>Intuitive navigation</li>
+                            <li>Mobile responsiveness</li>
+                            <li>Fast load times</li>
+                            <li>Professional design</li>
+                            <li>Accessibility features</li>
                         </ul>
                     </div>
                     
                     <div class="accomplishment-card">
-                        <h3>✅ Documentation</h3>
+                        <h3>Documentation</h3>
                         <ul>
-                            <li>✓ Technical blueprint</li>
-                            <li>✓ Project documentation</li>
-                            <li>✓ Knowledge base</li>
-                            <li>✓ Code comments</li>
-                            <li>✓ Future roadmap</li>
+                            <li>Technical blueprint</li>
+                            <li>Project documentation</li>
+                            <li>Knowledge base</li>
+                            <li>Code comments</li>
+                            <li>Future roadmap</li>
                         </ul>
                     </div>
                 </div>
@@ -500,102 +591,102 @@
             <div id="features" class="section">
                 <h2>System Features</h2>
                 
-                <h3>🏠 Property Management</h3>
-                <div class="feature-list">
+                <h3>Property Management</h3>
+                <div class="feature-grid">
                     <div class="feature-item">
-                        <div class="feature-icon">📝</div>
-                        <div>Complete property database with images and details</div>
+                        <div class="feature-icon">P</div>
+                        <div class="feature-content">Complete property database with images and details</div>
                     </div>
                     <div class="feature-item">
-                        <div class="feature-icon">🔍</div>
-                        <div>Advanced search and filtering capabilities</div>
+                        <div class="feature-icon">S</div>
+                        <div class="feature-content">Advanced search and filtering capabilities</div>
                     </div>
                     <div class="feature-item">
-                        <div class="feature-icon">📊</div>
-                        <div>Portfolio value tracking and analytics</div>
+                        <div class="feature-icon">A</div>
+                        <div class="feature-content">Portfolio value tracking and analytics</div>
                     </div>
                     <div class="feature-item">
-                        <div class="feature-icon">📤</div>
-                        <div>Export to CSV for reporting</div>
+                        <div class="feature-icon">E</div>
+                        <div class="feature-content">Export to CSV for reporting</div>
                     </div>
                 </div>
                 
-                <h3>👥 Agent Management</h3>
+                <h3>Agent Management</h3>
                 <div class="feature-list">
                     <div class="feature-item">
-                        <div class="feature-icon">🏆</div>
+                        <div class="feature-icon">P</div>
                         <div>Performance tracking and leaderboards</div>
                     </div>
                     <div class="feature-item">
-                        <div class="feature-icon">💵</div>
+                        <div class="feature-icon">C</div>
                         <div>Commission calculation and tracking</div>
                     </div>
                     <div class="feature-item">
-                        <div class="feature-icon">📈</div>
+                        <div class="feature-icon">S</div>
                         <div>Sales metrics and goal tracking</div>
                     </div>
                     <div class="feature-item">
-                        <div class="feature-icon">👔</div>
+                        <div class="feature-icon">T</div>
                         <div>Team hierarchy management</div>
                     </div>
                 </div>
                 
-                <h3>📋 Client CRM</h3>
+                <h3>Client CRM</h3>
                 <div class="feature-list">
                     <div class="feature-item">
-                        <div class="feature-icon">🎯</div>
+                        <div class="feature-icon">L</div>
                         <div>Lead scoring and prioritization</div>
                     </div>
                     <div class="feature-item">
-                        <div class="feature-icon">💰</div>
+                        <div class="feature-icon">B</div>
                         <div>Cash buyer identification</div>
                     </div>
                     <div class="feature-item">
-                        <div class="feature-icon">📅</div>
+                        <div class="feature-icon">A</div>
                         <div>Activity timeline tracking</div>
                     </div>
                     <div class="feature-item">
-                        <div class="feature-icon">📧</div>
+                        <div class="feature-icon">C</div>
                         <div>Communication history logs</div>
                     </div>
                 </div>
                 
-                <h3>💼 Transaction Management</h3>
+                <h3>Transaction Management</h3>
                 <div class="feature-list">
                     <div class="feature-item">
-                        <div class="feature-icon">📊</div>
+                        <div class="feature-icon">D</div>
                         <div>Deal pipeline visualization</div>
                     </div>
                     <div class="feature-item">
-                        <div class="feature-icon">⏳</div>
+                        <div class="feature-icon">P</div>
                         <div>Progress tracking with milestones</div>
                     </div>
                     <div class="feature-item">
-                        <div class="feature-icon">💵</div>
+                        <div class="feature-icon">F</div>
                         <div>Financial overview and reporting</div>
                     </div>
                     <div class="feature-item">
-                        <div class="feature-icon">📄</div>
+                        <div class="feature-icon">D</div>
                         <div>Document management system</div>
                     </div>
                 </div>
                 
-                <h3>📈 Market Analytics</h3>
+                <h3>Market Analytics</h3>
                 <div class="feature-list">
                     <div class="feature-item">
-                        <div class="feature-icon">📊</div>
+                        <div class="feature-icon">M</div>
                         <div>Real-time market metrics</div>
                     </div>
                     <div class="feature-item">
-                        <div class="feature-icon">🗺️</div>
+                        <div class="feature-icon">N</div>
                         <div>Neighborhood performance analysis</div>
                     </div>
                     <div class="feature-item">
-                        <div class="feature-icon">📉</div>
+                        <div class="feature-icon">P</div>
                         <div>Price trend visualization</div>
                     </div>
                     <div class="feature-item">
-                        <div class="feature-icon">🔥</div>
+                        <div class="feature-icon">H</div>
                         <div>Activity heatmaps</div>
                     </div>
                 </div>
@@ -618,28 +709,28 @@
                 <h3>Technology Stack</h3>
                 <div class="feature-list">
                     <div class="feature-item">
-                        <div class="feature-icon">🌐</div>
+                        <div class="feature-icon">F</div>
                         <div>
                             <strong>Frontend</strong><br>
                             <small>HTML5, CSS3, Vanilla JavaScript</small>
                         </div>
                     </div>
                     <div class="feature-item">
-                        <div class="feature-icon">💾</div>
+                        <div class="feature-icon">S</div>
                         <div>
                             <strong>Storage</strong><br>
                             <small>localStorage API, JSON format</small>
                         </div>
                     </div>
                     <div class="feature-item">
-                        <div class="feature-icon">🎨</div>
+                        <div class="feature-icon">D</div>
                         <div>
                             <strong>Design</strong><br>
                             <small>CSS Variables, Flexbox, Grid</small>
                         </div>
                     </div>
                     <div class="feature-item">
-                        <div class="feature-icon">📱</div>
+                        <div class="feature-icon">R</div>
                         <div>
                             <strong>Responsive</strong><br>
                             <small>Mobile-first, all devices</small>
@@ -705,19 +796,19 @@
                 <h3>Immediate Priorities</h3>
                 <div class="feature-list">
                     <div class="feature-item">
-                        <div class="feature-icon">🔐</div>
+                        <div class="feature-icon">A</div>
                         <div>User authentication system</div>
                     </div>
                     <div class="feature-item">
-                        <div class="feature-icon">☁️</div>
+                        <div class="feature-icon">C</div>
                         <div>Cloud database migration</div>
                     </div>
                     <div class="feature-item">
-                        <div class="feature-icon">🔄</div>
+                        <div class="feature-icon">API</div>
                         <div>API development</div>
                     </div>
                     <div class="feature-item">
-                        <div class="feature-icon">📧</div>
+                        <div class="feature-icon">E</div>
                         <div>Email notifications</div>
                     </div>
                 </div>
@@ -727,15 +818,15 @@
             <div id="quickstart" class="section">
                 <h2>Quick Start Guide</h2>
                 
-                <h3>🚀 For Executives</h3>
+                <h3>For Executives</h3>
                 <ol style="line-height: 2; margin: 20px 0;">
-                    <li>Open the <a href="dashboard-refined.html" style="color: var(--sky);">Executive Dashboard</a> for high-level overview</li>
+<li>Open the <a href="dashboard.html" style="color: var(--sky);">Executive Dashboard</a> for high-level overview</li>
                     <li>Review key metrics and performance indicators</li>
                     <li>Access detailed reports via backend modules</li>
                     <li>Export data for board presentations</li>
                 </ol>
                 
-                <h3>👥 For Agents</h3>
+                <h3>For Agents</h3>
                 <ol style="line-height: 2; margin: 20px 0;">
                     <li>Access <a href="backend/agents.html" style="color: var(--sky);">Agent Portal</a> to view your performance</li>
                     <li>Manage your property listings</li>
@@ -743,7 +834,7 @@
                     <li>Monitor deal progress in transactions</li>
                 </ol>
                 
-                <h3>🏠 For Property Management</h3>
+                <h3>For Property Management</h3>
                 <ol style="line-height: 2; margin: 20px 0;">
                     <li>Navigate to <a href="backend/properties.html" style="color: var(--sky);">Properties Module</a></li>
                     <li>Add new listings with images and details</li>
@@ -751,7 +842,7 @@
                     <li>Export inventory reports</li>
                 </ol>
                 
-                <h3>📊 For Market Analysis</h3>
+                <h3>For Market Analysis</h3>
                 <ol style="line-height: 2; margin: 20px 0;">
                     <li>Visit <a href="backend/market.html" style="color: var(--sky);">Market Analytics</a></li>
                     <li>Review current market metrics</li>
@@ -760,23 +851,23 @@
                 </ol>
                 
                 <div class="alert">
-                    <div class="alert-title">💡 Pro Tip</div>
+                    <div class="alert-title">Pro Tip</div>
                     <p>Bookmark frequently used pages for quick access. All data is automatically saved and synchronized across modules.</p>
                 </div>
                 
                 <h3>Support Resources</h3>
                 <div class="quick-links">
-<a href="../docs/PROJECT_DOCUMENTATION.md" class="quick-link">📚 Full Documentation</a>
-                    <a href="../docs/ASSIDUOUS_TECHNICAL_BLUEPRINT.md" class="quick-link">🔧 Technical Blueprint</a>
-                    <a href="mailto:support@assiduous.com" class="quick-link">📧 Contact Support</a>
-                    <a href="#" class="quick-link">🎥 Video Tutorials</a>
+<a href="../docs/PROJECT_DOCUMENTATION.md" class="quick-link">Full Documentation</a>
+                    <a href="../docs/ASSIDUOUS_TECHNICAL_BLUEPRINT.md" class="quick-link">Technical Blueprint</a>
+                    <a href="mailto:support@assiduous.com" class="quick-link">Contact Support</a>
+                    <a href="#" class="quick-link">Video Tutorials</a>
                 </div>
             </div>
         </div>
     </div>
     
     <script>
-        function showSection(sectionId) {
+        function showSection(evt, sectionId) {
             // Hide all sections
             document.querySelectorAll('.section').forEach(section => {
                 section.classList.remove('active');
@@ -791,7 +882,9 @@
             document.getElementById(sectionId).classList.add('active');
             
             // Mark tab as active
-            event.target.classList.add('active');
+            if (evt && evt.currentTarget) {
+                evt.currentTarget.classList.add('active');
+            }
         }
     </script>
 </body>
