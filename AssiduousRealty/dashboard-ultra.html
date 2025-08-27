@@ -784,6 +784,7 @@
             <nav class="nav-pills">
                 <a href="#" class="nav-pill active">Dashboard</a>
                 <a href="./index.html" class="nav-pill">Platform</a>
+                <a href="knowledge-base.html" class="nav-pill">Docs</a>
                 <a href="#" class="nav-pill">Analytics</a>
                 <a href="#" class="nav-pill">Settings</a>
             </nav>
@@ -941,7 +942,43 @@
 
     <!-- Feature Sidebar -->
     <div id="featureSidebar" class="feature-sidebar">
-        <!-- Sidebar content here -->
+        <div style="position: sticky; top: 0; background: var(--surface-primary); border-bottom: 1px solid var(--border-primary); padding: 1rem 1.5rem; display: flex; align-items: center; justify-content: space-between;">
+            <h3 style="font-family: var(--font-display); font-size: 1.1rem; font-weight: 800; margin: 0; background: var(--bg-secondary); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Documentation & Resources</h3>
+            <button class="btn btn-secondary" onclick="toggleFeatures()" title="Close">✖</button>
+        </div>
+
+        <div style="padding: 1.5rem; display: grid; gap: 1.25rem;">
+            <div style="background: var(--surface-secondary); border: 1px solid var(--border-primary); border-radius: var(--radius-lg); padding: 1rem;">
+                <div style="font-weight: 700; color: var(--text-primary); margin-bottom: 0.5rem;">Quick Links</div>
+                <div style="display: grid; gap: 0.5rem;">
+                    <a class="nav-pill" style="display: inline-block; text-decoration: none;" href="knowledge-base.html">📚 Knowledge Base</a>
+                    <a class="nav-pill" style="display: inline-block; text-decoration: none;" href="dashboard-ultra.html">📊 Executive Dashboard</a>
+                    <a class="nav-pill" style="display: inline-block; text-decoration: none;" href="index.html">🌐 Public Website</a>
+                </div>
+            </div>
+
+            <div style="background: var(--surface-secondary); border: 1px solid var(--border-primary); border-radius: var(--radius-lg); padding: 1rem;">
+                <div style="font-weight: 700; color: var(--text-primary); margin-bottom: 0.5rem;">Backend Modules</div>
+                <div style="display: grid; gap: 0.5rem;">
+                    <a class="nav-pill" style="display: inline-block; text-decoration: none;" href="backend/properties.html">🏠 Properties</a>
+                    <a class="nav-pill" style="display: inline-block; text-decoration: none;" href="backend/agents.html">👥 Agents</a>
+                    <a class="nav-pill" style="display: inline-block; text-decoration: none;" href="backend/clients.html">📋 Clients</a>
+                    <a class="nav-pill" style="display: inline-block; text-decoration: none;" href="backend/transactions.html">💼 Transactions</a>
+                    <a class="nav-pill" style="display: inline-block; text-decoration: none;" href="backend/market.html">📈 Market</a>
+                </div>
+            </div>
+
+            <div style="background: var(--surface-secondary); border: 1px solid var(--border-primary); border-radius: var(--radius-lg); padding: 1rem;">
+                <div style="font-weight: 700; color: var(--text-primary); margin-bottom: 0.5rem;">Documentation</div>
+                <div style="display: grid; gap: 0.5rem;">
+<a class="nav-pill" style="display: inline-block; text-decoration: none;" href="../docs/PROJECT_DOCUMENTATION.md">📄 Project Documentation</a>
+                    <a class="nav-pill" style="display: inline-block; text-decoration: none;" href="../docs/ASSIDUOUS_TECHNICAL_BLUEPRINT.md">🔧 Technical Blueprint</a>
+                    <a class="nav-pill" style="display: inline-block; text-decoration: none;" href="../docs/IMPLEMENTATION_CHECKLIST.md">✅ Implementation Checklist</a>
+                    <a class="nav-pill" style="display: inline-block; text-decoration: none;" href="../docs/deploy-dashboard.md">🚀 Deploy Guide</a>
+                    <a class="nav-pill" style="display: inline-block; text-decoration: none;" href="../docs/BRANCH_PROTECTION_RULES.md">🛡️ Branch Protection Rules</a>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Modal -->

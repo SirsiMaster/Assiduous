@@ -7,13 +7,13 @@ A professional, enterprise-grade executive dashboard suite for the Assiduous Rea
 ## 🚀 Quick Start
 
 ### Access the Dashboard
-1. Open `dashboard-refined.html` in your browser
+1. Open `dashboard-ultra.html` in your browser
 2. Navigate through the suite using the top navigation bar
 3. All data is pulled live from the GitHub repository
 
 ### Dashboard Pages
 
-#### 📊 Main Dashboard (`dashboard-refined.html`)
+#### 📊 Main Dashboard (`dashboard-ultra.html`)
 The primary executive interface featuring:
 - Real-time repository statistics
 - Commit activity monitoring
@@ -108,7 +108,7 @@ Complete configuration interface:
 
 ```
 AssiduousRealty/
-├── dashboard-refined.html     # Main executive dashboard
+├── dashboard-ultra.html       # Main executive dashboard
 ├── dashboard-premium.html     # Premium tier features
 ├── dashboard-professional.html# Professional tier
 ├── dashboard-ultra.html       # Enterprise tier

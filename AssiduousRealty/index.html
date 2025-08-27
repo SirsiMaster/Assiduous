@@ -457,8 +457,10 @@
             <ul class="nav-links">
                 <li><a href="#features" class="nav-link">Features</a></li>
                 <li><a href="#demo" class="nav-link">Demo</a></li>
-                <li><a href="#pricing" class="nav-link">Pricing</a></li>
-                <li><a href="./dashboard.html" class="nav-link">CEO Dashboard</a></li>
+                <li><a href="./backend/properties.html" class="nav-link">Properties</a></li>
+                <li><a href="./backend/agents.html" class="nav-link">Agents</a></li>
+                <li><a href="./dashboard-ultra.html" class="nav-link">Dashboard</a></li>
+                <li><a href="./knowledge-base.html" class="nav-link">Docs</a></li>
             </ul>
             <a href="#" class="cta-button" onclick="showSignup()">Get Started</a>
         </div>
@@ -671,75 +673,141 @@
             document.getElementById(`${tab}-panel`).classList.add('active');
         }
 
+        // Load real properties from backend localStorage
         function searchProperties() {
             const results = document.getElementById('property-results');
-            results.innerHTML = `
-                <div class="property-card">
-                    <div class="property-image">🏚️</div>
-                    <div class="property-details">
-                        <div class="property-price">$185,000</div>
-                        <div class="property-address">456 Oak Street, Austin, TX 78702</div>
-                        <div class="property-stats">
-                            <span>3 bed • 2 bath • 1,450 sqft</span>
-                            <span class="property-roi">28% ROI</span>
+            const properties = JSON.parse(localStorage.getItem('assiduousProperties') || '[]');
+            const location = document.querySelector('.search-inputs input[placeholder*="City"]').value;
+            const maxPrice = document.querySelector('.search-inputs input[placeholder*="500,000"]').value.replace(/[^0-9]/g, '');
+            
+            // Filter available properties based on search criteria
+            let filteredProperties = properties.filter(p => p.status === 'available');
+            
+            if (maxPrice) {
+                filteredProperties = filteredProperties.filter(p => p.price <= parseInt(maxPrice));
+            }
+            
+            if (location && location.toLowerCase().includes('austin')) {
+                filteredProperties = filteredProperties.filter(p => 
+                    p.city && p.city.toLowerCase().includes('austin')
+                );
+            }
+            
+            // If no properties match, show all available properties
+            if (filteredProperties.length === 0) {
+                filteredProperties = properties.filter(p => p.status === 'available').slice(0, 3);
+            }
+            
+            results.innerHTML = '';
+            
+            filteredProperties.slice(0, 3).forEach(property => {
+                // Calculate ROI (simplified)
+                const roi = Math.round((property.price * 0.15) / property.price * 100);
+                const arv = Math.round(property.price * 1.4); // Estimated After Repair Value
+                
+                results.innerHTML += `
+                    <div class="property-card" onclick="viewPropertyDetails(${property.id})">
+                        <div class="property-image">${property.image || '🏠'}</div>
+                        <div class="property-details">
+                            <div class="property-price">$${property.price.toLocaleString()}</div>
+                            <div class="property-address">${property.address}, ${property.city}, ${property.state}</div>
+                            <div class="property-stats">
+                                <span>${property.beds} bed • ${property.baths} bath • ${property.sqft} sqft</span>
+                                <span class="property-roi">${roi}% ROI</span>
+                            </div>
+                            <p style="margin-top: 0.5rem; color: #666;">
+                                ${property.type} • ${property.status} • ARV $${arv.toLocaleString()}
+                            </p>
                         </div>
-                        <p style="margin-top: 0.5rem; color: #666;">Pre-foreclosure • Needs $30k repairs • ARV $285,000</p>
                     </div>
-                </div>
-                <div class="property-card">
-                    <div class="property-image">🏠</div>
-                    <div class="property-details">
-                        <div class="property-price">$220,000</div>
-                        <div class="property-address">789 Pine Avenue, Austin, TX 78704</div>
-                        <div class="property-stats">
-                            <span>4 bed • 2 bath • 1,800 sqft</span>
-                            <span class="property-roi">22% ROI</span>
-                        </div>
-                        <p style="margin-top: 0.5rem; color: #666;">Distressed sale • Minor repairs • ARV $310,000</p>
-                    </div>
-                </div>
-                <div class="property-card">
-                    <div class="property-image">🏘️</div>
-                    <div class="property-details">
-                        <div class="property-price">$155,000</div>
-                        <div class="property-address">321 Elm Court, Austin, TX 78705</div>
-                        <div class="property-stats">
-                            <span>2 bed • 1 bath • 950 sqft</span>
-                            <span class="property-roi">35% ROI</span>
-                        </div>
-                        <p style="margin-top: 0.5rem; color: #666;">Foreclosure • Major renovation • ARV $250,000</p>
-                    </div>
-                </div>
-            `;
+                `;
+            });
+            
+            if (filteredProperties.length === 0) {
+                results.innerHTML = '<p style="text-align: center; padding: 2rem;">No properties found. Try adjusting your search criteria.</p>';
+            }
+            
             results.scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // View property details
+        function viewPropertyDetails(propertyId) {
+            window.location.href = `./backend/properties.html#property-${propertyId}`;
         }
 
         function runAnalysis() {
             alert('AI Analysis Complete!\n\nDeal Score: 92/100\nEstimated Profit: $45,000\nTime to Close: 14 days\nBuyer Match Confidence: 96%');
         }
 
+        // Load real buyers from clients backend
         function findBuyers() {
             const buyerList = document.getElementById('buyer-list');
-            buyerList.innerHTML = `
-                <div style="padding: 1rem; background: white; border-radius: 8px; margin-bottom: 1rem;">
-                    <strong>John Smith - Cash Buyer</strong><br>
-                    Interested in: Single Family, Austin Area<br>
-                    Budget: $200k-$500k<br>
-                    <span style="color: green;">✓ 95% Match</span>
-                </div>
-                <div style="padding: 1rem; background: white; border-radius: 8px; margin-bottom: 1rem;">
-                    <strong>ABC Investment Group</strong><br>
-                    Interested in: All property types<br>
-                    Budget: $100k-$1M<br>
-                    <span style="color: green;">✓ 88% Match</span>
-                </div>
-                <div style="padding: 1rem; background: white; border-radius: 8px; margin-bottom: 1rem;">
-                    <strong>Texas Home Buyers LLC</strong><br>
-                    Interested in: Distressed properties<br>
-                    Budget: $150k-$400k<br>
-                    <span style="color: green;">✓ 82% Match</span>
-                </div>
-            `;
+            const clients = JSON.parse(localStorage.getItem('assiduousClients') || '[]');
+            
+            // Filter for cash buyers
+            const cashBuyers = clients.filter(c => c.type === 'buyer' && c.buyerType === 'cash');
+            
+            if (cashBuyers.length === 0) {
+                // Initialize with sample buyers if none exist
+                const sampleBuyers = [
+                    {
+                        id: Date.now(),
+                        name: 'John Smith',
+                        company: 'Smith Investments',
+                        type: 'buyer',
+                        buyerType: 'cash',
+                        interests: 'Single Family, Austin Area',
+                        budget: '$200k-$500k',
+                        matchScore: 95
+                    },
+                    {
+                        id: Date.now() + 1,
+                        name: 'ABC Investment Group',
+                        company: 'ABC Investment Group',
+                        type: 'buyer',
+                        buyerType: 'cash',
+                        interests: 'All property types',
+                        budget: '$100k-$1M',
+                        matchScore: 88
+                    },
+                    {
+                        id: Date.now() + 2,
+                        name: 'Texas Home Buyers',
+                        company: 'Texas Home Buyers LLC',
+                        type: 'buyer',
+                        buyerType: 'cash',
+                        interests: 'Distressed properties',
+                        budget: '$150k-$400k',
+                        matchScore: 82
+                    }
+                ];
+                
+                // Save sample buyers
+                localStorage.setItem('assiduousClients', JSON.stringify(sampleBuyers));
+                displayBuyers(sampleBuyers);
+            } else {
+                displayBuyers(cashBuyers);
+            }
+            
+            function displayBuyers(buyers) {
+                buyerList.innerHTML = '';
+                buyers.forEach(buyer => {
+                    buyerList.innerHTML += `
+                        <div style="padding: 1rem; background: white; border-radius: 8px; margin-bottom: 1rem; cursor: pointer;"
+                             onclick="contactBuyer(${buyer.id})">
+                            <strong>${buyer.name}${buyer.company ? ' - ' + buyer.company : ''}</strong><br>
+                            Interested in: ${buyer.interests}<br>
+                            Budget: ${buyer.budget}<br>
+                            <span style="color: green;">✓ ${buyer.matchScore || Math.floor(Math.random() * 20) + 75}% Match</span>
+                        </div>
+                    `;
+                });
+            }
+        }
+        
+        // Contact buyer function
+        function contactBuyer(buyerId) {
+            window.location.href = `./backend/clients.html#client-${buyerId}`;
         }
 
         function generateContract() {
