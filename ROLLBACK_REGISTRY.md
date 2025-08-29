@@ -53,6 +53,41 @@ The rollback registry provides:
 
 ## Version History
 
+### v0.1.1 - Design System Enhancement
+**Date:** 2025-08-29  
+**Commit:** `e3dceec`  
+**Branch:** `main`  
+**Status:** Stable  
+
+**Features:**
+- Enhanced landing page design
+- CSS variable aliases for compatibility
+- Extended spacing system
+- Unified dashboard design system
+- Improved animation performance
+
+**Changes from v0.1.0:**
+- Consolidated 4 dashboard variants into single unified dashboard
+- Removed 5,234 lines of redundant code
+- Improved navigation visual styling
+- Fixed knowledge base page consistency
+
+**Dependencies:**
+- None (static HTML/CSS/JS)
+
+**Rollback Steps:**
+```bash
+git checkout tags/v0.1.1
+# No database migrations required
+# No dependency updates required
+```
+
+**Rollback Risks:** Minimal - UI/UX changes only
+
+**Recovery Time:** < 5 minutes
+
+---
+
 ### v0.1.0 - Foundation Release
 **Date:** 2025-08-22  
 **Commit:** `aeaf19b`  
@@ -195,6 +230,6 @@ Track these metrics for each rollback:
 
 ---
 
-**Last Updated:** 2025-08-22  
+**Last Updated:** 2025-08-29  
 **Maintained By:** DevOps Team  
 **Review Schedule:** After each rollback incident
