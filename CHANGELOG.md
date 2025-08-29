@@ -15,6 +15,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Rollback registry and tooling for version management
 - Contributing guidelines and templates
 
+## [0.1.1] - 2025-08-29
+
+### Added
+- Enhanced landing page design with improved visual hierarchy
+- CSS variable aliases for better compatibility across components
+- Extended spacing system with xs, sm, md, lg, xl, 2xl, and section sizes
+
+### Changed
+- Unified dashboard design system across all pages
+- Improved navigation with cleaner visual styling
+- Updated hero section with navy background and subtle patterns
+- Enhanced animation performance in dashboard components
+
+### Removed
+- Consolidated four dashboard variants (premium, professional, refined, ultra) into single unified dashboard
+- Removed redundant dashboard files totaling 5,234 lines of code
+
+### Fixed
+- Knowledge base page now uses consistent dashboard design system
+- Improved skeleton loading animations for better UX
+
 ## [0.1.0] - 2025-08-22
 
 ### Added
@@ -142,6 +163,7 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/SirsiMaster/Assiduous/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.0.1...v0.1.0
 [0.0.1]: https://github.com/SirsiMaster/Assiduous/releases/tag/v0.0.1
