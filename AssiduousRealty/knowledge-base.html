@@ -12,6 +12,80 @@
     <link rel="stylesheet" href="assiduous.css">
     
     <style>
+        /* Navigation Styles */
+        .navbar {
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: var(--shadow-sm);
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .nav-container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: var(--navy);
+            text-decoration: none;
+        }
+
+        .logo svg {
+            flex-shrink: 0;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-link {
+            color: var(--gray-700);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            font-size: 0.95rem;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--sky);
+        }
+
+        .cta-button {
+            background: var(--sky);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius-md);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            background: #4A8BC2;
+            box-shadow: var(--shadow-md);
+        }
+        
         /* Knowledge Base - Dashboard Design System */
         
         /* Main Container */
@@ -424,7 +498,29 @@
     </style>
 </head>
 <body>
-    <div class="main">
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="stroke: var(--navy);">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
+                <span style="color: var(--navy); font-weight: 700;">Assiduous Realty</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="/AssiduousRealty/" class="nav-link">Home</a></li>
+                <li><a href="/AssiduousRealty/dashboard.html" class="nav-link">Dashboard</a></li>
+                <li><a href="/AssiduousRealty/backend/properties.html" class="nav-link">Properties</a></li>
+                <li><a href="/AssiduousRealty/backend/agents.html" class="nav-link">Agents</a></li>
+                <li><a href="/AssiduousRealty/analytics.html" class="nav-link">Analytics</a></li>
+                <li><a href="/AssiduousRealty/knowledge-base.html" class="nav-link active">Knowledge</a></li>
+            </ul>
+            <a href="#" class="cta-button" onclick="showSignup()">Get Started</a>
+        </div>
+    </nav>
+    
+    <div class="main" style="margin-top: 80px;">
         <div class="page-title">
             <h1>Knowledge Base</h1>
             <p>Complete Documentation & Development Guide</p>
@@ -867,6 +963,10 @@
     </div>
     
     <script>
+        function showSignup() {
+            alert('Sign up functionality coming soon! Contact us at info@assiduousrealty.com');
+        }
+        
         function showSection(evt, sectionId) {
             // Hide all sections
             document.querySelectorAll('.section').forEach(section => {
