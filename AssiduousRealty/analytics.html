@@ -14,21 +14,15 @@
     <style>
         /* Navigation Styles */
         .navbar {
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            box-shadow: var(--shadow-sm);
-            border-bottom: 1px solid var(--gray-200);
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 0.75rem 0;
         }
 
         .nav-container {
-            max-width: var(--max-width);
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 1rem 2rem;
+            padding: 0 1.5rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -38,141 +32,161 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            font-size: 1.25rem;
-            font-weight: bold;
-            color: var(--navy);
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #111827;
             text-decoration: none;
         }
 
         .logo svg {
-            flex-shrink: 0;
+            width: 20px;
+            height: 20px;
+            stroke: #111827;
         }
 
-        .nav-links {
+        .nav-center {
             display: flex;
-            gap: 2rem;
-            list-style: none;
-            margin: 0;
-            padding: 0;
+            gap: 1.5rem;
+            align-items: center;
         }
 
         .nav-link {
-            color: var(--gray-700);
+            color: #6b7280;
             text-decoration: none;
+            font-size: 0.875rem;
             font-weight: 500;
-            transition: color 0.3s;
-            font-size: 0.95rem;
+            transition: color 0.2s;
         }
 
-        .nav-link:hover, .nav-link.active {
-            color: var(--sky);
+        .nav-link:hover {
+            color: #111827;
+        }
+
+        .nav-link.active {
+            color: #111827;
         }
 
         .cta-button {
-            background: var(--sky);
+            background: #3b82f6;
             color: white;
-            padding: 0.75rem 1.5rem;
-            border-radius: var(--radius-md);
+            padding: 0.5rem 1.25rem;
+            border-radius: 0.375rem;
             text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.2s;
             border: none;
             cursor: pointer;
         }
 
         .cta-button:hover {
-            transform: translateY(-2px);
-            background: #4A8BC2;
-            box-shadow: var(--shadow-md);
+            background: #2563eb;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
         
         /* Main */
         body {
-            padding-top: 60px;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f9fafb;
         }
         
         .main {
-            max-width: var(--max-width);
+            max-width: 1200px;
             margin: 0 auto;
-            padding: var(--space-xl) var(--space-lg);
+            padding: 2rem 1.5rem;
         }
         
         .page-header {
-            margin-bottom: var(--space-2xl);
+            margin-bottom: 2rem;
         }
         
         .page-header h1 {
-            font-size: 24px;
-            font-weight: 600;
-            color: var(--dark);
-            margin-bottom: var(--space-xs);
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: #111827;
+            margin: 0 0 0.5rem 0;
         }
         
         .page-header p {
-            font-size: 13px;
-            color: var(--text-secondary);
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin: 0;
         }
         
         /* Analytics Grid */
         .analytics-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: var(--space-lg);
-            margin-bottom: var(--space-2xl);
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
         }
         
         .stat-box {
             background: white;
-            border: 1px solid var(--border);
-            border-radius: var(--radius-md);
-            padding: var(--space-lg);
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            transition: box-shadow 0.2s;
+        }
+        
+        .stat-box:hover {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
         }
         
         .stat-label {
-            font-size: 12px;
-            font-weight: 500;
-            color: var(--text-secondary);
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #6b7280;
             text-transform: uppercase;
-            letter-spacing: 0.025em;
-            margin-bottom: var(--space-sm);
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
         }
         
         .stat-value {
-            font-size: 28px;
+            font-size: 2rem;
             font-weight: 700;
-            color: var(--dark);
+            color: #111827;
             line-height: 1;
-            margin-bottom: var(--space-sm);
+            margin-bottom: 0.5rem;
         }
         
         .stat-trend {
-            font-size: 12px;
-            color: var(--text-secondary);
+            font-size: 0.75rem;
+            color: #6b7280;
         }
         
-        .trend-up { color: var(--success); }
-        .trend-down { color: var(--danger); }
+        .trend-up { color: #10b981; }
+        .trend-down { color: #ef4444; }
         
         /* Charts Section */
         .charts-row {
             display: grid;
             grid-template-columns: 2fr 1fr;
-            gap: var(--space-lg);
-            margin-bottom: var(--space-2xl);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        @media (max-width: 768px) {
+            .charts-row {
+                grid-template-columns: 1fr;
+            }
         }
         
         .chart-card {
             background: white;
-            border: 1px solid var(--border);
-            border-radius: var(--radius-md);
-            padding: var(--space-xl);
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
         }
         
         .chart-title {
-            font-size: 16px;
+            font-size: 1rem;
             font-weight: 600;
-            color: var(--dark);
-            margin-bottom: var(--space-lg);
+            color: #111827;
+            margin: 0 0 1.5rem 0;
         }
         
         .chart-container {
@@ -183,62 +197,76 @@
         /* Performance Metrics */
         .performance-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        @media (max-width: 768px) {
+            .performance-grid {
+                grid-template-columns: 1fr;
+            }
         }
         
         .perf-item {
             display: flex;
             justify-content: space-between;
-            padding: 12px 0;
-            border-bottom: 1px solid var(--gray-100);
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #f3f4f6;
+        }
+        
+        .perf-item:last-child {
+            border-bottom: none;
         }
         
         .perf-label {
-            font-size: 13px;
-            color: var(--gray-600);
+            font-size: 0.875rem;
+            color: #6b7280;
         }
         
         .perf-value {
-            font-size: 13px;
+            font-size: 0.875rem;
             font-weight: 600;
-            color: var(--navy);
+            color: #111827;
         }
         
         /* Time Range Selector */
         .time-range {
             display: flex;
-            gap: 8px;
-            margin-bottom: 24px;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
         }
         
         .time-btn {
-            padding: 6px 12px;
-            background: var(--white);
-            border: 1px solid var(--gray-200);
-            border-radius: 6px;
-            font-size: 12px;
+            padding: 0.5rem 1rem;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
             font-weight: 500;
-            color: var(--gray-600);
+            color: #6b7280;
             cursor: pointer;
             transition: all 0.15s;
+            font-family: inherit;
         }
         
         .time-btn:hover {
-            background: var(--gray-50);
+            background: #f9fafb;
+            border-color: #d1d5db;
         }
         
         .time-btn.active {
-            background: var(--sky);
-            color: var(--white);
-            border-color: var(--sky);
+            background: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
         }
         
         /* Tooltips */
         .tooltip {
             position: relative;
             cursor: help;
-            border-bottom: 1px dashed var(--gray-400);
+            border-bottom: 1px dashed #9ca3af;
         }
         
         .tooltip::after {
@@ -247,15 +275,16 @@
             bottom: 125%;
             left: 50%;
             transform: translateX(-50%);
-            background: var(--navy);
-            color: var(--white);
-            padding: 6px 10px;
-            border-radius: 4px;
-            font-size: 11px;
+            background: #1f2937;
+            color: white;
+            padding: 0.375rem 0.75rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
             white-space: nowrap;
             opacity: 0;
             pointer-events: none;
             transition: opacity 0.2s;
+            z-index: 10;
         }
         
         .tooltip:hover::after {
@@ -265,42 +294,40 @@
         /* Progress Bars */
         .progress-list {
             display: grid;
-            gap: 16px;
+            gap: 1rem;
         }
         
         .progress-item {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            margin-bottom: 8px;
+            gap: 1rem;
         }
         
         .progress-bar {
-            height: 8px;
-            background: var(--gray-100);
-            border-radius: 4px;
+            height: 0.5rem;
+            background: #f3f4f6;
+            border-radius: 0.25rem;
             overflow: hidden;
             flex: 1;
-            margin: 0 12px;
         }
         
         .progress-fill {
             height: 100%;
-            background: var(--sky);
-            border-radius: 4px;
+            background: linear-gradient(90deg, #3b82f6, #60a5fa);
+            border-radius: 0.25rem;
             transition: width 0.5s ease;
         }
         
         .progress-label {
-            font-size: 12px;
-            color: var(--gray-600);
+            font-size: 0.875rem;
+            color: #6b7280;
             min-width: 100px;
         }
         
         .progress-value {
-            font-size: 12px;
+            font-size: 0.875rem;
             font-weight: 600;
-            color: var(--navy);
+            color: #111827;
             min-width: 40px;
             text-align: right;
         }
@@ -310,22 +337,24 @@
     <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
-            <div class="logo">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="stroke: var(--navy);">
+            <a href="/AssiduousRealty/" class="logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
                     <polyline points="9 22 9 12 15 12 15 22"></polyline>
                 </svg>
-                <span style="color: var(--navy); font-weight: 700;">Assiduous Realty</span>
+                <span>Assiduous Realty</span>
+            </a>
+            <div class="nav-center">
+                <a href="/AssiduousRealty/" class="nav-link">Features</a>
+                <a href="/AssiduousRealty/dashboard.html" class="nav-link">Dashboard</a>
+                <a href="/AssiduousRealty/backend/properties.html" class="nav-link">Properties</a>
+                <a href="/AssiduousRealty/backend/agents.html" class="nav-link">Agents</a>
+                <a href="/AssiduousRealty/analytics.html" class="nav-link active">Analytics</a>
+                <a href="/AssiduousRealty/reports.html" class="nav-link">Reports</a>
+                <a href="/AssiduousRealty/settings.html" class="nav-link">Settings</a>
+                <a href="/AssiduousRealty/docs/" class="nav-link">Docs</a>
             </div>
-            <ul class="nav-links">
-                <li><a href="/AssiduousRealty/" class="nav-link">Home</a></li>
-                <li><a href="/AssiduousRealty/dashboard.html" class="nav-link">Dashboard</a></li>
-                <li><a href="/AssiduousRealty/backend/properties.html" class="nav-link">Properties</a></li>
-                <li><a href="/AssiduousRealty/backend/agents.html" class="nav-link">Agents</a></li>
-                <li><a href="/AssiduousRealty/analytics.html" class="nav-link active">Analytics</a></li>
-                <li><a href="/AssiduousRealty/knowledge-base.html" class="nav-link">Knowledge</a></li>
-            </ul>
-            <a href="#" class="cta-button" onclick="showSignup()">Get Started</a>
+            <button class="cta-button" onclick="showSignup()">Get Started</button>
         </div>
     </nav>
 

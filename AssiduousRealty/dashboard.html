@@ -13,26 +13,85 @@
     <link rel="stylesheet" href="assiduous.css">
     
     <style>
-        /* Dashboard-specific styles */
-
-        .theme-btn {
-            width: 32px;
-            height: 32px;
-            border-radius: var(--radius);
-            border: 1px solid var(--gray-200);
-            background: var(--white);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.15s;
-            color: var(--gray-500);
+        /* Clean Design System */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f9fafb;
         }
 
-        .theme-btn:hover {
-            background: var(--gray-50);
-            border-color: var(--gray-300);
-            color: var(--navy);
+        /* Navigation Styles */
+        .navbar {
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 0.75rem 0;
+        }
+
+        .nav-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #111827;
+            text-decoration: none;
+        }
+
+        .logo svg {
+            width: 20px;
+            height: 20px;
+            stroke: #111827;
+        }
+
+        .nav-center {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: #6b7280;
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-link:hover {
+            color: #111827;
+        }
+
+        .nav-link.active {
+            color: #111827;
+        }
+
+        .cta-button {
+            background: #3b82f6;
+            color: white;
+            padding: 0.5rem 1.25rem;
+            border-radius: 0.375rem;
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .cta-button:hover {
+            background: #2563eb;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
 
         .status-pill {
@@ -65,41 +124,40 @@
         .main {
             max-width: 1280px;
             margin: 0 auto;
-            padding: var(--space-6) var(--space-5);
-            position: relative;
-            z-index: 2;
+            padding: 2rem 1.5rem;
         }
 
-        /* Page Title - Subtle */
+        /* Page Title */
         .page-title {
-            margin-bottom: var(--space-6);
+            margin-bottom: 2rem;
         }
 
         .page-title h1 {
-            font-size: var(--text-2xl);
-            font-weight: 600;
-            color: var(--navy);
-            margin-bottom: var(--space-1);
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: #111827;
+            margin: 0 0 0.5rem 0;
         }
 
         .page-title p {
-            font-size: var(--text-sm);
-            color: var(--gray-500);
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin: 0;
         }
 
-        /* Metrics Row - Refined Cards */
+        /* Metrics Row */
         .metrics-row {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: var(--space-4);
-            margin-bottom: var(--space-6);
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
         }
 
         .metric-card {
-            background: var(--white);
-            border: 1px solid var(--gray-200);
-            border-radius: var(--radius-lg);
-            padding: var(--space-4);
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
             transition: all 0.2s;
             cursor: pointer;
             position: relative;
@@ -121,8 +179,8 @@
         }
 
         .metric-card:hover {
-            transform: translateY(-1px);
-            border-color: var(--sky);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
         }
 
         /* Foreground focus indicator */
@@ -150,11 +208,11 @@
         }
 
         .metric-label {
-            font-size: var(--text-xs);
-            font-weight: 500;
-            color: var(--gray-500);
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #6b7280;
             text-transform: uppercase;
-            letter-spacing: 0.025em;
+            letter-spacing: 0.05em;
             position: relative;
             cursor: help;
         }
@@ -227,11 +285,11 @@
         }
 
         .metric-value {
-            font-size: var(--text-3xl);
+            font-size: 2rem;
             font-weight: 700;
-            color: var(--navy);
+            color: #111827;
             line-height: 1;
-            margin-bottom: var(--space-3);
+            margin-bottom: 0.5rem;
         }
 
         .metric-spark {
@@ -266,14 +324,13 @@
             opacity: 1;
         }
 
-        /* Progress Section - Clean and Focused */
+        /* Card Styles */
         .card {
-            background: var(--white);
-            border: 1px solid var(--gray-200);
-            border-radius: var(--radius-lg);
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
             overflow: hidden;
-            margin-bottom: var(--space-6);
-            box-shadow: var(--shadow-sm);
+            margin-bottom: 1.5rem;
         }
 
         .card-header {
@@ -553,35 +610,29 @@
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <header class="header">
-        <div class="header-inner">
-            <div class="logo">
-                <div class="logo-mark">A</div>
-                <div class="logo-text">Assiduous</div>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/AssiduousRealty/" class="logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
+                <span>Assiduous Realty</span>
+            </a>
+            <div class="nav-center">
+                <a href="/AssiduousRealty/" class="nav-link">Features</a>
+                <a href="/AssiduousRealty/dashboard.html" class="nav-link active">Dashboard</a>
+                <a href="/AssiduousRealty/backend/properties.html" class="nav-link">Properties</a>
+                <a href="/AssiduousRealty/backend/agents.html" class="nav-link">Agents</a>
+                <a href="/AssiduousRealty/analytics.html" class="nav-link">Analytics</a>
+                <a href="/AssiduousRealty/reports.html" class="nav-link">Reports</a>
+                <a href="/AssiduousRealty/settings.html" class="nav-link">Settings</a>
+                <a href="/AssiduousRealty/docs/" class="nav-link">Docs</a>
             </div>
-            
-            <nav class="nav">
-                <a href="#" class="nav-link active">Dashboard</a>
-                <a href="./index.html" class="nav-link">Platform</a>
-                <a href="./analytics.html" class="nav-link">Analytics</a>
-                <a href="./reports.html" class="nav-link">Reports</a>
-                <a href="./settings.html" class="nav-link">Settings</a>
-            </nav>
-            
-            <div class="header-actions">
-                <button class="theme-btn" onclick="toggleTheme()" title="Toggle theme">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                    </svg>
-                </button>
-                <div class="status-pill">
-                    <span class="status-dot"></span>
-                    <span>Live</span>
-                </div>
-            </div>
+            <button class="cta-button" onclick="showSignup()">Get Started</button>
         </div>
-    </header>
+    </nav>
 
     <!-- Main Content -->
     <main class="main">
