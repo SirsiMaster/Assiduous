@@ -62,7 +62,7 @@ jobs:
       - name: Perform Database Operation
         id: db_operation
         run: |
-          node .github/scripts/db-operation.js
+          node .github/scripts/database-operations.js
         env:
           OPERATION: ${{ inputs.operation }}
           COLLECTION: ${{ inputs.collection }}
