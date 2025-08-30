@@ -1,0 +1,77 @@
+name: Database Operations
+
+on:
+  repository_dispatch:
+    types: [db_operation]
+  workflow_dispatch:
+    inputs:
+      operation:
+        description: 'Database operation to perform'
+        required: true
+        default: 'read'
+      collection:
+        description: 'Collection name'
+        required: true
+      query:
+        description: 'Query parameters'
+        required: false
+      data:
+        description: 'Data for write operations'
+        required: false
+
+jobs:
+  database_operation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: |
+          npm install json-server
+          npm install jsonwebtoken
+          npm install lodash
+
+      - name: Validate Request
+        id: validate
+        run: |
+          node .github/scripts/validate-request.js
+        env:
+          OPERATION: ${{ github.event.inputs.operation }}
+          COLLECTION: ${{ github.event.inputs.collection }}
+          QUERY: ${{ github.event.inputs.query }}
+          DATA: ${{ github.event.inputs.data }}
+
+      - name: Perform Database Operation
+        id: db_operation
+        run: |
+          node .github/scripts/db-operation.js
+        env:
+          OPERATION: ${{ github.event.inputs.operation }}
+          COLLECTION: ${{ github.event.inputs.collection }}
+          QUERY: ${{ github.event.inputs.query }}
+          DATA: ${{ github.event.inputs.data }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+
+      - name: Commit Changes
+        if: github.event.inputs.operation != 'read'
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add data/
+          git commit -m "db: ${{ github.event.inputs.operation }} operation on ${{ github.event.inputs.collection }}"
+          git push
+
+      - name: Create Backup
+        if: github.event.inputs.operation != 'read'
+        run: |
+          timestamp=$(date +%Y%m%d_%H%M%S)
+          mkdir -p .backup
+          cp data/*.json .backup/
+          tar -czf ".backup/backup_${timestamp}.tar.gz" .backup/*.json

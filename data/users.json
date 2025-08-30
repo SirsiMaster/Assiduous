@@ -1,0 +1,27 @@
+{
+  "users": [
+    {
+      "_id": "usr_001",
+      "role": "client",
+      "profile": {
+        "name": "John Smith",
+        "email": "john@example.com",
+        "phone": "+1234567890",
+        "verificationStatus": true
+      },
+      "preferences": {
+        "searchHistory": [],
+        "savedProperties": [],
+        "notifications": {
+          "email": true,
+          "push": false
+        }
+      },
+      "metadata": {
+        "createdAt": "2024-01-01T00:00:00Z",
+        "lastLogin": "2024-01-01T00:00:00Z",
+        "updatedAt": "2024-01-01T00:00:00Z"
+      }
+    }
+  ]
+}
