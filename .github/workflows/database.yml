@@ -26,8 +26,8 @@ permissions:
 
 # Enable repository secret usage
 env:
-  DATABASE_ENCRYPTION_KEY: ${{ secrets.DATABASE_ENCRYPTION_KEY }}
-  JWT_SECRET: ${{ secrets.JWT_SECRET }}
+  DATABASE_ENCRYPTION_KEY: ${{ github.ref == 'refs/heads/main' && env.PROD_DATABASE_ENCRYPTION_KEY || env.DEV_DATABASE_ENCRYPTION_KEY }}
+  JWT_SECRET: ${{ github.ref == 'refs/heads/main' && env.PROD_JWT_SECRET || env.DEV_JWT_SECRET }}
 
 jobs:
   database_operation:
