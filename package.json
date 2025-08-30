@@ -1,1 +1,14 @@
-{\n  \"name\": \"assiduous\",\n  \"version\": \"1.0.0\",\n  \"description\": \"Assiduous Realty Platform\",\n  \"scripts\": {\n    \"test\": \"echo \\\"Error: no test specified\\\" && exit 1\"\n  },\n  \"dependencies\": {\n    \"json-server\": \"^0.17.0\",\n    \"jsonwebtoken\": \"^9.0.0\",\n    \"crypto\": \"^1.0.1\",\n    \"lodash\": \"^4.17.21\"\n  }\n}
+{
+  "name": "assiduous",
+  "version": "1.0.0",
+  "description": "Assiduous Realty Platform",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "json-server": "^0.17.0",
+    "jsonwebtoken": "^9.0.0",
+    "crypto": "^1.0.1",
+    "lodash": "^4.17.21"
+  }
+}
