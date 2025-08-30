@@ -54,10 +54,10 @@ jobs:
         run: |
           node .github/scripts/validate-request.js
         env:
-          OPERATION: ${{ github.event.inputs.operation }}
-          COLLECTION: ${{ github.event.inputs.collection }}
-          QUERY: ${{ github.event.inputs.query }}
-          DATA: ${{ github.event.inputs.data }}
+          OPERATION: ${{ inputs.operation }}
+          COLLECTION: ${{ inputs.collection }}
+          QUERY: ${{ inputs.query }}
+          DATA: ${{ inputs.data }}
 
       - name: Perform Database Operation
         id: db_operation
