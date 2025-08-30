@@ -108,10 +108,11 @@ function ensureDataDirectory() {
 function readCollection(collection) {
   const filePath = getDataFilePath(collection);
   if (!fs.existsSync(filePath)) {
-    return [];
+    return { documents: [] };
   }
   const fileContent = fs.readFileSync(filePath, 'utf8');
-  return JSON.parse(fileContent);
+  const data = JSON.parse(fileContent);
+  return data.documents ? data : { documents: [] };
 }
 
 function writeCollection(collection, data) {
@@ -154,14 +155,14 @@ async function performOperation() {
   try {
     validateInput();
     let result;
-    const documents = readCollection(collection);
+    const { documents } = readCollection(collection);
 
     switch (operation) {
       case 'create': {
         const newDoc = processDocument(data, 'encrypt');
         newDoc._id = `${collection}_${Date.now()}_${Math.random().toString(36).slice(2)}`;
         documents.push(newDoc);
-        writeCollection(collection, documents);
+        writeCollection(collection, { documents });
         result = processDocument(newDoc, 'decrypt');
         break;
       }
@@ -183,7 +184,7 @@ async function performOperation() {
           }
           return doc;
         });
-        writeCollection(collection, updatedDocs);
+        writeCollection(collection, { documents: updatedDocs });
         result = updatedDocs
           .filter(doc => Object.entries(query).every(([key, value]) => doc[key] === value))
           .map(doc => processDocument(doc, 'decrypt'));
@@ -194,7 +195,7 @@ async function performOperation() {
         const remainingDocs = documents.filter(
           doc => !Object.entries(query).every(([key, value]) => doc[key] === value)
         );
-        writeCollection(collection, remainingDocs);
+        writeCollection(collection, { documents: remainingDocs });
         result = {
           deleted: documents.length - remainingDocs.length
         };
