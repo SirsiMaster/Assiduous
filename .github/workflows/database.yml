@@ -1,4 +1,4 @@
-name: Secure Database Operations
+name: Firebase Database Operations
 
 on:
   repository_dispatch:
@@ -6,83 +6,64 @@ on:
   workflow_dispatch:
     inputs:
       operation:
-        description: 'Database operation to perform'
+        description: 'Database operation to perform (create/read/update/delete)'
         required: true
         default: 'read'
       collection:
-        description: 'Collection name'
+        description: 'Firestore collection name'
         required: true
       query:
-        description: 'Query parameters'
+        description: 'Query parameters (JSON string)'
         required: false
       data:
-        description: 'Encrypted data for write operations'
+        description: 'Document data (JSON string)'
         required: false
 
-# Limit access to specific users/teams
 permissions:
   contents: write
   id-token: write
 
-# Enable repository secret usage
 env:
-  DATABASE_ENCRYPTION_KEY: ${{ github.ref == 'refs/heads/main' && secrets.PROD_DATABASE_ENCRYPTION_KEY || secrets.DEV_DATABASE_ENCRYPTION_KEY }}
-  JWT_SECRET: ${{ github.ref == 'refs/heads/main' && secrets.PROD_JWT_SECRET || secrets.DEV_JWT_SECRET }}
+  FIREBASE_PROJECT_ID: ${{ github.ref == 'refs/heads/main' && secrets.PROD_FIREBASE_PROJECT_ID || secrets.DEV_FIREBASE_PROJECT_ID }}
+  FIREBASE_PRIVATE_KEY: ${{ github.ref == 'refs/heads/main' && secrets.PROD_FIREBASE_PRIVATE_KEY || secrets.DEV_FIREBASE_PRIVATE_KEY }}
+  FIREBASE_CLIENT_EMAIL: ${{ github.ref == 'refs/heads/main' && secrets.PROD_FIREBASE_CLIENT_EMAIL || secrets.DEV_FIREBASE_CLIENT_EMAIL }}
+  ENCRYPTION_KEY: ${{ github.ref == 'refs/heads/main' && secrets.PROD_ENCRYPTION_KEY || secrets.DEV_ENCRYPTION_KEY }}
 
 jobs:
   database_operation:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
           node-version: '18'
+          cache: 'npm'
 
       - name: Install dependencies
         run: |
           npm ci || npm install
-          npm install json-server jsonwebtoken lodash
-          chmod +x .github/scripts/*.js
-          npm install lodash
+          npm install firebase-admin @google-cloud/firestore
 
-      - name: Validate Request
-        id: validate
+      - name: Create Service Account Key
         run: |
-          node .github/scripts/validate-request.js
+          echo "$FIREBASE_PRIVATE_KEY" > /tmp/firebase-service-account.json
         env:
-          OPERATION: ${{ inputs.operation }}
-          COLLECTION: ${{ inputs.collection }}
-          QUERY: ${{ inputs.query }}
-          DATA: ${{ inputs.data }}
+          FIREBASE_PRIVATE_KEY: ${{ env.FIREBASE_PRIVATE_KEY }}
 
-      - name: Perform Database Operation
+      - name: Execute Database Operation
         id: db_operation
         run: |
-          node .github/scripts/database-operations.js
+          node ./scripts/firebase-operations.js
         env:
+          GOOGLE_APPLICATION_CREDENTIALS: /tmp/firebase-service-account.json
           OPERATION: ${{ inputs.operation }}
           COLLECTION: ${{ inputs.collection }}
           QUERY: ${{ inputs.query }}
           DATA: ${{ inputs.data }}
-          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          ENCRYPTION_KEY: ${{ env.ENCRYPTION_KEY }}
 
-      - name: Commit Changes
-        if: github.event.inputs.operation != 'read'
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add data/
-          git commit -m "db: ${{ github.event.inputs.operation }} operation on ${{ github.event.inputs.collection }}"
-          git push
-
-      - name: Create Backup
-        if: github.event.inputs.operation != 'read'
-        run: |
-          timestamp=$(date +%Y%m%d_%H%M%S)
-          mkdir -p .backup
-          cp data/*.json .backup/
-          tar -czf ".backup/backup_${timestamp}.tar.gz" .backup/*.json
+      - name: Cleanup
+        if: always()
+        run: rm -f /tmp/firebase-service-account.json
