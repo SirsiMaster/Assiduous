@@ -1,14 +1,28 @@
 name: Environment Configuration
 
-# Define environments
-environments:
-  development:
-    name: Development
-    secrets:
-      DATABASE_ENCRYPTION_KEY: ${{ secrets.DEV_DATABASE_ENCRYPTION_KEY }}
-      JWT_SECRET: ${{ secrets.DEV_JWT_SECRET }}
-  production:
-    name: Production
-    secrets:
-      DATABASE_ENCRYPTION_KEY: ${{ secrets.PROD_DATABASE_ENCRYPTION_KEY }}
-      JWT_SECRET: ${{ secrets.PROD_JWT_SECRET }}
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  setup-environments:
+    runs-on: ubuntu-latest
+    environment:
+      name: ${{ github.ref == 'refs/heads/main' && 'production' || 'development' }}
+    
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+      
+      - name: Set up environment variables
+        run: |
+          if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+            echo "Using production environment"
+            echo "DATABASE_ENCRYPTION_KEY=${{ secrets.PROD_DATABASE_ENCRYPTION_KEY }}" >> $GITHUB_ENV
+            echo "JWT_SECRET=${{ secrets.PROD_JWT_SECRET }}" >> $GITHUB_ENV
+          else
+            echo "Using development environment"
+            echo "DATABASE_ENCRYPTION_KEY=${{ secrets.DEV_DATABASE_ENCRYPTION_KEY }}" >> $GITHUB_ENV
+            echo "JWT_SECRET=${{ secrets.DEV_JWT_SECRET }}" >> $GITHUB_ENV
+          fi
