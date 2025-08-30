@@ -1,27 +1,21 @@
 {
-  "users": [
+  "documents": [
     {
-      "_id": "usr_001",
-      "role": "client",
       "profile": {
-        "name": "John Smith",
-        "email": "john@example.com",
-        "phone": "+1234567890",
-        "verificationStatus": true
-      },
-      "preferences": {
-        "searchHistory": [],
-        "savedProperties": [],
-        "notifications": {
-          "email": true,
-          "push": false
+        "name": "John Test",
+        "email": {
+          "encrypted": "9U9ySewW18BF1YJZ4ChIsA==",
+          "iv": "Word2WPc+sTFbVUu5+UEbw==",
+          "tag": "niMlJLAk3o94s09rLG4+pg=="
+        },
+        "phone": {
+          "encrypted": "lUjE407NllJjH4E=",
+          "iv": "+uDQ1IJCi12nlXM5p9qwPw==",
+          "tag": "Sh2jS+tLH9BVO2Zuvpq19w=="
         }
       },
-      "metadata": {
-        "createdAt": "2024-01-01T00:00:00Z",
-        "lastLogin": "2024-01-01T00:00:00Z",
-        "updatedAt": "2024-01-01T00:00:00Z"
-      }
+      "role": "client",
+      "_id": "users_1756596179571_1w7atoiby24"
     }
   ]
 }
