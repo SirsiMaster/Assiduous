@@ -1,0 +1,14 @@
+name: Environment Configuration
+
+# Define environments
+environments:
+  development:
+    name: Development
+    secrets:
+      DATABASE_ENCRYPTION_KEY: ${{ secrets.DEV_DATABASE_ENCRYPTION_KEY }}
+      JWT_SECRET: ${{ secrets.DEV_JWT_SECRET }}
+  production:
+    name: Production
+    secrets:
+      DATABASE_ENCRYPTION_KEY: ${{ secrets.PROD_DATABASE_ENCRYPTION_KEY }}
+      JWT_SECRET: ${{ secrets.PROD_JWT_SECRET }}
