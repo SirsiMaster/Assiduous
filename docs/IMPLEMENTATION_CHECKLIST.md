@@ -9,9 +9,21 @@
 
 ## ✅ Phase 1: Infrastructure Setup (Days 1-3)
 
-### Day 1: Core Accounts & APIs
+### Day 1: Core Accounts & Infrastructure
 
-#### Morning (2-3 hours)
+#### Morning (3-4 hours)
+- [ ] **Firebase Setup**
+  - Create Firebase project
+  - Enable Firestore database
+  - Configure Authentication
+  - Set up security rules
+  - Configure cloud storage
+  
+- [ ] **Environment Setup**
+  - Create .env file from template
+  - Set up Firebase API keys
+  - Configure encryption keys
+  - Set up development environment
 - [ ] **PropStream Account** ($100/month)
   - Sign up at propstream.com
   - Configure API access
@@ -24,15 +36,15 @@
   - Configure webhooks for real-time updates
   - Test data retrieval
 
-- [ ] **Airtable Setup** (Free)
-  - Create account at airtable.com
-  - Create "Micro-Flipping CRM" base
-  - Set up 4 tables:
-    - Properties
-    - Cash Buyers
-    - Deal Assignments
-    - Automated Alerts
-  - Configure formulas and relationships
+- [ ] **Database Collections**
+  - Set up Firestore collections:
+    - users (with security rules)
+    - properties (with indexing)
+    - transactions
+    - messages
+    - notifications
+  - Configure field-level encryption
+  - Set up backup system
 
 #### Afternoon (2-3 hours)
 - [ ] **Zapier Account** ($30/month)

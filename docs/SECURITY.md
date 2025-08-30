@@ -4,6 +4,23 @@
 
 This document outlines the security implementation for the Assiduous platform, specifically focusing on how we secure data using Firebase/Firestore while maintaining security best practices.
 
+### Migration from GitHub Storage
+
+Previously, the platform stored data in JSON files within the GitHub repository. This approach had several security concerns:
+- Repository data could be accessed by anyone with repo access
+- Git history maintained all versions of data
+- Repositories could be cloned/downloaded
+- GitHub staff could potentially access data
+- Encryption keys in GitHub Secrets relied on GitHub's security
+
+To address these concerns, we migrated to Firebase/Firestore, which provides:
+- Professional-grade authentication system
+- Granular security rules
+- Google's infrastructure security
+- Real-time updates
+- Proper database querying
+- Cloud-hosted scalability
+
 ## Architecture
 
 ### Current Setup
