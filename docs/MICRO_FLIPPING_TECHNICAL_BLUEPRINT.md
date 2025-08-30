@@ -1183,48 +1183,270 @@ document.addEventListener('DOMContentLoaded', () => {
 
 ## Email/SMS Marketing Automation
 
-### Email Sequences (SendGrid/Mailchimp)
+### Primary Lead Nurture Campaign - AI Micro-Flipping System
 
 ```javascript
-// Email Campaign Configuration
-const EMAIL_CAMPAIGNS = {
-    welcome: {
-        trigger: 'buyer_signup',
-        sequence: [
+// Microflip Lead Nurture Campaign Configuration
+const MICROFLIP_CAMPAIGN = {
+    // Day 1 - Initial Contact
+    day1: {
+        trigger: 'form_submission',
+        tag_applied: 'microflip-lead',
+        actions: [
             {
-                delay: 0, // Immediate
-                template: 'welcome_email',
-                subject: 'Welcome to Exclusive Off-Market Deals',
-                preheader: 'Your first deal is waiting...',
-                content: {
-                    headline: 'You\'re In! Get Ready for Exclusive Deals',
-                    body: 'You now have access to AI-analyzed off-market properties...',
-                    cta: 'View Available Deals',
-                    ps: 'Reply to this email if you have specific criteria'
-                }
+                type: 'email',
+                template: 'hidden_deal_flow',
+                subject: 'The Hidden Deal Flow You\'ve Been Missing',
+                send_time: 'immediate'
             },
             {
-                delay: 24 * 60 * 60 * 1000, // 24 hours
-                template: 'onboarding_2',
-                subject: 'How to Flip Your First Deal in 30 Days',
-                content: {
-                    steps: [
-                        'Set your buying criteria',
-                        'Wait for AI match alerts',
-                        'Click "Reserve" on deals you want',
-                        'Sign the digital contract',
-                        'Assign to your end buyer',
-                        'Collect assignment fee'
-                    ]
-                }
-            },
-            {
-                delay: 3 * 24 * 60 * 60 * 1000, // 3 days
-                template: 'first_deal_push',
-                subject: '🔥 3 New Deals Match Your Criteria',
-                dynamic: true // Pull actual matching deals
+                type: 'sms',
+                template: 'initial_outreach',
+                message: 'Hey {{First}}, ready to get AI-powered off-market deals? Book your 15-min call 👉 {{booking_link}}',
+                send_time: 'immediate'
             }
         ]
+    },
+    
+    // Day 2 - Education
+    day2: {
+        delay: 24 * 60 * 60 * 1000, // 24 hours
+        actions: [
+            {
+                type: 'email',
+                template: 'zero_to_flip',
+                subject: 'From Zero to Flip: How Investors are Closing in 30 Days',
+                send_time: '10:00 AM {{timezone}}'
+            }
+        ]
+    },
+    
+    // Day 3 - Urgency
+    day3: {
+        delay: 48 * 60 * 60 * 1000, // 48 hours
+        actions: [
+            {
+                type: 'sms',
+                template: 'urgency_slots',
+                message: 'Only 5 onboarding slots left for our AI Deal Stream. Secure yours 👉 {{booking_link}}',
+                send_time: '2:00 PM {{timezone}}'
+            }
+        ]
+    },
+    
+    // Day 5 - Value Proposition
+    day5: {
+        delay: 5 * 24 * 60 * 60 * 1000, // 5 days
+        actions: [
+            {
+                type: 'email',
+                template: 'deal_machine',
+                subject: 'What If You Had a Deal Machine in Your Inbox?',
+                send_time: '10:00 AM {{timezone}}'
+            },
+            {
+                type: 'sms',
+                template: 'interest_check',
+                message: 'Still interested in flipping without buying? Reply YES to claim your spot 👉 {{booking_link}}',
+                send_time: '2:00 PM {{timezone}}',
+                response_handler: {
+                    'YES': 'apply_tag:microflip-hot',
+                    'STOP': 'apply_tag:unsubscribed'
+                }
+            }
+        ]
+    },
+    
+    // Day 7 - Case Study
+    day7: {
+        delay: 7 * 24 * 60 * 60 * 1000, // 7 days
+        actions: [
+            {
+                type: 'email',
+                template: 'case_study',
+                subject: '$12K Profit in 12 Days: The 1-Page Playbook',
+                send_time: '10:00 AM {{timezone}}'
+            }
+        ]
+    },
+    
+    // Day 9 - Final Push
+    day9: {
+        delay: 9 * 24 * 60 * 60 * 1000, // 9 days
+        actions: [
+            {
+                type: 'email',
+                template: 'final_call',
+                subject: 'Final Call – 3 Spots Left for Deal Stream Access',
+                send_time: '10:00 AM {{timezone}}'
+            },
+            {
+                type: 'sms',
+                template: 'last_call',
+                message: 'Last call! Only 2 spots left for our AI Micro-Flipping system. Don\'t miss the next $5K+ assignment. 👉 {{booking_link}}',
+                send_time: '2:00 PM {{timezone}}'
+            },
+            {
+                type: 'tag_application',
+                condition: 'no_engagement',
+                tag: 'microflip-cold'
+            }
+        ]
+    }
+};
+
+// Follow-Up Booking Branch (Triggered by tag: microflip-hot)
+const BOOKING_FOLLOWUP = {
+    trigger: 'tag:microflip-hot',
+    sequence: [
+        {
+            delay: 0,
+            type: 'email',
+            template: 'booking_invite',
+            subject: 'Let\'s Map Your First Flip (1:1 Call Link)',
+            content: {
+                headline: 'You\'re Ready for Your First Deal',
+                body: 'Based on your interest, I\'d like to personally walk you through your first flip...',
+                cta: 'Book Your Strategy Call',
+                booking_link: '{{calendly_link}}'
+            }
+        },
+        {
+            delay: 24 * 60 * 60 * 1000, // 1 day
+            condition: 'no_booking',
+            type: 'sms',
+            message: 'Still want to lock in your first flip? Grab your spot 👉 {{booking_link}}'
+        },
+        {
+            condition: 'booking_completed',
+            type: 'tag_application',
+            tag: 'microflip-won'
+        }
+    ]
+};
+
+// Cold Lead Revival (Triggered by tag: microflip-cold after 2 weeks)
+const COLD_REVIVAL = {
+    trigger: 'tag:microflip-cold',
+    delay: 14 * 24 * 60 * 60 * 1000, // 2 weeks
+    sequence: [
+        {
+            type: 'email',
+            template: 'revival_offer',
+            subject: 'Still want off-market deals delivered to your inbox?'
+        },
+        {
+            type: 'sms',
+            message: 'You\'re still eligible for AI Deal Stream access. Want to activate? Reply YES.',
+            response_handler: {
+                'YES': 'apply_tag:microflip-hot,remove_tag:microflip-cold'
+            }
+        }
+    ]
+};
+```
+
+### CRM Integration Configuration
+
+```javascript
+// CRM Platform Integrations
+const CRM_INTEGRATIONS = {
+    goHighLevel: {
+        api_endpoint: 'https://api.gohighlevel.com/v1',
+        workflow_import: {
+            format: 'json',
+            automation_map: MICROFLIP_CAMPAIGN,
+            custom_fields: [
+                'microflip_status',
+                'deal_interest_level',
+                'preferred_markets',
+                'investment_capacity'
+            ],
+            tags: [
+                'microflip-lead',
+                'microflip-hot',
+                'microflip-cold',
+                'microflip-won'
+            ]
+        }
+    },
+    
+    activesCampaign: {
+        api_endpoint: 'https://{{account}}.api-us1.com/api/3',
+        automation_id: 'microflip_nurture',
+        tag_based_triggers: true,
+        custom_fields_mapping: {
+            'first_name': '%FIRSTNAME%',
+            'phone': '%PHONE%',
+            'investment_range': '%CUSTOM_INVESTMENT%'
+        }
+    },
+    
+    podio: {
+        workspace_id: '{{workspace_id}}',
+        app_id: '{{app_id}}',
+        workflow_configuration: {
+            trigger: 'item.create',
+            actions: MICROFLIP_CAMPAIGN
+        }
+    },
+    
+    hubspot: {
+        portal_id: '{{portal_id}}',
+        workflow_enrollment: {
+            name: 'AI Micro-Flipping Nurture',
+            enrollment_trigger: 'form_submission',
+            branches: [
+                'microflip-lead',
+                'microflip-hot',
+                'microflip-cold',
+                'microflip-won'
+            ]
+        }
+    },
+    
+    airtable_zapier: {
+        base_id: '{{base_id}}',
+        table_name: 'Leads',
+        zapier_webhooks: {
+            new_lead: 'https://hooks.zapier.com/hooks/catch/{{account}}/{{hook_id}}/',
+            tag_update: 'https://hooks.zapier.com/hooks/catch/{{account}}/{{hook_id2}}/',
+            booking_complete: 'https://hooks.zapier.com/hooks/catch/{{account}}/{{hook_id3}}/'
+        },
+        field_mapping: {
+            'Name': '{{first_name}} {{last_name}}',
+            'Email': '{{email}}',
+            'Phone': '{{phone}}',
+            'Tag': '{{current_tag}}',
+            'Status': '{{lead_status}}'
+        }
+    }
+};
+```
+
+### Email Templates (SendGrid/Mailchimp)
+
+```javascript
+// Email Campaign Templates
+const EMAIL_TEMPLATES = {
+    hidden_deal_flow: {
+        template_id: 'd-xxxxxxxxxxxx',
+        from: 'deals@assiduous.ai',
+        from_name: 'Assiduous AI',
+        subject: 'The Hidden Deal Flow You\'ve Been Missing',
+        preheader: 'While others fight on the MLS...',
+        content: {
+            headline: 'You\'re Missing 73% of Available Deals',
+            subheadline: 'Here\'s why smart investors are switching to AI',
+            body: [
+                'Most investors only see properties on the MLS.',
+                'But that\'s just 27% of available deals.',
+                'Our AI scans PropStream, pre-foreclosures, probate, and FSBO listings 24/7.',
+                'Result? You get first access to deals with 20-40% profit margins.'
+            ],
+            cta: 'See Today\'s Off-Market Deals',
+            ps: 'P.S. We found 47 deals matching 30%+ ROI just this morning...'
+        }
     },
     
     dealAlert: {
@@ -1284,13 +1506,14 @@ const EMAIL_CAMPAIGNS = {
 };
 ```
 
-### SMS Automation (Twilio)
+### SMS Automation (Twilio) with Zapier Integration
 
 ```python
-# SMS Campaign Management
+# SMS Campaign Management with PropStream Integration
 from twilio.rest import Client
 import redis
 import json
+import requests
 from datetime import datetime, timedelta
 
 class SMSCampaignManager:
@@ -1298,6 +1521,7 @@ class SMSCampaignManager:
         self.client = Client(account_sid, auth_token)
         self.redis_client = redis.Redis(host='localhost', port=6379, db=0)
         self.from_number = '+1234567890'
+        self.propstream_api_key = '{{PROPSTREAM_API_KEY}}'
         
     def send_deal_alert(self, buyer, deal):
         """Send immediate deal alert SMS"""

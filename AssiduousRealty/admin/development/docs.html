@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Development Documentation - Assiduous Realty Admin</title>
+    
+    <!-- Assiduous Design System -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assiduous.css">
+    
+    <style>
+        /* Admin Layout - Consistent across all admin pages */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--white);
+        }
+
+        .admin-wrapper {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 240px;
+            background: var(--navy);
+            color: var(--white);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-header {
+            padding: var(--space-lg);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .sidebar-logo {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            color: var(--white);
+            text-decoration: none;
+        }
+
+        .sidebar-logo svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .sidebar-logo-text {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: var(--space-md) 0;
+            overflow-y: auto;
+        }
+
+        .nav-section {
+            margin-bottom: var(--space-lg);
+        }
+
+        .nav-section-title {
+            padding: 0 var(--space-lg);
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            opacity: 0.6;
+            margin-bottom: var(--space-sm);
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: var(--space-sm) var(--space-lg);
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.15s;
+        }
+
+        .nav-item:hover {
+            background: rgba(255,255,255,0.05);
+            color: var(--white);
+        }
+
+        .nav-item.active {
+            background: var(--sky);
+            color: var(--white);
+        }
+
+        .nav-icon {
+            width: 18px;
+            height: 18px;
+            opacity: 0.8;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Top Bar */
+        .topbar {
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            padding: var(--space-md) var(--space-xl);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .topbar-search {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            flex: 1;
+            max-width: 400px;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: var(--space-sm) var(--space-md);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            font-size: 14px;
+        }
+
+        .topbar-actions {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-weight: 600;
+            font-size: 12px;
+        }
+
+        /* Page Content */
+        .page-content {
+            flex: 1;
+            padding: var(--space-xl);
+            overflow-y: auto;
+            background: var(--gray-50);
+        }
+
+        .page-header {
+            margin-bottom: var(--space-xl);
+        }
+
+        .page-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: var(--space-xs);
+        }
+
+        .page-subtitle {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        /* Documentation Layout */
+        .docs-layout {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: var(--space-xl);
+        }
+
+        /* Docs Sidebar */
+        .docs-sidebar {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: var(--space-md);
+            height: fit-content;
+            position: sticky;
+            top: 0;
+        }
+
+        .docs-nav {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-xs);
+        }
+
+        .docs-link {
+            padding: var(--space-sm) var(--space-md);
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            border-radius: var(--radius);
+            transition: all 0.15s;
+        }
+
+        .docs-link:hover {
+            background: var(--gray-50);
+            color: var(--text-primary);
+        }
+
+        .docs-link.active {
+            background: rgba(96, 163, 217, 0.1);
+            color: var(--sky);
+        }
+
+        /* Documentation Content */
+        .docs-content {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: var(--space-xl);
+        }
+
+        .doc-section {
+            margin-bottom: var(--space-2xl);
+        }
+
+        .doc-section h2 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: var(--space-md);
+        }
+
+        .doc-section h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: var(--space-sm);
+            margin-top: var(--space-lg);
+        }
+
+        .doc-section p {
+            font-size: 14px;
+            color: var(--text-primary);
+            line-height: 1.6;
+            margin-bottom: var(--space-md);
+        }
+
+        .code-block {
+            background: var(--gray-50);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: var(--space-md);
+            font-family: 'SF Mono', Monaco, monospace;
+            font-size: 13px;
+            overflow-x: auto;
+            margin-bottom: var(--space-md);
+        }
+
+        .inline-code {
+            background: var(--gray-100);
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'SF Mono', Monaco, monospace;
+            font-size: 13px;
+            color: var(--sky);
+        }
+
+        .api-endpoint {
+            background: var(--gray-50);
+            border-left: 3px solid var(--sky);
+            padding: var(--space-md);
+            margin-bottom: var(--space-md);
+        }
+
+        .method {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: var(--radius);
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-right: var(--space-sm);
+        }
+
+        .method.get { background: rgba(5, 150, 105, 0.1); color: var(--success); }
+        .method.post { background: rgba(96, 163, 217, 0.1); color: var(--sky); }
+        .method.put { background: rgba(255, 217, 64, 0.1); color: var(--warning); }
+        .method.delete { background: rgba(220, 38, 38, 0.1); color: var(--danger); }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+            
+            .docs-layout {
+                grid-template-columns: 1fr;
+            }
+            
+            .docs-sidebar {
+                position: static;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-wrapper">
+        <!-- Sidebar - Consistent across all admin pages -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <a href="/admin/dashboard.html" class="sidebar-logo">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                    </svg>
+                    <span class="sidebar-logo-text">Admin Portal</span>
+                </a>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <div class="nav-section-title">Main</div>
+                    <a href="/admin/dashboard.html" class="nav-item">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="14" width="7" height="7"></rect>
+                            <rect x="3" y="14" width="7" height="7"></rect>
+                        </svg>
+                        Dashboard
+                    </a>
+                    <a href="/admin/analytics.html" class="nav-item">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="20" x2="12" y2="10"></line>
+                            <line x1="18" y1="20" x2="18" y2="4"></line>
+                            <line x1="6" y1="20" x2="6" y2="16"></line>
+                        </svg>
+                        Analytics
+                    </a>
+                    <a href="/admin/market.html" class="nav-item">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                        </svg>
+                        Market Analysis
+                    </a>
+                </div>
+                
+                <div class="nav-section">
+                    <div class="nav-section-title">Management</div>
+                    <a href="/admin/properties.html" class="nav-item">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                        </svg>
+                        Properties
+                    </a>
+                    <a href="/admin/agents.html" class="nav-item">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                        </svg>
+                        Agents
+                    </a>
+                    <a href="/admin/clients.html" class="nav-item">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                        Clients
+                    </a>
+                    <a href="/admin/transactions.html" class="nav-item">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="1" x2="12" y2="23"></line>
+                            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                        </svg>
+                        Transactions
+                    </a>
+                </div>
+                
+                <div class="nav-section">
+                    <div class="nav-section-title">Development</div>
+                    <a href="/admin/development/dashboard.html" class="nav-item">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="16 18 22 12 16 6"></polyline>
+                            <polyline points="8 6 2 12 8 18"></polyline>
+                        </svg>
+                        Dev Dashboard
+                    </a>
+                    <a href="/admin/development/analytics.html" class="nav-item">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 2L11 13"></path>
+                            <path d="M22 2L15 22L11 13L2 9L22 2Z"></path>
+                        </svg>
+                        Dev Analytics
+                    </a>
+                    <a href="/admin/development/reports.html" class="nav-item">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                        </svg>
+                        Dev Reports
+                    </a>
+                    <a href="/admin/development/docs.html" class="nav-item active">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                        </svg>
+                        Dev Docs
+                    </a>
+                </div>
+                
+                <div class="nav-section">
+                    <div class="nav-section-title">System</div>
+                    <a href="/admin/settings.html" class="nav-item">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="3"></circle>
+                            <path d="M12 1v6m0 6v6m4.22-13.22l4.24 4.24M1.54 1.54l4.24 4.24M18.46 18.46l4.24 4.24M1.54 18.46l4.24-4.24"></path>
+                        </svg>
+                        Settings
+                    </a>
+                    <a href="/" class="nav-item">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                            <polyline points="16 17 21 12 16 7"></polyline>
+                            <line x1="21" y1="12" x2="9" y2="12"></line>
+                        </svg>
+                        Logout
+                    </a>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Bar -->
+            <header class="topbar">
+                <div class="topbar-search">
+                    <input type="text" class="search-input" placeholder="Search documentation...">
+                </div>
+                
+                <div class="topbar-actions">
+                    <div class="user-avatar">AU</div>
+                </div>
+            </header>
+
+            <!-- Page Content -->
+            <div class="page-content">
+                <!-- Page Header -->
+                <div class="page-header">
+                    <h1 class="page-title">Development Documentation</h1>
+                    <p class="page-subtitle">Technical documentation, API references, and development guidelines</p>
+                </div>
+
+                <!-- Documentation Layout -->
+                <div class="docs-layout">
+                    <!-- Docs Sidebar -->
+                    <aside class="docs-sidebar">
+                        <nav class="docs-nav">
+                            <a href="#getting-started" class="docs-link active">Getting Started</a>
+                            <a href="#architecture" class="docs-link">Architecture</a>
+                            <a href="#api-reference" class="docs-link">API Reference</a>
+                            <a href="#deployment" class="docs-link">Deployment</a>
+                            <a href="#contributing" class="docs-link">Contributing</a>
+                        </nav>
+                    </aside>
+
+                    <!-- Documentation Content -->
+                    <div class="docs-content">
+                        <section id="getting-started" class="doc-section">
+                            <h2>Getting Started</h2>
+                            <p>Welcome to the Assiduous Realty development documentation. This guide will help you understand the platform architecture, development workflow, and best practices.</p>
+                            
+                            <h3>Prerequisites</h3>
+                            <p>Before you begin, ensure you have the following installed:</p>
+                            <ul style="margin-left: 20px; margin-bottom: var(--space-md);">
+                                <li>Node.js (v16 or higher)</li>
+                                <li>Git</li>
+                                <li>Python 3.8+</li>
+                                <li>PostgreSQL 13+</li>
+                            </ul>
+
+                            <h3>Installation</h3>
+                            <p>Clone the repository and install dependencies:</p>
+                            <div class="code-block">
+git clone https://github.com/SirsiMaster/Assiduous.git
+cd Assiduous
+npm install
+python -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+                            </div>
+
+                            <h3>Development Server</h3>
+                            <p>Start the development server:</p>
+                            <div class="code-block">
+# Start the Python HTTP server
+python -m http.server 8080
+
+# Or use Node.js
+npm run dev
+                            </div>
+                        </section>
+
+                        <section id="architecture" class="doc-section">
+                            <h2>System Architecture</h2>
+                            <p>The Assiduous Realty platform follows a modular architecture with clear separation of concerns.</p>
+                            
+                            <h3>Frontend</h3>
+                            <p>The frontend is built with vanilla JavaScript and uses the Assiduous Design System for consistent styling. Key technologies include:</p>
+                            <ul style="margin-left: 20px; margin-bottom: var(--space-md);">
+                                <li>HTML5 with semantic markup</li>
+                                <li>CSS3 with custom properties</li>
+                                <li>Vanilla JavaScript ES6+</li>
+                                <li>Chart.js for data visualization</li>
+                            </ul>
+
+                            <h3>Backend</h3>
+                            <p>The backend services are organized into microservices:</p>
+                            <ul style="margin-left: 20px; margin-bottom: var(--space-md);">
+                                <li>API Gateway - Request routing and authentication</li>
+                                <li>Property Service - Property listings and management</li>
+                                <li>User Service - Authentication and user management</li>
+                                <li>Analytics Service - Data processing and reporting</li>
+                            </ul>
+
+                            <h3>Database</h3>
+                            <p>PostgreSQL is used as the primary database with the following schema structure:</p>
+                            <div class="code-block">
+-- Example schema
+CREATE TABLE properties (
+    id SERIAL PRIMARY KEY,
+    title VARCHAR(255),
+    price DECIMAL(10, 2),
+    created_at TIMESTAMP DEFAULT NOW()
+);
+                            </div>
+                        </section>
+
+                        <section id="api-reference" class="doc-section">
+                            <h2>API Reference</h2>
+                            <p>The Assiduous API provides RESTful endpoints for all platform operations.</p>
+                            
+                            <h3>Authentication</h3>
+                            <p>All API requests require authentication using Bearer tokens:</p>
+                            <div class="code-block">
+Authorization: Bearer YOUR_API_TOKEN
+                            </div>
+
+                            <h3>Endpoints</h3>
+                            
+                            <div class="api-endpoint">
+                                <span class="method get">GET</span>
+                                <span class="inline-code">/api/v1/properties</span>
+                                <p style="margin-top: var(--space-sm);">Retrieve a list of all properties</p>
+                            </div>
+
+                            <div class="api-endpoint">
+                                <span class="method post">POST</span>
+                                <span class="inline-code">/api/v1/properties</span>
+                                <p style="margin-top: var(--space-sm);">Create a new property listing</p>
+                            </div>
+
+                            <div class="api-endpoint">
+                                <span class="method put">PUT</span>
+                                <span class="inline-code">/api/v1/properties/{id}</span>
+                                <p style="margin-top: var(--space-sm);">Update an existing property</p>
+                            </div>
+
+                            <div class="api-endpoint">
+                                <span class="method delete">DELETE</span>
+                                <span class="inline-code">/api/v1/properties/{id}</span>
+                                <p style="margin-top: var(--space-sm);">Delete a property listing</p>
+                            </div>
+
+                            <h3>Response Format</h3>
+                            <p>All API responses follow a consistent JSON structure:</p>
+                            <div class="code-block">
+{
+    "success": true,
+    "data": {
+        // Response data
+    },
+    "message": "Operation successful",
+    "timestamp": "2024-12-14T10:30:00Z"
+}
+                            </div>
+                        </section>
+
+                        <section id="deployment" class="doc-section">
+                            <h2>Deployment</h2>
+                            <p>The platform can be deployed using various methods depending on your infrastructure.</p>
+                            
+                            <h3>Docker Deployment</h3>
+                            <div class="code-block">
+# Build the Docker image
+docker build -t assiduous-realty .
+
+# Run the container
+docker run -p 8080:8080 assiduous-realty
+                            </div>
+
+                            <h3>GitHub Pages</h3>
+                            <p>For static hosting, the platform can be deployed to GitHub Pages:</p>
+                            <div class="code-block">
+# Push to gh-pages branch
+git checkout -b gh-pages
+git push origin gh-pages
+                            </div>
+
+                            <h3>Environment Variables</h3>
+                            <p>Configure the following environment variables for production:</p>
+                            <ul style="margin-left: 20px; margin-bottom: var(--space-md);">
+                                <li><span class="inline-code">DATABASE_URL</span> - PostgreSQL connection string</li>
+                                <li><span class="inline-code">API_KEY</span> - API authentication key</li>
+                                <li><span class="inline-code">NODE_ENV</span> - Set to "production"</li>
+                                <li><span class="inline-code">PORT</span> - Server port (default: 8080)</li>
+                            </ul>
+                        </section>
+
+                        <section id="contributing" class="doc-section">
+                            <h2>Contributing</h2>
+                            <p>We welcome contributions to the Assiduous Realty platform. Please follow these guidelines:</p>
+                            
+                            <h3>Code Style</h3>
+                            <ul style="margin-left: 20px; margin-bottom: var(--space-md);">
+                                <li>Use 4 spaces for indentation</li>
+                                <li>Follow ES6+ JavaScript standards</li>
+                                <li>Write descriptive commit messages</li>
+                                <li>Add tests for new features</li>
+                            </ul>
+
+                            <h3>Pull Request Process</h3>
+                            <ol style="margin-left: 20px; margin-bottom: var(--space-md);">
+                                <li>Fork the repository</li>
+                                <li>Create a feature branch</li>
+                                <li>Make your changes</li>
+                                <li>Submit a pull request with a clear description</li>
+                            </ol>
+
+                            <h3>Testing</h3>
+                            <p>Run the test suite before submitting:</p>
+                            <div class="code-block">
+npm test
+python -m pytest
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Handle docs navigation
+        document.querySelectorAll('.docs-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Update active state
+                document.querySelectorAll('.docs-link').forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Scroll to section
+                const target = this.getAttribute('href');
+                const section = document.querySelector(target);
+                if (section) {
+                    section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Search functionality
+        document.querySelector('.search-input').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            // Implement search logic here
+            console.log('Searching for:', searchTerm);
+        });
+    </script>
+</body>
+</html>

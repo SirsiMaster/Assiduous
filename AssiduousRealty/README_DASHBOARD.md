@@ -200,6 +200,124 @@ Repository Stats        Local Storage
 Real-time Display      Persistent History
 ```
 
+## 🌐 Real-World Data Sources Architecture
+
+### 1. **Property Listings** (`/admin/properties.html`)
+**Real Data Sources:**
+- **MLS (Multiple Listing Service) API** - Real estate listings database
+- **Property management system database** - Internal listings
+- **Agent uploads** - Forms where agents add new properties
+- **Zillow/Realtor.com APIs** - Third-party listing aggregators
+- **Property photos** - Uploaded to cloud storage (S3/Cloudinary)
+
+### 2. **User Analytics** (`/admin/analytics.html`)
+**Real Data Sources:**
+- **Google Analytics API** - Website traffic, user behavior
+- **Internal tracking events** - Database logs of:
+  - Property views
+  - Search queries
+  - Contact form submissions
+  - Virtual tour starts
+  - Document downloads
+- **CRM system** - Lead tracking and conversion funnel
+- **Session recordings** - Tools like Hotjar/FullStory
+
+### 3. **Market Analysis** (`/admin/market.html`)
+**Real Data Sources:**
+- **MLS market reports** - Regional pricing trends
+- **Government data APIs** - Census, economic indicators
+- **Redfin/Zillow Data APIs** - Market trends and forecasts
+- **Local tax assessor databases** - Property values
+- **Federal Reserve Economic Data (FRED)** - Interest rates
+
+### 4. **Agent Management** (`/admin/agents.html`)
+**Real Data Sources:**
+- **HR/Employee database** - Agent profiles
+- **Commission tracking system** - Sales performance
+- **Calendar/scheduling APIs** - Showing appointments
+- **CRM integration** - Client interactions per agent
+- **License verification APIs** - State real estate boards
+
+### 5. **Client Management** (`/admin/clients.html`)
+**Real Data Sources:**
+- **CRM database** - Client profiles and preferences
+- **Email marketing platform** (Mailchimp/SendGrid) - Engagement metrics
+- **Form submissions** - Website contact forms
+- **Phone system integration** - Call logs
+- **Document management system** - Contracts and agreements
+
+### 6. **Transactions** (`/admin/transactions.html`)
+**Real Data Sources:**
+- **Escrow system integration** - Transaction status
+- **Banking APIs** - Payment processing
+- **DocuSign API** - Contract signatures
+- **Title company integration** - Closing documents
+- **Commission calculation system** - Payment distribution
+
+### 7. **Development Metrics** (`/admin/development/`)
+**Real Data Sources:**
+- **GitHub API** ✓ (already implemented)
+- **CI/CD pipelines** - Build status, test results
+- **Error tracking** (Sentry/Rollbar) - Production issues
+- **APM tools** (New Relic/DataDog) - Performance metrics
+
+## 📧 Marketing Automation Workflow
+
+### AI Micro-Flipping Lead Nurture Campaign
+
+#### Day 1 - Initial Contact
+- **Email**: "The Hidden Deal Flow You've Been Missing"
+- **SMS**: "Hey [First], ready to get AI-powered off-market deals? Book your 15-min call 👉 [Link]"
+- **Tag Applied**: `microflip-lead`
+
+#### Day 2 - Education
+- **Email**: "From Zero to Flip: How Investors are Closing in 30 Days"
+- **No SMS**
+
+#### Day 3 - Urgency
+- **SMS**: "Only 5 onboarding slots left for our AI Deal Stream. Secure yours 👉 [Link]"
+
+#### Day 5 - Value Proposition
+- **Email**: "What If You Had a Deal Machine in Your Inbox?"
+- **SMS**: "Still interested in flipping without buying? Reply YES to claim your spot 👉 [Link]"
+- **Action**: If user replies YES → Apply tag `microflip-hot` → Move to booking follow-up
+
+#### Day 7 - Case Study
+- **Email**: "$12K Profit in 12 Days: The 1-Page Playbook"
+- **No SMS**
+
+#### Day 9 - Final Push
+- **Email**: "Final Call – 3 Spots Left for Deal Stream Access"
+- **SMS**: "Last call! Only 2 spots left for our AI Micro-Flipping system. Don't miss the next $5K+ assignment. 👉 [Link]"
+- **Action**: If no click or reply → Apply tag `microflip-cold`
+
+### 📞 Follow-Up Booking Branch
+**Triggered by tag**: `microflip-hot`
+1. Send Email: "Let's Map Your First Flip (1:1 Call Link)"
+2. Wait 1 day
+3. If no booking → Send SMS reminder: "Still want to lock in your first flip? Grab your spot 👉 [Call Booking Link]"
+4. If booked → Apply tag: `microflip-won`
+
+### 🔄 Cold Lead Revival
+**Triggered by tag**: `microflip-cold` (after 2 weeks)
+1. Send Email: "Still want off-market deals delivered to your inbox?"
+2. Send SMS: "You're still eligible for AI Deal Stream access. Want to activate? Reply YES."
+3. If user replies YES → Re-tag as `microflip-hot` → Restart booking flow
+
+### 🔥 Automation Summary Map
+1. **Form submission** → Add tag `microflip-lead`
+2. **microflip-lead** → Enters 10-day email + SMS sequence
+3. **If reply/engagement** → Tag as `microflip-hot` → Booking sequence
+4. **If booked** → Tag as `microflip-won`
+5. **If no engagement** → Tag as `microflip-cold` → Revival loop
+
+### CRM Integration Options
+- **GoHighLevel (GHL)** - Native automation builder
+- **Podio** - Workflow documentation
+- **Airtable + Zapier** - CSV/JSON import ready
+- **HubSpot** - Marketing automation sequences
+- **ActiveCampaign** - Tag-based automation
+
 ## 🎯 Key Metrics Tracked
 
 1. **Repository Activity**
