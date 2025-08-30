@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client Dashboard - Assiduous Realty</title>
+    
+    <!-- Assiduous Design System -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assiduous.css">
+    
+    <style>
+        /* Dashboard Layout */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--space-lg);
+            margin-bottom: var(--space-xl);
+        }
+        
+        /* Activity Tabs */
+        .activity-tabs {
+            display: flex;
+            gap: var(--space-sm);
+            margin-bottom: var(--space-lg);
+            border-bottom: 1px solid var(--border);
+            padding-bottom: var(--space-sm);
+        }
+        
+        .activity-tab {
+            padding: var(--space-sm) var(--space-md);
+            border: none;
+            background: none;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s;
+            position: relative;
+        }
+        
+        .activity-tab:hover {
+            color: var(--text-primary);
+        }
+        
+        .activity-tab.active {
+            color: var(--sky);
+        }
+        
+        .activity-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -9px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--sky);
+        }
+        
+        /* Activity Cards */
+        .activity-panel {
+            display: none;
+        }
+        
+        .activity-panel.active {
+            display: block;
+        }
+        
+        .activity-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: var(--space-lg);
+            margin-bottom: var(--space-md);
+        }
+        
+        .activity-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-md);
+        }
+        
+        .activity-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .activity-status {
+            font-size: 12px;
+            font-weight: 500;
+            padding: 4px 8px;
+            border-radius: 12px;
+        }
+        
+        .status-active { background: rgba(5, 150, 105, 0.1); color: var(--success); }
+        .status-pending { background: rgba(245, 158, 11, 0.1); color: var(--warning); }
+        .status-completed { background: rgba(96, 163, 217, 0.1); color: var(--sky); }
+        
+        .activity-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--space-md);
+            margin-bottom: var(--space-md);
+            font-size: 14px;
+        }
+        
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        
+        .detail-label {
+            color: var(--text-secondary);
+            font-size: 12px;
+        }
+        
+        .detail-value {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+        
+        .activity-actions {
+            display: flex;
+            gap: var(--space-sm);
+        }
+        
+        .action-button {
+            padding: var(--space-xs) var(--space-sm);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            background: var(--white);
+            color: var(--text-primary);
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        
+        .action-button:hover {
+            background: var(--gray-50);
+            border-color: var(--text-secondary);
+        }
+        
+        .action-button.primary {
+            background: var(--sky);
+            border-color: var(--sky);
+            color: var(--white);
+        }
+        
+        .action-button.primary:hover {
+            background: var(--sky-dark);
+            border-color: var(--sky-dark);
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-wrapper">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <a href="/" class="sidebar-logo">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                    </svg>
+                    <span class="sidebar-logo-text">Client Portal</span>
+                </a>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <div class="nav-section-title">Dashboard</div>
+                    <a href="/client/" class="nav-item active">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="14" width="7" height="7"></rect>
+                            <rect x="3" y="14" width="7" height="7"></rect>
+                        </svg>
+                        Overview
+                    </a>
+                    <a href="/client/properties.html" class="nav-item">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                        </svg>
+                        Properties
+                    </a>
+                    <a href="/client/search.html" class="nav-item">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <path d="m21 21-4.35-4.35"></path>
+                        </svg>
+                        Property Search
+                    </a>
+                </div>
+                
+                <div class="nav-section">
+                    <div class="nav-section-title">Tools</div>
+                    <a href="/client/valuation.html" class="nav-item">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="1" x2="12" y2="23"></line>
+                            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                        </svg>
+                        Property Valuation
+                    </a>
+                    <a href="/client/market.html" class="nav-item">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="20" x2="12" y2="10"></line>
+                            <line x1="18" y1="20" x2="18" y2="4"></line>
+                            <line x1="6" y1="20" x2="6" y2="16"></line>
+                        </svg>
+                        Market Analysis
+                    </a>
+                    <a href="/client/mortgage.html" class="nav-item">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                            <line x1="2" y1="7" x2="22" y2="7"></line>
+                        </svg>
+                        Mortgage Calculator
+                    </a>
+                </div>
+                
+                <div class="nav-section">
+                    <div class="nav-section-title">Account</div>
+                    <a href="/client/profile.html" class="nav-item">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                        Profile
+                    </a>
+                    <a href="/client/settings.html" class="nav-item">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="3"></circle>
+                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                        </svg>
+                        Settings
+                    </a>
+                    <a href="/" class="nav-item">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                            <polyline points="16 17 21 12 16 7"></polyline>
+                            <line x1="21" y1="12" x2="9" y2="12"></line>
+                        </svg>
+                        Logout
+                    </a>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Bar -->
+            <header class="topbar">
+                <div class="topbar-left">
+                    <div class="search-bar">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <path d="m21 21-4.35-4.35"></path>
+                        </svg>
+                        <input type="text" class="search-input" placeholder="Search properties...">
+                    </div>
+                </div>
+                
+                <div class="topbar-actions">
+                    <button class="btn-primary" onclick="window.location.href='/client/properties.html'">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                        List Property
+                    </button>
+                    <div class="user-avatar">JS</div>
+                </div>
+            </header>
+
+            <!-- Dashboard Content -->
+            <div class="dashboard-content">
+                <h1 class="page-title">Welcome back, John</h1>
+                <p class="page-subtitle">Here's what's happening with your real estate activities</p>
+
+                <!-- Stats Overview -->
+                <div class="dashboard-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon blue">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                            </svg>
+                        </div>
+                        <div class="stat-value">3</div>
+                        <div class="stat-label">Active Listings</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon green">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                            </svg>
+                        </div>
+                        <div class="stat-value">12</div>
+                        <div class="stat-label">Saved Properties</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon yellow">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                            </svg>
+                        </div>
+                        <div class="stat-value">5</div>
+                        <div class="stat-label">Agent Connections</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon red">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="12" y1="16" x2="12" y2="12"></line>
+                                <line x1="12" y1="8" x2="12" y2="8"></line>
+                            </svg>
+                        </div>
+                        <div class="stat-value">2</div>
+                        <div class="stat-label">Pending Actions</div>
+                    </div>
+                </div>
+
+                <!-- Activity Tabs -->
+                <div class="activity-tabs">
+                    <button class="activity-tab active" onclick="showActivity('buying')">Buying Activity</button>
+                    <button class="activity-tab" onclick="showActivity('selling')">Selling Activity</button>
+                    <button class="activity-tab" onclick="showActivity('saved')">Saved Properties</button>
+                </div>
+
+                <!-- Buying Activity -->
+                <div id="buyingActivity" class="activity-panel active">
+                    <div class="activity-card">
+                        <div class="activity-header">
+                            <h3 class="activity-title">Viewing Scheduled: 123 Main St</h3>
+                            <span class="activity-status status-pending">Tomorrow, 2 PM</span>
+                        </div>
+                        <div class="activity-details">
+                            <div class="detail-item">
+                                <span class="detail-label">Property</span>
+                                <span class="detail-value">3 bed, 2 bath House</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Price</span>
+                                <span class="detail-value">$450,000</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Agent</span>
+                                <span class="detail-value">Sarah Johnson</span>
+                            </div>
+                        </div>
+                        <div class="activity-actions">
+                            <button class="action-button">Reschedule</button>
+                            <button class="action-button">Cancel</button>
+                            <button class="action-button primary">View Details</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Selling Activity -->
+                <div id="sellingActivity" class="activity-panel">
+                    <div class="activity-card">
+                        <div class="activity-header">
+                            <h3 class="activity-title">New Offer: 456 Oak Ave</h3>
+                            <span class="activity-status status-active">Action Required</span>
+                        </div>
+                        <div class="activity-details">
+                            <div class="detail-item">
+                                <span class="detail-label">Offer Amount</span>
+                                <span class="detail-value">$525,000</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Buyer Agent</span>
+                                <span class="detail-value">Mike Wilson</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Deadline</span>
+                                <span class="detail-value">48 hours</span>
+                            </div>
+                        </div>
+                        <div class="activity-actions">
+                            <button class="action-button">Counter Offer</button>
+                            <button class="action-button">Decline</button>
+                            <button class="action-button primary">Review & Accept</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Saved Properties -->
+                <div id="savedProperties" class="activity-panel">
+                    <div class="activity-card">
+                        <div class="activity-header">
+                            <h3 class="activity-title">789 Pine Rd</h3>
+                            <span class="activity-status status-active">Price Drop</span>
+                        </div>
+                        <div class="activity-details">
+                            <div class="detail-item">
+                                <span class="detail-label">New Price</span>
+                                <span class="detail-value">$399,000 (-$26,000)</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Property</span>
+                                <span class="detail-value">4 bed, 3 bath House</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Listed</span>
+                                <span class="detail-value">2 weeks ago</span>
+                            </div>
+                        </div>
+                        <div class="activity-actions">
+                            <button class="action-button">Remove</button>
+                            <button class="action-button">Set Alert</button>
+                            <button class="action-button primary">Schedule Viewing</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Activity Panel Switching
+        function showActivity(panel) {
+            // Update tabs
+            document.querySelectorAll('.activity-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelector(`.activity-tab[onclick*="${panel}"]`).classList.add('active');
+            
+            // Update panels
+            document.querySelectorAll('.activity-panel').forEach(panel => {
+                panel.classList.remove('active');
+            });
+            document.getElementById(`${panel}Activity`).classList.add('active');
+        }
+        
+        // Initialize any real-time updates or notifications
+        function initializeDashboard() {
+            // This would typically connect to your real-time services
+            console.log('Dashboard initialized');
+        }
+        
+        // Run on load
+        document.addEventListener('DOMContentLoaded', initializeDashboard);
+    </script>
+</body>
+</html>

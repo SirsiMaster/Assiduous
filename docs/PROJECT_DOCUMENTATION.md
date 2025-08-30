@@ -84,9 +84,9 @@ All data is stored in localStorage with the following keys:
 
 ### 3. Client Relationship Management (CRM)
 - **Lead Scoring**: Hot, warm, cold lead classification
-- **Client Types**: Buyers, sellers, investors categorization
-- **Cash Buyer Identification**: Special tracking for immediate purchasers
-- **Activity Timeline**: Complete interaction history
+- **Client Dashboard**: Unified portal for buying and selling activities
+- **Client Tracking**: Seamless transaction role switching
+- **Activity Timeline**: Complete interaction history across all transactions
 - **Communication Logs**: Email, phone, meeting tracking
 
 ### 4. Transactions & Deals
@@ -215,10 +215,11 @@ All data is stored in localStorage with the following keys:
 - Mobile-accessible platform
 
 ### For Clients
-- Modern, user-friendly property search
-- Transparent process tracking
-- Easy communication channels
-- Personalized property recommendations
+- Unified dashboard for buying and selling
+- Seamless role switching between transactions
+- Smart property matching for both sides
+- Comprehensive transaction management
+- Personalized market insights
 
 ## 📚 Technical Resources
 

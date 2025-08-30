@@ -535,89 +535,44 @@
             </div>
 
             <div class="roles-grid">
-                <!-- Buyers Portal -->
-                <a href="/buyers/" class="role-card">
-                    <div class="role-icon buyers-icon">
+                <!-- Client Portal -->
+                <a href="/client/" class="role-card">
+                    <div class="role-icon client-icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                            <polyline points="9 22 9 12 15 12 15 22"></polyline>
-                        </svg>
-                    </div>
-                    <h3 class="role-title">For Buyers</h3>
-                    <p class="role-description">Find your dream property with AI-powered search and personalized recommendations</p>
-                    <ul class="role-features">
-                        <li>
-                            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                                <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg>
-                            Smart Property Search
-                        </li>
-                        <li>
-                            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                                <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg>
-                            Mortgage Calculator
-                        </li>
-                        <li>
-                            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                                <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg>
-                            Saved Searches & Alerts
-                        </li>
-                        <li>
-                            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                                <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg>
-                            Virtual Tours
-                        </li>
-                    </ul>
-                    <span class="role-cta">
-                        Enter Buyer Portal
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
-                    </span>
-                </a>
-
-                <!-- Sellers Portal -->
-                <a href="/sellers/" class="role-card">
-                    <div class="role-icon sellers-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <line x1="12" y1="2" x2="12" y2="22"></line>
-                            <polyline points="19 9 12 2 5 9"></polyline>
                         </svg>
                     </div>
-                    <h3 class="role-title">For Sellers</h3>
-                    <p class="role-description">Maximize your property value with data-driven pricing and marketing tools</p>
+                    <h3 class="role-title">For Clients</h3>
+                    <p class="role-description">Your all-in-one platform for buying, selling, and managing real estate</p>
                     <ul class="role-features">
                         <li>
                             <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
                                 <polyline points="20 6 9 17 4 12"></polyline>
                             </svg>
-                            Property Valuation
+                            Smart Property Search & Listing
                         </li>
                         <li>
                             <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
                                 <polyline points="20 6 9 17 4 12"></polyline>
                             </svg>
-                            Market Analysis
+                            AI-Powered Valuation Tools
                         </li>
                         <li>
                             <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
                                 <polyline points="20 6 9 17 4 12"></polyline>
                             </svg>
-                            Listing Management
+                            Market Analysis & Insights
                         </li>
                         <li>
                             <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
                                 <polyline points="20 6 9 17 4 12"></polyline>
                             </svg>
-                            Offer Tracking
+                            Transaction Management
                         </li>
                     </ul>
                     <span class="role-cta">
-                        Enter Seller Portal
+                        Enter Client Portal
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <line x1="5" y1="12" x2="19" y2="12"></line>
                             <polyline points="12 5 19 12 12 19"></polyline>
@@ -801,6 +756,54 @@
         </div>
     </footer>
 
+    <!-- Signup Modal -->
+    <div id="signupModal" class="modal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeSignup()">&times;</button>
+            <div class="modal-header">
+                <h2 class="modal-title">Create Your Account</h2>
+                <p class="modal-subtitle">Join Assiduous Realty and start your real estate journey</p>
+            </div>
+            <form id="signupForm" onsubmit="handleSignup(event)">
+                <div class="form-group">
+                    <label class="form-label">Full Name</label>
+                    <input type="text" class="form-input" id="signupName" required placeholder="Enter your full name">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-input" id="signupEmail" required placeholder="Enter your email">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" class="form-input" id="signupPassword" required placeholder="Choose a password" pattern=".{8,}" title="Password must be at least 8 characters">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Confirm Password</label>
+                    <input type="password" class="form-input" id="signupPasswordConfirm" required placeholder="Confirm your password">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">I am a:</label>
+                    <select class="form-input" id="signupRole" required>
+                        <option value="client">Client (Buying/Selling)</option>
+                        <option value="agent">Agent</option>
+                    </select>
+                </div>
+                <div class="form-group" id="agentFields" style="display: none;">
+                    <label class="form-label">License Number</label>
+                    <input type="text" class="form-input" id="licenseNumber" placeholder="Enter your real estate license number">
+                </div>
+                <div class="form-group form-checkbox">
+                    <input type="checkbox" id="termsAccepted" required>
+                    <label for="termsAccepted">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></label>
+                </div>
+                <button type="submit" class="btn-primary">Create Account</button>
+            </form>
+            <div class="modal-footer">
+                <p>Already have an account? <a href="#" onclick="showLogin()">Sign in</a></p>
+            </div>
+        </div>
+    </div>
+
     <!-- Login Modal -->
     <div id="loginModal" class="modal">
         <div class="modal-content">
@@ -821,21 +824,88 @@
                 <div class="form-group">
                     <label class="form-label">Login as:</label>
                     <select class="form-input" id="userRole">
-                        <option value="buyer">Buyer</option>
-                        <option value="seller">Seller</option>
+                        <option value="client">Client (Buying/Selling)</option>
                         <option value="agent">Agent</option>
                     </select>
                 </div>
                 <button type="submit" class="btn-primary">Sign In</button>
             </form>
-            <div class="modal-footer">
-                <p>Don't have an account? <a href="#" onclick="showSignup()">Sign up</a></p>
-                <p><a href="#">Forgot password?</a></p>
-            </div>
+        <div class="modal-footer">
+            <p>Don't have an account? <a href="#" onclick="showSignup()">Sign up</a></p>
+            <p><a href="#">Forgot password?</a></p>
+        </div>
+    </div>
+</div>
+
+<!-- Navigation -->
+<nav class="main-nav">
+    <div class="nav-container">
+        <a href="#" class="logo">Assiduous Realty</a>
+        <div class="nav-links">
+            <a href="#" onclick="showLogin()" class="login-btn">Login</a>
+        </div>
+    </div>
+</nav>
         </div>
     </div>
 
-    <script>
+    <style>
+        /* Additional styles for signup form */
+        .form-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-checkbox input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            margin: 0;
+        }
+
+        .form-checkbox label {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .form-checkbox a {
+            color: #60A3D9;
+            text-decoration: none;
+        }
+
+        .form-checkbox a:hover {
+            text-decoration: underline;
+        }
+
+        /* Password strength indicator */
+        .password-strength {
+            margin-top: 4px;
+            font-size: 12px;
+        }
+
+        .password-strength.weak { color: #DC2626; }
+        .password-strength.medium { color: #F59E0B; }
+        .password-strength.strong { color: #059669; }
+
+        /* Form validation styles */
+        .form-input:invalid {
+            border-color: #DC2626;
+        }
+
+        .form-input:invalid:focus {
+            border-color: #DC2626;
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+        }
+
+        .validation-message {
+            font-size: 12px;
+            color: #DC2626;
+            margin-top: 4px;
+        }
+    </style>
+
+    <script type="module">
+        import { AuthService, CRMService } from '/assets/js/services/index.js';
         function showLogin() {
             document.getElementById('loginModal').classList.add('active');
         }
@@ -844,38 +914,249 @@
             document.getElementById('loginModal').classList.remove('active');
         }
         
-        function showSignup() {
+function showSignup() {
             closeLogin();
-            alert('Sign up functionality coming soon!');
+            document.getElementById('signupModal').classList.add('active');
+            
+            // Set up event listeners for form validation
+            const passwordInput = document.getElementById('signupPassword');
+            const confirmInput = document.getElementById('signupPasswordConfirm');
+            const roleSelect = document.getElementById('signupRole');
+            const agentFields = document.getElementById('agentFields');
+            
+            passwordInput.addEventListener('input', function() {
+                validatePassword(this.value);
+            });
+            
+            confirmInput.addEventListener('input', function() {
+                validatePasswordMatch(passwordInput.value, this.value);
+            });
+            
+            roleSelect.addEventListener('change', function() {
+                if (this.value === 'agent') {
+                    agentFields.style.display = 'block';
+                    document.getElementById('licenseNumber').required = true;
+                } else {
+                    agentFields.style.display = 'none';
+                    document.getElementById('licenseNumber').required = false;
+                }
+            });
         }
 
-        function handleLogin(event) {
+        function closeSignup() {
+            document.getElementById('signupModal').classList.remove('active');
+        }
+
+        function validatePassword(password) {
+            const strengthIndicator = document.querySelector('.password-strength') || document.createElement('div');
+            strengthIndicator.className = 'password-strength';
+            
+            const passwordInput = document.getElementById('signupPassword');
+            
+            if (!strengthIndicator.parentElement) {
+                passwordInput.parentElement.appendChild(strengthIndicator);
+            }
+            
+            if (password.length < 8) {
+                strengthIndicator.textContent = 'Password must be at least 8 characters';
+                strengthIndicator.className = 'password-strength weak';
+                return false;
+            }
+            
+            const hasUpperCase = /[A-Z]/.test(password);
+            const hasLowerCase = /[a-z]/.test(password);
+            const hasNumbers = /\d/.test(password);
+            const hasSpecialChars = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+            
+            const strength = [hasUpperCase, hasLowerCase, hasNumbers, hasSpecialChars].filter(Boolean).length;
+            
+            switch (strength) {
+                case 4:
+                    strengthIndicator.textContent = 'Strong password';
+                    strengthIndicator.className = 'password-strength strong';
+                    return true;
+                case 3:
+                    strengthIndicator.textContent = 'Good password';
+                    strengthIndicator.className = 'password-strength medium';
+                    return true;
+                case 2:
+                    strengthIndicator.textContent = 'Moderate password - add more variety';
+                    strengthIndicator.className = 'password-strength medium';
+                    return true;
+                default:
+                    strengthIndicator.textContent = 'Weak password - add uppercase, numbers, or special characters';
+                    strengthIndicator.className = 'password-strength weak';
+                    return false;
+            }
+        }
+
+        function validatePasswordMatch(password, confirm) {
+            const confirmInput = document.getElementById('signupPasswordConfirm');
+            const validationMessage = document.querySelector('.confirm-validation') || document.createElement('div');
+            validationMessage.className = 'validation-message confirm-validation';
+            
+            if (!validationMessage.parentElement) {
+                confirmInput.parentElement.appendChild(validationMessage);
+            }
+            
+            if (password !== confirm) {
+                validationMessage.textContent = 'Passwords do not match';
+                return false;
+            } else {
+                validationMessage.textContent = '';
+                return true;
+            }
+        }
+
+        async function handleSignup(event) {
             event.preventDefault();
             
+            const submitButton = event.target.querySelector('button[type="submit"]');
+            const name = document.getElementById('signupName').value;
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            const confirmPassword = document.getElementById('signupPasswordConfirm').value;
+            const role = document.getElementById('signupRole').value;
+            const licenseNumber = document.getElementById('licenseNumber').value;
+            
+            // Validate passwords
+            if (!validatePassword(password) || !validatePasswordMatch(password, confirmPassword)) {
+                showNotification('Please fix the password issues before continuing.', 'error');
+                return;
+            }
+            
+            // Show loading state
+            const originalText = submitButton.textContent;
+            submitButton.textContent = 'Creating Account...';
+            submitButton.disabled = true;
+            
+            try {
+                const result = await AuthService.signup({
+                    name,
+                    email,
+                    password,
+                    role,
+                    ...(role === 'agent' && { licenseNumber })
+                });
+                
+                if (result.success) {
+                    showNotification('Account created successfully! Please sign in.', 'success');
+                    closeSignup();
+                    showLogin();
+                } else {
+                    showNotification(result.error, 'error');
+                    submitButton.textContent = originalText;
+                    submitButton.disabled = false;
+                }
+            } catch (error) {
+                console.error('Signup error:', error);
+                showNotification('An error occurred during signup. Please try again.', 'error');
+                submitButton.textContent = originalText;
+                submitButton.disabled = false;
+            }
+        }
+
+async function handleLogin(event) {
+            event.preventDefault();
+            
+            const submitButton = event.target.querySelector('button[type="submit"]');
             const email = document.getElementById('loginEmail').value;
             const password = document.getElementById('loginPassword').value;
             const role = document.getElementById('userRole').value;
             
-            // Check for admin credentials (hidden from UI)
-            if (email === 'admin@assiduousrealty.com' && password === 'admin123') {
-                window.location.href = '/admin/dashboard.html';
-                return;
-            }
+            // Show loading state
+            const originalText = submitButton.textContent;
+            submitButton.textContent = 'Signing in...';
+            submitButton.disabled = true;
             
-            // Route based on selected role
-            switch(role) {
-                case 'buyer':
-                    window.location.href = '/buyers/';
-                    break;
-                case 'seller':
-                    window.location.href = '/sellers/';
-                    break;
-                case 'agent':
-                    window.location.href = '/agents/';
-                    break;
-                default:
-                    window.location.href = '/';
+            try {
+                const result = await AuthService.login(email, password, role);
+                
+                if (result.success) {
+                    // Check if admin
+                    if (result.user.role === 'admin') {
+                        window.location.href = '/admin/dashboard.html';
+                        return;
+                    }
+                    
+                    // Initialize CRM data
+                    try {
+                        await CRMService.getProfile();
+                        const notifications = await CRMService.getNotifications();
+                        
+                        // Show welcome notification if there are unread notifications
+                        const unreadCount = notifications.filter(n => !n.read).length;
+                        if (unreadCount > 0) {
+                            showNotification(`Welcome back! You have ${unreadCount} unread notifications.`, 'info');
+                        }
+                    } catch (error) {
+                        console.error('Error initializing CRM:', error);
+                    }
+                    
+                    // Route based on role
+                    switch(role) {
+                        case 'client':
+                            window.location.href = '/client/';
+                            break;
+                        case 'agent':
+                            window.location.href = '/agents/';
+                            break;
+                        default:
+                            window.location.href = '/';
+                    }
+                } else {
+                    showNotification(result.error, 'error');
+                    submitButton.textContent = originalText;
+                    submitButton.disabled = false;
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                showNotification('An error occurred during login. Please try again.', 'error');
+                submitButton.textContent = originalText;
+                submitButton.disabled = false;
             }
+        }
+
+        // Notification system
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.innerHTML = message;
+
+            // Add styles if not present
+            if (!document.querySelector('#notification-styles')) {
+                const styles = document.createElement('style');
+                styles.id = 'notification-styles';
+                styles.textContent = `
+                    .notification {
+                        position: fixed;
+                        top: 20px;
+                        right: 20px;
+                        max-width: 400px;
+                        padding: 15px 20px;
+                        background: white;
+                        border-radius: 8px;
+                        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+                        z-index: 10000;
+                        animation: slideIn 0.3s ease;
+                    }
+                    .notification.success { border-left: 4px solid #059669; }
+                    .notification.error { border-left: 4px solid #DC2626; }
+                    .notification.info { border-left: 4px solid #60A3D9; }
+                    @keyframes slideIn {
+                        from { transform: translateX(100%); opacity: 0; }
+                        to { transform: translateX(0); opacity: 1; }
+                    }
+                `;
+                document.head.appendChild(styles);
+            }
+
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.style.animation = 'slideIn 0.3s ease reverse';
+                setTimeout(() => notification.remove(), 300);
+            }, 5000);
         }
 
         // Close modal when clicking outside

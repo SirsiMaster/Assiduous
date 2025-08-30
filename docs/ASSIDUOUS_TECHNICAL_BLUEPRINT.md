@@ -162,43 +162,38 @@ To democratize real estate intelligence by making sophisticated AI-driven insigh
 
 ### Primary User Segments
 
-#### 1. Home Buyers (40% of user base)
+#### 1. Real Estate Clients (65% of user base)
 **Profile:**
-- Age: 25-45
-- Income: $50K-$150K
-- Tech-savvy millennials and Gen X
-- First-time and repeat buyers
+- Age: 25-65
+- Income: $50K-$200K
+- Tech-savvy individuals and families
+- Buyers, sellers, and dual-role users
 
 **Needs:**
-- Simplified property search
-- Transparent pricing information
-- Mortgage pre-qualification
-- Virtual property tours
-- Neighborhood insights
-
-**Pain Points:**
-- Information overload
-- Hidden costs
-- Complex paperwork
-- Limited time for search
-
-#### 2. Property Sellers (25% of user base)
-**Profile:**
-- Age: 35-65
-- Homeowners looking to upgrade or downsize
-- Investment property owners
-
-**Needs:**
-- Accurate property valuation
+- Unified property platform
+- Smart property search and listing
 - Market timing insights
-- Buyer lead generation
-- Marketing automation
+- Property valuation tools
+- Virtual tours and showings
+- Transaction management
+- Neighborhood analytics
 
 **Pain Points:**
-- Pricing uncertainty
-- Long listing periods
-- Agent commission costs
-- Marketing complexity
+- Complex market navigation
+- Information asymmetry
+- Transaction coordination
+- Price uncertainty
+- Time management
+- Document handling
+
+**Key Features:**
+- AI-powered property matching
+- Smart valuation tools
+- Virtual property tours
+- Market timing insights
+- Document automation
+- Transaction tracking
+- Property analytics
 
 #### 3. Real Estate Professionals (20% of user base)
 **Profile:**
