@@ -50,16 +50,31 @@ git commit --no-verify
 
 ## Architecture Overview
 
-Assiduous is an AI-powered real estate platform built as a progressive web application:
+Assiduous is an AI-powered real estate platform with dual-purpose architecture:
 
-- **Frontend**: Static HTML5/CSS3/JavaScript (ES6+) application served from `src/index.html`
-- **State Management**: Global AppState object in `assets/js/main.js` manages UI state and data flow
-- **AI Integration Points**: JavaScript modules prepared for ML model integration via REST APIs
-- **Internationalization**: Full i18n support with English/Spanish translations in main.js
-- **Responsive Design**: Mobile-first CSS framework in `assets/css/styles.css`
-- **Backend Ready**: Structure supports future API endpoints for property data, valuations, and AI services
+### Current Stack (Firebase Migration Complete)
+- **Frontend**: GitHub Pages static hosting (`AssiduousRealty/` directory)
+- **Backend**: Firebase (Firestore DB, Authentication, Cloud Storage)
+- **Security**: AES-256-GCM encryption for sensitive fields + Firebase Security Rules
+- **User Roles**: Unified "client" role (buyers/sellers) + "agent" role
+- **State Management**: Client-side services (`assets/js/services/`)
 
-The application uses client-side rendering with vanilla JavaScript, avoiding framework dependencies while maintaining modern development patterns. AI features currently display demo data but are architected for seamless integration with backend ML services.
+### Business Model Priority
+- **70% Focus**: Micro-Flipping Engine ($2-5K per deal)
+- **30% Focus**: Traditional Real Estate (lead generation)
+
+### Key Services
+- `FirebaseService.js`: Core database operations with encryption
+- `auth.js`: Authentication and session management  
+- `crm.js`: Client relationship management
+- `EncryptionService.js`: Field-level encryption layer
+
+### Firebase Collections
+- `users`: Encrypted user profiles (email, phone, SSN)
+- `properties`: Listings with investment scoring
+- `transactions`: Deal pipeline management
+- `messages`: Communication logs
+- `notifications`: Real-time alerts
 
 ## Project Conventions
 
@@ -227,24 +242,65 @@ The codebase is prepared for AI model integration at these key points:
 
 Backend services should expose REST endpoints that the frontend JavaScript can consume via fetch API.
 
-## Important Notes
+## Important Project Rules
 
-- No package.json or build process - pure static files
-- No node_modules or npm dependencies
-- Python server for local development only
-- All JavaScript is vanilla ES6+ (no frameworks)
-- CSS is custom (no Bootstrap/Tailwind)
+### Architecture Rules
+- **NEVER** store sensitive data in GitHub (use Firebase)
+- **ALWAYS** encrypt sensitive fields before Firestore storage
+- **USE** Firebase for all backend operations (no GitHub Actions for DB)
+- **MAINTAIN** unified client role (no separate buyer/seller paths)
+- **PRIORITIZE** micro-flipping features (70% of dev effort)
+
+### Development Rules  
+- **Frontend**: Pure HTML/CSS/JS served from GitHub Pages
+- **Backend**: Firebase only (Firestore, Auth, Storage)
+- **Dependencies**: Use package.json (Firebase, Next.js ready)
+- **Security**: Multi-layer (Auth → Rules → Encryption)
+- **Testing**: Jest for unit tests, manual for integration
+
+### Coding Standards
 - Git hooks enforce commit message format
 - Protected branches require PR reviews
+- Mobile-first responsive design
+- Accessibility compliance (WCAG 2.1)
 
 ## Quick Reference
 
+### Essential Commands
 | Task | Command |
 |------|---------|
-| Start server | `python -m http.server 8080` |
-| Install hooks | `./scripts/hooks/install.sh` |
-| Create tag | `./scripts/rollback/create_tag.sh X.Y.Z "desc"` |
-| Update changelog | `./scripts/changelog/update_changelog.sh` |
-| Rollback | `./scripts/rollback/rollback_to_tag.sh vX.Y.Z` |
+| Start dev server | `python -m http.server 8080` |
+| Access app | `open http://localhost:8080/AssiduousRealty/` |
+| Install deps | `npm install` |
+| Run tests | `npm test` |
+| Firebase deploy | `firebase deploy` |
 | View logs | `git log --oneline -10` |
 | Check branch | `git branch --show-current` |
+
+### Firebase Setup
+```bash
+# Install Firebase CLI
+npm install -g firebase-tools
+
+# Login to Firebase
+firebase login
+
+# Initialize project
+firebase init
+
+# Deploy to production
+firebase deploy --only hosting
+```
+
+### Environment Variables Required
+```bash
+# Development (.env.development)
+FIREBASE_API_KEY=xxx
+FIREBASE_AUTH_DOMAIN=xxx
+FIREBASE_PROJECT_ID=xxx
+FIREBASE_STORAGE_BUCKET=xxx
+ENCRYPTION_KEY=xxx
+
+# Production (.env.production)  
+# Same structure, different values
+```
