@@ -53,7 +53,7 @@ git commit --no-verify
 Assiduous is an AI-powered real estate platform with dual-purpose architecture:
 
 ### Current Stack (Firebase Migration Complete)
-- **Frontend**: GitHub Pages static hosting (`AssiduousRealty/` directory)
+- **Frontend**: GitHub Pages static hosting (`AssiduousProperties/` directory)
 - **Backend**: Firebase (Firestore DB, Authentication, Cloud Storage)
 - **Security**: AES-256-GCM encryption for sensitive fields + Firebase Security Rules
 - **User Roles**: Unified "client" role (buyers/sellers) + "agent" role
@@ -271,33 +271,33 @@ Backend services should expose REST endpoints that the frontend JavaScript can c
 
 #### Main Application
 - **Root Redirect**: https://sirsimaster.github.io/Assiduous/
-- **Landing Page (Login/Signup)**: https://sirsimaster.github.io/Assiduous/AssiduousRealty/
-- **Knowledge Base**: https://sirsimaster.github.io/Assiduous/AssiduousRealty/knowledge-base.html
-- **Reports**: https://sirsimaster.github.io/Assiduous/AssiduousRealty/reports.html
+- **Landing Page (Login/Signup)**: https://sirsimaster.github.io/Assiduous/AssiduousProperties/
+- **Knowledge Base**: https://sirsimaster.github.io/Assiduous/AssiduousProperties/knowledge-base.html
+- **Reports**: https://sirsimaster.github.io/Assiduous/AssiduousProperties/reports.html
 
 #### Admin Portal
-- **Admin Dashboard**: https://sirsimaster.github.io/Assiduous/AssiduousRealty/admin/dashboard.html
-- **Analytics**: https://sirsimaster.github.io/Assiduous/AssiduousRealty/admin/analytics.html
-- **Properties Management**: https://sirsimaster.github.io/Assiduous/AssiduousRealty/admin/properties.html
-- **Client Management**: https://sirsimaster.github.io/Assiduous/AssiduousRealty/admin/clients.html
-- **Agent Management**: https://sirsimaster.github.io/Assiduous/AssiduousRealty/admin/agents.html
-- **Transactions**: https://sirsimaster.github.io/Assiduous/AssiduousRealty/admin/transactions.html
-- **Market Analysis**: https://sirsimaster.github.io/Assiduous/AssiduousRealty/admin/market.html
-- **Settings**: https://sirsimaster.github.io/Assiduous/AssiduousRealty/admin/settings.html
+- **Admin Dashboard**: https://sirsimaster.github.io/Assiduous/AssiduousProperties/admin/dashboard.html
+- **Analytics**: https://sirsimaster.github.io/Assiduous/AssiduousProperties/admin/analytics.html
+- **Properties Management**: https://sirsimaster.github.io/Assiduous/AssiduousProperties/admin/properties.html
+- **Client Management**: https://sirsimaster.github.io/Assiduous/AssiduousProperties/admin/clients.html
+- **Agent Management**: https://sirsimaster.github.io/Assiduous/AssiduousProperties/admin/agents.html
+- **Transactions**: https://sirsimaster.github.io/Assiduous/AssiduousProperties/admin/transactions.html
+- **Market Analysis**: https://sirsimaster.github.io/Assiduous/AssiduousProperties/admin/market.html
+- **Settings**: https://sirsimaster.github.io/Assiduous/AssiduousProperties/admin/settings.html
 
 #### Development/Test Pages
-- **Dev Dashboard**: https://sirsimaster.github.io/Assiduous/AssiduousRealty/admin/development/dashboard.html
-- **Dev Analytics**: https://sirsimaster.github.io/Assiduous/AssiduousRealty/admin/development/analytics.html
-- **Dev Docs**: https://sirsimaster.github.io/Assiduous/AssiduousRealty/admin/development/docs.html
-- **Dev Reports**: https://sirsimaster.github.io/Assiduous/AssiduousRealty/admin/development/reports.html
-- **Old Dashboard (Backup)**: https://sirsimaster.github.io/Assiduous/AssiduousRealty/admin/development/dashboard_old.html
+- **Dev Dashboard**: https://sirsimaster.github.io/Assiduous/AssiduousProperties/admin/development/dashboard.html
+- **Dev Analytics**: https://sirsimaster.github.io/Assiduous/AssiduousProperties/admin/development/analytics.html
+- **Dev Docs**: https://sirsimaster.github.io/Assiduous/AssiduousProperties/admin/development/docs.html
+- **Dev Reports**: https://sirsimaster.github.io/Assiduous/AssiduousProperties/admin/development/reports.html
+- **Old Dashboard (Backup)**: https://sirsimaster.github.io/Assiduous/AssiduousProperties/admin/development/dashboard_old.html
 
 #### Client Portal
-- **Client Dashboard**: https://sirsimaster.github.io/Assiduous/AssiduousRealty/client/
+- **Client Dashboard**: https://sirsimaster.github.io/Assiduous/AssiduousProperties/client/
 
 #### Documentation Pages
-- **API Docs**: https://sirsimaster.github.io/Assiduous/AssiduousRealty/docs/
-- **README (HTML)**: https://sirsimaster.github.io/Assiduous/AssiduousRealty/docs/readme.html
+- **API Docs**: https://sirsimaster.github.io/Assiduous/AssiduousProperties/docs/
+- **README (HTML)**: https://sirsimaster.github.io/Assiduous/AssiduousProperties/docs/readme.html
 
 ### GitHub Repository URLs
 - **Repository Home**: https://github.com/SirsiMaster/Assiduous
@@ -312,9 +312,9 @@ Backend services should expose REST endpoints that the frontend JavaScript can c
 # Start server first: python -m http.server 8080
 
 # Main Pages
-http://localhost:8080/AssiduousRealty/
-http://localhost:8080/AssiduousRealty/admin/dashboard.html
-http://localhost:8080/AssiduousRealty/client/
+http://localhost:8080/AssiduousProperties/
+http://localhost:8080/AssiduousProperties/admin/dashboard.html
+http://localhost:8080/AssiduousProperties/client/
 ```
 
 ### URL Construction Rules for AI
@@ -322,7 +322,7 @@ http://localhost:8080/AssiduousRealty/client/
 - GitHub Pages: `https://sirsimaster.github.io/Assiduous/[path-to-file]`
 - Never omit `/Assiduous/` from the path
 - File paths are case-sensitive
-- Most HTML files are in `/AssiduousRealty/` subdirectory
+- Most HTML files are in `/AssiduousProperties/` subdirectory
 
 ## Quick Reference
 
@@ -330,7 +330,7 @@ http://localhost:8080/AssiduousRealty/client/
 | Task | Command |
 |------|---------|
 | Start dev server | `python -m http.server 8080` |
-| Access app | `open http://localhost:8080/AssiduousRealty/` |
+| Access app | `open http://localhost:8080/AssiduousProperties/` |
 | Install deps | `npm install` |
 | Run tests | `npm test` |
 | Firebase deploy | `firebase deploy` |
