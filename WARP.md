@@ -264,6 +264,66 @@ Backend services should expose REST endpoints that the frontend JavaScript can c
 - Mobile-first responsive design
 - Accessibility compliance (WCAG 2.1)
 
+## 🔗 LIVE APPLICATION URLS (ALWAYS USE THESE)
+
+### Production URLs (GitHub Pages)
+**Base URL**: `https://sirsimaster.github.io/Assiduous/`
+
+#### Main Application
+- **Root Redirect**: https://sirsimaster.github.io/Assiduous/
+- **Landing Page (Login/Signup)**: https://sirsimaster.github.io/Assiduous/AssiduousRealty/
+- **Knowledge Base**: https://sirsimaster.github.io/Assiduous/AssiduousRealty/knowledge-base.html
+- **Reports**: https://sirsimaster.github.io/Assiduous/AssiduousRealty/reports.html
+
+#### Admin Portal
+- **Admin Dashboard**: https://sirsimaster.github.io/Assiduous/AssiduousRealty/admin/dashboard.html
+- **Analytics**: https://sirsimaster.github.io/Assiduous/AssiduousRealty/admin/analytics.html
+- **Properties Management**: https://sirsimaster.github.io/Assiduous/AssiduousRealty/admin/properties.html
+- **Client Management**: https://sirsimaster.github.io/Assiduous/AssiduousRealty/admin/clients.html
+- **Agent Management**: https://sirsimaster.github.io/Assiduous/AssiduousRealty/admin/agents.html
+- **Transactions**: https://sirsimaster.github.io/Assiduous/AssiduousRealty/admin/transactions.html
+- **Market Analysis**: https://sirsimaster.github.io/Assiduous/AssiduousRealty/admin/market.html
+- **Settings**: https://sirsimaster.github.io/Assiduous/AssiduousRealty/admin/settings.html
+
+#### Development/Test Pages
+- **Dev Dashboard**: https://sirsimaster.github.io/Assiduous/AssiduousRealty/admin/development/dashboard.html
+- **Dev Analytics**: https://sirsimaster.github.io/Assiduous/AssiduousRealty/admin/development/analytics.html
+- **Dev Docs**: https://sirsimaster.github.io/Assiduous/AssiduousRealty/admin/development/docs.html
+- **Dev Reports**: https://sirsimaster.github.io/Assiduous/AssiduousRealty/admin/development/reports.html
+- **Old Dashboard (Backup)**: https://sirsimaster.github.io/Assiduous/AssiduousRealty/admin/development/dashboard_old.html
+
+#### Client Portal
+- **Client Dashboard**: https://sirsimaster.github.io/Assiduous/AssiduousRealty/client/
+
+#### Documentation Pages
+- **API Docs**: https://sirsimaster.github.io/Assiduous/AssiduousRealty/docs/
+- **README (HTML)**: https://sirsimaster.github.io/Assiduous/AssiduousRealty/docs/readme.html
+
+### GitHub Repository URLs
+- **Repository Home**: https://github.com/SirsiMaster/Assiduous
+- **Implementation Checklist**: https://github.com/SirsiMaster/Assiduous/blob/main/docs/IMPLEMENTATION_CHECKLIST.md
+- **Security Docs**: https://github.com/SirsiMaster/Assiduous/blob/main/docs/SECURITY.md
+- **WARP Rules (This File)**: https://github.com/SirsiMaster/Assiduous/blob/main/WARP.md
+- **Actions/Workflows**: https://github.com/SirsiMaster/Assiduous/actions
+- **Security Alerts**: https://github.com/SirsiMaster/Assiduous/security/dependabot
+
+### Local Development URLs
+```bash
+# Start server first: python -m http.server 8080
+
+# Main Pages
+http://localhost:8080/AssiduousRealty/
+http://localhost:8080/AssiduousRealty/admin/dashboard.html
+http://localhost:8080/AssiduousRealty/client/
+```
+
+### URL Construction Rules for AI
+**IMPORTANT**: When providing URLs, ALWAYS use this format:
+- GitHub Pages: `https://sirsimaster.github.io/Assiduous/[path-to-file]`
+- Never omit `/Assiduous/` from the path
+- File paths are case-sensitive
+- Most HTML files are in `/AssiduousRealty/` subdirectory
+
 ## Quick Reference
 
 ### Essential Commands
