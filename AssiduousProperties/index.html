@@ -1069,13 +1069,27 @@ async function handleLogin(event) {
             submitButton.textContent = 'Signing in...';
             submitButton.disabled = true;
             
+            // Check for admin credentials (independent of role dropdown)
+            if (email === 'admin@assiduousrealty.com' && password === 'admin123') {
+                // Admin login successful - redirect to admin dashboard
+                localStorage.setItem('auth_token', 'admin_token_demo');
+                localStorage.setItem('user_role', 'admin');
+                localStorage.setItem('user_data', JSON.stringify({
+                    name: 'Administrator',
+                    email: email,
+                    role: 'admin'
+                }));
+                window.location.href = '/AssiduousProperties/admin/dashboard.html';
+                return;
+            }
+            
             try {
                 const result = await AuthService.login(email, password, role);
                 
                 if (result.success) {
-                    // Check if admin
-                    if (result.user.role === 'admin') {
-                        window.location.href = '/admin/dashboard.html';
+                    // Check if admin based on result (fallback)
+                    if (result.user && result.user.role === 'admin') {
+                        window.location.href = '/AssiduousProperties/admin/dashboard.html';
                         return;
                     }
                     
