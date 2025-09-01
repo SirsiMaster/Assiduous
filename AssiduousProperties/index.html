@@ -906,15 +906,17 @@
 
     <script type="module">
         import { AuthService, CRMService } from '/assets/js/services/index.js';
-        function showLogin() {
+        
+        // Make functions available globally for onclick handlers
+        window.showLogin = function() {
             document.getElementById('loginModal').classList.add('active');
         }
 
-        function closeLogin() {
+        window.closeLogin = function() {
             document.getElementById('loginModal').classList.remove('active');
         }
         
-function showSignup() {
+        window.showSignup = function() {
             closeLogin();
             document.getElementById('signupModal').classList.add('active');
             
@@ -943,7 +945,7 @@ function showSignup() {
             });
         }
 
-        function closeSignup() {
+        window.closeSignup = function() {
             document.getElementById('signupModal').classList.remove('active');
         }
 
@@ -1008,7 +1010,7 @@ function showSignup() {
             }
         }
 
-        async function handleSignup(event) {
+        window.handleSignup = async function(event) {
             event.preventDefault();
             
             const submitButton = event.target.querySelector('button[type="submit"]');
@@ -1056,7 +1058,7 @@ function showSignup() {
             }
         }
 
-async function handleLogin(event) {
+window.handleLogin = async function(event) {
             event.preventDefault();
             
             const submitButton = event.target.querySelector('button[type="submit"]');
