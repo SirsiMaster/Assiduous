@@ -1,10 +1,11 @@
 # CONTRACT INTEGRATION PLAN
-## Aligning Collymore Consulting Amendment with Assiduous Platform
+## Sirsi Technologies - Assiduous Platform Enhancement
 
-**Version:** 1.0.0  
-**Date:** September 1, 2025  
+**Version:** 2.0.0  
+**Date:** September 5, 2025  
 **Status:** Active Implementation  
-**Contract Amendment Value:** $2,250 (87% discount from $17,500 market value)
+**Service Provider:** Sirsi Technologies  
+**Contract Amendment Value:** $2,250 (88% discount from $18,500 market value)
 
 ---
 
@@ -16,7 +17,7 @@ This plan integrates Ralph Kemp's contract amendment requirements into the exist
 2. **Cash Buyer Verification Gap** - Need for financial capacity validation before engagement  
 3. **Title Company Bottlenecks** - Manual processes delaying 7-14 day closing targets
 
-These challenges are being transformed into competitive advantages through custom development that saves $815/month in operational costs.
+These challenges are being transformed into competitive advantages through custom development that saves $1,000/month in operational costs compared to traditional solutions (after accounting for Warp Lightspeed).
 
 ---
 
@@ -261,21 +262,42 @@ exports.propertyMatchmaking = functions.firestore
 
 ## COST OPTIMIZATION BREAKDOWN
 
-### Monthly Savings Achievement
-| Service | Traditional Cost | Our Solution | Monthly Savings |
-|---------|-----------------|--------------|-----------------|
-| HubSpot CRM | $890 | Firebase CRM ($0) | $890 |
-| DocuSign | $25 | OpenSign ($0) | $25 |
-| Zapier Pro | $50 | Firebase Functions (~$5) | $45 |
-| SendGrid Paid | $20 | Free Tier | $20 |
-| Monitoring Tools | $15 | Firebase Analytics | $15 |
-| **TOTAL** | **$1,000** | **~$5** | **$995/month** |
+### Required Operational Tools & Services
+| Category | Service | Monthly Cost |
+|----------|---------|-------------|
+| **API Services** | PropStream | $100 |
+| | Firebase (DB, Functions, Storage) | $80 |
+| | Twilio SMS | $25 |
+| | Google Maps | $15 |
+| **Development Tools** | Warp Lightspeed (Required) | $225 |
+| **Maintenance** | Platform Support (Post-Delivery) | $500 |
+| **Total Operations** | | **$445** |
+| **Total with Maintenance** | | **$945** |
 
-### Implementation Investment
+### Cost Comparison Analysis
+| Service | Traditional Stack | Sirsi Solution | Savings |
+|---------|------------------|----------------|----------|
+| HubSpot CRM | $890 | $0 (Firebase) | $890 |
+| DocuSign | $25 | $0 (OpenSign) | $25 |
+| Zapier Pro | $50 | ~$10 (Functions) | $40 |
+| SendGrid Pro | $20 | $0 (Free tier) | $20 |
+| Monitoring | $15 | $0 (Firebase) | $15 |
+| PropStream | $100 | $100 | $0 |
+| Firebase/AWS | $80 | $80 | $0 |
+| Twilio | $25 | $25 | $0 |
+| Maps | $15 | $15 | $0 |
+| Warp | $225 | $225 | $0 |
+| Maintenance | $500 | $500 | $0 |
+| **TOTAL** | **$1,945** | **$945** | **$1,000/month** |
+
+### Investment Analysis with Sirsi Technologies
 - **One-time Integration Fee**: $2,250
-- **ROI Period**: 2.3 months
-- **Annual Savings**: $11,940
-- **5-Year Savings**: $59,700
+- **Total Monthly Costs**: $945 (includes Warp)
+- **Monthly Savings vs Traditional**: $1,000
+- **ROI Period**: 2.25 months
+- **Annual Net Savings**: $12,000
+- **5-Year Total Savings**: $60,000
+- **Revenue Impact**: +$192,000-288,000/year
 
 ---
 
@@ -345,6 +367,8 @@ exports.propertyMatchmaking = functions.firestore
 - **PropStream API**: $100/month subscription required
 - **Twilio Account**: $25/month for SMS
 - **Domain & SSL**: Already configured ✅
+- **Warp Lightspeed**: $225/month (AI-powered development - REQUIRED)
+- **Firebase Functions**: ~$10/month usage (replaces Zapier completely)
 
 ### Development Environment
 ```bash

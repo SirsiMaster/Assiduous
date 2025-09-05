@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Structure - Sirsi Technologies</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .header h2 {
+            font-size: 1.3em;
+            font-weight: 300;
+            opacity: 0.9;
+        }
+        
+        .client-info {
+            background: #34495e;
+            color: white;
+            padding: 20px 40px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .client-info div {
+            display: flex;
+            align-items: center;
+        }
+        
+        .client-info strong {
+            margin-right: 10px;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .section {
+            margin-bottom: 50px;
+        }
+        
+        .section h2 {
+            color: #2c3e50;
+            font-size: 1.8em;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+        }
+        
+        .section h3 {
+            color: #34495e;
+            font-size: 1.4em;
+            margin: 25px 0 15px 0;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #e0e0e0;
+            background: white;
+        }
+        
+        tr:hover td {
+            background: #f8f9fa;
+        }
+        
+        tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .total-row {
+            font-weight: bold;
+            background: #f0f0f0 !important;
+        }
+        
+        .total-row td {
+            background: #f0f0f0 !important;
+        }
+        
+        .discount-row {
+            color: #27ae60;
+            font-weight: bold;
+        }
+        
+        .payment-option {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 12px;
+            padding: 35px;
+            margin: 35px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .payment-option h3 {
+            color: #2c3e50;
+            margin-bottom: 25px;
+            font-size: 1.6em;
+        }
+        
+        .payment-option.best-value {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            border: 3px solid #667eea;
+            position: relative;
+        }
+        
+        .badge {
+            position: absolute;
+            top: -15px;
+            right: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 0.9em;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        
+        .benefits {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            margin: 25px 0;
+            border-left: 5px solid #667eea;
+        }
+        
+        .benefits h4 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        
+        .benefits ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .benefits li {
+            padding: 10px 0;
+            padding-left: 30px;
+            position: relative;
+            color: #555;
+        }
+        
+        .benefits li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #27ae60;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 30px 0;
+        }
+        
+        .comparison-box {
+            padding: 25px;
+            border-radius: 8px;
+        }
+        
+        .comparison-box.traditional {
+            background: #ffebee;
+            border: 2px solid #e74c3c;
+        }
+        
+        .comparison-box.sirsi {
+            background: #e8f5e9;
+            border: 2px solid #27ae60;
+        }
+        
+        .comparison-box h4 {
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+        
+        .traditional h4 {
+            color: #c0392b;
+        }
+        
+        .sirsi h4 {
+            color: #27ae60;
+        }
+        
+        .savings-highlight {
+            background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
+            padding: 25px;
+            border-radius: 8px;
+            text-align: center;
+            margin: 30px 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .savings-highlight h3 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .savings-amount {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #27ae60;
+        }
+        
+        .savings-period {
+            font-size: 1.2em;
+            color: #555;
+            margin-top: 5px;
+        }
+        
+        .instructions {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 25px;
+            border-radius: 8px;
+            margin: 30px 0;
+        }
+        
+        .instructions h3 {
+            color: #856404;
+            margin-bottom: 15px;
+        }
+        
+        .instructions ol {
+            padding-left: 25px;
+            color: #856404;
+        }
+        
+        .instructions li {
+            margin: 12px 0;
+            line-height: 1.8;
+        }
+        
+        .summary-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 35px;
+            border-radius: 8px;
+            margin: 40px 0;
+            text-align: center;
+        }
+        
+        .summary-box h2 {
+            border: none;
+            margin-bottom: 20px;
+            color: white;
+        }
+        
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 25px;
+            margin-top: 25px;
+        }
+        
+        .summary-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 8px;
+        }
+        
+        .summary-item .label {
+            font-size: 0.9em;
+            opacity: 0.9;
+            margin-bottom: 5px;
+        }
+        
+        .summary-item .value {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        
+        .footer {
+            background: #2c3e50;
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .footer p {
+            margin: 5px 0;
+        }
+        
+        @media (max-width: 768px) {
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            table {
+                font-size: 0.9em;
+            }
+            
+            .payment-option {
+                padding: 25px;
+            }
+        }
+        
+        @media print {
+            body {
+                background: white;
+            }
+            
+            .container {
+                box-shadow: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>PAYMENT STRUCTURE</h1>
+            <h2>Contract Amendment Cost Breakdown</h2>
+        </div>
+        
+        <div class="client-info">
+            <div><strong>Date:</strong> September 5, 2025</div>
+            <div><strong>Client:</strong> Ralph Kemp, Assiduous Realty Inc.</div>
+            <div><strong>Provider:</strong> Sirsi Technologies</div>
+            <div><strong>Contact:</strong> cylton@sirsi.ai</div>
+        </div>
+        
+        <div class="content">
+            <!-- Monthly Costs Section -->
+            <section class="section">
+                <h2>MONTHLY OPERATIONAL COSTS</h2>
+                
+                <h3>Cost Breakdown</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Category</th>
+                            <th>Service</th>
+                            <th>Monthly Cost</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td rowspan="5"><strong>Base Operations</strong></td>
+                            <td>PropStream API</td>
+                            <td>$100</td>
+                        </tr>
+                        <tr>
+                            <td>Firebase (Firestore, Functions, Storage)</td>
+                            <td>$80</td>
+                        </tr>
+                        <tr>
+                            <td>Twilio SMS</td>
+                            <td>$25</td>
+                        </tr>
+                        <tr>
+                            <td>Google Maps API</td>
+                            <td>$15</td>
+                        </tr>
+                        <tr class="total-row">
+                            <td><strong>Operations Subtotal</strong></td>
+                            <td><strong>$220</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Development Tools</strong></td>
+                            <td>Warp Lightspeed (AI Development)</td>
+                            <td>$225</td>
+                        </tr>
+                        <tr class="total-row">
+                            <td colspan="2"><strong>OPERATIONAL TOTAL</strong></td>
+                            <td><strong>$445/month</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Support</strong></td>
+                            <td>Platform Maintenance (Post-Delivery)</td>
+                            <td>$500</td>
+                        </tr>
+                        <tr class="total-row" style="background: #e3f2fd;">
+                            <td colspan="2"><strong>TOTAL MONTHLY WITH MAINTENANCE</strong></td>
+                            <td><strong style="color: #1976d2;">$945/month</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+            
+            <!-- Payment Options -->
+            <section class="section">
+                <h2>PAYMENT OPTIONS</h2>
+                
+                <div class="payment-option">
+                    <h3>OPTION 1: Standard Monthly Payment</h3>
+                    
+                    <h4>Payment Due Today</h4>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Component</th>
+                                <th>Description</th>
+                                <th>Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Platform Integration Fee</td>
+                                <td>One-time development cost</td>
+                                <td>$2,250.00</td>
+                            </tr>
+                            <tr>
+                                <td>First Month Operations</td>
+                                <td>PropStream, Firebase, Twilio, Maps</td>
+                                <td>$220.00</td>
+                            </tr>
+                            <tr>
+                                <td>First Month Warp Lightspeed</td>
+                                <td>AI development tool</td>
+                                <td>$225.00</td>
+                            </tr>
+                            <tr class="total-row">
+                                <td colspan="2"><strong>TOTAL DUE TODAY</strong></td>
+                                <td><strong>$2,695.00</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <h4>Ongoing Monthly (Starting Day 31)</h4>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td>Maintenance Service</td>
+                                <td>$500.00</td>
+                            </tr>
+                            <tr>
+                                <td>Operational Costs</td>
+                                <td>$220.00</td>
+                            </tr>
+                            <tr>
+                                <td>Warp Lightspeed</td>
+                                <td>$225.00</td>
+                            </tr>
+                            <tr class="total-row">
+                                <td><strong>Total Monthly</strong></td>
+                                <td><strong>$945.00</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="payment-option best-value">
+                    <span class="badge">BEST VALUE</span>
+                    <h3>OPTION 2: Quarterly Prepayment with Discount</h3>
+                    
+                    <h4>Payment Due Today (Covers First 3 Months)</h4>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Component</th>
+                                <th>Description</th>
+                                <th>Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Platform Integration Fee</td>
+                                <td>One-time development cost</td>
+                                <td>$2,250.00</td>
+                            </tr>
+                            <tr>
+                                <td>3 Months Maintenance</td>
+                                <td>Platform support (starts Day 31)</td>
+                                <td>$1,500.00</td>
+                            </tr>
+                            <tr>
+                                <td>3 Months Operations</td>
+                                <td>PropStream, Firebase, Twilio, Maps</td>
+                                <td>$660.00</td>
+                            </tr>
+                            <tr>
+                                <td>3 Months Warp Lightspeed</td>
+                                <td>AI development tool</td>
+                                <td>$675.00</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Subtotal Before Discount</td>
+                                <td>$5,085.00</td>
+                            </tr>
+                            <tr class="discount-row">
+                                <td colspan="2">Quarterly Prepayment Discount (10%)</td>
+                                <td>-$283.50</td>
+                            </tr>
+                            <tr class="total-row">
+                                <td colspan="2"><strong>TOTAL DUE TODAY</strong></td>
+                                <td><strong>$4,801.50</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <div class="benefits">
+                        <h4>Benefits of Option 2:</h4>
+                        <ul>
+                            <li>Save $283.50 with quarterly prepayment</li>
+                            <li>No additional payments for 3 months</li>
+                            <li>Priority support throughout launch</li>
+                            <li>Locked-in pricing</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Cost Comparison -->
+            <section class="section">
+                <h2>COST-BENEFIT ANALYSIS</h2>
+                
+                <div class="comparison-grid">
+                    <div class="comparison-box traditional">
+                        <h4>Traditional Stack Costs</h4>
+                        <table>
+                            <tbody>
+                                <tr><td>HubSpot CRM</td><td>$890</td></tr>
+                                <tr><td>DocuSign</td><td>$25</td></tr>
+                                <tr><td>Zapier Pro</td><td>$50</td></tr>
+                                <tr><td>SendGrid Pro</td><td>$20</td></tr>
+                                <tr><td>Monitoring</td><td>$15</td></tr>
+                                <tr><td>PropStream</td><td>$100</td></tr>
+                                <tr><td>Firebase/AWS</td><td>$80</td></tr>
+                                <tr><td>Twilio</td><td>$25</td></tr>
+                                <tr><td>Maps</td><td>$15</td></tr>
+                                <tr><td>Warp</td><td>$225</td></tr>
+                                <tr><td>Maintenance</td><td>$500</td></tr>
+                                <tr class="total-row">
+                                    <td><strong>TOTAL</strong></td>
+                                    <td><strong>$1,945/mo</strong></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="comparison-box sirsi">
+                        <h4>Sirsi Solution Costs</h4>
+                        <table>
+                            <tbody>
+                                <tr><td>Firebase CRM</td><td>$0</td></tr>
+                                <tr><td>OpenSign</td><td>$0</td></tr>
+                                <tr><td>Firebase Functions</td><td>~$10</td></tr>
+                                <tr><td>SendGrid Free</td><td>$0</td></tr>
+                                <tr><td>Firebase Analytics</td><td>$0</td></tr>
+                                <tr><td>PropStream</td><td>$100</td></tr>
+                                <tr><td>Firebase Total</td><td>$80</td></tr>
+                                <tr><td>Twilio</td><td>$25</td></tr>
+                                <tr><td>Maps</td><td>$15</td></tr>
+                                <tr><td>Warp</td><td>$225</td></tr>
+                                <tr><td>Maintenance</td><td>$500</td></tr>
+                                <tr class="total-row">
+                                    <td><strong>TOTAL</strong></td>
+                                    <td><strong>$945/mo</strong></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <div class="savings-highlight">
+                    <h3>Your Monthly Savings</h3>
+                    <div class="savings-amount">$1,000</div>
+                    <div class="savings-period">$12,000 per year</div>
+                </div>
+            </section>
+            
+            <!-- Payment Instructions -->
+            <section class="section">
+                <div class="instructions">
+                    <h3>PAYMENT INSTRUCTIONS</h3>
+                    
+                    <h4>For Option 1 ($2,695 today):</h4>
+                    <ol>
+                        <li>Send $2,695 via Zelle to cylton@sirsi.ai</li>
+                        <li>This covers integration + first month of ALL services</li>
+                        <li>Next payment: $945 on Day 31</li>
+                    </ol>
+                    
+                    <h4>For Option 2 ($4,801.50 today) - RECOMMENDED:</h4>
+                    <ol>
+                        <li>Send $4,801.50 via Zelle to cylton@sirsi.ai</li>
+                        <li>This covers integration + 3 months of ALL services</li>
+                        <li>No additional payments until Day 91</li>
+                        <li>Save $283.50 immediately</li>
+                    </ol>
+                </div>
+            </section>
+            
+            <!-- Financial Summary -->
+            <div class="summary-box">
+                <h2>FINANCIAL SUMMARY</h2>
+                <div class="summary-grid">
+                    <div class="summary-item">
+                        <div class="label">Integration Fee</div>
+                        <div class="value">$2,250</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="label">Monthly Cost</div>
+                        <div class="value">$945</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="label">Annual Cost</div>
+                        <div class="value">$11,340</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="label">Year 1 Revenue Target</div>
+                        <div class="value">$84-120K</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="label">Annual Savings</div>
+                        <div class="value">$12,000</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="label">Payback Period</div>
+                        <div class="value">2-3 months</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p><strong>Prepared by:</strong> Sirsi Technologies</p>
+            <p><strong>Contact:</strong> cylton@sirsi.ai</p>
+            <p><strong>Date:</strong> September 5, 2025</p>
+            <p>This document supersedes all previous payment calculations</p>
+        </div>
+    </div>
+</body>
+</html>

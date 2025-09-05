@@ -1,20 +1,22 @@
 # 30-DAY IMPLEMENTATION ROADMAP
-## Assiduous Micro-Flipping Platform with Contract Amendment Enhancements
+## Sirsi Technologies - Assiduous Micro-Flipping Platform Enhancement
 
-**Start Date:** September 2, 2025  
-**Target Completion:** October 1, 2025  
+**Service Provider:** Sirsi Technologies  
+**Start Date:** September 6, 2025  
+**Target Completion:** October 5, 2025  
 **Total Investment:** $6,750 ($4,500 original + $2,250 amendment)  
-**Expected Monthly Savings:** $995/month starting Month 2
+**Development Tools:** $225/month (Warp Lightspeed) - REQUIRED
+**Monthly Savings:** $1,000/month (vs traditional stack)
 
 ---
 
 ## WEEK 1: FOUNDATION & DATA LAYER (Sept 2-8)
 
-### 📅 Day 1 (Monday, Sept 2) - Contract & Setup
+### 📅 Day 1 (Friday, Sept 6) - Contract & Setup
 **Morning (9 AM - 12 PM)**
-- [ ] Execute contract amendment with Cylton Collymore
-- [ ] Send payment via Zelle ($2,470 for Option 1 or $4,194 for Option 2)
-- [ ] Schedule kickoff call with Cylton for technical handoff
+- [ ] Execute contract amendment with Sirsi Technologies
+- [ ] Send payment ($2,695 for Option 1 or $4,801.50 for Option 2)
+- [ ] Schedule kickoff call with Sirsi team for technical handoff
 - [ ] Review existing Firebase configuration
 
 **Afternoon (1 PM - 5 PM)**
@@ -28,7 +30,7 @@
 - [ ] Test Firebase connectivity
 - [ ] Document all account credentials securely
 
-### 📅 Day 2 (Tuesday, Sept 3) - PropStream Integration
+### 📅 Day 2 (Monday, Sept 9) - PropStream Integration
 **Morning**
 ```bash
 # Create PropStream service
@@ -49,7 +51,7 @@ touch AssiduousProperties/assets/js/services/PropStreamService.js
 - [ ] Implement caching layer for API responses
 - [ ] Set up error handling and retry logic
 
-### 📅 Day 3 (Wednesday, Sept 4) - Zillow Integration
+### 📅 Day 3 (Tuesday, Sept 10) - Zillow Integration
 **Morning**
 - [ ] Configure Zillow API endpoints
 - [ ] Set up webhook receivers for real-time updates
@@ -62,7 +64,7 @@ touch AssiduousProperties/assets/js/services/PropStreamService.js
 - [ ] Implement data quality checks
 - [ ] Test end-to-end data flow
 
-### 📅 Day 4 (Thursday, Sept 5) - Web Scraping Setup
+### 📅 Day 4 (Wednesday, Sept 11) - Web Scraping Setup
 **Morning**
 - [ ] Install Octoparse or build custom scraper
 - [ ] Configure FSBO scraping templates
@@ -83,7 +85,7 @@ class ScrapingService {
 }
 ```
 
-### 📅 Day 5 (Friday, Sept 6) - Data Orchestration Layer
+### 📅 Day 5 (Thursday, Sept 12) - Data Orchestration Layer
 **Full Day Task**
 - [ ] Build DataOrchestrator.js service
 - [ ] Implement intelligent fallback mechanisms
@@ -338,7 +340,7 @@ exports.matchProperties = functions.firestore
 - **Data Sources**: 4+ active sources by Day 5
 - **CRM Features**: 100% HubSpot replacement by Day 10
 - **Automation**: 10+ Firebase Functions by Day 15
-- **Cost Savings**: $995/month reduction achieved
+- **Cost Savings**: $1,000/month achieved (vs traditional stack)
 - **System Uptime**: 99.5% during testing week
 
 ---
@@ -358,10 +360,15 @@ exports.matchProperties = functions.firestore
 - **Development**: $6,750 (paid)
 - **Monthly Services**: $220/month
   - PropStream: $100
-  - Firebase: $80
+  - Firebase: $80 (~$10 Functions + $70 Firestore/Storage)
   - Twilio: $25
   - Google Maps: $15
+- **Development Tools**: $225/month
+  - Warp Lightspeed: $225 (AI-powered development)
 - **Maintenance**: $500/month (starts Month 2)
+- **Total Monthly Costs**: $945/month
+- **Monthly Revenue from Savings**: $1,710/month (vs traditional stack)
+- **Net Profit**: $765/month
 
 ---
 
@@ -401,7 +408,7 @@ exports.matchProperties = functions.firestore
 
 ### Stakeholder Communications
 - **Ralph Kemp**: Daily updates, weekly demos
-- **Cylton Collymore**: Technical sync twice weekly
+- **Sirsi Technologies**: Technical sync twice weekly
 - **End Users**: Training scheduled for Week 4
 
 ---
@@ -431,7 +438,7 @@ exports.matchProperties = functions.firestore
 ✅ 50+ properties imported daily
 ✅ 10+ cash buyers verified
 ✅ 5+ deals matched automatically
-✅ $995/month cost savings achieved
+✅ $1,000/month operational cost savings achieved
 ✅ <2 second page load times
 ✅ 99.5% uptime during first week
 
