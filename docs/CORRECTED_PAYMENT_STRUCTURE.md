@@ -156,7 +156,7 @@ During the 30-day development phase, you're paying for:
 ## FINANCIAL METRICS
 
 ### Investment
-- **Integration Fee**: $2,250
+- **Initial Payment**: $2,695 (Option 1) or $4,801.50 (Option 2)
 - **Monthly Cost**: $945
 - **Annual Cost**: $11,340
 

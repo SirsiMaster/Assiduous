@@ -4,7 +4,7 @@
 **Service Provider:** Sirsi Technologies  
 **Start Date:** September 6, 2025  
 **Target Completion:** October 5, 2025  
-**Total Investment:** $6,750 ($4,500 original + $2,250 amendment)  
+**Investment Options:** $2,695 (Option 1) or $4,801.50 (Option 2)
 **Development Tools:** $225/month (Warp Lightspeed) - REQUIRED
 **Monthly Savings:** $1,000/month (vs traditional stack)
 
@@ -14,7 +14,7 @@
 
 ### 📅 Day 1 (Friday, Sept 6) - Contract & Setup
 **Morning (9 AM - 12 PM)**
-- [ ] Execute contract amendment with Sirsi Technologies
+- [ ] Execute contract with Sirsi Technologies
 - [ ] Send payment ($2,695 for Option 1 or $4,801.50 for Option 2)
 - [ ] Schedule kickoff call with Sirsi team for technical handoff
 - [ ] Review existing Firebase configuration

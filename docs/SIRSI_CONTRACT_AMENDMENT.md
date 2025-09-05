@@ -1,9 +1,9 @@
-# TECHNICAL SERVICE CONTRACT AMENDMENT
-## SIRSI TECHNOLOGIES - MICRO-FLIPPING PLATFORM SCOPE ADJUSTMENT
+# TECHNICAL SERVICE CONTRACT
+## SIRSI TECHNOLOGIES - MICRO-FLIPPING PLATFORM ENHANCED SCOPE
 
 **Original Contract Date:** August 12, 2025  
-**Amendment Date:** September 5, 2025  
-**Contract Number:** ST-TSC-2025-001-A
+**Contract Date:** September 5, 2025  
+**Contract Number:** ST-TSC-2025-001
 
 ---
 
@@ -17,7 +17,7 @@ cylton@sirsi.ai
 **CLIENT:**  
 Ralph Kemp  
 AssiduousFlip.com  
-ralph@assiduousrealty.com
+ralph@assiduousflip.com
 
 ---
 
@@ -61,7 +61,9 @@ During initial development phases, three critical discoveries emerged that trans
 | **AI Development Tools Setup** | Warp Lightspeed integration for quality & speed | $2,000-3,000 |
 
 **Total Market Value of Required Enhancements: $18,500-26,500**  
-**Your Investment: $2,250 (88% discount)**
+**Your Investment Options:**
+**Option 1:** $2,695 initial payment (then $945/month)
+**Option 2:** $4,801.50 initial payment (3 months prepaid, saves $283.50)
 
 ---
 
@@ -257,9 +259,9 @@ During initial development phases, three critical discoveries emerged that trans
 
 ---
 
-## ACCEPTANCE OF AMENDMENT
+## CONTRACT ACCEPTANCE
 
-This amendment supplements the original contract dated August 12, 2025. By signing below, parties agree to the scope adjustments, payment structure, and maintenance terms outlined herein.
+By signing below, parties agree to the enhanced scope, payment structure, and maintenance terms outlined herein.
 
 **CLIENT ACCEPTANCE:**
 
@@ -273,9 +275,9 @@ Signature: _________________________ Date: _____________
 ☐ **Option 2:** $4,801.50 today (3 months prepaid with 10% discount)
 
 **PAYMENT INSTRUCTIONS:**
-1. **Sign and date** this amendment
+1. **Sign and date** this contract
 2. **Send payment** to Sirsi Technologies via agreed method
-3. **Email signed amendment** to cylton@sirsi.ai
+3. **Email signed contract** to cylton@sirsi.ai
 4. **Receive confirmation** and project kickoff within 24 hours
 
 **SERVICE PROVIDER ACCEPTANCE:**
@@ -289,10 +291,10 @@ Signature: _________________________ Date: _____________
 
 ## VALUE PROPOSITION SUMMARY
 
-Your investment of $2,250 + $945/month delivers:
+Your investment delivers:
 
 **Investment Summary:**
-- Integration Fee: $2,250 (one-time)
+- Payment Today: $2,695 (Option 1) or $4,801.50 (Option 2)
 - Monthly Operational Cost: $945
 - Annual Cost: $11,340
 

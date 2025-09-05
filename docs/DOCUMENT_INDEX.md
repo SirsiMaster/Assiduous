@@ -8,8 +8,8 @@
 
 ## 📄 CONTRACT DOCUMENTS
 
-### 1. **SIRSI_CONTRACT_AMENDMENT.md** ✅
-- **Purpose:** Main contract amendment with complete terms
+### 1. **SIRSI_CONTRACT.md** ✅
+- **Purpose:** Main contract with complete terms
 - **Key Details:**
   - Company: Sirsi Technologies
   - Contact: cylton@sirsi.ai
@@ -19,7 +19,7 @@
     - Option 2: $4,801.50 today (3 months prepaid, 10% discount)
 - **Status:** Complete and ready for signing
 
-### 2. **sirsi_contract_amendment.html** ✅
+### 2. **sirsi_contract.html** ✅
 - **Purpose:** Professional HTML version for presentation/printing
 - **Features:**
   - Clean, printable format
@@ -125,7 +125,7 @@
 ### View Contract Documents (HTML)
 ```bash
 # Open contract in browser (macOS)
-open /Users/thekryptodragon/development/assiduous/docs/sirsi_contract_amendment.html
+open /Users/thekryptodragon/development/assiduous/docs/sirsi_contract.html
 
 # Open payment structure in browser (macOS)
 open /Users/thekryptodragon/development/assiduous/docs/payment_structure.html

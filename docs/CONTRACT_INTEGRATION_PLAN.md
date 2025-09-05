@@ -5,13 +5,13 @@
 **Date:** September 5, 2025  
 **Status:** Active Implementation  
 **Service Provider:** Sirsi Technologies  
-**Contract Amendment Value:** $2,250 (88% discount from $18,500 market value)
+**Investment Options:** $2,695 (Option 1) or $4,801.50 (Option 2)
 
 ---
 
 ## EXECUTIVE SUMMARY
 
-This plan integrates Ralph Kemp's contract amendment requirements into the existing Assiduous platform infrastructure. The amendment addresses three critical gaps discovered during initial development:
+This plan integrates Ralph Kemp's enhanced platform requirements into the existing Assiduous infrastructure. The enhanced scope addresses three critical gaps discovered during initial development:
 
 1. **No MLS Access** - Requiring sophisticated multi-source data coordination
 2. **Cash Buyer Verification Gap** - Need for financial capacity validation before engagement  
@@ -291,7 +291,7 @@ exports.propertyMatchmaking = functions.firestore
 | **TOTAL** | **$1,945** | **$945** | **$1,000/month** |
 
 ### Investment Analysis with Sirsi Technologies
-- **One-time Integration Fee**: $2,250
+- **Initial Payment**: $2,695 (Option 1) or $4,801.50 (Option 2)
 - **Total Monthly Costs**: $945 (includes Warp)
 - **Monthly Savings vs Traditional**: $1,000
 - **ROI Period**: 2.25 months
