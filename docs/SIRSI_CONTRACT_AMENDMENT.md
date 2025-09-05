@@ -17,7 +17,7 @@ cylton@sirsi.ai
 **CLIENT:**  
 Ralph Kemp  
 AssiduousFlip.com  
-ralph@assiduousflip.com
+ralph@assiduousrealty.com
 
 ---
 
