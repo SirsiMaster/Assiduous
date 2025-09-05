@@ -35,8 +35,8 @@
 ```bash
 # Create PropStream service
 cd /Users/thekryptodragon/Development/assiduous
-mkdir -p AssiduousProperties/assets/js/services
-touch AssiduousProperties/assets/js/services/PropStreamService.js
+mkdir -p AssiduousFlip/assets/js/services
+touch AssiduousFlip/assets/js/services/PropStreamService.js
 ```
 
 **Tasks:**
@@ -74,7 +74,7 @@ touch AssiduousProperties/assets/js/services/PropStreamService.js
 **Afternoon**
 ```javascript
 // Create scraping service
-// Location: AssiduousProperties/assets/js/services/ScrapingService.js
+// Location: AssiduousFlip/assets/js/services/ScrapingService.js
 class ScrapingService {
   async scrapeFSBO() {
     // Implementation
@@ -215,7 +215,7 @@ exports.matchProperties = functions.firestore
 
 ### 📅 Day 14 (Thursday, Sept 19) - Landing Page Development
 **Full Day Task**
-- [ ] Create landing page at AssiduousProperties/microflipping.html
+- [ ] Create landing page at AssiduousFlip/microflipping.html
 - [ ] Build deal showcase section
 - [ ] Add buyer registration form
 - [ ] Implement pricing tables

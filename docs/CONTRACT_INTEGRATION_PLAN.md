@@ -54,7 +54,7 @@ These challenges are being transformed into competitive advantages through custo
 
 #### A. Multi-Source Data Orchestration
 ```javascript
-// Location: /AssiduousProperties/assets/js/services/DataOrchestrator.js
+// Location: /AssiduousFlip/assets/js/services/DataOrchestrator.js
 
 class DataOrchestrator {
   constructor() {
@@ -88,7 +88,7 @@ class DataOrchestrator {
 
 #### B. Firebase-Native CRM Implementation
 ```javascript
-// Location: /AssiduousProperties/assets/js/services/CRMService.js
+// Location: /AssiduousFlip/assets/js/services/CRMService.js
 
 class CRMService extends FirebaseService {
   constructor() {
@@ -121,7 +121,7 @@ class CRMService extends FirebaseService {
 
 #### A. Cash Buyer Verification Engine
 ```javascript
-// Location: /AssiduousProperties/assets/js/services/BuyerVerification.js
+// Location: /AssiduousFlip/assets/js/services/BuyerVerification.js
 
 class BuyerVerificationEngine {
   constructor() {
@@ -168,7 +168,7 @@ class BuyerVerificationEngine {
 
 #### B. Title Company Integration Hub
 ```javascript
-// Location: /AssiduousProperties/assets/js/services/TitleIntegration.js
+// Location: /AssiduousFlip/assets/js/services/TitleIntegration.js
 
 class TitleIntegrationHub {
   constructor() {
@@ -201,7 +201,7 @@ class TitleIntegrationHub {
 
 #### A. OpenSign Integration
 ```javascript
-// Location: /AssiduousProperties/assets/js/services/OpenSignService.js
+// Location: /AssiduousFlip/assets/js/services/OpenSignService.js
 
 class OpenSignService {
   constructor() {
