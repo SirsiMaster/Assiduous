@@ -1,6 +1,6 @@
 # 📚 SIRSI TECHNOLOGIES CONTRACT DOCUMENTATION INDEX
 **Last Updated:** September 5, 2025  
-**Client:** Ralph Kemp, Assiduous Realty Inc.  
+**Client:** Ralph Kemp, AssiduousFlip.com  
 **Service Provider:** Sirsi Technologies  
 **Contact:** cylton@sirsi.ai
 
@@ -182,5 +182,5 @@ All documents are complete and ready for Ralph Kemp's review and signature. The 
 ---
 
 **Document Prepared By:** Sirsi Technologies  
-**For:** Assiduous Realty Inc.  
+**For:** AssiduousFlip.com  
 **Date:** September 5, 2025

@@ -2,7 +2,7 @@
 ## Accurate Cost Breakdown for Contract Amendment
 
 **Date:** September 5, 2025  
-**Client:** Ralph Kemp, Assiduous Realty Inc.  
+**Client:** Ralph Kemp, AssiduousFlip.com
 **Service Provider:** Sirsi Technologies  
 **Contact:** cylton@sirsi.ai
 

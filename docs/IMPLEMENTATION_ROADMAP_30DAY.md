@@ -1,5 +1,5 @@
 # 30-DAY IMPLEMENTATION ROADMAP
-## Sirsi Technologies - Assiduous Micro-Flipping Platform Enhancement
+## Sirsi Technologies - AssiduousFlip.com Micro-Flipping Platform Enhancement
 
 **Service Provider:** Sirsi Technologies  
 **Start Date:** September 6, 2025  
@@ -461,7 +461,7 @@ exports.matchProperties = functions.firestore
 
 ---
 
-*This roadmap ensures successful delivery of the Assiduous Micro-Flipping Platform with all contract amendment enhancements within 30 days.*
+*This roadmap ensures successful delivery of the AssiduousFlip.com Micro-Flipping Platform with all contract amendment enhancements within 30 days.*
 
 **Questions?** Contact technical lead immediately to maintain timeline.
 

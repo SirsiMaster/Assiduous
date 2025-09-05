@@ -16,7 +16,7 @@ cylton@sirsi.ai
 
 **CLIENT:**  
 Ralph Kemp  
-Assiduous Realty, Inc.  
+AssiduousFlip.com  
 ralph@assiduousrealty.com
 
 ---
@@ -264,7 +264,7 @@ This amendment supplements the original contract dated August 12, 2025. By signi
 **CLIENT ACCEPTANCE:**
 
 Ralph Kemp  
-Assiduous Realty, Inc.  
+AssiduousFlip.com
 
 Signature: _________________________ Date: _____________  
 

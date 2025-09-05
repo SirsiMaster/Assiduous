@@ -1,5 +1,5 @@
 # CONTRACT INTEGRATION PLAN
-## Sirsi Technologies - Assiduous Platform Enhancement
+## Sirsi Technologies - AssiduousFlip.com Platform Enhancement
 
 **Version:** 2.0.0  
 **Date:** September 5, 2025  
