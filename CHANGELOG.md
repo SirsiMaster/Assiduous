@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.5.6] - 2025-09-06
+
+### Fixed
+- fix: Embed sidebar HTML directly in dashboard
+
+
 ## [0.5.5] - 2025-09-06
 
 ### Fixed
@@ -285,7 +291,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.5.5...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.5.6...HEAD
+
+
+## [0.5.6] - 2025-09-06
+
+### Fixed
+- fix: Embed sidebar HTML directly in dashboard
 
 
 ## [0.5.5] - 2025-09-06
@@ -347,3 +359,4 @@ To generate changelog entries:
 [0.5.3]: https://github.com/SirsiMaster/Assiduous/compare/v0.5.2...v0.5.3
 [0.5.4]: https://github.com/SirsiMaster/Assiduous/compare/v0.5.3...v0.5.4
 [0.5.5]: https://github.com/SirsiMaster/Assiduous/compare/v0.5.4...v0.5.5
+[0.5.6]: https://github.com/SirsiMaster/Assiduous/compare/v0.5.5...v0.5.6
