@@ -52,12 +52,14 @@ git commit --no-verify
 
 Assiduous is an AI-powered real estate platform with dual-purpose architecture:
 
-### Current Stack (Firebase Migration Complete)
-- **Frontend**: GitHub Pages static hosting (`AssiduousFlip/` directory)
-- **Backend**: Firebase (Firestore DB, Authentication, Cloud Storage)
+### Current Stack (Firebase Migration Complete - Sep 6, 2025)
+- **Frontend**: Dual hosting - GitHub Pages + Firebase Hosting
+- **Backend**: Firebase (Firestore DB, Authentication, Cloud Storage, Functions)
+- **API**: Cloud Functions at `https://us-central1-assiduous-prod.cloudfunctions.net/app`
 - **Security**: AES-256-GCM encryption for sensitive fields + Firebase Security Rules
 - **User Roles**: Unified "client" role (buyers/sellers) + "agent" role
 - **State Management**: Client-side services (`assets/js/services/`)
+- **Deployment Pipeline**: Local → GitHub (Source of Truth) → Firebase/GCP
 
 ### Business Model Priority
 - **70% Focus**: Micro-Flipping Engine ($2-5K per deal)
@@ -337,7 +339,15 @@ http://localhost:8080/AssiduousFlip/client/
 | View logs | `git log --oneline -10` |
 | Check branch | `git branch --show-current` |
 
-### Firebase Setup
+### Firebase Setup & Deployment (PRODUCTION READY)
+
+#### Project Details
+- **Project ID**: assiduous-prod
+- **Hosting URL**: https://assiduous-prod.web.app
+- **API Endpoint**: https://us-central1-assiduous-prod.cloudfunctions.net/app
+- **Console**: https://console.firebase.google.com/project/assiduous-prod
+
+#### Deployment Commands
 ```bash
 # Install Firebase CLI
 npm install -g firebase-tools
@@ -345,11 +355,52 @@ npm install -g firebase-tools
 # Login to Firebase
 firebase login
 
-# Initialize project
-firebase init
+# Deploy everything
+firebase deploy
 
-# Deploy to production
-firebase deploy --only hosting
+# Deploy specific services
+firebase deploy --only hosting           # Deploy website files
+firebase deploy --only functions         # Deploy Cloud Functions
+firebase deploy --only firestore:rules   # Deploy database rules
+firebase deploy --only storage           # Deploy storage rules
+
+# View deployment logs
+firebase functions:log
+
+# Run local emulators for testing
+firebase emulators:start
+```
+
+#### Deployment Pipeline (GitHub as Source of Truth)
+```bash
+# 1. Make changes locally
+edit files...
+
+# 2. Commit to GitHub (Source of Truth)
+git add .
+git commit -m "feat: add new feature"
+git push origin main
+
+# 3. Deploy from GitHub to Firebase
+cd firebase-migration-package
+firebase deploy
+
+# 4. Verify deployment
+curl https://assiduous-prod.web.app/AssiduousFlip/
+```
+
+#### Analytics & Monitoring
+```bash
+# View Firebase analytics in dev dashboard
+open https://assiduous-prod.web.app/AssiduousFlip/admin/development/dashboard.html
+
+# Check Firebase Console metrics
+open https://console.firebase.google.com/project/assiduous-prod/usage
+
+# Test API endpoints
+curl -X POST https://us-central1-assiduous-prod.cloudfunctions.net/app/api/v1/verification \
+  -H "Content-Type: application/json" \
+  -d '{"buyerId": "test", "amountCents": 250000}'
 ```
 
 ### Environment Variables Required

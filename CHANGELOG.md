@@ -7,6 +7,42 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.0] - 2025-09-06
+
+### Added
+- **MAJOR**: Complete Firebase/Google Cloud Platform migration
+- Firebase Analytics Service for capturing deployment metrics
+- Enhanced development dashboard with Firebase/GCP metrics integration
+- Real-time deployment pipeline visualization (Local → GitHub → Firebase)
+- Cloud Functions API with 3 endpoints for verification system
+- Firestore database with 5 collections and security rules
+- Cloud Storage with role-based access control
+- Deployment tracking system linking GitHub commits to Firebase deployments
+- Automated deployment registry for audit trail
+- Firebase Hosting serving 136 files from GitHub repository
+- Blaze plan billing integration for production scalability
+
+### Changed
+- GitHub established as single source of truth for all deployments
+- Development dashboard now displays both GitHub and Firebase metrics
+- Deployment flow: Local development → GitHub push → Firebase deployment
+- All 136 files from GitHub repo now served via Firebase CDN
+- API endpoints migrated to Cloud Functions
+
+### Infrastructure
+- **Project ID**: assiduous-prod
+- **Hosting URL**: https://assiduous-prod.web.app
+- **API Endpoint**: https://us-central1-assiduous-prod.cloudfunctions.net/app
+- **Services**: Hosting, Functions, Firestore, Storage, Authentication (pending)
+- **Region**: us-central1
+- **Plan**: Blaze (Pay-as-you-go)
+
+### Technical Details
+- Firebase SDK integration prepared
+- Security rules deployed for Firestore and Storage
+- Field-level encryption maintained (AES-256-GCM)
+- GitHub API integration preserved in development dashboards
+- Cost monitoring enabled (estimated $10-50/month)
 
 ## [0.3.0] - 2025-09-06
 
