@@ -1,0 +1,15 @@
+{
+  "projects": {
+    "default": "assiduous-prod"
+  },
+  "targets": {
+    "assiduous-prod": {
+      "hosting": {
+        "prod": [
+          "assiduous-prod"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}

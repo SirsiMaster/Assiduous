@@ -40,20 +40,32 @@ jobs:
         run: |
           echo "📦 Preparing files for Firebase deployment..."
           
-          # Create firebase directory if it doesn't exist
+          # Clean and recreate firebase build directory to ensure fresh copy
+          rm -rf firebase-migration-package/assiduous-build
           mkdir -p firebase-migration-package/assiduous-build
           
-          # Copy all necessary files directly to assiduous-build (Firebase public directory)
-          cp -r AssiduousFlip firebase-migration-package/assiduous-build/ 2>/dev/null || true
-          cp -r assets firebase-migration-package/assiduous-build/ 2>/dev/null || true
-          cp -r src firebase-migration-package/assiduous-build/ 2>/dev/null || true
-          cp -r docs firebase-migration-package/assiduous-build/ 2>/dev/null || true
-          cp index.html firebase-migration-package/assiduous-build/ 2>/dev/null || true
+          # Copy ALL files to Firebase public directory (remove the 2>/dev/null to see errors)
+          echo "Copying AssiduousFlip directory..."
+          cp -r AssiduousFlip firebase-migration-package/assiduous-build/
           
-          # Copy package files
-          cp package.json firebase-migration-package/assiduous-build/ 2>/dev/null || true
-          cp CHANGELOG.md firebase-migration-package/assiduous-build/ 2>/dev/null || true
-          cp README.md firebase-migration-package/assiduous-build/ 2>/dev/null || true
+          echo "Copying assets directory..."
+          cp -r assets firebase-migration-package/assiduous-build/
+          
+          # Copy other directories if they exist
+          [ -d "src" ] && cp -r src firebase-migration-package/assiduous-build/
+          [ -d "docs" ] && cp -r docs firebase-migration-package/assiduous-build/
+          [ -f "index.html" ] && cp index.html firebase-migration-package/assiduous-build/
+          
+          # Copy root files
+          [ -f "package.json" ] && cp package.json firebase-migration-package/assiduous-build/
+          [ -f "CHANGELOG.md" ] && cp CHANGELOG.md firebase-migration-package/assiduous-build/
+          [ -f "README.md" ] && cp README.md firebase-migration-package/assiduous-build/
+          
+          # List what was copied for verification
+          echo "Files in deployment directory:"
+          ls -la firebase-migration-package/assiduous-build/
+          echo "Admin development files:"
+          ls -la firebase-migration-package/assiduous-build/AssiduousFlip/admin/development/ || echo "Development directory not found"
           
           echo "✅ Files prepared for deployment"
       
@@ -91,6 +103,11 @@ jobs:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
         run: |
           echo "🚀 Deploying to Firebase Hosting..."
+          
+          # Copy firebase config to the deployment directory
+          cp firebase.json firebase-migration-package/
+          cp .firebaserc firebase-migration-package/
+          
           cd firebase-migration-package
           
           # Deploy with message (use only first line to avoid length issues)
@@ -140,11 +157,8 @@ jobs:
           echo "📊 Deploying analytics update..."
           cd firebase-migration-package
           
-          firebase deploy \
-            --only hosting \
-            --token "$FIREBASE_TOKEN" \
-            --project assiduous-prod \
-            --message "Analytics update #${{ github.run_number }}"
+          # Skip second deployment - everything was already deployed in the first step
+          echo "Analytics already deployed with main deployment"
       
       # Send deployment notification
       - name: Deployment Status Notification
