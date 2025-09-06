@@ -93,12 +93,13 @@ jobs:
           echo "🚀 Deploying to Firebase Hosting..."
           cd firebase-migration-package
           
-          # Deploy with message
+          # Deploy with message (use only first line to avoid length issues)
+          COMMIT_MSG_FIRST_LINE=$(echo "${{ github.event.head_commit.message }}" | head -n1)
           firebase deploy \
             --only hosting \
             --token "$FIREBASE_TOKEN" \
             --project assiduous-prod \
-            --message "Deploy: ${{ github.event.head_commit.message }}"
+            --message "Deploy: ${COMMIT_MSG_FIRST_LINE}"
           
           echo "✅ Deployment complete"
       
@@ -143,7 +144,7 @@ jobs:
             --only hosting \
             --token "$FIREBASE_TOKEN" \
             --project assiduous-prod \
-            --message "Analytics update for deployment #${{ github.run_number }}"
+            --message "Analytics update #${{ github.run_number }}"
       
       # Send deployment notification
       - name: Deployment Status Notification
