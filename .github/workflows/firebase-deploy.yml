@@ -1,0 +1,174 @@
+name: Deploy to Firebase Hosting on Push to Main
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch: # Allow manual trigger
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      # Checkout code
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # Get full history for analytics
+      
+      # Setup Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+      
+      # Install dependencies
+      - name: Install Dependencies
+        run: |
+          npm ci --prefix firebase-migration-package || npm install --prefix firebase-migration-package
+          npm install -g firebase-tools
+      
+      # Copy files to Firebase directory
+      - name: Prepare Firebase Deployment
+        run: |
+          echo "📦 Preparing files for Firebase deployment..."
+          
+          # Create firebase directory if it doesn't exist
+          mkdir -p firebase-migration-package/assiduous-build
+          
+          # Copy all necessary files
+          cp -r AssiduousFlip firebase-migration-package/assiduous-build/
+          cp -r assets firebase-migration-package/assiduous-build/
+          cp -r src firebase-migration-package/assiduous-build/ 2>/dev/null || true
+          cp -r docs firebase-migration-package/assiduous-build/ 2>/dev/null || true
+          cp index.html firebase-migration-package/assiduous-build/ 2>/dev/null || true
+          
+          # Copy package files
+          cp package.json firebase-migration-package/assiduous-build/ 2>/dev/null || true
+          cp CHANGELOG.md firebase-migration-package/assiduous-build/ 2>/dev/null || true
+          cp README.md firebase-migration-package/assiduous-build/ 2>/dev/null || true
+          
+          echo "✅ Files prepared for deployment"
+      
+      # Update deployment analytics
+      - name: Update Deployment Analytics
+        run: |
+          echo "📊 Updating deployment analytics..."
+          
+          # Create deployment record
+          DEPLOYMENT_DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          COMMIT_SHA="${{ github.sha }}"
+          COMMIT_MESSAGE="${{ github.event.head_commit.message }}"
+          COMMIT_AUTHOR="${{ github.event.head_commit.author.name }}"
+          
+          # Create deployment log entry
+          cat > firebase-migration-package/assiduous-build/deployment-log.json << EOF
+          {
+            "deployment": {
+              "timestamp": "$DEPLOYMENT_DATE",
+              "commit": "$COMMIT_SHA",
+              "message": "$COMMIT_MESSAGE",
+              "author": "$COMMIT_AUTHOR",
+              "branch": "main",
+              "environment": "production",
+              "status": "in_progress"
+            }
+          }
+          EOF
+          
+          echo "✅ Analytics updated"
+      
+      # Deploy to Firebase
+      - name: Deploy to Firebase Hosting
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        run: |
+          echo "🚀 Deploying to Firebase Hosting..."
+          cd firebase-migration-package
+          
+          # Deploy with message
+          firebase deploy \
+            --only hosting \
+            --token "$FIREBASE_TOKEN" \
+            --project assiduous-prod \
+            --message "Deploy: ${{ github.event.head_commit.message }}"
+          
+          echo "✅ Deployment complete"
+      
+      # Update FirebaseAnalyticsService
+      - name: Update Firebase Analytics
+        run: |
+          echo "📈 Updating Firebase Analytics Service..."
+          
+          # Update the analytics file with deployment info
+          DEPLOYMENT_COUNT=$(git rev-list --count HEAD)
+          FILES_COUNT=$(find AssiduousFlip assets -type f | wc -l)
+          
+          cat > firebase-migration-package/assiduous-build/assets/js/deployment-analytics.js << EOF
+          // Auto-generated deployment analytics
+          window.DEPLOYMENT_ANALYTICS = {
+            lastDeployment: "${DEPLOYMENT_DATE}",
+            deploymentCount: ${DEPLOYMENT_COUNT},
+            filesDeployed: ${FILES_COUNT},
+            commitSha: "${COMMIT_SHA}",
+            commitAuthor: "${COMMIT_AUTHOR}",
+            environment: "production",
+            gitHubAction: true,
+            buildNumber: "${{ github.run_number }}",
+            workflowRun: "${{ github.run_id }}"
+          };
+          EOF
+          
+          echo "✅ Analytics service updated"
+      
+      # Deploy analytics update
+      - name: Deploy Analytics Update
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        run: |
+          echo "📊 Deploying analytics update..."
+          cd firebase-migration-package
+          
+          firebase deploy \
+            --only hosting \
+            --token "$FIREBASE_TOKEN" \
+            --project assiduous-prod \
+            --message "Analytics update for deployment #${{ github.run_number }}"
+      
+      # Send deployment notification
+      - name: Deployment Status Notification
+        if: always()
+        run: |
+          if [ "${{ job.status }}" == "success" ]; then
+            echo "✅ DEPLOYMENT SUCCESSFUL"
+            echo "🌐 Site URL: https://assiduous-prod.web.app"
+            echo "📊 Deployment #${{ github.run_number }}"
+            echo "📝 Commit: ${{ github.event.head_commit.message }}"
+          else
+            echo "❌ DEPLOYMENT FAILED"
+            echo "Check the logs for details"
+          fi
+      
+      # Create deployment summary
+      - name: Create Deployment Summary
+        if: success()
+        run: |
+          echo "## 🚀 Deployment Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Deployment Details" >> $GITHUB_STEP_SUMMARY
+          echo "- **Status**: ✅ Success" >> $GITHUB_STEP_SUMMARY
+          echo "- **Environment**: Production" >> $GITHUB_STEP_SUMMARY
+          echo "- **URL**: [https://assiduous-prod.web.app](https://assiduous-prod.web.app)" >> $GITHUB_STEP_SUMMARY
+          echo "- **Deployment #**: ${{ github.run_number }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Commit Information" >> $GITHUB_STEP_SUMMARY
+          echo "- **SHA**: \`${{ github.sha }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "- **Author**: ${{ github.event.head_commit.author.name }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Message**: ${{ github.event.head_commit.message }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Analytics Integration" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Deployment tracked in FirebaseAnalyticsService" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Deployment count updated" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ File metrics recorded" >> $GITHUB_STEP_SUMMARY

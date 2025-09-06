@@ -670,89 +670,6 @@
             </div>
         </div>
 
-        <!-- Cost Tracking Card -->
-        <div class="card" style="margin-bottom: var(--space-6); border: 2px solid var(--accent);">
-            <div class="card-header" style="background: linear-gradient(135deg, rgba(255, 217, 64, 0.1), rgba(90, 168, 207, 0.1));">
-                <h2 class="card-title">💰 Development Cost Tracking</h2>
-                <div style="text-align: right;">
-                    <div style="font-size: 11px; color: var(--gray-500);">Owner Rate</div>
-                    <div style="font-size: 18px; font-weight: 700; color: var(--navy);">$300/hr</div>
-                </div>
-            </div>
-            <div class="card-body">
-                <!-- Cost Metrics -->
-                <div class="metrics-row" style="margin-bottom: var(--space-5);">
-                    <div class="metric-card">
-                        <div class="metric-header">
-                            <span class="metric-label">📅 TODAY</span>
-                        </div>
-                        <div class="metric-value" style="color: var(--danger);" id="todayTotalCost">$0</div>
-                        <div class="metric-spark">
-                            <div class="metric-bars">
-                                <div class="bar" style="height: 60%;"></div>
-                                <div class="bar" style="height: 80%;"></div>
-                                <div class="bar" style="height: 100%; background: var(--danger);"></div>
-                            </div>
-                        </div>
-                        <div style="font-size: 11px; color: var(--gray-500);">
-                            <span id="todayHours">0h</span> worked
-                        </div>
-                    </div>
-                    
-                    <div class="metric-card">
-                        <div class="metric-header">
-                            <span class="metric-label">📈 THIS WEEK</span>
-                        </div>
-                        <div class="metric-value" style="color: var(--success);" id="weekTotalCost">$0</div>
-                        <div class="metric-spark">
-                            <div class="metric-bars">
-                                <div class="bar" style="height: 70%;"></div>
-                                <div class="bar" style="height: 85%;"></div>
-                                <div class="bar" style="height: 90%; background: var(--success);"></div>
-                            </div>
-                        </div>
-                        <div style="font-size: 11px; color: var(--gray-500);">
-                            <span id="weekHours">0h</span> total
-                        </div>
-                    </div>
-                    
-                    <div class="metric-card">
-                        <div class="metric-header">
-                            <span class="metric-label">📆 THIS MONTH</span>
-                        </div>
-                        <div class="metric-value" style="color: var(--sky);" id="monthTotalCost">$0</div>
-                        <div class="metric-spark">
-                            <div class="metric-bars">
-                                <div class="bar" style="height: 50%;"></div>
-                                <div class="bar" style="height: 85%;"></div>
-                                <div class="bar" style="height: 95%; background: var(--sky);"></div>
-                            </div>
-                        </div>
-                        <div style="font-size: 11px; color: var(--gray-500);">
-                            <span id="monthHours">0h</span> logged
-                        </div>
-                    </div>
-                    
-                    <div class="metric-card">
-                        <div class="metric-header">
-                            <span class="metric-label">🏆 TOTAL</span>
-                        </div>
-                        <div class="metric-value" style="color: var(--navy);" id="totalProjectCost">$0</div>
-                        <div class="metric-spark">
-                            <div class="metric-bars">
-                                <div class="bar" style="height: 65%;"></div>
-                                <div class="bar" style="height: 85%;"></div>
-                                <div class="bar" style="height: 100%; background: var(--navy);"></div>
-                            </div>
-                        </div>
-                        <div style="font-size: 11px; color: var(--gray-500);">
-                            <span id="totalHours">0h</span> invested
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <!-- Progress Card -->
         <div class="card">
             <div class="card-header">
@@ -857,8 +774,6 @@
 
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Cost Service -->
-    <script src="../../assets/js/services/DevelopmentCostService.js"></script>
     
     <script>
         // GitHub API
@@ -872,49 +787,11 @@
             await loadCommits();
             createChart();
             loadFeatureChecklist();
-            initializeCostTracking();
             
             // Auto-refresh every 5 minutes to catch new commits
             setInterval(() => {
                 loadCommits();
             }, 5 * 60 * 1000);
-        }
-        
-        function initializeCostTracking() {
-            if (window.DevelopmentCostService) {
-                const costService = new DevelopmentCostService();
-                updateCostDisplay(costService);
-                
-                // Auto-update costs every minute
-                setInterval(() => {
-                    updateCostDisplay(costService);
-                }, 60 * 1000);
-            }
-        }
-        
-        function updateCostDisplay(costService) {
-            const breakdown = costService.getCostBreakdown();
-            
-            // Update cost values
-            document.getElementById('todayTotalCost').textContent = 
-                costService.formatCurrency(breakdown.summary.today.total);
-            document.getElementById('todayHours').textContent = 
-                costService.formatHours(breakdown.summary.today.hours);
-            
-            document.getElementById('weekTotalCost').textContent = 
-                costService.formatCurrency(breakdown.summary.thisWeek.total);
-            document.getElementById('weekHours').textContent = 
-                costService.formatHours(breakdown.summary.thisWeek.hours);
-            
-            document.getElementById('monthTotalCost').textContent = 
-                costService.formatCurrency(breakdown.summary.thisMonth.total);
-            document.getElementById('monthHours').textContent = 
-                costService.formatHours(breakdown.summary.thisMonth.hours);
-            
-            document.getElementById('totalProjectCost').textContent = 
-                costService.formatCurrency(breakdown.summary.allTime.total);
-            document.getElementById('totalHours').textContent = 
-                costService.formatHours(breakdown.summary.allTime.hours);
         }
 
         async function loadCommits() {
