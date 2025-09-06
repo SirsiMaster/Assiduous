@@ -1,0 +1,42 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper functions for Assiduous roles
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function getUserRole() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role;
+    }
+    
+    function isAgent() {
+      return isAuthenticated() && getUserRole() == 'agent';
+    }
+    
+    function isAdmin() {
+      return isAuthenticated() && getUserRole() == 'admin';
+    }
+    
+    // Verification docs: Enhanced access for Assiduous roles
+    match /verifications/{verificationId} {
+      // Buyers can read their own, agents can read assigned, admins can read all
+      allow read: if isAuthenticated() && (
+        request.auth.uid == resource.data.buyerId ||
+        (isAgent() && request.auth.uid == resource.data.agentId) ||
+        isAdmin()
+      );
+      allow write: if false; // server-only via Functions
+    }
+
+    // Webhook logs: server-only
+    match /webhook_logs/{doc} {
+      allow read, write: if false;
+    }
+
+    // Idempotency mapping: server-only
+    match /idempotency/{doc} {
+      allow read, write: if false;
+    }
+  }
+}

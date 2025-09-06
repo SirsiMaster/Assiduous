@@ -1,0 +1,19 @@
+{
+  "name": "sirsi-cbv-functions",
+  "version": "0.1.0",
+  "main": "index.js",
+  "engines": { "node": "18" },
+  "scripts": {
+    "serve": "firebase emulators:start --only functions,firestore,hosting",
+    "deploy": "firebase deploy --only functions,hosting",
+    "test": "node ivvAgent.js --local"
+  },
+  "dependencies": {
+    "axios": "^1.7.2",
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "firebase-admin": "^11.11.1",
+    "firebase-functions": "^4.7.0",
+    "uuid": "^9.0.1"
+  }
+}
