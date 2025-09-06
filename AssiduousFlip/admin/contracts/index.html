@@ -289,63 +289,7 @@
 <body>
     <div class="admin-wrapper">
         <!-- Sidebar -->
-        <aside class="sidebar">
-            <div class="sidebar-header">
-                <a href="../dashboard.html" class="sidebar-logo">
-                    <svg viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/>
-                    </svg>
-                    <span class="sidebar-logo-text">AssiduousFlip</span>
-                </a>
-            </div>
-            <nav class="sidebar-nav">
-                <div class="nav-section">
-                    <div class="nav-section-title">Main</div>
-                    <a href="../dashboard.html" class="nav-item">
-                        <span class="nav-icon">📊</span>
-                        <span>Dashboard</span>
-                    </a>
-                    <a href="../properties.html" class="nav-item">
-                        <span class="nav-icon">🏠</span>
-                        <span>Properties</span>
-                    </a>
-                    <a href="../clients.html" class="nav-item">
-                        <span class="nav-icon">👥</span>
-                        <span>Clients</span>
-                    </a>
-                    <a href="../agents.html" class="nav-item">
-                        <span class="nav-icon">💼</span>
-                        <span>Agents</span>
-                    </a>
-                    <a href="../transactions.html" class="nav-item">
-                        <span class="nav-icon">💰</span>
-                        <span>Transactions</span>
-                    </a>
-                    <a href="index.html" class="nav-item active">
-                        <span class="nav-icon">📄</span>
-                        <span>Contracts</span>
-                    </a>
-                </div>
-                <div class="nav-section">
-                    <div class="nav-section-title">Analytics</div>
-                    <a href="../analytics.html" class="nav-item">
-                        <span class="nav-icon">📈</span>
-                        <span>Analytics</span>
-                    </a>
-                    <a href="../market.html" class="nav-item">
-                        <span class="nav-icon">🌍</span>
-                        <span>Market Analysis</span>
-                    </a>
-                </div>
-                <div class="nav-section">
-                    <div class="nav-section-title">System</div>
-                    <a href="../settings.html" class="nav-item">
-                        <span class="nav-icon">⚙️</span>
-                        <span>Settings</span>
-                    </a>
-                </div>
-            </nav>
-        </aside>
+        <aside id="sidebar-root" data-active="contracts"></aside>
 
         <!-- Main Content -->
         <main class="main-content">
@@ -504,5 +448,6 @@
             });
         });
     </script>
+    <script src="../../components/sidebar.js"></script>
 </body>
 </html>
