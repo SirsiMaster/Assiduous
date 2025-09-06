@@ -8,6 +8,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.5.1] - 2025-09-06
+
+### Fixed
+- fix(dashboard): Restore working dashboard with cost tracking
+- fix(dashboard): Restore Assiduous design system quality
+
+
 ## [0.5.0] - 2025-09-06
 
 ### Added
@@ -254,7 +261,14 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.5.0...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.5.1...HEAD
+
+
+## [0.5.1] - 2025-09-06
+
+### Fixed
+- fix(dashboard): Restore working dashboard with cost tracking
+- fix(dashboard): Restore Assiduous design system quality
 
 
 ## [0.5.0] - 2025-09-06
@@ -280,3 +294,4 @@ To generate changelog entries:
 [0.3.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.2.0...v0.3.0
 [0.4.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.3.0...v0.4.0
 [0.5.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.4.0...v0.5.0
+[0.5.1]: https://github.com/SirsiMaster/Assiduous/compare/v0.5.0...v0.5.1
