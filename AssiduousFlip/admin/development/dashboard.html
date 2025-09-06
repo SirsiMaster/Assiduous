@@ -156,6 +156,49 @@
             color: var(--white);
         }
 
+        .btn-primary {
+            padding: var(--space-sm) var(--space-md);
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            border-radius: var(--radius);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-xs);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: var(--space-sm);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            font-size: 14px;
+            font-family: inherit;
+            transition: all 0.15s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 60px;
+        }
+
         .status-badge {
             display: inline-flex;
             align-items: center;
@@ -491,6 +534,203 @@
                     <p class="page-subtitle" style="margin-top: 8px; font-weight: 600; color: var(--sky);">Pipeline: Local → GitHub (Source of Truth) → Firebase/GCP</p>
                 </div>
 
+                <!-- DEVELOPMENT COST TRACKING - TOP PRIORITY -->
+                <div class="progress-section" style="border: 2px solid rgba(239, 68, 68, 0.2); background: linear-gradient(135deg, rgba(239, 68, 68, 0.03), rgba(251, 191, 36, 0.03));">
+                    <div class="chart-header">
+                        <h2 class="section-title">💰 Development Cost Tracking</h2>
+                        <div class="metric-card" style="padding: var(--space-sm); margin: 0;">
+                            <div class="metric-label">Owner Rate</div>
+                            <div class="metric-value" style="font-size: 18px;">$300/hr</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Cost Summary Cards -->
+                    <div class="metrics-row">
+                        <div class="metric-card">
+                            <div class="metric-label">📅 TODAY'S COST</div>
+                            <div class="metric-value" style="color: var(--danger);" id="todayTotalCost">$519</div>
+                            <div class="metric-change">
+                                <span id="todayHours">1h 39m</span> • 
+                                <span id="todayActivities">6 activities</span>
+                            </div>
+                        </div>
+                        
+                        <div class="metric-card">
+                            <div class="metric-label">📈 THIS WEEK</div>
+                            <div class="metric-value" style="color: var(--success);" id="weekTotalCost">$2,415</div>
+                            <div class="metric-change">
+                                <span id="weekHours">7h 39m</span> • 
+                                <span id="weekDays">2 days</span>
+                            </div>
+                        </div>
+                        
+                        <div class="metric-card">
+                            <div class="metric-label">📆 THIS MONTH</div>
+                            <div class="metric-value" style="color: var(--primary);" id="monthTotalCost">$2,615</div>
+                            <div class="metric-change">
+                                September 2025 • <span id="monthHours">8h 39m</span>
+                            </div>
+                        </div>
+                        
+                        <div class="metric-card">
+                            <div class="metric-label">🏆 PROJECT TOTAL</div>
+                            <div class="metric-value" style="color: var(--navy);" id="totalProjectCost">$5,589</div>
+                            <div class="metric-change">
+                                Since Aug 2025 • <span id="totalHours">18h 39m</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Cost Breakdown -->
+                    <div class="chart-card">
+                        <h3 class="section-title">Today's Cost Breakdown</h3>
+                        <div class="content-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+                            <div class="phase-item">
+                                <div class="activity-item">
+                                    <span class="phase-details">👨‍💻 Labor (1.65h × $300)</span>
+                                    <span class="phase-status" id="todayLaborCost">$495</span>
+                                </div>
+                                <div class="activity-item">
+                                    <span class="phase-details">🔧 Tools (Daily)</span>
+                                    <span class="phase-status" id="todayToolsCost">$2.47</span>
+                                </div>
+                                <div class="activity-item">
+                                    <span class="phase-details">☁️ Cloud (Firebase)</span>
+                                    <span class="phase-status" id="todayCloudCost">$0.00</span>
+                                </div>
+                            </div>
+                            
+                            <div class="phase-item">
+                                <div class="phase-title">Tools & Services</div>
+                                <div class="phase-details">
+                                    • Warp Terminal: $40/mo<br>
+                                    • GitHub Pro: $4/mo<br>
+                                    • AI Tools: $30/mo<br>
+                                    • Firebase: $0-50/mo (usage)
+                                </div>
+                            </div>
+                            
+                            <div class="phase-item">
+                                <div class="phase-title">Today's Activities</div>
+                                <div class="phase-details" id="todayActivityList">
+                                    • Firebase initialization (15m)<br>
+                                    • Hosting deployment (30m)<br>
+                                    • Functions setup (15m)<br>
+                                    • Analytics integration (40m)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- COST TREND CHARTS -->
+                <div class="progress-section">
+                    <h2 class="section-title">📊 Cost & Activity Trends</h2>
+                    
+                    <!-- Chart Controls -->
+                    <div class="chart-header">
+                        <div class="topbar-actions">
+                            <button class="btn-primary" id="trendViewDaily" onclick="switchTrendView('daily')">Daily View</button>
+                            <button class="btn-secondary" id="trendViewWeekly" onclick="switchTrendView('weekly')">Weekly View</button>
+                        </div>
+                        <button class="btn-secondary" onclick="refreshTrendChart()">🔄 Refresh</button>
+                    </div>
+                    
+                    <!-- Trend Chart Container -->
+                    <div class="chart-card">
+                        <div class="chart-container">
+                            <canvas id="costTrendChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <!-- Trend Summary Stats -->
+                    <div class="metrics-row">
+                        <div class="metric-card">
+                            <div class="metric-label">Avg Daily Hours</div>
+                            <div class="metric-value" id="avgDailyHours">5.2h</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-label">Avg Daily Cost</div>
+                            <div class="metric-value" id="avgDailyCost">$1,574</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-label">Peak Day</div>
+                            <div class="metric-value" id="peakDay">Aug 22</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-label">Total Days</div>
+                            <div class="metric-value" id="totalDays">4</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MANUAL TIME ENTRY & EXPORT -->
+                <div class="progress-section">
+                    <h2 class="section-title">🗓️ Manual Time Entry & Reports</h2>
+                    
+                    <div class="content-grid">
+                        <!-- Manual Time Entry Form -->
+                        <div class="chart-card">
+                            <h3 class="section-title">Add Manual Time Entry</h3>
+                            <form id="manualTimeEntry" onsubmit="submitManualEntry(event)">
+                                <div class="phase-item">
+                                    <label class="phase-details">Date</label>
+                                    <input type="date" id="manualDate" required class="form-control" value="2025-09-06">
+                                </div>
+                                <div class="phase-item">
+                                    <label class="phase-details">Hours Worked</label>
+                                    <input type="number" id="manualHours" step="0.25" min="0" max="24" required class="form-control" placeholder="e.g., 2.5">
+                                </div>
+                                <div class="phase-item">
+                                    <label class="phase-details">Description</label>
+                                    <input type="text" id="manualDescription" required class="form-control" placeholder="e.g., Code review and debugging">
+                                </div>
+                                <div class="phase-item">
+                                    <label class="phase-details">Commits (optional)</label>
+                                    <input type="number" id="manualCommits" min="0" class="form-control" placeholder="0">
+                                </div>
+                                <div class="phase-item">
+                                    <label class="phase-details">Notes (optional)</label>
+                                    <textarea id="manualNotes" class="form-control" rows="3" placeholder="Additional details..."></textarea>
+                                </div>
+                                <button type="submit" class="btn-primary" style="width: 100%;">➕ Add Time Entry</button>
+                            </form>
+                            <div id="manualEntryFeedback" class="phase-details" style="margin-top: var(--space-sm);"></div>
+                        </div>
+                        
+                        <!-- Export Reports -->
+                        <div class="chart-card">
+                            <h3 class="section-title">Export Cost Reports</h3>
+                            
+                            <div class="phase-item">
+                                <p class="phase-details">Generate detailed cost reports for accounting or client billing purposes.</p>
+                                
+                                <div class="topbar-actions" style="flex-direction: column; gap: var(--space-sm);">
+                                    <button onclick="exportCSV()" class="btn-primary" style="width: 100%; background: var(--success);">
+                                        💾 Download CSV Report
+                                    </button>
+                                    <button onclick="exportPDF()" class="btn-primary" style="width: 100%; background: var(--danger);">
+                                        📄 Generate PDF Report
+                                    </button>
+                                    <button onclick="printReport()" class="btn-secondary" style="width: 100%;">
+                                        🖨️ Print Summary
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="phase-item" style="border-top: 1px solid var(--border); padding-top: var(--space-md);">
+                                <h4 class="phase-title">Quick Stats</h4>
+                                <div class="phase-details">
+                                    <div>📅 Report Period: <strong id="reportPeriod">Aug 22 - Sep 6, 2025</strong></div>
+                                    <div>⏰ Total Hours: <strong id="reportHours">20.65</strong></div>
+                                    <div>💵 Total Cost: <strong id="reportCost">$6,195</strong></div>
+                                    <div>📊 Sessions: <strong id="reportSessions">4</strong></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Combined GitHub + Firebase Metrics Row -->
                 <div class="metrics-row">
                     <div class="metric-card">
@@ -680,8 +920,9 @@
         </main>
     </div>
 
-    <!-- Load Firebase Analytics Service -->
+    <!-- Load Analytics Services -->
     <script src="../../assets/js/services/FirebaseAnalyticsService.js"></script>
+    <script src="../../assets/js/services/DevelopmentCostService.js"></script>
     
     <!-- Chart.js for activity graph -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -696,6 +937,21 @@
         async function init() {
             await loadCommits();
             createChart();
+            
+            // Initialize Cost Tracking Service
+            if (window.DevelopmentCostService) {
+                const costService = new DevelopmentCostService();
+                window.costService = costService; // Make globally available
+                updateCostDisplay(costService);
+                initializeCostTrendChart(costService);
+                updateReportStats(costService);
+                
+                // Auto-update costs every minute
+                setInterval(() => {
+                    updateCostDisplay(costService);
+                    updateTrendChart(costService);
+                }, 60 * 1000);
+            }
             
             // Initialize Firebase Analytics and display metrics
             if (window.FirebaseAnalyticsService) {
@@ -716,6 +972,349 @@
                     updateFirebaseMetrics(new FirebaseAnalyticsService());
                 }
             }, 5 * 60 * 1000);
+        }
+        
+        // Cost Trend Chart variables
+        let costTrendChart = null;
+        let currentTrendView = 'daily';
+        
+        // Initialize cost trend chart
+        function initializeCostTrendChart(costService) {
+            const ctx = document.getElementById('costTrendChart');
+            if (!ctx) return;
+            
+            const trends = costService.calculateTrends();
+            const data = currentTrendView === 'daily' ? trends.daily : trends.weekly;
+            
+            costTrendChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: data.map(d => currentTrendView === 'daily' 
+                        ? new Date(d.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+                        : d.week),
+                    datasets: [{
+                        label: 'Labor Cost',
+                        data: data.map(d => d.laborCost),
+                        borderColor: '#3b82f6',
+                        backgroundColor: '#3b82f620',
+                        fill: true,
+                        tension: 0.4
+                    }, {
+                        label: 'Tools & Services',
+                        data: data.map(d => d.toolsCost),
+                        borderColor: '#10b981',
+                        backgroundColor: '#10b98120',
+                        fill: true,
+                        tension: 0.4
+                    }, {
+                        label: 'Total Cost',
+                        data: data.map(d => d.total),
+                        borderColor: '#ef4444',
+                        backgroundColor: '#ef444420',
+                        fill: false,
+                        borderWidth: 2,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.y !== null) {
+                                        label += new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(context.parsed.y);
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return '$' + value.toLocaleString();
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            updateTrendStats(trends);
+        }
+        
+        // Update trend chart
+        function updateTrendChart(costService) {
+            if (!costTrendChart) return;
+            
+            const trends = costService.calculateTrends();
+            const data = currentTrendView === 'daily' ? trends.daily : trends.weekly;
+            
+            costTrendChart.data.labels = data.map(d => currentTrendView === 'daily' 
+                ? new Date(d.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+                : d.week);
+            
+            costTrendChart.data.datasets[0].data = data.map(d => d.laborCost);
+            costTrendChart.data.datasets[1].data = data.map(d => d.toolsCost);
+            costTrendChart.data.datasets[2].data = data.map(d => d.total);
+            
+            costTrendChart.update();
+            updateTrendStats(trends);
+        }
+        
+        // Update trend statistics
+        function updateTrendStats(trends) {
+            const data = currentTrendView === 'daily' ? trends.daily : trends.weekly;
+            const avgHours = currentTrendView === 'daily' ? trends.summary.avgDailyHours : trends.summary.avgWeeklyHours;
+            const avgCost = currentTrendView === 'daily' ? trends.summary.avgDailyCost : trends.summary.avgWeeklyCost;
+            
+            document.getElementById('avgDailyHours').textContent = avgHours.toFixed(1) + 'h';
+            document.getElementById('avgDailyCost').textContent = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(avgCost);
+            
+            // Find peak day
+            if (data.length > 0) {
+                const peak = data.reduce((max, d) => d.total > max.total ? d : max, data[0]);
+                const peakDate = currentTrendView === 'daily' 
+                    ? new Date(peak.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+                    : peak.week;
+                document.getElementById('peakDay').textContent = peakDate;
+                document.getElementById('totalDays').textContent = data.length;
+            }
+        }
+        
+        // Switch trend view between daily and weekly
+        function switchTrendView(view) {
+            currentTrendView = view;
+            const dailyBtn = document.getElementById('trendViewDaily');
+            const weeklyBtn = document.getElementById('trendViewWeekly');
+            
+            // Toggle active state using classes instead of inline styles
+            if (view === 'daily') {
+                dailyBtn.classList.remove('btn-secondary');
+                dailyBtn.classList.add('btn-primary');
+                weeklyBtn.classList.remove('btn-primary');
+                weeklyBtn.classList.add('btn-secondary');
+            } else {
+                weeklyBtn.classList.remove('btn-secondary');
+                weeklyBtn.classList.add('btn-primary');
+                dailyBtn.classList.remove('btn-primary');
+                dailyBtn.classList.add('btn-secondary');
+            }
+            
+            if (window.costService) {
+                updateTrendChart(window.costService);
+            }
+        }
+        
+        // Refresh trend chart
+        function refreshTrendChart() {
+            if (window.costService) {
+                updateTrendChart(window.costService);
+            }
+        }
+        
+        // Submit manual time entry
+        function submitManualEntry(event) {
+            event.preventDefault();
+            
+            if (!window.costService) {
+                showFeedback('Error: Cost service not initialized', 'error');
+                return;
+            }
+            
+            const entry = {
+                date: document.getElementById('manualDate').value,
+                hours: parseFloat(document.getElementById('manualHours').value),
+                description: document.getElementById('manualDescription').value,
+                commits: parseInt(document.getElementById('manualCommits').value) || 0,
+                notes: document.getElementById('manualNotes').value
+            };
+            
+            window.costService.addManualEntry(entry);
+            
+            // Clear form
+            document.getElementById('manualTimeEntry').reset();
+            document.getElementById('manualDate').value = new Date().toISOString().split('T')[0];
+            
+            // Show success feedback
+            showFeedback('✓ Time entry added successfully!', 'success');
+            
+            // Update displays
+            updateCostDisplay(window.costService);
+            updateTrendChart(window.costService);
+            updateReportStats(window.costService);
+        }
+        
+        // Show feedback message
+        function showFeedback(message, type) {
+            const feedback = document.getElementById('manualEntryFeedback');
+            feedback.textContent = message;
+            feedback.style.color = type === 'success' ? 'var(--success)' : 'var(--danger)';
+            setTimeout(() => {
+                feedback.textContent = '';
+            }, 3000);
+        }
+        
+        // Export CSV
+        function exportCSV() {
+            if (!window.costService) return;
+            
+            const filename = `development_costs_${new Date().toISOString().split('T')[0]}.csv`;
+            window.costService.downloadCSV(filename);
+        }
+        
+        // Export PDF (simplified version - opens print dialog)
+        function exportPDF() {
+            if (!window.costService) return;
+            
+            const data = window.costService.exportForPDF();
+            
+            // Create a new window with formatted report
+            const reportWindow = window.open('', 'Cost Report', 'width=800,height=900');
+            reportWindow.document.write(`
+                <html>
+                <head>
+                    <title>Development Cost Report</title>
+                    <style>
+                        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; padding: 20px; }
+                        h1 { color: #333; border-bottom: 2px solid #3b82f6; padding-bottom: 10px; }
+                        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+                        th, td { padding: 8px; text-align: left; border-bottom: 1px solid #ddd; }
+                        th { background: #f5f5f5; font-weight: 600; }
+                        .summary { background: #f0f9ff; padding: 15px; border-radius: 5px; margin: 20px 0; }
+                        .footer { margin-top: 30px; padding-top: 20px; border-top: 1px solid #ddd; font-size: 12px; color: #666; }
+                    </style>
+                </head>
+                <body>
+                    <h1>Development Cost Report</h1>
+                    <div class="summary">
+                        <h2>Project: ${data.metadata.projectName}</h2>
+                        <p>Generated: ${new Date(data.metadata.generatedAt).toLocaleString()}</p>
+                        <p>Hourly Rate: $${data.metadata.hourlyRate}/hour</p>
+                    </div>
+                    
+                    <h2>Summary</h2>
+                    <table>
+                        <tr><th>Period</th><th>Hours</th><th>Labor Cost</th><th>Tools Cost</th><th>Total Cost</th></tr>
+                        <tr>
+                            <td>Today</td>
+                            <td>${data.summary.today.hours.toFixed(2)}</td>
+                            <td>$${data.summary.today.laborCost.toFixed(2)}</td>
+                            <td>$${data.summary.today.toolsCost.toFixed(2)}</td>
+                            <td><strong>$${data.summary.today.total.toFixed(2)}</strong></td>
+                        </tr>
+                        <tr>
+                            <td>This Week</td>
+                            <td>${data.summary.thisWeek.hours.toFixed(2)}</td>
+                            <td>$${data.summary.thisWeek.laborCost.toFixed(2)}</td>
+                            <td>$${data.summary.thisWeek.toolsCost.toFixed(2)}</td>
+                            <td><strong>$${data.summary.thisWeek.total.toFixed(2)}</strong></td>
+                        </tr>
+                        <tr>
+                            <td>This Month</td>
+                            <td>${data.summary.thisMonth.hours.toFixed(2)}</td>
+                            <td>$${data.summary.thisMonth.laborCost.toFixed(2)}</td>
+                            <td>$${data.summary.thisMonth.toolsCost.toFixed(2)}</td>
+                            <td><strong>$${data.summary.thisMonth.total.toFixed(2)}</strong></td>
+                        </tr>
+                        <tr>
+                            <td>All Time</td>
+                            <td>${data.summary.allTime.hours.toFixed(2)}</td>
+                            <td>$${data.summary.allTime.laborCost.toFixed(2)}</td>
+                            <td>$${data.summary.allTime.toolsCost.toFixed(2)}</td>
+                            <td><strong>$${data.summary.allTime.total.toFixed(2)}</strong></td>
+                        </tr>
+                    </table>
+                    
+                    <div class="footer">
+                        <p>This report is for internal use only. All costs are estimates based on tracked time and standard rates.</p>
+                    </div>
+                </body>
+                </html>
+            `);
+            
+            // Trigger print dialog
+            setTimeout(() => {
+                reportWindow.print();
+            }, 500);
+        }
+        
+        // Print report
+        function printReport() {
+            exportPDF(); // Reuse PDF export which opens print dialog
+        }
+        
+        // Update report statistics
+        function updateReportStats(costService) {
+            const data = costService.exportForPDF();
+            
+            // Update report period
+            const startDate = new Date(data.metadata.period.start).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+            const endDate = new Date(data.metadata.period.end).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+            document.getElementById('reportPeriod').textContent = `${startDate} - ${endDate}`;
+            
+            // Update totals
+            document.getElementById('reportHours').textContent = data.totals.hours.toFixed(2);
+            document.getElementById('reportCost').textContent = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(data.totals.laborCost + data.totals.toolsCost + data.totals.cloudCost);
+            document.getElementById('reportSessions').textContent = data.sessions.length;
+        }
+        
+        // Update cost display
+        function updateCostDisplay(costService) {
+            const breakdown = costService.getCostBreakdown();
+            
+            // Update today's costs
+            document.getElementById('todayTotalCost').textContent = 
+                costService.formatCurrency(breakdown.summary.today.total);
+            document.getElementById('todayHours').textContent = 
+                costService.formatHours(breakdown.summary.today.hours);
+            document.getElementById('todayLaborCost').textContent = 
+                costService.formatCurrency(breakdown.summary.today.laborCost);
+            document.getElementById('todayToolsCost').textContent = 
+                costService.formatCurrency(breakdown.summary.today.toolsCost);
+            document.getElementById('todayCloudCost').textContent = 
+                costService.formatCurrency(breakdown.summary.today.cloudCost);
+            
+            // Update week costs
+            document.getElementById('weekTotalCost').textContent = 
+                costService.formatCurrency(breakdown.summary.thisWeek.total);
+            document.getElementById('weekHours').textContent = 
+                costService.formatHours(breakdown.summary.thisWeek.hours);
+            
+            // Update month costs
+            document.getElementById('monthTotalCost').textContent = 
+                costService.formatCurrency(breakdown.summary.thisMonth.total);
+            document.getElementById('monthHours').textContent = 
+                costService.formatHours(breakdown.summary.thisMonth.hours);
+            
+            // Update total project costs
+            document.getElementById('totalProjectCost').textContent = 
+                costService.formatCurrency(breakdown.summary.allTime.total);
+            document.getElementById('totalHours').textContent = 
+                costService.formatHours(breakdown.summary.allTime.hours);
+            
+            // Update today's activities
+            if (breakdown.activities.todaySession && breakdown.activities.todaySession.activities) {
+                const activities = breakdown.activities.todaySession.activities;
+                const activityHtml = activities.slice(0, 4).map(a => 
+                    `• ${a.activity} (${Math.round(a.duration * 60)}m)`
+                ).join('<br>');
+                document.getElementById('todayActivityList').innerHTML = activityHtml;
+                document.getElementById('todayActivities').textContent = `${activities.length} activities`;
+            }
         }
         
         // Update Firebase metrics display
