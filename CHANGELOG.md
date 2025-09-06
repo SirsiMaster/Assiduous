@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.5.0] - 2025-09-06
+
+### Added
+- feat(dashboard): add comprehensive development cost tracking system
+
+
 ## [0.4.0] - 2025-09-06
 
 ### Added
@@ -248,7 +254,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.4.0...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.5.0...HEAD
+
+
+## [0.5.0] - 2025-09-06
+
+### Added
+- feat(dashboard): add comprehensive development cost tracking system
 
 
 ## [0.4.0] - 2025-09-06
@@ -267,3 +279,4 @@ To generate changelog entries:
 [0.0.1]: https://github.com/SirsiMaster/Assiduous/releases/tag/v0.0.1
 [0.3.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.2.0...v0.3.0
 [0.4.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.3.0...v0.4.0
+[0.5.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.4.0...v0.5.0
