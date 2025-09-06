@@ -27,7 +27,12 @@ jobs:
       # Install dependencies
       - name: Install Dependencies
         run: |
-          npm ci --prefix firebase-migration-package || npm install --prefix firebase-migration-package
+          # Install root dependencies if package.json exists
+          if [ -f "package.json" ]; then
+            npm ci || npm install
+          fi
+          
+          # Install Firebase tools globally
           npm install -g firebase-tools
       
       # Copy files to Firebase directory
@@ -36,14 +41,14 @@ jobs:
           echo "📦 Preparing files for Firebase deployment..."
           
           # Create firebase directory if it doesn't exist
-          mkdir -p firebase-migration-package/assiduous-build
+          mkdir -p firebase-migration-package/assiduous-build/public
           
-          # Copy all necessary files
-          cp -r AssiduousFlip firebase-migration-package/assiduous-build/
-          cp -r assets firebase-migration-package/assiduous-build/
-          cp -r src firebase-migration-package/assiduous-build/ 2>/dev/null || true
-          cp -r docs firebase-migration-package/assiduous-build/ 2>/dev/null || true
-          cp index.html firebase-migration-package/assiduous-build/ 2>/dev/null || true
+          # Copy all necessary files to public directory for Firebase hosting
+          cp -r AssiduousFlip/* firebase-migration-package/assiduous-build/public/ 2>/dev/null || true
+          cp -r assets firebase-migration-package/assiduous-build/public/ 2>/dev/null || true
+          cp -r src firebase-migration-package/assiduous-build/public/ 2>/dev/null || true
+          cp -r docs firebase-migration-package/assiduous-build/public/ 2>/dev/null || true
+          cp index.html firebase-migration-package/assiduous-build/public/ 2>/dev/null || true
           
           # Copy package files
           cp package.json firebase-migration-package/assiduous-build/ 2>/dev/null || true
@@ -106,7 +111,10 @@ jobs:
           DEPLOYMENT_COUNT=$(git rev-list --count HEAD)
           FILES_COUNT=$(find AssiduousFlip assets -type f | wc -l)
           
-          cat > firebase-migration-package/assiduous-build/assets/js/deployment-analytics.js << EOF
+          # Ensure analytics directory exists
+          mkdir -p firebase-migration-package/assiduous-build/public/assets/js
+          
+          cat > firebase-migration-package/assiduous-build/public/assets/js/deployment-analytics.js << EOF
           // Auto-generated deployment analytics
           window.DEPLOYMENT_ANALYTICS = {
             lastDeployment: "${DEPLOYMENT_DATE}",
