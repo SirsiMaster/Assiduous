@@ -52,21 +52,36 @@ We follow [Semantic Versioning](https://semver.org/) (SemVer):
 
 ---
 
-## 🚀 RELEASE PROCESS
+## 🚀 AUTOMATED RELEASE PROCESS
 
-### 1. Pre-Release Checklist
+### Fully Automated (Recommended)
+Versioning is **automatically handled** based on your commit messages:
+
+1. **Write commits using conventional format:**
+   - `feat: ...` → Bumps MINOR version (0.X.0)
+   - `fix: ...` → Bumps PATCH version (0.0.X)
+   - `BREAKING CHANGE: ...` → Bumps MAJOR version (X.0.0)
+
+2. **Push to main branch:**
+   ```bash
+   git push origin main
+   ```
+
+3. **GitHub Actions automatically:**
+   - Analyzes commits since last tag
+   - Determines version bump type
+   - Updates VERSION, package.json, README.md
+   - Updates CHANGELOG.md
+   - Creates git tag
+   - Creates GitHub release
+
+### Manual Process (if needed)
 ```bash
-# Ensure all tests pass
-npm test
+# Run auto-version script
+./scripts/auto-version.sh
 
-# Update VERSION file
-echo "0.3.0" > VERSION
-
-# Update package.json
-# Edit "version": "0.3.0"
-
-# Update README.md badge
-# Change version-0.2.0 to version-0.3.0
+# Or force specific version
+./scripts/update-version.sh 0.3.0
 ```
 
 ### 2. Update CHANGELOG.md

@@ -61,6 +61,7 @@ install_hook() {
 echo ""
 echo -e "${BLUE}Installing Git hooks...${NC}"
 install_hook "commit-msg"
+install_hook "prepare-commit-msg"
 
 # Configure commit template
 echo ""

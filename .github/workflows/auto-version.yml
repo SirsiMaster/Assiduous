@@ -1,0 +1,233 @@
+name: Auto Version Bump
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - 'VERSION'
+      - 'CHANGELOG.md'
+      - 'package.json'
+      - 'README.md'
+      - '.github/workflows/auto-version.yml'
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  version-bump:
+    runs-on: ubuntu-latest
+    # Skip if commit message contains [skip ci] or [no version]
+    if: |
+      !contains(github.event.head_commit.message, '[skip ci]') &&
+      !contains(github.event.head_commit.message, '[no version]') &&
+      !contains(github.event.head_commit.message, 'chore(release)')
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Fetch all history for tags
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Git
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+      - name: Check commit types
+        id: check_commits
+        run: |
+          # Get commits since last tag
+          LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+          
+          if [ -z "$LAST_TAG" ]; then
+            COMMIT_RANGE="HEAD"
+          else
+            COMMIT_RANGE="$LAST_TAG..HEAD"
+          fi
+          
+          # Check for different commit types
+          BREAKING=$(git log $COMMIT_RANGE --pretty=format:"%s" | grep -c "BREAKING CHANGE\|!" || true)
+          FEATURES=$(git log $COMMIT_RANGE --pretty=format:"%s" | grep -c "^feat" || true)
+          FIXES=$(git log $COMMIT_RANGE --pretty=format:"%s" | grep -c "^fix" || true)
+          
+          echo "breaking=$BREAKING" >> $GITHUB_OUTPUT
+          echo "features=$FEATURES" >> $GITHUB_OUTPUT
+          echo "fixes=$FIXES" >> $GITHUB_OUTPUT
+          
+          # Determine version bump type
+          if [ "$BREAKING" -gt 0 ]; then
+            echo "bump=major" >> $GITHUB_OUTPUT
+          elif [ "$FEATURES" -gt 0 ]; then
+            echo "bump=minor" >> $GITHUB_OUTPUT
+          elif [ "$FIXES" -gt 0 ]; then
+            echo "bump=patch" >> $GITHUB_OUTPUT
+          else
+            echo "bump=none" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Get current version
+        if: steps.check_commits.outputs.bump != 'none'
+        id: current_version
+        run: |
+          CURRENT=$(cat VERSION || echo "0.0.0")
+          echo "version=$CURRENT" >> $GITHUB_OUTPUT
+
+      - name: Calculate new version
+        if: steps.check_commits.outputs.bump != 'none'
+        id: new_version
+        run: |
+          CURRENT="${{ steps.current_version.outputs.version }}"
+          IFS='.' read -r -a VERSION_PARTS <<< "$CURRENT"
+          MAJOR="${VERSION_PARTS[0]}"
+          MINOR="${VERSION_PARTS[1]}"
+          PATCH="${VERSION_PARTS[2]}"
+          
+          BUMP_TYPE="${{ steps.check_commits.outputs.bump }}"
+          
+          if [ "$BUMP_TYPE" = "major" ]; then
+            NEW_VERSION="$((MAJOR + 1)).0.0"
+          elif [ "$BUMP_TYPE" = "minor" ]; then
+            NEW_VERSION="$MAJOR.$((MINOR + 1)).0"
+          elif [ "$BUMP_TYPE" = "patch" ]; then
+            NEW_VERSION="$MAJOR.$MINOR.$((PATCH + 1))"
+          fi
+          
+          echo "version=$NEW_VERSION" >> $GITHUB_OUTPUT
+
+      - name: Update version files
+        if: steps.check_commits.outputs.bump != 'none'
+        run: |
+          NEW_VERSION="${{ steps.new_version.outputs.version }}"
+          
+          # Update VERSION file
+          echo "$NEW_VERSION" > VERSION
+          
+          # Update package.json
+          sed -i "s/\"version\": \".*\"/\"version\": \"$NEW_VERSION\"/" package.json
+          
+          # Update README.md badge
+          sed -i "s/version-[^-]*-blue/version-$NEW_VERSION-blue/" README.md
+
+      - name: Update CHANGELOG
+        if: steps.check_commits.outputs.bump != 'none'
+        run: |
+          NEW_VERSION="${{ steps.new_version.outputs.version }}"
+          CURRENT_VERSION="${{ steps.current_version.outputs.version }}"
+          
+          # Create changelog entry
+          {
+            echo "## [$NEW_VERSION] - $(date +%Y-%m-%d)"
+            echo ""
+            
+            if [ "${{ steps.check_commits.outputs.breaking }}" -gt 0 ]; then
+              echo "### ⚠️ BREAKING CHANGES"
+              git log v$CURRENT_VERSION..HEAD --pretty=format:"- %s" --grep="BREAKING CHANGE\|!" || true
+              echo ""
+              echo ""
+            fi
+            
+            if [ "${{ steps.check_commits.outputs.features }}" -gt 0 ]; then
+              echo "### Added"
+              git log v$CURRENT_VERSION..HEAD --pretty=format:"- %s" --grep="^feat" || true
+              echo ""
+              echo ""
+            fi
+            
+            if [ "${{ steps.check_commits.outputs.fixes }}" -gt 0 ]; then
+              echo "### Fixed"
+              git log v$CURRENT_VERSION..HEAD --pretty=format:"- %s" --grep="^fix" || true
+              echo ""
+              echo ""
+            fi
+          } > new_changelog.md
+          
+          # Insert after [Unreleased] section
+          if grep -q "\[Unreleased\]" CHANGELOG.md; then
+            awk '/\[Unreleased\]/{print; print ""; getline; print; getline; while((getline line < "new_changelog.md") > 0) print line; close("new_changelog.md")} 1' CHANGELOG.md > CHANGELOG.tmp
+            mv CHANGELOG.tmp CHANGELOG.md
+          else
+            cat new_changelog.md CHANGELOG.md > CHANGELOG.tmp
+            mv CHANGELOG.tmp CHANGELOG.md
+          fi
+          
+          # Update links
+          sed -i "s/\[Unreleased\]:.*/[Unreleased]: https:\/\/github.com\/SirsiMaster\/Assiduous\/compare\/v$NEW_VERSION...HEAD/" CHANGELOG.md
+          echo "[$NEW_VERSION]: https://github.com/SirsiMaster/Assiduous/compare/v$CURRENT_VERSION...v$NEW_VERSION" >> CHANGELOG.md
+          
+          rm new_changelog.md
+
+      - name: Commit version bump
+        if: steps.check_commits.outputs.bump != 'none'
+        run: |
+          git add VERSION package.json README.md CHANGELOG.md
+          git commit -m "chore(release): Bump version to ${{ steps.new_version.outputs.version }} [skip ci]
+
+          Automated version bump:
+          - Breaking changes: ${{ steps.check_commits.outputs.breaking }}
+          - New features: ${{ steps.check_commits.outputs.features }}
+          - Bug fixes: ${{ steps.check_commits.outputs.fixes }}
+          
+          Generated by GitHub Actions"
+
+      - name: Push changes
+        if: steps.check_commits.outputs.bump != 'none'
+        run: |
+          git push origin main
+
+      - name: Create Release Tag
+        if: steps.check_commits.outputs.bump != 'none'
+        run: |
+          NEW_VERSION="${{ steps.new_version.outputs.version }}"
+          
+          git tag -a "v$NEW_VERSION" -m "Release v$NEW_VERSION
+
+          Automated release created by GitHub Actions
+          
+          Summary:
+          - Breaking changes: ${{ steps.check_commits.outputs.breaking }}
+          - New features: ${{ steps.check_commits.outputs.features }}
+          - Bug fixes: ${{ steps.check_commits.outputs.fixes }}"
+          
+          git push origin "v$NEW_VERSION"
+
+      - name: Create GitHub Release
+        if: steps.check_commits.outputs.bump != 'none'
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ steps.new_version.outputs.version }}
+          release_name: Release v${{ steps.new_version.outputs.version }}
+          body: |
+            ## Automated Release v${{ steps.new_version.outputs.version }}
+            
+            **Changes:**
+            - Breaking changes: ${{ steps.check_commits.outputs.breaking }}
+            - New features: ${{ steps.check_commits.outputs.features }}
+            - Bug fixes: ${{ steps.check_commits.outputs.fixes }}
+            
+            See [CHANGELOG.md](https://github.com/SirsiMaster/Assiduous/blob/main/CHANGELOG.md) for details.
+          draft: false
+          prerelease: false
+
+      - name: Summary
+        if: always()
+        run: |
+          if [ "${{ steps.check_commits.outputs.bump }}" = "none" ]; then
+            echo "### No Version Bump Needed" >> $GITHUB_STEP_SUMMARY
+            echo "No conventional commits found that require a version bump." >> $GITHUB_STEP_SUMMARY
+          else
+            echo "### Version Bumped! 🎉" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "- **Previous Version:** ${{ steps.current_version.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+            echo "- **New Version:** ${{ steps.new_version.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+            echo "- **Bump Type:** ${{ steps.check_commits.outputs.bump }}" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "**Commit Summary:**" >> $GITHUB_STEP_SUMMARY
+            echo "- Breaking changes: ${{ steps.check_commits.outputs.breaking }}" >> $GITHUB_STEP_SUMMARY
+            echo "- New features: ${{ steps.check_commits.outputs.features }}" >> $GITHUB_STEP_SUMMARY
+            echo "- Bug fixes: ${{ steps.check_commits.outputs.fixes }}" >> $GITHUB_STEP_SUMMARY
+          fi
