@@ -1,18 +1,59 @@
 #!/bin/bash
 
 # Prepare commit message hook
-# Adds helpful reminders about conventional commits and versioning
+# Adds helpful reminders about conventional commits and session tracking
 
 COMMIT_MSG_FILE=$1
 COMMIT_SOURCE=$2
 SHA1=$3
 
+# Function to calculate session time since last commit
+calculate_session_time() {
+    local last_commit_time=$(git log -1 --format=%ct 2>/dev/null)
+    local current_time=$(date +%s)
+    
+    if [ -n "$last_commit_time" ]; then
+        local diff=$((current_time - last_commit_time))
+        local hours=$(echo "scale=1; $diff / 3600" | bc -l 2>/dev/null || echo "0.5")
+        
+        # Cap at 8 hours for realistic session time
+        if (( $(echo "$hours > 8" | bc -l 2>/dev/null || echo 0) )); then
+            hours="8.0"
+        fi
+        
+        # Minimum 0.1 hours (6 minutes)
+        if (( $(echo "$hours < 0.1" | bc -l 2>/dev/null || echo 0) )); then
+            hours="0.1"
+        fi
+        
+        echo $hours
+    else
+        echo "0.5"  # Default for first commit
+    fi
+}
+
+# Function to estimate development cost
+calculate_cost() {
+    local hours=$1
+    local rate=300  # $300/hour
+    local cost=$(echo "scale=0; $hours * $rate" | bc -l 2>/dev/null || echo "150")
+    echo $cost
+}
+
 # Only add template for new commits (not amends, merges, etc.)
 if [ -z "$COMMIT_SOURCE" ]; then
     # Check if the message already has content
     if [ ! -s "$COMMIT_MSG_FILE" ]; then
-        cat > "$COMMIT_MSG_FILE" << 'EOF'
-# <type>(<scope>): <subject>
+        # Calculate session metadata
+        SESSION_HOURS=$(calculate_session_time)
+        SESSION_COST=$(calculate_cost $SESSION_HOURS)
+        
+        cat > "$COMMIT_MSG_FILE" << EOF
+# <type>(<scope>): <subject> [session:${SESSION_HOURS}] [cost:\$${SESSION_COST}]
+#
+# Session tracking metadata:
+#   [session:X.X] - Estimated hours since last commit
+#   [cost:\$XXX]   - Development cost (\$300/hour rate)
 #
 # Commit types that trigger automatic versioning:
 #   feat:     New feature (bumps MINOR version)
@@ -29,14 +70,12 @@ if [ -z "$COMMIT_SOURCE" ]; then
 #   ci:       CI/CD changes
 #
 # Examples:
-#   feat: Add property search API
-#   fix(auth): Resolve login timeout issue
-#   docs: Update API documentation
-#   BREAKING CHANGE: Remove deprecated endpoints
+#   feat: Add property search API [session:2.5] [cost:\$750]
+#   fix(auth): Resolve login timeout issue [session:1.0] [cost:\$300]
+#   docs: Update API documentation [session:0.5] [cost:\$150]
 #
-# Note: Version will be automatically bumped based on commit type
-# Add [skip ci] to skip automation
-# Add [no version] to skip version bump
+# Note: GitHub webhook will process session metadata automatically
+# Adjust [session:X.X] and [cost:\$XXX] if estimates are wrong
 #
 # Please remove these comments before committing
 EOF

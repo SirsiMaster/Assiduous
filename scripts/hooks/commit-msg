@@ -22,9 +22,10 @@ else
 fi
 
 # Define the conventional commit pattern
-# Format: <type>(<scope>): <subject>
-# or: <type>: <subject>
-conventional_pattern="^(feat|fix|docs|style|refactor|test|chore|perf|ci|build|revert)(\([a-z0-9-]+\))?: .{1,50}$"
+# Format: <type>(<scope>): <subject> [session:X.X] [cost:$XXX]
+# or: <type>: <subject> [session:X.X] [cost:$XXX]
+# Allow session metadata for development tracking
+conventional_pattern="^(feat|fix|docs|style|refactor|test|chore|perf|ci|build|revert)(\([a-z0-9-]+\))?: .{1,100}(\[session:[0-9]+\.?[0-9]*\])?(\[cost:\\\$[0-9]+\])?$"
 
 # Check if this is a revert commit (git revert creates these)
 revert_pattern="^Revert \".*\"$"
@@ -64,6 +65,7 @@ print_error() {
     echo "  feat: add property search API"
     echo "  fix(auth): resolve token expiration issue"
     echo "  docs(api): update endpoint documentation"
+    echo "  test: verify automation workflow [session:1.5] [cost:\$450]"
     echo ""
     echo -e "${YELLOW}Tips:${NC}"
     echo "  - Subject should be no more than 50 characters"

@@ -214,4 +214,14 @@ app.post('/api/webhook/bank', async (req, res) => {
   res.status(200).send('ok');
 });
 
+// Import GitHub automation functions
+const { githubWebhook } = require('./github-webhook');
+const { syncGitHubData, scheduledSync } = require('./sync-service');
+
+// Main HTTP Cloud Function
 exports.app = functions.https.onRequest(app);
+
+// GitHub automation functions
+exports.githubWebhook = githubWebhook;
+exports.syncGitHubData = syncGitHubData;
+exports.scheduledSync = scheduledSync;
