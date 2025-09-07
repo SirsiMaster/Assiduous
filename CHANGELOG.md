@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+
+## [0.13.0] - 2025-09-07
+
+### Added
+- feat(docs): Convert markdown documentation to HTML format
+
 ### Added
 - feat(components): Complete admin interface standardization with universal header/sidebar system
   - Standardized header component implemented across all 15 admin pages
@@ -434,7 +440,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.12.0...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.13.0...HEAD
+
+
+## [0.13.0] - 2025-09-07
+
+### Added
+- feat(docs): Convert markdown documentation to HTML format
 
 
 ## [0.12.0] - 2025-09-07
@@ -477,3 +489,4 @@ To generate changelog entries:
 [0.11.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.10.0...v0.11.0
 [0.11.1]: https://github.com/SirsiMaster/Assiduous/compare/v0.11.0...v0.11.1
 [0.12.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.11.1...v0.12.0
+[0.13.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.12.0...v0.13.0
