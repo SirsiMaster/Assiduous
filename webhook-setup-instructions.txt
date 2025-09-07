@@ -1,0 +1,7 @@
+Visit https://github.com/SirsiMaster/Assiduous/settings/hooks to manually configure the webhook with:
+- URL: https://us-central1-assiduous-prod.cloudfunctions.net/githubWebhook
+- Content type: application/json
+- Events: Push events, Releases
+- Active: Yes
+
+The automation is working! The manual test was successful.
