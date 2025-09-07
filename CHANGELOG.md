@@ -41,6 +41,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Status**: GitHub Pages completely disabled (404 verification)
 
 
+## [0.10.0] - 2025-09-07
+
+### Added
+- feat(security): Enterprise GitHub webhook security + repo isolation [session:0.5] [cost:]
+- feat(dashboard): Enterprise security + comprehensive metrics [session:2.0] [cost:]
+- feat: Complete Google Cloud CBV system deployment [session:1.0] [cost:$300]
+
+
 ## [0.9.0] - 2025-09-07
 
 ### Added
@@ -142,11 +150,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - feat(dashboard): add comprehensive development cost tracking system
 
-
-## [0.4.0] - 2025-09-06
-
-### Added
-- feat(analytics): integrate Firebase with development dashboards
 
 ## [0.4.0] - 2025-09-06
 
@@ -383,111 +386,25 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.9.0...HEAD
-
-
-## [0.9.0] - 2025-09-07
-
-### Added
-- feat: Complete 100% automation with webhook configuration [session:0.5] [cost:$150]
-- feat: Complete 95% automation for GitHub-to-Firebase pipeline [session:4.0] [cost:$1200]
-
-
-## [0.8.0] - 2025-09-07
-
-### Added
-- feat(dev-dashboard): Restore complete visual metrics
-
-### Fixed
-- fix: Restore working dashboard immediately
-
-
-## [0.7.1] - 2025-09-06
-
-### Fixed
-- fix: Fix CI/CD pipeline for seamless deployment
-
-
-## [0.7.0] - 2025-09-06
-
-### Added
-- feat: Add standard admin sidebar to costs page
-
-
-## [0.6.0] - 2025-09-06
-
-### Added
-- feat: Add development costs tracking page
-
-
-## [0.5.6] - 2025-09-06
-
-### Fixed
-- fix: Embed sidebar HTML directly in dashboard
-
-
-## [0.5.5] - 2025-09-06
-
-### Fixed
-- fix: Restore proper dashboard styling
-
-
-## [0.5.4] - 2025-09-06
-
-### Fixed
-- fix: Deploy files to correct Firebase directory
-
-
-## [0.5.3] - 2025-09-06
-
-### Fixed
-- fix: Shorten Firebase deployment messages
-
-
-## [0.5.2] - 2025-09-06
-
-### Fixed
-- fix: Fix GitHub Actions Firebase deployment paths
-
-
-## [0.5.1] - 2025-09-06
-
-### Fixed
-- fix(dashboard): Restore working dashboard with cost tracking
-- fix(dashboard): Restore Assiduous design system quality
-
-
-## [0.5.0] - 2025-09-06
-
-### Added
-- feat(dashboard): add comprehensive development cost tracking system
-
-
-## [0.4.0] - 2025-09-06
-
-### Added
-- feat(analytics): integrate Firebase with development dashboards
-
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.10.0...v1.0.0
+[0.10.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.9.0...v0.10.0
+[0.9.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.8.1...v0.9.0
+[0.8.1]: https://github.com/SirsiMaster/Assiduous/compare/v0.8.0...v0.8.1
+[0.8.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.7.1...v0.8.0
+[0.7.1]: https://github.com/SirsiMaster/Assiduous/compare/v0.7.0...v0.7.1
+[0.7.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.6.0...v0.7.0
+[0.6.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.5.6...v0.6.0
+[0.5.6]: https://github.com/SirsiMaster/Assiduous/compare/v0.5.5...v0.5.6
+[0.5.5]: https://github.com/SirsiMaster/Assiduous/compare/v0.5.4...v0.5.5
+[0.5.4]: https://github.com/SirsiMaster/Assiduous/compare/v0.5.3...v0.5.4
+[0.5.3]: https://github.com/SirsiMaster/Assiduous/compare/v0.5.2...v0.5.3
+[0.5.2]: https://github.com/SirsiMaster/Assiduous/compare/v0.5.1...v0.5.2
+[0.5.1]: https://github.com/SirsiMaster/Assiduous/compare/v0.5.0...v0.5.1
+[0.5.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.4.0...v0.5.0
+[0.4.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.3.0...v0.4.0
+[0.3.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.1.1...v0.2.0
-## [0.3.0] - 2025-09-06
-
-### Added
-- feat: Add automated versioning system
-
 [0.1.1]: https://github.com/SirsiMaster/Assiduous/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.0.1...v0.1.0
 [0.0.1]: https://github.com/SirsiMaster/Assiduous/releases/tag/v0.0.1
-[0.3.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.2.0...v0.3.0
-[0.4.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.3.0...v0.4.0
-[0.5.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.4.0...v0.5.0
-[0.5.1]: https://github.com/SirsiMaster/Assiduous/compare/v0.5.0...v0.5.1
-[0.5.2]: https://github.com/SirsiMaster/Assiduous/compare/v0.5.1...v0.5.2
-[0.5.3]: https://github.com/SirsiMaster/Assiduous/compare/v0.5.2...v0.5.3
-[0.5.4]: https://github.com/SirsiMaster/Assiduous/compare/v0.5.3...v0.5.4
-[0.5.5]: https://github.com/SirsiMaster/Assiduous/compare/v0.5.4...v0.5.5
-[0.5.6]: https://github.com/SirsiMaster/Assiduous/compare/v0.5.5...v0.5.6
-[0.6.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.5.6...v0.6.0
-[0.7.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.6.0...v0.7.0
-[0.7.1]: https://github.com/SirsiMaster/Assiduous/compare/v0.7.0...v0.7.1
-[0.8.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.7.1...v0.8.0
-[0.9.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.8.0...v0.9.0
