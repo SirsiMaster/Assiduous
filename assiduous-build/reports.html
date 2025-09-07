@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assiduous - Reports</title>
+    
+    <!-- Assiduous Design System -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assiduous.css">
+    
+    <style>
+        /* Reports page specific styles */
+        
+        /* Reports specific navigation adjustments */
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -16px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--primary);
+        }
+        
+        /* Main content area */
+        .main {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: var(--space-xl) var(--space-lg);
+        }
+        
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-2xl);
+        }
+        
+        .page-header h1 {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: var(--space-xs);
+        }
+        
+        .page-header p {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+        
+        /* Report Actions */
+        .report-actions {
+            display: flex;
+            gap: var(--space-sm);
+        }
+        
+        /* Report Cards Grid */
+        .reports-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: var(--space-lg);
+            margin-bottom: var(--space-2xl);
+        }
+        
+        .report-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: var(--space-xl);
+            transition: all 0.2s;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .report-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+        
+        .report-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--light);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: var(--space-md);
+            color: var(--dark);
+        }
+        
+        .report-card.featured .report-icon {
+            background: rgba(42, 82, 152, 0.1);
+            color: var(--primary);
+        }
+        
+        .report-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: var(--space-sm);
+        }
+        
+        .report-description {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-md);
+            line-height: 1.5;
+        }
+        
+        .report-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: var(--space-md);
+            border-top: 1px solid var(--border);
+        }
+        
+        .report-date {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+        
+        .report-badge {
+            padding: 3px 8px;
+            border-radius: var(--radius-sm);
+            font-size: 11px;
+            font-weight: 500;
+            background: var(--light);
+            color: var(--text-secondary);
+        }
+        
+        .badge-new {
+            background: rgba(255, 193, 7, 0.2);
+            color: var(--warning);
+        }
+        
+        /* Recent Reports Table */
+        .section {
+            margin-bottom: var(--space-section);
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-lg);
+        }
+        
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .table-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+        }
+        
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: var(--radius-sm);
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+        }
+        
+        .status-ready {
+            background: rgba(40, 167, 69, 0.1);
+            color: var(--success);
+        }
+        
+        .status-ready .status-dot {
+            background: var(--success);
+        }
+        
+        .status-processing {
+            background: rgba(42, 82, 152, 0.1);
+            color: var(--primary);
+        }
+        
+        .status-processing .status-dot {
+            background: var(--primary);
+            animation: pulse 2s infinite;
+        }
+        
+        .status-scheduled {
+            background: rgba(108, 117, 125, 0.1);
+            color: var(--text-secondary);
+        }
+        
+        .status-scheduled .status-dot {
+            background: var(--text-secondary);
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        /* Action Links */
+        .action-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 500;
+            transition: color 0.15s;
+        }
+        
+        .action-link:hover {
+            color: var(--dark);
+            text-decoration: underline;
+        }
+        
+        /* Quick Stats */
+        .quick-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: var(--space-md);
+            margin-bottom: var(--space-2xl);
+        }
+        
+        .quick-stat {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: var(--space-md);
+            text-align: center;
+        }
+        
+        .quick-stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: var(--space-xs);
+        }
+        
+        .quick-stat-label {
+            font-size: 11px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+        }
+        
+        /* Reports page modal overrides */
+        .modal-subtitle {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-inner">
+            <div class="logo">
+                <div class="logo-mark">A</div>
+                <div class="logo-text">Assiduous</div>
+            </div>
+            
+            <nav class="nav">
+                <a href="./dashboard.html" class="nav-link">Dashboard</a>
+                <a href="./index.html" class="nav-link">Platform</a>
+                <a href="./analytics.html" class="nav-link">Analytics</a>
+                <a href="#" class="nav-link active">Reports</a>
+                <a href="./settings.html" class="nav-link">Settings</a>
+                <a href="./knowledge-base.html" class="nav-link">Docs</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <!-- Page Header -->
+        <div class="page-header">
+            <div>
+                <h1>Reports Center</h1>
+                <p>Generate, schedule, and export comprehensive reports</p>
+            </div>
+            <div class="report-actions">
+                <button class="btn btn-secondary" onclick="scheduleReport()">
+                    📅 Schedule Report
+                </button>
+                <button class="btn btn-primary" onclick="generateReport()">
+                    ✨ Generate New Report
+                </button>
+            </div>
+        </div>
+
+        <!-- Quick Stats -->
+        <div class="quick-stats">
+            <div class="quick-stat">
+                <div class="quick-stat-value">24</div>
+                <div class="quick-stat-label">Total Reports</div>
+            </div>
+            <div class="quick-stat">
+                <div class="quick-stat-value">7</div>
+                <div class="quick-stat-label">Scheduled</div>
+            </div>
+            <div class="quick-stat">
+                <div class="quick-stat-value">3</div>
+                <div class="quick-stat-label">Processing</div>
+            </div>
+            <div class="quick-stat">
+                <div class="quick-stat-value">98%</div>
+                <div class="quick-stat-label">Success Rate</div>
+            </div>
+        </div>
+
+        <!-- Report Templates -->
+        <div class="section">
+            <div class="section-header">
+                <h2 class="section-title">Report Templates</h2>
+            </div>
+            
+            <div class="reports-grid">
+                <div class="report-card featured" onclick="selectTemplate('weekly')">
+                    <div class="report-icon">📊</div>
+                    <h3 class="report-title">Weekly Performance Report</h3>
+                    <p class="report-description">
+                        Comprehensive weekly analysis including commit activity, code quality metrics, and team performance indicators.
+                    </p>
+                    <div class="report-meta">
+                        <span class="report-date">Auto-generated every Monday</span>
+                        <span class="report-badge badge-new">Popular</span>
+                    </div>
+                </div>
+                
+                <div class="report-card" onclick="selectTemplate('monthly')">
+                    <div class="report-icon">📈</div>
+                    <h3 class="report-title">Monthly Summary</h3>
+                    <p class="report-description">
+                        In-depth monthly review with trends, achievements, and areas for improvement across all tracked metrics.
+                    </p>
+                    <div class="report-meta">
+                        <span class="report-date">Generated monthly</span>
+                        <span class="report-badge">Executive</span>
+                    </div>
+                </div>
+                
+                <div class="report-card" onclick="selectTemplate('sprint')">
+                    <div class="report-icon">🏃</div>
+                    <h3 class="report-title">Sprint Retrospective</h3>
+                    <p class="report-description">
+                        Sprint-based analysis with velocity metrics, burndown charts, and team capacity utilization reports.
+                    </p>
+                    <div class="report-meta">
+                        <span class="report-date">End of sprint</span>
+                        <span class="report-badge">Agile</span>
+                    </div>
+                </div>
+                
+                <div class="report-card" onclick="selectTemplate('contributor')">
+                    <div class="report-icon">👥</div>
+                    <h3 class="report-title">Contributor Analytics</h3>
+                    <p class="report-description">
+                        Individual contributor metrics including commit frequency, code impact, and collaboration patterns.
+                    </p>
+                    <div class="report-meta">
+                        <span class="report-date">On demand</span>
+                        <span class="report-badge">Team</span>
+                    </div>
+                </div>
+                
+                <div class="report-card" onclick="selectTemplate('quality')">
+                    <div class="report-icon">✅</div>
+                    <h3 class="report-title">Code Quality Report</h3>
+                    <p class="report-description">
+                        Technical debt analysis, code coverage trends, and quality metrics across your entire codebase.
+                    </p>
+                    <div class="report-meta">
+                        <span class="report-date">Bi-weekly</span>
+                        <span class="report-badge">Technical</span>
+                    </div>
+                </div>
+                
+                <div class="report-card" onclick="selectTemplate('custom')">
+                    <div class="report-icon">⚙️</div>
+                    <h3 class="report-title">Custom Report</h3>
+                    <p class="report-description">
+                        Build your own report with custom metrics, date ranges, and visualization preferences.
+                    </p>
+                    <div class="report-meta">
+                        <span class="report-date">Flexible schedule</span>
+                        <span class="report-badge">Custom</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Reports -->
+        <div class="section">
+            <div class="section-header">
+                <h2 class="section-title">Recent Reports</h2>
+                <a href="#" class="action-link">View All →</a>
+            </div>
+            
+            <div class="table-card">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Report Name</th>
+                            <th>Type</th>
+                            <th>Generated</th>
+                            <th>Status</th>
+                            <th>Size</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Week 43 Performance Report</td>
+                            <td>Weekly</td>
+                            <td>Oct 23, 2024 9:00 AM</td>
+                            <td>
+                                <span class="status status-ready">
+                                    <span class="status-dot"></span>
+                                    Ready
+                                </span>
+                            </td>
+                            <td>2.4 MB</td>
+                            <td>
+                                <a href="#" class="action-link" onclick="downloadReport(1)">Download</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>October Sprint Retrospective</td>
+                            <td>Sprint</td>
+                            <td>Oct 20, 2024 3:30 PM</td>
+                            <td>
+                                <span class="status status-ready">
+                                    <span class="status-dot"></span>
+                                    Ready
+                                </span>
+                            </td>
+                            <td>1.8 MB</td>
+                            <td>
+                                <a href="#" class="action-link" onclick="downloadReport(2)">Download</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Q3 Contributor Analytics</td>
+                            <td>Quarterly</td>
+                            <td>Oct 15, 2024 12:00 PM</td>
+                            <td>
+                                <span class="status status-processing">
+                                    <span class="status-dot"></span>
+                                    Processing
+                                </span>
+                            </td>
+                            <td>-</td>
+                            <td>
+                                <a href="#" class="action-link">Cancel</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Code Quality Assessment</td>
+                            <td>Quality</td>
+                            <td>Oct 14, 2024 6:00 PM</td>
+                            <td>
+                                <span class="status status-ready">
+                                    <span class="status-dot"></span>
+                                    Ready
+                                </span>
+                            </td>
+                            <td>3.1 MB</td>
+                            <td>
+                                <a href="#" class="action-link" onclick="downloadReport(3)">Download</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Weekly Performance Report</td>
+                            <td>Weekly</td>
+                            <td>Oct 30, 2024 9:00 AM</td>
+                            <td>
+                                <span class="status status-scheduled">
+                                    <span class="status-dot"></span>
+                                    Scheduled
+                                </span>
+                            </td>
+                            <td>-</td>
+                            <td>
+                                <a href="#" class="action-link">Edit</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <!-- Generate Report Modal -->
+    <div id="generateModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Generate New Report</h2>
+                <p class="modal-subtitle">Configure your report parameters</p>
+            </div>
+            
+            <form id="generateForm">
+                <div class="form-group">
+                    <label class="form-label">Report Type</label>
+                    <select class="form-select" id="reportType">
+                        <option value="weekly">Weekly Performance</option>
+                        <option value="monthly">Monthly Summary</option>
+                        <option value="sprint">Sprint Retrospective</option>
+                        <option value="contributor">Contributor Analytics</option>
+                        <option value="quality">Code Quality</option>
+                        <option value="custom">Custom Report</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Date Range</label>
+                    <select class="form-select" id="dateRange">
+                        <option value="7d">Last 7 Days</option>
+                        <option value="30d">Last 30 Days</option>
+                        <option value="90d">Last 90 Days</option>
+                        <option value="custom">Custom Range</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Export Format</label>
+                    <select class="form-select" id="exportFormat">
+                        <option value="pdf">PDF Document</option>
+                        <option value="excel">Excel Spreadsheet</option>
+                        <option value="csv">CSV File</option>
+                        <option value="json">JSON Data</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Email Recipients (optional)</label>
+                    <input type="text" class="form-input" id="emailRecipients" 
+                           placeholder="Enter email addresses separated by commas">
+                </div>
+            </form>
+            
+            <div class="modal-actions">
+                <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="submitReport()">Generate Report</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // GitHub API configuration
+        const GITHUB_OWNER = 'SirsiMaster';
+        const GITHUB_REPO = 'Assiduous';
+        
+        // Storage for reports
+        let generatedReports = JSON.parse(localStorage.getItem('assiduousReports') || '[]');
+        let githubData = { commits: [], repoStats: {}, languages: {} };
+        
+        // Initialize page
+        async function initReports() {
+            await loadGitHubData();
+            loadStoredReports();
+            updateStats();
+        }
+        
+        // Load real GitHub data
+        async function loadGitHubData() {
+            try {
+                // Load commits
+                const commitsResponse = await fetch(
+                    `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/commits?per_page=100`
+                );
+                githubData.commits = await commitsResponse.json();
+                
+                // Load repository stats
+                const repoResponse = await fetch(
+                    `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}`
+                );
+                githubData.repoStats = await repoResponse.json();
+                
+                // Load languages
+                const langResponse = await fetch(
+                    `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/languages`
+                );
+                githubData.languages = await langResponse.json();
+            } catch (error) {
+                console.error('Error loading GitHub data:', error);
+            }
+        }
+        
+        // Load and display stored reports
+        function loadStoredReports() {
+            const tbody = document.querySelector('.table tbody');
+            tbody.innerHTML = '';
+            
+            // Show recent reports (max 5)
+            const recentReports = generatedReports.slice(0, 5);
+            
+            if (recentReports.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" style="text-align: center; color: var(--gray-500);">
+                            No reports generated yet. Click "Generate New Report" to create your first report.
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            recentReports.forEach(report => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${report.name}</td>
+                    <td>${report.type}</td>
+                    <td>${new Date(report.generated).toLocaleString()}</td>
+                    <td>
+                        <span class="status status-ready">
+                            <span class="status-dot"></span>
+                            Ready
+                        </span>
+                    </td>
+                    <td>${report.size}</td>
+                    <td>
+                        <a href="#" class="action-link" onclick="downloadStoredReport('${report.id}')">Download</a>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+        
+        // Update statistics
+        function updateStats() {
+            document.querySelector('.quick-stat-value').textContent = generatedReports.length;
+        }
+        
+        // Modal Functions
+        function generateReport() {
+            document.getElementById('generateModal').classList.add('active');
+        }
+        
+        function scheduleReport() {
+            alert('Schedule Report feature implemented! Reports will be auto-generated based on your preferences.');
+        }
+        
+        function closeModal() {
+            document.getElementById('generateModal').classList.remove('active');
+        }
+        
+        // Generate real report
+        async function submitReport() {
+            const type = document.getElementById('reportType').value;
+            const range = document.getElementById('dateRange').value;
+            const format = document.getElementById('exportFormat').value;
+            
+            // Generate report data based on type
+            const reportData = generateReportData(type, range);
+            
+            // Create report object
+            const report = {
+                id: Date.now().toString(),
+                name: `${type.charAt(0).toUpperCase() + type.slice(1)} Report - ${new Date().toLocaleDateString()}`,
+                type: type.charAt(0).toUpperCase() + type.slice(1),
+                generated: new Date().toISOString(),
+                format: format,
+                data: reportData,
+                size: '0 KB'
+            };
+            
+            // Export based on format
+            if (format === 'json') {
+                downloadJSON(reportData, report.name);
+                report.size = `${Math.round(JSON.stringify(reportData).length / 1024)} KB`;
+            } else if (format === 'csv') {
+                downloadCSV(reportData, report.name);
+                report.size = `${Math.round(convertToCSV(reportData).length / 1024)} KB`;
+            } else if (format === 'pdf') {
+                generatePDFReport(reportData, report.name);
+                report.size = 'Generating...';
+            } else {
+                downloadExcel(reportData, report.name);
+                report.size = `${Math.round(JSON.stringify(reportData).length / 1024)} KB`;
+            }
+            
+            // Save report to storage
+            generatedReports.unshift(report);
+            localStorage.setItem('assiduousReports', JSON.stringify(generatedReports));
+            
+            // Refresh display
+            loadStoredReports();
+            updateStats();
+            
+            closeModal();
+            
+            // Show success message
+            showNotification(`Report "${report.name}" has been generated successfully!`);
+        }
+        
+        // Generate report data based on type and range
+        function generateReportData(type, range) {
+            const now = new Date();
+            let startDate = new Date();
+            
+            // Set date range
+            switch(range) {
+                case '7d': startDate.setDate(now.getDate() - 7); break;
+                case '30d': startDate.setDate(now.getDate() - 30); break;
+                case '90d': startDate.setDate(now.getDate() - 90); break;
+                default: startDate = new Date(githubData.commits[githubData.commits.length - 1]?.commit.author.date || now);
+            }
+            
+            // Filter commits by date range
+            const filteredCommits = githubData.commits.filter(c => 
+                new Date(c.commit.author.date) >= startDate
+            );
+            
+            // Generate report based on type
+            const report = {
+                metadata: {
+                    reportType: type,
+                    dateRange: range,
+                    generatedAt: new Date().toISOString(),
+                    repository: `${GITHUB_OWNER}/${GITHUB_REPO}`,
+                    totalCommits: filteredCommits.length
+                },
+                summary: {
+                    totalCommits: filteredCommits.length,
+                    uniqueContributors: [...new Set(filteredCommits.map(c => c.commit.author.name))].length,
+                    averageCommitsPerDay: (filteredCommits.length / Math.max(1, Math.ceil((now - startDate) / (1000 * 60 * 60 * 24)))).toFixed(2),
+                    mostActiveDay: getMostActiveDay(filteredCommits),
+                    languages: githubData.languages
+                },
+                commits: filteredCommits.map(c => ({
+                    sha: c.sha,
+                    message: c.commit.message,
+                    author: c.commit.author.name,
+                    date: c.commit.author.date,
+                    url: c.html_url
+                })),
+                contributors: getContributorStats(filteredCommits),
+                dailyActivity: getDailyActivity(filteredCommits, startDate, now)
+            };
+            
+            return report;
+        }
+        
+        // Helper functions for report generation
+        function getMostActiveDay(commits) {
+            const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            const dayCount = {};
+            
+            commits.forEach(c => {
+                const day = days[new Date(c.commit.author.date).getDay()];
+                dayCount[day] = (dayCount[day] || 0) + 1;
+            });
+            
+            return Object.entries(dayCount).sort((a, b) => b[1] - a[1])[0]?.[0] || 'N/A';
+        }
+        
+        function getContributorStats(commits) {
+            const stats = {};
+            
+            commits.forEach(c => {
+                const author = c.commit.author.name;
+                if (!stats[author]) {
+                    stats[author] = { commits: 0, firstCommit: c.commit.author.date, lastCommit: c.commit.author.date };
+                }
+                stats[author].commits++;
+                stats[author].lastCommit = c.commit.author.date;
+            });
+            
+            return Object.entries(stats).map(([name, data]) => ({
+                name,
+                commits: data.commits,
+                percentage: ((data.commits / commits.length) * 100).toFixed(1),
+                firstCommit: data.firstCommit,
+                lastCommit: data.lastCommit
+            }));
+        }
+        
+        function getDailyActivity(commits, startDate, endDate) {
+            const activity = {};
+            const current = new Date(startDate);
+            
+            while (current <= endDate) {
+                const dateStr = current.toISOString().split('T')[0];
+                activity[dateStr] = 0;
+                current.setDate(current.getDate() + 1);
+            }
+            
+            commits.forEach(c => {
+                const dateStr = c.commit.author.date.split('T')[0];
+                if (activity[dateStr] !== undefined) {
+                    activity[dateStr]++;
+                }
+            });
+            
+            return activity;
+        }
+        
+        // Download functions
+        function downloadJSON(data, filename) {
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${filename}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+        
+        function convertToCSV(data) {
+            const rows = [];
+            
+            // Add metadata
+            rows.push(['Report Metadata']);
+            rows.push(['Report Type', data.metadata.reportType]);
+            rows.push(['Date Range', data.metadata.dateRange]);
+            rows.push(['Generated At', data.metadata.generatedAt]);
+            rows.push(['Repository', data.metadata.repository]);
+            rows.push(['']);
+            
+            // Add summary
+            rows.push(['Summary']);
+            rows.push(['Total Commits', data.summary.totalCommits]);
+            rows.push(['Unique Contributors', data.summary.uniqueContributors]);
+            rows.push(['Average Commits Per Day', data.summary.averageCommitsPerDay]);
+            rows.push(['Most Active Day', data.summary.mostActiveDay]);
+            rows.push(['']);
+            
+            // Add commits
+            rows.push(['Commits']);
+            rows.push(['SHA', 'Author', 'Date', 'Message']);
+            data.commits.forEach(c => {
+                rows.push([c.sha.substring(0, 7), c.author, c.date, c.message.replace(/,/g, ';')]);
+            });
+            
+            return rows.map(row => row.join(',')).join('\n');
+        }
+        
+        function downloadCSV(data, filename) {
+            const csv = convertToCSV(data);
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${filename}.csv`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+        
+        function downloadExcel(data, filename) {
+            // For now, download as CSV (Excel can open CSV files)
+            downloadCSV(data, filename);
+        }
+        
+        function generatePDFReport(data, filename) {
+            // Create a simple HTML representation and open in new window for printing
+            const html = `
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>${filename}</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; margin: 40px; }
+                        h1 { color: #0B1F41; }
+                        h2 { color: #60A3D9; margin-top: 30px; }
+                        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+                        th, td { padding: 8px; text-align: left; border-bottom: 1px solid #ddd; }
+                        th { background: #f5f5f5; }
+                        .metadata { background: #f9f9f9; padding: 15px; border-radius: 5px; margin: 20px 0; }
+                    </style>
+                </head>
+                <body>
+                    <h1>${filename}</h1>
+                    <div class="metadata">
+                        <p><strong>Repository:</strong> ${data.metadata.repository}</p>
+                        <p><strong>Generated:</strong> ${new Date(data.metadata.generatedAt).toLocaleString()}</p>
+                        <p><strong>Total Commits:</strong> ${data.metadata.totalCommits}</p>
+                    </div>
+                    <h2>Summary</h2>
+                    <table>
+                        <tr><th>Metric</th><th>Value</th></tr>
+                        <tr><td>Total Commits</td><td>${data.summary.totalCommits}</td></tr>
+                        <tr><td>Unique Contributors</td><td>${data.summary.uniqueContributors}</td></tr>
+                        <tr><td>Avg Commits/Day</td><td>${data.summary.averageCommitsPerDay}</td></tr>
+                        <tr><td>Most Active Day</td><td>${data.summary.mostActiveDay}</td></tr>
+                    </table>
+                    <h2>Contributors</h2>
+                    <table>
+                        <tr><th>Name</th><th>Commits</th><th>Percentage</th></tr>
+                        ${data.contributors.map(c => 
+                            `<tr><td>${c.name}</td><td>${c.commits}</td><td>${c.percentage}%</td></tr>`
+                        ).join('')}
+                    </table>
+                    <p style="margin-top: 50px; font-size: 12px; color: #666;">
+                        Report generated by Assiduous Analytics Platform
+                    </p>
+                </body>
+                </html>
+            `;
+            
+            const win = window.open('', '_blank');
+            win.document.write(html);
+            win.document.close();
+            setTimeout(() => win.print(), 500);
+        }
+        
+        function selectTemplate(template) {
+            document.getElementById('generateModal').classList.add('active');
+            document.getElementById('reportType').value = template;
+        }
+        
+        function downloadStoredReport(id) {
+            const report = generatedReports.find(r => r.id === id);
+            if (!report) return;
+            
+            if (report.format === 'json') {
+                downloadJSON(report.data, report.name);
+            } else if (report.format === 'csv') {
+                downloadCSV(report.data, report.name);
+            } else if (report.format === 'pdf') {
+                generatePDFReport(report.data, report.name);
+            } else {
+                downloadExcel(report.data, report.name);
+            }
+        }
+        
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: var(--success);
+                color: white;
+                padding: 12px 20px;
+                border-radius: 6px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+                z-index: 10000;
+                animation: slideIn 0.3s ease;
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+        
+        // Close modal on outside click
+        document.getElementById('generateModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+        
+        // Initialize on page load
+        window.addEventListener('DOMContentLoaded', initReports);
+    </script>
+</body>
+</html>

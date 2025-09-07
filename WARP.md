@@ -254,7 +254,7 @@ Backend services should expose REST endpoints that the frontend JavaScript can c
 - **PRIORITIZE** micro-flipping features (70% of dev effort)
 
 ### Development Rules  
-- **Frontend**: Pure HTML/CSS/JS served from GitHub Pages
+- **Frontend**: Pure HTML/CSS/JS served from Firebase Hosting
 - **Backend**: Firebase only (Firestore, Auth, Storage)
 - **Dependencies**: Use package.json (Firebase, Next.js ready)
 - **Security**: Multi-layer (Auth → Rules → Encryption)
@@ -268,38 +268,38 @@ Backend services should expose REST endpoints that the frontend JavaScript can c
 
 ## 🔗 LIVE APPLICATION URLS (ALWAYS USE THESE)
 
-### Production URLs (GitHub Pages)
-**Base URL**: `https://sirsimaster.github.io/Assiduous/`
+### Production URLs (Firebase Hosting)
+**Base URL**: `https://assiduous-prod.web.app/`
 
 #### Main Application
-- **Root Redirect**: https://sirsimaster.github.io/Assiduous/
-- **Landing Page (Login/Signup)**: https://sirsimaster.github.io/Assiduous/AssiduousFlip/
-- **Knowledge Base**: https://sirsimaster.github.io/Assiduous/AssiduousFlip/knowledge-base.html
-- **Reports**: https://sirsimaster.github.io/Assiduous/AssiduousFlip/reports.html
+- **Root Redirect**: https://assiduous-prod.web.app/
+- **Landing Page (Login/Signup)**: https://assiduous-prod.web.app/
+- **Knowledge Base**: https://assiduous-prod.web.app/knowledge-base.html
+- **Reports**: https://assiduous-prod.web.app/reports.html
 
 #### Admin Portal
-- **Admin Dashboard**: https://sirsimaster.github.io/Assiduous/AssiduousFlip/admin/dashboard.html
-- **Analytics**: https://sirsimaster.github.io/Assiduous/AssiduousFlip/admin/analytics.html
-- **Properties Management**: https://sirsimaster.github.io/Assiduous/AssiduousFlip/admin/properties.html
-- **Client Management**: https://sirsimaster.github.io/Assiduous/AssiduousFlip/admin/clients.html
-- **Agent Management**: https://sirsimaster.github.io/Assiduous/AssiduousFlip/admin/agents.html
-- **Transactions**: https://sirsimaster.github.io/Assiduous/AssiduousFlip/admin/transactions.html
-- **Market Analysis**: https://sirsimaster.github.io/Assiduous/AssiduousFlip/admin/market.html
-- **Settings**: https://sirsimaster.github.io/Assiduous/AssiduousFlip/admin/settings.html
+- **Admin Dashboard**: https://assiduous-prod.web.app/admin/dashboard.html
+- **Analytics**: https://assiduous-prod.web.app/admin/analytics.html
+- **Properties Management**: https://assiduous-prod.web.app/admin/properties.html
+- **Client Management**: https://assiduous-prod.web.app/admin/clients.html
+- **Agent Management**: https://assiduous-prod.web.app/admin/agents.html
+- **Transactions**: https://assiduous-prod.web.app/admin/transactions.html
+- **Market Analysis**: https://assiduous-prod.web.app/admin/market.html
+- **Settings**: https://assiduous-prod.web.app/admin/settings.html
 
 #### Development/Test Pages
-- **Dev Dashboard**: https://sirsimaster.github.io/Assiduous/AssiduousFlip/admin/development/dashboard.html
-- **Dev Analytics**: https://sirsimaster.github.io/Assiduous/AssiduousFlip/admin/development/analytics.html
-- **Dev Docs**: https://sirsimaster.github.io/Assiduous/AssiduousFlip/admin/development/docs.html
-- **Dev Reports**: https://sirsimaster.github.io/Assiduous/AssiduousFlip/admin/development/reports.html
-- **Old Dashboard (Backup)**: https://sirsimaster.github.io/Assiduous/AssiduousFlip/admin/development/dashboard_old.html
+- **Dev Dashboard**: https://assiduous-prod.web.app/admin/development/dashboard.html
+- **Dev Analytics**: https://assiduous-prod.web.app/admin/development/analytics.html
+- **Dev Docs**: https://assiduous-prod.web.app/admin/development/docs.html
+- **Dev Reports**: https://assiduous-prod.web.app/admin/development/reports.html
+- **Old Dashboard (Backup)**: https://assiduous-prod.web.app/admin/development/dashboard_old.html
 
 #### Client Portal
-- **Client Dashboard**: https://sirsimaster.github.io/Assiduous/AssiduousFlip/client/
+- **Client Dashboard**: https://assiduous-prod.web.app/client/
 
 #### Documentation Pages
-- **API Docs**: https://sirsimaster.github.io/Assiduous/AssiduousFlip/docs/
-- **README (HTML)**: https://sirsimaster.github.io/Assiduous/AssiduousFlip/docs/readme.html
+- **API Docs**: https://assiduous-prod.web.app/docs/
+- **README (HTML)**: https://assiduous-prod.web.app/docs/readme.html
 
 ### GitHub Repository URLs
 - **Repository Home**: https://github.com/SirsiMaster/Assiduous
@@ -321,8 +321,8 @@ http://localhost:8080/AssiduousFlip/client/
 
 ### URL Construction Rules for AI
 **IMPORTANT**: When providing URLs, ALWAYS use this format:
-- GitHub Pages: `https://sirsimaster.github.io/Assiduous/[path-to-file]`
-- Never omit `/Assiduous/` from the path
+- **Production**: `https://assiduous-prod.web.app/[path-to-file]`
+- **Local Dev**: `http://localhost:8080/AssiduousFlip/[path-to-file]`
 - File paths are case-sensitive
 - Most HTML files are in `/AssiduousFlip/` subdirectory
 

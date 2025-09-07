@@ -137,10 +137,12 @@ assiduous/
 
 ## 🌐 Deployment
 
-Assiduous can be deployed as:
-- Static website on GitHub Pages
-- Progressive Web App (PWA)
-- Integrated with backend AI services
+Assiduous is deployed using Firebase Hosting:
+- **Production**: https://assiduous-prod.web.app/
+- **Firebase Console**: https://console.firebase.google.com/project/assiduous-prod
+- **API Endpoints**: https://us-central1-assiduous-prod.cloudfunctions.net/app
+- Progressive Web App (PWA) ready
+- Integrated with Firebase backend services
 - White-label solution for real estate agencies
 
 ## 🤝 Contributing
