@@ -45,8 +45,8 @@ jobs:
           mkdir -p firebase-migration-package/assiduous-build
           
           # Copy ALL files to Firebase public directory (remove the 2>/dev/null to see errors)
-          echo "Copying AssiduousFlip directory..."
-          cp -r AssiduousFlip firebase-migration-package/assiduous-build/
+          echo "Copying AssiduousFlip directory contents..."
+          cp -r AssiduousFlip/* firebase-migration-package/assiduous-build/
           
           echo "Copying assets directory..."
           cp -r assets firebase-migration-package/assiduous-build/
