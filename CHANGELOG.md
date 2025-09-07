@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.12.0] - 2025-09-07
+
+### Added
+- feat: Implement professional standardized admin header system
+
+
 ## [0.11.1] - 2025-09-07
 
 ### Fixed
@@ -398,7 +404,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.11.1...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.12.0...HEAD
+
+
+## [0.12.0] - 2025-09-07
+
+### Added
+- feat: Implement professional standardized admin header system
 
 
 ## [0.11.1] - 2025-09-07
@@ -434,3 +446,4 @@ To generate changelog entries:
 [0.0.1]: https://github.com/SirsiMaster/Assiduous/releases/tag/v0.0.1
 [0.11.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.10.0...v0.11.0
 [0.11.1]: https://github.com/SirsiMaster/Assiduous/compare/v0.11.0...v0.11.1
+[0.12.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.11.1...v0.12.0
