@@ -290,27 +290,125 @@ async function processReleaseEvent(payload) {
 }
 
 /**
- * Main GitHub webhook handler
+ * Get repository-specific security configuration
+ */
+async function getRepositorySecurityConfig(repoFullName) {
+    try {
+        const configRef = db.collection('repository_configs').doc(repoFullName.replace('/', '_'));
+        const configDoc = await configRef.get();
+        
+        if (!configDoc.exists) {
+            // Default security config for unregistered repos
+            return {
+                authorized: false,
+                reason: 'Repository not registered'
+            };
+        }
+        
+        const config = configDoc.data();
+        return {
+            authorized: config.enabled === true,
+            securityLevel: config.securityLevel || 'standard',
+            allowedEvents: config.allowedEvents || ['push', 'release'],
+            rateLimits: config.rateLimits || { requestsPerMinute: 60 },
+            encryptionRequired: config.encryptionRequired === true,
+            reason: config.enabled ? 'Authorized' : 'Repository disabled'
+        };
+    } catch (error) {
+        console.error('Error getting repository config:', error);
+        return {
+            authorized: false,
+            reason: 'Configuration error'
+        };
+    }
+}
+
+/**
+ * Rate limiting check per repository
+ */
+async function checkRateLimit(repoFullName) {
+    const rateLimitKey = `rate_limit_${repoFullName.replace('/', '_')}_${Date.now().toString().slice(0, -4)}`; // Per minute
+    const rateLimitRef = db.collection('rate_limits').doc(rateLimitKey);
+    
+    try {
+        const doc = await rateLimitRef.get();
+        if (doc.exists) {
+            const count = doc.data().count || 0;
+            if (count >= 60) { // 60 requests per minute limit
+                return { allowed: false, count };
+            }
+            await rateLimitRef.update({ count: count + 1 });
+            return { allowed: true, count: count + 1 };
+        } else {
+            await rateLimitRef.set({ count: 1, timestamp: admin.firestore.FieldValue.serverTimestamp() });
+            return { allowed: true, count: 1 };
+        }
+    } catch (error) {
+        console.error('Rate limit check error:', error);
+        return { allowed: true, count: 0 }; // Allow on error
+    }
+}
+
+/**
+ * Main GitHub webhook handler with enterprise security
  */
 exports.githubWebhook = functions.https.onRequest(async (req, res) => {
+    const startTime = Date.now();
+    
     try {
         // Verify request method
         if (req.method !== 'POST') {
             return res.status(405).json({ error: 'Method not allowed' });
         }
         
-        // Get GitHub webhook secret from environment
-        const webhookSecret = functions.config().github?.webhook_secret || process.env.GITHUB_WEBHOOK_SECRET;
+        // Get repository info early for security checks
+        const repoFullName = req.body?.repository?.full_name;
+        if (!repoFullName) {
+            return res.status(400).json({ error: 'Repository information required' });
+        }
+        
+        // Repository-specific security configuration
+        const repoConfig = await getRepositorySecurityConfig(repoFullName);
+        if (!repoConfig.authorized) {
+            console.error(`Repository ${repoFullName} not authorized: ${repoConfig.reason}`);
+            return res.status(403).json({ 
+                error: 'Repository not authorized', 
+                reason: repoConfig.reason 
+            });
+        }
+        
+        // Rate limiting per repository
+        const rateCheck = await checkRateLimit(repoFullName);
+        if (!rateCheck.allowed) {
+            console.error(`Rate limit exceeded for ${repoFullName}`);
+            return res.status(429).json({ 
+                error: 'Rate limit exceeded', 
+                requestCount: rateCheck.count 
+            });
+        }
+        
+        // Enhanced HMAC signature verification with repo-specific secrets
+        const webhookSecret = functions.config().github?.webhook_secret || 
+                             repoConfig.webhookSecret || 
+                             process.env.GITHUB_WEBHOOK_SECRET;
         
         if (webhookSecret) {
-            // Verify GitHub signature
             const signature = req.headers['x-hub-signature-256'];
             if (!signature || !verifyGitHubSignature(JSON.stringify(req.body), signature, webhookSecret)) {
-                console.error('Invalid GitHub signature');
-                return res.status(401).json({ error: 'Unauthorized' });
+                console.error(`Invalid GitHub signature for ${repoFullName}`);
+                // Log security event
+                await db.collection('security_events').add({
+                    type: 'invalid_signature',
+                    repository: repoFullName,
+                    timestamp: admin.firestore.FieldValue.serverTimestamp(),
+                    headers: req.headers,
+                    ip: req.ip
+                });
+                return res.status(401).json({ error: 'Unauthorized - invalid signature' });
             }
         } else {
-            console.warn('GitHub webhook secret not configured - skipping signature verification');
+            console.error(`No webhook secret configured for ${repoFullName}`);
+            return res.status(401).json({ error: 'Webhook secret required' });
         }
         
         // Get event type
