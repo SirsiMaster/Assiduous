@@ -72,10 +72,11 @@ assiduous/
 
 ## 💻 Technology Stack
 
-- **Frontend**: Modern HTML5, CSS3 with custom design system
+- **Frontend**: Modern HTML5, CSS3 with universal component design system
 - **JavaScript**: ES6+ with advanced state management
 - **AI Integration**: Ready for ML model integration
 - **Responsive Design**: Mobile-first approach
+- **Component Architecture**: Universal header/sidebar system across all pages
 - **Internationalization**: Multi-language support framework
 
 ## 📊 Current Metrics (Demo Data)
@@ -129,6 +130,8 @@ assiduous/
 - **Assets**: Images and resources in `assets/images/`
 
 ### Key Components
+- **Universal Header System**: Standardized header component for admin, client, and public pages
+- **Component Architecture**: Reusable UI components with 90% code reduction
 - Property search with AI filtering
 - Real-time market analytics dashboard
 - Lead capture and CRM integration

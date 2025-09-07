@@ -360,37 +360,15 @@
 
         <!-- Main Content -->
         <main class="main-content">
-            <!-- Top Bar -->
-            <header class="topbar">
-                <div class="topbar-left">
-                    <div class="search-bar">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="11" cy="11" r="8"></circle>
-                            <path d="m21 21-4.35-4.35"></path>
-                        </svg>
-                        <input type="text" class="search-input" placeholder="Search agents...">
-                    </div>
-                </div>
-                
-                <div class="topbar-actions">
-                    <button class="btn-primary">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <line x1="12" y1="5" x2="12" y2="19"></line>
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                        </svg>
-                        Add Agent
-                    </button>
-                    <div class="user-avatar">AU</div>
-                </div>
-            </header>
+            <!-- Standardized Admin Header -->
+            <header id="admin-header-root" 
+                    data-title="Agents Management" 
+                    data-subtitle="Manage agent profiles and performance metrics"
+                    data-search-placeholder="Search agents..."
+                    data-actions='[{"label":"Add Agent","icon":"<line x1=\"12\" y1=\"5\" x2=\"12\" y2=\"19\"></line><line x1=\"5\" y1=\"12\" x2=\"19\" y2=\"12\"></line>","primary":true,"onclick":"HeaderActions.handleAction(\"addAgent\")"}]'></header>
 
             <!-- Page Content -->
             <div class="page-content">
-                <!-- Page Header -->
-                <div class="page-header">
-                    <h1 class="page-title">Agents Management</h1>
-                    <p class="page-subtitle">Manage real estate agents and their performance</p>
-                </div>
 
                 <!-- Stats Cards -->
                 <div class="stats-grid">
@@ -568,6 +546,21 @@
     </div>
 
     <script>
+        // Header Actions for Agents
+        const HeaderActions = {
+            handleAction: function(action) {
+                switch(action) {
+                    case 'addAgent':
+                        // In production, this would open a modal or navigate to add agent form
+                        console.log('Opening add agent form...');
+                        alert('Add agent functionality will be implemented in the next phase.');
+                        break;
+                    default:
+                        console.log('Unknown action:', action);
+                }
+            }
+        };
+
         // Highlight active page in sidebar
         document.addEventListener('DOMContentLoaded', function() {
             const currentPath = window.location.pathname;

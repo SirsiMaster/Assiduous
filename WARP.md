@@ -2,6 +2,39 @@
 
 This file provides guidance to WARP (warp.dev) when working with code in this repository.
 
+## ⚠️  CRITICAL DEVELOPMENT GOVERNANCE RULES (MUST FOLLOW)
+
+### **RULE 1: ALWAYS CHECK EXISTING DOCUMENTATION FIRST**
+**Before starting ANY task, you MUST:**
+- Read and understand ALL existing project documentation
+- Verify what functionality already exists and is working
+- Check against established project plans and architecture
+- Ensure you're not duplicating work or breaking existing functionality
+- Review similar implementations that already exist in the project
+- **NEVER modify or break existing working files without explicit instruction**
+
+### **RULE 2: MANDATORY COMPLETION VERIFICATION**
+**Before reporting ANY task as complete, you MUST:**
+- Run the completion verification script: `./scripts/verify_completion.sh`
+- Test all functionality you claim to have implemented
+- Verify that claimed changes actually exist in the files
+- Confirm that all components/pages work as specified
+- Check that nothing existing was broken by your changes
+- **NEVER report completion without running verification**
+
+### **RULE 3: VALIDATE GROUND TRUTH**
+**After completing ANY development work, you MUST:**
+- Test all implemented functionality against the project requirements
+- Update development documentation to reflect current reality
+- Ensure analytics and dashboards show accurate current status
+- Report the true development status, not assumptions
+- Validate that the project state matches what you report
+- **The documentation and dashboards must reflect ground truth, always**
+
+**These rules apply to ALL repositories and ALL development work, current and future.**
+
+---
+
 ## Essential Commands
 
 ### Development Server
@@ -118,11 +151,61 @@ Semantic versioning: `vMAJOR.MINOR.PATCH[-PRERELEASE]`
 - Include release notes
 - Update ROLLBACK_REGISTRY.md
 
+## Component System (NEW - Sep 2025)
+
+Assiduous now uses a standardized component system for consistent UI across all pages:
+
+### Header Component
+```html
+<!-- Replace custom headers with this standardized approach -->
+<header id="admin-header-root" 
+        data-title="Page Title" 
+        data-subtitle="Page description"
+        data-search-placeholder="Search placeholder..."
+        data-actions='[{"label":"Action","icon":"<svg>...","onclick":"handler()"}]'></header>
+<script src="[[BASE]]/components/admin-header.js"></script>
+```
+
+### Sidebar Component
+```html
+<!-- Replace custom sidebars with this standardized approach -->
+<aside id="sidebar-root" data-active="page-identifier"></aside>
+<script src="[[BASE]]/components/sidebar.js"></script>
+```
+
+### Component Files
+- `AssiduousFlip/components/admin-header.html` - Header template
+- `AssiduousFlip/components/admin-header.js` - Header loader
+- `AssiduousFlip/components/admin-layout.css` - Shared styles  
+- `AssiduousFlip/components/sidebar.html` - Sidebar template
+- `AssiduousFlip/components/sidebar.js` - Sidebar loader
+
+### Benefits
+- **90% reduction** in code duplication
+- **Consistent UX** across all pages
+- **Easy maintenance** - update once, apply everywhere
+- **Automatic path resolution** for any directory depth
+- **Mobile responsive** design built-in
+
+### Usage Guidelines
+- **ALL NEW PAGES** must use standardized components
+- Use `[[BASE]]` token for path references in components
+- Configure via data attributes, not custom code
+- Follow naming convention: `page-identifier` for data-active
+
 ## Directory Structure
 
 ```
 assiduous/
 ├── AssiduousFlip/
+│   ├── components/         # Standardized UI components (NEW)
+│   │   ├── admin-header.html    # Universal header template
+│   │   ├── admin-header.js      # Header component loader
+│   │   ├── admin-layout.css     # Shared admin styles
+│   │   ├── sidebar.html         # Universal sidebar template
+│   │   └── sidebar.js           # Sidebar component loader
+│   ├── admin/              # Admin interface (15 pages)
+│   ├── client/             # Client portal
 │   └── index.html          # Main application entry point
 ├── assets/
 │   ├── css/

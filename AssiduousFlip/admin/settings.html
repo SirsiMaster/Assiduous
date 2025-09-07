@@ -11,6 +11,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../assiduous.css">
+    <link rel="stylesheet" href="../components/admin-layout.css">
     
     <style>
         /* Admin Layout - Consistent across all admin pages */
@@ -437,36 +438,15 @@
 
         <!-- Main Content -->
         <main class="main-content">
-            <!-- Top Bar -->
-            <header class="topbar">
-                <div class="topbar-left">
-                    <div class="breadcrumb">
-                        <span>Admin</span>
-                        <span class="breadcrumb-separator">/</span>
-                        <span class="breadcrumb-current">Settings</span>
-                    </div>
-                </div>
-                
-                <div class="topbar-actions">
-                    <button class="btn-primary" onclick="saveAllSettings()">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"></path>
-                            <polyline points="17 21 17 13 7 13 7 21"></polyline>
-                            <polyline points="7 3 7 8 15 8"></polyline>
-                        </svg>
-                        Save All Changes
-                    </button>
-                    <div class="user-avatar">AU</div>
-                </div>
-            </header>
+            <!-- Standardized Admin Header -->
+            <header id="admin-header-root" 
+                    data-title="System Settings" 
+                    data-subtitle="Configure your system preferences and account settings"
+                    data-search-placeholder="Search settings..."
+                    data-actions='[{"label":"Save All Changes","icon":"<path d=\"M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z\"></path><polyline points=\"17 21 17 13 7 13 7 21\"></polyline><polyline points=\"7 3 7 8 15 8\"></polyline>","primary":true,"onclick":"saveAllSettings()"}]'></header>
 
             <!-- Page Content -->
             <div class="page-content">
-                <!-- Page Header -->
-                <div class="page-header">
-                    <h1 class="page-title">System Settings</h1>
-                    <p class="page-subtitle">Configure your system preferences and account settings</p>
-                </div>
 
                 <!-- Settings Layout -->
                 <div class="settings-layout">
@@ -643,6 +623,11 @@
     </div>
 
     <script>
+        // Header Actions for Settings (keeping existing save function)
+        const HeaderActions = {
+            // Reference to existing save function for header action compatibility
+        };
+
         // Settings navigation
         document.querySelectorAll('.settings-nav-item').forEach(item => {
             item.addEventListener('click', function(e) {
@@ -652,7 +637,7 @@
             });
         });
 
-        // Save settings
+        // Save settings (existing function - called from header action)
         function saveAllSettings() {
             alert('Settings saved successfully!');
         }

@@ -450,46 +450,15 @@
 
         <!-- Main Content -->
         <main class="main-content">
-            <!-- Top Bar -->
-            <header class="topbar">
-                <div class="topbar-left">
-                    <div class="date-range-selector">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                            <line x1="16" y1="2" x2="16" y2="6"></line>
-                            <line x1="8" y1="2" x2="8" y2="6"></line>
-                            <line x1="3" y1="10" x2="21" y2="10"></line>
-                        </svg>
-                        <select class="date-select">
-                            <option>Last 30 Days</option>
-                            <option>Last Quarter</option>
-                            <option>Last 6 Months</option>
-                            <option>Last Year</option>
-                            <option>All Time</option>
-                        </select>
-                    </div>
-                </div>
-                
-                <div class="topbar-actions">
-                    <button class="btn-secondary">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                            <polyline points="7 10 12 15 17 10"></polyline>
-                            <line x1="12" y1="15" x2="12" y2="3"></line>
-                        </svg>
-                        Export Report
-                    </button>
-                    <div class="user-avatar">AU</div>
-                </div>
-            </header>
+            <!-- Standardized Admin Header -->
+            <header id="admin-header-root" 
+                    data-title="Market Analysis" 
+                    data-subtitle="Real-time market insights and trends analysis"
+                    data-search-placeholder="Search market data..."
+                    data-actions='[{"label":"Export Market Report","icon":"<path d=\"M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4\"></path><polyline points=\"7 10 12 15 17 10\"></polyline><line x1=\"12\" y1=\"15\" x2=\"12\" y2=\"3\"></line>","onclick":"HeaderActions.exportData()"}]'></header>
 
             <!-- Page Content -->
             <div class="page-content">
-                <!-- Page Header -->
-                <div class="page-header">
-                    <h1 class="page-title">Market Analysis</h1>
-                    <p class="page-subtitle">Real estate market trends and insights</p>
-                </div>
 
                 <!-- Market Stats -->
                 <div class="market-stats">
@@ -767,6 +736,15 @@
     </div>
 
     <script>
+        // Header Actions for Market Analysis
+        const HeaderActions = {
+            exportData: function() {
+                // In production, this would export market analysis data
+                console.log('Exporting market data...');
+                alert('Market report export functionality will be implemented in the next phase.');
+            }
+        };
+
         // Highlight active page in sidebar
         document.addEventListener('DOMContentLoaded', function() {
             const currentPath = window.location.pathname;

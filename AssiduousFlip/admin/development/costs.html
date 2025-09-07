@@ -336,13 +336,12 @@
 
         <!-- Main Content -->
         <main class="main-content">
-            <!-- Top Bar -->
-            <header class="topbar">
-                <div class="page-title">💰 Development Cost Tracking</div>
-                <div class="topbar-actions">
-                    <div class="user-avatar">AU</div>
-                </div>
-            </header>
+            <!-- Standardized Admin Header -->
+            <header id="admin-header-root" 
+                    data-title="Development Costs" 
+                    data-subtitle="Track development expenses and budget allocation"
+                    data-search-placeholder="Search cost data..."
+                    data-actions='[{"label":"Export Report","icon":"<path d=\"M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4\"></path><polyline points=\"7 10 12 15 17 10\"></polyline><line x1=\"12\" y1=\"15\" x2=\"12\" y2=\"3\"></line>","onclick":"HeaderActions.exportData()"}]'></header>
 
             <!-- Page Content -->
             <div class="page-content">

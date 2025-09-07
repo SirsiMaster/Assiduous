@@ -5,12 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Buyer Portal - Assiduous Realty</title>
     
-    <!-- Assiduous Design System -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../assiduous.css">
-    <link rel="stylesheet" href="../components/admin-layout.css">
     
     <style>
         * {
@@ -25,7 +22,114 @@
             color: #111827;
         }
 
-        /* Page-specific styles only - header handled by universal component */
+        /* Navigation */
+        .navbar {
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 0.75rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+
+        .logo svg {
+            width: 24px;
+            height: 24px;
+            stroke: #667eea;
+        }
+
+        .logo-text {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #111827;
+        }
+
+        .portal-badge {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            margin-left: 0.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: #6b7280;
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-link:hover {
+            color: #111827;
+        }
+
+        .nav-link.active {
+            color: #667eea;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .notification-btn {
+            position: relative;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        .notification-dot {
+            position: absolute;
+            top: 0.25rem;
+            right: 0.25rem;
+            width: 8px;
+            height: 8px;
+            background: #ef4444;
+            border-radius: 50%;
+            border: 2px solid white;
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.875rem;
+            cursor: pointer;
+        }
 
         /* Main Layout */
         .main {
@@ -306,12 +410,38 @@
     </style>
 </head>
 <body>
-    <!-- Universal Header for Client-Facing Pages -->
-    <header id="universal-header-root" 
-            data-type="client"
-            data-title="Buyer Portal"
-            data-show-auth="true"
-            data-nav-links='[{"label":"Search","href":"#","active":true},{"label":"Saved Properties","href":"#"},{"label":"Mortgage Calculator","href":"#"},{"label":"Tours","href":"#"},{"label":"Messages","href":"#"}]'></header>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="logo">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
+                <span class="logo-text">Assiduous Realty</span>
+                <span class="portal-badge">BUYER PORTAL</span>
+            </a>
+            
+            <div class="nav-links">
+                <a href="#" class="nav-link active">Search</a>
+                <a href="#" class="nav-link">Saved Properties</a>
+                <a href="#" class="nav-link">Mortgage Calculator</a>
+                <a href="#" class="nav-link">Tours</a>
+                <a href="#" class="nav-link">Messages</a>
+            </div>
+            
+            <div class="user-menu">
+                <button class="notification-btn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2">
+                        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                        <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                    </svg>
+                    <span class="notification-dot"></span>
+                </button>
+                <div class="user-avatar">JD</div>
+            </div>
+        </div>
+    </nav>
 
     <!-- Main Content -->
     <main class="main">
@@ -545,8 +675,5 @@
             </div>
         </div>
     </main>
-    
-    <!-- Universal Header JavaScript Component -->
-    <script src="../components/universal-header.js"></script>
 </body>
 </html>

@@ -14,11 +14,176 @@
     <link rel="stylesheet" href="../components/admin-layout.css">
     
     <style>
-        /* Minimal dashboard-specific styles only */
+        /* Admin Layout */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--white);
+        }
+
+        .admin-wrapper {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 240px;
+            background: var(--navy);
+            color: var(--white);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-header {
+            padding: var(--space-lg);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .sidebar-logo {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            color: var(--white);
+            text-decoration: none;
+        }
+
+        .sidebar-logo svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .sidebar-logo-text {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: var(--space-md) 0;
+        }
+
+        .nav-section {
+            margin-bottom: var(--space-lg);
+        }
+
+        .nav-section-title {
+            padding: 0 var(--space-lg);
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            opacity: 0.6;
+            margin-bottom: var(--space-sm);
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: var(--space-sm) var(--space-lg);
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.15s;
+        }
+
+        .nav-item:hover {
+            background: rgba(255,255,255,0.05);
+            color: var(--white);
+        }
+
+        .nav-item.active {
+            background: var(--sky);
+            color: var(--white);
+        }
+
+        .nav-icon {
+            width: 18px;
+            height: 18px;
+            opacity: 0.8;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Top Bar */
+        .topbar {
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            padding: var(--space-md) var(--space-xl);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .topbar-search {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            flex: 1;
+            max-width: 400px;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: var(--space-sm) var(--space-md);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            font-size: 14px;
+        }
+
+        .topbar-actions {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+        }
+
+        .topbar-user {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-weight: 600;
+            font-size: 12px;
+        }
+
+        /* Dashboard Content */
         .dashboard-content {
+            flex: 1;
             padding: var(--space-xl);
             overflow-y: auto;
             background: var(--gray-50);
+        }
+
+        .page-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: var(--space-xs);
+        }
+
+        .page-subtitle {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-xl);
         }
 
         /* Stats Grid */
@@ -133,45 +298,81 @@
         th {
             padding: var(--space-sm) var(--space-lg);
             text-align: left;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 600;
             color: var(--text-secondary);
             text-transform: uppercase;
-            letter-spacing: 0.025em;
+            letter-spacing: 0.05em;
             background: var(--gray-50);
+            border-bottom: 1px solid var(--border);
         }
 
         td {
             padding: var(--space-md) var(--space-lg);
-            border-top: 1px solid var(--border);
             font-size: 14px;
+            color: var(--text-primary);
+            border-bottom: 1px solid var(--gray-100);
         }
 
-        .status {
-            padding: var(--space-xs) var(--space-sm);
-            border-radius: var(--radius);
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background: var(--gray-50);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 12px;
             font-size: 11px;
             font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.025em;
         }
 
-        .status.active { background: rgba(5, 150, 105, 0.1); color: var(--success); }
-        .status.pending { background: rgba(255, 217, 64, 0.1); color: var(--warning); }
-        .status.inactive { background: rgba(107, 114, 128, 0.1); color: var(--text-secondary); }
+        .status-active {
+            background: rgba(5, 150, 105, 0.1);
+            color: var(--success);
+        }
+
+        .status-pending {
+            background: rgba(255, 217, 64, 0.1);
+            color: var(--warning);
+        }
+
+        .status-inactive {
+            background: rgba(107, 114, 128, 0.1);
+            color: var(--text-secondary);
+        }
 
         /* Activity Feed */
-        .activity-feed {
+        .activity-card {
             background: var(--white);
             border: 1px solid var(--border);
             border-radius: var(--radius-md);
         }
 
+        .activity-header {
+            padding: var(--space-md) var(--space-lg);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .activity-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .activity-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
         .activity-item {
             padding: var(--space-md) var(--space-lg);
+            border-bottom: 1px solid var(--gray-100);
             display: flex;
-            gap: var(--space-md);
-            border-bottom: 1px solid var(--border);
+            gap: var(--space-sm);
         }
 
         .activity-item:last-child {
@@ -182,12 +383,11 @@
             width: 32px;
             height: 32px;
             border-radius: 50%;
-            background: var(--gray-50);
+            background: var(--gray-100);
             display: flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
-            color: var(--text-secondary);
         }
 
         .activity-content {
@@ -195,43 +395,61 @@
         }
 
         .activity-text {
-            font-size: 14px;
-            color: var(--dark);
-            margin-bottom: var(--space-xs);
+            font-size: 13px;
+            color: var(--text-primary);
+            margin-bottom: 2px;
         }
 
         .activity-time {
-            font-size: 12px;
+            font-size: 11px;
             color: var(--text-secondary);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
     <div class="admin-wrapper">
-        <!-- Standardized Sidebar -->
-        <aside class="sidebar" id="sidebar-root" data-active="dashboard"></aside>
+        <!-- Sidebar -->
+        <aside id="sidebar-root" data-active="dashboard"></aside>
 
+        <!-- Main Content -->
         <main class="main-content">
-            <!-- Standardized Header -->
+            <!-- Standardized Admin Header -->
             <header id="admin-header-root" 
-                    data-title="Admin Dashboard" 
+                    data-title="Dashboard Overview" 
                     data-subtitle="Welcome back! Here's what's happening with your platform today."
-                    data-search-placeholder="Search properties, agents, transactions..."></header>
+                    data-search-placeholder="Search across all modules..."></header>
 
             <!-- Dashboard Content -->
             <div class="dashboard-content">
+
                 <!-- Stats Grid -->
                 <div class="stats-grid">
                     <div class="stat-card">
                         <div class="stat-icon blue">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                                <polyline points="9 22 9 12 15 12 15 22"></polyline>
                             </svg>
                         </div>
-                        <div class="stat-value">1,247</div>
-                        <div class="stat-label">Total Properties</div>
-                        <div class="stat-change up">+12% from last month</div>
+                        <div class="stat-value">1,248</div>
+                        <div class="stat-label">Active Properties</div>
+                        <div class="stat-change up">↑ 12% from last month</div>
                     </div>
 
                     <div class="stat-card">
@@ -242,106 +460,99 @@
                             </svg>
                         </div>
                         <div class="stat-value">$2.4M</div>
-                        <div class="stat-label">Monthly Revenue</div>
-                        <div class="stat-change up">+8% from last month</div>
+                        <div class="stat-label">Monthly Volume</div>
+                        <div class="stat-change up">↑ 8% from last month</div>
                     </div>
 
                     <div class="stat-card">
                         <div class="stat-icon yellow">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                                <circle cx="12" cy="7" r="4"></circle>
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
                             </svg>
                         </div>
-                        <div class="stat-value">89</div>
+                        <div class="stat-value">156</div>
                         <div class="stat-label">Active Agents</div>
-                        <div class="stat-change up">+3 this week</div>
+                        <div class="stat-change up">↑ 3% from last month</div>
                     </div>
 
                     <div class="stat-card">
                         <div class="stat-icon red">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <line x1="12" y1="20" x2="12" y2="10"></line>
-                                <line x1="18" y1="20" x2="18" y2="4"></line>
-                                <line x1="6" y1="20" x2="6" y2="16"></line>
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
                             </svg>
                         </div>
-                        <div class="stat-value">34</div>
-                        <div class="stat-label">Pending Transactions</div>
-                        <div class="stat-change down">-5% from last week</div>
+                        <div class="stat-value">3,842</div>
+                        <div class="stat-label">Total Clients</div>
+                        <div class="stat-change up">↑ 18% from last month</div>
                     </div>
                 </div>
 
                 <!-- Content Grid -->
                 <div class="content-grid">
-                    <!-- Recent Properties Table -->
+                    <!-- Recent Transactions Table -->
                     <div class="data-table">
                         <div class="table-header">
-                            <h3 class="table-title">Recent Properties</h3>
+                            <h3 class="table-title">Recent Transactions</h3>
                             <button class="table-action">View All</button>
                         </div>
                         <table>
                             <thead>
                                 <tr>
                                     <th>Property</th>
+                                    <th>Client</th>
                                     <th>Agent</th>
-                                    <th>Price</th>
+                                    <th>Amount</th>
                                     <th>Status</th>
-                                    <th>Listed</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>
-                                        <div style="font-weight: 600;">123 Sunset Boulevard</div>
-                                        <div style="font-size: 12px; color: var(--text-secondary);">Los Angeles, CA 90210</div>
-                                    </td>
+                                    <td>123 Main St</td>
+                                    <td>John Smith</td>
                                     <td>Sarah Johnson</td>
-                                    <td>$850,000</td>
-                                    <td><span class="status active">Active</span></td>
-                                    <td>2 days ago</td>
+                                    <td>$450,000</td>
+                                    <td><span class="status-badge status-active">Completed</span></td>
                                 </tr>
                                 <tr>
-                                    <td>
-                                        <div style="font-weight: 600;">456 Ocean Drive</div>
-                                        <div style="font-size: 12px; color: var(--text-secondary);">Miami Beach, FL 33139</div>
-                                    </td>
-                                    <td>Michael Chen</td>
-                                    <td>$1,200,000</td>
-                                    <td><span class="status pending">Pending</span></td>
-                                    <td>5 days ago</td>
+                                    <td>456 Oak Ave</td>
+                                    <td>Emily Davis</td>
+                                    <td>Mike Wilson</td>
+                                    <td>$325,000</td>
+                                    <td><span class="status-badge status-pending">Pending</span></td>
                                 </tr>
                                 <tr>
-                                    <td>
-                                        <div style="font-weight: 600;">789 Park Avenue</div>
-                                        <div style="font-size: 12px; color: var(--text-secondary);">New York, NY 10021</div>
-                                    </td>
-                                    <td>Emily Rodriguez</td>
-                                    <td>$2,300,000</td>
-                                    <td><span class="status active">Active</span></td>
-                                    <td>1 week ago</td>
+                                    <td>789 Pine Rd</td>
+                                    <td>Robert Brown</td>
+                                    <td>Lisa Anderson</td>
+                                    <td>$580,000</td>
+                                    <td><span class="status-badge status-active">Completed</span></td>
                                 </tr>
                                 <tr>
-                                    <td>
-                                        <div style="font-weight: 600;">321 Pine Street</div>
-                                        <div style="font-size: 12px; color: var(--text-secondary);">Seattle, WA 98101</div>
-                                    </td>
-                                    <td>David Wilson</td>
-                                    <td>$695,000</td>
-                                    <td><span class="status inactive">Sold</span></td>
-                                    <td>2 weeks ago</td>
+                                    <td>321 Elm St</td>
+                                    <td>Maria Garcia</td>
+                                    <td>Tom Martinez</td>
+                                    <td>$275,000</td>
+                                    <td><span class="status-badge status-pending">Pending</span></td>
+                                </tr>
+                                <tr>
+                                    <td>654 Maple Dr</td>
+                                    <td>James Lee</td>
+                                    <td>Sarah Johnson</td>
+                                    <td>$420,000</td>
+                                    <td><span class="status-badge status-active">Completed</span></td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
 
-                    <!-- Activity Feed -->
-                    <div>
-                        <div class="activity-feed">
-                            <div class="table-header">
-                                <h3 class="table-title">Recent Activity</h3>
-                            </div>
-                            
+                    <!-- Recent Activity -->
+                    <div class="activity-card">
+                        <div class="activity-header">
+                            <h3 class="activity-title">Recent Activity</h3>
+                        </div>
+                        <div class="activity-list">
                             <div class="activity-item">
                                 <div class="activity-icon">
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -412,12 +623,17 @@
         </main>
     </div>
 
-    <!-- Load Component Scripts -->
-    <script src="../components/sidebar.js"></script>
-    <script src="../components/admin-header.js"></script>
-    
-    <!-- Dashboard-specific functionality -->
     <script>
+        // Simple interactivity
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function(e) {
+                if (!this.href.includes('#')) return;
+                e.preventDefault();
+                document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
         // Simulate real-time updates
         function updateStats() {
             const statValues = document.querySelectorAll('.stat-value');
@@ -435,5 +651,7 @@
         // Update every 10 seconds
         setInterval(updateStats, 10000);
     </script>
+    <script src="../components/sidebar.js"></script>
+    <script src="../components/admin-header.js"></script>
 </body>
 </html>
