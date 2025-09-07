@@ -8,6 +8,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.8.0] - 2025-09-07
+
+### Added
+- feat(dev-dashboard): Restore complete visual metrics
+
+### Fixed
+- fix: Restore working dashboard immediately
+
+
 ## [0.7.1] - 2025-09-06
 
 ### Fixed
@@ -309,7 +318,16 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.7.1...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.8.0...HEAD
+
+
+## [0.8.0] - 2025-09-07
+
+### Added
+- feat(dev-dashboard): Restore complete visual metrics
+
+### Fixed
+- fix: Restore working dashboard immediately
 
 
 ## [0.7.1] - 2025-09-06
@@ -399,3 +417,4 @@ To generate changelog entries:
 [0.6.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.5.6...v0.6.0
 [0.7.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.6.0...v0.7.0
 [0.7.1]: https://github.com/SirsiMaster/Assiduous/compare/v0.7.0...v0.7.1
+[0.8.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.7.1...v0.8.0
