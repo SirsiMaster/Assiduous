@@ -54,14 +54,14 @@ This document defines the complete development-to-production workflow for the As
    ```
 
 #### Automation Opportunities:
-- [ ] **Git Hook Integration**: Auto-log session start/end
-- [ ] **IDE Plugin**: Track active coding time
-- [ ] **Local Metrics Collection**: Automatic file change tracking
+- [ ] **Enhanced Git Hooks**: Better commit metadata tracking
+- [ ] **IDE Plugin**: Track active coding time (saved to local files)
+- [ ] **Local Metrics Collection**: Automatic file change tracking → commit to GitHub
 
 #### Current Gaps:
-- ❌ No automatic session logging to Firebase
 - ❌ Manual time tracking required
 - ❌ Cost calculations done post-session
+- ✅ All development data properly committed to GitHub (source of truth)
 
 ---
 
@@ -139,30 +139,31 @@ This document defines the complete development-to-production workflow for the As
    ```
 
 #### Missing Components:
-- ❌ **Automatic Session Logging**: Currently manual
+- ❌ **GitHub Webhook Integration**: No automatic GitHub → Firebase sync
 - ❌ **Real-time Data Sync**: Batch updates only
-- ❌ **GitHub Integration**: No webhook connection
-- ❌ **Cost Automation**: Manual calculations
+- ❌ **Automated Data Migration**: GitHub data → Firebase processing
+- ❌ **Cost Automation**: Manual calculations from GitHub data
 
 #### Required Implementations:
-1. **Session Auto-Logger**
+1. **GitHub-to-Firebase Data Pipeline**
    ```javascript
-   // Needed: Git hook integration
-   const autoLogger = {
-     onCommit: (commitData) => logToFirebase(commitData),
-     onPush: (pushData) => updateMetrics(pushData),
-     onSessionStart: () => startTracking(),
-     onSessionEnd: () => endTracking()
+   // GitHub webhook processes repository data
+   const dataProcessor = {
+     onPush: (githubEvent) => processCommitData(githubEvent),
+     onRelease: (releaseData) => processMilestone(releaseData),
+     extractMetrics: (commitHistory) => calculateSessionData(commitHistory),
+     syncToFirebase: (processedData) => updateFirebaseMetrics(processedData)
    };
    ```
 
 2. **GitHub Webhook Handler**
    ```javascript
-   // Cloud Function needed
+   // Cloud Function: GitHub → Firebase data processor
    exports.githubWebhook = functions.https.onRequest(async (req, res) => {
      const event = req.body;
-     if (event.action === 'opened' || event.action === 'closed') {
-       await logDevelopmentActivity(event);
+     // Process GitHub data and sync to Firebase
+     if (event.commits) {
+       await processCommitDataToFirebase(event.commits);
      }
    });
    ```
@@ -211,15 +212,15 @@ This document defines the complete development-to-production workflow for the As
 
 ### **Immediate Priorities (Next 2 weeks)**
 
-1. **Git Hooks Integration**
+1. **Enhanced Git Hooks**
    ```bash
-   # Install git hooks for auto-logging
+   # Install git hooks for better metadata
    ./scripts/hooks/install.sh
    
    # Add to commit hook:
-   - Start/end session tracking
-   - Log commit data to Firebase
-   - Calculate real-time metrics
+   - Enhanced commit metadata
+   - Session boundary markers in commits
+   - Development cost annotations
    ```
 
 2. **GitHub Webhook Setup**
@@ -228,18 +229,18 @@ This document defines the complete development-to-production workflow for the As
    /api/webhook/github
    
    // Handles:
-   - Push events → Update metrics
-   - PR events → Log activity  
-   - Release events → Mark milestones
+   - Push events → Process GitHub commit data → Firebase
+   - PR events → Extract development activity → Firebase  
+   - Release events → Mark project milestones → Firebase
    ```
 
-3. **Session Auto-Logger**
+3. **GitHub Data Processor**
    ```javascript
-   // Background service
-   - Track IDE activity
-   - Monitor file changes
-   - Calculate work sessions
-   - Auto-sync to Firebase
+   // Cloud Function service
+   - Process GitHub commit history
+   - Extract development sessions from commits
+   - Calculate costs from GitHub metadata
+   - Transform GitHub data for Firebase storage
    ```
 
 ### **Medium-term Enhancements (1-2 months)**
@@ -280,23 +281,23 @@ This document defines the complete development-to-production workflow for the As
 
 ## 🔧 Implementation Steps
 
-### **Step 1: Complete Firebase Automation**
+### **Step 1: Complete GitHub-to-Firebase Pipeline**
 
-1. **Update Git Hooks**
+1. **Enhance Git Hooks**
    ```bash
    # File: scripts/hooks/commit-msg
    #!/bin/bash
-   # Auto-log commit to Firebase
-   node scripts/log-commit.js "$1"
+   # Add metadata to commits for later Firebase processing
+   node scripts/enhance-commit-metadata.js "$1"
    ```
 
-2. **Create Session Logger**
+2. **Create GitHub Data Processor**
    ```javascript
-   // File: scripts/session-logger.js
-   class SessionLogger {
-     start() { /* Log session start */ }
-     end() { /* Log session end, calculate metrics */ }
-     sync() { /* Sync to Firebase */ }
+   // File: functions/github-data-processor.js
+   class GitHubDataProcessor {
+     processCommits(githubWebhookData) { /* Process GitHub commits */ }
+     extractSessions(commitHistory) { /* Extract development sessions */ }
+     syncToFirebase(processedData) { /* Update Firebase metrics */ }
    }
    ```
 
@@ -377,19 +378,19 @@ This document defines the complete development-to-production workflow for the As
 
 ### **Critical Missing Components**
 
-1. **❌ Session Auto-Logging**
-   - **Impact**: Manual effort, potential data loss
-   - **Solution**: Git hooks + background service
+1. **❌ GitHub-to-Firebase Data Pipeline**
+   - **Impact**: Manual data migration from GitHub to Firebase
+   - **Solution**: GitHub webhook + Cloud Function data processor
    - **Timeline**: 1 week implementation
 
 2. **❌ Real-time GitHub Integration** 
    - **Impact**: Delayed metrics updates
-   - **Solution**: Webhook + Cloud Function
+   - **Solution**: Webhook + automated GitHub data processing
    - **Timeline**: 3 days implementation
 
-3. **❌ Cost Automation**
-   - **Impact**: Manual calculations, potential errors
-   - **Solution**: Automated time × rate calculations
+3. **❌ Cost Automation from GitHub Data**
+   - **Impact**: Manual calculations from commit history
+   - **Solution**: Automated GitHub commit analysis + cost calculation
    - **Timeline**: 2 days implementation
 
 ### **Medium Priority Enhancements**
@@ -408,13 +409,13 @@ This document defines the complete development-to-production workflow for the As
 
 ## 🏁 Conclusion
 
-The current workflow is **70% automated** with strong foundations in place. The remaining 30% requires:
+The current workflow is **70% automated** with strong GitHub-first foundations in place. The remaining 30% requires:
 
-1. **Git hooks integration** (highest priority)
-2. **GitHub webhook setup** (medium priority) 
-3. **Session auto-logging** (high priority)
-4. **Real-time sync improvements** (medium priority)
+1. **GitHub webhook integration** (highest priority)
+2. **GitHub-to-Firebase data pipeline** (high priority) 
+3. **Enhanced git metadata** (medium priority)
+4. **Real-time GitHub data processing** (medium priority)
 
-**Next Steps**: Implement git hooks and session auto-logging within the next week to achieve 95% automation coverage.
+**Next Steps**: Implement GitHub webhook and data processing pipeline within the next week to achieve 95% automation coverage.
 
-**Target Date**: September 15, 2025 for complete workflow automation.
+**Target Date**: September 15, 2025 for complete GitHub-to-Firebase automation.

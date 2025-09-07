@@ -410,18 +410,18 @@ The Firebase metrics system automatically tracks development sessions, costs, co
 
 ### Development Session Workflow
 ```bash
-# 1. Start Development Session (Manual logging currently)
-# Open development cost tracking page
-open http://localhost:8080/AssiduousFlip/admin/development/costs.html
+# 1. Start Development Session (Track in local files/commits)
+# All development data stays in GitHub as source of truth
 
-# 2. Code & Commit (Automated tracking ready)
+# 2. Code & Commit (Enhanced metadata)
 git add .
-git commit -m "feat(dashboard): add new feature"  # Git hooks can auto-log
+git commit -m "feat(dashboard): add new feature"  # Enhanced git hooks add metadata
 
 # 3. Push & Deploy (Fully automated)
-git push origin main  # Triggers GitHub Actions → Firebase deployment
+git push origin main  # GitHub Actions → Firebase deployment
+#                    # GitHub webhook → Process commit data → Firebase metrics
 
-# 4. View Metrics (Real-time)
+# 4. View Metrics (Real-time from Firebase)
 open http://localhost:8080/AssiduousFlip/admin/development/dashboard.html
 ```
 
@@ -489,10 +489,10 @@ const activity = await metricsService.getRecentActivity(10);
 - DevelopmentMetricsService (Firebase integration ready)
 
 #### Needs Implementation ❌
-- Git hooks for automatic session logging
-- GitHub webhook integration
-- Real-time data synchronization
-- Automatic time tracking
+- Enhanced git hooks for better commit metadata
+- GitHub webhook integration for data processing
+- Real-time GitHub-to-Firebase data synchronization
+- Automatic GitHub commit analysis for time tracking
 
 ### Quick Setup Commands
 ```bash
