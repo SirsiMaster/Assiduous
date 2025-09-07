@@ -356,6 +356,7 @@ exports.githubWebhook = functions.https.onRequest(async (req, res) => {
 
 // Export for testing
 module.exports = {
+    githubWebhook: exports.githubWebhook,
     extractSessionData,
     calculateMetrics,
     processPushEvent,

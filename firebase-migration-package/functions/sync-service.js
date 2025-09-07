@@ -409,4 +409,8 @@ exports.scheduledSync = functions.pubsub.schedule('every 24 hours').onRun(async 
 });
 
 // Export sync service for testing
-module.exports = { GitHubFirebaseSync };
+module.exports = { 
+    GitHubFirebaseSync,
+    syncGitHubData: exports.syncGitHubData,
+    scheduledSync: exports.scheduledSync
+};
