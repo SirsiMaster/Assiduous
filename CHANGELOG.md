@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.11.1] - 2025-09-07
+
+### Fixed
+- fix: Add missing sidebar component to development dashboard
+
+
 ## [0.11.0] - 2025-09-07
 
 ### Added
@@ -392,7 +398,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.11.0...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.11.1...HEAD
+
+
+## [0.11.1] - 2025-09-07
+
+### Fixed
+- fix: Add missing sidebar component to development dashboard
 
 [1.0.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.10.0...v1.0.0
 ## [0.11.0] - 2025-09-07
@@ -421,3 +433,4 @@ To generate changelog entries:
 [0.1.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.0.1...v0.1.0
 [0.0.1]: https://github.com/SirsiMaster/Assiduous/releases/tag/v0.0.1
 [0.11.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.10.0...v0.11.0
+[0.11.1]: https://github.com/SirsiMaster/Assiduous/compare/v0.11.0...v0.11.1
