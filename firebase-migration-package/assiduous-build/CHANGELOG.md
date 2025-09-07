@@ -8,6 +8,143 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.8.1] - 2025-09-07
+
+### Changed
+- refactor(sidebar): Use standardized sidebar component
+  - Updated costs.html to use sidebar component loader
+  - Added missing Dev Costs link to sidebar.html template
+  - Replace hardcoded sidebar with sidebar-root placeholder
+  - Ensures consistent navigation across all admin pages
+  - Reduces code duplication by 75+ lines per page
+
+
+## [0.8.0] - 2025-09-07
+
+### Added
+- feat(dev-dashboard): Restore complete visual metrics
+  - Added interactive sparklines with animated bars for all metrics
+  - Integrated Chart.js for live 7-day activity trend visualization  
+  - Implemented real-time GitHub API integration with auto-refresh
+  - Added rich tooltip system for metric explanations
+  - Created interactive modal system with detailed statistics
+  - Restored hover animations and visual polish
+  - Added loading skeletons and smooth transitions
+  - Implemented clickable metric cards with detailed breakdowns
+  - Added live commit feed with author avatars and commit hashes
+  - Restored complete chart functionality with responsive design
+
+### Fixed
+- fix: Restore working dashboard immediately
+  - Fixed broken development dashboard sidebar
+  - Restored missing visual metrics and charts
+  - Fixed Chart.js integration and GitHub API calls
+  - Resolved layout issues and responsive design problems
+
+
+## [0.7.1] - 2025-09-06
+
+### Fixed
+- fix: Fix CI/CD pipeline for seamless deployment
+
+
+## [0.7.0] - 2025-09-06
+
+### Added
+- feat: Add standard admin sidebar to costs page
+
+
+## [0.6.0] - 2025-09-06
+
+### Added
+- feat: Add development costs tracking page
+
+
+## [0.5.6] - 2025-09-06
+
+### Fixed
+- fix: Embed sidebar HTML directly in dashboard
+
+
+## [0.5.5] - 2025-09-06
+
+### Fixed
+- fix: Restore proper dashboard styling
+
+
+## [0.5.4] - 2025-09-06
+
+### Fixed
+- fix: Deploy files to correct Firebase directory
+
+
+## [0.5.3] - 2025-09-06
+
+### Fixed
+- fix: Shorten Firebase deployment messages
+
+
+## [0.5.2] - 2025-09-06
+
+### Fixed
+- fix: Fix GitHub Actions Firebase deployment paths
+
+
+## [0.5.1] - 2025-09-06
+
+### Fixed
+- fix(dashboard): Restore working dashboard with cost tracking
+- fix(dashboard): Restore Assiduous design system quality
+
+
+## [0.5.0] - 2025-09-06
+
+### Added
+- feat(dashboard): add comprehensive development cost tracking system
+
+
+## [0.4.0] - 2025-09-06
+
+### Added
+- feat(analytics): integrate Firebase with development dashboards
+
+## [0.4.0] - 2025-09-06
+
+### Added
+- **MAJOR**: Complete Firebase/Google Cloud Platform migration
+- Firebase Analytics Service for capturing deployment metrics
+- Enhanced development dashboard with Firebase/GCP metrics integration
+- Real-time deployment pipeline visualization (Local → GitHub → Firebase)
+- Cloud Functions API with 3 endpoints for verification system
+- Firestore database with 5 collections and security rules
+- Cloud Storage with role-based access control
+- Deployment tracking system linking GitHub commits to Firebase deployments
+- Automated deployment registry for audit trail
+- Firebase Hosting serving 136 files from GitHub repository
+- Blaze plan billing integration for production scalability
+
+### Changed
+- GitHub established as single source of truth for all deployments
+- Development dashboard now displays both GitHub and Firebase metrics
+- Deployment flow: Local development → GitHub push → Firebase deployment
+- All 136 files from GitHub repo now served via Firebase CDN
+- API endpoints migrated to Cloud Functions
+
+### Infrastructure
+- **Project ID**: assiduous-prod
+- **Hosting URL**: https://assiduous-prod.web.app
+- **API Endpoint**: https://us-central1-assiduous-prod.cloudfunctions.net/app
+- **Services**: Hosting, Functions, Firestore, Storage, Authentication (pending)
+- **Region**: us-central1
+- **Plan**: Blaze (Pay-as-you-go)
+
+### Technical Details
+- Firebase SDK integration prepared
+- Security rules deployed for Firestore and Storage
+- Field-level encryption maintained (AES-256-GCM)
+- GitHub API integration preserved in development dashboards
+- Cost monitoring enabled (estimated $10-50/month)
+
 ## [0.3.0] - 2025-09-06
 
 ### Added
@@ -206,7 +343,83 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.3.0...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.8.0...HEAD
+
+
+## [0.8.0] - 2025-09-07
+
+### Added
+- feat(dev-dashboard): Restore complete visual metrics
+
+### Fixed
+- fix: Restore working dashboard immediately
+
+
+## [0.7.1] - 2025-09-06
+
+### Fixed
+- fix: Fix CI/CD pipeline for seamless deployment
+
+
+## [0.7.0] - 2025-09-06
+
+### Added
+- feat: Add standard admin sidebar to costs page
+
+
+## [0.6.0] - 2025-09-06
+
+### Added
+- feat: Add development costs tracking page
+
+
+## [0.5.6] - 2025-09-06
+
+### Fixed
+- fix: Embed sidebar HTML directly in dashboard
+
+
+## [0.5.5] - 2025-09-06
+
+### Fixed
+- fix: Restore proper dashboard styling
+
+
+## [0.5.4] - 2025-09-06
+
+### Fixed
+- fix: Deploy files to correct Firebase directory
+
+
+## [0.5.3] - 2025-09-06
+
+### Fixed
+- fix: Shorten Firebase deployment messages
+
+
+## [0.5.2] - 2025-09-06
+
+### Fixed
+- fix: Fix GitHub Actions Firebase deployment paths
+
+
+## [0.5.1] - 2025-09-06
+
+### Fixed
+- fix(dashboard): Restore working dashboard with cost tracking
+- fix(dashboard): Restore Assiduous design system quality
+
+
+## [0.5.0] - 2025-09-06
+
+### Added
+- feat(dashboard): add comprehensive development cost tracking system
+
+
+## [0.4.0] - 2025-09-06
+
+### Added
+- feat(analytics): integrate Firebase with development dashboards
 
 [0.2.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.1.1...v0.2.0
 ## [0.3.0] - 2025-09-06
@@ -218,3 +431,15 @@ To generate changelog entries:
 [0.1.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.0.1...v0.1.0
 [0.0.1]: https://github.com/SirsiMaster/Assiduous/releases/tag/v0.0.1
 [0.3.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.2.0...v0.3.0
+[0.4.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.3.0...v0.4.0
+[0.5.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.4.0...v0.5.0
+[0.5.1]: https://github.com/SirsiMaster/Assiduous/compare/v0.5.0...v0.5.1
+[0.5.2]: https://github.com/SirsiMaster/Assiduous/compare/v0.5.1...v0.5.2
+[0.5.3]: https://github.com/SirsiMaster/Assiduous/compare/v0.5.2...v0.5.3
+[0.5.4]: https://github.com/SirsiMaster/Assiduous/compare/v0.5.3...v0.5.4
+[0.5.5]: https://github.com/SirsiMaster/Assiduous/compare/v0.5.4...v0.5.5
+[0.5.6]: https://github.com/SirsiMaster/Assiduous/compare/v0.5.5...v0.5.6
+[0.6.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.5.6...v0.6.0
+[0.7.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.6.0...v0.7.0
+[0.7.1]: https://github.com/SirsiMaster/Assiduous/compare/v0.7.0...v0.7.1
+[0.8.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.7.1...v0.8.0
