@@ -8,6 +8,39 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [1.0.0] - 2025-09-07
+
+### Changed - BREAKING
+- **MAJOR**: Complete migration from GitHub Pages to Firebase Hosting
+  - Disabled GitHub Pages completely via GitHub CLI API
+  - All production URLs migrated from sirsimaster.github.io/Assiduous/ to https://assiduous-prod.web.app/
+  - Updated WARP.md with new Firebase Hosting URLs for all admin and client portals
+  - Updated README.md deployment section to reference Firebase exclusively
+  - Updated all HTML documentation files with Firebase URLs
+  - Added .nojekyll file to prevent any GitHub Pages processing
+  - Verified all Firebase Hosting functionality (200 status responses)
+
+### Added
+- Enterprise security implementation with HMAC SHA-256 verification
+- Per-repository security isolation with rate limiting (100 req/min)
+- Real-time Firebase Functions processing GitHub webhook events
+- Enhanced development dashboard with comprehensive project metrics
+- Live status indicators with pulsing animations
+- Automated Firebase Hosting deployment pipeline
+
+### Removed
+- GitHub Pages deployment and hosting (100% deprecated)
+- All GitHub Pages URLs and references from documentation
+- GitHub Pages build process and dependencies
+
+### Infrastructure
+- **Production URLs**: All migrated to https://assiduous-prod.web.app/
+- **API Endpoints**: https://us-central1-assiduous-prod.cloudfunctions.net/app
+- **Security**: Enterprise-grade HMAC verification + repository isolation
+- **Analytics**: Immediate updates with 4-second webhook response times
+- **Status**: GitHub Pages completely disabled (404 verification)
+
+
 ## [0.9.0] - 2025-09-07
 
 ### Added
