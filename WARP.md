@@ -403,6 +403,129 @@ curl -X POST https://us-central1-assiduous-prod.cloudfunctions.net/app/api/v1/ve
   -d '{"buyerId": "test", "amountCents": 250000}'
 ```
 
+## 🔥 Firebase Development Metrics Workflow
+
+### Overview
+The Firebase metrics system automatically tracks development sessions, costs, commits, and deployments with real-time dashboard updates.
+
+### Development Session Workflow
+```bash
+# 1. Start Development Session (Manual logging currently)
+# Open development cost tracking page
+open http://localhost:8080/AssiduousFlip/admin/development/costs.html
+
+# 2. Code & Commit (Automated tracking ready)
+git add .
+git commit -m "feat(dashboard): add new feature"  # Git hooks can auto-log
+
+# 3. Push & Deploy (Fully automated)
+git push origin main  # Triggers GitHub Actions → Firebase deployment
+
+# 4. View Metrics (Real-time)
+open http://localhost:8080/AssiduousFlip/admin/development/dashboard.html
+```
+
+### Firebase Collections Structure
+```
+Firestore Database:
+├── development_sessions/     # Individual work sessions
+│   ├── sessionId
+│   ├── date (YYYY-MM-DD)
+│   ├── duration (hours)
+│   ├── costTracking.totalCost
+│   └── metrics.commitsCreated
+├── development_metrics/      # Daily aggregated data
+│   ├── date (YYYY-MM-DD)
+│   ├── hours, cost, commits
+│   ├── velocity.commitsPerHour
+│   └── totals.projectCost
+├── git_commits/             # Commit tracking
+│   ├── hash, message, author
+│   ├── timestamp, filesChanged
+│   └── metrics.linesAdded
+├── project_milestones/      # Major achievements
+│   └── version, description
+└── deployment_logs/         # Firebase deployments
+    ├── timestamp, success
+    └── deployer, commitHash
+```
+
+### DevelopmentMetricsService API
+```javascript
+// Available service methods:
+const metricsService = new DevelopmentMetricsService();
+
+// Initialize Firebase connection
+await metricsService.initialize();
+
+// Log development session
+await metricsService.createSession({
+  sessionId: '20250907_001',
+  date: '2025-09-07',
+  duration: 4.0,
+  costTracking: { totalCost: 1200 },
+  metrics: { commitsCreated: 32 }
+});
+
+// Get dashboard data
+const metrics = await metricsService.getDashboardMetrics();
+console.log('Today cost:', metrics.today.cost);
+
+// Get recent activity
+const activity = await metricsService.getRecentActivity(10);
+```
+
+### Automation Status & Next Steps
+
+#### Currently Automated ✅
+- Firebase deployment via GitHub Actions
+- Dashboard metrics display with fallback
+- Daily cost calculations and aggregations
+- Real-time chart updates on dashboard
+
+#### Partially Implemented ⚠️
+- Session data logging (manual populate script available)
+- Firestore collections structure (schema ready)
+- DevelopmentMetricsService (Firebase integration ready)
+
+#### Needs Implementation ❌
+- Git hooks for automatic session logging
+- GitHub webhook integration
+- Real-time data synchronization
+- Automatic time tracking
+
+### Quick Setup Commands
+```bash
+# Populate historical session data
+node AssiduousFlip/admin/development/populate_session_data.js
+
+# Test Firebase connection
+node -e "const service = new DevelopmentMetricsService(); service.initialize();"
+
+# View live dashboard with Firebase metrics
+python -m http.server 8080
+open http://localhost:8080/AssiduousFlip/admin/development/dashboard.html
+
+# Deploy latest changes to Firebase
+cd firebase-migration-package/assiduous-build
+firebase deploy --only hosting
+```
+
+### Cost Tracking Integration
+```bash
+# Development costs automatically calculated:
+# - $300/hour development rate
+# - Real-time session tracking
+# - Monthly/weekly aggregations
+# - Project total calculations
+
+# View cost breakdown:
+open https://assiduous-prod.web.app/AssiduousFlip/admin/development/costs.html
+
+# Check Firebase usage costs:
+open https://console.firebase.google.com/project/assiduous-prod/usage
+```
+
 ### Environment Variables Required
 ```bash
 # Development (.env.development)

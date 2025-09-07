@@ -405,28 +405,41 @@ Secure digital document storage, management, and execution platform.
 
 ### Technology Stack
 
-#### Frontend
-- **Framework:** React 18.x with TypeScript
-- **State Management:** Redux Toolkit
-- **UI Library:** Material-UI v5
-- **Build Tool:** Vite
-- **Testing:** Jest, React Testing Library
-- **Styling:** Tailwind CSS, Styled Components
+#### Frontend (Current Implementation)
+- **Framework:** Vanilla JavaScript (ES6+) with HTML5/CSS3
+- **UI Library:** Custom CSS Framework with Bootstrap components
+- **Charts:** Chart.js for analytics visualization
+- **State Management:** Native JavaScript with localStorage
+- **Testing:** Jest, manual testing
+- **Styling:** Responsive CSS Grid/Flexbox, custom design system
 
-#### Backend
-- **Runtime:** Node.js 20.x LTS
-- **Framework:** NestJS
-- **API:** GraphQL with Apollo Server
-- **Authentication:** JWT with refresh tokens
-- **Validation:** Joi, class-validator
-- **Testing:** Jest, Supertest
+#### Backend (Firebase Architecture)
+- **Platform:** Firebase Cloud Platform
+- **Database:** Firestore NoSQL (document-based)
+- **Authentication:** Firebase Authentication
+- **Hosting:** Firebase Hosting with CDN
+- **Functions:** Firebase Cloud Functions (Node.js)
+- **Storage:** Firebase Cloud Storage
+- **Analytics:** Firebase Analytics + custom metrics
+
+#### Development Metrics Infrastructure
+- **Primary Database:** Firestore (development tracking)
+- **Collections:** development_sessions, development_metrics, git_commits
+- **Service Layer:** DevelopmentMetricsService.js
+- **Dashboard Integration:** Real-time Firebase sync
+- **Fallback System:** Local caching for offline capability
+- **Automation:** Git hooks + GitHub webhooks integration
 
 #### Databases
-- **Primary:** PostgreSQL 15 (transactional data)
-- **Document Store:** MongoDB (property listings)
-- **Cache:** Redis (session management)
-- **Search:** Elasticsearch (full-text search)
-- **Time Series:** InfluxDB (analytics)
+- **Primary:** Firestore (all application data)
+- **Development Tracking:** Firebase collections structure:
+  - `development_sessions` - Individual work sessions
+  - `development_metrics` - Daily aggregated data
+  - `git_commits` - Commit tracking with metadata
+  - `project_milestones` - Major project achievements
+  - `deployment_logs` - Firebase deployment history
+- **Cache:** Browser localStorage + Firebase offline persistence
+- **Search:** Firestore compound queries + client-side filtering
 
 #### AI/ML Stack
 - **Framework:** TensorFlow 2.x, PyTorch
@@ -490,6 +503,39 @@ Data Sources → Kafka → Stream Processing → Feature Store → ML Models →
      ↓                        ↓                 ↓            ↓         ↓
   Raw Data              Transformed Data   Feature Vectors  Predictions  Client
 ```
+
+#### Development Metrics & Firebase Workflow
+```
+Local Development → GitHub Repository → Firebase Deployment → Dashboard Metrics
+        ↓                   ↓                    ↓                  ↓
+   Code Changes      Commits & CI/CD    Firestore Database   Real-time Visualization
+        |                   |                    |                  |
+  Session Tracking ←────── Git Hooks ────→ DevelopmentMetricsService → Cost Tracking
+```
+
+##### Development Data Flow
+1. **Local Development Phase**
+   - Developer works on code and tracks time
+   - Git hooks capture commit data
+   - Session data logged to Firestore
+
+2. **GitHub Integration Phase**
+   - Code pushed to GitHub repository
+   - GitHub Actions trigger CI/CD pipeline
+   - Webhooks notify Firebase of updates
+
+3. **Firebase Processing Phase**
+   - Firestore collections updated:
+     - `development_sessions`: Session logging
+     - `development_metrics`: Daily aggregations
+     - `git_commits`: Commit history
+     - `deployment_logs`: Deployment tracking
+   - Cloud Functions process aggregations
+
+4. **Dashboard Visualization Phase**
+   - DevelopmentMetricsService fetches metrics
+   - Real-time data displayed on dashboard
+   - Cost calculations and projections updated
 
 ---
 
