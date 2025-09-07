@@ -8,13 +8,38 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.8.1] - 2025-09-07
+
+### Changed
+- refactor(sidebar): Use standardized sidebar component
+  - Updated costs.html to use sidebar component loader
+  - Added missing Dev Costs link to sidebar.html template
+  - Replace hardcoded sidebar with sidebar-root placeholder
+  - Ensures consistent navigation across all admin pages
+  - Reduces code duplication by 75+ lines per page
+
+
 ## [0.8.0] - 2025-09-07
 
 ### Added
 - feat(dev-dashboard): Restore complete visual metrics
+  - Added interactive sparklines with animated bars for all metrics
+  - Integrated Chart.js for live 7-day activity trend visualization  
+  - Implemented real-time GitHub API integration with auto-refresh
+  - Added rich tooltip system for metric explanations
+  - Created interactive modal system with detailed statistics
+  - Restored hover animations and visual polish
+  - Added loading skeletons and smooth transitions
+  - Implemented clickable metric cards with detailed breakdowns
+  - Added live commit feed with author avatars and commit hashes
+  - Restored complete chart functionality with responsive design
 
 ### Fixed
 - fix: Restore working dashboard immediately
+  - Fixed broken development dashboard sidebar
+  - Restored missing visual metrics and charts
+  - Fixed Chart.js integration and GitHub API calls
+  - Resolved layout issues and responsive design problems
 
 
 ## [0.7.1] - 2025-09-06
