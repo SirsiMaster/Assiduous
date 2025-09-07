@@ -11,6 +11,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../assiduous.css">
+    <link rel="stylesheet" href="../components/admin-layout.css">
     
     <style>
         /* Admin Layout */
@@ -429,24 +430,14 @@
 
         <!-- Main Content -->
         <main class="main-content">
-            <!-- Top Bar -->
-            <header class="topbar">
-                <div class="topbar-search">
-                    <input type="text" class="search-input" placeholder="Search...">
-                </div>
-                
-                <div class="topbar-actions">
-                    <div class="topbar-user">
-                        <span style="font-size: 14px; color: var(--text-primary);">Admin User</span>
-                        <div class="user-avatar">AU</div>
-                    </div>
-                </div>
-            </header>
+            <!-- Standardized Admin Header -->
+            <header id="admin-header-root" 
+                    data-title="Dashboard Overview" 
+                    data-subtitle="Welcome back! Here's what's happening with your platform today."
+                    data-search-placeholder="Search across all modules..."></header>
 
             <!-- Dashboard Content -->
             <div class="dashboard-content">
-                <h1 class="page-title">Dashboard Overview</h1>
-                <p class="page-subtitle">Welcome back! Here's what's happening with your platform today.</p>
 
                 <!-- Stats Grid -->
                 <div class="stats-grid">
@@ -661,5 +652,6 @@
         setInterval(updateStats, 10000);
     </script>
     <script src="../components/sidebar.js"></script>
+    <script src="../components/admin-header.js"></script>
 </body>
 </html>

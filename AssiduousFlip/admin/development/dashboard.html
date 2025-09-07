@@ -11,6 +11,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../assiduous.css">
+    <link rel="stylesheet" href="../../components/admin-layout.css">
     
     <style>
         /* Admin Layout */
@@ -613,17 +614,14 @@
 
         <!-- Main Content -->
         <main class="main-content">
-            <!-- Top Bar -->
-            <header class="topbar">
-                <div class="page-title">Development Dashboard</div>
-                <div class="topbar-actions">
-                    <div class="user-avatar">AU</div>
-                </div>
-            </header>
+            <!-- Standardized Admin Header -->
+            <header id="admin-header-root" 
+                    data-title="Development Dashboard" 
+                    data-subtitle="Real-time development metrics and progress tracking"
+                    data-search-placeholder="Search development data..."></header>
 
             <!-- Page Content -->
             <div class="page-content">
-                <div class="page-subtitle">Real-time development metrics and progress tracking</div>
 
                 <!-- Quick Actions -->
                 <div class="quick-actions">
@@ -1306,5 +1304,6 @@
     
     <!-- Load Sidebar Component -->
     <script src="../../components/sidebar.js"></script>
+    <script src="../../components/admin-header.js"></script>
 </body>
 </html>
