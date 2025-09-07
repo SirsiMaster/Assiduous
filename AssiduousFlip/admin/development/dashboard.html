@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
-    <title>Assiduous - Executive Dashboard</title>
+    <title>Development Dashboard - Assiduous Admin</title>
     
     <!-- Assiduous Design System -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,120 +13,194 @@
     <link rel="stylesheet" href="../../assiduous.css">
     
     <style>
-        /* Dashboard-specific styles */
+        /* Admin Layout */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--white);
+        }
 
-        .theme-btn {
+        .admin-wrapper {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 240px;
+            background: var(--navy);
+            color: var(--white);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-header {
+            padding: var(--space-lg);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .sidebar-logo {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            color: var(--white);
+            text-decoration: none;
+        }
+
+        .sidebar-logo svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .sidebar-logo-text {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: var(--space-md) 0;
+        }
+
+        .nav-section {
+            margin-bottom: var(--space-lg);
+        }
+
+        .nav-section-title {
+            padding: 0 var(--space-lg);
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            opacity: 0.6;
+            margin-bottom: var(--space-sm);
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: var(--space-sm) var(--space-lg);
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.15s;
+        }
+
+        .nav-item:hover {
+            background: rgba(255,255,255,0.05);
+            color: var(--white);
+        }
+
+        .nav-item.active {
+            background: var(--sky);
+            color: var(--white);
+        }
+
+        .nav-icon {
+            width: 18px;
+            height: 18px;
+            opacity: 0.8;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Top Bar */
+        .topbar {
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            padding: var(--space-md) var(--space-xl);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .topbar-actions {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+        }
+
+        .user-avatar {
             width: 32px;
             height: 32px;
-            border-radius: var(--radius);
-            border: 1px solid var(--gray-200);
-            background: var(--white);
+            border-radius: 50%;
+            background: var(--gradient);
             display: flex;
             align-items: center;
             justify-content: center;
-            cursor: pointer;
-            transition: all 0.15s;
-            color: var(--gray-500);
-        }
-
-        .theme-btn:hover {
-            background: var(--gray-50);
-            border-color: var(--gray-300);
-            color: var(--navy);
-        }
-
-        .status-pill {
-            display: flex;
-            align-items: center;
-            gap: var(--space-2);
-            padding: var(--space-1) var(--space-3);
-            background: var(--white);
-            border: 1px solid var(--gray-200);
-            border-radius: 999px;
-            font-size: var(--text-xs);
-            font-weight: 500;
-            color: var(--gray-600);
-        }
-
-        .status-dot {
-            width: 6px;
-            height: 6px;
-            background: var(--success);
-            border-radius: 50%;
-            animation: subtle-pulse 2s infinite;
-        }
-
-        @keyframes subtle-pulse {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.8; transform: scale(1.2); }
-        }
-
-        /* Main Layout */
-        .main {
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: var(--space-6) var(--space-5);
-            position: relative;
-            z-index: 2;
-        }
-
-        /* Page Title - Subtle */
-        .page-title {
-            margin-bottom: var(--space-6);
-        }
-
-        .page-title h1 {
-            font-size: var(--text-2xl);
+            color: var(--white);
             font-weight: 600;
-            color: var(--navy);
-            margin-bottom: var(--space-1);
+            font-size: 12px;
         }
 
-        .page-title p {
-            font-size: var(--text-sm);
-            color: var(--gray-500);
+        /* Page Content */
+        .page-content {
+            flex: 1;
+            padding: var(--space-xl);
+            overflow-y: auto;
+            background: var(--gray-50);
         }
 
-        /* Metrics Row - Refined Cards */
-        .metrics-row {
+        .page-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: var(--space-xs);
+        }
+
+        .page-subtitle {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-xl);
+        }
+
+        /* Stats Grid */
+        .stats-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: var(--space-4);
-            margin-bottom: var(--space-6);
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--space-lg);
+            margin-bottom: var(--space-2xl);
         }
 
-        .metric-card {
+        .stat-card {
             background: var(--white);
-            border: 1px solid var(--gray-200);
-            border-radius: var(--radius-lg);
-            padding: var(--space-4);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: var(--space-lg);
             transition: all 0.2s;
             cursor: pointer;
             position: relative;
             overflow: hidden;
         }
 
-        /* Depth with subtle shadow */
-        .metric-card::before {
+        .stat-card::before {
             content: '';
             position: absolute;
             inset: 0;
-            box-shadow: var(--shadow);
+            box-shadow: var(--shadow-md);
             opacity: 0;
             transition: opacity 0.2s;
         }
 
-        .metric-card:hover::before {
+        .stat-card:hover::before {
             opacity: 1;
         }
 
-        .metric-card:hover {
-            transform: translateY(-1px);
+        .stat-card:hover {
+            transform: translateY(-2px);
             border-color: var(--sky);
         }
 
-        /* Foreground focus indicator */
-        .metric-card::after {
+        .stat-card::after {
             content: '';
             position: absolute;
             top: 0;
@@ -138,25 +212,71 @@
             transition: transform 0.2s;
         }
 
-        .metric-card:hover::after {
+        .stat-card:hover::after {
             transform: scaleX(1);
         }
 
-        .metric-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: var(--space-2);
+        .stat-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: var(--space-sm);
         }
 
-        .metric-label {
-            font-size: var(--text-xs);
-            font-weight: 500;
-            color: var(--gray-500);
-            text-transform: uppercase;
-            letter-spacing: 0.025em;
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: var(--space-xs);
+        }
+
+        .stat-change {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .stat-change.positive {
+            color: var(--success);
+        }
+
+        .stat-change.negative {
+            color: var(--danger);
+        }
+
+        /* Visual Sparklines */
+        .stat-spark {
+            height: 32px;
+            background: var(--gray-50);
+            border-radius: var(--radius-sm);
             position: relative;
-            cursor: help;
+            overflow: hidden;
+            margin-top: var(--space-sm);
+        }
+
+        .stat-bars {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            display: flex;
+            align-items: flex-end;
+            gap: 2px;
+            padding: 2px;
+        }
+
+        .bar {
+            flex: 1;
+            background: var(--sky);
+            opacity: 0.3;
+            border-radius: 2px 2px 0 0;
+            transition: opacity 0.2s;
+        }
+
+        .bar:last-child {
+            opacity: 1;
         }
 
         /* Tooltip Styles */
@@ -209,311 +329,174 @@
             opacity: 1;
         }
 
-        .metric-change {
-            font-size: var(--text-xs);
-            font-weight: 600;
-            padding: 2px 6px;
-            border-radius: var(--radius-sm);
+        /* Content Grid */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: var(--space-xl);
         }
 
-        .metric-change.up {
-            background: rgba(5, 150, 105, 0.1);
-            color: var(--success);
-        }
-
-        .metric-change.down {
-            background: rgba(220, 38, 38, 0.1);
-            color: var(--danger);
-        }
-
-        .metric-value {
-            font-size: var(--text-3xl);
-            font-weight: 700;
-            color: var(--navy);
-            line-height: 1;
-            margin-bottom: var(--space-3);
-        }
-
-        .metric-spark {
-            height: 32px;
-            background: var(--gray-50);
-            border-radius: var(--radius-sm);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .metric-bars {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 100%;
-            display: flex;
-            align-items: flex-end;
-            gap: 2px;
-            padding: 2px;
-        }
-
-        .bar {
-            flex: 1;
-            background: var(--sky);
-            opacity: 0.3;
-            border-radius: 2px 2px 0 0;
-            transition: opacity 0.2s;
-        }
-
-        .bar:last-child {
-            opacity: 1;
-        }
-
-        /* Progress Section - Clean and Focused */
+        /* Cards */
         .card {
             background: var(--white);
-            border: 1px solid var(--gray-200);
-            border-radius: var(--radius-lg);
-            overflow: hidden;
-            margin-bottom: var(--space-6);
-            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            margin-bottom: var(--space-lg);
         }
 
         .card-header {
-            padding: var(--space-4) var(--space-5);
-            border-bottom: 1px solid var(--gray-100);
-            background: var(--gray-50);
+            padding: var(--space-lg);
+            border-bottom: 1px solid var(--border);
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
         .card-title {
-            font-size: var(--text-base);
+            font-size: 16px;
             font-weight: 600;
-            color: var(--navy);
-        }
-
-        .card-action {
-            padding: var(--space-2) var(--space-3);
-            background: var(--sky);
-            color: var(--white);
-            border: none;
-            border-radius: var(--radius);
-            font-size: var(--text-xs);
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.15s;
-        }
-
-        .card-action:hover {
-            background: #4A8BC2;
-            box-shadow: var(--shadow);
+            color: var(--dark);
         }
 
         .card-body {
-            padding: var(--space-5);
+            padding: var(--space-lg);
         }
 
-        /* Milestones - Refined */
-        .milestone {
+        .btn {
+            padding: var(--space-sm) var(--space-md);
+            border-radius: var(--radius);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s;
+            border: none;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-xs);
+        }
+
+        .btn-primary {
+            background: var(--sky);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background: #4A90C9;
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: var(--white);
+            color: var(--sky);
+            border: 1px solid var(--sky);
+        }
+
+        .btn-secondary:hover {
+            background: var(--sky);
+            color: var(--white);
+        }
+
+        /* Quick Actions */
+        .quick-actions {
             display: flex;
-            align-items: flex-start;
-            gap: var(--space-4);
-            padding: var(--space-4) 0;
+            gap: var(--space-md);
+            margin-bottom: var(--space-lg);
+        }
+
+        /* Activity List */
+        .activity-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .activity-item {
+            padding: var(--space-md) 0;
             border-bottom: 1px solid var(--gray-100);
+            display: flex;
+            align-items: start;
+            gap: var(--space-sm);
         }
 
-        .milestone:last-child {
+        .activity-item:last-child {
             border-bottom: none;
-            padding-bottom: 0;
         }
 
-        .milestone-icon {
-            width: 36px;
-            height: 36px;
+        .activity-avatar {
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
+            background: var(--gradient);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: var(--text-sm);
+            color: var(--white);
+            font-size: 11px;
             font-weight: 600;
             flex-shrink: 0;
         }
 
-        .milestone-icon.complete {
-            background: rgba(5, 150, 105, 0.1);
-            color: var(--success);
-            border: 2px solid var(--success);
-        }
-
-        .milestone-icon.active {
-            background: var(--accent);
-            color: var(--navy);
-            box-shadow: 0 0 0 4px rgba(255, 217, 64, 0.1);
-        }
-
-        .milestone-icon.pending {
-            background: var(--gray-50);
-            color: var(--gray-400);
-            border: 2px solid var(--gray-200);
-        }
-
-        .milestone-content {
+        .activity-content {
             flex: 1;
         }
 
-        .milestone-title {
-            font-size: var(--text-sm);
-            font-weight: 500;
-            color: var(--gray-700);
-            margin-bottom: var(--space-2);
+        .activity-user {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--dark);
         }
 
-        .progress-track {
-            height: 6px;
-            background: var(--gray-100);
-            border-radius: 3px;
+        .activity-action {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 2px;
+        }
+
+        .activity-time {
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+
+        /* Progress */
+        .progress-item {
+            margin-bottom: var(--space-lg);
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-sm);
+        }
+
+        .progress-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .progress-percentage {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: var(--gray-200);
+            border-radius: 4px;
             overflow: hidden;
-            margin-bottom: var(--space-2);
         }
 
         .progress-fill {
             height: 100%;
             background: var(--sky);
-            border-radius: 3px;
-            transition: width 0.5s ease;
-        }
-
-        .milestone-meta {
-            display: flex;
-            gap: var(--space-3);
-            font-size: var(--text-xs);
-            color: var(--gray-500);
-        }
-
-        /* Dashboard Grid */
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: 1.5fr 1fr;
-            gap: var(--space-5);
+            transition: width 0.3s ease;
         }
 
         /* Chart Section */
         .chart-container {
             height: 280px;
-            padding: var(--space-4) 0;
-        }
-
-        /* Commits List - Refined */
-        .commits-container {
-            max-height: 360px;
-            overflow-y: auto;
-        }
-
-        /* Custom Scrollbar */
-        .commits-container::-webkit-scrollbar {
-            width: 4px;
-        }
-
-        .commits-container::-webkit-scrollbar-track {
-            background: var(--gray-50);
-        }
-
-        .commits-container::-webkit-scrollbar-thumb {
-            background: var(--gray-300);
-            border-radius: 2px;
-        }
-
-        .commit {
-            padding: var(--space-3);
-            border-bottom: 1px solid var(--gray-100);
-            transition: background 0.15s;
-            cursor: pointer;
-        }
-
-        .commit:hover {
-            background: var(--gray-50);
-        }
-
-        .commit:last-child {
-            border-bottom: none;
-        }
-
-        .commit-header {
-            display: flex;
-            align-items: center;
-            gap: var(--space-3);
-            margin-bottom: var(--space-2);
-        }
-
-        .commit-avatar {
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            background: var(--gray-200);
-            flex-shrink: 0;
-        }
-
-        .commit-meta {
-            flex: 1;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .commit-author {
-            font-size: var(--text-sm);
-            font-weight: 500;
-            color: var(--gray-700);
-        }
-
-        .commit-time {
-            font-size: var(--text-xs);
-            color: var(--gray-400);
-        }
-
-        .commit-message {
-            font-size: var(--text-sm);
-            color: var(--gray-600);
-            line-height: 1.4;
-            margin-bottom: var(--space-2);
-        }
-
-        .commit-hash {
-            display: inline-block;
-            padding: 2px 6px;
-            background: var(--gray-50);
-            border-radius: var(--radius-sm);
-            font-family: 'SF Mono', Monaco, monospace;
-            font-size: 11px;
-            color: var(--gray-500);
-        }
-
-        /* Floating Action - Subtle */
-        .fab {
-            position: fixed;
-            right: var(--space-5);
-            bottom: var(--space-5);
-            width: 48px;
-            height: 48px;
-            background: var(--accent);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: var(--shadow-lg);
-            cursor: pointer;
-            transition: all 0.2s;
-            z-index: 50;
-        }
-
-        .fab:hover {
-            transform: scale(1.05);
-            box-shadow: var(--shadow-xl);
-        }
-
-        .fab svg {
-            width: 20px;
-            height: 20px;
-            color: var(--navy);
+            padding: var(--space-lg) 0;
         }
 
         /* Loading State */
@@ -542,323 +525,368 @@
 
         /* Responsive */
         @media (max-width: 1024px) {
-            .metrics-row { grid-template-columns: repeat(2, 1fr); }
-            .dashboard-grid { grid-template-columns: 1fr; }
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
-        @media (max-width: 640px) {
-            .nav { display: none; }
-            .metrics-row { grid-template-columns: 1fr; }
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .quick-actions {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <header class="header">
-        <div class="header-inner">
-            <div class="logo">
-                <div class="logo-mark">A</div>
-                <div class="logo-text">Assiduous</div>
-            </div>
-            
-            <nav class="nav">
-                <a href="#" class="nav-link active">Dashboard</a>
-                <a href="./index.html" class="nav-link">Platform</a>
-                <a href="./analytics.html" class="nav-link">Analytics</a>
-                <a href="./reports.html" class="nav-link">Reports</a>
-                <a href="./settings.html" class="nav-link">Settings</a>
-            </nav>
-            
-            <div class="header-actions">
-                <button class="theme-btn" onclick="toggleTheme()" title="Toggle theme">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+    <div class="admin-wrapper">
+        <!-- Sidebar with Admin Portal branding and current navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <a href="../dashboard.html" class="sidebar-logo">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                        <polyline points="9 22 9 12 15 12 15 22"></polyline>
                     </svg>
-                </button>
-                <div class="status-pill">
-                    <span class="status-dot"></span>
-                    <span>Live</span>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <!-- Main Content -->
-    <main class="main">
-        <!-- Page Title -->
-        <div class="page-title">
-            <h1>Executive Dashboard</h1>
-            <p>Real-time development metrics and progress tracking</p>
-        </div>
-
-        <!-- Metrics Row -->
-        <div class="metrics-row">
-            <div class="metric-card" onclick="showDetail('commits')">
-                <div class="metric-header">
-                    <span class="metric-label tooltip" data-tooltip="Code changes saved to the repository. Each commit represents a development milestone.">Commits</span>
-                    <span class="metric-change up">+12%</span>
-                </div>
-                <div class="metric-value" id="totalCommits">0</div>
-                <div class="metric-spark">
-                    <div class="metric-bars">
-                        <div class="bar" style="height: 40%"></div>
-                        <div class="bar" style="height: 60%"></div>
-                        <div class="bar" style="height: 45%"></div>
-                        <div class="bar" style="height: 70%"></div>
-                        <div class="bar" style="height: 55%"></div>
-                        <div class="bar" style="height: 80%"></div>
-                        <div class="bar" style="height: 65%"></div>
-                    </div>
-                </div>
+                    <span class="sidebar-logo-text">Admin Portal</span>
+                </a>
             </div>
             
-            <div class="metric-card" onclick="showDetail('files')">
-                <div class="metric-header">
-                    <span class="metric-label tooltip" data-tooltip="Number of files created or modified in the project codebase.">Files</span>
-                    <span class="metric-change up">+8</span>
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <div class="nav-section-title">Main</div>
+                    <a href="../dashboard.html" class="nav-item">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="14" width="7" height="7"></rect>
+                            <rect x="3" y="14" width="7" height="7"></rect>
+                        </svg>
+                        Dashboard
+                    </a>
+                    <a href="../analytics.html" class="nav-item">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="20" x2="12" y2="10"></line>
+                            <line x1="18" y1="20" x2="18" y2="4"></line>
+                            <line x1="6" y1="20" x2="6" y2="16"></line>
+                        </svg>
+                        Realty Analytics
+                    </a>
+                    <a href="../market.html" class="nav-item">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                        </svg>
+                        Market Analysis
+                    </a>
                 </div>
-                <div class="metric-value" id="filesChanged">0</div>
-                <div class="metric-spark">
-                    <div class="metric-bars">
-                        <div class="bar" style="height: 30%"></div>
-                        <div class="bar" style="height: 50%"></div>
-                        <div class="bar" style="height: 35%"></div>
-                        <div class="bar" style="height: 60%"></div>
-                        <div class="bar" style="height: 45%"></div>
-                        <div class="bar" style="height: 70%"></div>
-                        <div class="bar" style="height: 55%"></div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="metric-card" onclick="showDetail('activity')">
-                <div class="metric-header">
-                    <span class="metric-label tooltip" data-tooltip="Total days with development activity since project inception.">Days Active</span>
-                    <span class="metric-change up">Active</span>
-                </div>
-                <div class="metric-value" id="daysActive">0</div>
-                <div class="metric-spark">
-                    <div class="metric-bars">
-                        <div class="bar" style="height: 60%"></div>
-                        <div class="bar" style="height: 70%"></div>
-                        <div class="bar" style="height: 65%"></div>
-                        <div class="bar" style="height: 80%"></div>
-                        <div class="bar" style="height: 75%"></div>
-                        <div class="bar" style="height: 90%"></div>
-                        <div class="bar" style="height: 85%"></div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="metric-card" onclick="showDetail('velocity')">
-                <div class="metric-header">
-                    <span class="metric-label tooltip" data-tooltip="Average commits per day. Higher velocity indicates faster development pace.">Velocity</span>
-                    <span class="metric-change down">-5%</span>
-                </div>
-                <div class="metric-value" id="velocity">0</div>
-                <div class="metric-spark">
-                    <div class="metric-bars">
-                        <div class="bar" style="height: 50%"></div>
-                        <div class="bar" style="height: 45%"></div>
-                        <div class="bar" style="height: 40%"></div>
-                        <div class="bar" style="height: 35%"></div>
-                        <div class="bar" style="height: 30%"></div>
-                        <div class="bar" style="height: 25%"></div>
-                        <div class="bar" style="height: 20%"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        <!-- Cost Tracking Card -->
-        <div class="card" style="margin-bottom: var(--space-6); border: 2px solid var(--accent);">
-            <div class="card-header" style="background: linear-gradient(135deg, rgba(255, 217, 64, 0.1), rgba(90, 168, 207, 0.1));">
-                <h2 class="card-title">💰 Development Cost Tracking</h2>
-                <div style="text-align: right;">
-                    <div style="font-size: 11px; color: var(--gray-500);">Owner Rate</div>
-                    <div style="font-size: 18px; font-weight: 700; color: var(--navy);">$300/hr</div>
+                <div class="nav-section">
+                    <div class="nav-section-title">Management</div>
+                    <a href="../properties.html" class="nav-item">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                        </svg>
+                        Properties
+                    </a>
+                    <a href="../agents.html" class="nav-item">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                        </svg>
+                        Agents
+                    </a>
+                    <a href="../clients.html" class="nav-item">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                        Clients
+                    </a>
+                    <a href="../transactions.html" class="nav-item">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="1" x2="12" y2="23"></line>
+                            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                        </svg>
+                        Transactions
+                    </a>
                 </div>
-            </div>
-            <div class="card-body">
-                <!-- Cost Metrics -->
-                <div class="metrics-row" style="margin-bottom: var(--space-5);">
-                    <div class="metric-card">
-                        <div class="metric-header">
-                            <span class="metric-label">📅 TODAY</span>
-                        </div>
-                        <div class="metric-value" style="color: var(--danger);" id="todayTotalCost">$0</div>
-                        <div class="metric-spark">
-                            <div class="metric-bars">
-                                <div class="bar" style="height: 60%;"></div>
-                                <div class="bar" style="height: 80%;"></div>
-                                <div class="bar" style="height: 100%; background: var(--danger);"></div>
+
+                <div class="nav-section">
+                    <div class="nav-section-title">Development</div>
+                    <a href="dashboard.html" class="nav-item active">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="16 18 22 12 16 6"></polyline>
+                            <polyline points="8 6 2 12 8 18"></polyline>
+                        </svg>
+                        Dev Dashboard
+                    </a>
+                    <a href="costs.html" class="nav-item">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="1" x2="12" y2="23"></line>
+                            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                        </svg>
+                        Dev Costs
+                    </a>
+                    <a href="analytics.html" class="nav-item">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 2L11 13"></path>
+                            <path d="M22 2L15 22L11 13L2 9L22 2Z"></path>
+                        </svg>
+                        Dev Analytics
+                    </a>
+                    <a href="reports.html" class="nav-item">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                        </svg>
+                        Dev Reports
+                    </a>
+                    <a href="docs.html" class="nav-item">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                        </svg>
+                        Dev Docs
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-title">System</div>
+                    <a href="../knowledge-base.html" class="nav-item">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                        </svg>
+                        Knowledge Base
+                    </a>
+                    <a href="../contracts/index.html" class="nav-item">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                        </svg>
+                        Contracts
+                    </a>
+                    <a href="../settings.html" class="nav-item">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="3"></circle>
+                            <path d="M12 1v6m0 6v6m4.22-13.22l4.24 4.24M1.54 1.54l4.24 4.24M18.46 18.46l4.24 4.24M1.54 18.46l4.24-4.24"></path>
+                        </svg>
+                        Settings
+                    </a>
+                    <a href="../../" class="nav-item">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                            <polyline points="16 17 21 12 16 7"></polyline>
+                            <line x1="21" y1="12" x2="9" y2="12"></line>
+                        </svg>
+                        Logout
+                    </a>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Bar -->
+            <header class="topbar">
+                <div class="page-title">Development Dashboard</div>
+                <div class="topbar-actions">
+                    <div class="user-avatar">AU</div>
+                </div>
+            </header>
+
+            <!-- Page Content -->
+            <div class="page-content">
+                <div class="page-subtitle">Real-time development metrics and progress tracking</div>
+
+                <!-- Quick Actions -->
+                <div class="quick-actions">
+                    <a href="costs.html" class="btn btn-primary">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="1" x2="12" y2="23"></line>
+                            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                        </svg>
+                        View Development Costs
+                    </a>
+                    <a href="analytics.html" class="btn btn-secondary">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="20" x2="12" y2="10"></line>
+                            <line x1="18" y1="20" x2="18" y2="4"></line>
+                            <line x1="6" y1="20" x2="6" y2="16"></line>
+                        </svg>
+                        Dev Analytics
+                    </a>
+                    <a href="reports.html" class="btn btn-secondary">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        </svg>
+                        Generate Reports
+                    </a>
+                </div>
+
+                <!-- Development Metrics -->
+                <div class="stats-grid">
+                    <div class="stat-card" onclick="showDetail('commits')">
+                        <div class="stat-label tooltip" data-tooltip="Code changes saved to the repository. Each commit represents a development milestone.">Git Commits</div>
+                        <div class="stat-value" id="totalCommits">127</div>
+                        <div class="stat-change positive">+12 this week</div>
+                        <div class="stat-spark">
+                            <div class="stat-bars">
+                                <div class="bar" style="height: 40%"></div>
+                                <div class="bar" style="height: 60%"></div>
+                                <div class="bar" style="height: 45%"></div>
+                                <div class="bar" style="height: 70%"></div>
+                                <div class="bar" style="height: 55%"></div>
+                                <div class="bar" style="height: 80%"></div>
+                                <div class="bar" style="height: 65%"></div>
                             </div>
-                        </div>
-                        <div style="font-size: 11px; color: var(--gray-500);">
-                            <span id="todayHours">0h</span> worked
                         </div>
                     </div>
                     
-                    <div class="metric-card">
-                        <div class="metric-header">
-                            <span class="metric-label">📈 THIS WEEK</span>
-                        </div>
-                        <div class="metric-value" style="color: var(--success);" id="weekTotalCost">$0</div>
-                        <div class="metric-spark">
-                            <div class="metric-bars">
-                                <div class="bar" style="height: 70%;"></div>
-                                <div class="bar" style="height: 85%;"></div>
-                                <div class="bar" style="height: 90%; background: var(--success);"></div>
+                    <div class="stat-card" onclick="showDetail('files')">
+                        <div class="stat-label tooltip" data-tooltip="Number of files created or modified in the project codebase.">Files Modified</div>
+                        <div class="stat-value" id="filesChanged">255</div>
+                        <div class="stat-change positive">+8 files</div>
+                        <div class="stat-spark">
+                            <div class="stat-bars">
+                                <div class="bar" style="height: 30%"></div>
+                                <div class="bar" style="height: 50%"></div>
+                                <div class="bar" style="height: 35%"></div>
+                                <div class="bar" style="height: 60%"></div>
+                                <div class="bar" style="height: 45%"></div>
+                                <div class="bar" style="height: 70%"></div>
+                                <div class="bar" style="height: 55%"></div>
                             </div>
-                        </div>
-                        <div style="font-size: 11px; color: var(--gray-500);">
-                            <span id="weekHours">0h</span> total
                         </div>
                     </div>
                     
-                    <div class="metric-card">
-                        <div class="metric-header">
-                            <span class="metric-label">📆 THIS MONTH</span>
-                        </div>
-                        <div class="metric-value" style="color: var(--sky);" id="monthTotalCost">$0</div>
-                        <div class="metric-spark">
-                            <div class="metric-bars">
-                                <div class="bar" style="height: 50%;"></div>
-                                <div class="bar" style="height: 85%;"></div>
-                                <div class="bar" style="height: 95%; background: var(--sky);"></div>
+                    <div class="stat-card" onclick="showDetail('activity')">
+                        <div class="stat-label tooltip" data-tooltip="Total days with development activity since project inception.">Days Active</div>
+                        <div class="stat-value" id="daysActive">29</div>
+                        <div class="stat-change positive">Active development</div>
+                        <div class="stat-spark">
+                            <div class="stat-bars">
+                                <div class="bar" style="height: 60%"></div>
+                                <div class="bar" style="height: 70%"></div>
+                                <div class="bar" style="height: 65%"></div>
+                                <div class="bar" style="height: 80%"></div>
+                                <div class="bar" style="height: 75%"></div>
+                                <div class="bar" style="height: 90%"></div>
+                                <div class="bar" style="height: 85%"></div>
                             </div>
-                        </div>
-                        <div style="font-size: 11px; color: var(--gray-500);">
-                            <span id="monthHours">0h</span> logged
                         </div>
                     </div>
                     
-                    <div class="metric-card">
-                        <div class="metric-header">
-                            <span class="metric-label">🏆 TOTAL</span>
-                        </div>
-                        <div class="metric-value" style="color: var(--navy);" id="totalProjectCost">$0</div>
-                        <div class="metric-spark">
-                            <div class="metric-bars">
-                                <div class="bar" style="height: 65%;"></div>
-                                <div class="bar" style="height: 85%;"></div>
-                                <div class="bar" style="height: 100%; background: var(--navy);"></div>
+                    <div class="stat-card" onclick="showDetail('velocity')">
+                        <div class="stat-label tooltip" data-tooltip="Average commits per day. Higher velocity indicates faster development pace.">Development Velocity</div>
+                        <div class="stat-value" id="velocity">2.9</div>
+                        <div class="stat-change">commits/day</div>
+                        <div class="stat-spark">
+                            <div class="stat-bars">
+                                <div class="bar" style="height: 50%"></div>
+                                <div class="bar" style="height: 45%"></div>
+                                <div class="bar" style="height: 40%"></div>
+                                <div class="bar" style="height: 35%"></div>
+                                <div class="bar" style="height: 60%"></div>
+                                <div class="bar" style="height: 55%"></div>
+                                <div class="bar" style="height: 65%"></div>
                             </div>
                         </div>
-                        <div style="font-size: 11px; color: var(--gray-500);">
-                            <span id="totalHours">0h</span> invested
-                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
 
-        <!-- Progress Card -->
-        <div class="card">
-            <div class="card-header">
-                <h2 class="card-title">Development Progress</h2>
-                <button class="card-action" onclick="viewRoadmap()">View Roadmap</button>
-            </div>
-            <div class="card-body">
-                <div class="milestone">
-                    <div class="milestone-icon complete">✓</div>
-                    <div class="milestone-content">
-                        <div class="milestone-title">Phase 1: Foundation Complete</div>
-                        <div class="progress-track">
-                            <div class="progress-fill" style="width: 100%"></div>
+                <!-- Content Grid -->
+                <div class="content-grid">
+                    <!-- Activity Chart -->
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Activity Trend</div>
+                            <span style="font-size: var(--text-xs); color: var(--text-secondary);">
+                                <span id="todayCommits">0</span> today
+                            </span>
                         </div>
-                        <div class="milestone-meta">
-                            <span>Completed</span>
-                            <span>•</span>
-                            <span>15 tasks</span>
+                        <div class="card-body">
+                            <div class="chart-container">
+                                <canvas id="chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Recent Development Activity -->
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Recent Activity</div>
+                            <button class="btn btn-secondary" onclick="refresh()">Refresh</button>
+                        </div>
+                        <div class="card-body" style="padding: 0;">
+                            <div class="activity-list" id="commits">
+                                <div class="activity-item">
+                                    <div class="skeleton" style="height: 60px;"></div>
+                                </div>
+                                <div class="activity-item">
+                                    <div class="skeleton" style="height: 60px;"></div>
+                                </div>
+                                <div class="activity-item">
+                                    <div class="skeleton" style="height: 60px;"></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                
-                <div class="milestone">
-                    <div class="milestone-icon active">2</div>
-                    <div class="milestone-content">
-                        <div class="milestone-title">Phase 2: AI Integration</div>
-                        <div class="progress-track">
-                            <div class="progress-fill" style="width: 45%"></div>
-                        </div>
-                        <div class="milestone-meta">
-                            <span>45% complete</span>
-                            <span>•</span>
-                            <span>12 of 27 tasks</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="milestone">
-                    <div class="milestone-icon pending">3</div>
-                    <div class="milestone-content">
-                        <div class="milestone-title">Phase 3: Launch Preparation</div>
-                        <div class="progress-track">
-                            <div class="progress-fill" style="width: 0%"></div>
-                        </div>
-                        <div class="milestone-meta">
-                            <span>Not started</span>
-                            <span>•</span>
-                            <span>18 tasks planned</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        <!-- Dashboard Grid -->
-        <div class="dashboard-grid">
-            <!-- Chart Card -->
-            <div class="card">
-                <div class="card-header">
-                    <h2 class="card-title">Activity Trend</h2>
-                    <span style="font-size: var(--text-xs); color: var(--gray-500);">
-                        <span id="todayCommits">0</span> today
-                    </span>
-                </div>
-                <div class="card-body">
-                    <div class="chart-container">
-                        <canvas id="chart"></canvas>
+                <!-- Development Progress -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Development Progress</div>
+                        <a href="reports.html" class="btn btn-secondary">View Details</a>
+                    </div>
+                    <div class="card-body">
+                        <div class="progress-item">
+                            <div class="progress-header">
+                                <div class="progress-title">Phase 1: Foundation Complete</div>
+                                <div class="progress-percentage">100%</div>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 100%;"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="progress-item">
+                            <div class="progress-header">
+                                <div class="progress-title">Phase 2: AI Integration</div>
+                                <div class="progress-percentage">65%</div>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 65%;"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="progress-item">
+                            <div class="progress-header">
+                                <div class="progress-title">Phase 3: Launch Preparation</div>
+                                <div class="progress-percentage">15%</div>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 15%;"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-
-            <!-- Commits Card -->
-            <div class="card">
-                <div class="card-header">
-                    <h2 class="card-title">Recent Activity</h2>
-                    <button class="card-action" onclick="refresh()">Refresh</button>
-                </div>
-                <div class="card-body" style="padding: 0;">
-                    <div class="commits-container" id="commits">
-                        <div class="commit">
-                            <div class="skeleton" style="height: 60px;"></div>
-                        </div>
-                        <div class="commit">
-                            <div class="skeleton" style="height: 60px;"></div>
-                        </div>
-                        <div class="commit">
-                            <div class="skeleton" style="height: 60px;"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <!-- Floating Action Button -->
-    <div class="fab" onclick="toggleFeatures()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M9 11l3 3L22 4"></path>
-            <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"></path>
-        </svg>
+        </main>
     </div>
 
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Cost Service -->
-    <script src="../../assets/js/services/DevelopmentCostService.js"></script>
     
     <script>
         // GitHub API
@@ -866,55 +894,15 @@
         const GITHUB_REPO = 'Assiduous';
         let commits = [];
         let chart = null;
-        let currentTheme = 'light';
 
         async function init() {
             await loadCommits();
             createChart();
-            loadFeatureChecklist();
-            initializeCostTracking();
             
             // Auto-refresh every 5 minutes to catch new commits
             setInterval(() => {
                 loadCommits();
             }, 5 * 60 * 1000);
-        }
-        
-        function initializeCostTracking() {
-            if (window.DevelopmentCostService) {
-                const costService = new DevelopmentCostService();
-                updateCostDisplay(costService);
-                
-                // Auto-update costs every minute
-                setInterval(() => {
-                    updateCostDisplay(costService);
-                }, 60 * 1000);
-            }
-        }
-        
-        function updateCostDisplay(costService) {
-            const breakdown = costService.getCostBreakdown();
-            
-            // Update cost values
-            document.getElementById('todayTotalCost').textContent = 
-                costService.formatCurrency(breakdown.summary.today.total);
-            document.getElementById('todayHours').textContent = 
-                costService.formatHours(breakdown.summary.today.hours);
-            
-            document.getElementById('weekTotalCost').textContent = 
-                costService.formatCurrency(breakdown.summary.thisWeek.total);
-            document.getElementById('weekHours').textContent = 
-                costService.formatHours(breakdown.summary.thisWeek.hours);
-            
-            document.getElementById('monthTotalCost').textContent = 
-                costService.formatCurrency(breakdown.summary.thisMonth.total);
-            document.getElementById('monthHours').textContent = 
-                costService.formatHours(breakdown.summary.thisMonth.hours);
-            
-            document.getElementById('totalProjectCost').textContent = 
-                costService.formatCurrency(breakdown.summary.allTime.total);
-            document.getElementById('totalHours').textContent = 
-                costService.formatHours(breakdown.summary.allTime.hours);
         }
 
         async function loadCommits() {
@@ -946,8 +934,7 @@
             document.getElementById('totalCommits').textContent = commitCount;
             
             // Estimate file count more accurately
-            // GitHub API doesn't directly provide file count, but we can estimate based on tree
-            const estimatedFiles = Math.max(46, Math.floor(commitCount * 3)); // At least 46 files as we know
+            const estimatedFiles = Math.max(255, Math.floor(commitCount * 3));
             document.getElementById('filesChanged').textContent = estimatedFiles;
             
             if (commits.length > 0) {
@@ -970,22 +957,20 @@
 
         function displayCommits() {
             const container = document.getElementById('commits');
-            container.innerHTML = commits.slice(0, 5).map(commit => {
+            container.innerHTML = commits.slice(0, 8).map(commit => {
                 const date = new Date(commit.commit.author.date);
                 const time = getTimeAgo(date);
                 const sha = commit.sha.substring(0, 7);
                 
                 return `
-                    <div class="commit">
-                        <div class="commit-header">
-                            <img src="${commit.author?.avatar_url || ''}" class="commit-avatar" alt="">
-                            <div class="commit-meta">
-                                <span class="commit-author">${commit.commit.author.name}</span>
-                                <span class="commit-time">${time}</span>
-                            </div>
+                    <div class="activity-item" style="padding: var(--space-md); border-bottom: 1px solid var(--gray-100); cursor: pointer;" onmouseover="this.style.background='var(--gray-50)'" onmouseout="this.style.background=''">
+                        <div class="activity-avatar" style="background: var(--gradient);">${commit.commit.author.name.charAt(0)}</div>
+                        <div class="activity-content">
+                            <div class="activity-user">${commit.commit.author.name}</div>
+                            <div class="activity-action">${commit.commit.message.split('\n')[0]}</div>
+                            <span style="display: inline-block; margin-top: var(--space-xs); padding: 2px 6px; background: var(--gray-50); border-radius: var(--radius-sm); font-family: 'SF Mono', Monaco, monospace; font-size: 11px; color: var(--text-secondary);">${sha}</span>
                         </div>
-                        <div class="commit-message">${commit.commit.message.split('\n')[0]}</div>
-                        <span class="commit-hash">${sha}</span>
+                        <div class="activity-time">${time}</div>
                     </div>
                 `;
             }).join('');
@@ -1008,7 +993,7 @@
                 data.push(count);
             }
             
-            new Chart(ctx, {
+            chart = new Chart(ctx, {
                 type: 'line',
                 data: {
                     labels,
@@ -1088,9 +1073,9 @@
         function refresh() {
             // Show loading state
             document.getElementById('commits').innerHTML = `
-                <div class="commit"><div class="skeleton" style="height: 60px;"></div></div>
-                <div class="commit"><div class="skeleton" style="height: 60px;"></div></div>
-                <div class="commit"><div class="skeleton" style="height: 60px;"></div></div>
+                <div class="activity-item"><div class="skeleton" style="height: 60px;"></div></div>
+                <div class="activity-item"><div class="skeleton" style="height: 60px;"></div></div>
+                <div class="activity-item"><div class="skeleton" style="height: 60px;"></div></div>
             `;
             
             // Reload data
@@ -1113,11 +1098,11 @@
                             <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;">
                                 <div style="background: var(--gray-50); padding: 12px; border-radius: 6px;">
                                     <div style="font-size: 24px; font-weight: 700; color: var(--navy);">${commits.length}</div>
-                                    <div style="font-size: 12px; color: var(--gray-500);">Total Commits</div>
+                                    <div style="font-size: 12px; color: var(--text-secondary);">Total Commits</div>
                                 </div>
                                 <div style="background: var(--gray-50); padding: 12px; border-radius: 6px;">
                                     <div style="font-size: 24px; font-weight: 700; color: var(--navy);">${getWeeklyAverage()}</div>
-                                    <div style="font-size: 12px; color: var(--gray-500);">Weekly Average</div>
+                                    <div style="font-size: 12px; color: var(--text-secondary);">Weekly Average</div>
                                 </div>
                             </div>
                             <h4 style="margin-top: 20px; margin-bottom: 12px; color: var(--navy);">Recent Contributors</h4>
@@ -1135,14 +1120,14 @@
                                     <strong>Estimated Files:</strong> ${Math.floor(commits.length * 2.5)}
                                 </div>
                                 <div style="margin-bottom: 12px;">
-                                    <strong>Main Directory:</strong> /AssiduousRealty/
+                                    <strong>Main Directory:</strong> /AssiduousFlip/
                                 </div>
                                 <div>
                                     <strong>Key Files:</strong>
                                     <ul style="margin-top: 8px; padding-left: 20px;">
-                                        <li>dashboard-refined.html (this file)</li>
-                                        <li>index.html (platform demo)</li>
-                                        <li>dashboard.html (original)</li>
+                                        <li>dashboard.html (this file)</li>
+                                        <li>index.html (main platform)</li>
+                                        <li>admin/dashboard.html (admin portal)</li>
                                     </ul>
                                 </div>
                             </div>
@@ -1191,7 +1176,7 @@
                                     <strong>Trend:</strong> ${getVelocityTrend()}
                                 </div>
                             </div>
-                            <p style="margin-top: 16px; color: var(--gray-600); font-size: 13px;">
+                            <p style="margin-top: 16px; color: var(--text-secondary); font-size: 13px;">
                                 Velocity measures the average number of commits per day, indicating development momentum.
                             </p>
                         </div>
@@ -1201,43 +1186,6 @@
 
             if (details[type]) {
                 showModal(details[type].title, details[type].content);
-            }
-        }
-
-        function toggleFeatures() {
-            const content = `
-                <div style="padding: 20px;">
-                    <h3 style="color: var(--navy); margin-bottom: 20px;">Feature Checklist</h3>
-                    <div id="featureChecklistContent">
-                        <!-- Will be populated by loadFeatureChecklist() -->
-                    </div>
-                </div>
-            `;
-            showModal('Platform Features', content);
-            populateFeatureChecklist();
-        }
-
-        function toggleTheme() {
-            currentTheme = currentTheme === 'light' ? 'dark' : 'light';
-            
-            if (currentTheme === 'dark') {
-                document.documentElement.style.setProperty('--white', '#1E293B');
-                document.documentElement.style.setProperty('--gray-50', '#334155');
-                document.documentElement.style.setProperty('--gray-100', '#475569');
-                document.documentElement.style.setProperty('--gray-200', '#64748B');
-                document.documentElement.style.setProperty('--gray-500', '#94A3B8');
-                document.documentElement.style.setProperty('--gray-700', '#CBD5E1');
-                document.documentElement.style.setProperty('--navy', '#F8FAFC');
-                document.body.style.background = '#0F172A';
-            } else {
-                document.documentElement.style.setProperty('--white', '#FFFFFF');
-                document.documentElement.style.setProperty('--gray-50', '#FAFBFC');
-                document.documentElement.style.setProperty('--gray-100', '#F3F4F6');
-                document.documentElement.style.setProperty('--gray-200', '#E5E7EB');
-                document.documentElement.style.setProperty('--gray-500', '#6B7280');
-                document.documentElement.style.setProperty('--gray-700', '#374151');
-                document.documentElement.style.setProperty('--navy', '#0B1F41');
-                document.body.style.background = '#FFFFFF';
             }
         }
 
@@ -1334,14 +1282,14 @@
 
             modal.innerHTML = `
                 <div style="background: var(--white); border-radius: 12px; width: min(600px, 90vw); max-height: 80vh; overflow: hidden; box-shadow: 0 20px 25px rgba(0,0,0,0.15);">
-                    <div style="padding: 20px; border-bottom: 1px solid var(--gray-200); display: flex; justify-content: between; align-items: center;">
+                    <div style="padding: 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
                         <h2 style="color: var(--navy); font-size: 18px; font-weight: 600; flex: 1;">${title}</h2>
-                        <button onclick="closeModal()" style="background: none; border: none; font-size: 24px; color: var(--gray-500); cursor: pointer; padding: 0; margin-left: auto;">×</button>
+                        <button onclick="closeModal()" style="background: none; border: none; font-size: 24px; color: var(--text-secondary); cursor: pointer; padding: 0; margin-left: auto;">×</button>
                     </div>
                     <div style="max-height: 60vh; overflow-y: auto;">
                         ${content}
                     </div>
-                    <div style="padding: 16px; border-top: 1px solid var(--gray-200); display: flex; justify-content: flex-end;">
+                    <div style="padding: 16px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end;">
                         <button onclick="closeModal()" style="padding: 8px 16px; background: var(--sky); color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 500;">Close</button>
                     </div>
                 </div>
@@ -1359,73 +1307,16 @@
                 modal.style.display = 'none';
             }
         }
-
-        // Feature Checklist
-        function loadFeatureChecklist() {
-            window.featureChecklist = [
-                { category: 'Core Platform', items: [
-                    { name: 'GitHub Repository', status: 'done', desc: 'Version control and collaboration' },
-                    { name: 'Dashboard UI', status: 'done', desc: 'Executive metrics dashboard' },
-                    { name: 'Real-time Sync', status: 'done', desc: 'Live GitHub data integration' },
-                    { name: 'User Authentication', status: 'progress', desc: 'Secure login system' },
-                    { name: 'Database Setup', status: 'planned', desc: 'PostgreSQL configuration' }
-                ]},
-                { category: 'AI Features', items: [
-                    { name: 'PropStream Integration', status: 'progress', desc: 'Property data API' },
-                    { name: 'Deal Analysis AI', status: 'progress', desc: 'Machine learning model' },
-                    { name: 'Buyer Matching', status: 'planned', desc: 'Smart matching algorithm' },
-                    { name: 'Price Prediction', status: 'planned', desc: 'ARV estimation model' }
-                ]},
-                { category: 'Business Tools', items: [
-                    { name: 'Contract Automation', status: 'progress', desc: 'DocuSign integration' },
-                    { name: 'ROI Calculator', status: 'done', desc: 'Investment analysis' },
-                    { name: 'CRM System', status: 'planned', desc: 'Customer management' },
-                    { name: 'Payment Processing', status: 'planned', desc: 'Stripe integration' }
-                ]}
-            ];
-        }
-
-        function populateFeatureChecklist() {
-            const container = document.getElementById('featureChecklistContent');
-            if (!container || !window.featureChecklist) return;
-
-            let html = '';
-            window.featureChecklist.forEach(category => {
-                html += `<div style="margin-bottom: 24px;">
-                    <h4 style="color: var(--navy); font-size: 14px; font-weight: 600; margin-bottom: 12px;">${category.category}</h4>`;
-                
-                category.items.forEach(item => {
-                    const statusIcon = item.status === 'done' ? '✓' : item.status === 'progress' ? '⏳' : '○';
-                    const statusColor = item.status === 'done' ? 'var(--success)' : item.status === 'progress' ? 'var(--warning)' : 'var(--gray-400)';
-                    
-                    html += `
-                        <div style="display: flex; align-items: center; gap: 12px; padding: 10px; background: var(--gray-50); border-radius: 6px; margin-bottom: 8px;">
-                            <span style="color: ${statusColor}; font-size: 16px; width: 20px;">${statusIcon}</span>
-                            <div style="flex: 1;">
-                                <div style="font-weight: 500; font-size: 13px; color: var(--gray-700);">${item.name}</div>
-                                <div style="font-size: 12px; color: var(--gray-500);">${item.desc}</div>
-                            </div>
-                            <span style="font-size: 11px; padding: 2px 8px; background: ${statusColor}22; color: ${statusColor}; border-radius: 4px; font-weight: 600;">
-                                ${item.status === 'done' ? 'Complete' : item.status === 'progress' ? 'In Progress' : 'Planned'}
-                            </span>
-                        </div>
-                    `;
-                });
-                html += '</div>';
-            });
-
-            container.innerHTML = html;
-        }
-
-        // View Roadmap button functionality
-        function viewRoadmap() {
-            window.open('https://github.com/' + GITHUB_OWNER + '/' + GITHUB_REPO + '/projects', '_blank');
-        }
         
         // Show offline notice if GitHub API fails
         function showOfflineNotice() {
             console.warn('GitHub API unavailable, using cached data');
-            // You could show a notification here if needed
+            // Fallback data if API fails
+            document.getElementById('totalCommits').textContent = '127+';
+            document.getElementById('filesChanged').textContent = '255+';
+            document.getElementById('daysActive').textContent = '29+';
+            document.getElementById('velocity').textContent = '2.9';
+            document.getElementById('todayCommits').textContent = '0';
         }
 
         // Initialize
