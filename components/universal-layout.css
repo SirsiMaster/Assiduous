@@ -100,13 +100,23 @@ body {
 
 /* Header Layout Common */
 .header-admin,
-.header-client,
-.header-public {
+.header-client {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: var(--space-sm) var(--space-lg);
   min-height: 3.25rem;
+  gap: var(--space-md);
+}
+
+/* Public header uses inner container for perfect alignment */
+.header-public { padding: var(--space-sm) var(--space-lg); }
+.header-public-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   gap: var(--space-md);
 }
 
@@ -460,6 +470,7 @@ body {
   .header-public .brand-subtitle{display:none}
   .main-nav { gap: 0.9rem; }
   .auth-buttons sirsi-button { --btn-size: xs; }
+  .header-public-inner{max-width: 1200px}
 }
 
 @media (max-width: 768px) {
