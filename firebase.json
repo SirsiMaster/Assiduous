@@ -13,6 +13,17 @@
       "rewrites": [
         { "source": "/api/**", "function": "app" }
       ]
+    },
+    {
+      "target": "assiduousflip",
+      "public": "assiduous-build",
+      "ignore": ["firebase.json", "**/.*", "**/node_modules/**", "**/firebase-migration-package/**"],
+      "redirects": [
+        { "source": "/", "destination": "/index.html", "type": 302 }
+      ],
+      "rewrites": [
+        { "source": "/api/**", "function": "app" }
+      ]
     }
   ],
   "firestore": {

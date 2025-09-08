@@ -220,6 +220,34 @@
             background: white;
         }
 
+        /* Demo Section */
+        .demo-section {
+            padding: 5rem 1.5rem;
+            background: #f9fafb;
+        }
+        .demo-card {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.75rem;
+            padding: 2rem;
+            text-align: center;
+        }
+        .demo-title { font-size: 2rem; font-weight: 700; margin-bottom: 1rem; }
+        .demo-subtitle { color: #6b7280; margin-bottom: 1.5rem; }
+        .demo-placeholder {
+            display: grid;
+            place-items: center;
+            aspect-ratio: 16 / 9;
+            background: linear-gradient(135deg, #E2E8F0, #F3F4F6);
+            border: 1px dashed #cbd5e1;
+            border-radius: 0.5rem;
+            color: #64748b;
+            margin-bottom: 1rem;
+        }
+        .demo-note { font-size: 0.9rem; color: #64748b; }
+
         .features-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -477,7 +505,8 @@
         <nav class="site-header__nav">
             <a href="index.html">Home</a>
             <a href="knowledge-base.html">Knowledge Base</a>
-            <a href="admin/dashboard.html">Admin</a>
+            <a href="#features">Features</a>
+            <a href="#demo">Demo</a>
         </nav>
         <div class="site-header__auth">
             <a href="#" onclick="showLogin()">Sign In</a>
@@ -647,6 +676,20 @@
                     <h3 class="feature-title">Unified Management</h3>
                     <p class="feature-description">Handle all your real estate activities in one place</p>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Demo Section -->
+    <section class="demo-section" id="demo">
+        <div class="container">
+            <div class="demo-card">
+                <h2 class="demo-title">Interactive Demo</h2>
+                <p class="demo-subtitle">A guided product demo is coming soon. In the meantime, explore our features below.</p>
+                <div class="demo-placeholder">
+                    <span>Demo preview placeholder</span>
+                </div>
+                <p class="demo-note">Want early access? Use the Sign In button to get started with a basic account.</p>
             </div>
         </div>
     </section>

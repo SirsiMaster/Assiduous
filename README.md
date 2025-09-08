@@ -141,7 +141,7 @@ assiduous/
 ## 🌐 Deployment
 
 Assiduous is deployed using Firebase Hosting:
-- **Production**: https://assiduous-prod.web.app/
+- **Production**: https://assiduousflip.web.app/
 - **Firebase Console**: https://console.firebase.google.com/project/assiduous-prod
 - **API Endpoints**: https://us-central1-assiduous-prod.cloudfunctions.net/app
 - Progressive Web App (PWA) ready

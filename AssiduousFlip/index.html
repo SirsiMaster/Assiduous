@@ -490,6 +490,13 @@
     </style>
 </head>
 <body class="page-wrapper">
+    <!-- Universal Header (progressive enhancement) -->
+    <header id="universal-header-root"
+            data-type="public"
+            data-title="Assiduous Properties"
+            data-subtitle="Intelligent Real Estate Solutions"
+            data-search-placeholder="Search properties, insights, and tools..."
+            data-actions='[{"label":"Sign In","onclick":"showLogin()"},{"label":"Get Started","primary":true,"onclick":"showSignup()"}]'></header>
     <!-- Simple Static Header (no external dependencies) -->
     <header class="site-header">
         <div class="site-header__left">
@@ -1081,7 +1088,7 @@ window.handleLogin = async function(event) {
                     email: email,
                     role: 'admin'
                 }));
-                window.location.href = 'admin/dashboard.html';
+                window.location.href = './admin/dashboard.html';
                 return;
             }
             
@@ -1096,7 +1103,7 @@ window.handleLogin = async function(event) {
                 if (result.success) {
                     // Check if admin based on result (fallback)
                     if (result.user && result.user.role === 'admin') {
-                        window.location.href = '/AssiduousFlip/admin/dashboard.html';
+                        window.location.href = './admin/dashboard.html';
                         return;
                     }
                     
@@ -1105,10 +1112,10 @@ window.handleLogin = async function(event) {
                     // Route based on role
                     switch(role) {
                         case 'client':
-                            window.location.href = 'client/';
+                            window.location.href = './client/';
                             break;
                         case 'agent':
-                            window.location.href = 'agents/';
+                            window.location.href = './agents/';
                             break;
                         default:
                             window.location.href = './';
@@ -1182,5 +1189,6 @@ window.handleLogin = async function(event) {
         });
     </script>
     <!-- Header component loader removed to avoid path/caching issues -->
+    <script src="components/universal-header.js?v=phase1.3"></script>
 </body>
 </html>

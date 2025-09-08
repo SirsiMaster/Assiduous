@@ -352,37 +352,37 @@ Backend services should expose REST endpoints that the frontend JavaScript can c
 ## 🔗 LIVE APPLICATION URLS (ALWAYS USE THESE)
 
 ### Production URLs (Firebase Hosting)
-**Base URL**: `https://assiduous-prod.web.app/`
+**Base URL**: `https://assiduousflip.web.app/`
 
 #### Main Application
-- **Root Redirect**: https://assiduous-prod.web.app/
-- **Landing Page (Login/Signup)**: https://assiduous-prod.web.app/
-- **Knowledge Base**: https://assiduous-prod.web.app/knowledge-base.html
-- **Reports**: https://assiduous-prod.web.app/reports.html
+- **Root Redirect**: https://assiduousflip.web.app/
+- **Landing Page (Login/Signup)**: https://assiduousflip.web.app/
+- **Knowledge Base**: https://assiduousflip.web.app/knowledge-base.html
+- **Reports**: https://assiduousflip.web.app/reports.html
 
 #### Admin Portal
-- **Admin Dashboard**: https://assiduous-prod.web.app/admin/dashboard.html
-- **Analytics**: https://assiduous-prod.web.app/admin/analytics.html
-- **Properties Management**: https://assiduous-prod.web.app/admin/properties.html
-- **Client Management**: https://assiduous-prod.web.app/admin/clients.html
-- **Agent Management**: https://assiduous-prod.web.app/admin/agents.html
-- **Transactions**: https://assiduous-prod.web.app/admin/transactions.html
-- **Market Analysis**: https://assiduous-prod.web.app/admin/market.html
-- **Settings**: https://assiduous-prod.web.app/admin/settings.html
+- **Admin Dashboard**: https://assiduousflip.web.app/admin/dashboard.html
+- **Analytics**: https://assiduousflip.web.app/admin/analytics.html
+- **Properties Management**: https://assiduousflip.web.app/admin/properties.html
+- **Client Management**: https://assiduousflip.web.app/admin/clients.html
+- **Agent Management**: https://assiduousflip.web.app/admin/agents.html
+- **Transactions**: https://assiduousflip.web.app/admin/transactions.html
+- **Market Analysis**: https://assiduousflip.web.app/admin/market.html
+- **Settings**: https://assiduousflip.web.app/admin/settings.html
 
 #### Development/Test Pages
-- **Dev Dashboard**: https://assiduous-prod.web.app/admin/development/dashboard.html
-- **Dev Analytics**: https://assiduous-prod.web.app/admin/development/analytics.html
-- **Dev Docs**: https://assiduous-prod.web.app/admin/development/docs.html
-- **Dev Reports**: https://assiduous-prod.web.app/admin/development/reports.html
-- **Old Dashboard (Backup)**: https://assiduous-prod.web.app/admin/development/dashboard_old.html
+- **Dev Dashboard**: https://assiduousflip.web.app/admin/development/dashboard.html
+- **Dev Analytics**: https://assiduousflip.web.app/admin/development/analytics.html
+- **Dev Docs**: https://assiduousflip.web.app/admin/development/docs.html
+- **Dev Reports**: https://assiduousflip.web.app/admin/development/reports.html
+- **Old Dashboard (Backup)**: https://assiduousflip.web.app/admin/development/dashboard_old.html
 
 #### Client Portal
-- **Client Dashboard**: https://assiduous-prod.web.app/client/
+- **Client Dashboard**: https://assiduousflip.web.app/client/
 
 #### Documentation Pages
-- **API Docs**: https://assiduous-prod.web.app/docs/
-- **README (HTML)**: https://assiduous-prod.web.app/docs/readme.html
+- **API Docs**: https://assiduousflip.web.app/docs/
+- **README (HTML)**: https://assiduousflip.web.app/docs/readme.html
 
 ### GitHub Repository URLs
 - **Repository Home**: https://github.com/SirsiMaster/Assiduous
@@ -404,7 +404,7 @@ http://localhost:8080/AssiduousFlip/client/
 
 ### URL Construction Rules for AI
 **IMPORTANT**: When providing URLs, ALWAYS use this format:
-- **Production**: `https://assiduous-prod.web.app/[path-to-file]`
+- **Production**: `https://assiduousflip.web.app/[path-to-file]`
 - **Local Dev**: `http://localhost:8080/AssiduousFlip/[path-to-file]`
 - File paths are case-sensitive
 - Most HTML files are in `/AssiduousFlip/` subdirectory
@@ -469,13 +469,13 @@ cd firebase-migration-package
 firebase deploy
 
 # 4. Verify deployment
-curl https://assiduous-prod.web.app/AssiduousFlip/
+curl https://assiduousflip.web.app/AssiduousFlip/
 ```
 
 #### Analytics & Monitoring
 ```bash
 # View Firebase analytics in dev dashboard
-open https://assiduous-prod.web.app/AssiduousFlip/admin/development/dashboard.html
+open https://assiduousflip.web.app/AssiduousFlip/admin/development/dashboard.html
 
 # Check Firebase Console metrics
 open https://console.firebase.google.com/project/assiduous-prod/usage
@@ -603,7 +603,7 @@ firebase deploy --only hosting
 # - Project total calculations
 
 # View cost breakdown:
-open https://assiduous-prod.web.app/AssiduousFlip/admin/development/costs.html
+open https://assiduousflip.web.app/AssiduousFlip/admin/development/costs.html
 
 # Check Firebase usage costs:
 open https://console.firebase.google.com/project/assiduous-prod/usage
