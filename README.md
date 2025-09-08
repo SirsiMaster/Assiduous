@@ -1,6 +1,6 @@
 # Assiduous AI-Powered Real Estate Platform 🏠🤖
 
-[![Version](https://img.shields.io/badge/version-0.13.13-blue.svg)](https://github.com/SirsiMaster/Assiduous/releases)
+[![Version](https://img.shields.io/badge/version-0.13.14-blue.svg)](https://github.com/SirsiMaster/Assiduous/releases)
 [![Changelog](https://img.shields.io/badge/changelog-Keep%20a%20Changelog-brightgreen.svg)](./CHANGELOG.md)
 [![PRD](https://img.shields.io/badge/PRD-Technical%20Blueprint-orange.svg)](./docs/ASSIDUOUS_TECHNICAL_BLUEPRINT.md)
 [![Contributing](https://img.shields.io/badge/contributing-guidelines-purple.svg)](./.github/CONTRIBUTING.md)
