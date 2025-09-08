@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.13.16] - 2025-09-08
+
+### Fixed
+- fix: correct sidebar navigation links to use absolute paths
+
+
 ## [0.13.15] - 2025-09-08
 
 ### Fixed
@@ -532,7 +538,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.13.15...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.13.16...HEAD
+
+
+## [0.13.16] - 2025-09-08
+
+### Fixed
+- fix: correct sidebar navigation links to use absolute paths
 
 
 ## [0.13.15] - 2025-09-08
@@ -689,3 +701,4 @@ To generate changelog entries:
 [0.13.13]: https://github.com/SirsiMaster/Assiduous/compare/v0.13.12...v0.13.13
 [0.13.14]: https://github.com/SirsiMaster/Assiduous/compare/v0.13.13...v0.13.14
 [0.13.15]: https://github.com/SirsiMaster/Assiduous/compare/v0.13.14...v0.13.15
+[0.13.16]: https://github.com/SirsiMaster/Assiduous/compare/v0.13.15...v0.13.16
