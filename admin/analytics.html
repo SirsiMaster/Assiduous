@@ -8,11 +8,12 @@
     
     <!-- Assiduous Design System -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SirsiMaster/sirsi-ui@v0.1.1/dist/sirsi-ui.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SirsiMaster/sirsi-ui@v0.1.2/dist/sirsi-ui.css">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     
     <link rel="stylesheet" href="../assiduous.css">
     <link rel="stylesheet" href="../components/admin-layout.css">
+    <script defer src="https://cdn.jsdelivr.net/gh/SirsiMaster/sirsi-ui@v0.1.2/dist/sirsi-ui.js"></script>
     
     <style>
         /* Analytics-specific styles only */
@@ -388,6 +389,40 @@
             <!-- Page Content -->
             <div class="page-content">
 
+                <!-- Analytics Tabs -->
+                <sirsi-tabs id="analytics-tabs" style="margin-bottom: var(--space-lg);">
+                    <sirsi-tab slot="tab" selected>Overview</sirsi-tab>
+                    <sirsi-tab slot="tab">Trends</sirsi-tab>
+                    <sirsi-tab slot="tab">Performance</sirsi-tab>
+
+                    <div slot="panel">
+                        <p class="text-sm" style="color: var(--text-secondary); margin-bottom: var(--space-sm);">
+                            Quick snapshot of KPIs and current period highlights.
+                        </p>
+                        <sirsi-button appearance="secondary" size="sm" onclick="document.getElementById('overview').scrollIntoView({behavior:'smooth'});">
+                            Jump to Overview
+                        </sirsi-button>
+                    </div>
+                    <div slot="panel">
+                        <p class="text-sm" style="color: var(--text-secondary); margin-bottom: var(--space-sm);">
+                            Explore sales volume trends and recent user activity.
+                        </p>
+                        <sirsi-button appearance="secondary" size="sm" onclick="document.getElementById('trends').scrollIntoView({behavior:'smooth'});">
+                            Jump to Trends
+                        </sirsi-button>
+                    </div>
+                    <div slot="panel">
+                        <p class="text-sm" style="color: var(--text-secondary); margin-bottom: var(--space-sm);">
+                            Review agent performance, property type performance, ROI and commissions.
+                        </p>
+                        <sirsi-button appearance="secondary" size="sm" onclick="document.getElementById('performance').scrollIntoView({behavior:'smooth'});">
+                            Jump to Performance
+                        </sirsi-button>
+                    </div>
+                </sirsi-tabs>
+
+                <div id="overview"></div>
+
                 <!-- KPI Cards -->
                 <div class="kpi-grid">
                     <div class="kpi-card">
@@ -502,6 +537,7 @@
                     </div>
                 </div>
 
+                <div id="trends"></div>
                 <!-- Sales & Revenue Chart -->
                 <div class="chart-card full-width" style="margin-bottom: var(--space-xl);">
                     <div class="chart-header">
@@ -623,6 +659,7 @@
                     </div>
                 </div>
 
+                <div id="performance"></div>
                 <!-- Performance Tables -->
                 <div class="analytics-grid">
                     <!-- Top Performing Agents -->
