@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="components/universal-layout.css">
+    <link rel="stylesheet" href="/AssiduousFlip/components/universal-layout.css?v=phase1.3">
     
     <style>
         /* Clean Design System */
@@ -430,11 +430,36 @@
     </style>
 </head>
 <body class="page-wrapper">
-    <!-- Universal Header -->
+    <!-- Universal Header (with static fallback content) -->
     <header id="universal-header-root" 
             data-type="public"
             data-title="Assiduous Properties"
-            data-show-auth="true"></header>
+            data-show-auth="true">
+        <!-- Static fallback header (rendered if JS fails). JS will replace this block when loaded. -->
+        <div class="universal-header header-public" style="background: #fff; border-bottom: 1px solid #e5e7eb; padding: 1rem 1.5rem; display: flex; justify-content: space-between; align-items: center;">
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#60A3D9" stroke-width="2">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
+                <div>
+                    <span style="font-size: 1.125rem; font-weight: 700; color: #111827;">Assiduous</span><br>
+                    <span style="font-size: 0.75rem; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em;">Properties</span>
+                </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <nav style="display: flex; gap: 1.5rem;">
+                    <a href="/AssiduousFlip/" style="color: #6b7280; text-decoration: none; font-size: 0.875rem;">Home</a>
+                    <a href="/AssiduousFlip/knowledge-base.html" style="color: #6b7280; text-decoration: none; font-size: 0.875rem;">Knowledge Base</a>
+                    <a href="/AssiduousFlip/admin/dashboard.html" style="color: #6b7280; text-decoration: none; font-size: 0.875rem;">Admin</a>
+                </nav>
+                <div style="display: flex; gap: 0.75rem;">
+                    <a href="#" onclick="showLogin()" style="color: #6b7280; text-decoration: none; font-size: 0.875rem;">Sign In</a>
+                    <a href="#" onclick="showSignup()" style="background: #60A3D9; color: white; padding: 0.5rem 1rem; border-radius: 0.375rem; text-decoration: none; font-size: 0.875rem;">Get Started</a>
+                </div>
+            </div>
+        </div>
+    </header>
     <!-- Hero Section -->
     <section class="hero">
         <h1>Smart Real Estate Solutions</h1>
@@ -1100,6 +1125,6 @@ window.handleLogin = async function(event) {
             }
         });
     </script>
-    <script src="components/universal-header.js"></script>
+    <script src="/AssiduousFlip/components/universal-header.js?v=phase1.3"></script>
 </body>
 </html>
