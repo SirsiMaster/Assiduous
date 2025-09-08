@@ -19,7 +19,7 @@
         body {
             margin: 0;
             padding: 0;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: "Geist Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
             background: var(--white);
         }
 
@@ -607,6 +607,7 @@
             font-weight: 500;
         }
     </style>
+    <script defer src="https://cdn.jsdelivr.net/gh/SirsiMaster/sirsi-ui@v0.1.2/dist/sirsi-ui.js"></script>
 </head>
 <body>
     <div class="admin-wrapper">
@@ -654,25 +655,25 @@
                     <h3 style="font-size: 18px; font-weight: 600; color: var(--navy);">📊 Project Totals Since August 10, 2025</h3>
                 </div>
                 <div class="stats-grid">
-                    <div class="stat-card" onclick="showDetail('total-hours')" style="border-left: 3px solid var(--success);">
+                    <div class="stat-card sirsi-card sirsi-card--elevated">
                         <div class="stat-label tooltip" data-tooltip="Total hours worked on the Assiduous project">Total Hours</div>
                         <div class="stat-value" id="totalHours">50.25</div>
                         <div class="stat-change" id="avgHoursPerDay">4.57 hrs/day avg</div>
                     </div>
                     
-                    <div class="stat-card" onclick="showDetail('total-cost')" style="border-left: 3px solid var(--danger);">
+                    <div class="stat-card sirsi-card sirsi-card--elevated">
                         <div class="stat-label tooltip" data-tooltip="Total project cost including labor and tools">Total Cost</div>
                         <div class="stat-value" id="totalCost">$7,988</div>
                         <div class="stat-change" id="costBreakdown">Labor + Tools</div>
                     </div>
                     
-                    <div class="stat-card" onclick="showDetail('total-commits')" style="border-left: 3px solid var(--sky);">
+                    <div class="stat-card sirsi-card sirsi-card--elevated">
                         <div class="stat-label tooltip" data-tooltip="Total commits in the repository">Total Commits</div>
                         <div class="stat-value" id="totalCommits">196</div>
                         <div class="stat-change" id="velocityRate">17.8/day avg</div>
                     </div>
                     
-                    <div class="stat-card" onclick="showDetail('total-files')" style="border-left: 3px solid var(--warning);">
+                    <div class="stat-card sirsi-card sirsi-card--elevated">
                         <div class="stat-label tooltip" data-tooltip="Total files in the repository">Total Files</div>
                         <div class="stat-value" id="totalFiles">38,957</div>
                         <div class="stat-change" id="projectDays">11 active days</div>
@@ -685,7 +686,7 @@
                     <span style="font-size: 12px; color: var(--text-secondary);" id="todayDate"></span>
                 </div>
                 <div class="stats-grid">
-                    <div class="stat-card" onclick="showDetail('today-hours')">
+                    <div class="stat-card sirsi-card sirsi-card--elevated">
                         <div class="stat-label tooltip" data-tooltip="Hours worked today">Today's Hours</div>
                         <div class="stat-value" id="todayHours">0.0</div>
                         <div class="stat-change" id="todayHoursStatus">No activity yet</div>
@@ -702,7 +703,7 @@
                         </div>
                     </div>
                     
-                    <div class="stat-card" onclick="showDetail('today-cost')">
+                    <div class="stat-card sirsi-card sirsi-card--elevated">
                         <div class="stat-label tooltip" data-tooltip="Development cost for today">Today's Cost</div>
                         <div class="stat-value" id="todayCost">$0</div>
                         <div class="stat-change" id="todayCostRate">$150/hour</div>
@@ -719,7 +720,7 @@
                         </div>
                     </div>
                     
-                    <div class="stat-card" onclick="showDetail('today-commits')">
+                    <div class="stat-card sirsi-card sirsi-card--elevated">
                         <div class="stat-label tooltip" data-tooltip="Commits made today">Today's Commits</div>
                         <div class="stat-value" id="todayCommitsCount">0</div>
                         <div class="stat-change" id="todayCommitsChange">0% of average</div>
@@ -736,7 +737,7 @@
                         </div>
                     </div>
                     
-                    <div class="stat-card" onclick="showDetail('week-summary')">
+                    <div class="stat-card sirsi-card sirsi-card--elevated">
                         <div class="stat-label tooltip" data-tooltip="This week's development summary">Week Summary</div>
                         <div class="stat-value" id="weekHours">0.0 hrs</div>
                         <div class="stat-change" id="weekCommits">0 commits</div>

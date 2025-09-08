@@ -19,7 +19,7 @@
         body {
             margin: 0;
             padding: 0;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: "Geist Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
             background: var(--white);
         }
 
@@ -353,6 +353,7 @@
             }
         }
     </style>
+    <script defer src="https://cdn.jsdelivr.net/gh/SirsiMaster/sirsi-ui@v0.1.2/dist/sirsi-ui.js"></script>
 </head>
 <body>
     <div class="admin-wrapper">
@@ -373,30 +374,30 @@
 
                 <!-- Stats Cards -->
                 <div class="stats-grid">
-                    <div class="stat-card">
+                    <div class="stat-card sirsi-card sirsi-card--elevated">
                         <div class="stat-value">156</div>
                         <div class="stat-label">Total Agents</div>
                     </div>
-                    <div class="stat-card">
+                    <div class="stat-card sirsi-card sirsi-card--elevated">
                         <div class="stat-value">142</div>
                         <div class="stat-label">Active</div>
                     </div>
-                    <div class="stat-card">
+                    <div class="stat-card sirsi-card sirsi-card--elevated">
                         <div class="stat-value">$12.4M</div>
                         <div class="stat-label">Total Sales</div>
                     </div>
-                    <div class="stat-card">
+                    <div class="stat-card sirsi-card sirsi-card--elevated">
                         <div class="stat-value">4.8</div>
                         <div class="stat-label">Avg Rating</div>
                     </div>
-                    <div class="stat-card">
+                    <div class="stat-card sirsi-card sirsi-card--elevated">
                         <div class="stat-value">89%</div>
                         <div class="stat-label">Satisfaction</div>
                     </div>
                 </div>
 
                 <!-- Agents Table -->
-                <div class="data-table">
+                <div class="data-table sirsi-card">
                     <div class="table-header">
                         <h3 class="table-title">Agent Directory</h3>
                     </div>

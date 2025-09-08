@@ -19,7 +19,7 @@
         body {
             margin: 0;
             padding: 0;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: "Geist Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
             background: var(--white);
         }
 
@@ -607,6 +607,7 @@
             font-weight: 500;
         }
     </style>
+    <script defer src="https://cdn.jsdelivr.net/gh/SirsiMaster/sirsi-ui@v0.1.2/dist/sirsi-ui.js"></script>
 </head>
 <body>
     <div class="admin-wrapper">
@@ -651,7 +652,7 @@
 
                 <!-- Development Metrics -->
                 <div class="stats-grid">
-                    <div class="stat-card" onclick="showDetail('commits')">
+                    <div class="stat-card sirsi-card sirsi-card--elevated">
                         <div class="stat-label tooltip" data-tooltip="Code changes saved to the repository. Each commit represents a development milestone.">Git Commits</div>
                         <div class="stat-value" id="totalCommits">127</div>
                         <div class="stat-change positive">+12 this week</div>
@@ -668,7 +669,7 @@
                         </div>
                     </div>
                     
-                    <div class="stat-card" onclick="showDetail('files')">
+                    <div class="stat-card sirsi-card sirsi-card--elevated">
                         <div class="stat-label tooltip" data-tooltip="Number of files created or modified in the project codebase.">Files Modified</div>
                         <div class="stat-value" id="filesChanged">255</div>
                         <div class="stat-change positive">+8 files</div>
@@ -685,7 +686,7 @@
                         </div>
                     </div>
                     
-                    <div class="stat-card" onclick="showDetail('activity')">
+                    <div class="stat-card sirsi-card sirsi-card--elevated">
                         <div class="stat-label tooltip" data-tooltip="Total days with development activity since project inception.">Days Active</div>
                         <div class="stat-value" id="daysActive">29</div>
                         <div class="stat-change positive">Active development</div>
@@ -702,7 +703,7 @@
                         </div>
                     </div>
                     
-                    <div class="stat-card" onclick="showDetail('velocity')">
+                    <div class="stat-card sirsi-card sirsi-card--elevated">
                         <div class="stat-label tooltip" data-tooltip="Average commits per day. Higher velocity indicates faster development pace.">Development Velocity</div>
                         <div class="stat-value" id="velocity">2.9</div>
                         <div class="stat-change">commits/day</div>
