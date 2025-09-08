@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="../assiduous.css">
     <link rel="stylesheet" href="../components/admin-layout.css">
     <link rel="stylesheet" href="../../assets/css/generated.css">
+    <script defer src="https://cdn.jsdelivr.net/gh/SirsiMaster/sirsi-ui@v0.1.2/dist/sirsi-ui.js"></script>
     
     <style>
         /* Minimal dashboard-specific styles only */
@@ -227,7 +228,7 @@
             <div class="dashboard-content">
                 <!-- Stats Grid -->
                 <div class="stats-grid">
-                    <div class="stat-card">
+                    <div class="stat-card sirsi-card sirsi-card--elevated">
                         <div class="stat-icon blue">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
@@ -280,10 +281,10 @@
                 <!-- Content Grid -->
                 <div class="content-grid">
                     <!-- Recent Properties Table -->
-                    <div class="data-table">
+                    <div class="data-table sirsi-card">
                         <div class="table-header">
                             <h3 class="table-title">Recent Properties</h3>
-                            <button class="table-action">View All</button>
+                            <sirsi-button variant="primary" size="sm" class="table-action">View All</sirsi-button>
                         </div>
                         <table>
                             <thead>
