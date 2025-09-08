@@ -169,10 +169,54 @@
       actions
     };
 
+    // Debug: log the fetch URL
+    const fetchUrl = base + '/components/universal-header.html';
+    console.log('Universal Header: Attempting to fetch from:', fetchUrl);
+    console.log('Base path resolved as:', base);
+    console.log('Current location:', window.location.href);
+    
+    // Create a more robust fallback header first
+    const createFallbackHeader = () => {
+      const fallbackHtml = `
+        <header class="universal-header public-header" style="background: white; border-bottom: 1px solid #e5e7eb; padding: 1rem 1.5rem; display: flex; justify-content: space-between; align-items: center;">
+          <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#60A3D9" stroke-width="2">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+              <polyline points="9 22 9 12 15 12 15 22"></polyline>
+            </svg>
+            <div>
+              <span style="font-size: 1.125rem; font-weight: 700; color: #111827;">Assiduous</span><br>
+              <span style="font-size: 0.75rem; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em;">Properties</span>
+            </div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 1rem;">
+            <nav style="display: flex; gap: 1.5rem;">
+              <a href="${base}/" style="color: #6b7280; text-decoration: none; font-size: 0.875rem;">Home</a>
+              <a href="${base}/properties.html" style="color: #6b7280; text-decoration: none; font-size: 0.875rem;">Properties</a>
+              <a href="${base}/agents.html" style="color: #6b7280; text-decoration: none; font-size: 0.875rem;">Find Agents</a>
+              <a href="${base}/about.html" style="color: #6b7280; text-decoration: none; font-size: 0.875rem;">About</a>
+            </nav>
+            <div style="display: flex; gap: 0.75rem;">
+              <a href="#" onclick="showLogin()" style="color: #6b7280; text-decoration: none; font-size: 0.875rem;">Sign In</a>
+              <a href="#" onclick="showSignup()" style="background: #60A3D9; color: white; padding: 0.5rem 1rem; border-radius: 0.375rem; text-decoration: none; font-size: 0.875rem;">Get Started</a>
+            </div>
+          </div>
+        </header>
+      `;
+      root.outerHTML = fallbackHtml;
+    };
+    
     // Fetch the header template
-    fetch(base + '/components/universal-header.html')
-      .then(response => response.text())
+    fetch(fetchUrl)
+      .then(response => {
+        console.log('Fetch response status:', response.status);
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+        return response.text();
+      })
       .then(html => {
+        console.log('Successfully fetched header template');
         // Process tokens
         html = processTokens(html, config);
         
@@ -197,13 +241,9 @@
       })
       .catch(err => {
         console.error('Failed to load universal header:', err);
-        // Fallback to basic header
-        root.innerHTML = `
-          <div style="padding: 1rem; background: #f9fafb; border-bottom: 1px solid #e5e7eb;">
-            <h1 style="margin: 0; font-size: 1.5rem; color: #111827;">${title}</h1>
-            ${subtitle ? `<p style="margin: 0.25rem 0 0 0; color: #6b7280; font-size: 0.875rem;">${subtitle}</p>` : ''}
-          </div>
-        `;
+        console.log('Using fallback header instead');
+        // Use the robust fallback header
+        createFallbackHeader();
       });
   }
 
