@@ -88,8 +88,10 @@ body {
 
 /* Universal Header Styles */
 .universal-header {
-  background: var(--white);
-  border-bottom: 1px solid var(--border);
+  background: rgba(255,255,255,0.8);
+  backdrop-filter: saturate(1.2) blur(10px);
+  -webkit-backdrop-filter: saturate(1.2) blur(10px);
+  border-bottom: 1px solid rgba(229,231,235,0.7);
   position: sticky;
   top: 0;
   z-index: 50;
