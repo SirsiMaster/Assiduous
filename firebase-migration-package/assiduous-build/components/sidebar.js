@@ -12,23 +12,22 @@
     var base = el.getAttribute('data-base');
     if (base && base.trim()) return base.replace(/\/$/, '');
 
-    // Fallbacks: try to infer from current path
-    // GitHub Pages: path contains /Assiduous/AssiduousFlip
-    var m = window.location.pathname.match(/\/(Assiduous\/AssiduousFlip)(?=\/|$)/);
-    if (m) return '/' + m[1];
-    
-    // Local development: path starts with /AssiduousFlip
-    if (window.location.pathname.startsWith('/AssiduousFlip')) {
-      return '';
-    }
-
-    // Default to GitHub Pages structure
+    // New structure: everything is at root level
+    // No more /AssiduousFlip subdirectory
     return '';
   }
 
   function injectSidebar(root, base, activeKey) {
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', '../components/sidebar.html');
+    // Determine the correct path based on current page location
+    var path = window.location.pathname;
+    var depth = (path.match(/\//g) || []).length - 1; // Count slashes to determine depth
+    var prefix = '';
+    for (var i = 0; i < depth; i++) {
+      prefix += '../';
+    }
+    var sidebarPath = prefix + 'components/sidebar.html';
+    xhr.open('GET', sidebarPath);
     xhr.onreadystatechange = function () {
       if (xhr.readyState === 4) {
         if (xhr.status >= 200 && xhr.status < 300) {

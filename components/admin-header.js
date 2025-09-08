@@ -21,8 +21,15 @@
 
   function injectHeader(root, base, config) {
     var xhr = new XMLHttpRequest();
-    // Use relative path from admin pages to components
-    xhr.open('GET', '../components/admin-header.html');
+    // Determine the correct path based on current page location
+    var path = window.location.pathname;
+    var depth = (path.match(/\//g) || []).length - 1; // Count slashes to determine depth
+    var prefix = '';
+    for (var i = 0; i < depth; i++) {
+      prefix += '../';
+    }
+    var headerPath = prefix + 'components/admin-header.html';
+    xhr.open('GET', headerPath);
     xhr.onreadystatechange = function () {
       if (xhr.readyState === 4) {
         if (xhr.status >= 200 && xhr.status < 300) {

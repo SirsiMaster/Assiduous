@@ -19,8 +19,15 @@
 
   function injectSidebar(root, base, activeKey) {
     var xhr = new XMLHttpRequest();
-    // Use relative path from admin pages to components
-    xhr.open('GET', '../components/sidebar.html');
+    // Determine the correct path based on current page location
+    var path = window.location.pathname;
+    var depth = (path.match(/\//g) || []).length - 1; // Count slashes to determine depth
+    var prefix = '';
+    for (var i = 0; i < depth; i++) {
+      prefix += '../';
+    }
+    var sidebarPath = prefix + 'components/sidebar.html';
+    xhr.open('GET', sidebarPath);
     xhr.onreadystatechange = function () {
       if (xhr.readyState === 4) {
         if (xhr.status >= 200 && xhr.status < 300) {
