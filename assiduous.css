@@ -172,6 +172,60 @@ a:hover {
 }
 
 /* ========================================
+   Buttons: normalize legacy buttons to Sirsi UI look
+   ======================================== */
+button,
+.btn,
+.btn-primary,
+.btn-secondary,
+.button,
+.button-primary,
+.button-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-weight: var(--font-semibold);
+    border: 1px solid transparent;
+    border-radius: 12px;
+    padding: 0.6rem 0.95rem;
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease, color 0.15s ease;
+    line-height: 1;
+}
+
+.btn-primary,
+button.btn-primary,
+button[type="submit"],
+button.primary {
+    background: linear-gradient(180deg, var(--sky) 0%, #4A8BC2 100%);
+    color: var(--white);
+    border-color: #4A8BC2;
+    box-shadow: 0 6px 12px rgba(11,31,65,0.12);
+}
+
+.btn-secondary,
+button.btn-secondary,
+.button-secondary {
+    background: var(--white);
+    color: var(--navy);
+    border-color: #CFD6DE;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+}
+
+button:hover,
+.btn:hover,
+.btn-primary:hover,
+.btn-secondary:hover {
+    filter: brightness(0.98);
+}
+
+button:active,
+.btn:active { transform: translateY(1px); }
+
+button:focus { outline: 2px solid rgba(96,163,217,0.45); outline-offset: 2px; }
+
+/* ========================================
    Header Component
    ======================================== */
 .header {
