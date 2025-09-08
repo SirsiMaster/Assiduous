@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.13.4] - 2025-09-08
+
+### Fixed
+- fix: Correct Firebase hosting configuration to serve AssiduousFlip at correct path
+
+
 ## [0.13.3] - 2025-09-08
 
 ### Fixed
@@ -458,7 +464,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.13.3...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.13.4...HEAD
+
+
+## [0.13.4] - 2025-09-08
+
+### Fixed
+- fix: Correct Firebase hosting configuration to serve AssiduousFlip at correct path
 
 
 ## [0.13.3] - 2025-09-08
@@ -529,3 +541,4 @@ To generate changelog entries:
 [0.13.1]: https://github.com/SirsiMaster/Assiduous/compare/v0.13.0...v0.13.1
 [0.13.2]: https://github.com/SirsiMaster/Assiduous/compare/v0.13.1...v0.13.2
 [0.13.3]: https://github.com/SirsiMaster/Assiduous/compare/v0.13.2...v0.13.3
+[0.13.4]: https://github.com/SirsiMaster/Assiduous/compare/v0.13.3...v0.13.4
