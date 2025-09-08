@@ -1,4 +1,4 @@
-import { firebaseService } from '@/services/FirebaseService';
+import { firebaseService } from '@/services/firebaseservice';
 import { verifyAuth } from '@/utils/auth';
 
 const handler = async (req, res) => {

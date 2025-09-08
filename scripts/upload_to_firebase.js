@@ -4,7 +4,7 @@
  * Firebase Upload Script for Complete Development History
  * 
  * This script takes the output from sync_all_development_history.js and
- * uploads it to Firebase using the existing DevelopmentMetricsService structure.
+ * uploads it to Firebase using the existing developmentmetricsservice structure.
  * 
  * Usage:
  *   node scripts/upload_to_firebase.js --data-dir path/to/data [--batch-size 50] [--dry-run]

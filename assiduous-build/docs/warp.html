@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WARP.md - Development Guide | Assiduous Realty</title>
+    <title>warp.md - Development Guide | Assiduous Realty</title>
     
     <!-- Assiduous Design System -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -238,7 +238,7 @@
 <body>
     <div class="doc-container">
         <div class="doc-header">
-            <h1>WARP.md</h1>
+            <h1>warp.md</h1>
             <p>Complete Development Guide for Assiduous Realty Platform</p>
         </div>
         
@@ -374,10 +374,10 @@ git commit --no-verify</code></pre>
                 
                 <h3>Key Services</h3>
                 <ul>
-                    <li><code>FirebaseService.js</code>: Core database operations with encryption</li>
+                    <li><code>firebaseservice.js</code>: Core database operations with encryption</li>
                     <li><code>auth.js</code>: Authentication and session management</li>
                     <li><code>crm.js</code>: Client relationship management</li>
-                    <li><code>EncryptionService.js</code>: Field-level encryption layer</li>
+                    <li><code>encryptionservice.js</code>: Field-level encryption layer</li>
                 </ul>
                 
                 <h3>Firebase Collections</h3>
@@ -514,7 +514,7 @@ git commit --no-verify</code></pre>
                     <li><strong>Repository Home</strong>: <a href="https://github.com/SirsiMaster/Assiduous">https://github.com/SirsiMaster/Assiduous</a></li>
                     <li><strong>Implementation Checklist</strong>: <a href="https://github.com/SirsiMaster/Assiduous/blob/main/docs/IMPLEMENTATION_CHECKLIST.md">Implementation Checklist</a></li>
                     <li><strong>Security Docs</strong>: <a href="https://github.com/SirsiMaster/Assiduous/blob/main/docs/SECURITY.md">Security Documentation</a></li>
-                    <li><strong>WARP Rules (This File)</strong>: <a href="https://github.com/SirsiMaster/Assiduous/blob/main/WARP.md">WARP.md on GitHub</a></li>
+                    <li><strong>WARP Rules (This File)</strong>: <a href="https://github.com/SirsiMaster/Assiduous/blob/main/warp.md">warp.md on GitHub</a></li>
                 </ul>
                 
                 <h4>Local Development URLs</h4>
@@ -585,7 +585,7 @@ open http://localhost:8080/admin/development/dashboard.html</code></pre>
 node admin/development/populate_session_data.js
 
 # Test Firebase connection
-node -e "const service = new DevelopmentMetricsService(); service.initialize();"
+node -e "const service = new developmentmetricsservice(); service.initialize();"
 
 # View live dashboard with Firebase metrics
 python -m http.server 8080

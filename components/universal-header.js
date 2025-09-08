@@ -32,7 +32,7 @@
       // Fallback to current page location
       const currentPath = window.location.pathname;
       if (currentPath.includes('/')) {
-        return window.location.origin + '/AssiduousFlip';
+        return window.location.origin + '/assiduousflip';
       }
       return window.location.origin;
     }
@@ -42,7 +42,7 @@
       if (src.startsWith('components/')) {
         const currentPath = window.location.pathname;
         if (currentPath.includes('/')) {
-          return window.location.origin + '/AssiduousFlip';
+          return window.location.origin + '/assiduousflip';
         }
         return window.location.origin;
       }

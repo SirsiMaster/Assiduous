@@ -46,7 +46,7 @@ var route_kind = __webpack_require__(153);
 // EXTERNAL MODULE: ./node_modules/next/dist/build/webpack/loaders/next-route-loader/helpers.js
 var helpers = __webpack_require__(305);
 ;// CONCATENATED MODULE: ./src/pages/api/[collection]/[id].js
-Object(function webpackMissingModule() { var e = new Error("Cannot find module '@/services/FirebaseService'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
+Object(function webpackMissingModule() { var e = new Error("Cannot find module '@/services/firebaseservice'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
 Object(function webpackMissingModule() { var e = new Error("Cannot find module '@/utils/auth'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
 
 
@@ -64,7 +64,7 @@ const handler = async (req, res)=>{
         switch(method){
             case "GET":
                 {
-                    const doc = await Object(function webpackMissingModule() { var e = new Error("Cannot find module '@/services/FirebaseService'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()).findById(collection, id);
+                    const doc = await Object(function webpackMissingModule() { var e = new Error("Cannot find module '@/services/firebaseservice'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()).findById(collection, id);
                     if (!doc) {
                         return res.status(404).json({
                             error: "Document not found"
@@ -75,12 +75,12 @@ const handler = async (req, res)=>{
             case "PUT":
             case "PATCH":
                 {
-                    const doc = await Object(function webpackMissingModule() { var e = new Error("Cannot find module '@/services/FirebaseService'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()).update(collection, id, req.body);
+                    const doc = await Object(function webpackMissingModule() { var e = new Error("Cannot find module '@/services/firebaseservice'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()).update(collection, id, req.body);
                     return res.status(200).json(doc);
                 }
             case "DELETE":
                 {
-                    await Object(function webpackMissingModule() { var e = new Error("Cannot find module '@/services/FirebaseService'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()).delete(collection, id);
+                    await Object(function webpackMissingModule() { var e = new Error("Cannot find module '@/services/firebaseservice'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()).delete(collection, id);
                     return res.status(204).end();
                 }
             default:

@@ -1,11 +1,11 @@
-import { dataService } from '../src/services/DataService';
-import { searchService } from '../src/services/SearchService';
-import { databaseUtils } from '../src/services/DatabaseUtils';
-import { QueryBuilder } from '../src/services/QueryBuilder';
+import { dataService } from '../src/services/dataservice';
+import { searchService } from '../src/services/searchservice';
+import { databaseUtils } from '../src/services/databaseutils';
+import { querybuilder } from '../src/services/querybuilder';
 
 // Example 1: Advanced Property Search
 async function searchProperties() {
-  const query = new QueryBuilder()
+  const query = new querybuilder()
     .price(500000, 1000000)           // Price range
     .propertyType('single_family')     // Property type
     .amenities('garage', 'pool')       // Must have these amenities
@@ -39,7 +39,7 @@ async function findTransactions() {
   const threeDaysAgo = new Date();
   threeDaysAgo.setDate(threeDaysAgo.getDate() - 3);
 
-  const query = new QueryBuilder()
+  const query = new querybuilder()
     .equals('status', 'pending')
     .greaterThan('details.offerAmount', 500000)
     .lessThan('timeline.created', threeDaysAgo.toISOString())
@@ -169,14 +169,14 @@ async function searchWithSuggestions() {
   console.log('Search suggestions:', suggestions);
 
   // Perform search with multiple conditions
-  const query = new QueryBuilder()
+  const query = new querybuilder()
     .or([
-      QueryBuilder.price(500000, 750000),
-      QueryBuilder.recent(7)
+      querybuilder.price(500000, 750000),
+      querybuilder.recent(7)
     ])
     .and([
-      QueryBuilder.propertyType('single_family', 'condo'),
-      QueryBuilder.amenities('parking', 'gym')
+      querybuilder.propertyType('single_family', 'condo'),
+      querybuilder.amenities('parking', 'gym')
     ])
     .build();
 

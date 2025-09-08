@@ -1,6 +1,6 @@
 import { getAuth } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
-import { firebaseService } from '@/services/FirebaseService';
+import { firebaseService } from '@/services/firebaseservice';
 
 /**
  * Verify Firebase ID token from request

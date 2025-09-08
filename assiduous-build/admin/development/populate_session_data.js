@@ -126,7 +126,7 @@ const SESSION_DATA = {
             type: "enhancement"
         },
         {
-            path: "assets/js/services/DevelopmentMetricsService.js",
+            path: "assets/js/services/developmentmetricsservice.js",
             insertions: 450, 
             deletions: 0,
             type: "new_file"
@@ -138,7 +138,7 @@ const SESSION_DATA = {
             type: "documentation"
         },
         {
-            path: "CHANGELOG.md",
+            path: "changelog.md",
             insertions: 35, 
             deletions: 10,
             type: "documentation"

@@ -46,7 +46,7 @@ var route_kind = __webpack_require__(153);
 // EXTERNAL MODULE: ./node_modules/next/dist/build/webpack/loaders/next-route-loader/helpers.js
 var helpers = __webpack_require__(305);
 ;// CONCATENATED MODULE: ./src/pages/api/[collection]/index.js
-Object(function webpackMissingModule() { var e = new Error("Cannot find module '@/services/FirebaseService'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
+Object(function webpackMissingModule() { var e = new Error("Cannot find module '@/services/firebaseservice'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
 Object(function webpackMissingModule() { var e = new Error("Cannot find module '@/utils/auth'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
 
 
@@ -72,12 +72,12 @@ const handler = async (req, res)=>{
                         limit: limit ? parseInt(limit, 10) : undefined,
                         startAfter: startAfter || undefined
                     };
-                    const docs = await Object(function webpackMissingModule() { var e = new Error("Cannot find module '@/services/FirebaseService'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()).find(collection, queryParams);
+                    const docs = await Object(function webpackMissingModule() { var e = new Error("Cannot find module '@/services/firebaseservice'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()).find(collection, queryParams);
                     return res.status(200).json(docs);
                 }
             case "POST":
                 {
-                    const doc = await Object(function webpackMissingModule() { var e = new Error("Cannot find module '@/services/FirebaseService'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()).create(collection, req.body);
+                    const doc = await Object(function webpackMissingModule() { var e = new Error("Cannot find module '@/services/firebaseservice'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()).create(collection, req.body);
                     return res.status(201).json(doc);
                 }
             default:

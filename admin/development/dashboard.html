@@ -850,7 +850,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
     
     <!-- Development Metrics Service -->
-    <script src="../../assets/js/services/DevelopmentMetricsService.js"></script>
+    <script src="../../assets/js/services/developmentmetricsservice.js"></script>
     
     <script>
         // Dashboard Data
@@ -862,8 +862,8 @@
             try {
                 if (typeof firebase !== 'undefined' && window.firebaseConfig) {
                     firebase.initializeApp(window.firebaseConfig);
-                    await window.DevelopmentMetricsService.initialize();
-                    metricsService = window.DevelopmentMetricsService;
+                    await window.developmentmetricsservice.initialize();
+                    metricsService = window.developmentmetricsservice;
                     console.log('Firebase metrics service initialized');
                 }
             } catch (error) {

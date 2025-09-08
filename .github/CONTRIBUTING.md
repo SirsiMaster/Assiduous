@@ -444,7 +444,7 @@ Use issue templates for:
 ## Recognition
 
 Contributors will be recognized in:
-- CHANGELOG.md
+- changelog.md
 - Contributors section in README
 - Release notes
 - Annual contributor report

@@ -47,7 +47,7 @@ Relates to #
 
 ### Documentation
 - [ ] I have updated the documentation accordingly
-- [ ] I have updated the CHANGELOG.md (run `./scripts/changelog/update_changelog.sh`)
+- [ ] I have updated the changelog.md (run `./scripts/changelog/update_changelog.sh`)
 - [ ] I have added/updated JSDoc comments for new functions
 - [ ] I have updated the README if needed
 
