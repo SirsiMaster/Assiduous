@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.13.15] - 2025-09-08
+
+### Fixed
+- fix: use path-based detection instead of depth counting for components
+
+
 ## [0.13.14] - 2025-09-08
 
 ### Fixed
@@ -526,7 +532,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.13.14...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.13.15...HEAD
+
+
+## [0.13.15] - 2025-09-08
+
+### Fixed
+- fix: use path-based detection instead of depth counting for components
 
 
 ## [0.13.14] - 2025-09-08
@@ -676,3 +688,4 @@ To generate changelog entries:
 [0.13.12]: https://github.com/SirsiMaster/Assiduous/compare/v0.13.11...v0.13.12
 [0.13.13]: https://github.com/SirsiMaster/Assiduous/compare/v0.13.12...v0.13.13
 [0.13.14]: https://github.com/SirsiMaster/Assiduous/compare/v0.13.13...v0.13.14
+[0.13.15]: https://github.com/SirsiMaster/Assiduous/compare/v0.13.14...v0.13.15
