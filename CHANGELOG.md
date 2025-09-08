@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.13.1] - 2025-09-08
+
+### Fixed
+- fix(ci): Ensure GitHub Action copies all AssiduousFlip contents to Firebase
+
+
 ## [0.13.0] - 2025-09-07
 
 ### Added
@@ -440,7 +446,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.13.0...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.13.1...HEAD
+
+
+## [0.13.1] - 2025-09-08
+
+### Fixed
+- fix(ci): Ensure GitHub Action copies all AssiduousFlip contents to Firebase
 
 
 ## [0.13.0] - 2025-09-07
@@ -490,3 +502,4 @@ To generate changelog entries:
 [0.11.1]: https://github.com/SirsiMaster/Assiduous/compare/v0.11.0...v0.11.1
 [0.12.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.11.1...v0.12.0
 [0.13.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.12.0...v0.13.0
+[0.13.1]: https://github.com/SirsiMaster/Assiduous/compare/v0.13.0...v0.13.1
