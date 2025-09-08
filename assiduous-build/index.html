@@ -570,6 +570,45 @@ body {
                 <img src="https://dummyimage.com/720x320/29406b/ffffff&text=Micro‑Flip+Valuation+Module" alt="Product Module" style="width:720px;max-width:95vw;border-radius:10px;display:block;">
             </div>
         </div>
+            <svg class="hero-network" width="1400" height="520" viewBox="0 0 1400 520" fill="none" xmlns="http://www.w3.org/2000/svg" style="position:absolute;left:50%;top:0;transform:translateX(-50%);opacity:.55;">
+              <defs>
+                <linearGradient id="lineGrad" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stop-color="#60A3D9" stop-opacity="0.0"/>
+                  <stop offset="50%" stop-color="#60A3D9" stop-opacity="0.9"/>
+                  <stop offset="100%" stop-color="#60A3D9" stop-opacity="0.0"/>
+                </linearGradient>
+              </defs>
+              <path id="circuit" d="M200 120 H520 V220 H860 V360 H1180" stroke="url(#lineGrad)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" opacity="0.65"/>
+              <circle class="node" cx="520" cy="220" r="6" fill="#60A3D9"/>
+              <circle class="node" cx="860" cy="360" r="6" fill="#60A3D9"/>
+              <circle class="node" cx="1180" cy="360" r="6" fill="#60A3D9"/>
+            </svg>
+        <script>
+          (function(){
+            const hero = document.querySelector('.hero');
+            if(!hero) return;
+            const module = document.querySelector('.product-module');
+            if(module){
+              hero.addEventListener('mousemove', (e)=>{
+                const rect = hero.getBoundingClientRect();
+                const x = (e.clientX - rect.left) / rect.width - 0.5;
+                const y = (e.clientY - rect.top) / rect.height - 0.5;
+                module.style.transform = `translate3d(${x*10}px, ${y*10}px, 0)`;
+              });
+            }
+            const circuit = document.getElementById('circuit');
+            const nodes = document.querySelectorAll('.hero-network .node');
+            if(circuit){
+              const len = circuit.getTotalLength();
+              circuit.style.strokeDasharray = len;
+              circuit.style.strokeDashoffset = len;
+              let t = 0;
+              const animateLine = ()=>{ t = (t + 2) % (len*2); circuit.style.strokeDashoffset = len - (t % len); requestAnimationFrame(animateLine); };
+              requestAnimationFrame(animateLine);
+            }
+            nodes.forEach((n)=>{ let g=true,r=6; const pulse=()=>{ r+=g?0.06:-0.06; if(r>7.2) g=false; if(r<5.8) g=true; n.setAttribute('r', r.toFixed(2)); requestAnimationFrame(pulse); }; pulse();});
+          })();
+        </script>
     </section>
 
     <!-- Investor Stories (photographic band) -->
