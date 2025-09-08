@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.13.5] - 2025-09-08
+
+### Fixed
+- fix: Add robust fallback header and debugging for universal header loading
+
+
 ## [0.13.4] - 2025-09-08
 
 ### Fixed
@@ -464,7 +470,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.13.4...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.13.5...HEAD
+
+
+## [0.13.5] - 2025-09-08
+
+### Fixed
+- fix: Add robust fallback header and debugging for universal header loading
 
 
 ## [0.13.4] - 2025-09-08
@@ -542,3 +554,4 @@ To generate changelog entries:
 [0.13.2]: https://github.com/SirsiMaster/Assiduous/compare/v0.13.1...v0.13.2
 [0.13.3]: https://github.com/SirsiMaster/Assiduous/compare/v0.13.2...v0.13.3
 [0.13.4]: https://github.com/SirsiMaster/Assiduous/compare/v0.13.3...v0.13.4
+[0.13.5]: https://github.com/SirsiMaster/Assiduous/compare/v0.13.4...v0.13.5
