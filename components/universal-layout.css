@@ -103,9 +103,9 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: var(--space-lg) var(--space-xl);
-  min-height: 4rem;
-  gap: var(--space-lg);
+  padding: var(--space-sm) var(--space-lg);
+  min-height: 3.25rem;
+  gap: var(--space-md);
 }
 
 .header-left,
@@ -126,7 +126,7 @@ body {
 .header-branding {
   display: flex;
   align-items: center;
-  gap: var(--space-sm);
+  gap: var(--space-xs);
   text-decoration: none;
   color: inherit;
 }
@@ -159,7 +159,7 @@ body {
 
 /* Page Info (Admin) */
 .page-info {
-  margin-left: var(--space-xl);
+  margin-left: var(--space-lg);
 }
 
 .page-title {
@@ -219,7 +219,7 @@ body {
 .main-nav {
   display: flex;
   align-items: center;
-  gap: var(--space-xl);
+  gap: var(--space-md);
 }
 
 .nav-link {
@@ -242,7 +242,7 @@ body {
 .auth-buttons {
   display: flex;
   align-items: center;
-  gap: var(--space-md);
+  gap: var(--space-sm);
 }
 
 .auth-link {
@@ -445,6 +445,13 @@ body {
   .header-center {
     max-width: 300px;
   }
+}
+
+/* Compact desktop spacing for large viewports */
+@media (min-width: 1024px) {
+  .header-public { padding: 0.5rem 1rem; }
+  .main-nav { gap: 0.9rem; }
+  .auth-buttons sirsi-button { --btn-size: xs; }
 }
 
 @media (max-width: 768px) {
