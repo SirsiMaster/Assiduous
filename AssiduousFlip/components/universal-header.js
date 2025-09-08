@@ -28,9 +28,28 @@
   function resolveBase() {
     // Attempt to infer base from script tag src
     const script = document.currentScript || document.querySelector('script[src$="universal-header.js"]');
-    if (!script) return '';
+    if (!script) {
+      // Fallback to current page location
+      const currentPath = window.location.pathname;
+      if (currentPath.includes('/AssiduousFlip/')) {
+        return window.location.origin + '/AssiduousFlip';
+      }
+      return window.location.origin;
+    }
     const src = script.getAttribute('src');
-    return src ? src.replace(/\\/components\\/universal-header\\.js$/, '') : '';
+    if (src) {
+      // Handle relative paths
+      if (src.startsWith('components/')) {
+        const currentPath = window.location.pathname;
+        if (currentPath.includes('/AssiduousFlip/')) {
+          return window.location.origin + '/AssiduousFlip';
+        }
+        return window.location.origin;
+      }
+      // Handle absolute paths
+      return src.replace(/\/components\/universal-header\.js$/, '');
+    }
+    return '';
   }
 
   function processTokens(html, config) {
