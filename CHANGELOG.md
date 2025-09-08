@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.13.7] - 2025-09-08
+
+### Fixed
+- fix(landing): Add static header, remove stray markup
+
+
 ## [0.13.6] - 2025-09-08
 
 ### Fixed
@@ -476,7 +482,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.13.6...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.13.7...HEAD
+
+
+## [0.13.7] - 2025-09-08
+
+### Fixed
+- fix(landing): Add static header, remove stray markup
 
 
 ## [0.13.6] - 2025-09-08
@@ -568,3 +580,4 @@ To generate changelog entries:
 [0.13.4]: https://github.com/SirsiMaster/Assiduous/compare/v0.13.3...v0.13.4
 [0.13.5]: https://github.com/SirsiMaster/Assiduous/compare/v0.13.4...v0.13.5
 [0.13.6]: https://github.com/SirsiMaster/Assiduous/compare/v0.13.5...v0.13.6
+[0.13.7]: https://github.com/SirsiMaster/Assiduous/compare/v0.13.6...v0.13.7
