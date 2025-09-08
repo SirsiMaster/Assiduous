@@ -25,6 +25,38 @@
             color: #111827;
         }
 
+        /* Header */
+        .site-header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: #ffffff;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+        .site-header__left {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .site-header__brand {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.1;
+        }
+        .site-header__brand .name { font-size: 1.125rem; font-weight: 700; color: #111827; }
+        .site-header__brand .sub { font-size: 0.75rem; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em; }
+        .site-header__nav { display: flex; align-items: center; gap: 1.25rem; }
+        .site-header__nav a { color: #6b7280; text-decoration: none; font-size: 0.9rem; }
+        .site-header__nav a:hover { color: #111827; }
+        .site-header__auth { display: flex; align-items: center; gap: 0.75rem; }
+        .site-header__auth a { color: #6b7280; text-decoration: none; font-size: 0.9rem; }
+        .site-header__auth a.primary { background: #60A3D9; color: #fff; padding: 0.5rem 1rem; border-radius: 0.375rem; }
+        .site-header__auth a.primary:hover { background: #0B1F41; color: #fff; }
 
         /* Hero Section */
         .hero {
@@ -430,34 +462,26 @@
     </style>
 </head>
 <body class="page-wrapper">
-    <!-- Universal Header (with static fallback content) -->
-    <header id="universal-header-root" 
-            data-type="public"
-            data-title="Assiduous Properties"
-            data-show-auth="true">
-        <!-- Static fallback header (rendered if JS fails). JS will replace this block when loaded. -->
-        <div class="universal-header header-public" style="background: #fff; border-bottom: 1px solid #e5e7eb; padding: 1rem 1.5rem; display: flex; justify-content: space-between; align-items: center;">
-            <div style="display: flex; align-items: center; gap: 0.5rem;">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#60A3D9" stroke-width="2">
-                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
-                </svg>
-                <div>
-                    <span style="font-size: 1.125rem; font-weight: 700; color: #111827;">Assiduous</span><br>
-                    <span style="font-size: 0.75rem; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em;">Properties</span>
-                </div>
+    <!-- Simple Static Header (no external dependencies) -->
+    <header class="site-header">
+        <div class="site-header__left">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#60A3D9" stroke-width="2">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+            </svg>
+            <div class="site-header__brand">
+                <span class="name">Assiduous</span>
+                <span class="sub">Properties</span>
             </div>
-            <div style="display: flex; align-items: center; gap: 1rem;">
-                <nav style="display: flex; gap: 1.5rem;">
-                    <a href="/AssiduousFlip/" style="color: #6b7280; text-decoration: none; font-size: 0.875rem;">Home</a>
-                    <a href="/AssiduousFlip/knowledge-base.html" style="color: #6b7280; text-decoration: none; font-size: 0.875rem;">Knowledge Base</a>
-                    <a href="/AssiduousFlip/admin/dashboard.html" style="color: #6b7280; text-decoration: none; font-size: 0.875rem;">Admin</a>
-                </nav>
-                <div style="display: flex; gap: 0.75rem;">
-                    <a href="#" onclick="showLogin()" style="color: #6b7280; text-decoration: none; font-size: 0.875rem;">Sign In</a>
-                    <a href="#" onclick="showSignup()" style="background: #60A3D9; color: white; padding: 0.5rem 1rem; border-radius: 0.375rem; text-decoration: none; font-size: 0.875rem;">Get Started</a>
-                </div>
-            </div>
+        </div>
+        <nav class="site-header__nav">
+            <a href="index.html">Home</a>
+            <a href="knowledge-base.html">Knowledge Base</a>
+            <a href="admin/dashboard.html">Admin</a>
+        </nav>
+        <div class="site-header__auth">
+            <a href="#" onclick="showLogin()">Sign In</a>
+            <a class="primary" href="#" onclick="showSignup()">Get Started</a>
         </div>
     </header>
     <!-- Hero Section -->
@@ -476,7 +500,7 @@
 
             <div class="roles-grid">
                 <!-- Client Portal -->
-                <a href="/Assiduous/AssiduousFlip/client/" class="role-card">
+                <a href="client/" class="role-card">
                     <div class="role-icon client-icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
@@ -521,7 +545,7 @@
                 </a>
 
                 <!-- Agents Portal -->
-                <a href="/Assiduous/AssiduousFlip/agents/" class="role-card">
+                <a href="agents/" class="role-card">
                     <div class="role-icon agents-icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
@@ -666,8 +690,8 @@
             <div class="footer-section">
                 <h4>Resources</h4>
                 <ul class="footer-links">
-                    <li><a href="/Assiduous/AssiduousFlip/docs/">Documentation</a></li>
-                    <li><a href="/Assiduous/AssiduousFlip/knowledge-base.html">Knowledge Base</a></li>
+                    <li><a href="docs/">Documentation</a></li>
+                    <li><a href="knowledge-base.html">Knowledge Base</a></li>
                     <li><a href="#">API Reference</a></li>
                     <li><a href="#">Support</a></li>
                 </ul>
@@ -777,17 +801,6 @@
     </div>
 </div>
 
-<!-- Navigation -->
-<nav class="main-nav">
-    <div class="nav-container">
-        <a href="#" class="logo">Assiduous Properties</a>
-        <div class="nav-links">
-            <a href="#" onclick="showLogin()" class="login-btn">Login</a>
-        </div>
-    </div>
-</nav>
-        </div>
-    </div>
 
     <style>
         /* Additional styles for signup form */
@@ -1025,7 +1038,7 @@ window.handleLogin = async function(event) {
                     email: email,
                     role: 'admin'
                 }));
-                window.location.href = '/Assiduous/AssiduousFlip/admin/dashboard.html';
+                window.location.href = 'admin/dashboard.html';
                 return;
             }
             
@@ -1049,13 +1062,13 @@ window.handleLogin = async function(event) {
                     // Route based on role
                     switch(role) {
                         case 'client':
-                            window.location.href = '/Assiduous/AssiduousFlip/client/';
+                            window.location.href = 'client/';
                             break;
                         case 'agent':
-                            window.location.href = '/Assiduous/AssiduousFlip/agents/';
+                            window.location.href = 'agents/';
                             break;
                         default:
-                            window.location.href = '/Assiduous/AssiduousFlip/';
+                            window.location.href = './';
                     }
                 } else {
                     showNotification(result.error, 'error');
@@ -1125,6 +1138,6 @@ window.handleLogin = async function(event) {
             }
         });
     </script>
-    <script src="/AssiduousFlip/components/universal-header.js?v=phase1.3"></script>
+    <!-- Header component loader removed to avoid path/caching issues -->
 </body>
 </html>
