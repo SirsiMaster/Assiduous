@@ -3,13 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Assiduous Properties - Intelligent Real Estate Solutions</title>
+<title>Assiduous — Your Micro-Flipping Path to Wealth</title>
+    <meta property="og:title" content="Assiduous — Your Micro-Flipping Path to Wealth">
+    <meta name="twitter:title" content="Assiduous — Your Micro-Flipping Path to Wealth">
     
     <!-- Design System -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fontsource/geist-sans@5.0.6/latin.css" rel="stylesheet">
     <link rel="stylesheet" href="components/universal-layout.css?v=phase1.3">
+    <link rel="stylesheet" href="../assets/css/generated.css">
     
     <style>
         /* Clean Design System */
@@ -19,8 +23,8 @@
             box-sizing: border-box;
         }
         
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+body {
+            font-family: "Geist Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
             background: #ffffff;
             color: #111827;
         }
@@ -67,8 +71,10 @@
         }
 
         .hero h1 {
+            font-family: "DM Serif Display", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
             font-size: 3rem;
-            font-weight: 700;
+            font-weight: 400;
+            letter-spacing: -0.01em;
             margin-bottom: 1rem;
         }
 
@@ -95,8 +101,10 @@
         }
 
         .section-title {
+            font-family: "DM Serif Display", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
             font-size: 2.5rem;
-            font-weight: 700;
+            font-weight: 400;
+            letter-spacing: -0.01em;
             color: #111827;
             margin-bottom: 1rem;
         }
@@ -488,13 +496,16 @@
             }
         }
     </style>
+    <!-- Motion One for subtle animations -->
+    <script defer src="https://cdn.jsdelivr.net/npm/@motionone/animate/dist/animate.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/@motionone/dom/dist/motion-one.umd.min.js"></script>
 </head>
 <body class="page-wrapper">
     <!-- Universal Header (progressive enhancement) -->
-    <header id="universal-header-root"
+<header id="universal-header-root"
             data-type="public"
-            data-title="Assiduous Properties"
-            data-subtitle="Intelligent Real Estate Solutions"
+            data-title="Assiduous"
+            data-subtitle="Your Micro-Flipping Path to Wealth"
             data-search-placeholder="Search properties, insights, and tools..."
             data-actions='[{"label":"Sign In","onclick":"showLogin()"},{"label":"Get Started","primary":true,"onclick":"showSignup()"}]'></header>
     <!-- Simple Static Header (no external dependencies) -->
@@ -522,7 +533,7 @@
     </header>
     <!-- Hero Section -->
     <section class="hero">
-        <h1>Smart Real Estate Solutions</h1>
+<h1>Your Micro-Flipping Path to Wealth</h1>
         <p>Experience a smarter way to buy, sell, and manage real estate with personalized insights and automation</p>
     </section>
 
@@ -1187,6 +1198,33 @@ window.handleLogin = async function(event) {
                 closeLogin();
             }
         });
+    </script>
+    <!-- Motion One initializers -->
+    <script>
+      (function(){
+        if (!window.motionOne) return;
+        const { animate, inView } = window.motionOne;
+        // Page fade-in
+        animate(document.body, { opacity: [0, 1] }, { duration: 0.5, easing: 'ease-out' });
+        // Hero subtle rise
+        const hero = document.querySelector('.hero');
+        if (hero) animate(hero, { y: [-12, 0], opacity: [0, 1] }, { duration: 0.6, delay: 0.05, easing: 'ease-out' });
+        // Section slide-up on enter view
+        document.querySelectorAll('.section-header, .feature, .role-card, .stats-grid .stat').forEach((el, i) => {
+          inView(el, () => {
+            animate(el, { y: [16, 0], opacity: [0, 1] }, { duration: 0.45, delay: Math.min(i * 0.05, 0.3), easing: 'ease-out', fill: 'forwards' });
+          }, { amount: 0.2, once: true });
+        });
+        // Card hover lift
+        document.querySelectorAll('.role-card').forEach((card) => {
+          card.addEventListener('mouseenter', () => animate(card, { y: -4 }, { duration: 0.2 }));
+          card.addEventListener('mouseleave', () => animate(card, { y: 0 }, { duration: 0.2 }));
+        });
+        // CTA gentle pulse
+        document.querySelectorAll('.role-cta').forEach((cta) => {
+          animate(cta, { transform: ['scale(1)', 'scale(1.02)', 'scale(1)'] }, { duration: 1.6, delay: 1.0, easing: 'ease-in-out' });
+        });
+      })();
     </script>
     <!-- Header component loader removed to avoid path/caching issues -->
     <script src="components/universal-header.js?v=phase1.3"></script>

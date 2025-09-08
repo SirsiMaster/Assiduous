@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "jest"
+    "test": "jest",
+    "tw:build": "tailwindcss -i assets/css/tailwind.input.css -o assets/css/generated.css --minify",
+    "tw:watch": "tailwindcss -i assets/css/tailwind.input.css -o assets/css/generated.css --watch"
   },
   "dependencies": {
     "firebase": "^10.4.0",
@@ -31,6 +33,9 @@
     "@testing-library/jest-dom": "^6.1.3",
     "jest": "^29.7.0",
     "eslint": "8.49.0",
-    "eslint-config-next": "13.4.19"
+    "eslint-config-next": "13.4.19",
+    "tailwindcss": "^3.4.10",
+    "postcss": "^8.4.41",
+    "autoprefixer": "^10.4.20"
   }
 }
