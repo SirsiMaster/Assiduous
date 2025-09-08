@@ -8,7 +8,7 @@
       "public": "assiduous-build",
       "ignore": ["firebase.json", "**/.*", "**/node_modules/**", "**/firebase-migration-package/**"],
       "redirects": [
-        { "source": "/", "destination": "/AssiduousFlip/index.html", "type": 302 }
+        { "source": "/", "destination": "/AssiduousFlip/", "type": 302 }
       ],
       "rewrites": [
         { "source": "/api/**", "function": "app" }
