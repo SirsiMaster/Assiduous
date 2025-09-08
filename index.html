@@ -779,86 +779,70 @@ body {
         </div>
     </footer>
 
-    <!-- Signup Modal -->
-    <div id="signupModal" class="modal">
-        <div class="modal-content">
-            <button class="close-modal" onclick="closeSignup()">&times;</button>
-            <div class="modal-header">
-                <h2 class="modal-title">Create Your Account</h2>
-                <p class="modal-subtitle">Join Assiduous Properties and start your real estate journey</p>
+    <!-- Signup Modal (sirsi-ui) -->
+    <sirsi-modal id="signupModal">
+        <span slot="title">Create Your Account</span>
+        <form id="signupForm" onsubmit="handleSignup(event)">
+            <div class="form-group">
+                <label class="form-label">Full Name</label>
+                <input type="text" class="sirsi-input" id="signupName" required placeholder="Enter your full name">
             </div>
-            <form id="signupForm" onsubmit="handleSignup(event)">
-                <div class="form-group">
-                    <label class="form-label">Full Name</label>
-                    <input type="text" class="form-input" id="signupName" required placeholder="Enter your full name">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Email</label>
-                    <input type="email" class="form-input" id="signupEmail" required placeholder="Enter your email">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Password</label>
-                    <input type="password" class="form-input" id="signupPassword" required placeholder="Choose a password" pattern=".{8,}" title="Password must be at least 8 characters">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Confirm Password</label>
-                    <input type="password" class="form-input" id="signupPasswordConfirm" required placeholder="Confirm your password">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">I am a:</label>
-                    <select class="form-input" id="signupRole" required>
-                        <option value="client">Client (Buying/Selling)</option>
-                        <option value="agent">Agent</option>
-                    </select>
-                </div>
-                <div class="form-group" id="agentFields" style="display: none;">
-                    <label class="form-label">License Number</label>
-                    <input type="text" class="form-input" id="licenseNumber" placeholder="Enter your real estate license number">
-                </div>
-                <div class="form-group form-checkbox">
-                    <input type="checkbox" id="termsAccepted" required>
-                    <label for="termsAccepted">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></label>
-                </div>
-                <button type="submit" class="btn-primary">Create Account</button>
-            </form>
-            <div class="modal-footer">
-                <p>Already have an account? <a href="#" onclick="showLogin()">Sign in</a></p>
+            <div class="form-group">
+                <label class="form-label">Email</label>
+                <input type="email" class="sirsi-input" id="signupEmail" required placeholder="Enter your email">
             </div>
+            <div class="form-group">
+                <label class="form-label">Password</label>
+                <input type="password" class="sirsi-input" id="signupPassword" required placeholder="Choose a password" pattern=".{8,}" title="Password must be at least 8 characters">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Confirm Password</label>
+                <input type="password" class="sirsi-input" id="signupPasswordConfirm" required placeholder="Confirm your password">
+            </div>
+            <div class="form-group">
+                <label class="form-label">I am a:</label>
+                <select class="sirsi-input" id="signupRole" required>
+                    <option value="client">Client (Buying/Selling)</option>
+                    <option value="agent">Agent</option>
+                </select>
+            </div>
+            <div class="form-group form-checkbox">
+                <input type="checkbox" id="termsAccepted" required>
+                <label for="termsAccepted">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></label>
+            </div>
+            <sirsi-button variant="primary" size="md" type="submit">Create Account</sirsi-button>
+        </form>
+        <div class="modal-footer">
+            <p>Already have an account? <a href="#" onclick="showLogin()">Sign in</a></p>
         </div>
-    </div>
+    </sirsi-modal>
 
-    <!-- Login Modal -->
-    <div id="loginModal" class="modal">
-        <div class="modal-content">
-            <button class="close-modal" onclick="closeLogin()">&times;</button>
-            <div class="modal-header">
-                <h2 class="modal-title">Welcome Back</h2>
-                <p class="modal-subtitle">Sign in to access your account</p>
+    <!-- Login Modal (sirsi-ui) -->
+    <sirsi-modal id="loginModal">
+        <span slot="title">Welcome Back</span>
+        <form onsubmit="handleLogin(event)">
+            <div class="form-group">
+                <label class="form-label">Email</label>
+                <input type="email" class="sirsi-input" id="loginEmail" required placeholder="Enter your email">
             </div>
-            <form onsubmit="handleLogin(event)">
-                <div class="form-group">
-                    <label class="form-label">Email</label>
-                    <input type="email" class="form-input" id="loginEmail" required placeholder="Enter your email">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Password</label>
-                    <input type="password" class="form-input" id="loginPassword" required placeholder="Enter your password">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Login as:</label>
-                    <select class="form-input" id="userRole">
-                        <option value="client">Client (Buying/Selling)</option>
-                        <option value="agent">Agent</option>
-                    </select>
-                </div>
-                <button type="submit" class="btn-primary">Sign In</button>
-            </form>
+            <div class="form-group">
+                <label class="form-label">Password</label>
+                <input type="password" class="sirsi-input" id="loginPassword" required placeholder="Enter your password">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Login as:</label>
+                <select class="sirsi-input" id="userRole">
+                    <option value="client">Client (Buying/Selling)</option>
+                    <option value="agent">Agent</option>
+                </select>
+            </div>
+            <sirsi-button variant="primary" size="md" type="submit">Sign In</sirsi-button>
+        </form>
         <div class="modal-footer">
             <p>Don't have an account? <a href="#" onclick="showSignup()">Sign up</a></p>
             <p><a href="#">Forgot password?</a></p>
         </div>
-    </div>
-</div>
+    </sirsi-modal>
 
 
     <style>
@@ -919,18 +903,21 @@ body {
     <script>
         // Make functions available globally for onclick handlers
         window.showLogin = function() {
-            document.getElementById('loginModal').classList.add('active');
+            const m = document.getElementById('loginModal');
+            if (m && m.show) m.show();
         }
         
         window.openModal = window.showLogin; // Alias for compatibility
 
         window.closeLogin = function() {
-            document.getElementById('loginModal').classList.remove('active');
+            const m = document.getElementById('loginModal');
+            if (m && m.hide) m.hide();
         }
         
         window.showSignup = function() {
             closeLogin();
-            document.getElementById('signupModal').classList.add('active');
+            const m = document.getElementById('signupModal');
+            if (m && m.show) m.show();
             
             // Set up event listeners for form validation
             const passwordInput = document.getElementById('signupPassword');
@@ -958,7 +945,8 @@ body {
         }
 
         window.closeSignup = function() {
-            document.getElementById('signupModal').classList.remove('active');
+            const m = document.getElementById('signupModal');
+            if (m && m.hide) m.hide();
         }
 
         function validatePassword(password) {
