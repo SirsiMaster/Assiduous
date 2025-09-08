@@ -533,14 +533,18 @@ body {
             <a href="#demo">Demo</a>
         </nav>
         <div class="site-header__auth">
-            <a href="#" onclick="showLogin()">Sign In</a>
-            <a class="primary" href="#" onclick="showSignup()">Get Started</a>
+            <sirsi-button variant="ghost" size="sm" onclick="showLogin()">Sign In</sirsi-button>
+            <sirsi-button variant="primary" size="sm" onclick="showSignup()">Get Started</sirsi-button>
         </div>
     </header>
     <!-- Hero Section -->
     <section class="hero">
-<h1>Your Micro-Flipping Path to Wealth</h1>
+        <h1>Your Micro-Flipping Path to Wealth</h1>
         <p>Experience a smarter way to buy, sell, and manage real estate with personalized insights and automation</p>
+        <div style="margin-top:2rem;display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+            <sirsi-button variant="primary" size="lg" onclick="showSignup()">Start Now</sirsi-button>
+            <sirsi-button variant="secondary" size="lg" onclick="document.getElementById('demo').scrollIntoView({behavior:'smooth'})">See a Demo</sirsi-button>
+        </div>
     </section>
 
     <!-- Role Selection -->
@@ -553,7 +557,7 @@ body {
 
             <div class="roles-grid">
                 <!-- Client Portal -->
-                <a href="client/" class="role-card">
+                <a href="client/" class="role-card sirsi-card">
                     <div class="role-icon client-icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
@@ -588,17 +592,11 @@ body {
                             Seamless Transaction Management
                         </li>
                     </ul>
-                    <span class="role-cta">
-                        Enter Client Portal
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
-                    </span>
+                    <sirsi-button variant="primary" size="md">Enter Client Portal</sirsi-button>
                 </a>
 
                 <!-- Agents Portal -->
-                <a href="agents/" class="role-card">
+                <a href="agents/" class="role-card sirsi-card">
                     <div class="role-icon agents-icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
@@ -635,13 +633,7 @@ body {
                             Lead Generation
                         </li>
                     </ul>
-                    <span class="role-cta">
-                        Enter Agent Portal
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
-                    </span>
+                    <sirsi-button variant="primary" size="md">Enter Agent Portal</sirsi-button>
                 </a>
             </div>
         </div>
