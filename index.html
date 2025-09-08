@@ -67,11 +67,29 @@ body {
 
         /* Hero Section */
         .hero {
-            background: linear-gradient(135deg, #60A3D9 0%, #0B1F41 100%);
+            position: relative;
             padding: 2.75rem 1rem;
             text-align: center;
             color: white;
+            overflow: hidden;
+            min-height: 420px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
+        .hero::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(180deg, rgba(11,31,65,0.50) 0%, rgba(11,31,65,0.50) 100%),
+                url('https://images.unsplash.com/photo-1560185127-6ed189bf02f4?q=80&w=2000&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            filter: saturate(1.05) contrast(1.02);
+            transform: scale(1.02);
+        }
+        .hero > * { position: relative; z-index: 1; }
 
         .hero h1 {
             font-family: "DM Serif Display", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
@@ -516,19 +534,99 @@ body {
     <!-- Simple Static Header removed to prevent duplicate with universal header -->
     <!-- Hero Section -->
     <section class="hero">
-        <h1>Your Micro-Flipping Path to Wealth</h1>
-        <p>Experience a smarter way to buy, sell, and manage real estate with personalized insights and automation</p>
-        <div style="margin-top:2rem;display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
-            <sirsi-button variant="primary" size="lg" onclick="showSignup()">Start Now</sirsi-button>
-            <sirsi-button variant="secondary" size="lg" onclick="document.getElementById('demo').scrollIntoView({behavior:'smooth'})">See a Demo</sirsi-button>
+        <div class="container" style="max-width: 1040px;">
+            <h1 style="font-size:2.5rem;margin-bottom:.5rem;">Micro‑Flip Properties. Compound Gains.</h1>
+            <p style="max-width:720px;margin:0 auto 1.25rem;opacity:.92;">
+                Source undervalued homes, close fast, and recycle capital with data‑driven exits — all on one platform.
+            </p>
+            <div style="margin-top:1.25rem;display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap;">
+                <sirsi-button variant="primary" size="lg" onclick="document.getElementById('deals').scrollIntoView({behavior:'smooth'})">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18"/><path d="m11 5 7 7-7 7"/></svg>
+                    Find Deals Now
+                </sirsi-button>
+                <sirsi-button variant="secondary" size="lg" onclick="document.getElementById('how').scrollIntoView({behavior:'smooth'})">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+                    See How It Works
+                </sirsi-button>
+            </div>
+            <!-- Trust strip -->
+            <div class="trust-strip" style="display:flex;gap:1rem;justify-content:center;margin-top:1.25rem;flex-wrap:wrap;">
+                <div class="sirsi-badge sirsi-badge--primary">10,000+ Active Deals</div>
+                <div class="sirsi-badge sirsi-badge--primary">7–14 Day Avg Hold</div>
+                <div class="sirsi-badge sirsi-badge--primary">$2.1B+ Volume</div>
+                <div class="sirsi-badge sirsi-badge--primary">98% Verified Data</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Investor Stories (photographic band) -->
+    <section class="roles-section" style="padding:3rem 1rem;background:linear-gradient(180deg,#0B1F41 0%,#09172f 100%);color:#fff;">
+        <div class="container" style="display:grid;grid-template-columns:1.4fr 1fr;gap:1.5rem;align-items:center;">
+            <div>
+                <h2 class="section-title" style="color:#fff;margin-bottom:.5rem;">Investor Stories</h2>
+                <p class="section-subtitle" style="color:#d1d5db;margin-bottom:1rem;">“Closed 9 micro‑flips in 60 days — capital never slept.”</p>
+                <div style="display:flex;gap:1rem;align-items:center;">
+                    <img src="https://images.unsplash.com/photo-1544723795-3fb6469f5b39?q=80&w=800&auto=format&fit=crop" alt="Investor" style="width:48px;height:48px;border-radius:999px;object-fit:cover;">
+                    <div style="font-size:.9rem;color:#e5e7eb;">
+                        Jordan K. · Micro‑Flipper · Dallas, TX
+                    </div>
+                </div>
+            </div>
+            <div class="sirsi-card" style="overflow:hidden;padding:0;border:none;">
+                <img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=1600&auto=format&fit=crop" alt="Property" style="width:100%;height:220px;object-fit:cover;display:block;">
+            </div>
         </div>
     </section>
 
     <!-- Role Selection -->
     <section class="roles-section">
+    <!-- Live Deals Band -->
+    <section id="deals" class="roles-section" style="padding:2rem 1rem;background:#f8fafc;">
         <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Choose Your Portal</h2>
+            <div class="section-header" style="margin-bottom:1rem;">
+                <h2 class="section-title" style="margin-bottom:.25rem;">Live Deal Flow</h2>
+                <p class="section-subtitle">Snapshot of opportunities with spread and velocity</p>
+            </div>
+            <div class="deal-row" style="display:flex;gap:1rem;overflow-x:auto;padding-bottom:.5rem;scroll-snap-type:x mandatory;">
+                <div class="sirsi-card" style="min-width:320px;scroll-snap-align:start;display:flex;gap:.75rem;padding:.75rem;">
+                    <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=1200&auto=format&fit=crop" alt="Property" style="width:120px;height:80px;object-fit:cover;border-radius:.5rem;">
+                    <div style="flex:1;">
+                        <div style="font-weight:700;color:#0B1F41;">1246 Maple Ave</div>
+                        <div style="font-size:.85rem;color:#6b7280;">List $312k · ARV $365k · Spread $53k</div>
+                        <div style="font-size:.8rem;color:#6b7280;">DOM 6 · Austin, TX</div>
+                        <div style="margin-top:.5rem;">
+                            <sirsi-button variant="primary" size="sm">Analyze</sirsi-button>
+                        </div>
+                    </div>
+                </div>
+                <div class="sirsi-card" style="min-width:320px;scroll-snap-align:start;display:flex;gap:.75rem;padding:.75rem;">
+                    <img src="https://images.unsplash.com/photo-1570129477492-45c003edd2be?q=80&w=1200&auto=format&fit=crop" alt="Property" style="width:120px;height:80px;object-fit:cover;border-radius:.5rem;">
+                    <div style="flex:1;">
+                        <div style="font-weight:700;color:#0B1F41;">58 Harbor Ct</div>
+                        <div style="font-size:.85rem;color:#6b7280;">List $489k · ARV $552k · Spread $63k</div>
+                        <div style="font-size:.8rem;color:#6b7280;">DOM 9 · Tampa, FL</div>
+                        <div style="margin-top:.5rem;">
+                            <sirsi-button variant="primary" size="sm">Analyze</sirsi-button>
+                        </div>
+                    </div>
+                </div>
+                <div class="sirsi-card" style="min-width:320px;scroll-snap-align:start;display:flex;gap:.75rem;padding:.75rem;">
+                    <img src="https://images.unsplash.com/photo-1502005229762-cf1b2da7c52f?q=80&w=1200&auto=format&fit=crop" alt="Property" style="width:120px;height:80px;object-fit:cover;border-radius:.5rem;">
+                    <div style="flex:1;">
+                        <div style="font-weight:700;color:#0B1F41;">942 Canyon Dr</div>
+                        <div style="font-size:.85rem;color:#6b7280;">List $402k · ARV $455k · Spread $53k</div>
+                        <div style="font-size:.8rem;color:#6b7280;">DOM 3 · Phoenix, AZ</div>
+                        <div style="margin-top:.5rem;">
+                            <sirsi-button variant="primary" size="sm">Analyze</sirsi-button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Role Selection -->
+    <section class="roles-section">
                 <p class="section-subtitle">Access tailored tools and features designed for your specific needs</p>
             </div>
 
