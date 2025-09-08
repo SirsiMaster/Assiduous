@@ -23,12 +23,20 @@
     var xhr = new XMLHttpRequest();
     // Determine the correct path based on current page location
     var path = window.location.pathname;
-    var depth = (path.match(/\//g) || []).length - 1; // Count slashes to determine depth
-    var prefix = '';
-    for (var i = 0; i < depth; i++) {
-      prefix += '../';
+    var headerPath;
+    
+    // Check if we're in development subfolder
+    if (path.includes('/admin/development/backups/')) {
+      headerPath = '../../../components/admin-header.html';
+    } else if (path.includes('/admin/development/') || path.includes('/admin/contracts/')) {
+      headerPath = '../../components/admin-header.html';
+    } else if (path.includes('/admin/') || path.includes('/client/') || path.includes('/docs/')) {
+      headerPath = '../components/admin-header.html';
+    } else {
+      // Root level
+      headerPath = 'components/admin-header.html';
     }
-    var headerPath = prefix + 'components/admin-header.html';
+    
     xhr.open('GET', headerPath);
     xhr.onreadystatechange = function () {
       if (xhr.readyState === 4) {
