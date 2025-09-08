@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WARP.md - Development Guide | Assiduous Realty</title>
+    
+    <!-- Assiduous Design System -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assiduous.css">
+    
+    <style>
+        /* Documentation Styles */
+        :root {
+            --navy: #1E293B;
+            --sky: #0EA5E9;
+            --success: #059669;
+            --warning: #D97706;
+            --danger: #DC2626;
+            --gray-50: #F8FAFC;
+            --gray-100: #F1F5F9;
+            --gray-200: #E2E8F0;
+            --gray-700: #374151;
+            --gray-900: #111827;
+            --text-primary: #1F2937;
+            --text-secondary: #6B7280;
+            --radius: 8px;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background: var(--gray-50);
+            margin: 0;
+            padding: 2rem;
+        }
+        
+        .doc-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+        }
+        
+        .doc-header {
+            background: linear-gradient(135deg, var(--navy) 0%, var(--sky) 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .doc-header h1 {
+            font-size: 2.5rem;
+            margin: 0 0 0.5rem 0;
+            font-weight: 700;
+        }
+        
+        .doc-header p {
+            margin: 0;
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+        
+        .doc-content {
+            padding: 2rem;
+        }
+        
+        .alert {
+            padding: 1rem;
+            border-radius: var(--radius);
+            margin: 1.5rem 0;
+            border-left: 4px solid;
+        }
+        
+        .alert-danger {
+            background: rgba(220, 38, 38, 0.1);
+            border-color: var(--danger);
+            color: var(--danger);
+        }
+        
+        .alert-warning {
+            background: rgba(217, 119, 6, 0.1);
+            border-color: var(--warning);
+            color: var(--warning);
+        }
+        
+        .alert-success {
+            background: rgba(5, 150, 105, 0.1);
+            border-color: var(--success);
+            color: var(--success);
+        }
+        
+        h2 {
+            color: var(--navy);
+            font-size: 1.8rem;
+            margin: 2rem 0 1rem 0;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--gray-200);
+        }
+        
+        h3 {
+            color: var(--navy);
+            font-size: 1.3rem;
+            margin: 1.5rem 0 0.75rem 0;
+        }
+        
+        h4 {
+            color: var(--sky);
+            font-size: 1.1rem;
+            margin: 1rem 0 0.5rem 0;
+        }
+        
+        p {
+            margin-bottom: 1rem;
+        }
+        
+        ul, ol {
+            margin-bottom: 1rem;
+            padding-left: 2rem;
+        }
+        
+        li {
+            margin-bottom: 0.5rem;
+        }
+        
+        code {
+            background: var(--gray-100);
+            padding: 0.2rem 0.4rem;
+            border-radius: var(--radius);
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9em;
+            color: var(--navy);
+        }
+        
+        pre {
+            background: var(--gray-900);
+            color: var(--gray-100);
+            padding: 1rem;
+            border-radius: var(--radius);
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+        
+        pre code {
+            background: transparent;
+            color: inherit;
+            padding: 0;
+        }
+        
+        .command-section {
+            background: var(--gray-50);
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            margin: 1rem 0;
+            border-left: 4px solid var(--sky);
+        }
+        
+        .url-section {
+            background: rgba(14, 165, 233, 0.1);
+            padding: 1rem;
+            border-radius: var(--radius);
+            margin: 1rem 0;
+            border: 1px solid rgba(14, 165, 233, 0.2);
+        }
+        
+        .url-section a {
+            color: var(--sky);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .url-section a:hover {
+            text-decoration: underline;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+        
+        th, td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid var(--gray-200);
+        }
+        
+        th {
+            background: var(--gray-50);
+            font-weight: 600;
+            color: var(--navy);
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-bottom: 1rem;
+            color: var(--sky);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        
+        .toc {
+            background: var(--gray-50);
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            margin: 2rem 0;
+        }
+        
+        .toc h4 {
+            margin-top: 0;
+            color: var(--navy);
+        }
+        
+        .toc ul {
+            margin-bottom: 0;
+        }
+        
+        .toc a {
+            color: var(--sky);
+            text-decoration: none;
+        }
+        
+        .toc a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="doc-container">
+        <div class="doc-header">
+            <h1>WARP.md</h1>
+            <p>Complete Development Guide for Assiduous Realty Platform</p>
+        </div>
+        
+        <div class="doc-content">
+            <a href="../admin/knowledge-base.html" class="back-link">← Back to Knowledge Base</a>
+            
+            <div class="toc">
+                <h4>Table of Contents</h4>
+                <ul>
+                    <li><a href="#critical-rules">Critical Development Governance Rules</a></li>
+                    <li><a href="#essential-commands">Essential Commands</a></li>
+                    <li><a href="#architecture">Architecture Overview</a></li>
+                    <li><a href="#conventions">Project Conventions</a></li>
+                    <li><a href="#component-system">Component System</a></li>
+                    <li><a href="#directory-structure">Directory Structure</a></li>
+                    <li><a href="#development-workflow">Development Workflow</a></li>
+                    <li><a href="#ai-integration">AI Integration Points</a></li>
+                    <li><a href="#project-rules">Important Project Rules</a></li>
+                    <li><a href="#live-urls">Live Application URLs</a></li>
+                    <li><a href="#firebase-metrics">Firebase Development Metrics</a></li>
+                </ul>
+            </div>
+            
+            <p><em>This file provides guidance to WARP (warp.dev) when working with code in this repository.</em></p>
+            
+            <div id="critical-rules" class="alert alert-danger">
+                <h2>⚠️ CRITICAL DEVELOPMENT GOVERNANCE RULES (MUST FOLLOW)</h2>
+                
+                <h3><strong>RULE 1: ALWAYS CHECK EXISTING DOCUMENTATION FIRST</strong></h3>
+                <p><strong>Before starting ANY task, you MUST:</strong></p>
+                <ul>
+                    <li>Read and understand ALL existing project documentation</li>
+                    <li>Verify what functionality already exists and is working</li>
+                    <li>Check against established project plans and architecture</li>
+                    <li>Ensure you're not duplicating work or breaking existing functionality</li>
+                    <li>Review similar implementations that already exist in the project</li>
+                    <li><strong>NEVER modify or break existing working files without explicit instruction</strong></li>
+                </ul>
+                
+                <h3><strong>RULE 2: MANDATORY COMPLETION VERIFICATION</strong></h3>
+                <p><strong>Before reporting ANY task as complete, you MUST:</strong></p>
+                <ul>
+                    <li>Run the completion verification script: <code>./scripts/verify_completion.sh</code></li>
+                    <li>Test all functionality you claim to have implemented</li>
+                    <li>Verify that claimed changes actually exist in the files</li>
+                    <li>Confirm that all components/pages work as specified</li>
+                    <li>Check that nothing existing was broken by your changes</li>
+                    <li><strong>NEVER report completion without running verification</strong></li>
+                </ul>
+                
+                <h3><strong>RULE 3: VALIDATE GROUND TRUTH</strong></h3>
+                <p><strong>After completing ANY development work, you MUST:</strong></p>
+                <ul>
+                    <li>Test all implemented functionality against the project requirements</li>
+                    <li>Update development documentation to reflect current reality</li>
+                    <li>Ensure analytics and dashboards show accurate current status</li>
+                    <li>Report the true development status, not assumptions</li>
+                    <li>Validate that the project state matches what you report</li>
+                    <li><strong>The documentation and dashboards must reflect ground truth, always</strong></li>
+                </ul>
+                
+                <p><strong>These rules apply to ALL repositories and ALL development work, current and future.</strong></p>
+            </div>
+            
+            <div id="essential-commands">
+                <h2>Essential Commands</h2>
+                
+                <div class="command-section">
+                    <h3>Development Server</h3>
+                    <pre><code># Start local development server (choose one)
+python -m http.server 8080           # Basic Python server
+python serve.py                      # If serve.py exists
+
+# Access application
+open http://localhost:8080/AssiduousFlip/</code></pre>
+                </div>
+                
+                <div class="command-section">
+                    <h3>Git Hooks Setup</h3>
+                    <pre><code># Install git hooks (required after cloning)
+./scripts/hooks/install.sh
+
+# This configures:
+# - Conventional commit message validation
+# - Commit template from .gitmessage</code></pre>
+                </div>
+                
+                <div class="command-section">
+                    <h3>Version Management</h3>
+                    <pre><code># Create a new release tag
+./scripts/rollback/create_tag.sh 0.2.0 "AI integration release"
+
+# Update changelog (prompts for version)
+./scripts/changelog/update_changelog.sh [version]
+
+# Rollback to previous version
+./scripts/rollback/rollback_to_tag.sh v0.1.0</code></pre>
+                </div>
+                
+                <div class="command-section">
+                    <h3>Git Operations</h3>
+                    <pre><code># View available tags
+git tag -l | sort -V
+
+# Push tags to remote
+git push origin --tags
+
+# Emergency commit bypass (use sparingly)
+git commit --no-verify</code></pre>
+                </div>
+            </div>
+            
+            <div id="architecture">
+                <h2>Architecture Overview</h2>
+                <p>Assiduous is an AI-powered real estate platform with dual-purpose architecture:</p>
+                
+                <h3>Current Stack (Firebase Migration Complete - Sep 6, 2025)</h3>
+                <ul>
+                    <li><strong>Frontend</strong>: Dual hosting - GitHub Pages + Firebase Hosting</li>
+                    <li><strong>Backend</strong>: Firebase (Firestore DB, Authentication, Cloud Storage, Functions)</li>
+                    <li><strong>API</strong>: Cloud Functions at <code>https://us-central1-assiduous-prod.cloudfunctions.net/app</code></li>
+                    <li><strong>Security</strong>: AES-256-GCM encryption for sensitive fields + Firebase Security Rules</li>
+                    <li><strong>User Roles</strong>: Unified "client" role (buyers/sellers) + "agent" role</li>
+                    <li><strong>State Management</strong>: Client-side services (<code>assets/js/services/</code>)</li>
+                    <li><strong>Deployment Pipeline</strong>: Local → GitHub (Source of Truth) → Firebase/GCP</li>
+                </ul>
+                
+                <h3>Business Model Priority</h3>
+                <ul>
+                    <li><strong>70% Focus</strong>: Micro-Flipping Engine ($2-5K per deal)</li>
+                    <li><strong>30% Focus</strong>: Traditional Real Estate (lead generation)</li>
+                </ul>
+                
+                <h3>Key Services</h3>
+                <ul>
+                    <li><code>FirebaseService.js</code>: Core database operations with encryption</li>
+                    <li><code>auth.js</code>: Authentication and session management</li>
+                    <li><code>crm.js</code>: Client relationship management</li>
+                    <li><code>EncryptionService.js</code>: Field-level encryption layer</li>
+                </ul>
+                
+                <h3>Firebase Collections</h3>
+                <ul>
+                    <li><code>users</code>: Encrypted user profiles (email, phone, SSN)</li>
+                    <li><code>properties</code>: Listings with investment scoring</li>
+                    <li><code>transactions</code>: Deal pipeline management</li>
+                    <li><code>messages</code>: Communication logs</li>
+                    <li><code>notifications</code>: Real-time alerts</li>
+                </ul>
+            </div>
+            
+            <div id="conventions">
+                <h2>Project Conventions</h2>
+                
+                <h3>Commit Messages</h3>
+                <p>Follow Conventional Commits specification:</p>
+                <pre><code>&lt;type&gt;(&lt;scope&gt;): &lt;subject&gt;
+
+&lt;body&gt;
+
+&lt;footer&gt;</code></pre>
+                
+                <p><strong>Types</strong>: <code>feat</code>, <code>fix</code>, <code>docs</code>, <code>style</code>, <code>refactor</code>, <code>perf</code>, <code>test</code>, <code>build</code>, <code>ci</code>, <code>chore</code>, <code>revert</code></p>
+                
+                <h4>Rules:</h4>
+                <ul>
+                    <li>Use imperative mood ("add" not "added")</li>
+                    <li>Capitalize subject first letter</li>
+                    <li>No period at subject end</li>
+                    <li>Subject max 50 chars</li>
+                    <li>Body wrapped at 72 chars</li>
+                </ul>
+                
+                <h3>Branching Strategy</h3>
+                <p>GitFlow-inspired model:</p>
+                <ul>
+                    <li><code>main</code> - Production code</li>
+                    <li><code>develop</code> - Integration branch</li>
+                    <li><code>staging</code> - Pre-production testing</li>
+                    <li><code>feature/*</code> - New features</li>
+                    <li><code>bugfix/*</code> - Bug fixes for develop</li>
+                    <li><code>hotfix/*</code> - Emergency production fixes</li>
+                    <li><code>release/*</code> - Release preparation</li>
+                    <li><code>docs/*</code> - Documentation updates</li>
+                </ul>
+                
+                <p>Branch naming: <code>&lt;type&gt;/&lt;issue-number&gt;-&lt;short-description&gt;</code></p>
+                
+                <h3>Version Tags</h3>
+                <p>Semantic versioning: <code>vMAJOR.MINOR.PATCH[-PRERELEASE]</code></p>
+                <ul>
+                    <li>Always create annotated tags</li>
+                    <li>Include release notes</li>
+                    <li>Update ROLLBACK_REGISTRY.md</li>
+                </ul>
+            </div>
+            
+            <div id="component-system">
+                <h2>Component System (NEW - Sep 2025)</h2>
+                <p>Assiduous now uses a standardized component system for consistent UI across all pages:</p>
+                
+                <h3>Header Component</h3>
+                <pre><code>&lt;!-- Replace custom headers with this standardized approach --&gt;
+&lt;header id="admin-header-root" 
+        data-title="Page Title" 
+        data-subtitle="Page description"
+        data-search-placeholder="Search placeholder..."
+        data-actions='[{"label":"Action","icon":"&lt;svg&gt;...","onclick":"handler()"}]'&gt;&lt;/header&gt;
+&lt;script src="[[BASE]]/components/admin-header.js"&gt;&lt;/script&gt;</code></pre>
+                
+                <h3>Sidebar Component</h3>
+                <pre><code>&lt;!-- Replace custom sidebars with this standardized approach --&gt;
+&lt;aside id="sidebar-root" data-active="page-identifier"&gt;&lt;/aside&gt;
+&lt;script src="[[BASE]]/components/sidebar.js"&gt;&lt;/script&gt;</code></pre>
+                
+                <h3>Component Files</h3>
+                <ul>
+                    <li><code>AssiduousFlip/components/admin-header.html</code> - Header template</li>
+                    <li><code>AssiduousFlip/components/admin-header.js</code> - Header loader</li>
+                    <li><code>AssiduousFlip/components/admin-layout.css</code> - Shared styles</li>
+                    <li><code>AssiduousFlip/components/sidebar.html</code> - Sidebar template</li>
+                    <li><code>AssiduousFlip/components/sidebar.js</code> - Sidebar loader</li>
+                </ul>
+                
+                <div class="alert alert-success">
+                    <h4>Benefits</h4>
+                    <ul>
+                        <li><strong>90% reduction</strong> in code duplication</li>
+                        <li><strong>Consistent UX</strong> across all pages</li>
+                        <li><strong>Easy maintenance</strong> - update once, apply everywhere</li>
+                        <li><strong>Automatic path resolution</strong> for any directory depth</li>
+                        <li><strong>Mobile responsive</strong> design built-in</li>
+                    </ul>
+                </div>
+                
+                <h3>Usage Guidelines</h3>
+                <ul>
+                    <li><strong>ALL NEW PAGES</strong> must use standardized components</li>
+                    <li>Use <code>[[BASE]]</code> token for path references in components</li>
+                    <li>Configure via data attributes, not custom code</li>
+                    <li>Follow naming convention: <code>page-identifier</code> for data-active</li>
+                </ul>
+            </div>
+            
+            <div id="live-urls" class="url-section">
+                <h2>🔗 LIVE APPLICATION URLS (ALWAYS USE THESE)</h2>
+                
+                <h3>Production URLs (Firebase Hosting)</h3>
+                <p><strong>Base URL</strong>: <code>https://assiduous-prod.web.app/</code></p>
+                
+                <h4>Main Application</h4>
+                <ul>
+                    <li><strong>Root Redirect</strong>: <a href="https://assiduous-prod.web.app/">https://assiduous-prod.web.app/</a></li>
+                    <li><strong>Landing Page (Login/Signup)</strong>: <a href="https://assiduous-prod.web.app/">https://assiduous-prod.web.app/</a></li>
+                    <li><strong>Knowledge Base</strong>: <a href="https://assiduous-prod.web.app/knowledge-base.html">https://assiduous-prod.web.app/knowledge-base.html</a></li>
+                    <li><strong>Reports</strong>: <a href="https://assiduous-prod.web.app/reports.html">https://assiduous-prod.web.app/reports.html</a></li>
+                </ul>
+                
+                <h4>Admin Portal</h4>
+                <ul>
+                    <li><strong>Admin Dashboard</strong>: <a href="https://assiduous-prod.web.app/admin/dashboard.html">Admin Dashboard</a></li>
+                    <li><strong>Analytics</strong>: <a href="https://assiduous-prod.web.app/admin/analytics.html">Analytics</a></li>
+                    <li><strong>Properties Management</strong>: <a href="https://assiduous-prod.web.app/admin/properties.html">Properties</a></li>
+                    <li><strong>Client Management</strong>: <a href="https://assiduous-prod.web.app/admin/clients.html">Clients</a></li>
+                    <li><strong>Agent Management</strong>: <a href="https://assiduous-prod.web.app/admin/agents.html">Agents</a></li>
+                    <li><strong>Transactions</strong>: <a href="https://assiduous-prod.web.app/admin/transactions.html">Transactions</a></li>
+                    <li><strong>Market Analysis</strong>: <a href="https://assiduous-prod.web.app/admin/market.html">Market Analysis</a></li>
+                    <li><strong>Settings</strong>: <a href="https://assiduous-prod.web.app/admin/settings.html">Settings</a></li>
+                </ul>
+                
+                <h4>GitHub Repository URLs</h4>
+                <ul>
+                    <li><strong>Repository Home</strong>: <a href="https://github.com/SirsiMaster/Assiduous">https://github.com/SirsiMaster/Assiduous</a></li>
+                    <li><strong>Implementation Checklist</strong>: <a href="https://github.com/SirsiMaster/Assiduous/blob/main/docs/IMPLEMENTATION_CHECKLIST.md">Implementation Checklist</a></li>
+                    <li><strong>Security Docs</strong>: <a href="https://github.com/SirsiMaster/Assiduous/blob/main/docs/SECURITY.md">Security Documentation</a></li>
+                    <li><strong>WARP Rules (This File)</strong>: <a href="https://github.com/SirsiMaster/Assiduous/blob/main/WARP.md">WARP.md on GitHub</a></li>
+                </ul>
+                
+                <h4>Local Development URLs</h4>
+                <pre><code># Start server first: python -m http.server 8080
+
+# Main Pages
+http://localhost:8080/AssiduousFlip/
+http://localhost:8080/AssiduousFlip/admin/dashboard.html
+http://localhost:8080/AssiduousFlip/client/</code></pre>
+            </div>
+            
+            <div id="project-rules">
+                <h2>Important Project Rules</h2>
+                
+                <div class="alert alert-warning">
+                    <h3>Architecture Rules</h3>
+                    <ul>
+                        <li><strong>NEVER</strong> store sensitive data in GitHub (use Firebase)</li>
+                        <li><strong>ALWAYS</strong> encrypt sensitive fields before Firestore storage</li>
+                        <li><strong>USE</strong> Firebase for all backend operations (no GitHub Actions for DB)</li>
+                        <li><strong>MAINTAIN</strong> unified client role (no separate buyer/seller paths)</li>
+                        <li><strong>PRIORITIZE</strong> micro-flipping features (70% of dev effort)</li>
+                    </ul>
+                </div>
+                
+                <h3>Development Rules</h3>
+                <ul>
+                    <li><strong>Frontend</strong>: Pure HTML/CSS/JS served from Firebase Hosting</li>
+                    <li><strong>Backend</strong>: Firebase only (Firestore, Auth, Storage)</li>
+                    <li><strong>Dependencies</strong>: Use package.json (Firebase, Next.js ready)</li>
+                    <li><strong>Security</strong>: Multi-layer (Auth → Rules → Encryption)</li>
+                    <li><strong>Testing</strong>: Jest for unit tests, manual for integration</li>
+                </ul>
+                
+                <h3>Coding Standards</h3>
+                <ul>
+                    <li>Git hooks enforce commit message format</li>
+                    <li>Protected branches require PR reviews</li>
+                    <li>Mobile-first responsive design</li>
+                    <li>Accessibility compliance (WCAG 2.1)</li>
+                </ul>
+            </div>
+            
+            <div id="firebase-metrics">
+                <h2>🔥 Firebase Development Metrics Workflow</h2>
+                
+                <h3>Overview</h3>
+                <p>The Firebase metrics system automatically tracks development sessions, costs, commits, and deployments with real-time dashboard updates.</p>
+                
+                <h3>Development Session Workflow</h3>
+                <pre><code># 1. Start Development Session (Track in local files/commits)
+# All development data stays in GitHub as source of truth
+
+# 2. Code & Commit (Enhanced metadata)
+git add .
+git commit -m "feat(dashboard): add new feature"  # Enhanced git hooks add metadata
+
+# 3. Push & Deploy (Fully automated)
+git push origin main  # GitHub Actions → Firebase deployment
+#                    # GitHub webhook → Process commit data → Firebase metrics
+
+# 4. View Metrics (Real-time from Firebase)
+open http://localhost:8080/AssiduousFlip/admin/development/dashboard.html</code></pre>
+                
+                <div class="command-section">
+                    <h3>Quick Setup Commands</h3>
+                    <pre><code># Populate historical session data
+node AssiduousFlip/admin/development/populate_session_data.js
+
+# Test Firebase connection
+node -e "const service = new DevelopmentMetricsService(); service.initialize();"
+
+# View live dashboard with Firebase metrics
+python -m http.server 8080
+open http://localhost:8080/AssiduousFlip/admin/development/dashboard.html
+
+# Deploy latest changes to Firebase
+cd firebase-migration-package/assiduous-build
+firebase deploy --only hosting</code></pre>
+                </div>
+                
+                <h3>Environment Variables Required</h3>
+                <pre><code># Development (.env.development)
+FIREBASE_API_KEY=xxx
+FIREBASE_AUTH_DOMAIN=xxx
+FIREBASE_PROJECT_ID=xxx
+FIREBASE_STORAGE_BUCKET=xxx
+ENCRYPTION_KEY=xxx
+
+# Production (.env.production)  
+# Same structure, different values</code></pre>
+            </div>
+            
+            <div class="command-section">
+                <h2>Quick Reference</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Task</th>
+                            <th>Command</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Start dev server</td>
+                            <td><code>python -m http.server 8080</code></td>
+                        </tr>
+                        <tr>
+                            <td>Access app</td>
+                            <td><code>open http://localhost:8080/AssiduousFlip/</code></td>
+                        </tr>
+                        <tr>
+                            <td>Install deps</td>
+                            <td><code>npm install</code></td>
+                        </tr>
+                        <tr>
+                            <td>Run tests</td>
+                            <td><code>npm test</code></td>
+                        </tr>
+                        <tr>
+                            <td>Firebase deploy</td>
+                            <td><code>firebase deploy</code></td>
+                        </tr>
+                        <tr>
+                            <td>View logs</td>
+                            <td><code>git log --oneline -10</code></td>
+                        </tr>
+                        <tr>
+                            <td>Check branch</td>
+                            <td><code>git branch --show-current</code></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <hr style="margin: 2rem 0; border: none; border-top: 1px solid var(--gray-200);">
+            
+            <p style="text-align: center; color: var(--text-secondary); font-style: italic;">
+                <strong>Assiduous</strong> - <em>Transforming Real Estate with Artificial Intelligence</em>
+            </p>
+            
+            <p style="text-align: center; margin-top: 1rem;">
+                <a href="../admin/knowledge-base.html" class="back-link">← Back to Knowledge Base</a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>

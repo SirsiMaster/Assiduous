@@ -11,6 +11,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../assiduous.css">
+    <link rel="stylesheet" href="../components/admin-layout.css">
     
     <style>
         /* Admin Layout - Consistent across all admin pages */
@@ -389,37 +390,15 @@
 
         <!-- Main Content -->
         <main class="main-content">
-            <!-- Top Bar -->
-            <header class="topbar">
-                <div class="topbar-left">
-                    <div class="search-bar">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="11" cy="11" r="8"></circle>
-                            <path d="m21 21-4.35-4.35"></path>
-                        </svg>
-                        <input type="text" class="search-input" placeholder="Search properties...">
-                    </div>
-                </div>
-                
-                <div class="topbar-actions">
-                    <button class="btn-primary">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <line x1="12" y1="5" x2="12" y2="19"></line>
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                        </svg>
-                        Add Property
-                    </button>
-                    <div class="user-avatar">AU</div>
-                </div>
-            </header>
+            <!-- Standardized Admin Header -->
+            <header id="admin-header-root" 
+                    data-title="Properties Management" 
+                    data-subtitle="Manage all property listings and their details"
+                    data-search-placeholder="Search properties..."
+                    data-actions='[{"label":"Add Property","icon":"<line x1=\"12\" y1=\"5\" x2=\"12\" y2=\"19\"></line><line x1=\"5\" y1=\"12\" x2=\"19\" y2=\"12\"></line>","primary":true,"onclick":"HeaderActions.addProperty()"}]'></header>
 
             <!-- Page Content -->
             <div class="page-content">
-                <!-- Page Header -->
-                <div class="page-header">
-                    <h1 class="page-title">Properties Management</h1>
-                    <p class="page-subtitle">Manage all property listings and their details</p>
-                </div>
 
                 <!-- Stats Cards -->
                 <div class="stats-grid">
@@ -711,6 +690,15 @@
     </div>
 
     <script>
+        // Header Actions for Properties
+        const HeaderActions = {
+            addProperty: function() {
+                // In production, this would open a modal or navigate to add property form
+                console.log('Opening add property form...');
+                alert('Add property functionality will be implemented in the next phase.');
+            }
+        };
+
         // Highlight active page in sidebar
         document.addEventListener('DOMContentLoaded', function() {
             const currentPath = window.location.pathname;
@@ -732,5 +720,6 @@
         });
     </script>
     <script src="../components/sidebar.js"></script>
+    <script src="../components/admin-header.js"></script>
 </body>
 </html>

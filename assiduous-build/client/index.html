@@ -10,6 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../assiduous.css">
+    <link rel="stylesheet" href="../components/universal-layout.css">
     
     <style>
         /* Dashboard Layout */
@@ -158,9 +159,9 @@
         }
     </style>
 </head>
-<body>
-    <div class="admin-wrapper">
-        <!-- Sidebar -->
+<body class="page-wrapper">
+    <div class="main-wrapper">
+        <!-- Client Sidebar (for now keep existing, will be standardized later) -->
         <aside class="sidebar">
             <div class="sidebar-header">
                 <a href="/" class="sidebar-logo">
@@ -253,34 +254,18 @@
             </nav>
         </aside>
 
-        <!-- Main Content -->
-        <main class="main-content">
-            <!-- Top Bar -->
-            <header class="topbar">
-                <div class="topbar-left">
-                    <div class="search-bar">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="11" cy="11" r="8"></circle>
-                            <path d="m21 21-4.35-4.35"></path>
-                        </svg>
-                        <input type="text" class="search-input" placeholder="Search properties...">
-                    </div>
-                </div>
-                
-                <div class="topbar-actions">
-                    <button class="btn-primary" onclick="window.location.href='/client/properties.html'">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <line x1="12" y1="5" x2="12" y2="19"></line>
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                        </svg>
-                        List Property
-                    </button>
-                    <div class="user-avatar">JS</div>
-                </div>
-            </header>
+        <!-- Content Area -->
+        <div class="content-area">
+            <!-- Universal Header -->
+            <header id="universal-header-root" 
+                    data-type="client"
+                    data-title="Client Dashboard"
+                    data-user-name="John Smith"
+                    data-search-placeholder="Search properties..."
+                    data-actions='[{"label":"List Property","icon":"<line x1=\"12\" y1=\"5\" x2=\"12\" y2=\"19\"></line><line x1=\"5\" y1=\"12\" x2=\"19\" y2=\"12\"></line>","primary":true,"onclick":"window.location.href=\"/client/properties.html\""}]'></header>
 
             <!-- Dashboard Content -->
-            <div class="dashboard-content">
+            <div class="page-content">
                 <h1 class="page-title">Welcome back, John</h1>
                 <p class="page-subtitle">Here's what's happening with your real estate activities</p>
 
@@ -425,7 +410,9 @@
                     </div>
                 </div>
             </div>
-        </main>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -453,5 +440,6 @@
         // Run on load
         document.addEventListener('DOMContentLoaded', initializeDashboard);
     </script>
+    <script src="../components/universal-header.js"></script>
 </body>
 </html>

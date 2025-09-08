@@ -264,24 +264,12 @@
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <header class="header">
-        <div class="header-inner">
-            <div class="logo">
-                <div class="logo-mark">A</div>
-                <div class="logo-text">Assiduous</div>
-            </div>
-            
-            <nav class="nav">
-                <a href="./dashboard.html" class="nav-link">Dashboard</a>
-                <a href="./index.html" class="nav-link">Platform</a>
-                <a href="./analytics.html" class="nav-link">Analytics</a>
-                <a href="#" class="nav-link active">Reports</a>
-                <a href="./settings.html" class="nav-link">Settings</a>
-                <a href="./knowledge-base.html" class="nav-link">Docs</a>
-            </nav>
-        </div>
-    </header>
+    <!-- Universal Header for Main Application -->
+    <header id="universal-header-root" 
+            data-type="public"
+            data-title="Assiduous Reports"
+            data-show-auth="true"
+            data-nav-links='[{"label":"Dashboard","href":"./admin/dashboard.html"},{"label":"Platform","href":"./index.html"},{"label":"Analytics","href":"./admin/analytics.html"},{"label":"Reports","href":"#","active":true},{"label":"Settings","href":"./admin/settings.html"},{"label":"Docs","href":"./admin/knowledge-base.html"}]'></header>
 
     <!-- Main Content -->
     <main class="main">
@@ -968,5 +956,8 @@
         // Initialize on page load
         window.addEventListener('DOMContentLoaded', initReports);
     </script>
+    
+    <!-- Universal Header JavaScript Component -->
+    <script src="components/universal-header.js"></script>
 </body>
 </html>

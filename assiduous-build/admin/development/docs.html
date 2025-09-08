@@ -11,6 +11,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../assiduous.css">
+    <link rel="stylesheet" href="../../components/admin-layout.css">
     
     <style>
         /* Admin Layout - Consistent across all admin pages */
@@ -114,50 +115,6 @@
             overflow: hidden;
         }
 
-        /* Top Bar */
-        .topbar {
-            background: var(--white);
-            border-bottom: 1px solid var(--border);
-            padding: var(--space-md) var(--space-xl);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .topbar-search {
-            display: flex;
-            align-items: center;
-            gap: var(--space-sm);
-            flex: 1;
-            max-width: 400px;
-        }
-
-        .search-input {
-            flex: 1;
-            padding: var(--space-sm) var(--space-md);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            font-size: 14px;
-        }
-
-        .topbar-actions {
-            display: flex;
-            align-items: center;
-            gap: var(--space-md);
-        }
-
-        .user-avatar {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: var(--gradient);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--white);
-            font-weight: 600;
-            font-size: 12px;
-        }
 
         /* Page Content */
         .page-content {
@@ -167,21 +124,6 @@
             background: var(--gray-50);
         }
 
-        .page-header {
-            margin-bottom: var(--space-xl);
-        }
-
-        .page-title {
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--dark);
-            margin-bottom: var(--space-xs);
-        }
-
-        .page-subtitle {
-            font-size: 14px;
-            color: var(--text-secondary);
-        }
 
         /* Documentation Layout */
         .docs-layout {
@@ -326,24 +268,14 @@
 
         <!-- Main Content -->
         <main class="main-content">
-            <!-- Top Bar -->
-            <header class="topbar">
-                <div class="topbar-search">
-                    <input type="text" class="search-input" placeholder="Search documentation...">
-                </div>
-                
-                <div class="topbar-actions">
-                    <div class="user-avatar">AU</div>
-                </div>
-            </header>
+            <!-- Standardized Admin Header -->
+            <header id="admin-header-root" 
+                    data-title="Development Documentation" 
+                    data-subtitle="Technical documentation, API references, and development guidelines"
+                    data-search-placeholder="Search documentation..."></header>
 
             <!-- Page Content -->
             <div class="page-content">
-                <!-- Page Header -->
-                <div class="page-header">
-                    <h1 class="page-title">Development Documentation</h1>
-                    <p class="page-subtitle">Technical documentation, API references, and development guidelines</p>
-                </div>
 
                 <!-- Documentation Layout -->
                 <div class="docs-layout">
@@ -981,5 +913,6 @@ python -m pytest
         });
     </script>
     <script src="../../components/sidebar.js"></script>
+    <script src="../../components/admin-header.js"></script>
 </body>
 </html>
