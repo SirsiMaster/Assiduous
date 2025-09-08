@@ -25,8 +25,17 @@
     var breadcrumbItems = [];
     var currentPath = '';
     
+    // Add back button for nested pages (depth > 2)
+    if (pathParts.length > 2) {
+      var parentPath = '/' + pathParts.slice(0, -1).join('/') + '/';
+      var backButton = '<a href="' + parentPath + '" class="breadcrumb-back">';
+      backButton += '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>';
+      backButton += 'Back</a>';
+      breadcrumbItems.push(backButton);
+    }
+    
     // Add home/root
-    breadcrumbItems.push('<a href="/" style="color: #60A3D9; text-decoration: none;">Home</a>');
+    breadcrumbItems.push('<a href="/">Home</a>');
     
     // Build breadcrumb trail
     for (var i = 0; i < pathParts.length; i++) {
@@ -39,7 +48,8 @@
       
       // Special case labels
       if (label === 'Admin') label = 'Admin Portal';
-      if (label === 'Dev') label = 'Development';
+      if (label === 'Development') label = 'Development';
+      if (label === 'Contracts') label = 'Contracts';
       if (label.includes('.html')) {
         label = label.replace('.html', '');
         label = label.charAt(0).toUpperCase() + label.slice(1);
@@ -50,21 +60,13 @@
       // Add separator and link
       if (i < pathParts.length - 1) {
         // Not the last item - make it a link
-        breadcrumbItems.push('<span style="color: #9CA3AF; margin: 0 4px;">/</span>');
-        breadcrumbItems.push('<a href="' + currentPath + '/" style="color: #60A3D9; text-decoration: none; transition: opacity 0.2s;" onmouseover="this.style.opacity=\'0.8\'" onmouseout="this.style.opacity=\'1\'">' + label + '</a>');
+        breadcrumbItems.push('<span class="breadcrumb-separator">/</span>');
+        breadcrumbItems.push('<a href="' + currentPath + '/">' + label + '</a>');
       } else {
         // Last item - current page (not a link)
-        breadcrumbItems.push('<span style="color: #9CA3AF; margin: 0 4px;">/</span>');
-        breadcrumbItems.push('<span style="color: #6B7280; font-weight: 500;">' + label + '</span>');
+        breadcrumbItems.push('<span class="breadcrumb-separator">/</span>');
+        breadcrumbItems.push('<span class="breadcrumb-current">' + label + '</span>');
       }
-    }
-    
-    // Add back button at the beginning for nested pages (depth > 2)
-    if (pathParts.length > 2) {
-      var parentPath = '/' + pathParts.slice(0, -1).join('/') + '/';
-      var backButton = '<a href="' + parentPath + '" style="display: inline-flex; align-items: center; gap: 6px; color: #60A3D9; text-decoration: none; margin-right: 12px; padding: 4px 8px; border-radius: 4px; background: #F3F4F6; transition: all 0.2s;" onmouseover="this.style.background=\'#E5E7EB\'" onmouseout="this.style.background=\'#F3F4F6\'">';
-      backButton += '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>Back</a>';
-      breadcrumbItems.unshift(backButton);
     }
     
     return breadcrumbItems.join('');
@@ -119,14 +121,14 @@
     var actionsContainer = document.querySelector('[data-header-actions]');
 
     // Add breadcrumb navigation for nested pages
-    if (pathParts.length > 1 && titleEl) {
-      var breadcrumb = createBreadcrumb(pathParts);
-      if (breadcrumb) {
-        // Insert breadcrumb above the title
-        var breadcrumbContainer = document.createElement('div');
-        breadcrumbContainer.style.cssText = 'margin-bottom: 8px; display: flex; align-items: center; gap: 8px; font-size: 13px;';
-        breadcrumbContainer.innerHTML = breadcrumb;
-        titleEl.parentNode.insertBefore(breadcrumbContainer, titleEl);
+    if (pathParts.length > 1) {
+      var breadcrumbContainer = document.querySelector('[data-breadcrumb-container]');
+      if (breadcrumbContainer) {
+        var breadcrumb = createBreadcrumb(pathParts);
+        if (breadcrumb) {
+          breadcrumbContainer.innerHTML = breadcrumb;
+          breadcrumbContainer.style.display = 'flex';
+        }
       }
     }
 

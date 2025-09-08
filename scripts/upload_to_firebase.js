@@ -67,7 +67,8 @@ class FirebaseHistoryUploader {
             // Find the most recent data files
             const dataFiles = this.findDataFiles(dataDir);
             
-            if (!dataFiles.sessions || !dataFiles.metrics || !dataFiles.commits) {
+            if (!dataFiles.sessions || !dataFiles.metrics) {
+                console.log('Found files:', dataFiles);
                 throw new Error('Required data files not found in directory');
             }
 
@@ -113,7 +114,7 @@ class FirebaseHistoryUploader {
         
         const findLatest = (pattern) => {
             return files
-                .filter(f => f.match(pattern))
+                .filter(f => f.toLowerCase().match(pattern))
                 .sort()
                 .pop();
         };
@@ -123,7 +124,8 @@ class FirebaseHistoryUploader {
             metrics: findLatest(/^daily_metrics_/) ? path.join(dataDir, findLatest(/^daily_metrics_/)) : null,
             deployments: findLatest(/^deployments_/) ? path.join(dataDir, findLatest(/^deployments_/)) : null,
             fileChanges: findLatest(/^file_changes_/) ? path.join(dataDir, findLatest(/^file_changes_/)) : null,
-            costBreakdown: findLatest(/^cost_breakdown_/) ? path.join(dataDir, findLatest(/^cost_breakdown_/)) : null
+            costBreakdown: findLatest(/^cost_breakdown_/) ? path.join(dataDir, findLatest(/^cost_breakdown_/)) : null,
+            commits: findLatest(/^(sessions_|commits_)/) ? path.join(dataDir, findLatest(/^(sessions_|commits_)/)) : null
         };
     }
 
