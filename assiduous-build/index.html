@@ -1096,7 +1096,7 @@ window.handleLogin = async function(event) {
                 if (result.success) {
                     // Check if admin based on result (fallback)
                     if (result.user && result.user.role === 'admin') {
-                        window.location.href = '/AssiduousFlip/admin/dashboard.html';
+                        window.location.href = '/admin/dashboard.html';
                         return;
                     }
                     

@@ -31,7 +31,7 @@
     if (!script) {
       // Fallback to current page location
       const currentPath = window.location.pathname;
-      if (currentPath.includes('/AssiduousFlip/')) {
+      if (currentPath.includes('/')) {
         return window.location.origin + '/AssiduousFlip';
       }
       return window.location.origin;
@@ -41,7 +41,7 @@
       // Handle relative paths
       if (src.startsWith('components/')) {
         const currentPath = window.location.pathname;
-        if (currentPath.includes('/AssiduousFlip/')) {
+        if (currentPath.includes('/')) {
           return window.location.origin + '/AssiduousFlip';
         }
         return window.location.origin;

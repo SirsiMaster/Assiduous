@@ -313,7 +313,7 @@ python -m http.server 8080           # Basic Python server
 python serve.py                      # If serve.py exists
 
 # Access application
-open http://localhost:8080/AssiduousFlip/</code></pre>
+open http://localhost:8080/</code></pre>
                 </div>
                 
                 <div class="command-section">
@@ -456,11 +456,11 @@ git commit --no-verify</code></pre>
                 
                 <h3>Component Files</h3>
                 <ul>
-                    <li><code>AssiduousFlip/components/admin-header.html</code> - Header template</li>
-                    <li><code>AssiduousFlip/components/admin-header.js</code> - Header loader</li>
-                    <li><code>AssiduousFlip/components/admin-layout.css</code> - Shared styles</li>
-                    <li><code>AssiduousFlip/components/sidebar.html</code> - Sidebar template</li>
-                    <li><code>AssiduousFlip/components/sidebar.js</code> - Sidebar loader</li>
+                    <li><code>components/admin-header.html</code> - Header template</li>
+                    <li><code>components/admin-header.js</code> - Header loader</li>
+                    <li><code>components/admin-layout.css</code> - Shared styles</li>
+                    <li><code>components/sidebar.html</code> - Sidebar template</li>
+                    <li><code>components/sidebar.js</code> - Sidebar loader</li>
                 </ul>
                 
                 <div class="alert alert-success">
@@ -521,9 +521,9 @@ git commit --no-verify</code></pre>
                 <pre><code># Start server first: python -m http.server 8080
 
 # Main Pages
-http://localhost:8080/AssiduousFlip/
-http://localhost:8080/AssiduousFlip/admin/dashboard.html
-http://localhost:8080/AssiduousFlip/client/</code></pre>
+http://localhost:8080/
+http://localhost:8080/admin/dashboard.html
+http://localhost:8080/client/</code></pre>
             </div>
             
             <div id="project-rules">
@@ -577,19 +577,19 @@ git push origin main  # GitHub Actions → Firebase deployment
 #                    # GitHub webhook → Process commit data → Firebase metrics
 
 # 4. View Metrics (Real-time from Firebase)
-open http://localhost:8080/AssiduousFlip/admin/development/dashboard.html</code></pre>
+open http://localhost:8080/admin/development/dashboard.html</code></pre>
                 
                 <div class="command-section">
                     <h3>Quick Setup Commands</h3>
                     <pre><code># Populate historical session data
-node AssiduousFlip/admin/development/populate_session_data.js
+node admin/development/populate_session_data.js
 
 # Test Firebase connection
 node -e "const service = new DevelopmentMetricsService(); service.initialize();"
 
 # View live dashboard with Firebase metrics
 python -m http.server 8080
-open http://localhost:8080/AssiduousFlip/admin/development/dashboard.html
+open http://localhost:8080/admin/development/dashboard.html
 
 # Deploy latest changes to Firebase
 cd firebase-migration-package/assiduous-build
@@ -624,7 +624,7 @@ ENCRYPTION_KEY=xxx
                         </tr>
                         <tr>
                             <td>Access app</td>
-                            <td><code>open http://localhost:8080/AssiduousFlip/</code></td>
+                            <td><code>open http://localhost:8080/</code></td>
                         </tr>
                         <tr>
                             <td>Install deps</td>

@@ -108,31 +108,31 @@ const SESSION_DATA = {
     // Files Modified
     filesChanged: [
         {
-            path: "AssiduousFlip/admin/development/dashboard.html",
+            path: "admin/development/dashboard.html",
             insertions: 642,
             deletions: 751,
             type: "major_update"
         },
         {
-            path: "AssiduousFlip/admin/development/costs.html", 
+            path: "admin/development/costs.html", 
             insertions: 25,
             deletions: 75,
             type: "refactor"
         },
         {
-            path: "AssiduousFlip/components/sidebar.html",
+            path: "components/sidebar.html",
             insertions: 8, 
             deletions: 0,
             type: "enhancement"
         },
         {
-            path: "AssiduousFlip/assets/js/services/DevelopmentMetricsService.js",
+            path: "assets/js/services/DevelopmentMetricsService.js",
             insertions: 450, 
             deletions: 0,
             type: "new_file"
         },
         {
-            path: "AssiduousFlip/admin/development/FIREBASE_SCHEMA.md",
+            path: "admin/development/FIREBASE_SCHEMA.md",
             insertions: 465, 
             deletions: 0,
             type: "documentation"
