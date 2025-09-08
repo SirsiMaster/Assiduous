@@ -1,0 +1,111 @@
+version: '3.8'
+
+services:
+  opensign:
+    image: opensignlabs/opensign:latest
+    container_name: assiduous-opensign
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:3000:3000"  # OpenSign frontend (localhost only)
+    environment:
+      # Parse Server Configuration
+      PARSE_SERVER_APPLICATION_ID: assiduous-opensign-app
+      PARSE_SERVER_MASTER_KEY: ${OPENSIGN_MASTER_KEY:-RandOmStr1ng!23456789}
+      PARSE_SERVER_DATABASE_URI: mongodb://mongodb:27017/opensign
+      PARSE_SERVER_URL: http://parse-server:1337/parse
+      PUBLIC_URL: http://localhost:3000
+      
+      # Email Configuration (using SendGrid like main app)
+      MAIL_TYPE: sendgrid
+      SENDGRID_API_KEY: ${SENDGRID_API_KEY}
+      FROM_EMAIL: ${FROM_EMAIL:-contracts@assiduousflip.com}
+      
+      # Storage Configuration
+      STORAGE_TYPE: s3
+      S3_BUCKET: ${OPENSIGN_S3_BUCKET:-assiduous-opensign-docs}
+      S3_REGION: ${AWS_REGION:-us-east-1}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      
+      # Security
+      JWT_SECRET: ${OPENSIGN_JWT_SECRET:-ChangeThisToSomethingSecure123!}
+      ENCRYPTION_KEY: ${OPENSIGN_ENCRYPTION_KEY}
+      
+      # Webhook Configuration (for Assiduous integration)
+      WEBHOOK_URL: ${FIREBASE_FUNCTIONS_URL}/opensignWebhook
+      WEBHOOK_SECRET: ${OPENSIGN_WEBHOOK_SECRET}
+      
+    depends_on:
+      - mongodb
+      - parse-server
+    networks:
+      - opensign-network
+
+  parse-server:
+    image: parseplatform/parse-server:latest
+    container_name: assiduous-parse-server
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:1337:1337"  # Parse Server API (localhost only)
+    environment:
+      PARSE_SERVER_APPLICATION_ID: assiduous-opensign-app
+      PARSE_SERVER_MASTER_KEY: ${OPENSIGN_MASTER_KEY:-RandOmStr1ng!23456789}
+      PARSE_SERVER_DATABASE_URI: mongodb://mongodb:27017/opensign
+      PARSE_SERVER_URL: http://parse-server:1337/parse
+      PARSE_SERVER_MOUNT_PATH: /parse
+      PARSE_SERVER_CLOUD: /parse-server/cloud/main.js
+      PARSE_SERVER_FILE_UPLOAD_ENABLE_FOR_PUBLIC: true
+      PARSE_SERVER_FILE_UPLOAD_ENABLE_FOR_AUTHENTICATED_USER: true
+      PARSE_SERVER_FILE_UPLOAD_ENABLE_FOR_ANONYMOUS_USER: false
+      PARSE_SERVER_MAX_UPLOAD_SIZE: 20mb
+      PARSE_SERVER_VERBOSE: ${DEBUG:-false}
+    volumes:
+      - ./opensign-cloud-code:/parse-server/cloud
+    depends_on:
+      - mongodb
+    networks:
+      - opensign-network
+
+  mongodb:
+    image: mongo:6.0
+    container_name: assiduous-opensign-mongodb
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:27017:27017"  # MongoDB (localhost only for debugging)
+    environment:
+      MONGO_INITDB_DATABASE: opensign
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USERNAME:-admin}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD:-SecurePassword123}
+    volumes:
+      - opensign-mongodb-data:/data/db
+      - opensign-mongodb-config:/data/configdb
+    networks:
+      - opensign-network
+
+  # Optional: Parse Dashboard for debugging
+  parse-dashboard:
+    image: parseplatform/parse-dashboard:latest
+    container_name: assiduous-parse-dashboard
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:4040:4040"  # Parse Dashboard (localhost only)
+    environment:
+      PARSE_DASHBOARD_APP_ID: assiduous-opensign-app
+      PARSE_DASHBOARD_MASTER_KEY: ${OPENSIGN_MASTER_KEY:-RandOmStr1ng!23456789}
+      PARSE_DASHBOARD_SERVER_URL: http://parse-server:1337/parse
+      PARSE_DASHBOARD_APP_NAME: Assiduous OpenSign
+      PARSE_DASHBOARD_USER_ID: ${DASHBOARD_USER:-admin}
+      PARSE_DASHBOARD_USER_PASSWORD: ${DASHBOARD_PASSWORD:-admin}
+      PARSE_DASHBOARD_ALLOW_INSECURE_HTTP: true
+    depends_on:
+      - parse-server
+    networks:
+      - opensign-network
+
+volumes:
+  opensign-mongodb-data:
+  opensign-mongodb-config:
+
+networks:
+  opensign-network:
+    driver: bridge

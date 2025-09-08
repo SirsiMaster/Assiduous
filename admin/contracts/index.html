@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
-    <title>Contracts & Documents - assiduousflip Admin</title>
+    <title>Contracts & Signatures - Assiduous Admin</title>
     
     <!-- Assiduous Design System -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -316,13 +316,16 @@
                     </a>
 
                     <!-- Add New Contract Card -->
-                    <div class="contract-card" style="border: 2px dashed var(--border); background: var(--gray-50); cursor: pointer;"
-                         onclick="alert('Upload functionality coming soon!')">
+                    <div class="contract-card upload-zone" style="border: 2px dashed var(--border); background: var(--gray-50); cursor: pointer;"
+                         data-upload-zone="true">
                         <div class="contract-icon" style="background: none; color: var(--text-secondary);">➕</div>
                         <h3 class="contract-title" style="color: var(--text-secondary);">Add New Document</h3>
                         <p class="contract-description">
-                            Upload a new contract or document to the system
+                            Upload a new contract or document with automatic OpenSign integration
                         </p>
+                        <div style="margin-top: 10px; font-size: 12px; color: var(--text-secondary);">
+                            🔐 Powered by OpenSign
+                        </div>
                     </div>
                 </div>
 
@@ -376,5 +379,13 @@
     </script>
     <script src="../../components/sidebar.js"></script>
     <script src="../../components/admin-header.js"></script>
+    
+    <!-- OpenSign Global Integration -->
+    <script src="../../assets/js/opensign-global-loader.js"></script>
+    <script type="module">
+        // Ensure DocumentUploadService is loaded
+        import DocumentUploadService from '../../assets/js/services/DocumentUploadService.js';
+        window.documentUploadService = new DocumentUploadService();
+    </script>
 </body>
 </html>

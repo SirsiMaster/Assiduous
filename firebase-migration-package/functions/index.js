@@ -218,6 +218,9 @@ app.post('/api/webhook/bank', async (req, res) => {
 const { githubWebhook } = require('./github-webhook');
 const { syncGitHubData, scheduledSync } = require('./sync-service');
 
+// Import OpenSign functions
+const opensignFunctions = require('./opensign-functions');
+
 // Main HTTP Cloud Function
 exports.app = functions.https.onRequest(app);
 
@@ -225,3 +228,13 @@ exports.app = functions.https.onRequest(app);
 exports.githubWebhook = githubWebhook;
 exports.syncGitHubData = syncGitHubData;
 exports.scheduledSync = scheduledSync;
+
+// OpenSign integration functions
+exports.createSigningSession = opensignFunctions.createSigningSession;
+exports.createTemplateFromUpload = opensignFunctions.createTemplateFromUpload;
+exports.opensignWebhook = opensignFunctions.opensignWebhook;
+exports.verifyOtp = opensignFunctions.verifyOtp;
+exports.generateOtp = opensignFunctions.generateOtp;
+exports.resendReminder = opensignFunctions.resendReminder;
+exports.scheduledExpireSessions = opensignFunctions.scheduledExpireSessions;
+exports.downloadSignedDocument = opensignFunctions.downloadSignedDocument;

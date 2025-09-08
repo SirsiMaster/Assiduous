@@ -1,0 +1,89 @@
+{
+  "byType": {
+    "unknown": {
+      "cost": 12036,
+      "hours": 40.12,
+      "commits": 10
+    },
+    "docs": {
+      "cost": 38826,
+      "hours": 129.42000000000002,
+      "commits": 20
+    },
+    "test": {
+      "cost": 1182,
+      "hours": 3.9399999999999995,
+      "commits": 3
+    },
+    "chore": {
+      "cost": 17136,
+      "hours": 57.12,
+      "commits": 24
+    },
+    "feat": {
+      "cost": 82230,
+      "hours": 274.1,
+      "commits": 33
+    },
+    "fix": {
+      "cost": 31896,
+      "hours": 106.31999999999998,
+      "commits": 31
+    },
+    "refactor": {
+      "cost": 28356,
+      "hours": 94.52,
+      "commits": 12
+    },
+    "style": {
+      "cost": 6990,
+      "hours": 23.299999999999997,
+      "commits": 3
+    },
+    "perf": {
+      "cost": 372,
+      "hours": 1.24,
+      "commits": 1
+    },
+    "ci": {
+      "cost": 3600,
+      "hours": 12,
+      "commits": 1
+    }
+  },
+  "byAuthor": {
+    "SirsiMaster": {
+      "cost": 216192,
+      "hours": 720.64,
+      "commits": 119
+    },
+    "GitHub Action": {
+      "cost": 414,
+      "hours": 1.3800000000000001,
+      "commits": 1
+    },
+    "github-actions[bot]": {
+      "cost": 5796,
+      "hours": 19.32,
+      "commits": 17
+    },
+    "dependabot[bot]": {
+      "cost": 222,
+      "hours": 0.74,
+      "commits": 1
+    }
+  },
+  "byMonth": {
+    "2025-08": {
+      "cost": 111504,
+      "hours": 371.68000000000006,
+      "commits": 56
+    },
+    "2025-09": {
+      "cost": 111120,
+      "hours": 370.4000000000001,
+      "commits": 82
+    }
+  },
+  "byPhase": {}
+}

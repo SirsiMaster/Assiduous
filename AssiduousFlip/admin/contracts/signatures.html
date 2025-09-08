@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Contract Signatures - Assiduous Admin</title>
+    
+    <!-- Assiduous Design System -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assiduous.css">
+    <link rel="stylesheet" href="../../components/admin-layout.css">
+    
+    <style>
+        /* Signature Dashboard Styles */
+        .signature-dashboard {
+            padding: var(--space-xl);
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-2xl);
+        }
+
+        .dashboard-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .dashboard-actions {
+            display: flex;
+            gap: var(--space-md);
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--space-lg);
+            margin-bottom: var(--space-2xl);
+        }
+
+        .stat-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: var(--space-lg);
+        }
+
+        .stat-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-xs);
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: var(--space-sm);
+        }
+
+        .stat-change {
+            font-size: 12px;
+            color: var(--success);
+        }
+
+        .stat-change.negative {
+            color: var(--error);
+        }
+
+        /* Tabs */
+        .tabs-container {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+        }
+
+        .tabs-header {
+            display: flex;
+            border-bottom: 1px solid var(--border);
+            background: var(--gray-50);
+        }
+
+        .tab-button {
+            flex: 1;
+            padding: var(--space-md) var(--space-lg);
+            background: none;
+            border: none;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            cursor: pointer;
+            position: relative;
+            transition: all 0.2s;
+        }
+
+        .tab-button:hover {
+            background: var(--white);
+        }
+
+        .tab-button.active {
+            color: var(--sky);
+            background: var(--white);
+        }
+
+        .tab-button.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--sky);
+        }
+
+        .tab-content {
+            padding: var(--space-xl);
+        }
+
+        .tab-panel {
+            display: none;
+        }
+
+        .tab-panel.active {
+            display: block;
+        }
+
+        /* Signing Sessions Table */
+        .sessions-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .sessions-table th {
+            text-align: left;
+            padding: var(--space-sm) var(--space-md);
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            border-bottom: 2px solid var(--border);
+        }
+
+        .sessions-table td {
+            padding: var(--space-md);
+            border-bottom: 1px solid var(--border);
+            font-size: 14px;
+        }
+
+        .sessions-table tr:hover {
+            background: var(--gray-50);
+        }
+
+        /* Status Badges */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-xs);
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .status-badge.pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-badge.signed {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .status-badge.completed {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-badge.declined {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .status-badge.expired {
+            background: #f3f4f6;
+            color: #6b7280;
+        }
+
+        /* Signer Pills */
+        .signers-list {
+            display: flex;
+            gap: var(--space-xs);
+            flex-wrap: wrap;
+        }
+
+        .signer-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-xs);
+            padding: 2px 8px;
+            background: var(--gray-100);
+            border-radius: 10px;
+            font-size: 12px;
+        }
+
+        .signer-pill.signed {
+            background: var(--success-light);
+            color: var(--success);
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: var(--space-xs);
+        }
+
+        .action-btn {
+            padding: 6px;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            border-radius: var(--radius-sm);
+            transition: all 0.15s;
+        }
+
+        .action-btn:hover {
+            background: var(--gray-100);
+            color: var(--dark);
+        }
+
+        /* Create Session Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            padding: var(--space-lg);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .modal-close {
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            border-radius: var(--radius);
+            transition: background 0.15s;
+        }
+
+        .modal-close:hover {
+            background: var(--gray-100);
+        }
+
+        .modal-body {
+            padding: var(--space-lg);
+        }
+
+        .form-group {
+            margin-bottom: var(--space-lg);
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: var(--space-sm);
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        .form-input,
+        .form-select {
+            width: 100%;
+            padding: var(--space-sm) var(--space-md);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            font-size: 14px;
+            transition: border-color 0.15s;
+        }
+
+        .form-input:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: var(--sky);
+        }
+
+        .form-help {
+            margin-top: var(--space-xs);
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        /* Signers Form */
+        .signers-form {
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: var(--space-md);
+            background: var(--gray-50);
+        }
+
+        .signer-row {
+            display: grid;
+            grid-template-columns: 2fr 2fr 1fr auto;
+            gap: var(--space-sm);
+            margin-bottom: var(--space-sm);
+            align-items: center;
+        }
+
+        .signer-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .remove-signer {
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: var(--error-light);
+            color: var(--error);
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .remove-signer:hover {
+            background: var(--error);
+            color: var(--white);
+        }
+
+        .add-signer {
+            margin-top: var(--space-sm);
+            width: 100%;
+            padding: var(--space-sm);
+            border: 1px dashed var(--border);
+            background: var(--white);
+            color: var(--sky);
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .add-signer:hover {
+            border-color: var(--sky);
+            background: var(--sky-light);
+        }
+
+        .modal-footer {
+            padding: var(--space-lg);
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: flex-end;
+            gap: var(--space-md);
+        }
+
+        .btn-secondary {
+            padding: var(--space-sm) var(--space-lg);
+            background: var(--white);
+            color: var(--dark);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .btn-secondary:hover {
+            background: var(--gray-50);
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-wrapper">
+        <!-- Sidebar -->
+        <aside id="sidebar-root" data-active="contracts"></aside>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Header -->
+            <header id="admin-header-root" 
+                    data-title="Contract Signatures" 
+                    data-subtitle="Manage document signing sessions"
+                    data-search-placeholder="Search contracts..."
+                    data-actions='[{"label":"New Signing Session","icon":"plus","onclick":"openCreateModal()"}]'></header>
+
+            <!-- Page Content -->
+            <div class="signature-dashboard">
+                <!-- Stats -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-label">Pending Signatures</div>
+                        <div class="stat-value" id="stat-pending">0</div>
+                        <div class="stat-change">↑ 12% from last week</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Completed This Month</div>
+                        <div class="stat-value" id="stat-completed">0</div>
+                        <div class="stat-change">↑ 8% from last month</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Average Time to Sign</div>
+                        <div class="stat-value" id="stat-avg-time">0h</div>
+                        <div class="stat-change negative">↓ 2h from last week</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Success Rate</div>
+                        <div class="stat-value" id="stat-success">0%</div>
+                        <div class="stat-change">↑ 3% from last month</div>
+                    </div>
+                </div>
+
+                <!-- Tabs -->
+                <div class="tabs-container">
+                    <div class="tabs-header">
+                        <button class="tab-button active" onclick="switchTab('active')">Active Sessions</button>
+                        <button class="tab-button" onclick="switchTab('completed')">Completed</button>
+                        <button class="tab-button" onclick="switchTab('templates')">Templates</button>
+                    </div>
+
+                    <div class="tab-content">
+                        <!-- Active Sessions Tab -->
+                        <div id="active-tab" class="tab-panel active">
+                            <table class="sessions-table">
+                                <thead>
+                                    <tr>
+                                        <th>Document</th>
+                                        <th>Transaction</th>
+                                        <th>Signers</th>
+                                        <th>Status</th>
+                                        <th>Created</th>
+                                        <th>Expires</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="active-sessions">
+                                    <!-- Sessions will be loaded here -->
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Completed Tab -->
+                        <div id="completed-tab" class="tab-panel">
+                            <table class="sessions-table">
+                                <thead>
+                                    <tr>
+                                        <th>Document</th>
+                                        <th>Transaction</th>
+                                        <th>Signers</th>
+                                        <th>Status</th>
+                                        <th>Completed</th>
+                                        <th>Documents</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="completed-sessions">
+                                    <!-- Completed sessions will be loaded here -->
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Templates Tab -->
+                        <div id="templates-tab" class="tab-panel">
+                            <div class="templates-grid">
+                                <!-- Templates will be loaded here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Signing Session Modal -->
+    <div id="create-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Create Signing Session</h2>
+                <button class="modal-close" onclick="closeCreateModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <form id="create-session-form">
+                    <div class="form-group">
+                        <label class="form-label">Transaction</label>
+                        <select class="form-select" id="transaction-select" required>
+                            <option value="">Select a transaction...</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Document Template</label>
+                        <select class="form-select" id="template-select" required>
+                            <option value="">Select a template...</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Signers</label>
+                        <div class="signers-form" id="signers-container">
+                            <div class="signer-row">
+                                <input type="email" class="form-input" placeholder="Email" required>
+                                <input type="text" class="form-input" placeholder="Name" required>
+                                <select class="form-select">
+                                    <option>Buyer</option>
+                                    <option>Seller</option>
+                                    <option>Agent</option>
+                                    <option>Witness</option>
+                                </select>
+                                <button type="button" class="remove-signer" onclick="removeSigner(this)">×</button>
+                            </div>
+                        </div>
+                        <button type="button" class="add-signer" onclick="addSigner()">+ Add Signer</button>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Expiration (days)</label>
+                        <input type="number" class="form-input" id="expiration-days" value="7" min="1" max="30">
+                        <div class="form-help">Document will expire after this many days</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Email Message (optional)</label>
+                        <textarea class="form-input" id="email-message" rows="3" 
+                                  placeholder="Custom message to include in the signature request email..."></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeCreateModal()">Cancel</button>
+                <button class="btn-primary" onclick="createSession()">Send for Signature</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Load Components -->
+    <script src="../../components/sidebar.js"></script>
+    <script src="../../components/admin-header.js"></script>
+
+    <!-- Firebase -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js';
+        import { 
+            getFirestore, 
+            collection, 
+            query, 
+            where, 
+            orderBy, 
+            limit,
+            getDocs,
+            onSnapshot 
+        } from 'https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore.js';
+        import { 
+            getAuth, 
+            onAuthStateChanged 
+        } from 'https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js';
+        import {
+            getFunctions,
+            httpsCallable
+        } from 'https://www.gstatic.com/firebasejs/10.4.0/firebase-functions.js';
+
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBkF3QnTsxYajUkF3BVE7E9F7LdkGEKpV8",
+            authDomain: "assiduous-prod.firebaseapp.com",
+            projectId: "assiduous-prod",
+            storageBucket: "assiduous-prod.appspot.com",
+            messagingSenderId: "883040437562",
+            appId: "1:883040437562:web:91a2e5c7d8d0c5a3f3d0e5"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+        const functions = getFunctions(app);
+
+        // Cloud Functions
+        const createSigningSession = httpsCallable(functions, 'createSigningSession');
+        const resendReminder = httpsCallable(functions, 'resendReminder');
+        const downloadSignedDocument = httpsCallable(functions, 'downloadSignedDocument');
+
+        // Global functions
+        window.openCreateModal = () => {
+            document.getElementById('create-modal').classList.add('active');
+            loadTransactions();
+            loadTemplates();
+        };
+
+        window.closeCreateModal = () => {
+            document.getElementById('create-modal').classList.remove('active');
+            document.getElementById('create-session-form').reset();
+        };
+
+        window.switchTab = (tab) => {
+            // Update tab buttons
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // Update tab panels
+            document.querySelectorAll('.tab-panel').forEach(panel => {
+                panel.classList.remove('active');
+            });
+            document.getElementById(`${tab}-tab`).classList.add('active');
+
+            // Load data for the tab
+            if (tab === 'active') {
+                loadActiveSessions();
+            } else if (tab === 'completed') {
+                loadCompletedSessions();
+            } else if (tab === 'templates') {
+                loadTemplatesList();
+            }
+        };
+
+        window.addSigner = () => {
+            const container = document.getElementById('signers-container');
+            const signerRow = document.createElement('div');
+            signerRow.className = 'signer-row';
+            signerRow.innerHTML = `
+                <input type="email" class="form-input" placeholder="Email" required>
+                <input type="text" class="form-input" placeholder="Name" required>
+                <select class="form-select">
+                    <option>Buyer</option>
+                    <option>Seller</option>
+                    <option>Agent</option>
+                    <option>Witness</option>
+                </select>
+                <button type="button" class="remove-signer" onclick="removeSigner(this)">×</button>
+            `;
+            container.appendChild(signerRow);
+        };
+
+        window.removeSigner = (button) => {
+            button.parentElement.remove();
+        };
+
+        window.createSession = async () => {
+            const form = document.getElementById('create-session-form');
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
+            // Gather signers
+            const signerRows = document.querySelectorAll('.signer-row');
+            const signers = Array.from(signerRows).map(row => ({
+                email: row.children[0].value,
+                name: row.children[1].value,
+                role: row.children[2].value
+            }));
+
+            try {
+                const result = await createSigningSession({
+                    transactionId: document.getElementById('transaction-select').value,
+                    templateId: document.getElementById('template-select').value,
+                    signers,
+                    options: {
+                        expirationDays: parseInt(document.getElementById('expiration-days').value),
+                        emailMessage: document.getElementById('email-message').value
+                    }
+                });
+
+                if (result.data.success) {
+                    alert('Signing session created successfully!');
+                    closeCreateModal();
+                    loadActiveSessions();
+                }
+            } catch (error) {
+                console.error('Error creating session:', error);
+                alert('Failed to create signing session: ' + error.message);
+            }
+        };
+
+        // Load functions
+        async function loadActiveSessions() {
+            const q = query(
+                collection(db, 'signingSessions'),
+                where('status', 'in', ['pending', 'partially_signed']),
+                orderBy('createdAt', 'desc'),
+                limit(50)
+            );
+
+            const snapshot = await getDocs(q);
+            const tbody = document.getElementById('active-sessions');
+            tbody.innerHTML = '';
+
+            snapshot.forEach(doc => {
+                const session = doc.data();
+                const row = createSessionRow(doc.id, session);
+                tbody.appendChild(row);
+            });
+
+            updateStats();
+        }
+
+        async function loadCompletedSessions() {
+            const q = query(
+                collection(db, 'signingSessions'),
+                where('status', 'in', ['completed', 'declined', 'expired']),
+                orderBy('completedAt', 'desc'),
+                limit(50)
+            );
+
+            const snapshot = await getDocs(q);
+            const tbody = document.getElementById('completed-sessions');
+            tbody.innerHTML = '';
+
+            snapshot.forEach(doc => {
+                const session = doc.data();
+                const row = createCompletedRow(doc.id, session);
+                tbody.appendChild(row);
+            });
+        }
+
+        async function loadTransactions() {
+            const q = query(
+                collection(db, 'transactions'),
+                where('status', '!=', 'completed'),
+                orderBy('createdAt', 'desc'),
+                limit(100)
+            );
+
+            const snapshot = await getDocs(q);
+            const select = document.getElementById('transaction-select');
+            select.innerHTML = '<option value="">Select a transaction...</option>';
+
+            snapshot.forEach(doc => {
+                const transaction = doc.data();
+                const option = document.createElement('option');
+                option.value = doc.id;
+                option.textContent = `${transaction.propertyAddress || 'Transaction'} - ${transaction.buyerName || 'N/A'}`;
+                select.appendChild(option);
+            });
+        }
+
+        async function loadTemplates() {
+            const q = query(
+                collection(db, 'signingTemplates'),
+                where('active', '==', true),
+                orderBy('name')
+            );
+
+            const snapshot = await getDocs(q);
+            const select = document.getElementById('template-select');
+            select.innerHTML = '<option value="">Select a template...</option>';
+
+            snapshot.forEach(doc => {
+                const template = doc.data();
+                const option = document.createElement('option');
+                option.value = doc.id;
+                option.textContent = template.name;
+                select.appendChild(option);
+            });
+        }
+
+        function createSessionRow(id, session) {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td><strong>${session.templateName || 'Document'}</strong></td>
+                <td>${session.transactionId}</td>
+                <td>${createSignersPills(session.signers)}</td>
+                <td>${createStatusBadge(session.status)}</td>
+                <td>${formatDate(session.createdAt)}</td>
+                <td>${formatDate(session.expiresAt)}</td>
+                <td>${createActionButtons(id, session)}</td>
+            `;
+            return tr;
+        }
+
+        function createCompletedRow(id, session) {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td><strong>${session.templateName || 'Document'}</strong></td>
+                <td>${session.transactionId}</td>
+                <td>${createSignersPills(session.signers)}</td>
+                <td>${createStatusBadge(session.status)}</td>
+                <td>${formatDate(session.completedAt || session.declinedAt || session.expiredAt)}</td>
+                <td>${createDocumentLinks(id, session)}</td>
+                <td>${createCompletedActions(id, session)}</td>
+            `;
+            return tr;
+        }
+
+        function createSignersPills(signers) {
+            return `<div class="signers-list">
+                ${signers.map(s => `
+                    <span class="signer-pill ${s.status === 'signed' ? 'signed' : ''}">
+                        ${s.name} ${s.status === 'signed' ? '✓' : ''}
+                    </span>
+                `).join('')}
+            </div>`;
+        }
+
+        function createStatusBadge(status) {
+            return `<span class="status-badge ${status}">${status.replace('_', ' ')}</span>`;
+        }
+
+        function createActionButtons(id, session) {
+            return `<div class="action-buttons">
+                <button class="action-btn" onclick="sendReminder('${id}')" title="Send Reminder">
+                    📧
+                </button>
+                <button class="action-btn" onclick="viewDetails('${id}')" title="View Details">
+                    👁
+                </button>
+                <button class="action-btn" onclick="cancelSession('${id}')" title="Cancel">
+                    ❌
+                </button>
+            </div>`;
+        }
+
+        function createDocumentLinks(id, session) {
+            if (session.status === 'completed' && session.documents) {
+                return `<div class="action-buttons">
+                    <button class="action-btn" onclick="downloadDocument('${id}', 'signed')" title="Download Signed">
+                        📄
+                    </button>
+                    <button class="action-btn" onclick="downloadDocument('${id}', 'audit')" title="Download Audit">
+                        📋
+                    </button>
+                </div>`;
+            }
+            return '-';
+        }
+
+        function createCompletedActions(id, session) {
+            return `<div class="action-buttons">
+                <button class="action-btn" onclick="viewDetails('${id}')" title="View Details">
+                    👁
+                </button>
+            </div>`;
+        }
+
+        function formatDate(timestamp) {
+            if (!timestamp) return '-';
+            const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
+            return date.toLocaleDateString();
+        }
+
+        async function updateStats() {
+            // Get stats from Firestore
+            const pendingQuery = query(
+                collection(db, 'signingSessions'),
+                where('status', '==', 'pending')
+            );
+            const pendingSnapshot = await getDocs(pendingQuery);
+            document.getElementById('stat-pending').textContent = pendingSnapshot.size;
+
+            // More stats queries would go here...
+        }
+
+        window.sendReminder = async (sessionId) => {
+            const signerEmail = prompt('Enter signer email to send reminder to:');
+            if (!signerEmail) return;
+
+            try {
+                await resendReminder({ sessionId, signerEmail });
+                alert('Reminder sent successfully!');
+            } catch (error) {
+                alert('Failed to send reminder: ' + error.message);
+            }
+        };
+
+        window.downloadDocument = async (sessionId, type) => {
+            try {
+                const result = await downloadSignedDocument({ sessionId, documentType: type });
+                if (result.data.url) {
+                    window.open(result.data.url, '_blank');
+                }
+            } catch (error) {
+                alert('Failed to download document: ' + error.message);
+            }
+        };
+
+        // Initialize on auth
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                loadActiveSessions();
+            } else {
+                window.location.href = '/';
+            }
+        });
+    </script>
+</body>
+</html>
