@@ -8,6 +8,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.13.10] - 2025-09-08
+
+### Fixed
+- fix(auth): use relative paths for login redirects
+- fix(nav): Point Demo to on-page section; add demo placeholder section
+- fix(nav): Replace Admin with Features and Demo
+
+
 ## [0.13.9] - 2025-09-08
 
 ### Fixed
@@ -494,7 +502,15 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.13.9...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.13.10...HEAD
+
+
+## [0.13.10] - 2025-09-08
+
+### Fixed
+- fix(auth): use relative paths for login redirects
+- fix(nav): Point Demo to on-page section; add demo placeholder section
+- fix(nav): Replace Admin with Features and Demo
 
 
 ## [0.13.9] - 2025-09-08
@@ -607,3 +623,4 @@ To generate changelog entries:
 [0.13.7]: https://github.com/SirsiMaster/Assiduous/compare/v0.13.6...v0.13.7
 [0.13.8]: https://github.com/SirsiMaster/Assiduous/compare/v0.13.7...v0.13.8
 [0.13.9]: https://github.com/SirsiMaster/Assiduous/compare/v0.13.8...v0.13.9
+[0.13.10]: https://github.com/SirsiMaster/Assiduous/compare/v0.13.9...v0.13.10
