@@ -54,7 +54,9 @@ jobs:
           # Copy other directories if they exist
           [ -d "src" ] && cp -r src firebase-migration-package/assiduous-build/
           [ -d "docs" ] && cp -r docs firebase-migration-package/assiduous-build/
-          [ -f "index.html" ] && cp index.html firebase-migration-package/assiduous-build/
+          
+          # IMPORTANT: Do NOT overwrite AssiduousFlip index with root redirect file.
+          echo "Skipping root index.html to preserve AssiduousFlip/index.html as site root"
           
           # Copy root files
           [ -f "package.json" ] && cp package.json firebase-migration-package/assiduous-build/
@@ -64,8 +66,8 @@ jobs:
           # List what was copied for verification
           echo "Files in deployment directory:"
           ls -la firebase-migration-package/assiduous-build/
-          echo "Admin development files:"
-          ls -la firebase-migration-package/assiduous-build/AssiduousFlip/admin/development/ || echo "Development directory not found"
+          echo "Sample admin development files (flattened deploy):"
+          ls -la firebase-migration-package/assiduous-build/admin/development/ || echo "Development directory not found"
           
           echo "✅ Files prepared for deployment"
       
