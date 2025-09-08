@@ -5,7 +5,7 @@ const path = require('path');
 const ROOT = process.cwd();
 const IGNORE = ['node_modules', '.git', '.next', 'firebase-migration-package/y', 'firebase-migration-package/assiduous-build/.next'];
 
-const SIRSI_CSS = '<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SirsiMaster/sirsi-ui@v0.1.1/dist/sirsi-ui.css">';
+const SIRSI_CSS = '<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SirsiMaster/sirsi-ui@v0.1.2/dist/sirsi-ui.css">';
 const INTER_REGEX = /<link[^>]*fonts\.googleapis[^>]*Inter[^>]*>/gi;
 const OLD_TAGLINES = [/Intelligent Real Estate Solutions/gi, /Smart Real Estate Solutions/gi];
 
