@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.13.11] - 2025-09-08
+
+### Fixed
+- fix: repair broken admin portal paths after directory reorganization
+
+
 ## [0.13.10] - 2025-09-08
 
 ### Fixed
@@ -502,7 +508,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.13.10...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.13.11...HEAD
+
+
+## [0.13.11] - 2025-09-08
+
+### Fixed
+- fix: repair broken admin portal paths after directory reorganization
 
 
 ## [0.13.10] - 2025-09-08
@@ -624,3 +636,4 @@ To generate changelog entries:
 [0.13.8]: https://github.com/SirsiMaster/Assiduous/compare/v0.13.7...v0.13.8
 [0.13.9]: https://github.com/SirsiMaster/Assiduous/compare/v0.13.8...v0.13.9
 [0.13.10]: https://github.com/SirsiMaster/Assiduous/compare/v0.13.9...v0.13.10
+[0.13.11]: https://github.com/SirsiMaster/Assiduous/compare/v0.13.10...v0.13.11
