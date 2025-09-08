@@ -19,16 +19,16 @@
     
     // Local development: path starts with /AssiduousFlip
     if (window.location.pathname.startsWith('/AssiduousFlip')) {
-      return '/AssiduousFlip';
+      return '';
     }
 
     // Default to GitHub Pages structure
-    return '/Assiduous/AssiduousFlip';
+    return '';
   }
 
   function injectSidebar(root, base, activeKey) {
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', base + '/components/sidebar.html');
+    xhr.open('GET', '../components/sidebar.html');
     xhr.onreadystatechange = function () {
       if (xhr.readyState === 4) {
         if (xhr.status >= 200 && xhr.status < 300) {
