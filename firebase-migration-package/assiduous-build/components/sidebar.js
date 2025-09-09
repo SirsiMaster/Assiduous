@@ -3,7 +3,7 @@
  *
  * How it works:
  * - On DOMContentLoaded, replaces <aside id="sidebar-root"> with the shared template
- * - Uses data-base attribute on the aside as the base path (defaults to "/Assiduous/AssiduousFlip")
+ * - Uses data-base attribute on the aside as the base path (defaults to "/Assiduous/assiduousflip")
  * - Highlights active item via data-active (data-key in template)
  * - Ensures portable across SirsiMaster projects (only dependency is CSS already on each page)
  */
@@ -13,7 +13,7 @@
     if (base && base.trim()) return base.replace(/\/$/, '');
 
     // New structure: everything is at root level
-    // No more /AssiduousFlip subdirectory
+    // No more /assiduousflip subdirectory
     return '';
   }
 
