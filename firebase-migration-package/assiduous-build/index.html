@@ -824,7 +824,7 @@
                 <a href="#insights">Insights</a>
                 <a href="#about">About</a>
                 <div class="nav-actions">
-                    <a href="#" class="btn-ghost">Sign In</a>
+                    <a href="#" class="btn-ghost" onclick="showLogin(); return false;">Sign In</a>
                     <a href="#" class="btn-gradient" id="openSignup">Get Started Free</a>
                 </div>
             </nav>
@@ -850,6 +850,30 @@
                 <small style="color: #94a3b8;">No credit card required</small>
             </form>
             <div id="signupSuccess" style="display: none; margin-top: 12px; padding: 12px; background: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0; border-radius: 8px; font-weight: 600;">Thanks! We just sent you a verification email.</div>
+        </div>
+    </div>
+
+    <!-- Sign In Modal -->
+    <div id="loginModal" style="position: fixed; inset: 0; background: rgba(15,23,42,0.6); display: none; align-items: center; justify-content: center; z-index: 2000;">
+        <div style="background: white; border-radius: 16px; width: 92%; max-width: 520px; padding: 28px; box-shadow: 0 30px 60px rgba(0,0,0,0.3);">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+                <h3 style="font-size: 22px; font-weight: 800; color: #0f172a;">Welcome Back</h3>
+                <button id="closeLogin" aria-label="Close" style="background: transparent; border: none; cursor: pointer; color: #64748b;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 6L6 18M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+            <p style="color: #64748b; margin-bottom: 16px;">Sign in to access your dashboard and tools.</p>
+            <form id="loginForm" style="display: grid; gap: 12px;">
+                <input id="loginEmail" type="email" required placeholder="Email address" style="padding: 14px 16px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 15px;">
+                <input id="loginPassword" type="password" required placeholder="Password" style="padding: 14px 16px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 15px;">
+                <button type="submit" style="padding: 12px 16px; background: linear-gradient(135deg, #3b82f6, #2563eb); color: white; border: none; border-radius: 10px; font-size: 16px; font-weight: 700; cursor: pointer;">Sign In →</button>
+            </form>
+            <div style="margin-top: 16px; text-align: center;">
+                <p style="color: #64748b; font-size: 14px;">Don't have an account? <a href="#" onclick="showSignup(); return false;" style="color: #3b82f6; text-decoration: none; font-weight: 600;">Sign up</a></p>
+                <p style="color: #64748b; font-size: 14px; margin-top: 8px;"><a href="#" style="color: #3b82f6; text-decoration: none;">Forgot password?</a></p>
+            </div>
         </div>
     </div>
 
@@ -1620,6 +1644,41 @@
                     e.preventDefault();
                     success.style.display = 'block';
                     setTimeout(() => { success.style.display = 'none'; modal.style.display = 'none'; }, 1800);
+                });
+            }
+        })();
+
+        // Sign in modal handlers
+        function showLogin() {
+            const modal = document.getElementById('loginModal');
+            const signupModal = document.getElementById('signupModal');
+            if (signupModal) signupModal.style.display = 'none';
+            if (modal) modal.style.display = 'flex';
+        }
+
+        function showSignup() {
+            const modal = document.getElementById('signupModal');
+            const loginModal = document.getElementById('loginModal');
+            if (loginModal) loginModal.style.display = 'none';
+            if (modal) modal.style.display = 'flex';
+        }
+
+        (function() {
+            const closeBtn = document.getElementById('closeLogin');
+            const modal = document.getElementById('loginModal');
+            const form = document.getElementById('loginForm');
+            
+            if (closeBtn && modal) {
+                closeBtn.addEventListener('click', () => { modal.style.display = 'none'; });
+            }
+            if (modal) {
+                modal.addEventListener('click', (e) => { if (e.target === modal) modal.style.display = 'none'; });
+            }
+            if (form) {
+                form.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    // For now, just redirect to admin dashboard
+                    window.location.href = '/admin/dashboard.html';
                 });
             }
         })();
