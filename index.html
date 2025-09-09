@@ -935,14 +935,61 @@
         
         /* Ensure no overlapping */
         section {
+            position: relative !important;
+            z-index: 1 !important;
+            clear: both;
+            display: block;
+            width: 100%;
+        }
+        
+        /* Fix for absolute positioned children */
+        section > * {
             position: relative;
-            z-index: 1;
+            z-index: 2;
+        }
+        
+        /* Ensure sections don't overlap */
+        section + section {
+            margin-top: 0;
         }
         
         /* Fix background image sizing */
         .hero-bg-image {
             background-attachment: scroll;
         }
+        
+        /* Timeline styles for How It Works section */
+        .timeline-container {
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .timeline-line {
+            position: absolute;
+            top: 40px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #3b82f6 0%, #60a5fa 50%, #3b82f6 100%);
+            background-size: 200% 100%;
+            animation: shimmer 4s ease-in-out infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        
+        .timeline-step {
+            text-align: center;
+            position: relative;
+            opacity: 0;
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+        
+        .timeline-step:nth-child(2) { animation-delay: 0.2s; }
+        .timeline-step:nth-child(3) { animation-delay: 0.4s; }
     </style>
 </head>
 <body>
@@ -1136,67 +1183,9 @@
 
     <!-- Subtle Transition -->
     <div style="height: 2px; background: linear-gradient(90deg, transparent, rgba(59,130,246,0.3), transparent);"></div>
-            
-            .timeline-container {
-                position: relative;
-                max-width: 1200px;
-                margin: 0 auto;
-            }
-            
-            .timeline-line {
-                position: absolute;
-                top: 40px;
-                left: 0;
-                right: 0;
-                height: 3px;
-                background: linear-gradient(90deg, #3b82f6 0%, #60a5fa 50%, #3b82f6 100%);
-                background-size: 200% 100%;
-                animation: shimmer 4s ease-in-out infinite;
-            }
-            
-            @keyframes shimmer {
-                0% { background-position: -200% 0; }
-                100% { background-position: 200% 0; }
-            }
-            
-            .timeline-step {
-                text-align: center;
-                position: relative;
-                opacity: 0;
-                animation: fadeInUp 0.6s ease-out forwards;
-            }
-            
-            .timeline-step:nth-child(2) { animation-delay: 0.2s; }
-            .timeline-step:nth-child(3) { animation-delay: 0.4s; }
-            
-            .step-number {
-                position: absolute;
-                top: -20px;
-                left: 40px;
-                width: 60px;
-                height: 60px;
-                background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-                border-radius: 50%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 24px;
-                font-weight: 800;
-                color: white;
-                box-shadow: 0 10px 30px rgba(59, 130, 246, 0.4);
-            }
-            
-            .step-icon {
-                width: 80px;
-                height: 80px;
-                margin: 0 auto 24px;
-                background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
-                border-radius: 20px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
-        </style>
+    
+    <!-- How It Works Section -->
+    <section style="padding: 80px 40px; background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); position: relative; overflow: hidden; z-index: 1;">
         
         <div class="section-header animate-on-scroll" style="position: relative; z-index: 10; color: white;">
             <div class="section-badge" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white;">How It Works</div>
@@ -1252,7 +1241,7 @@
     </section>
 
     <!-- Live Deals Section -->
-    <section class="deals-section" id="deals" style="padding: 120px 40px; background: linear-gradient(180deg, #fafafa 0%, #ffffff 100%); position: relative; overflow: hidden;">
+    <section class="deals-section" id="deals" style="padding: 80px 40px; background: linear-gradient(180deg, #fafafa 0%, #ffffff 100%); position: relative; overflow: hidden; z-index: 1;">
         <!-- Animated Background Pattern -->
         <svg style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.03; z-index: 1;" viewBox="0 0 100 100" preserveAspectRatio="none">
             <pattern id="dealGrid" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
@@ -1383,7 +1372,7 @@
     </section>
     
     <!-- Dashboard Preview Section -->
-    <section style="padding: 100px 40px; background: #0f172a; position: relative; overflow: hidden;">
+    <section style="padding: 80px 40px; background: #0f172a; position: relative; overflow: hidden; z-index: 1;">
         <div style="max-width: 1200px; margin: 0 auto;">
             <div style="text-align: center; margin-bottom: 60px;">
                 <div style="display: inline-block; padding: 8px 16px; background: linear-gradient(135deg, rgba(59,130,246,0.2), rgba(37,99,235,0.2)); border: 1px solid rgba(59,130,246,0.3); border-radius: 100px; font-size: 13px; font-weight: 600; color: #60a5fa; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 16px;">Platform Preview</div>
@@ -1497,7 +1486,7 @@
     </section>
     
     <!-- Success Stories Section -->
-    <section style="padding: 100px 40px; background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%); position: relative; overflow: hidden;">
+    <section style="padding: 80px 40px; background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%); position: relative; overflow: hidden; z-index: 1;">
         <div style="position: absolute; top: -100px; right: -100px; width: 400px; height: 400px; background: radial-gradient(circle, rgba(59, 130, 246, 0.08) 0%, transparent 70%); border-radius: 50%;"></div>
         
         <div class="section-header animate-on-scroll" style="max-width: 800px; margin: 0 auto 60px; text-align: center;">
