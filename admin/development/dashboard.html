@@ -364,40 +364,15 @@
             padding: var(--space-lg);
         }
 
-        .btn {
-            padding: var(--space-sm) var(--space-md);
-            border-radius: var(--radius);
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.15s;
-            border: none;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: var(--space-xs);
-        }
+        /* Button styles handled by sirsi-button component */
 
-        .btn-primary {
-            background: var(--sky);
-            color: var(--white);
-        }
+        
 
-        .btn-primary:hover {
-            background: #4A90C9;
-            transform: translateY(-1px);
-        }
+        
 
-        .btn-secondary {
-            background: var(--white);
-            color: var(--sky);
-            border: 1px solid var(--sky);
-        }
+        
 
-        .btn-secondary:hover {
-            background: var(--sky);
-            color: var(--white);
-        }
+        
 
         /* Quick Actions */
         .quick-actions {
@@ -942,7 +917,7 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="card-title">Recent Activity</div>
-                        <button class="btn btn-secondary" onclick="refresh()">Refresh</button>
+                        <sirsi-button variant="secondary" size="md">Refresh</sirsi-button>
                     </div>
                     <div class="card-body" style="padding: 0;">
                         <div class="activity-list" id="commits">
@@ -964,7 +939,7 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="card-title">Development Progress</div>
-                        <a href="reports.html" class="btn btn-secondary">View Details</a>
+                        <sirsi-button variant="secondary" size="md" onclick="window.location.href='reports.html'">View Details</sirsi-button>
                     </div>
                     <div class="card-body">
                         <div class="progress-item">
@@ -1760,13 +1735,13 @@
                 <div style="background: var(--white); border-radius: 12px; width: min(600px, 90vw); max-height: 80vh; overflow: hidden; box-shadow: 0 20px 25px rgba(0,0,0,0.15);">
                     <div style="padding: 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
                         <h2 style="color: var(--navy); font-size: 18px; font-weight: 600; flex: 1;">${title}</h2>
-                        <button onclick="closeModal()" style="background: none; border: none; font-size: 24px; color: var(--text-secondary); cursor: pointer; padding: 0; margin-left: auto;">×</button>
+                        <sirsi-button variant="secondary" size="md" onclick="closeModal()">×</sirsi-button>
                     </div>
                     <div style="max-height: 60vh; overflow-y: auto;">
                         ${content}
                     </div>
                     <div style="padding: 16px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end;">
-                        <button onclick="closeModal()" style="padding: 8px 16px; background: var(--sky); color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 500;">Close</button>
+                        <sirsi-button variant="ghost" size="md" onclick="closeModal()">Close</sirsi-button>
                     </div>
                 </div>
             `;

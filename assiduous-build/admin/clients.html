@@ -157,25 +157,9 @@
             gap: var(--space-md);
         }
 
-        .btn-primary {
-            padding: var(--space-sm) var(--space-md);
-            background: var(--sky);
-            color: var(--white);
-            border: none;
-            border-radius: var(--radius);
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.15s;
-            display: flex;
-            align-items: center;
-            gap: var(--space-xs);
-        }
+        
 
-        .btn-primary:hover {
-            background: #4A8BC2;
-            transform: translateY(-1px);
-        }
+        
 
         .user-avatar {
             width: 32px;
@@ -265,22 +249,9 @@
             color: var(--dark);
         }
 
-        .btn-secondary {
-            padding: var(--space-xs) var(--space-sm);
-            background: var(--white);
-            color: var(--sky);
-            border: 1px solid var(--sky);
-            border-radius: var(--radius);
-            font-size: 12px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.15s;
-        }
+        
 
-        .btn-secondary:hover {
-            background: var(--sky);
-            color: var(--white);
-        }
+        
 
         table {
             width: 100%;
@@ -564,7 +535,7 @@
                 <div class="data-table sirsi-card">
                     <div class="table-header">
                         <h3 class="table-title">Client Directory</h3>
-                        <button class="btn-secondary">Export List</button>
+                        <sirsi-button variant="secondary" size="md">Export List</sirsi-button>
                     </div>
                     <table>
                         <thead>

@@ -156,25 +156,9 @@
             gap: var(--space-md);
         }
 
-        .btn-primary {
-            padding: var(--space-sm) var(--space-md);
-            background: var(--sky);
-            color: var(--white);
-            border: none;
-            border-radius: var(--radius);
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.15s;
-            display: flex;
-            align-items: center;
-            gap: var(--space-xs);
-        }
+        
 
-        .btn-primary:hover {
-            background: #4A8BC2;
-            transform: translateY(-1px);
-        }
+        
 
         .user-avatar {
             width: 32px;
@@ -401,21 +385,9 @@
             margin-top: var(--space-xl);
         }
 
-        .btn-secondary {
-            padding: var(--space-sm) var(--space-lg);
-            background: var(--white);
-            color: var(--text-primary);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.15s;
-        }
+        
 
-        .btn-secondary:hover {
-            background: var(--gray-50);
-        }
+        
 
         /* Responsive */
         @media (max-width: 768px) {
@@ -750,8 +722,8 @@
 
                         <!-- Form Actions -->
                         <div class="form-actions">
-                            <button class="btn-secondary">Cancel Changes</button>
-                            <sirsi-button variant="primary" size="md" class="btn-primary">Save Settings</sirsi-button>
+                            <sirsi-button variant="secondary" size="md">Cancel Changes</sirsi-button>
+                            <sirsi-button variant="primary" size="md" >Save Settings</sirsi-button>
                         </div>
                     </div>
                 </div>
