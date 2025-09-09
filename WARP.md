@@ -4,6 +4,14 @@ This file provides guidance to WARP (warp.dev) when working with code in this re
 
 ## ⚠️  CRITICAL DEVELOPMENT GOVERNANCE RULES (MUST FOLLOW)
 
+### **RULE 0: CHECK SIRSIMASTER COMPONENT LIBRARY FIRST**
+**Before creating ANY UI component, utility, or shared functionality:**
+- **ALWAYS** check the SirsiMaster Component Library at `/Users/thekryptodragon/Development/sirsimaster-component-library`
+- **USE** existing library components instead of creating new ones
+- **REFERENCE** the library's WARP.md for component usage guidelines
+- **CONTRIBUTE** new generic components to the library, not this project
+- **Library GitHub**: https://github.com/SirsiMaster/sirsimaster-component-library
+
 ### **RULE 1: ALWAYS CHECK EXISTING DOCUMENTATION FIRST**
 **Before starting ANY task, you MUST:**
 - Read and understand ALL existing project documentation
@@ -151,34 +159,35 @@ Semantic versioning: `vMAJOR.MINOR.PATCH[-PRERELEASE]`
 - Include release notes
 - Update rollback_registry.md
 
-## Component System (NEW - Sep 2025)
+## Component System (UPDATED - Using SirsiMaster Component Library)
 
-Assiduous now uses a standardized component system for consistent UI across all pages:
+### 🚨 IMPORTANT: Use SirsiMaster Component Library
+Assiduous now uses components from the **SirsiMaster Component Library** for all UI elements:
+- **Library Location**: `/Users/thekryptodragon/Development/sirsimaster-component-library`
+- **NPM Package**: `@sirsimaster/component-library` (once published)
+- **GitHub**: https://github.com/SirsiMaster/sirsimaster-component-library
 
-### Header Component
-```html
-<!-- Replace custom headers with this standardized approach -->
-<header id="admin-header-root" 
-        data-title="Page Title" 
-        data-subtitle="Page description"
-        data-search-placeholder="Search placeholder..."
-        data-actions='[{"label":"Action","icon":"<svg>...","onclick":"handler()"}]'></header>
-<script src="[[BASE]]/components/admin-header.js"></script>
+### Using Library Components
+```javascript
+// Import from library (once installed)
+import { Header, Sidebar, Card, Form } from '@sirsimaster/component-library';
+
+// Or during development
+import Header from '../sirsimaster-component-library/src/components/layout/Header';
 ```
 
-### Sidebar Component
-```html
-<!-- Replace custom sidebars with this standardized approach -->
-<aside id="sidebar-root" data-active="page-identifier"></aside>
-<script src="[[BASE]]/components/sidebar.js"></script>
-```
+### Legacy Components (To Be Migrated)
+These local components should be migrated to the library:
+- `assiduousflip/components/admin-header.html` - Migrate to library `Header`
+- `assiduousflip/components/admin-header.js` - Migrate to library `Header`
+- `assiduousflip/components/admin-layout.css` - Migrate to library theme system
+- `assiduousflip/components/sidebar.html` - Migrate to library `Sidebar`
+- `assiduousflip/components/sidebar.js` - Migrate to library `Sidebar`
 
-### Component Files
-- `assiduousflip/components/admin-header.html` - Header template
-- `assiduousflip/components/admin-header.js` - Header loader
-- `assiduousflip/components/admin-layout.css` - Shared styles  
-- `assiduousflip/components/sidebar.html` - Sidebar template
-- `assiduousflip/components/sidebar.js` - Sidebar loader
+### Migration Plan
+1. Use library components for all new features
+2. Gradually replace legacy components with library versions
+3. Contribute Assiduous-specific improvements back to the library
 
 ### Benefits
 - **90% reduction** in code duplication
