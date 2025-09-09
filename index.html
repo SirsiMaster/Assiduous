@@ -21,6 +21,12 @@
             box-sizing: border-box;
         }
         
+        /* Aggressive overlap prevention */
+        html, body {
+            overflow-x: hidden;
+            position: relative;
+        }
+        
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
             background: #ffffff;
@@ -933,24 +939,30 @@
             }
         }
         
-        /* Ensure no overlapping */
+        /* Fix overlapping sections */
         section {
             position: relative !important;
-            z-index: 1 !important;
+            z-index: 1;
             clear: both;
             display: block;
             width: 100%;
+            overflow: hidden;
         }
         
-        /* Fix for absolute positioned children */
-        section > * {
+        /* Ensure proper stacking */
+        body > * {
             position: relative;
-            z-index: 2;
         }
         
-        /* Ensure sections don't overlap */
-        section + section {
-            margin-top: 0;
+        /* Fix hero section specifically */
+        .hero {
+            position: relative !important;
+            overflow: hidden !important;
+        }
+        
+        /* Keep absolute elements contained */
+        section > div:first-child {
+            position: relative;
         }
         
         /* Fix background image sizing */
@@ -1591,14 +1603,17 @@
                 </h2>
                 <p style="font-size: 20px; color: #64748b; max-width: 600px; margin: 0 auto;" class="animate-on-scroll">
                     Enter any Philadelphia metro area address to see potential profit in seconds
+                </p>
+            </div>
+            <div style="text-align: center; margin-top: 48px;">
+                <a href="/properties.html" style="display: inline-block; padding: 16px 40px; background: linear-gradient(135deg, #3b82f6, #2563eb); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 16px; transition: all 0.3s;"
+                   onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 20px 40px rgba(59,130,246,0.3)'"
+                   onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                    View All Properties →
+                </a>
+            </div>
         </div>
-        <div style="text-align: center; margin-top: 48px;">
-            <a href="/properties.html" style="display: inline-block; padding: 16px 40px; background: linear-gradient(135deg, #3b82f6, #2563eb); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 16px; transition: all 0.3s;"
-               onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 20px 40px rgba(59,130,246,0.3)'"
-               onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
-                View All Properties →
-            </a>
-        </div>
+    </section>
 
     <!-- CTA Section -->
     <section style="padding: 80px 40px; background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); position: relative; overflow: hidden; z-index: 1;">
