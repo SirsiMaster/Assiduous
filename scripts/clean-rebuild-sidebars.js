@@ -3,17 +3,16 @@
 const fs = require('fs');
 const path = require('path');
 
-// Read the sidebar template
+// Read the clean sidebar template
 let sidebarTemplateRaw = fs.readFileSync(path.join(__dirname, '../components/sidebar.html'), 'utf-8');
-// Extract only the HTML content (remove ALL comments)
+// Extract only the HTML content (everything after the comment)
 let sidebarTemplate = sidebarTemplateRaw
-  .split('-->').slice(1).join('') // Remove everything before first comment close
+  .substring(sidebarTemplateRaw.indexOf('-->') + 3)
   .trim();
 
 // Function to get the correct base path for each file
 function getBasePath(filePath) {
   const relativePath = path.relative(path.join(__dirname, '../'), filePath);
-  const depth = relativePath.split(path.sep).length - 1;
   
   if (relativePath.includes('admin/development/')) {
     return '../';
@@ -37,18 +36,11 @@ ${processed}
   
   // Add active class to the correct menu item
   if (activeKey) {
-    const regex = new RegExp(`(data-key="${activeKey}"[^>]*>)`, 'g');
-    processed = processed.replace(regex, '$1');
-    // Now add the active class
-    processed = processed.replace(
-      new RegExp(`(<a[^>]*data-key="${activeKey}"[^>]*class="nav-item)(")`),
-      '$1 active$2'
-    );
-    // If no class exists, add it
-    processed = processed.replace(
-      new RegExp(`(<a[^>]*data-key="${activeKey}"[^>]*)>`),
-      '$1 class="nav-item active">'
-    );
+    // Fix the active class insertion
+    const dataKeyPattern = new RegExp(`data-key="${activeKey}"`, 'g');
+    processed = processed.replace(dataKeyPattern, `data-key="${activeKey}" class="nav-item active"`);
+    // Remove duplicate class attributes
+    processed = processed.replace(/class="nav-item"\s+class="nav-item active"/g, 'class="nav-item active"');
   }
   
   return processed;
@@ -89,29 +81,49 @@ adminPages.forEach(({ file, activeKey }) => {
   // Generate the processed sidebar
   const newSidebar = processSidebar(filePath, activeKey);
   
-  // Replace the existing sidebar - handle all possible states
-  // First, remove any existing sidebar and its duplicated/broken content
-  // This regex captures everything from <aside> to the last </nav> before main content
+  // COMPLETE CLEANUP: Remove ALL existing sidebar content
+  // This matches from any <aside> tag to right before <main> or end of admin-wrapper
   content = content.replace(
-    /<aside[^>]*id="sidebar-root"[^>]*>[\s\S]*?<\/nav>[\s\S]*?(?=<main|<!-- Sidebar pre-rendered|$)/g,
+    /<aside[^>]*id="sidebar-root"[^>]*>[\s\S]*?(?=<main|<\/div>\s*<\/body>)/g,
     ''
   );
   
-  // Now insert the clean sidebar
+  // Remove any orphaned comment text and duplicate sidebar content
   content = content.replace(
-    /(<div class="admin-wrapper">\s*)/,
-    '$1' + newSidebar + '\n        '
+    /<!--\s*Sidebar Component\s*-->[\s\S]*?(?=<main|<\/div>\s*<\/body>)/g,
+    ''
   );
   
-  // Pattern 2: Remove the sidebar.js script tag (no longer needed)
+  // Remove the broken tokens text
+  content = content.replace(
+    /Tokens:[\s\S]*?This template is portable across all admin pages\.\s*-->/g,
+    ''
+  );
+  
+  // Remove any duplicate sidebar header/nav elements that might be floating around
+  content = content.replace(
+    /<div class="sidebar-header">[\s\S]*?<\/nav>\s*/g,
+    ''
+  );
+  
+  // Remove the sidebar.js script tag (no longer needed)
   content = content.replace(
     /<script[^>]*src="[^"]*sidebar\.js"[^>]*><\/script>/g,
     '<!-- Sidebar pre-rendered, no JS needed -->'
   );
   
+  // Now insert the clean sidebar in the right place
+  content = content.replace(
+    /(<div class="admin-wrapper">\s*)/,
+    `$1
+        <!-- Sidebar Component -->
+        ${newSidebar}
+        `
+  );
+  
   // Write the updated content back
   fs.writeFileSync(filePath, content, 'utf-8');
-  console.log(`✅ Updated: ${file}`);
+  console.log(`✅ Cleaned and rebuilt: ${file}`);
   
   // Also update in assiduous-build
   const buildPath = path.join(__dirname, '../assiduous-build/', file);
@@ -121,5 +133,5 @@ adminPages.forEach(({ file, activeKey }) => {
   }
 });
 
-console.log('\n✅ All admin pages updated with pre-rendered sidebars!');
-console.log('🚀 No more flicker - sidebars are now instantly visible!');
+console.log('\n✅ All admin pages have been cleaned and rebuilt!');
+console.log('🎯 Sidebars are now clean, properly rendered, and flicker-free!');
