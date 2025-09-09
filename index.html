@@ -200,16 +200,27 @@
             color: white !important;
         }
 
-        /* Hero Section - Spacious & Stunning */
+        /* Hero Section - Properly Sized & Balanced */
         .hero {
             margin-top: 72px;
-            min-height: 100vh;
+            min-height: 600px;
+            height: 70vh;
+            max-height: 800px;
             position: relative;
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
             background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        }
+        
+        /* Mobile responsiveness for hero */
+        @media (max-width: 768px) {
+            .hero {
+                height: auto;
+                min-height: 500px;
+                padding: 60px 0 80px;
+            }
         }
 
         /* Hero Rotating Backgrounds */
@@ -303,11 +314,11 @@
         }
 
         .hero h1 {
-            font-size: clamp(36px, 5vw, 56px);
+            font-size: clamp(32px, 4.5vw, 48px);
             font-weight: 800;
-            line-height: 1.1;
+            line-height: 1.15;
             letter-spacing: -0.03em;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
             background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -316,10 +327,10 @@
         }
 
         .hero-subtitle {
-            font-size: clamp(16px, 2vw, 20px);
+            font-size: clamp(15px, 1.8vw, 18px);
             color: #e2e8f0;
-            max-width: 680px;
-            margin: 0 auto 32px;
+            max-width: 600px;
+            margin: 0 auto 28px;
             line-height: 1.5;
             font-weight: 400;
             opacity: 0.9;
@@ -328,23 +339,23 @@
 
         .hero-actions {
             display: flex;
-            gap: 20px;
+            gap: 16px;
             justify-content: center;
             flex-wrap: wrap;
-            margin-bottom: 80px;
+            margin-bottom: 40px;
             animation: fadeInUp 0.3s ease-out 0.25s both;
         }
 
         .hero-btn {
-            padding: 14px 32px;
-            font-size: 15px;
+            padding: 12px 28px;
+            font-size: 14px;
             font-weight: 600;
             border-radius: 10px;
             text-decoration: none;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             display: inline-flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             position: relative;
             overflow: hidden;
         }
@@ -397,8 +408,15 @@
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(20px);
             border-top: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 32px 0;
+            padding: 24px 0;
             z-index: 10;
+        }
+        
+        @media (max-width: 768px) {
+            .stats-bar {
+                position: relative;
+                padding: 20px 0;
+            }
         }
 
         .stats-container {
@@ -416,25 +434,37 @@
         }
 
         .stat-number {
-            font-size: 32px;
+            font-size: 28px;
             font-weight: 800;
             color: white;
-            margin-bottom: 8px;
+            margin-bottom: 4px;
+        }
+        
+        @media (max-width: 768px) {
+            .stat-number {
+                font-size: 24px;
+            }
         }
 
         .stat-label {
-            font-size: 14px;
+            font-size: 12px;
             color: #94a3b8;
             text-transform: uppercase;
-            letter-spacing: 0.1em;
+            letter-spacing: 0.08em;
         }
 
         /* Features Section - Modern Cards */
         .features-section {
-            padding: 120px 40px;
+            padding: 80px 40px;
             background: #fafafa;
             position: relative;
             overflow: hidden;
+        }
+        
+        @media (max-width: 768px) {
+            .features-section {
+                padding: 60px 20px;
+            }
         }
 
         .features-section::before {
@@ -597,8 +627,14 @@
 
         /* Deals Section with High-Res Images */
         .deals-section {
-            padding: 120px 40px;
+            padding: 80px 40px;
             background: white;
+        }
+        
+        @media (max-width: 768px) {
+            .deals-section {
+                padding: 60px 20px;
+            }
         }
 
         .deals-grid {
@@ -811,6 +847,102 @@
             background: #3b82f6;
             transform: translateY(-4px);
         }
+        
+        /* Additional Mobile Fixes */
+        @media (max-width: 768px) {
+            .header {
+                height: 60px;
+            }
+            
+            .header-inner {
+                padding: 0 20px;
+            }
+            
+            .nav {
+                display: none;
+            }
+            
+            .nav-actions {
+                gap: 8px;
+                margin-left: auto;
+            }
+            
+            .btn-gradient {
+                padding: 8px 16px;
+                font-size: 14px;
+            }
+            
+            .hero {
+                margin-top: 60px;
+            }
+            
+            .hero-content {
+                padding: 0 20px;
+            }
+            
+            .hero h1 {
+                font-size: 28px;
+                line-height: 1.2;
+                margin-bottom: 16px;
+            }
+            
+            .hero-subtitle {
+                font-size: 16px;
+                margin-bottom: 24px;
+            }
+            
+            .hero-actions {
+                flex-direction: column;
+                width: 100%;
+                gap: 12px;
+            }
+            
+            .hero-btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .stats-container {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+                padding: 0 20px;
+            }
+            
+            .deals-grid {
+                grid-template-columns: 1fr;
+                padding: 0;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 40px;
+                padding: 0 20px;
+            }
+            
+            .footer-bottom {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+                padding: 20px;
+            }
+            
+            /* Fix for overlapping sections on mobile */
+            section {
+                position: relative !important;
+                z-index: 1 !important;
+            }
+        }
+        
+        /* Ensure no overlapping */
+        section {
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Fix background image sizing */
+        .hero-bg-image {
+            background-attachment: scroll;
+        }
     </style>
 </head>
 <body>
@@ -963,7 +1095,7 @@
         </div>
     </section>
     <!-- Trust Indicators -->
-    <section style="padding: 60px 40px; background: #ffffff; border-bottom: 1px solid #e2e8f0;">
+    <section style="padding: 60px 40px; background: #ffffff; border-bottom: 1px solid #e2e8f0; position: relative; z-index: 1;">
         <div style="max-width: 1200px; margin: 0 auto;">
             <p style="text-align: center; color: #94a3b8; font-size: 13px; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 24px; font-weight: 600;">FEATURED IN</p>
             <div style="display: flex; justify-content: center; align-items: center; gap: 48px; flex-wrap: wrap; opacity: 0.6; filter: grayscale(100%);">
@@ -1004,29 +1136,6 @@
 
     <!-- Subtle Transition -->
     <div style="height: 2px; background: linear-gradient(90deg, transparent, rgba(59,130,246,0.3), transparent);"></div>
-
-        <!-- Background Carousel - Philadelphia Area Properties -->
-        <div style="position: absolute; inset: 0; z-index: 1;">
-            <div class="carousel-container" style="position: absolute; inset: 0; display: flex; animation: slide 24s linear infinite;">
-                <!-- Philadelphia row homes -->
-                <img src="https://images.unsplash.com/photo-1516156008625-3a9d6067fab5?w=2400&h=1200&fit=crop&q=90" style="min-width: 100%; height: 100%; object-fit: cover; opacity: 0.22;" alt="Philadelphia row homes">
-                <!-- Chester County stone farmhouse -->
-                <img src="https://images.unsplash.com/photo-1449844908441-8829872d2607?w=2400&h=1200&fit=crop&q=90" style="min-width: 100%; height: 100%; object-fit: cover; opacity: 0.22;" alt="Chester County farmhouse">
-                <!-- Delaware suburban development -->
-                <img src="https://images.unsplash.com/photo-1554995207-c18c203602cb?w=2400&h=1200&fit=crop&q=90" style="min-width: 100%; height: 100%; object-fit: cover; opacity: 0.22;" alt="Delaware suburban home">
-                <!-- Philadelphia row homes (loop back) -->
-                <img src="https://images.unsplash.com/photo-1516156008625-3a9d6067fab5?w=2400&h=1200&fit=crop&q=90" style="min-width: 100%; height: 100%; object-fit: cover; opacity: 0.22;" alt="Philadelphia row homes">
-            </div>
-        </div>
-        
-        <style>
-            @keyframes slide {
-                0% { transform: translateX(0); }
-                33% { transform: translateX(-100%); }
-                66% { transform: translateX(-200%); }
-                100% { transform: translateX(-300%); }
-            }
-            .carousel-container img { filter: brightness(1.2) contrast(1.05); }
             
             .timeline-container {
                 position: relative;
@@ -1485,7 +1594,7 @@
     </section>
 
     <!-- Interactive Property Estimator -->
-    <section style="padding: 80px 40px; background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%); position: relative;">
+    <section style="padding: 60px 40px; background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%); position: relative; z-index: 1;">
         <div style="max-width: 1200px; margin: 0 auto;">
             <div style="text-align: center; margin-bottom: 48px;">
                 <h2 style="font-size: 42px; font-weight: 800; color: #0f172a; margin-bottom: 16px; line-height: 1.1;" class="animate-on-scroll">
@@ -1503,7 +1612,7 @@
         </div>
 
     <!-- CTA Section -->
-    <section style="padding: 120px 40px; background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); position: relative; overflow: hidden;">
+    <section style="padding: 80px 40px; background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); position: relative; overflow: hidden; z-index: 1;">
         <div style="position: absolute; inset: 0; opacity: 0.1;">
             <svg width="100%" height="100%" viewBox="0 0 1200 600" preserveAspectRatio="none">
                 <pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse">
@@ -1515,11 +1624,11 @@
         </div>
         
         <div style="max-width: 900px; margin: 0 auto; text-align: center; position: relative; z-index: 10;">
-            <h2 style="font-size: 48px; font-weight: 800; color: white; margin-bottom: 24px; line-height: 1.1;" class="animate-on-scroll">
+            <h2 style="font-size: 36px; font-weight: 800; color: white; margin-bottom: 20px; line-height: 1.2;" class="animate-on-scroll">
                 Ready to Make Your First $47K?<br>
-                <span style="font-weight: 400; font-size: 36px;">Start Your Analysis in 60 Seconds</span>
+                <span style="font-weight: 400; font-size: 28px;">Start Your Analysis in 60 Seconds</span>
             </h2>
-            <p style="font-size: 20px; color: #e0e7ff; margin-bottom: 40px; line-height: 1.5;" class="animate-on-scroll">
+            <p style="font-size: 18px; color: #e0e7ff; margin-bottom: 32px; line-height: 1.5;" class="animate-on-scroll">
                 Join 12,847+ successful flippers who started with zero experience.<br>
                 Our intelligent platform handles the complexity. You make the profit.
             </p>
