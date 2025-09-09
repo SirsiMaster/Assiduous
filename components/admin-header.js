@@ -79,16 +79,26 @@
     var headerPath;
     
     // Check if we're in development subfolder
-    if (path.includes('/admin/development/backups/')) {
+    if (path.includes('/assiduousflip/admin/development/backups/')) {
       headerPath = '../../../components/admin-header.html';
+    } else if (path.includes('/admin/development/backups/')) {
+      headerPath = '../../../components/admin-header.html';
+    } else if (path.includes('/assiduousflip/admin/development/') || path.includes('/assiduousflip/admin/contracts/')) {
+      headerPath = '../../components/admin-header.html';
     } else if (path.includes('/admin/development/') || path.includes('/admin/contracts/')) {
       headerPath = '../../components/admin-header.html';
+    } else if (path.includes('/assiduousflip/admin/')) {
+      headerPath = '../components/admin-header.html';
     } else if (path.includes('/admin/') || path.includes('/client/') || path.includes('/docs/')) {
       headerPath = '../components/admin-header.html';
+    } else if (path.includes('/assiduousflip/')) {
+      headerPath = 'components/admin-header.html';
     } else {
       // Root level
       headerPath = 'components/admin-header.html';
     }
+    
+    console.log('Loading header from:', headerPath);
     
     xhr.open('GET', headerPath);
     xhr.onreadystatechange = function () {

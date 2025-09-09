@@ -30,14 +30,29 @@
     // For root level or other pages
     return 'admin/';
   }
+
+  function injectSidebar(root, base, activeKey) {
+    var xhr = new XMLHttpRequest();
+    var path = window.location.pathname;
+    var sidebarPath;
+    
+    // Determine the correct path to sidebar.html based on current location
+    if (path.includes('/assiduousflip/admin/development/') || path.includes('/assiduousflip/admin/contracts/')) {
+      sidebarPath = '../../components/sidebar.html';
     } else if (path.includes('/admin/development/') || path.includes('/admin/contracts/')) {
       sidebarPath = '../../components/sidebar.html';
+    } else if (path.includes('/assiduousflip/admin/')) {
+      sidebarPath = '../components/sidebar.html';
     } else if (path.includes('/admin/') || path.includes('/client/') || path.includes('/docs/')) {
       sidebarPath = '../components/sidebar.html';
+    } else if (path.includes('/assiduousflip/')) {
+      sidebarPath = 'components/sidebar.html';
     } else {
       // Root level
       sidebarPath = 'components/sidebar.html';
     }
+    
+    console.log('Loading sidebar from:', sidebarPath);
     
     xhr.open('GET', sidebarPath);
     xhr.onreadystatechange = function () {
@@ -54,7 +69,7 @@
             }
           }
         } else {
-          console.error('Failed to load sidebar template:', xhr.status, xhr.statusText);
+          console.error('Failed to load sidebar template:', xhr.status, xhr.statusText, 'from path:', sidebarPath);
         }
       }
     };
