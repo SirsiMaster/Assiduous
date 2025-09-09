@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.14.2] - 2025-09-09
+
+### Fixed
+- fix(admin): Remove conflicting sidebar class from dashboard.html
+
+
 ## [0.14.1] - 2025-09-09
 
 ### Fixed
@@ -639,7 +645,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.14.1...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.14.2...HEAD
+
+
+## [0.14.2] - 2025-09-09
+
+### Fixed
+- fix(admin): Remove conflicting sidebar class from dashboard.html
 
 
 ## [0.14.1] - 2025-09-09
@@ -863,3 +875,4 @@ To generate changelog entries:
 [0.13.16]: https://github.com/SirsiMaster/Assiduous/compare/v0.13.15...v0.13.16
 [0.14.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.13.16...v0.14.0
 [0.14.1]: https://github.com/SirsiMaster/Assiduous/compare/v0.14.0...v0.14.1
+[0.14.2]: https://github.com/SirsiMaster/Assiduous/compare/v0.14.1...v0.14.2

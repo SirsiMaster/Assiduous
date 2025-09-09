@@ -2,7 +2,7 @@
 
 🌐 **Live Platform:** https://assiduousflip.web.app
 
-[![Version](https://img.shields.io/badge/version-0.14.1-blue.svg)](https://github.com/SirsiMaster/Assiduous/releases)
+[![Version](https://img.shields.io/badge/version-0.14.2-blue.svg)](https://github.com/SirsiMaster/Assiduous/releases)
 [![Changelog](https://img.shields.io/badge/changelog-Keep%20a%20Changelog-brightgreen.svg)](./changelog.md)
 [![PRD](https://img.shields.io/badge/PRD-Technical%20Blueprint-orange.svg)](./docs/ASSIDUOUS_TECHNICAL_BLUEPRINT.md)
 [![Contributing](https://img.shields.io/badge/contributing-guidelines-purple.svg)](./.github/CONTRIBUTING.md)
