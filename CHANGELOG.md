@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.14.1] - 2025-09-09
+
+### Fixed
+- fix(components): Fix sidebar and header rendering in admin portal
+
+
 ## [0.14.0] - 2025-09-09
 
 ### Added
@@ -633,7 +639,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.14.0...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.14.1...HEAD
+
+
+## [0.14.1] - 2025-09-09
+
+### Fixed
+- fix(components): Fix sidebar and header rendering in admin portal
 
 
 ## [0.14.0] - 2025-09-09
@@ -850,3 +862,4 @@ To generate changelog entries:
 [0.13.15]: https://github.com/SirsiMaster/Assiduous/compare/v0.13.14...v0.13.15
 [0.13.16]: https://github.com/SirsiMaster/Assiduous/compare/v0.13.15...v0.13.16
 [0.14.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.13.16...v0.14.0
+[0.14.1]: https://github.com/SirsiMaster/Assiduous/compare/v0.14.0...v0.14.1
