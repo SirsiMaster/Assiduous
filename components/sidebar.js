@@ -3,29 +3,33 @@
  *
  * How it works:
  * - On DOMContentLoaded, replaces <aside id="sidebar-root"> with the shared template
- * - Uses data-base attribute on the aside as the base path (defaults to "/Assiduous/assiduousflip")
+ * - Dynamically calculates correct base path for navigation links
  * - Highlights active item via data-active (data-key in template)
- * - Ensures portable across SirsiMaster projects (only dependency is CSS already on each page)
+ * - Works correctly from any location in the site hierarchy
  */
 (function () {
   function resolveBase(el) {
     var base = el.getAttribute('data-base');
     if (base && base.trim()) return base.replace(/\/$/, '');
 
-    // New structure: everything is at root level
-    // No more /assiduousflip subdirectory
-    return '';
-  }
-
-  function injectSidebar(root, base, activeKey) {
-    var xhr = new XMLHttpRequest();
-    // Determine the correct path based on current page location
+    // Calculate relative path to admin root based on current location
     var path = window.location.pathname;
-    var sidebarPath;
     
-    // Check if we're in development subfolder
-    if (path.includes('/admin/development/backups/')) {
-      sidebarPath = '../../../components/sidebar.html';
+    // For development subfolder pages
+    if (path.includes('/admin/development/')) {
+      return '../'; // Go up one level to admin/
+    }
+    // For contract subfolder pages  
+    else if (path.includes('/admin/contracts/')) {
+      return '../'; // Go up one level to admin/
+    }
+    // For admin root pages
+    else if (path.includes('/admin/')) {
+      return ''; // Already at admin level
+    }
+    // For root level or other pages
+    return 'admin/';
+  }
     } else if (path.includes('/admin/development/') || path.includes('/admin/contracts/')) {
       sidebarPath = '../../components/sidebar.html';
     } else if (path.includes('/admin/') || path.includes('/client/') || path.includes('/docs/')) {
