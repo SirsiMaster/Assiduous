@@ -269,24 +269,7 @@
             padding: 24px;
         }
 
-        .btn {
-            padding: 8px 16px;
-            border-radius: 6px;
-            font-weight: 500;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.15s;
-            border: none;
-        }
-
-        .btn-primary {
-            background: var(--sky);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background: #4A90C9;
-        }
+        /* Modern button styles handled by sirsi-button component */
 
         .table {
             width: 100%;
@@ -514,7 +497,7 @@
         <div class="card">
             <div class="card-header">
                 <div class="card-title">⚙️ Rate Configuration</div>
-                <sirsi-button variant="primary" size="md" class="btn btn-primary">Update Rate</sirsi-button>
+                <sirsi-button variant="primary" size="md">Update Rate</sirsi-button>
             </div>
             <div class="card-body">
                 <div class="metrics-grid">
@@ -538,7 +521,7 @@
         <div class="card">
             <div class="card-header">
                 <div class="card-title">📋 Today's Activities</div>
-                <sirsi-button variant="primary" size="md" class="btn btn-primary">Add Entry</sirsi-button>
+                <sirsi-button variant="primary" size="md">Add Entry</sirsi-button>
             </div>
             <div class="card-body">
                 <table class="table">
@@ -619,9 +602,9 @@
             </div>
             <div class="card-body">
                 <div style="display: flex; gap: 12px;">
-                    <sirsi-button variant="primary" size="md" class="btn btn-primary">Export CSV</sirsi-button>
-                    <sirsi-button variant="primary" size="md" class="btn btn-primary">Generate PDF Report</sirsi-button>
-                    <sirsi-button variant="primary" size="md" class="btn btn-primary">Print Summary</sirsi-button>
+                    <sirsi-button variant="primary" size="md">Export CSV</sirsi-button>
+                    <sirsi-button variant="secondary" size="md">Generate PDF Report</sirsi-button>
+                    <sirsi-button variant="ghost" size="md">Print Summary</sirsi-button>
                 </div>
             </div>
             </div>
@@ -634,18 +617,19 @@
         document.addEventListener('DOMContentLoaded', function() {
             console.log('Development Costs page loaded');
             
-            // Add click handlers for buttons
-            document.querySelectorAll('.btn').forEach(btn => {
+            // Add click handlers for sirsi-button components
+            document.querySelectorAll('sirsi-button').forEach(btn => {
                 btn.addEventListener('click', function(e) {
-                    if (this.textContent.includes('Export CSV')) {
+                    const buttonText = this.textContent.trim();
+                    if (buttonText === 'Export CSV') {
                         alert('CSV export would download development_costs_' + new Date().toISOString().split('T')[0] + '.csv');
-                    } else if (this.textContent.includes('PDF')) {
+                    } else if (buttonText === 'Generate PDF Report') {
                         alert('PDF report generation would open in new window');
-                    } else if (this.textContent.includes('Print')) {
+                    } else if (buttonText === 'Print Summary') {
                         window.print();
-                    } else if (this.textContent.includes('Add Entry')) {
+                    } else if (buttonText === 'Add Entry') {
                         alert('Time entry form would open here');
-                    } else if (this.textContent.includes('Update Rate')) {
+                    } else if (buttonText === 'Update Rate') {
                         alert('Rate configuration dialog would open here');
                     }
                 });
