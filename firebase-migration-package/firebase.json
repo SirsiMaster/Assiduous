@@ -2,19 +2,14 @@
   "functions": {
     "source": "functions"
   },
-  "hosting": [
-    {
-      "target": "prod",
-      "public": "assiduous-build",
-      "ignore": ["firebase.json", "**/.*", "**/node_modules/**", "**/firebase-migration-package/**"],
-      "redirects": [
-        { "source": "/", "destination": "/AssiduousFlip/", "type": 302 }
-      ],
-      "rewrites": [
-        { "source": "/api/**", "function": "app" }
-      ]
-    }
-  ],
+  "hosting": {
+    "site": "assiduousflip",
+    "public": "assiduous-build",
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**", "**/firebase-migration-package/**"],
+    "rewrites": [
+      { "source": "/api/**", "function": "app" }
+    ]
+  },
   "firestore": {
     "rules": "firestore.rules",
     "indexes": "firestore.indexes.json"
