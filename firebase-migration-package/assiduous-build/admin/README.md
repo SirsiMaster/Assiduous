@@ -14,7 +14,7 @@ Complete admin portal with consistent design system and navigation.
 ├── market.html         ✅ Market analysis
 ├── analytics.html      ✅ Analytics page (fixed CSS)
 ├── settings.html       ✅ Settings page
-└── README.md          ✅ This documentation
+└── readme.md          ✅ This documentation
 ```
 
 ## Design System

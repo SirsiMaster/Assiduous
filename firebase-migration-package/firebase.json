@@ -6,6 +6,17 @@
     "site": "assiduousflip",
     "public": "assiduous-build",
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**", "**/firebase-migration-package/**"],
+    "headers": [
+      {
+        "source": "**",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "public, max-age=3600"
+          }
+        ]
+      }
+    ],
     "rewrites": [
       { "source": "/api/**", "function": "app" }
     ]

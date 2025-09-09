@@ -8,127 +8,19 @@
     
     <!-- Assiduous Design System -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SirsiMaster/sirsi-ui@v0.1.1/dist/sirsi-ui.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SirsiMaster/sirsi-ui@v0.1.4/dist/sirsi-ui.css">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     
     <link rel="stylesheet" href="../assiduous.css">
+    <link rel="stylesheet" href="../components/admin-layout.css">
+    <script defer src="https://cdn.jsdelivr.net/gh/SirsiMaster/sirsi-ui@v0.1.4/dist/sirsi-ui.js"></script>
     
     <style>
-        /* Admin Layout - Consistent across all admin pages */
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: var(--white);
-        }
-
-        .admin-wrapper {
-            display: flex;
-            height: 100vh;
-        }
-
-        /* Sidebar */
-        .sidebar {
-            width: 240px;
-            background: var(--navy);
-            color: var(--white);
-            display: flex;
-            flex-direction: column;
-        }
-
-        .sidebar-header {
-            padding: var(--space-lg);
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .sidebar-logo {
-            display: flex;
-            align-items: center;
-            gap: var(--space-sm);
-            color: var(--white);
-            text-decoration: none;
-        }
-
-        .sidebar-logo svg {
-            width: 24px;
-            height: 24px;
-        }
-
-        .sidebar-logo-text {
-            font-size: 18px;
-            font-weight: 700;
-        }
-
-        .sidebar-nav {
-            flex: 1;
-            padding: var(--space-md) 0;
+        /* Analytics-specific styles only */
+        .page-content {
+            padding: var(--space-xl);
             overflow-y: auto;
-        }
-
-        .nav-section {
-            margin-bottom: var(--space-lg);
-        }
-
-        .nav-section-title {
-            padding: 0 var(--space-lg);
-            font-size: 11px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            opacity: 0.6;
-            margin-bottom: var(--space-sm);
-        }
-
-        .nav-item {
-            display: flex;
-            align-items: center;
-            gap: var(--space-sm);
-            padding: var(--space-sm) var(--space-lg);
-            color: rgba(255,255,255,0.8);
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            transition: all 0.15s;
-        }
-
-        .nav-item:hover {
-            background: rgba(255,255,255,0.05);
-            color: var(--white);
-        }
-
-        .nav-item.active {
-            background: var(--sky);
-            color: var(--white);
-        }
-
-        .nav-icon {
-            width: 18px;
-            height: 18px;
-            opacity: 0.8;
-        }
-
-        /* Main Content */
-        .main-content {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        /* Top Bar */
-        .topbar {
-            background: var(--white);
-            border-bottom: 1px solid var(--border);
-            padding: var(--space-md) var(--space-xl);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .topbar-left {
-            display: flex;
-            align-items: center;
-            gap: var(--space-lg);
+            background: var(--gray-50);
         }
 
         .date-range-selector {
@@ -149,12 +41,6 @@
             color: var(--text-primary);
         }
 
-        .topbar-actions {
-            display: flex;
-            align-items: center;
-            gap: var(--space-md);
-        }
-
         .btn-secondary {
             padding: var(--space-sm) var(--space-md);
             background: var(--white);
@@ -173,43 +59,6 @@
         .btn-secondary:hover {
             background: var(--sky);
             color: var(--white);
-        }
-
-        .user-avatar {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: var(--gradient);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--white);
-            font-weight: 600;
-            font-size: 12px;
-        }
-
-        /* Page Content */
-        .page-content {
-            flex: 1;
-            padding: var(--space-xl);
-            overflow-y: auto;
-            background: var(--gray-50);
-        }
-
-        .page-header {
-            margin-bottom: var(--space-xl);
-        }
-
-        .page-title {
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--dark);
-            margin-bottom: var(--space-xs);
-        }
-
-        .page-subtitle {
-            font-size: 14px;
-            color: var(--text-secondary);
         }
 
         /* KPI Cards */
@@ -524,51 +373,54 @@
 </head>
 <body>
     <div class="admin-wrapper">
-        <!-- Sidebar - Consistent across all admin pages -->
+        <!-- Standardized Admin Sidebar -->
         <aside id="sidebar-root" data-active="analytics"></aside>
 
         <!-- Main Content -->
         <main class="main-content">
-            <!-- Top Bar -->
-            <header class="topbar">
-                <div class="topbar-left">
-                    <div class="date-range-selector">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                            <line x1="16" y1="2" x2="16" y2="6"></line>
-                            <line x1="8" y1="2" x2="8" y2="6"></line>
-                            <line x1="3" y1="10" x2="21" y2="10"></line>
-                        </svg>
-                        <select class="date-select">
-                            <option>Last 30 Days</option>
-                            <option>Last Quarter</option>
-                            <option>Last 6 Months</option>
-                            <option>Last Year</option>
-                            <option>All Time</option>
-                        </select>
-                    </div>
-                </div>
-                
-                <div class="topbar-actions">
-                    <button class="btn-secondary">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                            <polyline points="7 10 12 15 17 10"></polyline>
-                            <line x1="12" y1="15" x2="12" y2="3"></line>
-                        </svg>
-                        Export Report
-                    </button>
-                    <div class="user-avatar">AU</div>
-                </div>
-            </header>
+            <!-- Standardized Admin Header -->
+            <header id="admin-header-root" 
+                    data-title="Analytics Dashboard" 
+                    data-subtitle="Comprehensive insights into platform performance, sales, and user engagement"
+                    data-search-placeholder="Search analytics data..."
+                    data-actions='[{"label":"Export Report","icon":"<path d=\"M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4\"></path><polyline points=\"7 10 12 15 17 10\"></polyline><line x1=\"12\" y1=\"15\" x2=\"12\" y2=\"3\"></line>","onclick":"HeaderActions.exportData()"}]'></header>
 
             <!-- Page Content -->
             <div class="page-content">
-                <!-- Page Header -->
-                <div class="page-header">
-                    <h1 class="page-title">Real Estate Analytics</h1>
-                    <p class="page-subtitle">Comprehensive insights into platform performance, sales, and user engagement</p>
-                </div>
+
+                <!-- Analytics Tabs -->
+                <sirsi-tabs id="analytics-tabs" style="margin-bottom: var(--space-lg);">
+                    <sirsi-tab slot="tab" selected>Overview</sirsi-tab>
+                    <sirsi-tab slot="tab">Trends</sirsi-tab>
+                    <sirsi-tab slot="tab">Performance</sirsi-tab>
+
+                    <div slot="panel">
+                        <p class="text-sm" style="color: var(--text-secondary); margin-bottom: var(--space-sm);">
+                            Quick snapshot of KPIs and current period highlights.
+                        </p>
+                        <sirsi-button appearance="secondary" size="sm" onclick="document.getElementById('overview').scrollIntoView({behavior:'smooth'});">
+                            Jump to Overview
+                        </sirsi-button>
+                    </div>
+                    <div slot="panel">
+                        <p class="text-sm" style="color: var(--text-secondary); margin-bottom: var(--space-sm);">
+                            Explore sales volume trends and recent user activity.
+                        </p>
+                        <sirsi-button appearance="secondary" size="sm" onclick="document.getElementById('trends').scrollIntoView({behavior:'smooth'});">
+                            Jump to Trends
+                        </sirsi-button>
+                    </div>
+                    <div slot="panel">
+                        <p class="text-sm" style="color: var(--text-secondary); margin-bottom: var(--space-sm);">
+                            Review agent performance, property type performance, ROI and commissions.
+                        </p>
+                        <sirsi-button appearance="secondary" size="sm" onclick="document.getElementById('performance').scrollIntoView({behavior:'smooth'});">
+                            Jump to Performance
+                        </sirsi-button>
+                    </div>
+                </sirsi-tabs>
+
+                <div id="overview"></div>
 
                 <!-- KPI Cards -->
                 <div class="kpi-grid">
@@ -684,6 +536,7 @@
                     </div>
                 </div>
 
+                <div id="trends"></div>
                 <!-- Sales & Revenue Chart -->
                 <div class="chart-card full-width" style="margin-bottom: var(--space-xl);">
                     <div class="chart-header">
@@ -805,6 +658,7 @@
                     </div>
                 </div>
 
+                <div id="performance"></div>
                 <!-- Performance Tables -->
                 <div class="analytics-grid">
                     <!-- Top Performing Agents -->
@@ -1085,6 +939,15 @@
             }
         });
 
+        // Header Actions for Analytics
+        const HeaderActions = {
+            exportData: function() {
+                // In production, this would generate CSV/PDF export of analytics data
+                console.log('Exporting analytics data...');
+                alert('Analytics data export functionality will be implemented in the next phase.');
+            }
+        };
+
         // Highlight active page in sidebar
         document.addEventListener('DOMContentLoaded', function() {
             const currentPath = window.location.pathname;
@@ -1098,5 +961,6 @@
         });
     </script>
     <script src="../components/sidebar.js"></script>
+    <script src="../components/admin-header.js"></script>
 </body>
 </html>

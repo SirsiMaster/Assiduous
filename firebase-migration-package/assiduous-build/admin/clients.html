@@ -8,17 +8,18 @@
     
     <!-- Assiduous Design System -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SirsiMaster/sirsi-ui@v0.1.1/dist/sirsi-ui.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SirsiMaster/sirsi-ui@v0.1.2/dist/sirsi-ui.css">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     
     <link rel="stylesheet" href="../assiduous.css">
+    <link rel="stylesheet" href="../components/admin-layout.css">
     
     <style>
         /* Admin Layout - Consistent across all admin pages */
         body {
             margin: 0;
             padding: 0;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: "Geist Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
             background: var(--white);
         }
 
@@ -381,6 +382,7 @@
             }
         }
     </style>
+    <script defer src="https://cdn.jsdelivr.net/gh/SirsiMaster/sirsi-ui@v0.1.2/dist/sirsi-ui.js"></script>
 </head>
 <body>
     <div class="admin-wrapper">
@@ -389,64 +391,42 @@
 
         <!-- Main Content -->
         <main class="main-content">
-            <!-- Top Bar -->
-            <header class="topbar">
-                <div class="topbar-left">
-                    <div class="search-bar">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="11" cy="11" r="8"></circle>
-                            <path d="m21 21-4.35-4.35"></path>
-                        </svg>
-                        <input type="text" class="search-input" placeholder="Search clients...">
-                    </div>
-                </div>
-                
-                <div class="topbar-actions">
-                    <button class="btn-primary">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <line x1="12" y1="5" x2="12" y2="19"></line>
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                        </svg>
-                        Add Client
-                    </button>
-                    <div class="user-avatar">AU</div>
-                </div>
-            </header>
+            <!-- Standardized Admin Header -->
+            <header id="admin-header-root" 
+                    data-title="Clients Management" 
+                    data-subtitle="Manage all client information and relationships"
+                    data-search-placeholder="Search clients..."
+                    data-actions='[{"label":"Add Client","icon":"<line x1=\"12\" y1=\"5\" x2=\"12\" y2=\"19\"></line><line x1=\"5\" y1=\"12\" x2=\"19\" y2=\"12\"></line>","primary":true,"onclick":"HeaderActions.handleAction(\"addClient\")"}]'></header>
 
             <!-- Page Content -->
             <div class="page-content">
-                <!-- Page Header -->
-                <div class="page-header">
-                    <h1 class="page-title">Clients Management</h1>
-                    <p class="page-subtitle">Manage client information and interactions</p>
-                </div>
 
                 <!-- Stats Cards -->
                 <div class="stats-grid">
-                    <div class="stat-card">
+                    <div class="stat-card sirsi-card sirsi-card--elevated">
                         <div class="stat-value">3,842</div>
                         <div class="stat-label">Total Clients</div>
                     </div>
-                    <div class="stat-card">
+                    <div class="stat-card sirsi-card sirsi-card--elevated">
                         <div class="stat-value">1,256</div>
                         <div class="stat-label">Active Clients</div>
                     </div>
-                    <div class="stat-card">
+                    <div class="stat-card sirsi-card sirsi-card--elevated">
                         <div class="stat-value">423</div>
                         <div class="stat-label">New This Month</div>
                     </div>
-                    <div class="stat-card">
+                    <div class="stat-card sirsi-card sirsi-card--elevated">
                         <div class="stat-value">89%</div>
                         <div class="stat-label">Satisfaction Rate</div>
                     </div>
-                    <div class="stat-card">
+                    <div class="stat-card sirsi-card sirsi-card--elevated">
                         <div class="stat-value">$2.8M</div>
                         <div class="stat-label">Total Value</div>
                     </div>
                 </div>
 
                 <!-- Clients Table -->
-                <div class="data-table">
+                <div class="data-table sirsi-card">
                     <div class="table-header">
                         <h3 class="table-title">Client Directory</h3>
                         <button class="btn-secondary">Export List</button>
@@ -479,7 +459,7 @@
                                 <td>Sarah Johnson</td>
                                 <td>3</td>
                                 <td>$1.2M</td>
-                                <td><span class="status-badge status-active">Active</span></td>
+                                <td><span class="sirsi-badge sirsi-badge--success">Active</span></td>
                             </tr>
                             <tr>
                                 <td>
@@ -513,7 +493,7 @@
                                 <td>Lisa Anderson</td>
                                 <td>1</td>
                                 <td>$580K</td>
-                                <td><span class="status-badge status-active">Active</span></td>
+                                <td><span class="sirsi-badge sirsi-badge--success">Active</span></td>
                             </tr>
                             <tr>
                                 <td>
@@ -530,7 +510,7 @@
                                 <td>Tom Martinez</td>
                                 <td>2</td>
                                 <td>$475K</td>
-                                <td><span class="status-badge status-active">Active</span></td>
+                                <td><span class="sirsi-badge sirsi-badge--success">Active</span></td>
                             </tr>
                             <tr>
                                 <td>
@@ -547,7 +527,7 @@
                                 <td>Sarah Johnson</td>
                                 <td>1</td>
                                 <td>$420K</td>
-                                <td><span class="status-badge status-inactive">Inactive</span></td>
+                                <td><span class="sirsi-badge sirsi-badge--success">Inactive</span></td>
                             </tr>
                             <tr>
                                 <td>
@@ -564,7 +544,7 @@
                                 <td>Mike Wilson</td>
                                 <td>3</td>
                                 <td>$920K</td>
-                                <td><span class="status-badge status-active">Active</span></td>
+                                <td><span class="sirsi-badge sirsi-badge--success">Active</span></td>
                             </tr>
                             <tr>
                                 <td>
@@ -598,7 +578,7 @@
                                 <td>Tom Martinez</td>
                                 <td>1</td>
                                 <td>$295K</td>
-                                <td><span class="status-badge status-active">Active</span></td>
+                                <td><span class="sirsi-badge sirsi-badge--success">Active</span></td>
                             </tr>
                         </tbody>
                     </table>
@@ -608,6 +588,21 @@
     </div>
 
     <script>
+        // Header Actions for Clients
+        const HeaderActions = {
+            handleAction: function(action) {
+                switch(action) {
+                    case 'addClient':
+                        // In production, this would open a modal or navigate to add client form
+                        console.log('Opening add client form...');
+                        alert('Add client functionality will be implemented in the next phase.');
+                        break;
+                    default:
+                        console.log('Unknown action:', action);
+                }
+            }
+        };
+
         // Highlight active page in sidebar
         document.addEventListener('DOMContentLoaded', function() {
             const currentPath = window.location.pathname;
@@ -621,5 +616,6 @@
         });
     </script>
     <script src="../components/sidebar.js"></script>
+    <script src="../components/admin-header.js"></script>
 </body>
 </html>

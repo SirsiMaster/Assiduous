@@ -115,7 +115,7 @@ AssiduousRealty/
 ├── analytics.html            # Analytics platform
 ├── reports.html             # Report generation
 ├── settings.html            # Configuration
-├── CHANGELOG.md             # Version history
+├── changelog.md             # Version history
 ├── README_DASHBOARD.md      # This file
 └── TESTING_CHECKLIST.md     # QA documentation
 ```

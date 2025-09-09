@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
-    <title>Contracts & Documents - AssiduousFlip Admin</title>
+    <title>Contracts & Signatures - Assiduous Admin</title>
     
     <!-- Assiduous Design System -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,13 +12,14 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     
     <link rel="stylesheet" href="../../assiduous.css">
+    <link rel="stylesheet" href="../../components/admin-layout.css">
     
     <style>
         /* Admin Layout */
         body {
             margin: 0;
             padding: 0;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: "Geist Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
             background: var(--white);
         }
 
@@ -114,40 +115,6 @@
             overflow: hidden;
         }
 
-        /* Top Bar */
-        .topbar {
-            background: var(--white);
-            border-bottom: 1px solid var(--border);
-            padding: var(--space-md) var(--space-xl);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .topbar-actions {
-            display: flex;
-            align-items: center;
-            gap: var(--space-md);
-        }
-
-        .topbar-user {
-            display: flex;
-            align-items: center;
-            gap: var(--space-sm);
-        }
-
-        .user-avatar {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: var(--gradient);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--white);
-            font-weight: 600;
-            font-size: 12px;
-        }
 
         /* Dashboard Content */
         .dashboard-content {
@@ -157,18 +124,6 @@
             background: var(--gray-50);
         }
 
-        .page-title {
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--dark);
-            margin-bottom: var(--space-xs);
-        }
-
-        .page-subtitle {
-            font-size: 14px;
-            color: var(--text-secondary);
-            margin-bottom: var(--space-xl);
-        }
 
         /* Contract Cards Grid */
         .contracts-grid {
@@ -286,6 +241,7 @@
             color: var(--text-secondary);
         }
     </style>
+    <script defer src="https://cdn.jsdelivr.net/gh/SirsiMaster/sirsi-ui@v0.1.2/dist/sirsi-ui.js"></script>
 </head>
 <body>
     <div class="admin-wrapper">
@@ -294,29 +250,14 @@
 
         <!-- Main Content -->
         <main class="main-content">
-            <!-- Top Bar -->
-            <header class="topbar">
-                <div>
-                    <nav style="font-size: 12px; color: var(--text-secondary);">
-                        <a href="../dashboard.html" style="color: var(--text-secondary); text-decoration: none;">Admin</a>
-                        <span style="margin: 0 8px;">/</span>
-                        <span>Contracts & Documents</span>
-                    </nav>
-                </div>
-                <div class="topbar-actions">
-                    <div class="topbar-user">
-                        <span style="font-size: 14px; color: var(--text-secondary);">Admin User</span>
-                        <div class="user-avatar">A</div>
-                    </div>
-                </div>
-            </header>
+            <!-- Standardized Admin Header -->
+            <header id="admin-header-root" 
+                    data-title="Contracts & Documents" 
+                    data-subtitle="Manage your contracts, agreements, and important documents"
+                    data-search-placeholder="Search contracts..."></header>
 
             <!-- Dashboard Content -->
             <div class="dashboard-content">
-                <div>
-                    <h1 class="page-title">Contracts & Documents</h1>
-                    <p class="page-subtitle">Manage your contracts, agreements, and important documents</p>
-                </div>
 
                 <!-- Contracts Grid -->
                 <div class="contracts-grid">
@@ -325,12 +266,12 @@
                         <div class="contract-icon">📑</div>
                         <h3 class="contract-title">Sirsi Technologies Service Contract</h3>
                         <p class="contract-description">
-                            Technical service contract for the AssiduousFlip micro-flipping platform enhancement. 
+                            Technical service contract for the assiduousflip micro-flipping platform enhancement. 
                             Includes platform integration, payment terms, and implementation details.
                         </p>
                         <div class="contract-meta">
                             <span class="contract-status">Active</span>
-                            <span class="contract-date">Sept 5, 2025</span>
+                            <span class="contract-date">Sept 7, 2025</span>
                         </div>
                     </a>
 
@@ -340,10 +281,24 @@
                         <h3 class="contract-title">Payment Structure</h3>
                         <p class="contract-description">
                             Detailed breakdown of payment options, monthly costs, and financial structure 
-                            for the Sirsi Technologies contract.
+                            for the Sirsi Technologies contract. Recently updated with standardized formatting.
                         </p>
                         <div class="contract-meta">
-                            <span class="contract-status">Current</span>
+                            <span class="contract-status">Updated</span>
+                            <span class="contract-date">Sept 7, 2025</span>
+                        </div>
+                    </a>
+
+                    <!-- Contract Amendment Card -->
+                    <a href="../../../docs/SIRSI_CONTRACT_AMENDMENT.md" class="contract-card" target="_blank">
+                        <div class="contract-icon">📋</div>
+                        <h3 class="contract-title">Contract Amendment</h3>
+                        <p class="contract-description">
+                            Original contract amendment documentation outlining the scope changes 
+                            and technical requirements for the platform enhancement.
+                        </p>
+                        <div class="contract-meta">
+                            <span class="contract-status">Signed</span>
                             <span class="contract-date">Sept 5, 2025</span>
                         </div>
                     </a>
@@ -353,8 +308,8 @@
                         <div class="contract-icon">✅</div>
                         <h3 class="contract-title">Financial Verification</h3>
                         <p class="contract-description">
-                            Complete financial verification summary with all calculations, payment options, 
-                            and cost comparisons verified and documented.
+                            Complete financial verification summary with all contract calculations, 
+                            payment options, and cost comparisons verified and documented.
                         </p>
                         <div class="contract-meta">
                             <span class="contract-status">Verified</span>
@@ -362,42 +317,17 @@
                         </div>
                     </a>
 
-                    <!-- Implementation Roadmap Card -->
-                    <a href="../../../docs/IMPLEMENTATION_ROADMAP_30DAY.md" class="contract-card" target="_blank">
-                        <div class="contract-icon">🗺️</div>
-                        <h3 class="contract-title">30-Day Implementation Roadmap</h3>
-                        <p class="contract-description">
-                            Day-by-day implementation schedule for the AssiduousFlip platform enhancement 
-                            with milestones and deliverables.
-                        </p>
-                        <div class="contract-meta">
-                            <span class="contract-status">In Progress</span>
-                            <span class="contract-date">Sept 6 - Oct 5, 2025</span>
-                        </div>
-                    </a>
-
-                    <!-- Contract Integration Plan Card -->
-                    <a href="../../../docs/CONTRACT_INTEGRATION_PLAN.md" class="contract-card" target="_blank">
-                        <div class="contract-icon">🔧</div>
-                        <h3 class="contract-title">Contract Integration Plan</h3>
-                        <p class="contract-description">
-                            Technical architecture and integration details for the platform enhancement,
-                            including Firebase setup and API integrations.
-                        </p>
-                        <div class="contract-meta">
-                            <span class="contract-status">Planning</span>
-                            <span class="contract-date">Sept 5, 2025</span>
-                        </div>
-                    </a>
-
                     <!-- Add New Contract Card -->
-                    <div class="contract-card" style="border: 2px dashed var(--border); background: var(--gray-50); cursor: pointer;"
-                         onclick="alert('Upload functionality coming soon!')">
+                    <div class="contract-card upload-zone" style="border: 2px dashed var(--border); background: var(--gray-50); cursor: pointer;"
+                         data-upload-zone="true">
                         <div class="contract-icon" style="background: none; color: var(--text-secondary);">➕</div>
                         <h3 class="contract-title" style="color: var(--text-secondary);">Add New Document</h3>
                         <p class="contract-description">
-                            Upload a new contract or document to the system
+                            Upload a new contract or document with automatic OpenSign integration
                         </p>
+                        <div style="margin-top: 10px; font-size: 12px; color: var(--text-secondary);">
+                            🔐 Powered by OpenSign
+                        </div>
                     </div>
                 </div>
 
@@ -413,9 +343,9 @@
                             <span>💰</span>
                             <span>Review Payment Options</span>
                         </a>
-                        <a href="../../../docs/DOCUMENT_INDEX.md" class="action-button" style="background: #6366f1;" target="_blank">
+                        <a href="../knowledge-base.html" class="action-button" style="background: #6366f1;">
                             <span>📚</span>
-                            <span>Documentation Index</span>
+                            <span>Technical Documentation</span>
                         </a>
                     </div>
                 </div>
@@ -450,5 +380,14 @@
         });
     </script>
     <script src="../../components/sidebar.js"></script>
+    <script src="../../components/admin-header.js"></script>
+    
+    <!-- OpenSign Global Integration -->
+    <script src="../../assets/js/opensign-global-loader.js"></script>
+    <script type="module">
+        // Ensure DocumentUploadService is loaded
+        import DocumentUploadService from '../../assets/js/services/DocumentUploadService.js';
+        window.documentUploadService = new DocumentUploadService();
+    </script>
 </body>
 </html>

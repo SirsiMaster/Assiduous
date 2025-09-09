@@ -64,7 +64,7 @@
 - **Commits Today**: 32 commits
 - **Average Commit Size**: ~47 lines per commit
 - **Files Modified**: 15+ unique files
-- **Documentation Updated**: CHANGELOG.md, development logs
+- **Documentation Updated**: changelog.md, development logs
 - **Deployment Success Rate**: 100% (after initial fixes)
 
 ### Code Quality Improvements
@@ -123,10 +123,10 @@ Local Development → Git Commit → GitHub Push → Firebase Deploy
 
 ### Files Modified
 ```
-AssiduousFlip/admin/development/dashboard.html      (642 insertions, 751 deletions)
-AssiduousFlip/admin/development/costs.html          (12 insertions, 75 deletions)  
-AssiduousFlip/components/sidebar.html               (8 insertions, 0 deletions)
-CHANGELOG.md                                        (25 insertions, 8 deletions)
+assiduousflip/admin/development/dashboard.html      (642 insertions, 751 deletions)
+assiduousflip/admin/development/costs.html          (12 insertions, 75 deletions)  
+assiduousflip/components/sidebar.html               (8 insertions, 0 deletions)
+changelog.md                                        (25 insertions, 8 deletions)
 firebase-migration-package/                        (build updates)
 ```
 
@@ -167,7 +167,7 @@ firebase-migration-package/                        (build updates)
 ## 📝 Documentation Updates
 
 ### Updated Documents
-1. **CHANGELOG.md**: Added detailed entries for v0.8.0 and v0.8.1
+1. **changelog.md**: Added detailed entries for v0.8.0 and v0.8.1
 2. **Development Dashboard**: Updated with comprehensive tracking
 3. **Sidebar Component**: Enhanced with Dev Costs navigation
 4. **Cost Tracking**: Real-time development cost calculations
@@ -228,4 +228,4 @@ firebase-migration-package/                        (build updates)
 **Developer**: AI Development Assistant  
 **Project**: Assiduous AI-Powered Real Estate Platform  
 **Repository**: https://github.com/SirsiMaster/Assiduous  
-**Live URL**: https://assiduous-prod.web.app/AssiduousFlip/admin/development/dashboard.html
+**Live URL**: https://assiduous-prod.web.app/assiduousflip/admin/development/dashboard.html

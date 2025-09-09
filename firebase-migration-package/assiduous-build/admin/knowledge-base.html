@@ -8,17 +8,18 @@
     
     <!-- Assiduous Design System -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SirsiMaster/sirsi-ui@v0.1.1/dist/sirsi-ui.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SirsiMaster/sirsi-ui@v0.1.2/dist/sirsi-ui.css">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     
     <link rel="stylesheet" href="../assiduous.css">
+    <link rel="stylesheet" href="../components/admin-layout.css">
     
     <style>
         /* Admin Layout */
         body {
             margin: 0;
             padding: 0;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: "Geist Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
             background: var(--white);
         }
 
@@ -115,56 +116,6 @@
             overflow: hidden;
         }
 
-        /* Top Bar */
-        .topbar {
-            background: var(--white);
-            border-bottom: 1px solid var(--border);
-            padding: var(--space-md) var(--space-xl);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .topbar-search {
-            display: flex;
-            align-items: center;
-            gap: var(--space-sm);
-            flex: 1;
-            max-width: 400px;
-        }
-
-        .search-input {
-            flex: 1;
-            padding: var(--space-sm) var(--space-md);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            font-size: 14px;
-        }
-
-        .topbar-actions {
-            display: flex;
-            align-items: center;
-            gap: var(--space-md);
-        }
-
-        .topbar-user {
-            display: flex;
-            align-items: center;
-            gap: var(--space-sm);
-        }
-
-        .user-avatar {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: var(--gradient);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--white);
-            font-weight: 600;
-            font-size: 12px;
-        }
 
         /* Knowledge Base Content */
         .knowledge-content {
@@ -174,21 +125,6 @@
             background: var(--gray-50);
         }
 
-        .page-header {
-            margin-bottom: var(--space-2xl);
-        }
-
-        .page-title {
-            font-size: 28px;
-            font-weight: 700;
-            color: var(--dark);
-            margin-bottom: var(--space-xs);
-        }
-
-        .page-subtitle {
-            font-size: 14px;
-            color: var(--text-secondary);
-        }
 
         /* Navigation Tabs */
         .nav-tabs {
@@ -487,6 +423,7 @@
             }
         }
     </style>
+    <script defer src="https://cdn.jsdelivr.net/gh/SirsiMaster/sirsi-ui@v0.1.2/dist/sirsi-ui.js"></script>
 </head>
 <body>
     <div class="admin-wrapper">
@@ -495,26 +432,14 @@
 
         <!-- Main Content -->
         <main class="main-content">
-            <!-- Top Bar -->
-            <header class="topbar">
-                <div class="topbar-search">
-                    <input type="text" class="search-input" placeholder="Search documentation...">
-                </div>
-                
-                <div class="topbar-actions">
-                    <div class="topbar-user">
-                        <span style="font-size: 14px; color: var(--text-primary);">Admin User</span>
-                        <div class="user-avatar">AU</div>
-                    </div>
-                </div>
-            </header>
+            <!-- Standardized Admin Header -->
+            <header id="admin-header-root" 
+                    data-title="Knowledge Base" 
+                    data-subtitle="Complete documentation and development guide for Assiduous Realty platform"
+                    data-search-placeholder="Search documentation..."></header>
 
             <!-- Knowledge Base Content -->
             <div class="knowledge-content">
-                <div class="page-header">
-                    <h1 class="page-title">Knowledge Base</h1>
-                    <p class="page-subtitle">Complete documentation and development guide for Assiduous Realty platform</p>
-                </div>
 
                 <!-- Navigation Tabs -->
                 <div class="nav-tabs">
@@ -843,47 +768,172 @@
                 <!-- Technical Guide -->
                 <div id="technical" class="content-section">
                     <div class="content-card">
-                        <h2 class="card-title">Technical Guide</h2>
+                        <h2 class="card-title">Technical Documentation</h2>
+                        <p style="margin-bottom: var(--space-xl); color: var(--text-secondary);">
+                            Complete technical reference for the Assiduous Realty platform, including architecture, development setup, and deployment procedures.
+                        </p>
 
-                        <h3 class="card-subtitle">Data Storage Keys</h3>
-                        <p style="margin-bottom: var(--space-lg);">All data is stored in browser localStorage using these keys:</p>
-                        <ul class="styled-list">
-                            <li><code>assiduousProperties</code> - Property inventory</li>
-                            <li><code>assiduousAgents</code> - Agent profiles</li>
-                            <li><code>assiduousClients</code> - Client database</li>
-                            <li><code>assiduousTransactions</code> - Deal pipeline</li>
-                            <li><code>assiduousBuyers</code> - Buyer preferences</li>
-                        </ul>
+                        <h3 class="card-subtitle">System Architecture</h3>
+                        <div class="feature-grid">
+                            <div class="feature-item">
+                                <div class="feature-icon-box">FE</div>
+                                <div class="feature-content">
+                                    <div class="feature-title">Frontend</div>
+                                    <div class="feature-desc">GitHub Pages static hosting from  directory</div>
+                                </div>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon-box">BE</div>
+                                <div class="feature-content">
+                                    <div class="feature-title">Backend</div>
+                                    <div class="feature-desc">Firebase (Firestore DB, Auth, Cloud Storage)</div>
+                                </div>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon-box">🔐</div>
+                                <div class="feature-content">
+                                    <div class="feature-title">Security</div>
+                                    <div class="feature-desc">AES-256-GCM encryption + Firebase Security Rules</div>
+                                </div>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon-box">👥</div>
+                                <div class="feature-content">
+                                    <div class="feature-title">User Roles</div>
+                                    <div class="feature-desc">Unified "client" role (buyers/sellers) + "agent" role</div>
+                                </div>
+                            </div>
+                        </div>
 
                         <h3 class="card-subtitle">Technology Stack</h3>
                         <div class="feature-grid">
                             <div class="feature-item">
-                                <div class="feature-icon-box">F</div>
+                                <div class="feature-icon-box">HTML</div>
                                 <div class="feature-content">
                                     <div class="feature-title">Frontend</div>
-                                    <div class="feature-desc">HTML5, CSS3, Vanilla JavaScript</div>
+                                    <div class="feature-desc">Pure HTML/CSS/JS served from GitHub Pages</div>
                                 </div>
                             </div>
                             <div class="feature-item">
-                                <div class="feature-icon-box">S</div>
+                                <div class="feature-icon-box">🔥</div>
                                 <div class="feature-content">
-                                    <div class="feature-title">Storage</div>
-                                    <div class="feature-desc">localStorage API, JSON format</div>
+                                    <div class="feature-title">Backend</div>
+                                    <div class="feature-desc">Firebase only (Firestore, Auth, Storage)</div>
+                                </div>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon-box">📦</div>
+                                <div class="feature-content">
+                                    <div class="feature-title">Dependencies</div>
+                                    <div class="feature-desc">package.json (Firebase, Next.js ready)</div>
+                                </div>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon-box">🧪</div>
+                                <div class="feature-content">
+                                    <div class="feature-title">Testing</div>
+                                    <div class="feature-desc">Jest for unit tests, manual for integration</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h3 class="card-subtitle">Essential Development Commands</h3>
+                        <div style="background: var(--gray-50); padding: var(--space-lg); border-radius: var(--radius); margin-bottom: var(--space-xl);">
+                            <h4 style="color: var(--sky); margin-bottom: var(--space-md);">Development Server</h4>
+                            <p style="font-family: 'Monaco', monospace; font-size: 13px; margin-bottom: var(--space-sm);"><code>python -m http.server 8080</code> - Start local development server</p>
+                            <p style="font-family: 'Monaco', monospace; font-size: 13px; margin-bottom: var(--space-sm);"><code>python serve.py</code> - Alternative server (if serve.py exists)</p>
+                            <p style="font-family: 'Monaco', monospace; font-size: 13px;"><code>open http://localhost:8080/</code> - Access application</p>
+                        </div>
+
+                        <div style="background: var(--gray-50); padding: var(--space-lg); border-radius: var(--radius); margin-bottom: var(--space-xl);">
+                            <h4 style="color: var(--sky); margin-bottom: var(--space-md);">Git Operations</h4>
+                            <p style="font-family: 'Monaco', monospace; font-size: 13px; margin-bottom: var(--space-sm);"><code>./scripts/hooks/install.sh</code> - Install git hooks (required after cloning)</p>
+                            <p style="font-family: 'Monaco', monospace; font-size: 13px; margin-bottom: var(--space-sm);"><code>git tag -l | sort -V</code> - View available tags</p>
+                            <p style="font-family: 'Monaco', monospace; font-size: 13px;"><code>git push origin --tags</code> - Push tags to remote</p>
+                        </div>
+
+                        <div style="background: var(--gray-50); padding: var(--space-lg); border-radius: var(--radius); margin-bottom: var(--space-xl);">
+                            <h4 style="color: var(--sky); margin-bottom: var(--space-md);">Version Management</h4>
+                            <p style="font-family: 'Monaco', monospace; font-size: 13px; margin-bottom: var(--space-sm);"><code>./scripts/rollback/create_tag.sh 0.2.0 "Release notes"</code> - Create release tag</p>
+                            <p style="font-family: 'Monaco', monospace; font-size: 13px; margin-bottom: var(--space-sm);"><code>./scripts/changelog/update_changelog.sh [version]</code> - Update changelog</p>
+                            <p style="font-family: 'Monaco', monospace; font-size: 13px;"><code>./scripts/rollback/rollback_to_tag.sh v0.1.0</code> - Rollback to previous version</p>
+                        </div>
+
+                        <h3 class="card-subtitle">Key Services & Components</h3>
+                        <ul class="styled-list">
+                            <li><code>firebaseservice.js</code> - Core database operations with encryption</li>
+                            <li><code>auth.js</code> - Authentication and session management</li>
+                            <li><code>crm.js</code> - Client relationship management</li>
+                            <li><code>encryptionservice.js</code> - Field-level encryption layer</li>
+                        </ul>
+
+                        <h3 class="card-subtitle">Firebase Collections</h3>
+                        <ul class="styled-list">
+                            <li><code>users</code> - Encrypted user profiles (email, phone, SSN)</li>
+                            <li><code>properties</code> - Listings with investment scoring</li>
+                            <li><code>transactions</code> - Deal pipeline management</li>
+                            <li><code>messages</code> - Communication logs</li>
+                            <li><code>notifications</code> - Real-time alerts</li>
+                        </ul>
+
+                        <h3 class="card-subtitle">Branching Strategy</h3>
+                        <div class="feature-grid">
+                            <div class="feature-item">
+                                <div class="feature-icon-box">M</div>
+                                <div class="feature-content">
+                                    <div class="feature-title">main</div>
+                                    <div class="feature-desc">Production code</div>
                                 </div>
                             </div>
                             <div class="feature-item">
                                 <div class="feature-icon-box">D</div>
                                 <div class="feature-content">
-                                    <div class="feature-title">Design</div>
-                                    <div class="feature-desc">CSS Variables, Flexbox, Grid</div>
+                                    <div class="feature-title">develop</div>
+                                    <div class="feature-desc">Integration branch</div>
                                 </div>
                             </div>
                             <div class="feature-item">
-                                <div class="feature-icon-box">R</div>
+                                <div class="feature-icon-box">F</div>
                                 <div class="feature-content">
-                                    <div class="feature-title">Responsive</div>
-                                    <div class="feature-desc">Mobile-first, all devices</div>
+                                    <div class="feature-title">feature/*</div>
+                                    <div class="feature-desc">New features</div>
                                 </div>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon-box">H</div>
+                                <div class="feature-content">
+                                    <div class="feature-title">hotfix/*</div>
+                                    <div class="feature-desc">Emergency fixes</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h3 class="card-subtitle">Live Application URLs</h3>
+                        <div style="background: var(--success-light); padding: var(--space-lg); border-radius: var(--radius); margin-bottom: var(--space-xl);">
+                            <h4 style="color: var(--success); margin-bottom: var(--space-md);">Production URLs (GitHub Pages)</h4>
+                            <p style="font-size: 14px; margin-bottom: var(--space-sm);">Base: <a href="https://sirsimaster.github.io/Assiduous/" style="color: var(--sky);">https://sirsimaster.github.io/Assiduous/</a></p>
+                            <p style="font-size: 14px; margin-bottom: var(--space-sm);">Landing: <a href="https://sirsimaster.github.io/Assiduous/" style="color: var(--sky);">Main Application</a></p>
+                            <p style="font-size: 14px; margin-bottom: var(--space-sm);">Admin: <a href="https://sirsimaster.github.io/Assiduous/admin/dashboard.html" style="color: var(--sky);">Admin Dashboard</a></p>
+                            <p style="font-size: 14px;">Client: <a href="https://sirsimaster.github.io/Assiduous/client/" style="color: var(--sky);">Client Portal</a></p>
+                        </div>
+
+                        <h3 class="card-subtitle">Business Model Priority</h3>
+                        <div class="metrics-grid">
+                            <div class="metric-card">
+                                <div class="metric-value">70%</div>
+                                <div class="metric-label">Micro-Flipping Engine</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-value">$2-5K</div>
+                                <div class="metric-label">Per Deal Target</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-value">30%</div>
+                                <div class="metric-label">Traditional Real Estate</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-value">Lead Gen</div>
+                                <div class="metric-label">Focus Area</div>
                             </div>
                         </div>
 
@@ -903,8 +953,19 @@
                             </div>
                             <div class="metric-card">
                                 <div class="metric-label">Dependencies</div>
-                                <div class="metric-value">0</div>
+                                <div class="metric-value">0 External</div>
                             </div>
+                        </div>
+
+                        <div style="background: var(--warning-light); padding: var(--space-lg); border-radius: var(--radius); margin-top: var(--space-xl);">
+                            <h4 style="color: var(--warning); margin-bottom: var(--space-sm);">Critical Architecture Rules</h4>
+                            <ul style="font-size: 14px; color: var(--text-secondary); margin: 0; padding-left: var(--space-lg);">
+                                <li>NEVER store sensitive data in GitHub (use Firebase)</li>
+                                <li>ALWAYS encrypt sensitive fields before Firestore storage</li>
+                                <li>USE Firebase for all backend operations (no GitHub Actions for DB)</li>
+                                <li>MAINTAIN unified client role (no separate buyer/seller paths)</li>
+                                <li>PRIORITIZE micro-flipping features (70% of dev effort)</li>
+                            </ul>
                         </div>
                     </div>
                 </div>
@@ -1064,5 +1125,6 @@
         });
     </script>
     <script src="../components/sidebar.js"></script>
+    <script src="../components/admin-header.js"></script>
 </body>
 </html>

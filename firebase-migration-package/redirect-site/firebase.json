@@ -1,0 +1,14 @@
+{
+  "hosting": {
+    "site": "assiduous-prod",
+    "public": ".",
+    "ignore": ["firebase.json", "**/.*"],
+    "redirects": [
+      {
+        "source": "**",
+        "destination": "https://assiduousflip.web.app",
+        "type": 301
+      }
+    ]
+  }
+}

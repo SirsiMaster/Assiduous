@@ -8,17 +8,18 @@
     
     <!-- Assiduous Design System -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SirsiMaster/sirsi-ui@v0.1.1/dist/sirsi-ui.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SirsiMaster/sirsi-ui@v0.1.2/dist/sirsi-ui.css">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     
     <link rel="stylesheet" href="../assiduous.css">
+    <link rel="stylesheet" href="../components/admin-layout.css">
     
     <style>
         /* Admin Layout - Consistent across all admin pages */
         body {
             margin: 0;
             padding: 0;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: "Geist Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
             background: var(--white);
         }
 
@@ -383,6 +384,7 @@
             }
         }
     </style>
+    <script defer src="https://cdn.jsdelivr.net/gh/SirsiMaster/sirsi-ui@v0.1.2/dist/sirsi-ui.js"></script>
 </head>
 <body>
     <div class="admin-wrapper">
@@ -391,57 +393,35 @@
 
         <!-- Main Content -->
         <main class="main-content">
-            <!-- Top Bar -->
-            <header class="topbar">
-                <div class="topbar-left">
-                    <div class="search-bar">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="11" cy="11" r="8"></circle>
-                            <path d="m21 21-4.35-4.35"></path>
-                        </svg>
-                        <input type="text" class="search-input" placeholder="Search transactions...">
-                    </div>
-                </div>
-                
-                <div class="topbar-actions">
-                    <button class="btn-primary">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <line x1="12" y1="5" x2="12" y2="19"></line>
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                        </svg>
-                        New Transaction
-                    </button>
-                    <div class="user-avatar">AU</div>
-                </div>
-            </header>
+            <!-- Standardized Admin Header -->
+            <header id="admin-header-root" 
+                    data-title="Transactions Management" 
+                    data-subtitle="Track and manage all property transactions"
+                    data-search-placeholder="Search transactions..."
+                    data-actions='[{"label":"New Transaction","icon":"<line x1=\"12\" y1=\"5\" x2=\"12\" y2=\"19\"></line><line x1=\"5\" y1=\"12\" x2=\"19\" y2=\"12\"></line>","primary":true,"onclick":"HeaderActions.handleAction(\"newTransaction\")"}]'></header>
 
             <!-- Page Content -->
             <div class="page-content">
-                <!-- Page Header -->
-                <div class="page-header">
-                    <h1 class="page-title">Transactions Management</h1>
-                    <p class="page-subtitle">Track and manage all property transactions</p>
-                </div>
 
                 <!-- Stats Cards -->
                 <div class="stats-grid">
-                    <div class="stat-card">
+                    <div class="stat-card sirsi-card sirsi-card--elevated">
                         <div class="stat-value">$48.6M</div>
                         <div class="stat-label">Total Volume</div>
                     </div>
-                    <div class="stat-card">
+                    <div class="stat-card sirsi-card sirsi-card--elevated">
                         <div class="stat-value">342</div>
                         <div class="stat-label">Total Transactions</div>
                     </div>
-                    <div class="stat-card">
+                    <div class="stat-card sirsi-card sirsi-card--elevated">
                         <div class="stat-value">89</div>
                         <div class="stat-label">Pending</div>
                     </div>
-                    <div class="stat-card">
+                    <div class="stat-card sirsi-card sirsi-card--elevated">
                         <div class="stat-value">253</div>
                         <div class="stat-label">Completed</div>
                     </div>
-                    <div class="stat-card">
+                    <div class="stat-card sirsi-card sirsi-card--elevated">
                         <div class="stat-value">$142K</div>
                         <div class="stat-label">Avg. Transaction</div>
                     </div>
@@ -488,7 +468,7 @@
                 </div>
 
                 <!-- Transactions Table -->
-                <div class="data-table">
+                <div class="data-table sirsi-card">
                     <div class="table-header">
                         <h3 class="table-title">Recent Transactions</h3>
                         <button class="btn-secondary">Export CSV</button>
@@ -522,7 +502,7 @@
                                 <td>Mike Wilson</td>
                                 <td>$325,000</td>
                                 <td>Dec 14, 2024</td>
-                                <td><span class="status-badge status-pending">Pending</span></td>
+                                <td><span class="sirsi-badge sirsi-badge--warning">Pending</span></td>
                             </tr>
                             <tr>
                                 <td>#TRX-2024-003</td>
@@ -540,7 +520,7 @@
                                 <td>Tom Martinez</td>
                                 <td>$275,000</td>
                                 <td>Dec 12, 2024</td>
-                                <td><span class="status-badge status-pending">Pending</span></td>
+                                <td><span class="sirsi-badge sirsi-badge--warning">Pending</span></td>
                             </tr>
                             <tr>
                                 <td>#TRX-2024-005</td>
@@ -576,7 +556,7 @@
                                 <td>Tom Martinez</td>
                                 <td>$295,000</td>
                                 <td>Dec 8, 2024</td>
-                                <td><span class="status-badge status-pending">Pending</span></td>
+                                <td><span class="sirsi-badge sirsi-badge--warning">Pending</span></td>
                             </tr>
                         </tbody>
                     </table>
@@ -586,6 +566,21 @@
     </div>
 
     <script>
+        // Header Actions for Transactions
+        const HeaderActions = {
+            handleAction: function(action) {
+                switch(action) {
+                    case 'newTransaction':
+                        // In production, this would open a modal or navigate to add transaction form
+                        console.log('Opening new transaction form...');
+                        alert('New transaction functionality will be implemented in the next phase.');
+                        break;
+                    default:
+                        console.log('Unknown action:', action);
+                }
+            }
+        };
+
         // Highlight active page in sidebar
         document.addEventListener('DOMContentLoaded', function() {
             const currentPath = window.location.pathname;
@@ -599,5 +594,6 @@
         });
     </script>
     <script src="../components/sidebar.js"></script>
+    <script src="../components/admin-header.js"></script>
 </body>
 </html>

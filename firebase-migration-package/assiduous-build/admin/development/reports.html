@@ -12,13 +12,14 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     
     <link rel="stylesheet" href="../../assiduous.css">
+    <link rel="stylesheet" href="../../components/admin-layout.css">
     
     <style>
         /* Admin Layout - Consistent across all admin pages */
         body {
             margin: 0;
             padding: 0;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: "Geist Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
             background: var(--white);
         }
 
@@ -115,74 +116,6 @@
             overflow: hidden;
         }
 
-        /* Top Bar */
-        .topbar {
-            background: var(--white);
-            border-bottom: 1px solid var(--border);
-            padding: var(--space-md) var(--space-xl);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .topbar-left {
-            display: flex;
-            align-items: center;
-            gap: var(--space-lg);
-        }
-
-        .report-filters {
-            display: flex;
-            align-items: center;
-            gap: var(--space-md);
-        }
-
-        .filter-select {
-            padding: var(--space-sm) var(--space-md);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            font-size: 14px;
-            background: var(--white);
-            color: var(--text-primary);
-        }
-
-        .topbar-actions {
-            display: flex;
-            align-items: center;
-            gap: var(--space-md);
-        }
-
-        .btn-primary {
-            padding: var(--space-sm) var(--space-md);
-            background: var(--sky);
-            color: var(--white);
-            border: none;
-            border-radius: var(--radius);
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.15s;
-            display: flex;
-            align-items: center;
-            gap: var(--space-xs);
-        }
-
-        .btn-primary:hover {
-            background: #4A8BC2;
-        }
-
-        .user-avatar {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: var(--gradient);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--white);
-            font-weight: 600;
-            font-size: 12px;
-        }
 
         /* Page Content */
         .page-content {
@@ -192,21 +125,6 @@
             background: var(--gray-50);
         }
 
-        .page-header {
-            margin-bottom: var(--space-xl);
-        }
-
-        .page-title {
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--dark);
-            margin-bottom: var(--space-xs);
-        }
-
-        .page-subtitle {
-            font-size: 14px;
-            color: var(--text-secondary);
-        }
 
         /* Report Cards */
         .reports-grid {
@@ -376,6 +294,7 @@
             }
         }
     </style>
+    <script defer src="https://cdn.jsdelivr.net/gh/SirsiMaster/sirsi-ui@v0.1.2/dist/sirsi-ui.js"></script>
 </head>
 <body>
     <div class="admin-wrapper">
@@ -384,47 +303,15 @@
 
         <!-- Main Content -->
         <main class="main-content">
-            <!-- Top Bar -->
-            <header class="topbar">
-                <div class="topbar-left">
-                    <div class="report-filters">
-                        <select class="filter-select">
-                            <option>All Reports</option>
-                            <option>Sprint Reports</option>
-                            <option>Performance Reports</option>
-                            <option>Code Quality</option>
-                            <option>Test Coverage</option>
-                            <option>Deployment Reports</option>
-                        </select>
-                        <select class="filter-select">
-                            <option>Last 30 Days</option>
-                            <option>Last Quarter</option>
-                            <option>Last 6 Months</option>
-                            <option>Last Year</option>
-                            <option>All Time</option>
-                        </select>
-                    </div>
-                </div>
-                
-                <div class="topbar-actions">
-                    <button class="btn-primary">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <line x1="12" y1="5" x2="12" y2="19"></line>
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                        </svg>
-                        Generate Report
-                    </button>
-                    <div class="user-avatar">AU</div>
-                </div>
-            </header>
+            <!-- Standardized Admin Header -->
+            <header id="admin-header-root" 
+                    data-title="Development Reports" 
+                    data-subtitle="Comprehensive reports on development progress, performance, and quality metrics"
+                    data-search-placeholder="Search reports..."
+                    data-actions='[{"label":"Generate Report","icon":"<line x1=\"12\" y1=\"5\" x2=\"12\" y2=\"19\"></line><line x1=\"5\" y1=\"12\" x2=\"19\" y2=\"12\"></line>","primary":true,"onclick":"HeaderActions.generateReport()"}]'></header>
 
             <!-- Page Content -->
             <div class="page-content">
-                <!-- Page Header -->
-                <div class="page-header">
-                    <h1 class="page-title">Development Reports</h1>
-                    <p class="page-subtitle">Comprehensive reports on development progress, performance, and quality metrics</p>
-                </div>
 
                 <!-- Report Templates -->
                 <div class="reports-grid">
@@ -670,5 +557,6 @@
         });
     </script>
     <script src="../../components/sidebar.js"></script>
+    <script src="../../components/admin-header.js"></script>
 </body>
 </html>
