@@ -885,6 +885,20 @@
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
     
+    <!-- Firebase Configuration -->
+    <script>
+        // Firebase configuration for Assiduous Production
+        window.firebaseConfig = {
+            apiKey: "AIzaSyCYlJs10_cdfakekey_RdbxVB6Zjk",
+            authDomain: "assiduous-prod.firebaseapp.com",
+            projectId: "assiduous-prod",
+            storageBucket: "assiduous-prod.appspot.com",
+            messagingSenderId: "123456789012",
+            appId: "1:123456789012:web:abcdef123456789",
+            measurementId: "G-XXXXXXXXXX"
+        };
+    </script>
+    
     <!-- Development Metrics Service -->
     <script src="../../assets/js/services/developmentmetricsservice.js"></script>
     
@@ -917,9 +931,11 @@
                 loadMetrics();
             }, 30 * 1000);
             
-            // Update metrics every 5 minutes
+            // Update metrics every 5 minutes as requested
             setInterval(() => {
                 triggerMetricsUpdate();
+                loadMetrics();
+                console.log('Auto-refresh: Loading latest metrics from Firebase');
             }, 5 * 60 * 1000);
         }
         
