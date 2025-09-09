@@ -1823,17 +1823,8 @@
             if (form) {
                 form.addEventListener('submit', (e) => {
                     e.preventDefault();
-                    const email = document.getElementById('loginEmail').value;
-                    const password = document.getElementById('loginPassword').value;
-                    
-                    // Check for admin credentials
-                    if (email === 'admin@assiduous.com' && password === 'admin123') {
-                        window.location.href = '/assiduousflip/admin/dashboard.html';
-                    } else if (email === 'test@assiduous.com' && password === 'test123') {
-                        window.location.href = '/assiduousflip/client/';
-                    } else {
-                        alert('Invalid credentials. Use admin@assiduous.com / admin123');
-                    }
+                    // For now, just redirect to admin dashboard
+                    window.location.href = '/admin/dashboard.html';
                 });
             }
         })();
