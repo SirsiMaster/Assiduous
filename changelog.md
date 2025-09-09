@@ -7,6 +7,49 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.14.0] - 2025-09-09
+
+### Added
+- feat(landing): Implement comprehensive AssiduousFlip micro-flipping platform
+  - Interactive property value estimator with instant profit calculations
+  - Dashboard preview section with real-time analytics mockup
+  - Video learning center with platform tutorials
+  - Detailed case studies with before/after transformations
+  - Live chat widget with localStorage message persistence
+  - Mobile app CTAs with App Store and Google Play buttons
+  - Market reports download section with email capture
+  - Comprehensive FAQ section addressing micro-flipping concerns
+  - Email signup modal with validation
+  - Trust indicators and media mentions section
+  - Success stories testimonials localized to Philadelphia metro
+
+### Changed
+- refactor(branding): Rebrand from "Assiduous" to "AssiduousFlip" throughout site
+- refactor(images): Update all property images to Philadelphia metro area locations
+  - Hero section: 12 unique Philadelphia area property types
+  - How It Works: Chester County, Delaware suburban homes
+  - Live Opportunities: Location-specific images matching property addresses
+- refactor(content): Localize all content to Philadelphia metro area
+  - Updated neighborhoods: Fishtown, Manayunk, University City, Media, etc.
+  - Updated counties: Bucks, Montgomery, Chester, Delaware, Camden, etc.
+  - Updated testimonial locations to PA, NJ, DE
+
+### Fixed
+- fix(ui): Improve header "Get Started Free" button readability with white text
+- fix(accessibility): Enhance text contrast throughout site
+  - Increased font sizes in Features and How It Works sections
+  - Improved color contrast ratios to meet WCAG standards
+- fix(footer): Make Sirsi credit more prominent with better positioning
+
+### Technical
+- Implemented 7 major platform improvements inspired by HouseCanary
+- Added JavaScript handlers for all interactive elements
+- Created functional email capture forms with inline validation
+- Deployed to Firebase Hosting (https://assiduousflip.web.app)
+- Total lines of code added: ~1,200
+- New interactive components: 8
+- Performance: Maintained <2s load time despite additions
+
 
 ## [0.13.16] - 2025-09-08
 

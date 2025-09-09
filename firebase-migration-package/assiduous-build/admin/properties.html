@@ -8,17 +8,19 @@
     
     <!-- Assiduous Design System -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SirsiMaster/sirsi-ui@v0.1.1/dist/sirsi-ui.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SirsiMaster/sirsi-ui@v0.1.5/dist/sirsi-ui.css">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     
     <link rel="stylesheet" href="../assiduous.css">
+    <link rel="stylesheet" href="../components/admin-layout.css">
+    <script defer src="https://cdn.jsdelivr.net/gh/SirsiMaster/sirsi-ui@v0.1.5/dist/sirsi-ui.js"></script>
     
     <style>
         /* Admin Layout - Consistent across all admin pages */
         body {
             margin: 0;
             padding: 0;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: "Geist Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
             background: var(--white);
         }
 
@@ -148,6 +150,28 @@
             font-size: 14px;
             outline: none;
         }
+        
+        /* Enhanced select styles */
+        .sirsi-select {
+            padding: var(--space-xs) var(--space-sm);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            font-size: 14px;
+            background: var(--white);
+            min-width: 150px;
+            transition: all 0.15s;
+            cursor: pointer;
+        }
+        
+        .sirsi-select:hover {
+            border-color: var(--sky);
+        }
+        
+        .sirsi-select:focus {
+            outline: none;
+            border-color: var(--sky);
+            box-shadow: 0 0 0 3px rgba(91, 165, 217, 0.1);
+        }
 
         .topbar-actions {
             display: flex;
@@ -155,25 +179,7 @@
             gap: var(--space-md);
         }
 
-        .btn-primary {
-            padding: var(--space-sm) var(--space-md);
-            background: var(--sky);
-            color: var(--white);
-            border: none;
-            border-radius: var(--radius);
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.15s;
-            display: flex;
-            align-items: center;
-            gap: var(--space-xs);
-        }
-
-        .btn-primary:hover {
-            background: #4A8BC2;
-            transform: translateY(-1px);
-        }
+        /* Removed legacy button styles - now using sirsi-button */
 
         .user-avatar {
             width: 32px;
@@ -225,6 +231,12 @@
             border: 1px solid var(--border);
             border-radius: var(--radius-md);
             padding: var(--space-lg);
+            transition: all 0.2s;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
         }
 
         .stat-value {
@@ -268,14 +280,7 @@
             letter-spacing: 0.05em;
         }
 
-        .filter-select {
-            padding: var(--space-xs) var(--space-sm);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            font-size: 14px;
-            background: var(--white);
-            min-width: 150px;
-        }
+        /* Filter select now uses sirsi-select class defined above */
 
         /* Properties Grid */
         .properties-grid {
@@ -315,30 +320,11 @@
             opacity: 0.8;
         }
 
+        /* Status badges now use sirsi-badge component */
         .property-status {
             position: absolute;
             top: var(--space-sm);
             right: var(--space-sm);
-            padding: 4px 8px;
-            border-radius: var(--radius);
-            font-size: 11px;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-
-        .status-available {
-            background: var(--success);
-            color: var(--white);
-        }
-
-        .status-pending {
-            background: var(--warning);
-            color: var(--dark);
-        }
-
-        .status-sold {
-            background: var(--danger);
-            color: var(--white);
         }
 
         .property-details {
@@ -390,67 +376,45 @@
 
         <!-- Main Content -->
         <main class="main-content">
-            <!-- Top Bar -->
-            <header class="topbar">
-                <div class="topbar-left">
-                    <div class="search-bar">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="11" cy="11" r="8"></circle>
-                            <path d="m21 21-4.35-4.35"></path>
-                        </svg>
-                        <input type="text" class="search-input" placeholder="Search properties...">
-                    </div>
-                </div>
-                
-                <div class="topbar-actions">
-                    <button class="btn-primary">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <line x1="12" y1="5" x2="12" y2="19"></line>
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                        </svg>
-                        Add Property
-                    </button>
-                    <div class="user-avatar">AU</div>
-                </div>
-            </header>
+            <!-- Standardized Admin Header -->
+            <header id="admin-header-root" 
+                    data-title="Properties Management" 
+                    data-subtitle="Manage all property listings and their details"
+                    data-search-placeholder="Search properties..."
+                    data-actions='[{"label":"Add Property","icon":"<line x1=\"12\" y1=\"5\" x2=\"12\" y2=\"19\"></line><line x1=\"5\" y1=\"12\" x2=\"19\" y2=\"12\"></line>","primary":true,"onclick":"HeaderActions.addProperty()"}]'></header>
 
             <!-- Page Content -->
             <div class="page-content">
-                <!-- Page Header -->
-                <div class="page-header">
-                    <h1 class="page-title">Properties Management</h1>
-                    <p class="page-subtitle">Manage all property listings and their details</p>
-                </div>
 
                 <!-- Stats Cards -->
                 <div class="stats-grid">
-                    <div class="stat-card">
+                    <div class="stat-card sirsi-card sirsi-card--elevated">
                         <div class="stat-value">1,248</div>
                         <div class="stat-label">Total Properties</div>
                     </div>
-                    <div class="stat-card">
+                    <div class="stat-card sirsi-card sirsi-card--elevated">
                         <div class="stat-value">892</div>
                         <div class="stat-label">Available</div>
                     </div>
-                    <div class="stat-card">
+                    <div class="stat-card sirsi-card sirsi-card--elevated">
                         <div class="stat-value">234</div>
                         <div class="stat-label">Pending</div>
                     </div>
-                    <div class="stat-card">
+                    <div class="stat-card sirsi-card sirsi-card--elevated">
                         <div class="stat-value">122</div>
                         <div class="stat-label">Sold</div>
                     </div>
-                    <div class="stat-card">
+                    <div class="stat-card sirsi-card sirsi-card--elevated">
                         <div class="stat-value">$425K</div>
                         <div class="stat-label">Avg. Price</div>
                     </div>
                 </div>
 
                 <!-- Filters -->
-                <div class="filters-bar">
+                <div class="filters-bar sirsi-card">
                     <div class="filter-group">
                         <label class="filter-label">Status</label>
-                        <select class="filter-select">
+                        <select class="sirsi-select">
                             <option>All Status</option>
                             <option>Available</option>
                             <option>Pending</option>
@@ -459,7 +423,7 @@
                     </div>
                     <div class="filter-group">
                         <label class="filter-label">Type</label>
-                        <select class="filter-select">
+                        <select class="sirsi-select">
                             <option>All Types</option>
                             <option>House</option>
                             <option>Apartment</option>
@@ -469,7 +433,7 @@
                     </div>
                     <div class="filter-group">
                         <label class="filter-label">Price Range</label>
-                        <select class="filter-select">
+                        <select class="sirsi-select">
                             <option>Any Price</option>
                             <option>$0 - $200K</option>
                             <option>$200K - $500K</option>
@@ -479,7 +443,7 @@
                     </div>
                     <div class="filter-group">
                         <label class="filter-label">Bedrooms</label>
-                        <select class="filter-select">
+                        <select class="sirsi-select">
                             <option>Any</option>
                             <option>1+</option>
                             <option>2+</option>
@@ -487,18 +451,20 @@
                             <option>4+</option>
                         </select>
                     </div>
+                    <div style="margin-left: auto;">
+                        <sirsi-button variant="secondary" size="sm" icon-leading="<svg width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'><line x1='4' y1='21' x2='4' y2='14'></line><line x1='4' y1='10' x2='4' y2='3'></line><line x1='12' y1='21' x2='12' y2='12'></line><line x1='12' y1='8' x2='12' y2='3'></line><line x1='20' y1='21' x2='20' y2='16'></line><line x1='20' y1='12' x2='20' y2='3'></line><line x1='1' y1='14' x2='7' y2='14'></line><line x1='9' y1='8' x2='15' y2='8'></line><line x1='17' y1='16' x2='23' y2='16'></line></svg>">
+                            Apply Filters
+                        </sirsi-button>
+                    </div>
                 </div>
 
                 <!-- Properties Grid -->
                 <div class="properties-grid">
                     <!-- Property Card 1 -->
-                    <div class="property-card">
+                    <div class="property-card sirsi-card sirsi-card--elevated">
                         <div class="property-image">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                                <polyline points="9 22 9 12 15 12 15 22"></polyline>
-                            </svg>
-                            <span class="property-status status-available">Available</span>
+                            <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&q=80" alt="Property" style="width: 100%; height: 100%; object-fit: cover;">
+                            <sirsi-badge variant="success" class="property-status">Available</sirsi-badge>
                         </div>
                         <div class="property-details">
                             <div class="property-price">$450,000</div>
@@ -528,13 +494,10 @@
                     </div>
 
                     <!-- Property Card 2 -->
-                    <div class="property-card">
+                    <div class="property-card sirsi-card sirsi-card--elevated">
                         <div class="property-image">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                                <polyline points="9 22 9 12 15 12 15 22"></polyline>
-                            </svg>
-                            <span class="property-status status-pending">Pending</span>
+                            <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80" alt="Property" style="width: 100%; height: 100%; object-fit: cover;">
+                            <sirsi-badge variant="warning" class="property-status">Pending</sirsi-badge>
                         </div>
                         <div class="property-details">
                             <div class="property-price">$325,000</div>
@@ -564,13 +527,10 @@
                     </div>
 
                     <!-- Property Card 3 -->
-                    <div class="property-card">
+                    <div class="property-card sirsi-card sirsi-card--elevated">
                         <div class="property-image">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                                <polyline points="9 22 9 12 15 12 15 22"></polyline>
-                            </svg>
-                            <span class="property-status status-available">Available</span>
+                            <img src="https://images.unsplash.com/photo-1605146769289-440113cc3d00?w=800&q=80" alt="Property" style="width: 100%; height: 100%; object-fit: cover;">
+                            <sirsi-badge variant="success" class="property-status">Available</sirsi-badge>
                         </div>
                         <div class="property-details">
                             <div class="property-price">$580,000</div>
@@ -600,13 +560,10 @@
                     </div>
 
                     <!-- Property Card 4 -->
-                    <div class="property-card">
+                    <div class="property-card sirsi-card sirsi-card--elevated">
                         <div class="property-image">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                                <polyline points="9 22 9 12 15 12 15 22"></polyline>
-                            </svg>
-                            <span class="property-status status-sold">Sold</span>
+                            <img src="https://images.unsplash.com/photo-1558036117-15d82a90b9b1?w=800&q=80" alt="Property" style="width: 100%; height: 100%; object-fit: cover;">
+                            <sirsi-badge variant="danger" class="property-status">Sold</sirsi-badge>
                         </div>
                         <div class="property-details">
                             <div class="property-price">$275,000</div>
@@ -636,13 +593,10 @@
                     </div>
 
                     <!-- Property Card 5 -->
-                    <div class="property-card">
+                    <div class="property-card sirsi-card sirsi-card--elevated">
                         <div class="property-image">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                                <polyline points="9 22 9 12 15 12 15 22"></polyline>
-                            </svg>
-                            <span class="property-status status-available">Available</span>
+                            <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&q=80" alt="Property" style="width: 100%; height: 100%; object-fit: cover;">
+                            <sirsi-badge variant="success" class="property-status">Available</sirsi-badge>
                         </div>
                         <div class="property-details">
                             <div class="property-price">$725,000</div>
@@ -672,13 +626,10 @@
                     </div>
 
                     <!-- Property Card 6 -->
-                    <div class="property-card">
+                    <div class="property-card sirsi-card sirsi-card--elevated">
                         <div class="property-image">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                                <polyline points="9 22 9 12 15 12 15 22"></polyline>
-                            </svg>
-                            <span class="property-status status-pending">Pending</span>
+                            <img src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=800&q=80" alt="Property" style="width: 100%; height: 100%; object-fit: cover;">
+                            <sirsi-badge variant="warning" class="property-status">Pending</sirsi-badge>
                         </div>
                         <div class="property-details">
                             <div class="property-price">$380,000</div>
@@ -711,7 +662,130 @@
         </main>
     </div>
 
+    <!-- Property Detail Modal -->
+    <sirsi-modal id="propertyModal" size="lg">
+        <div slot="header">
+            <h2 style="margin: 0; font-size: 20px; font-weight: 600;">Property Details</h2>
+        </div>
+        <div slot="body">
+            <div id="modalPropertyContent">
+                <!-- Dynamic content will be inserted here -->
+            </div>
+        </div>
+        <div slot="footer" style="display: flex; gap: 12px; justify-content: flex-end;">
+            <sirsi-button variant="secondary" size="sm" onclick="closePropertyModal()">
+                Cancel
+            </sirsi-button>
+            <sirsi-button variant="primary" size="sm" icon-leading="<svg width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'><path d='M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7'></path><path d='M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z'></path></svg>">
+                Edit Property
+            </sirsi-button>
+            <sirsi-button variant="danger" size="sm" icon-leading="<svg width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'><polyline points='3 6 5 6 21 6'></polyline><path d='M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2'></path></svg>">
+                Delete
+            </sirsi-button>
+        </div>
+    </sirsi-modal>
+
     <script>
+        // Header Actions for Properties
+        const HeaderActions = {
+            addProperty: function() {
+                // Show add property modal
+                showAddPropertyModal();
+            }
+        };
+
+        // Show property details modal
+        function showPropertyModal(propertyData) {
+            const modal = document.getElementById('propertyModal');
+            const content = document.getElementById('modalPropertyContent');
+            
+            // Generate property detail HTML
+            content.innerHTML = `
+                <div style="display: grid; gap: 20px;">
+                    <img src="${propertyData.image}" alt="Property" style="width: 100%; height: 300px; object-fit: cover; border-radius: 8px;">
+                    <div>
+                        <h3 style="font-size: 24px; font-weight: 600; margin-bottom: 8px;">${propertyData.price}</h3>
+                        <p style="color: var(--text-secondary); margin-bottom: 16px;">${propertyData.address}</p>
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;">
+                            <div style="padding: 12px; background: var(--gray-50); border-radius: 8px;">
+                                <div style="font-size: 18px; font-weight: 600;">${propertyData.beds}</div>
+                                <div style="font-size: 12px; color: var(--text-secondary);">Bedrooms</div>
+                            </div>
+                            <div style="padding: 12px; background: var(--gray-50); border-radius: 8px;">
+                                <div style="font-size: 18px; font-weight: 600;">${propertyData.baths}</div>
+                                <div style="font-size: 12px; color: var(--text-secondary);">Bathrooms</div>
+                            </div>
+                            <div style="padding: 12px; background: var(--gray-50); border-radius: 8px;">
+                                <div style="font-size: 18px; font-weight: 600;">${propertyData.sqft}</div>
+                                <div style="font-size: 12px; color: var(--text-secondary);">Sq Ft</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            modal.open = true;
+        }
+        
+        function closePropertyModal() {
+            const modal = document.getElementById('propertyModal');
+            modal.open = false;
+        }
+        
+        function showAddPropertyModal() {
+            const modal = document.getElementById('propertyModal');
+            const content = document.getElementById('modalPropertyContent');
+            
+            // Generate add property form
+            content.innerHTML = `
+                <form style="display: grid; gap: 16px;">
+                    <div>
+                        <label style="display: block; margin-bottom: 4px; font-size: 14px; font-weight: 500;">Property Address</label>
+                        <input type="text" class="sirsi-input" placeholder="Enter property address" style="width: 100%;">
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                        <div>
+                            <label style="display: block; margin-bottom: 4px; font-size: 14px; font-weight: 500;">Price</label>
+                            <input type="text" class="sirsi-input" placeholder="$0.00">
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 4px; font-size: 14px; font-weight: 500;">Property Type</label>
+                            <select class="sirsi-select" style="width: 100%;">
+                                <option>House</option>
+                                <option>Apartment</option>
+                                <option>Condo</option>
+                                <option>Townhouse</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;">
+                        <div>
+                            <label style="display: block; margin-bottom: 4px; font-size: 14px; font-weight: 500;">Bedrooms</label>
+                            <input type="number" class="sirsi-input" placeholder="0">
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 4px; font-size: 14px; font-weight: 500;">Bathrooms</label>
+                            <input type="number" class="sirsi-input" placeholder="0">
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 4px; font-size: 14px; font-weight: 500;">Sq Ft</label>
+                            <input type="number" class="sirsi-input" placeholder="0">
+                        </div>
+                    </div>
+                    <div>
+                        <label style="display: block; margin-bottom: 4px; font-size: 14px; font-weight: 500;">Description</label>
+                        <textarea class="sirsi-input" rows="4" placeholder="Enter property description" style="width: 100%; resize: vertical;"></textarea>
+                    </div>
+                </form>
+            `;
+            
+            // Update modal header
+            const header = modal.querySelector('[slot="header"] h2');
+            if (header) header.textContent = 'Add New Property';
+            
+            modal.open = true;
+        }
+
         // Highlight active page in sidebar
         document.addEventListener('DOMContentLoaded', function() {
             const currentPath = window.location.pathname;
@@ -722,16 +796,52 @@
                     item.classList.remove('active');
                 }
             });
-        });
 
-        // Property card interactions
-        document.querySelectorAll('.property-card').forEach(card => {
-            card.addEventListener('click', function() {
-                console.log('Property clicked');
-                // Add property detail view logic here
+            // Property card interactions
+            document.querySelectorAll('.property-card').forEach((card, index) => {
+                card.addEventListener('click', function() {
+                    // Extract property data from card
+                    const priceEl = card.querySelector('.property-price');
+                    const addressEl = card.querySelector('.property-address');
+                    const features = card.querySelectorAll('.property-feature');
+                    const imageEl = card.querySelector('.property-image img');
+                    
+                    const propertyData = {
+                        image: imageEl ? imageEl.src : 'https://via.placeholder.com/800x400',
+                        price: priceEl ? priceEl.textContent : '$0',
+                        address: addressEl ? addressEl.textContent : 'Unknown Address',
+                        beds: features[0] ? features[0].textContent.trim().split(' ')[0] : '0',
+                        baths: features[1] ? features[1].textContent.trim().split(' ')[0] : '0',
+                        sqft: features[2] ? features[2].textContent.trim().split(' ')[0] : '0'
+                    };
+                    
+                    showPropertyModal(propertyData);
+                });
             });
         });
+        
+        // Enhanced input styles
+        const style = document.createElement('style');
+        style.textContent = `
+            .sirsi-input {
+                padding: 8px 12px;
+                border: 1px solid var(--border);
+                border-radius: var(--radius);
+                font-size: 14px;
+                transition: all 0.15s;
+            }
+            .sirsi-input:focus {
+                outline: none;
+                border-color: var(--sky);
+                box-shadow: 0 0 0 3px rgba(91, 165, 217, 0.1);
+            }
+            .sirsi-input::placeholder {
+                color: var(--text-secondary);
+            }
+        `;
+        document.head.appendChild(style);
     </script>
     <script src="../components/sidebar.js"></script>
+    <script src="../components/admin-header.js"></script>
 </body>
 </html>

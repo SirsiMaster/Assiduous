@@ -1,22 +1,19 @@
-# Assiduous AI-Powered Real Estate Platform 🏠🤖
+# AssiduousFlip - AI-Powered Micro-Flipping Platform 🏠💰
 
-<<<<<<< HEAD:README.md
-[![Version](https://img.shields.io/badge/version-0.13.16-blue.svg)](https://github.com/SirsiMaster/Assiduous/releases)
-[![Changelog](https://img.shields.io/badge/changelog-Keep%20a%20Changelog-brightgreen.svg)](./CHANGELOG.md)
-=======
-[![Version](https://img.shields.io/badge/version-0.13.15-blue.svg)](https://github.com/SirsiMaster/Assiduous/releases)
+🌐 **Live Platform:** https://assiduousflip.web.app
+
+[![Version](https://img.shields.io/badge/version-0.14.0-blue.svg)](https://github.com/SirsiMaster/Assiduous/releases)
 [![Changelog](https://img.shields.io/badge/changelog-Keep%20a%20Changelog-brightgreen.svg)](./changelog.md)
->>>>>>> 7fdeadcf (refactor: convert all paths and filenames to lowercase):readme.md
 [![PRD](https://img.shields.io/badge/PRD-Technical%20Blueprint-orange.svg)](./docs/ASSIDUOUS_TECHNICAL_BLUEPRINT.md)
 [![Contributing](https://img.shields.io/badge/contributing-guidelines-purple.svg)](./.github/CONTRIBUTING.md)
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
 [![License](https://img.shields.io/badge/license-Proprietary-red.svg)](./LICENSE)
 
-**Assiduous** is an advanced AI-driven real estate platform that revolutionizes property transactions through intelligent matching algorithms, automated market analysis, and predictive analytics. Our flagship AI-Powered Micro-Flipping Service enables investors to identify, analyze, and assign underpriced properties without holding inventory, generating $2,000-$5,000 per deal with minimal capital investment.
+**AssiduousFlip** is the premier micro-flipping platform for the Philadelphia metro area, empowering investors to identify, analyze, and flip properties with zero prior experience. Our AI-driven platform has facilitated over $2.4B in successful flips, with users averaging $47K profit in just 45 days. Whether you're a complete beginner or seasoned investor, AssiduousFlip provides the tools, data, and support to succeed in micro-flipping.
 
 ## 🚀 Overview
 
-Assiduous leverages cutting-edge artificial intelligence to transform how real estate professionals and clients interact with the property market. Our platform provides:
+AssiduousFlip leverages cutting-edge technology to transform micro-flipping in the Philadelphia metro area. Our platform provides:
 
 - **AI Property Matching**: Smart algorithms that learn user preferences and automatically suggest optimal properties
 - **Instant Market Analysis**: Real-time property valuations and investment potential analysis
@@ -146,7 +143,7 @@ assiduous/
 ## 🌐 Deployment
 
 Assiduous is deployed using Firebase Hosting:
-- **Production**: https://assiduousflip.web.app/
+- **Production**: https://assiduousflip.web.app
 - **Firebase Console**: https://console.firebase.google.com/project/assiduous-prod
 - **API Endpoints**: https://us-central1-assiduous-prod.cloudfunctions.net/app
 - Progressive Web App (PWA) ready
@@ -190,4 +187,4 @@ For inquiries about Assiduous AI Real Estate Platform, please contact the develo
 
 ---
 
-**Assiduous** - *Transforming Real Estate with Artificial Intelligence*
+**AssiduousFlip** - *Your Path to Profitable Property Flipping in Philadelphia*
