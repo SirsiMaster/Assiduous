@@ -1194,10 +1194,18 @@
     
     <!-- How It Works Section -->
     <section style="padding: 60px 40px; background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); position: relative; overflow: hidden; z-index: 1;">
-        <!-- Rotating Background -->
+        <!-- Rotating Backgrounds -->
         <div style="position: absolute; inset: 0; z-index: 0;">
-            <div style="position: absolute; inset: 0; background: url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1920&h=1080&fit=crop&q=80'); background-size: cover; background-position: center; opacity: 0.15; filter: blur(1px);"></div>
-            <div style="position: absolute; inset: 0; background: linear-gradient(135deg, rgba(30,41,59,0.95) 0%, rgba(15,23,42,0.98) 100%);"></div>
+            <div class="how-it-works-bg" style="position: absolute; inset: 0; opacity: 0; transition: opacity 2s ease-in-out;">
+                <div style="position: absolute; inset: 0; background: url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1920&h=1080&fit=crop&q=80'); background-size: cover; background-position: center; opacity: 0.2; filter: blur(2px);"></div>
+            </div>
+            <div class="how-it-works-bg active" style="position: absolute; inset: 0; opacity: 1; transition: opacity 2s ease-in-out;">
+                <div style="position: absolute; inset: 0; background: url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920&h=1080&fit=crop&q=80'); background-size: cover; background-position: center; opacity: 0.2; filter: blur(2px);"></div>
+            </div>
+            <div class="how-it-works-bg" style="position: absolute; inset: 0; opacity: 0; transition: opacity 2s ease-in-out;">
+                <div style="position: absolute; inset: 0; background: url('https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=1920&h=1080&fit=crop&q=80'); background-size: cover; background-position: center; opacity: 0.2; filter: blur(2px);"></div>
+            </div>
+            <div style="position: absolute; inset: 0; background: linear-gradient(135deg, rgba(30,41,59,0.92) 0%, rgba(15,23,42,0.95) 100%);"></div>
         </div>
         
         <div class="section-header animate-on-scroll" style="position: relative; z-index: 10; color: white;">
@@ -1386,16 +1394,36 @@
     
     <!-- Platform Features Section -->
     <section style="padding: 60px 40px; background: #0f172a; position: relative; overflow: hidden; z-index: 1;">
-        <!-- Animated Motion Background -->
+        <!-- Smooth Motion Graphics Background -->
         <div style="position: absolute; inset: 0; z-index: 0;">
-            <div style="position: absolute; width: 300%; height: 300%; top: -100%; left: -100%; background: radial-gradient(circle at 20% 50%, rgba(59,130,246,0.4), transparent 40%), radial-gradient(circle at 80% 80%, rgba(139,92,246,0.3), transparent 45%), radial-gradient(circle at 40% 20%, rgba(16,185,129,0.3), transparent 50%), radial-gradient(circle at 70% 60%, rgba(236,72,153,0.2), transparent 40%); animation: morphBackground 15s ease-in-out infinite; filter: blur(60px);"></div>
+            <!-- Floating orbs -->
+            <div style="position: absolute; width: 400px; height: 400px; top: 10%; left: -100px; background: radial-gradient(circle, rgba(59,130,246,0.15), transparent 70%); border-radius: 50%; animation: float1 20s ease-in-out infinite;"></div>
+            <div style="position: absolute; width: 300px; height: 300px; top: 50%; right: -150px; background: radial-gradient(circle, rgba(139,92,246,0.15), transparent 70%); border-radius: 50%; animation: float2 25s ease-in-out infinite;"></div>
+            <div style="position: absolute; width: 350px; height: 350px; bottom: 10%; left: 30%; background: radial-gradient(circle, rgba(16,185,129,0.1), transparent 70%); border-radius: 50%; animation: float3 30s ease-in-out infinite;"></div>
+            <!-- Grid lines -->
+            <svg style="position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0.03;">
+                <defs>
+                    <pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse">
+                        <path d="M 60 0 L 0 0 0 60" fill="none" stroke="#3b82f6" stroke-width="1"/>
+                    </pattern>
+                </defs>
+                <rect width="100%" height="100%" fill="url(#grid)" />
+            </svg>
         </div>
         <style>
-            @keyframes morphBackground {
-                0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); filter: blur(60px); }
-                25% { transform: translate(-100px, -100px) scale(1.2) rotate(90deg); filter: blur(80px); }
-                50% { transform: translate(100px, -50px) scale(0.8) rotate(180deg); filter: blur(40px); }
-                75% { transform: translate(-50px, 100px) scale(1.1) rotate(270deg); filter: blur(70px); }
+            @keyframes float1 {
+                0%, 100% { transform: translate(0, 0) scale(1); }
+                33% { transform: translate(50px, -30px) scale(1.1); }
+                66% { transform: translate(-30px, 20px) scale(0.95); }
+            }
+            @keyframes float2 {
+                0%, 100% { transform: translate(0, 0) scale(1); }
+                50% { transform: translate(-60px, 40px) scale(1.15); }
+            }
+            @keyframes float3 {
+                0%, 100% { transform: translate(0, 0) scale(1); }
+                25% { transform: translate(30px, 30px) scale(0.9); }
+                75% { transform: translate(-40px, -20px) scale(1.05); }
             }
         </style>
         
@@ -1409,14 +1437,21 @@
             <!-- Platform Features Grid -->
             <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;">
                 <!-- Deal Analyzer -->
-                <div style="background: linear-gradient(135deg, #ffffff, #f8fafc); border-radius: 16px; padding: 30px; box-shadow: 0 20px 40px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.8); transition: transform 0.3s;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
-                    <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #3b82f6, #2563eb); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
-                        <svg width="28" height="28" viewBox="0 0 24 24" fill="white">
+                <div style="background: linear-gradient(135deg, #1e293b, #0f172a); border: 1px solid rgba(59,130,246,0.3); border-radius: 16px; padding: 24px; transition: all 0.3s; position: relative; overflow: hidden;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='rgba(59,130,246,0.6)'" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='rgba(59,130,246,0.3)'">
+                    <div style="position: absolute; top: -50px; right: -50px; width: 150px; height: 150px; background: radial-gradient(circle, rgba(59,130,246,0.2), transparent 70%); border-radius: 50%;"></div>
+                    <div style="width: 45px; height: 45px; background: linear-gradient(135deg, #3b82f6, #2563eb); border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; box-shadow: 0 4px 12px rgba(59,130,246,0.3);">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
                             <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/>
                         </svg>
                     </div>
-                    <h3 style="color: #0f172a; font-size: 18px; font-weight: 700; margin-bottom: 10px;">Deal Analyzer</h3>
-                    <p style="color: #64748b; font-size: 14px; line-height: 1.5;">Instant ROI calculations with 95% accuracy using local market data</p>
+                    <h3 style="color: white; font-size: 17px; font-weight: 600; margin-bottom: 8px;">Deal Analyzer</h3>
+                    <p style="color: #94a3b8; font-size: 13px; line-height: 1.5; margin-bottom: 16px;">95% accurate ROI calculations using 2M+ data points</p>
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 12px; border-top: 1px solid rgba(148,163,184,0.1);">
+                        <span style="color: #3b82f6; font-size: 12px; font-weight: 600;">247 analyses today</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="#3b82f6">
+                            <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+                        </svg>
+                    </div>
                 </div>
                 
                 <!-- Market Intelligence -->
@@ -1713,8 +1748,25 @@
                 bgImages[currentIndex].classList.add('active');
             }
             
-            // Rotate every 30 seconds
-            setInterval(rotateBackground, 30000);
+            // Rotate every 5 seconds for better effect
+            setInterval(rotateBackground, 5000);
+        })();
+        
+        // Rotating How It Works Backgrounds
+        (function() {
+            const howBgImages = document.querySelectorAll('.how-it-works-bg');
+            let howCurrentIndex = 0;
+            
+            if (howBgImages.length > 0) {
+                function rotateHowBackground() {
+                    howBgImages[howCurrentIndex].style.opacity = '0';
+                    howCurrentIndex = (howCurrentIndex + 1) % howBgImages.length;
+                    howBgImages[howCurrentIndex].style.opacity = '1';
+                }
+                
+                // Rotate every 7 seconds
+                setInterval(rotateHowBackground, 7000);
+            }
         })();
 
         // Signup modal handlers
@@ -1771,8 +1823,17 @@
             if (form) {
                 form.addEventListener('submit', (e) => {
                     e.preventDefault();
-                    // For now, just redirect to admin dashboard
-                    window.location.href = '/admin/dashboard.html';
+                    const email = document.getElementById('loginEmail').value;
+                    const password = document.getElementById('loginPassword').value;
+                    
+                    // Check for admin credentials
+                    if (email === 'admin@assiduous.com' && password === 'admin123') {
+                        window.location.href = '/assiduousflip/admin/dashboard.html';
+                    } else if (email === 'test@assiduous.com' && password === 'test123') {
+                        window.location.href = '/assiduousflip/client/';
+                    } else {
+                        alert('Invalid credentials. Use admin@assiduous.com / admin123');
+                    }
                 });
             }
         })();
