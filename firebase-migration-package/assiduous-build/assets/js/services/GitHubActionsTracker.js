@@ -1,16 +1,16 @@
 /**
  * GitHub Actions Deployment Tracker
- * Integrates with FirebaseAnalyticsService to track automated deployments
+ * Integrates with firebaseanalyticsservice to track automated deployments
  */
 
-class GitHubActionsTracker {
+class githubactionstracker {
     constructor() {
         this.deploymentData = window.DEPLOYMENT_ANALYTICS || null;
         this.localStorageKey = 'github_actions_deployments';
     }
 
     /**
-     * Initialize and integrate with FirebaseAnalyticsService
+     * Initialize and integrate with firebaseanalyticsservice
      */
     init() {
         if (this.deploymentData) {
@@ -52,9 +52,9 @@ class GitHubActionsTracker {
         
         localStorage.setItem(this.localStorageKey, JSON.stringify(history));
 
-        // Integrate with FirebaseAnalyticsService if available
-        if (window.FirebaseAnalyticsService) {
-            const analyticsService = new FirebaseAnalyticsService();
+        // Integrate with firebaseanalyticsservice if available
+        if (window.firebaseanalyticsservice) {
+            const analyticsService = new firebaseanalyticsservice();
             analyticsService.captureDeployment({
                 services: ['hosting'],
                 filesCount: deployment.filesDeployed,
@@ -259,12 +259,12 @@ class GitHubActionsTracker {
 // Auto-initialize on page load
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
-        const tracker = new GitHubActionsTracker();
+        const tracker = new githubactionstracker();
         tracker.init();
-        window.GitHubActionsTracker = tracker;
+        window.githubactionstracker = tracker;
     });
 } else {
-    const tracker = new GitHubActionsTracker();
+    const tracker = new githubactionstracker();
     tracker.init();
-    window.GitHubActionsTracker = tracker;
+    window.githubactionstracker = tracker;
 }

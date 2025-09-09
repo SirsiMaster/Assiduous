@@ -6,7 +6,7 @@
  * Calculates daily hours from first to last file modification
  */
 
-class DevelopmentCostService {
+class developmentcostservice {
     constructor() {
         this.hourlyRate = 300; // $300 per hour for owner/developer
         this.costs = {
@@ -668,4 +668,4 @@ class DevelopmentCostService {
 }
 
 // Export for use in dashboard
-window.DevelopmentCostService = DevelopmentCostService;
+window.developmentcostservice = developmentcostservice;

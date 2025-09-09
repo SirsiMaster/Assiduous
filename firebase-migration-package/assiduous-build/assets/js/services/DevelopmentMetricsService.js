@@ -5,7 +5,7 @@
  * commits, deployments, and analytics aggregations.
  */
 
-class DevelopmentMetricsService {
+class developmentmetricsservice {
     constructor() {
         this.db = null;
         this.isInitialized = false;
@@ -19,14 +19,14 @@ class DevelopmentMetricsService {
             if (typeof firebase !== 'undefined' && firebase.firestore) {
                 this.db = firebase.firestore();
                 this.isInitialized = true;
-                console.log('DevelopmentMetricsService initialized with Firebase');
+                console.log('developmentmetricsservice initialized with Firebase');
                 return true;
             } else {
                 console.warn('Firebase not available, using fallback mode');
                 return false;
             }
         } catch (error) {
-            console.error('Failed to initialize DevelopmentMetricsService:', error);
+            console.error('Failed to initialize developmentmetricsservice:', error);
             return false;
         }
     }
@@ -440,11 +440,11 @@ class DevelopmentMetricsService {
 }
 
 // Initialize the service
-window.DevelopmentMetricsService = new DevelopmentMetricsService();
+window.developmentmetricsservice = new developmentmetricsservice();
 
 // Auto-initialize when Firebase is available
 document.addEventListener('DOMContentLoaded', () => {
     if (typeof firebase !== 'undefined') {
-        window.DevelopmentMetricsService.initialize();
+        window.developmentmetricsservice.initialize();
     }
 });

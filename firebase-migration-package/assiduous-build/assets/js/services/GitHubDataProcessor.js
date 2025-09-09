@@ -5,7 +5,7 @@
  * Can be used for both real-time webhook processing and batch analysis
  */
 
-class GitHubDataProcessor {
+class githubdataprocessor {
     constructor() {
         this.githubToken = null;
         this.repositoryOwner = 'SirsiMaster';
@@ -18,7 +18,7 @@ class GitHubDataProcessor {
      */
     initialize(githubToken = null) {
         this.githubToken = githubToken;
-        console.log('GitHubDataProcessor initialized');
+        console.log('githubdataprocessor initialized');
     }
 
     /**
@@ -343,7 +343,7 @@ class GitHubDataProcessor {
 
 // Export for use in Node.js and browsers
 if (typeof module !== 'undefined' && module.exports) {
-    module.exports = GitHubDataProcessor;
+    module.exports = githubdataprocessor;
 } else if (typeof window !== 'undefined') {
-    window.GitHubDataProcessor = GitHubDataProcessor;
+    window.githubdataprocessor = githubdataprocessor;
 }

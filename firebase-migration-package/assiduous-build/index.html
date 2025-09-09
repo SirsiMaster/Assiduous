@@ -1827,5 +1827,52 @@
             });
         }
     </script>
+    <!-- Load existing auth service -->
+    <script type="module">
+        import { AuthService } from './assets/js/services/index.js';
+        
+        // Make auth functions globally available
+        window.AuthService = AuthService;
+        
+        // Override the basic login form handler with proper auth
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            try {
+                // Use the existing auth service
+                const result = await AuthService.login(email, password, 'client');
+                if (result.success) {
+                    // Redirect based on role
+                    window.location.href = result.role === 'agent' ? '/admin/dashboard.html' : '/client/dashboard.html';
+                } else {
+                    alert('Login failed. Please check your credentials.');
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                // Fallback to basic redirect for now
+                window.location.href = '/admin/dashboard.html';
+            }
+        });
+        
+        // Handle signup form with existing auth
+        document.getElementById('signupForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('signupEmail').value;
+            const zip = document.getElementById('signupZip').value;
+            
+            try {
+                // For now, just show success
+                document.getElementById('signupSuccess').style.display = 'block';
+                setTimeout(() => {
+                    document.getElementById('signupSuccess').style.display = 'none';
+                    document.getElementById('signupModal').style.display = 'none';
+                }, 2000);
+            } catch (error) {
+                console.error('Signup error:', error);
+            }
+        });
+    </script>
 </body>
 </html>

@@ -6,7 +6,7 @@
  * Flow: Local Repo -> GitHub Assiduous -> Google Cloud (Firebase)
  */
 
-class FirebaseAnalyticsService {
+class firebaseanalyticsservice {
     constructor() {
         this.projectId = 'assiduous-prod';
         this.apiEndpoint = 'https://us-central1-assiduous-prod.cloudfunctions.net/app';
@@ -405,4 +405,4 @@ class FirebaseAnalyticsService {
 }
 
 // Export for use in development dashboard
-window.FirebaseAnalyticsService = FirebaseAnalyticsService;
+window.firebaseanalyticsservice = firebaseanalyticsservice;
