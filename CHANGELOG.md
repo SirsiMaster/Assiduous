@@ -7,6 +7,58 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+
+## [0.14.0] - 2025-09-09
+
+### Added
+- feat(dashboard): add complete historical data import script for Firebase
+- feat: Major design polish and professional refinements
+- feat(landing): Streamline landing page for better conversion
+- feat(hosting): Make assiduousflip the primary site
+- feat(admin): upgrade properties page with sirsi-ui v0.1.5 components
+- feat(hero): add animated SVG network + parallax; chore(assets): swap to luxury photos
+- feat(landing): align hero with competitor language (gradient band, glass card, partner logos, product module)
+- feat(landing): add luxury hero, before/after slider, live deals; improve header spacing
+- feat(landing): photographic hero overlay, live deals band, investor stories; updated CTAs and trust strip
+- feat(header): upgrade public auth buttons to sirsi-button in template (build mirror)
+- feat(build-analytics): add sirsi-tabs and bump CSS to v0.1.2
+- feat(settings): add sirsi-tabs sections
+- feat(analytics): add sirsi-tabs and align Sirsi UI v0.1.2
+- feat(admin): replace legacy status pills with sirsi-badge
+- feat(admin): global upgrade of buttons/cards; include sirsi-ui JS; unify fonts
+- feat(ui): integrate sirsi-modal and sirsi-input in auth; apply components to admin properties
+- feat(admin): apply sirsi-ui components to dashboard (buttons, cards, script)
+- feat(ui): use <sirsi-button> and sirsi-card styles for CTAs and tiles
+- feat(ui): include sirsi-ui@v0.1.1 components JS via CDN
+- feat(ui): upgrade typography and motion
+- feat(opensign): complete automatic e-signature integration platform-wide
+- feat: capture and display complete development metrics
+- feat: add smart breadcrumb navigation and back button to admin pages
+
+### Fixed
+- fix(security): resolve all npm vulnerabilities with major package updates
+- fix: Rename files to uppercase for GitHub Actions compatibility [skip ci]
+- fix(sidebar): correct admin navigation URLs for Firebase hosting
+- fix(metrics): correct cost calculations to use documented /hour rate
+- fix: Revert authentication to original behavior
+- fix: Complete overhaul of animations and authentication
+- fix: Complete redesign addressing all user feedback
+- fix: Complete rewrite of section stacking to prevent overlaps
+- fix: Resolve hero and carousel overlap issues
+- fix: Critical fix for missing closing tags causing section overlap
+- fix: Remove CSS from HTML and enforce section separation
+- fix: Complete overhaul of hero section and mobile responsiveness
+- fix: remove extra closing section tag causing overlapping sections
+- fix(auth): Integrate existing AuthService instead of recreating
+- fix(auth): Restore sign-in modal functionality
+- fix(landing): Remove chat widget and reorder sections for optimal flow
+- fix(hero): include animated SVG network + parallax in build index
+- fix(header-public): set exact 64px height, center inner container, hide center nav on tablet; tighten nav/auth spacing
+- fix(header-public): center content with inner container; xs auth buttons; cleaner nav hover
+- fix(header): glass effect and tighter nav/auth spacing; style(hero): add glass content card for readability
+- fix(landing): remove duplicate header; feat(header): use sirsi-button for public auth actions
+- fix: add missing admin-header.js script to costs and settings pages
+
 ## [0.14.0] - 2025-09-09
 
 ### Added
@@ -581,7 +633,59 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.13.16...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.14.0...HEAD
+
+
+## [0.14.0] - 2025-09-09
+
+### Added
+- feat(dashboard): add complete historical data import script for Firebase
+- feat: Major design polish and professional refinements
+- feat(landing): Streamline landing page for better conversion
+- feat(hosting): Make assiduousflip the primary site
+- feat(admin): upgrade properties page with sirsi-ui v0.1.5 components
+- feat(hero): add animated SVG network + parallax; chore(assets): swap to luxury photos
+- feat(landing): align hero with competitor language (gradient band, glass card, partner logos, product module)
+- feat(landing): add luxury hero, before/after slider, live deals; improve header spacing
+- feat(landing): photographic hero overlay, live deals band, investor stories; updated CTAs and trust strip
+- feat(header): upgrade public auth buttons to sirsi-button in template (build mirror)
+- feat(build-analytics): add sirsi-tabs and bump CSS to v0.1.2
+- feat(settings): add sirsi-tabs sections
+- feat(analytics): add sirsi-tabs and align Sirsi UI v0.1.2
+- feat(admin): replace legacy status pills with sirsi-badge
+- feat(admin): global upgrade of buttons/cards; include sirsi-ui JS; unify fonts
+- feat(ui): integrate sirsi-modal and sirsi-input in auth; apply components to admin properties
+- feat(admin): apply sirsi-ui components to dashboard (buttons, cards, script)
+- feat(ui): use <sirsi-button> and sirsi-card styles for CTAs and tiles
+- feat(ui): include sirsi-ui@v0.1.1 components JS via CDN
+- feat(ui): upgrade typography and motion
+- feat(opensign): complete automatic e-signature integration platform-wide
+- feat: capture and display complete development metrics
+- feat: add smart breadcrumb navigation and back button to admin pages
+
+### Fixed
+- fix(security): resolve all npm vulnerabilities with major package updates
+- fix: Rename files to uppercase for GitHub Actions compatibility [skip ci]
+- fix(sidebar): correct admin navigation URLs for Firebase hosting
+- fix(metrics): correct cost calculations to use documented /hour rate
+- fix: Revert authentication to original behavior
+- fix: Complete overhaul of animations and authentication
+- fix: Complete redesign addressing all user feedback
+- fix: Complete rewrite of section stacking to prevent overlaps
+- fix: Resolve hero and carousel overlap issues
+- fix: Critical fix for missing closing tags causing section overlap
+- fix: Remove CSS from HTML and enforce section separation
+- fix: Complete overhaul of hero section and mobile responsiveness
+- fix: remove extra closing section tag causing overlapping sections
+- fix(auth): Integrate existing AuthService instead of recreating
+- fix(auth): Restore sign-in modal functionality
+- fix(landing): Remove chat widget and reorder sections for optimal flow
+- fix(hero): include animated SVG network + parallax in build index
+- fix(header-public): set exact 64px height, center inner container, hide center nav on tablet; tighten nav/auth spacing
+- fix(header-public): center content with inner container; xs auth buttons; cleaner nav hover
+- fix(header): glass effect and tighter nav/auth spacing; style(hero): add glass content card for readability
+- fix(landing): remove duplicate header; feat(header): use sirsi-button for public auth actions
+- fix: add missing admin-header.js script to costs and settings pages
 
 
 ## [0.13.16] - 2025-09-08
@@ -745,3 +849,4 @@ To generate changelog entries:
 [0.13.14]: https://github.com/SirsiMaster/Assiduous/compare/v0.13.13...v0.13.14
 [0.13.15]: https://github.com/SirsiMaster/Assiduous/compare/v0.13.14...v0.13.15
 [0.13.16]: https://github.com/SirsiMaster/Assiduous/compare/v0.13.15...v0.13.16
+[0.14.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.13.16...v0.14.0
