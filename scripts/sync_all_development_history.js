@@ -17,7 +17,7 @@ const path = require('path');
 
 class ComprehensiveHistorySync {
     constructor() {
-        this.hourlyRate = 300;
+        this.hourlyRate = 150; // $150 per hour as documented
         this.projectStartDate = null;
         this.totalCommits = 0;
         this.totalFiles = 0;
@@ -596,26 +596,10 @@ class ComprehensiveHistorySync {
         }
         
         // Calculate actual time between first and last commit of the day
+        // Following the documented rubric: first commit to last commit
         if (sessionData.commits.length === 1) {
-            // Single commit - estimate minimum session time based on work type
-            const commit = sessionData.commits[0];
-            const linesChanged = sessionData.totalInsertions + sessionData.totalDeletions;
-            
-            // Base time estimates for single commits
-            let baseHours = 0.5; // Minimum 30 minutes
-            
-            // Adjust based on commit type
-            switch (commit.type) {
-                case 'feat': baseHours = Math.max(1.0, linesChanged / 100); break;
-                case 'fix': baseHours = Math.max(0.5, linesChanged / 150); break;
-                case 'refactor': baseHours = Math.max(0.75, linesChanged / 80); break;
-                case 'docs': baseHours = Math.max(0.25, linesChanged / 200); break;
-                case 'test': baseHours = Math.max(0.5, linesChanged / 120); break;
-                case 'chore': baseHours = Math.max(0.25, linesChanged / 250); break;
-                default: baseHours = Math.max(0.5, linesChanged / 100); break;
-            }
-            
-            return Math.min(baseHours, 4); // Cap single commits at 4 hours
+            // Single commit = 30 minutes minimum as per rubric
+            return 0.5;
         }
         
         // Multiple commits - calculate time between first and last commit
@@ -624,28 +608,26 @@ class ComprehensiveHistorySync {
         const lastCommitTime = new Date(commits[commits.length - 1].date);
         
         const timeDiffMs = lastCommitTime - firstCommitTime;
-        const timeDiffHours = timeDiffMs / (1000 * 60 * 60); // Convert to hours
+        let hoursWorked = timeDiffMs / (1000 * 60 * 60); // Convert to hours
         
-        // If commits span more than reasonable working hours, cap it
-        if (timeDiffHours > 12) {
-            console.log(`  📅 Day ${sessionData.date}: Commits span ${timeDiffHours.toFixed(1)}h, capping at 12h`);
-            return 12; // Max 12 hour work day
+        // Add 30 minutes for the last commit work (as per rubric)
+        hoursWorked += 0.5;
+        
+        // Round to 15-minute intervals
+        hoursWorked = Math.round(hoursWorked * 4) / 4;
+        
+        // Minimum 1 hour if multiple commits
+        hoursWorked = Math.max(hoursWorked, 1);
+        
+        // Cap at 12 hours for any single day
+        if (hoursWorked > 12) {
+            console.log(`  📅 Day ${sessionData.date}: Capping at 12 hours (was ${hoursWorked.toFixed(1)}h)`);
+            hoursWorked = 12;
         }
         
-        // If commits are very close together, ensure minimum time
-        if (timeDiffHours < 0.5) {
-            const minHours = Math.max(0.5, sessionData.commits.length * 0.25); // 15 min per commit minimum
-            console.log(`  ⏰ Day ${sessionData.date}: Commits close together (${timeDiffHours.toFixed(1)}h), using minimum ${minHours.toFixed(1)}h`);
-            return Math.min(minHours, 2);
-        }
+        console.log(`  📊 Day ${sessionData.date}: ${commits.length} commits, ${hoursWorked.toFixed(2)} hours (${firstCommitTime.toLocaleTimeString()} - ${lastCommitTime.toLocaleTimeString()})`);
         
-        // Add buffer time for actual work (commits don't capture all work time)
-        const bufferMultiplier = 1.2; // 20% buffer for work between commits
-        const actualHours = Math.min(timeDiffHours * bufferMultiplier, 12);
-        
-        console.log(`  📊 Day ${sessionData.date}: ${commits.length} commits over ${timeDiffHours.toFixed(1)}h (${firstCommitTime.toLocaleTimeString()} - ${lastCommitTime.toLocaleTimeString()}), calculated: ${actualHours.toFixed(1)}h`);
-        
-        return Math.max(actualHours, 0.5); // Minimum 30 minutes
+        return hoursWorked;
     }
     
     updateDailyMetrics(date, session) {

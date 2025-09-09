@@ -40,16 +40,20 @@ async function importCompleteHistory() {
     
     try {
         // Project summary data from actual repository analysis
+        // Using documented rubric: $150/hour, first-to-last commit timing
+        // Values from calculate_accurate_metrics.js (authoritative source)
         const projectSummary = {
-            startDate: "2025-09-09",
-            totalCommits: 245,
-            totalFiles: 872,
-            totalHours: 377.6,
-            totalCost: 113282,
-            totalSessions: 243,
-            totalDeployments: 58,
-            activeDays: 243,
-            avgCostPerCommit: 462.38,
+            startDate: "2025-08-10", // Actual project start date
+            totalCommits: 246,
+            totalFiles: 39042, // Actual file count from git ls-files
+            totalHours: 72.5,
+            laborCost: 10875, // 72.5 hours × $150/hour
+            toolsCost: 450, // 2 months × $225/month
+            totalCost: 11325, // Labor + Tools
+            totalSessions: 11, // Active development days
+            activeDays: 11,
+            avgCostPerCommit: 46.04, // $11,325 / 246 commits
+            avgHoursPerDay: 6.59, // 72.5 / 11 days
             lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
         };
         
@@ -58,19 +62,20 @@ async function importCompleteHistory() {
         batch.set(summaryRef, projectSummary, { merge: true });
         operationCount++;
         
-        // Cost breakdown by type
+        // Cost breakdown proportional to actual hours worked
+        // Based on 72.5 total hours at $150/hour
         const costBreakdown = {
-            feat: { cost: 45993, hours: 153.3, commits: 56 },
-            fix: { cost: 22860, hours: 76.2, commits: 69 },
-            refactor: { cost: 13031, hours: 43.4, commits: 14 },
-            docs: { cost: 10841, hours: 36.1, commits: 21 },
-            chore: { cost: 8297, hours: 27.7, commits: 49 },
-            unknown: { cost: 5517, hours: 18.4, commits: 20 },
-            style: { cost: 3330, hours: 11.1, commits: 6 },
-            ci: { cost: 1200, hours: 4.0, commits: 1 },
-            build: { cost: 1167, hours: 3.9, commits: 4 },
-            test: { cost: 900, hours: 3.0, commits: 4 },
-            perf: { cost: 150, hours: 0.5, commits: 1 }
+            feat: { commits: 56, percentage: 22.8 },
+            fix: { commits: 69, percentage: 28.0 },
+            refactor: { commits: 14, percentage: 5.7 },
+            docs: { commits: 21, percentage: 8.5 },
+            chore: { commits: 49, percentage: 19.9 },
+            style: { commits: 6, percentage: 2.4 },
+            test: { commits: 4, percentage: 1.6 },
+            build: { commits: 4, percentage: 1.6 },
+            ci: { commits: 1, percentage: 0.4 },
+            perf: { commits: 1, percentage: 0.4 },
+            unknown: { commits: 20, percentage: 8.1 }
         };
         
         // Store cost breakdown
@@ -78,10 +83,10 @@ async function importCompleteHistory() {
         batch.set(costRef, costBreakdown, { merge: true });
         operationCount++;
         
-        // Monthly activity data
+        // Monthly activity data from accurate calculations
         const monthlyActivity = {
-            "2025-08": { cost: 37258, hours: 124.2, commits: 56 },
-            "2025-09": { cost: 76028, hours: 253.4, commits: 189 }
+            "2025-08": { cost: 3300, hours: 22.0, commits: 56, days: 6 },
+            "2025-09": { cost: 7575, hours: 50.5, commits: 190, days: 5 }
         };
         
         // Store monthly metrics
@@ -101,7 +106,7 @@ async function importCompleteHistory() {
                 sessionId: "20250909_003",
                 date: "2025-09-09",
                 duration: 2.5,
-                costTracking: { totalCost: 750, hourlyRate: 300 },
+                costTracking: { totalCost: 375, hourlyRate: 150 },
                 metrics: { commitsCreated: 15, filesModified: 45, linesAdded: 3456, linesDeleted: 890 },
                 description: "Hero section fixes and animation improvements"
             },
@@ -109,7 +114,7 @@ async function importCompleteHistory() {
                 sessionId: "20250908_002",
                 date: "2025-09-08",
                 duration: 3.5,
-                costTracking: { totalCost: 1050, hourlyRate: 300 },
+                costTracking: { totalCost: 525, hourlyRate: 150 },
                 metrics: { commitsCreated: 18, filesModified: 67, linesAdded: 4567, linesDeleted: 1234 },
                 description: "Landing page fixes and responsive design"
             },
@@ -117,7 +122,7 @@ async function importCompleteHistory() {
                 sessionId: "20250907_004",
                 date: "2025-09-07",
                 duration: 4.0,
-                costTracking: { totalCost: 1200, hourlyRate: 300 },
+                costTracking: { totalCost: 600, hourlyRate: 150 },
                 metrics: { commitsCreated: 32, filesModified: 180, linesAdded: 8452, linesDeleted: 3012 },
                 description: "Development dashboard metrics implementation"
             },
@@ -125,7 +130,7 @@ async function importCompleteHistory() {
                 sessionId: "20250906_003",
                 date: "2025-09-06",
                 duration: 10.0,
-                costTracking: { totalCost: 3000, hourlyRate: 300 },
+                costTracking: { totalCost: 1500, hourlyRate: 150 },
                 metrics: { commitsCreated: 52, filesModified: 189, linesAdded: 15678, linesDeleted: 2345 },
                 description: "Complete Firebase integration and security"
             },
@@ -133,7 +138,7 @@ async function importCompleteHistory() {
                 sessionId: "20250905_002",
                 date: "2025-09-05",
                 duration: 8.5,
-                costTracking: { totalCost: 2550, hourlyRate: 300 },
+                costTracking: { totalCost: 1275, hourlyRate: 150 },
                 metrics: { commitsCreated: 38, filesModified: 134, linesAdded: 10234, linesDeleted: 1234 },
                 description: "Component standardization and dashboard"
             },
@@ -141,7 +146,7 @@ async function importCompleteHistory() {
                 sessionId: "20250904_002",
                 date: "2025-09-04",
                 duration: 9.0,
-                costTracking: { totalCost: 2700, hourlyRate: 300 },
+                costTracking: { totalCost: 1350, hourlyRate: 150 },
                 metrics: { commitsCreated: 42, filesModified: 156, linesAdded: 12567, linesDeleted: 892 },
                 description: "Firebase migration and authentication"
             },
@@ -149,7 +154,7 @@ async function importCompleteHistory() {
                 sessionId: "20250903_002",
                 date: "2025-09-03",
                 duration: 7.5,
-                costTracking: { totalCost: 2250, hourlyRate: 300 },
+                costTracking: { totalCost: 1125, hourlyRate: 150 },
                 metrics: { commitsCreated: 35, filesModified: 112, linesAdded: 9456, linesDeleted: 456 },
                 description: "Admin portal implementation"
             },
@@ -157,7 +162,7 @@ async function importCompleteHistory() {
                 sessionId: "20250902_002",
                 date: "2025-09-02",
                 duration: 8.0,
-                costTracking: { totalCost: 2400, hourlyRate: 300 },
+                costTracking: { totalCost: 1200, hourlyRate: 150 },
                 metrics: { commitsCreated: 28, filesModified: 89, linesAdded: 7823, linesDeleted: 125 },
                 description: "Core architecture development"
             },
@@ -165,7 +170,7 @@ async function importCompleteHistory() {
                 sessionId: "20250901_002",
                 date: "2025-09-01",
                 duration: 6.0,
-                costTracking: { totalCost: 1800, hourlyRate: 300 },
+                costTracking: { totalCost: 900, hourlyRate: 150 },
                 metrics: { commitsCreated: 12, filesModified: 45, linesAdded: 3450, linesDeleted: 0 },
                 description: "Initial repository setup"
             }
@@ -201,10 +206,10 @@ async function importCompleteHistory() {
                 weekId: "2025-W37",
                 startDate: "2025-09-09",
                 endDate: "2025-09-15",
-                hours: 28.5,
-                cost: 8550,
-                commits: 147,
-                sessions: 7,
+                hours: 44.25, // From metrics_cache.json
+                cost: 6637.50, // $150/hour
+                commits: 181,
+                sessions: 4,
                 lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
             },
             lastWeek: {
@@ -212,7 +217,7 @@ async function importCompleteHistory() {
                 startDate: "2025-09-02",
                 endDate: "2025-09-08",
                 hours: 51.5,
-                cost: 15450,
+                cost: 7725, // $150/hour
                 commits: 203,
                 sessions: 8,
                 lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
@@ -255,22 +260,26 @@ async function importCompleteHistory() {
             date: new Date().toISOString(),
             version: "v1.0.0",
             metrics: {
-                totalCommits: 245,
-                totalSessions: 243,
-                totalHours: 377.6,
-                totalCost: 113282
+                totalCommits: 246,
+                totalSessions: 11,
+                totalHours: 72.5,
+                totalCost: 11325
             },
             createdAt: firebase.firestore.FieldValue.serverTimestamp()
         });
         
         console.log('🎉 Complete history import finished successfully!');
-        console.log('📊 Summary:');
-        console.log(`  - Total Commits: 245`);
-        console.log(`  - Total Sessions: 243`);
-        console.log(`  - Total Hours: 377.6`);
-        console.log(`  - Total Cost: $113,282`);
-        console.log(`  - Active Days: 243`);
-        console.log(`  - Date Range: 2025-08-01 to 2025-09-09`);
+        console.log('📊 Summary (Accurate Calculation):');
+        console.log(`  - Total Commits: 246`);
+        console.log(`  - Active Development Days: 11`);
+        console.log(`  - Total Hours: 72.5`);
+        console.log(`  - Labor Cost: $10,875`);
+        console.log(`  - Tools Cost: $450`);
+        console.log(`  - TOTAL COST: $11,325`);
+        console.log(`  - Date Range: 2025-08-10 to 2025-09-09`);
+        console.log(`  - Hourly Rate: $150/hour`);
+        console.log(`  - Avg Hours/Day: 6.59`);
+        console.log(`  - Velocity: 22.4 commits/day`);
         
         // Trigger dashboard refresh
         if (typeof loadDashboardData === 'function') {
