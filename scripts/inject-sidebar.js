@@ -3,8 +3,10 @@
 const fs = require('fs');
 const path = require('path');
 
-// Read the sidebar template
-const sidebarTemplate = fs.readFileSync(path.join(__dirname, '../components/sidebar.html'), 'utf-8');
+// Read the sidebar template and remove the HTML comment
+let sidebarTemplate = fs.readFileSync(path.join(__dirname, '../components/sidebar.html'), 'utf-8');
+// Remove the HTML comment at the beginning
+sidebarTemplate = sidebarTemplate.replace(/<!--[\s\S]*?-->/g, '').trim();
 
 // Function to get the correct base path for each file
 function getBasePath(filePath) {
