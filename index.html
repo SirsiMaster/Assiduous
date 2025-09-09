@@ -35,6 +35,9 @@
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
 
         /* Animations */
@@ -210,10 +213,9 @@
         .hero {
             margin-top: 72px;
             min-height: 600px;
-            height: 70vh;
-            max-height: 800px;
             position: relative;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             overflow: hidden;
@@ -223,9 +225,9 @@
         /* Mobile responsiveness for hero */
         @media (max-width: 768px) {
             .hero {
-                height: auto;
                 min-height: 500px;
-                padding: 60px 0 80px;
+                padding: 60px 0;
+                margin-top: 60px;
             }
         }
 
@@ -234,9 +236,10 @@
             position: absolute;
             top: 0;
             left: 0;
-            right: 0;
-            bottom: 0;
+            width: 100%;
+            height: 100%;
             z-index: 1;
+            pointer-events: none;
         }
         
         .hero-bg-image {
@@ -407,21 +410,19 @@
 
         /* Stats Bar */
         .stats-bar {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
+            position: relative;
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(20px);
             border-top: 1px solid rgba(255, 255, 255, 0.1);
             padding: 24px 0;
             z-index: 10;
+            margin-top: 60px;
         }
         
         @media (max-width: 768px) {
             .stats-bar {
-                position: relative;
                 padding: 20px 0;
+                margin-top: 40px;
             }
         }
 
@@ -940,13 +941,26 @@
         }
         
         /* Fix overlapping sections */
-        section {
+        section, .hero {
             position: relative !important;
             z-index: 1;
             clear: both;
             display: block;
             width: 100%;
-            overflow: hidden;
+            flex-shrink: 0;
+        }
+        
+        /* Ensure sections don't overlap */
+        body > section,
+        body > div.hero {
+            margin: 0;
+            padding-top: 60px;
+            padding-bottom: 60px;
+        }
+        
+        body > section:first-of-type,
+        body > div.hero {
+            margin-top: 0;
         }
         
         /* Ensure proper stacking */
@@ -958,6 +972,7 @@
         .hero {
             position: relative !important;
             overflow: hidden !important;
+            contain: layout style paint;
         }
         
         /* Keep absolute elements contained */
@@ -1069,7 +1084,7 @@
     </div>
 
     <!-- Hero Section -->
-    <section class="hero" id="hero">
+    <div class="hero" id="hero">
         <!-- Rotating Background Images - Philadelphia Metro Area -->
         <div class="hero-bg" id="heroBg">
             <!-- Colonial home in Chester County PA -->
@@ -1152,7 +1167,7 @@
                 </div>
             </div>
         </div>
-    </section>
+    </div>
     <!-- Trust Indicators -->
     <section style="padding: 60px 40px; background: #ffffff; border-bottom: 1px solid #e2e8f0; position: relative; z-index: 1;">
         <div style="max-width: 1200px; margin: 0 auto;">
