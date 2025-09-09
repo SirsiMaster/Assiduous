@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Section Overlap Test</title>
+    <style>
+        body { margin: 0; padding: 0; font-family: Arial; }
+        .test-section { 
+            padding: 20px; 
+            border: 3px solid red; 
+            margin: 10px;
+            background: rgba(255,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <h1>Testing Section Boundaries</h1>
+    <button onclick="testOverlaps()">Test for Overlaps</button>
+    <div id="results"></div>
+    
+    <script>
+        function testOverlaps() {
+            const sections = document.querySelectorAll('section, .hero');
+            const results = document.getElementById('results');
+            let html = '<h2>Section Analysis:</h2>';
+            
+            sections.forEach((section, i) => {
+                const rect = section.getBoundingClientRect();
+                const styles = window.getComputedStyle(section);
+                
+                html += `<div class="test-section">
+                    <strong>Section ${i + 1}:</strong> ${section.className || section.tagName}<br>
+                    Top: ${rect.top}px<br>
+                    Height: ${rect.height}px<br>
+                    Bottom: ${rect.bottom}px<br>
+                    Position: ${styles.position}<br>
+                    Z-Index: ${styles.zIndex}<br>
+                    Overflow: ${styles.overflow}<br>
+                `;
+                
+                // Check for overlaps with next section
+                if (i < sections.length - 1) {
+                    const nextRect = sections[i + 1].getBoundingClientRect();
+                    if (rect.bottom > nextRect.top) {
+                        html += `<span style="color: red; font-weight: bold;">⚠️ OVERLAPS with next section by ${rect.bottom - nextRect.top}px</span>`;
+                    } else {
+                        html += `<span style="color: green;">✓ No overlap (gap: ${nextRect.top - rect.bottom}px)</span>`;
+                    }
+                }
+                
+                html += '</div>';
+            });
+            
+            results.innerHTML = html;
+        }
+        
+        // Auto-run on parent page load
+        if (window.parent !== window) {
+            window.parent.addEventListener('load', () => {
+                setTimeout(testOverlaps, 1000);
+            });
+        }
+    </script>
+    
+    <iframe src="index.html" style="width: 100%; height: 600px; border: 2px solid blue;"></iframe>
+</body>
+</html>
