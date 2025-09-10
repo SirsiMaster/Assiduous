@@ -256,7 +256,9 @@
         /* Hero Section - Fixed Positioning */
         .hero {
             margin-top: 72px;
-            min-height: 100vh;
+            /* Use small viewport height to avoid browser UI jumps; cap height on desktop */
+            min-height: min(100svh, 820px);
+            max-height: 820px;
             position: relative;
             display: flex;
             align-items: center;
@@ -445,9 +447,11 @@
         /* Stats Bar - Glass overlay style within hero */
         .stats-bar {
             position: absolute;
-            left: 50%;
-            bottom: 24px;
-            transform: translateX(-50%);
+            left: 24px;
+            right: 24px;
+            bottom: 32px;
+            transform: none;
+            margin: 0 auto;
             background: rgba(255, 255, 255, 0.08);
             -webkit-backdrop-filter: blur(10px);
             backdrop-filter: blur(10px);
@@ -456,37 +460,70 @@
             z-index: 10;
             border-radius: 14px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-            max-width: 860px;
+            max-width: 1100px;
         }
 
         .stats-container {
             max-width: 100%;
             margin: 0 auto;
-            padding: 0 4px;
+            padding: 0 8px;
             display: grid;
-            grid-template-columns: repeat(4, minmax(120px, 1fr));
-            gap: 24px;
+            grid-template-columns: repeat(4, 1fr);
+            column-gap: 0;
+            row-gap: 0;
             text-align: center;
-            align-items: center;
+            align-items: stretch;
         }
 
         .stat-item {
-            animation: fadeInUp 0.3s ease-out 0.3s both;
+            padding: 12px 18px;
+            display: grid;
+            grid-template-rows: auto auto;
+            align-content: center;
+            justify-items: center;
+            gap: 4px;
+            border-right: 1px solid rgba(255,255,255,0.16);
+            animation: fadeInUp 0.35s ease-out 0.15s both;
         }
+        .stat-item:last-child { border-right: none; }
 
         .stat-number {
-            font-size: 28px;
+            font-size: 26px;
             font-weight: 800;
             color: #ffffff;
-            margin-bottom: 4px;
+            line-height: 1;
+            letter-spacing: -0.01em;
+            min-height: 28px; /* equalize number row height */
+            display: block;
+            text-align: center;
         }
 
         .stat-label {
-            font-size: 12px;
-            color: #e2e8f0;
+            font-size: 11px;
+            color: #e5e7eb;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.12em;
             opacity: 0.9;
+            line-height: 1.1;
+            min-height: 24px; /* equalize label row height */
+            display: block;
+            text-align: center;
+            white-space: nowrap;          /* force single line */
+            overflow: hidden;             /* prevent overflow visuals */
+            text-overflow: ellipsis;      /* graceful truncation if needed */
+        }
+
+        /* Mobile layout refinements */
+@media (max-width: 768px) {
+            .stats-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .stat-item {
+                border-right: none;
+                padding: 10px 12px;
+            }
+            .stat-number { min-height: 26px; }
+            .stat-label { min-height: 22px; white-space: nowrap; }
         }
 
         /* Features Section - Modern Cards */
@@ -562,8 +599,9 @@
         }
 
 @media (max-width: 768px) {
-            .hero { padding-bottom: 200px; }
-            .stats-bar { bottom: 16px; max-width: 94%; }
+            /* On phones, use full viewport height without desktop cap */
+            .hero { min-height: 100svh; max-height: none; padding-bottom: 200px; }
+            .stats-bar { left: 12px; right: 12px; bottom: 16px; max-width: none; }
         }
 
         @media (max-width: 640px) {
