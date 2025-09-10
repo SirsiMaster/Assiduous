@@ -1,0 +1,5342 @@
+[
+  {
+    "filename": ".gitignore",
+    "totalCommits": 2,
+    "totalInsertions": 86,
+    "totalDeletions": 0,
+    "firstSeen": "2025-08-10 15:21:57 -0400",
+    "lastModified": "2025-08-30 19:06:20 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 1.72,
+    "category": "application_logic"
+  },
+  {
+    "filename": "readme.md",
+    "totalCommits": 27,
+    "totalInsertions": 234,
+    "totalDeletions": 49,
+    "firstSeen": "2025-08-10 15:21:57 -0400",
+    "lastModified": "2025-09-06 23:19:54 -0400",
+    "authors": [
+      "SirsiMaster",
+      "github-actions[bot]"
+    ],
+    "complexity": 1,
+    "estimatedHours": 2.83,
+    "category": "documentation"
+  },
+  {
+    "filename": "assets/css/styles.css",
+    "totalCommits": 2,
+    "totalInsertions": 855,
+    "totalDeletions": 120,
+    "firstSeen": "2025-08-10 15:21:57 -0400",
+    "lastModified": "2025-08-22 15:34:59 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 19.5,
+    "category": "styling"
+  },
+  {
+    "filename": "assets/js/main.js",
+    "totalCommits": 2,
+    "totalInsertions": 1513,
+    "totalDeletions": 13,
+    "firstSeen": "2025-08-10 15:21:57 -0400",
+    "lastModified": "2025-08-22 15:34:59 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 3,
+    "estimatedHours": 45.78,
+    "category": "application_logic"
+  },
+  {
+    "filename": "src/index.html",
+    "totalCommits": 2,
+    "totalInsertions": 388,
+    "totalDeletions": 31,
+    "firstSeen": "2025-08-10 15:21:57 -0400",
+    "lastModified": "2025-08-22 15:34:59 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 8.38,
+    "category": "application_logic"
+  },
+  {
+    "filename": ".github/CONTRIBUTING.md",
+    "totalCommits": 1,
+    "totalInsertions": 462,
+    "totalDeletions": 0,
+    "firstSeen": "2025-08-22 16:29:13 -0400",
+    "lastModified": "2025-08-22 16:29:13 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 4.62,
+    "category": "documentation"
+  },
+  {
+    "filename": ".github/ISSUE_TEMPLATE/bug_report.md",
+    "totalCommits": 1,
+    "totalInsertions": 67,
+    "totalDeletions": 0,
+    "firstSeen": "2025-08-22 16:29:13 -0400",
+    "lastModified": "2025-08-22 16:29:13 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 0.67,
+    "category": "documentation"
+  },
+  {
+    "filename": ".github/ISSUE_TEMPLATE/feature_request.md",
+    "totalCommits": 1,
+    "totalInsertions": 77,
+    "totalDeletions": 0,
+    "firstSeen": "2025-08-22 16:29:13 -0400",
+    "lastModified": "2025-08-22 16:29:13 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 0.77,
+    "category": "documentation"
+  },
+  {
+    "filename": ".github/PULL_REQUEST_TEMPLATE.md",
+    "totalCommits": 1,
+    "totalInsertions": 85,
+    "totalDeletions": 0,
+    "firstSeen": "2025-08-22 16:29:13 -0400",
+    "lastModified": "2025-08-22 16:29:13 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 0.85,
+    "category": "documentation"
+  },
+  {
+    "filename": ".gitmessage",
+    "totalCommits": 1,
+    "totalInsertions": 47,
+    "totalDeletions": 0,
+    "firstSeen": "2025-08-22 16:29:13 -0400",
+    "lastModified": "2025-08-22 16:29:13 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.94,
+    "category": "application_logic"
+  },
+  {
+    "filename": "changelog.md",
+    "totalCommits": 27,
+    "totalInsertions": 629,
+    "totalDeletions": 135,
+    "firstSeen": "2025-08-22 16:29:13 -0400",
+    "lastModified": "2025-09-06 23:19:54 -0400",
+    "authors": [
+      "SirsiMaster",
+      "github-actions[bot]"
+    ],
+    "complexity": 1,
+    "estimatedHours": 7.64,
+    "category": "documentation"
+  },
+  {
+    "filename": "ROLLBACK_REGISTRY.md",
+    "totalCommits": 2,
+    "totalInsertions": 236,
+    "totalDeletions": 1,
+    "firstSeen": "2025-08-22 16:29:13 -0400",
+    "lastModified": "2025-08-29 16:05:52 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 2.37,
+    "category": "documentation"
+  },
+  {
+    "filename": "docs/ASSIDUOUS_TECHNICAL_BLUEPRINT.md",
+    "totalCommits": 5,
+    "totalInsertions": 1532,
+    "totalDeletions": 51,
+    "firstSeen": "2025-08-22 16:29:13 -0400",
+    "lastModified": "2025-09-06 20:57:15 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 15.83,
+    "category": "documentation"
+  },
+  {
+    "filename": "docs/BRANCH_PROTECTION_RULES.md",
+    "totalCommits": 1,
+    "totalInsertions": 247,
+    "totalDeletions": 0,
+    "firstSeen": "2025-08-22 16:29:13 -0400",
+    "lastModified": "2025-08-22 16:29:13 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 2.47,
+    "category": "documentation"
+  },
+  {
+    "filename": "scripts/changelog/update_changelog.sh",
+    "totalCommits": 1,
+    "totalInsertions": 202,
+    "totalDeletions": 0,
+    "firstSeen": "2025-08-22 16:29:13 -0400",
+    "lastModified": "2025-08-22 16:29:13 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 4.04,
+    "category": "application_logic"
+  },
+  {
+    "filename": "scripts/hooks/readme.md",
+    "totalCommits": 1,
+    "totalInsertions": 154,
+    "totalDeletions": 0,
+    "firstSeen": "2025-08-22 16:29:13 -0400",
+    "lastModified": "2025-08-22 16:29:13 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 1.54,
+    "category": "documentation"
+  },
+  {
+    "filename": "scripts/hooks/commit-msg",
+    "totalCommits": 2,
+    "totalInsertions": 107,
+    "totalDeletions": 3,
+    "firstSeen": "2025-08-22 16:29:13 -0400",
+    "lastModified": "2025-09-06 21:19:57 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 2.2,
+    "category": "application_logic"
+  },
+  {
+    "filename": "scripts/hooks/install.sh",
+    "totalCommits": 2,
+    "totalInsertions": 92,
+    "totalDeletions": 0,
+    "firstSeen": "2025-08-22 16:29:13 -0400",
+    "lastModified": "2025-09-06 12:37:19 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 1.84,
+    "category": "application_logic"
+  },
+  {
+    "filename": "scripts/rollback/create_tag.sh",
+    "totalCommits": 1,
+    "totalInsertions": 175,
+    "totalDeletions": 0,
+    "firstSeen": "2025-08-22 16:29:13 -0400",
+    "lastModified": "2025-08-22 16:29:13 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 3.5,
+    "category": "application_logic"
+  },
+  {
+    "filename": "scripts/rollback/rollback_to_tag.sh",
+    "totalCommits": 1,
+    "totalInsertions": 190,
+    "totalDeletions": 0,
+    "firstSeen": "2025-08-22 16:29:13 -0400",
+    "lastModified": "2025-08-22 16:29:13 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 3.8,
+    "category": "application_logic"
+  },
+  {
+    "filename": "test-hooks.txt",
+    "totalCommits": 2,
+    "totalInsertions": 1,
+    "totalDeletions": 1,
+    "firstSeen": "2025-08-22 16:32:18 -0400",
+    "lastModified": "2025-08-22 16:32:26 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 0.1,
+    "category": "testing"
+  },
+  {
+    "filename": "RESUMPTION_PROMPT.md",
+    "totalCommits": 1,
+    "totalInsertions": 289,
+    "totalDeletions": 0,
+    "firstSeen": "2025-08-22 16:35:17 -0400",
+    "lastModified": "2025-08-22 16:35:17 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 2.89,
+    "category": "documentation"
+  },
+  {
+    "filename": "warp.md",
+    "totalCommits": 9,
+    "totalInsertions": 657,
+    "totalDeletions": 117,
+    "firstSeen": "2025-08-22 17:21:46 -0400",
+    "lastModified": "2025-09-06 22:35:43 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 7.74,
+    "category": "documentation"
+  },
+  {
+    "filename": "docs/GITHUB_SETUP.md",
+    "totalCommits": 1,
+    "totalInsertions": 172,
+    "totalDeletions": 0,
+    "firstSeen": "2025-08-22 17:21:46 -0400",
+    "lastModified": "2025-08-22 17:21:46 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 1.72,
+    "category": "documentation"
+  },
+  {
+    "filename": "docs/IMPLEMENTATION_CHECKLIST.md",
+    "totalCommits": 3,
+    "totalInsertions": 660,
+    "totalDeletions": 19,
+    "firstSeen": "2025-08-22 17:21:46 -0400",
+    "lastModified": "2025-09-01 12:06:01 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 6.79,
+    "category": "documentation"
+  },
+  {
+    "filename": "docs/MICRO_FLIPPING_TECHNICAL_BLUEPRINT.md",
+    "totalCommits": 3,
+    "totalInsertions": 2362,
+    "totalDeletions": 35,
+    "firstSeen": "2025-08-22 17:21:46 -0400",
+    "lastModified": "2025-09-05 14:33:07 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 23.97,
+    "category": "documentation"
+  },
+  {
+    "filename": "docs/ceo-dashboard.html",
+    "totalCommits": 2,
+    "totalInsertions": 954,
+    "totalDeletions": 5,
+    "firstSeen": "2025-08-22 17:21:46 -0400",
+    "lastModified": "2025-08-22 17:24:59 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 19.18,
+    "category": "documentation"
+  },
+  {
+    "filename": "docs/deploy-dashboard.md",
+    "totalCommits": 1,
+    "totalInsertions": 208,
+    "totalDeletions": 0,
+    "firstSeen": "2025-08-22 17:21:46 -0400",
+    "lastModified": "2025-08-22 17:21:46 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 2.08,
+    "category": "documentation"
+  },
+  {
+    "filename": "docs/index.html",
+    "totalCommits": 2,
+    "totalInsertions": 949,
+    "totalDeletions": 949,
+    "firstSeen": "2025-08-22 17:24:59 -0400",
+    "lastModified": "2025-08-22 17:33:04 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 37.96,
+    "category": "documentation"
+  },
+  {
+    "filename": "index.html",
+    "totalCommits": 5,
+    "totalInsertions": 56,
+    "totalDeletions": 11,
+    "firstSeen": "2025-08-22 17:24:59 -0400",
+    "lastModified": "2025-09-05 15:47:55 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 1.34,
+    "category": "application_logic"
+  },
+  {
+    "filename": "docs/ceo-dashboard.html => AssiduousRealty/dashboard.html",
+    "totalCommits": 1,
+    "totalInsertions": 0,
+    "totalDeletions": 0,
+    "firstSeen": "2025-08-22 17:33:04 -0400",
+    "lastModified": "2025-08-22 17:33:04 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.1,
+    "category": "documentation"
+  },
+  {
+    "filename": "AssiduousRealty/dashboard.html",
+    "totalCommits": 5,
+    "totalInsertions": 1821,
+    "totalDeletions": 1407,
+    "firstSeen": "2025-08-22 17:51:40 -0400",
+    "lastModified": "2025-08-29 17:00:26 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 64.56,
+    "category": "application_logic"
+  },
+  {
+    "filename": "AssiduousRealty/index.html",
+    "totalCommits": 10,
+    "totalInsertions": 2301,
+    "totalDeletions": 1131,
+    "firstSeen": "2025-08-22 17:51:40 -0400",
+    "lastModified": "2025-08-30 18:39:58 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 68.64,
+    "category": "application_logic"
+  },
+  {
+    "filename": "AssiduousRealty/changelog.md",
+    "totalCommits": 2,
+    "totalInsertions": 198,
+    "totalDeletions": 1,
+    "firstSeen": "2025-08-26 14:46:31 -0400",
+    "lastModified": "2025-08-26 20:42:10 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 1.99,
+    "category": "documentation"
+  },
+  {
+    "filename": "AssiduousRealty/README_DASHBOARD.md",
+    "totalCommits": 3,
+    "totalInsertions": 388,
+    "totalDeletions": 3,
+    "firstSeen": "2025-08-26 14:46:31 -0400",
+    "lastModified": "2025-08-29 20:34:11 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 3.91,
+    "category": "documentation"
+  },
+  {
+    "filename": "AssiduousRealty/TESTING_CHECKLIST.md",
+    "totalCommits": 1,
+    "totalInsertions": 87,
+    "totalDeletions": 0,
+    "firstSeen": "2025-08-26 14:46:31 -0400",
+    "lastModified": "2025-08-26 14:46:31 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 0.87,
+    "category": "documentation"
+  },
+  {
+    "filename": "AssiduousRealty/analytics.html",
+    "totalCommits": 5,
+    "totalInsertions": 1214,
+    "totalDeletions": 265,
+    "firstSeen": "2025-08-26 14:46:31 -0400",
+    "lastModified": "2025-08-29 17:00:26 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 29.58,
+    "category": "application_logic"
+  },
+  {
+    "filename": "AssiduousRealty/dashboard-premium.html",
+    "totalCommits": 2,
+    "totalInsertions": 1622,
+    "totalDeletions": 1622,
+    "firstSeen": "2025-08-26 14:46:31 -0400",
+    "lastModified": "2025-08-29 16:03:03 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 64.88,
+    "category": "application_logic"
+  },
+  {
+    "filename": "AssiduousRealty/dashboard-professional.html",
+    "totalCommits": 2,
+    "totalInsertions": 973,
+    "totalDeletions": 973,
+    "firstSeen": "2025-08-26 14:46:31 -0400",
+    "lastModified": "2025-08-29 16:03:03 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 38.92,
+    "category": "application_logic"
+  },
+  {
+    "filename": "AssiduousRealty/dashboard-refined.html",
+    "totalCommits": 2,
+    "totalInsertions": 1437,
+    "totalDeletions": 1437,
+    "firstSeen": "2025-08-26 14:46:31 -0400",
+    "lastModified": "2025-08-29 16:03:03 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 57.48,
+    "category": "application_logic"
+  },
+  {
+    "filename": "AssiduousRealty/dashboard-ultra.html",
+    "totalCommits": 3,
+    "totalInsertions": 1203,
+    "totalDeletions": 1203,
+    "firstSeen": "2025-08-26 14:46:31 -0400",
+    "lastModified": "2025-08-29 16:03:03 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 48.12,
+    "category": "application_logic"
+  },
+  {
+    "filename": "AssiduousRealty/reports.html",
+    "totalCommits": 3,
+    "totalInsertions": 1256,
+    "totalDeletions": 284,
+    "firstSeen": "2025-08-26 14:46:31 -0400",
+    "lastModified": "2025-08-27 12:27:38 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 30.8,
+    "category": "application_logic"
+  },
+  {
+    "filename": "AssiduousRealty/settings.html",
+    "totalCommits": 4,
+    "totalInsertions": 1020,
+    "totalDeletions": 1020,
+    "firstSeen": "2025-08-26 14:46:31 -0400",
+    "lastModified": "2025-08-29 20:34:11 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 40.8,
+    "category": "application_logic"
+  },
+  {
+    "filename": "AssiduousRealty/backend/agents.html",
+    "totalCommits": 5,
+    "totalInsertions": 1045,
+    "totalDeletions": 1045,
+    "firstSeen": "2025-08-26 20:42:10 -0400",
+    "lastModified": "2025-08-29 20:34:11 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 41.8,
+    "category": "application_logic"
+  },
+  {
+    "filename": "AssiduousRealty/backend/clients.html",
+    "totalCommits": 4,
+    "totalInsertions": 602,
+    "totalDeletions": 602,
+    "firstSeen": "2025-08-26 20:42:10 -0400",
+    "lastModified": "2025-08-29 20:34:11 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 24.08,
+    "category": "application_logic"
+  },
+  {
+    "filename": "AssiduousRealty/backend/market.html",
+    "totalCommits": 4,
+    "totalInsertions": 678,
+    "totalDeletions": 678,
+    "firstSeen": "2025-08-26 20:42:10 -0400",
+    "lastModified": "2025-08-29 20:34:11 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 27.12,
+    "category": "application_logic"
+  },
+  {
+    "filename": "AssiduousRealty/backend/properties.html",
+    "totalCommits": 4,
+    "totalInsertions": 977,
+    "totalDeletions": 977,
+    "firstSeen": "2025-08-26 20:42:10 -0400",
+    "lastModified": "2025-08-29 20:34:11 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 39.08,
+    "category": "application_logic"
+  },
+  {
+    "filename": "AssiduousRealty/backend/transactions.html",
+    "totalCommits": 4,
+    "totalInsertions": 776,
+    "totalDeletions": 776,
+    "firstSeen": "2025-08-26 20:42:10 -0400",
+    "lastModified": "2025-08-29 20:34:11 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 31.04,
+    "category": "application_logic"
+  },
+  {
+    "filename": "AssiduousRealty/knowledge-base.html",
+    "totalCommits": 6,
+    "totalInsertions": 1399,
+    "totalDeletions": 408,
+    "firstSeen": "2025-08-26 20:42:10 -0400",
+    "lastModified": "2025-08-29 16:36:31 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 36.14,
+    "category": "application_logic"
+  },
+  {
+    "filename": "docs/PROJECT_DOCUMENTATION.md",
+    "totalCommits": 3,
+    "totalInsertions": 313,
+    "totalDeletions": 9,
+    "firstSeen": "2025-08-26 20:42:10 -0400",
+    "lastModified": "2025-08-30 18:32:23 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 3.22,
+    "category": "documentation"
+  },
+  {
+    "filename": "AssiduousRealty/assiduous.css",
+    "totalCommits": 2,
+    "totalInsertions": 798,
+    "totalDeletions": 0,
+    "firstSeen": "2025-08-27 12:27:38 -0400",
+    "lastModified": "2025-08-29 16:02:38 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 15.96,
+    "category": "styling"
+  },
+  {
+    "filename": "AssiduousRealty/components/header-template.html",
+    "totalCommits": 1,
+    "totalInsertions": 202,
+    "totalDeletions": 0,
+    "firstSeen": "2025-08-29 16:36:31 -0400",
+    "lastModified": "2025-08-29 16:36:31 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 4.04,
+    "category": "ui_component"
+  },
+  {
+    "filename": "AssiduousRealty/diagnostic.html",
+    "totalCommits": 1,
+    "totalInsertions": 87,
+    "totalDeletions": 0,
+    "firstSeen": "2025-08-29 16:36:31 -0400",
+    "lastModified": "2025-08-29 16:36:31 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 1.74,
+    "category": "application_logic"
+  },
+  {
+    "filename": "AssiduousRealty/docs/index.html",
+    "totalCommits": 1,
+    "totalInsertions": 411,
+    "totalDeletions": 0,
+    "firstSeen": "2025-08-29 16:36:31 -0400",
+    "lastModified": "2025-08-29 16:36:31 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 8.22,
+    "category": "documentation"
+  },
+  {
+    "filename": "test.html",
+    "totalCommits": 1,
+    "totalInsertions": 22,
+    "totalDeletions": 0,
+    "firstSeen": "2025-08-29 16:36:31 -0400",
+    "lastModified": "2025-08-29 16:36:31 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.44,
+    "category": "testing"
+  },
+  {
+    "filename": "AssiduousRealty/docs/readme.html",
+    "totalCommits": 1,
+    "totalInsertions": 523,
+    "totalDeletions": 0,
+    "firstSeen": "2025-08-29 16:41:55 -0400",
+    "lastModified": "2025-08-29 16:41:55 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 10.46,
+    "category": "documentation"
+  },
+  {
+    "filename": "AssiduousRealty/{ => admin}/analytics.html",
+    "totalCommits": 1,
+    "totalInsertions": 0,
+    "totalDeletions": 0,
+    "firstSeen": "2025-08-29 17:19:12 -0400",
+    "lastModified": "2025-08-29 17:19:12 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.1,
+    "category": "application_logic"
+  },
+  {
+    "filename": "AssiduousRealty/{ => admin}/dashboard.html",
+    "totalCommits": 1,
+    "totalInsertions": 0,
+    "totalDeletions": 0,
+    "firstSeen": "2025-08-29 17:19:12 -0400",
+    "lastModified": "2025-08-29 17:19:12 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.1,
+    "category": "application_logic"
+  },
+  {
+    "filename": "AssiduousRealty/buyers/index.html",
+    "totalCommits": 1,
+    "totalInsertions": 679,
+    "totalDeletions": 0,
+    "firstSeen": "2025-08-29 17:19:12 -0400",
+    "lastModified": "2025-08-29 17:19:12 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 13.58,
+    "category": "application_logic"
+  },
+  {
+    "filename": "AssiduousRealty/index-old.html",
+    "totalCommits": 1,
+    "totalInsertions": 1014,
+    "totalDeletions": 0,
+    "firstSeen": "2025-08-29 17:19:12 -0400",
+    "lastModified": "2025-08-29 17:19:12 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 20.28,
+    "category": "application_logic"
+  },
+  {
+    "filename": "AssiduousRealty/admin/readme.md",
+    "totalCommits": 1,
+    "totalInsertions": 84,
+    "totalDeletions": 0,
+    "firstSeen": "2025-08-29 20:34:11 -0400",
+    "lastModified": "2025-08-29 20:34:11 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 0.84,
+    "category": "documentation"
+  },
+  {
+    "filename": "AssiduousRealty/admin/agents.html",
+    "totalCommits": 1,
+    "totalInsertions": 706,
+    "totalDeletions": 0,
+    "firstSeen": "2025-08-29 20:34:11 -0400",
+    "lastModified": "2025-08-29 20:34:11 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 14.12,
+    "category": "application_logic"
+  },
+  {
+    "filename": "AssiduousRealty/admin/analytics.html",
+    "totalCommits": 1,
+    "totalInsertions": 1095,
+    "totalDeletions": 821,
+    "firstSeen": "2025-08-29 20:34:11 -0400",
+    "lastModified": "2025-08-29 20:34:11 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 38.32,
+    "category": "application_logic"
+  },
+  {
+    "filename": "AssiduousRealty/admin/clients.html",
+    "totalCommits": 1,
+    "totalInsertions": 746,
+    "totalDeletions": 0,
+    "firstSeen": "2025-08-29 20:34:11 -0400",
+    "lastModified": "2025-08-29 20:34:11 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 14.92,
+    "category": "application_logic"
+  },
+  {
+    "filename": "AssiduousRealty/admin/dashboard.html",
+    "totalCommits": 1,
+    "totalInsertions": 564,
+    "totalDeletions": 1140,
+    "firstSeen": "2025-08-29 20:34:11 -0400",
+    "lastModified": "2025-08-29 20:34:11 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 34.08,
+    "category": "application_logic"
+  },
+  {
+    "filename": "AssiduousRealty/admin/development/analytics.html",
+    "totalCommits": 1,
+    "totalInsertions": 904,
+    "totalDeletions": 0,
+    "firstSeen": "2025-08-29 20:34:11 -0400",
+    "lastModified": "2025-08-29 20:34:11 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 18.08,
+    "category": "application_logic"
+  },
+  {
+    "filename": "AssiduousRealty/admin/development/backups/ROLLBACK_INSTRUCTIONS.md",
+    "totalCommits": 1,
+    "totalInsertions": 69,
+    "totalDeletions": 0,
+    "firstSeen": "2025-08-29 20:34:11 -0400",
+    "lastModified": "2025-08-29 20:34:11 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 0.69,
+    "category": "documentation"
+  },
+  {
+    "filename": "AssiduousRealty/admin/development/backups/analytics_backup_20250829.html",
+    "totalCommits": 1,
+    "totalInsertions": 904,
+    "totalDeletions": 0,
+    "firstSeen": "2025-08-29 20:34:11 -0400",
+    "lastModified": "2025-08-29 20:34:11 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 18.08,
+    "category": "application_logic"
+  },
+  {
+    "filename": "AssiduousRealty/admin/development/backups/dashboard_backup_20250829.html",
+    "totalCommits": 1,
+    "totalInsertions": 942,
+    "totalDeletions": 0,
+    "firstSeen": "2025-08-29 20:34:11 -0400",
+    "lastModified": "2025-08-29 20:34:11 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 18.84,
+    "category": "application_logic"
+  },
+  {
+    "filename": "AssiduousRealty/admin/development/backups/docs_backup_20250829.html",
+    "totalCommits": 1,
+    "totalInsertions": 697,
+    "totalDeletions": 0,
+    "firstSeen": "2025-08-29 20:34:11 -0400",
+    "lastModified": "2025-08-29 20:34:11 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 13.94,
+    "category": "documentation"
+  },
+  {
+    "filename": "AssiduousRealty/admin/development/backups/reports_backup_20250829.html",
+    "totalCommits": 1,
+    "totalInsertions": 796,
+    "totalDeletions": 0,
+    "firstSeen": "2025-08-29 20:34:11 -0400",
+    "lastModified": "2025-08-29 20:34:11 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 15.92,
+    "category": "application_logic"
+  },
+  {
+    "filename": "AssiduousRealty/admin/development/dashboard.html",
+    "totalCommits": 1,
+    "totalInsertions": 942,
+    "totalDeletions": 0,
+    "firstSeen": "2025-08-29 20:34:11 -0400",
+    "lastModified": "2025-08-29 20:34:11 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 18.84,
+    "category": "application_logic"
+  },
+  {
+    "filename": "AssiduousRealty/admin/development/dashboard_old.html",
+    "totalCommits": 1,
+    "totalInsertions": 1312,
+    "totalDeletions": 0,
+    "firstSeen": "2025-08-29 20:34:11 -0400",
+    "lastModified": "2025-08-29 20:34:11 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 26.24,
+    "category": "application_logic"
+  },
+  {
+    "filename": "AssiduousRealty/admin/development/docs.html",
+    "totalCommits": 3,
+    "totalInsertions": 1112,
+    "totalDeletions": 5,
+    "firstSeen": "2025-08-29 20:34:11 -0400",
+    "lastModified": "2025-08-29 20:49:33 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 22.34,
+    "category": "documentation"
+  },
+  {
+    "filename": "AssiduousRealty/admin/development/reports.html",
+    "totalCommits": 1,
+    "totalInsertions": 796,
+    "totalDeletions": 0,
+    "firstSeen": "2025-08-29 20:34:11 -0400",
+    "lastModified": "2025-08-29 20:34:11 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 15.92,
+    "category": "application_logic"
+  },
+  {
+    "filename": "AssiduousRealty/admin/market.html",
+    "totalCommits": 1,
+    "totalInsertions": 905,
+    "totalDeletions": 0,
+    "firstSeen": "2025-08-29 20:34:11 -0400",
+    "lastModified": "2025-08-29 20:34:11 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 18.1,
+    "category": "application_logic"
+  },
+  {
+    "filename": "AssiduousRealty/admin/properties.html",
+    "totalCommits": 1,
+    "totalInsertions": 858,
+    "totalDeletions": 0,
+    "firstSeen": "2025-08-29 20:34:11 -0400",
+    "lastModified": "2025-08-29 20:34:11 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 17.16,
+    "category": "application_logic"
+  },
+  {
+    "filename": "AssiduousRealty/admin/settings.html",
+    "totalCommits": 1,
+    "totalInsertions": 796,
+    "totalDeletions": 0,
+    "firstSeen": "2025-08-29 20:34:11 -0400",
+    "lastModified": "2025-08-29 20:34:11 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 15.92,
+    "category": "application_logic"
+  },
+  {
+    "filename": "AssiduousRealty/admin/transactions.html",
+    "totalCommits": 1,
+    "totalInsertions": 724,
+    "totalDeletions": 0,
+    "firstSeen": "2025-08-29 20:34:11 -0400",
+    "lastModified": "2025-08-29 20:34:11 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 14.48,
+    "category": "application_logic"
+  },
+  {
+    "filename": "docs/UNIFIED_ASSIDUOUS_BLUEPRINT.md",
+    "totalCommits": 1,
+    "totalInsertions": 637,
+    "totalDeletions": 0,
+    "firstSeen": "2025-08-29 20:34:11 -0400",
+    "lastModified": "2025-08-29 20:34:11 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 6.37,
+    "category": "documentation"
+  },
+  {
+    "filename": "AssiduousRealty/admin/development/TEST_VERIFICATION.md",
+    "totalCommits": 1,
+    "totalInsertions": 66,
+    "totalDeletions": 0,
+    "firstSeen": "2025-08-29 20:41:36 -0400",
+    "lastModified": "2025-08-29 20:41:36 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 0.66,
+    "category": "documentation"
+  },
+  {
+    "filename": "DEPLOYMENT_CONFIRMATION.md",
+    "totalCommits": 1,
+    "totalInsertions": 126,
+    "totalDeletions": 0,
+    "firstSeen": "2025-08-30 17:04:00 -0400",
+    "lastModified": "2025-08-30 17:04:00 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 1.26,
+    "category": "documentation"
+  },
+  {
+    "filename": "AssiduousRealty/client/index.html",
+    "totalCommits": 1,
+    "totalInsertions": 457,
+    "totalDeletions": 0,
+    "firstSeen": "2025-08-30 18:32:23 -0400",
+    "lastModified": "2025-08-30 18:32:23 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 9.14,
+    "category": "application_logic"
+  },
+  {
+    "filename": "AssiduousRealty/docs/API_DOCS.md",
+    "totalCommits": 1,
+    "totalInsertions": 342,
+    "totalDeletions": 0,
+    "firstSeen": "2025-08-30 18:32:23 -0400",
+    "lastModified": "2025-08-30 18:32:23 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 3.42,
+    "category": "documentation"
+  },
+  {
+    "filename": "assets/js/services/auth.js",
+    "totalCommits": 1,
+    "totalInsertions": 199,
+    "totalDeletions": 0,
+    "firstSeen": "2025-08-30 18:32:23 -0400",
+    "lastModified": "2025-08-30 18:32:23 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 3,
+    "estimatedHours": 5.97,
+    "category": "backend_service"
+  },
+  {
+    "filename": "assets/js/services/crm.js",
+    "totalCommits": 1,
+    "totalInsertions": 166,
+    "totalDeletions": 0,
+    "firstSeen": "2025-08-30 18:32:23 -0400",
+    "lastModified": "2025-08-30 18:32:23 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 3,
+    "estimatedHours": 4.9799999999999995,
+    "category": "backend_service"
+  },
+  {
+    "filename": "assets/js/services/index.js",
+    "totalCommits": 1,
+    "totalInsertions": 4,
+    "totalDeletions": 0,
+    "firstSeen": "2025-08-30 18:32:23 -0400",
+    "lastModified": "2025-08-30 18:32:23 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 3,
+    "estimatedHours": 0.12,
+    "category": "backend_service"
+  },
+  {
+    "filename": "docs/WORKFLOW_DOCUMENTATION.md",
+    "totalCommits": 1,
+    "totalInsertions": 395,
+    "totalDeletions": 0,
+    "firstSeen": "2025-08-30 18:49:48 -0400",
+    "lastModified": "2025-08-30 18:49:48 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 3.95,
+    "category": "documentation"
+  },
+  {
+    "filename": ".github/scripts/db-operation.js",
+    "totalCommits": 2,
+    "totalInsertions": 110,
+    "totalDeletions": 0,
+    "firstSeen": "2025-08-30 19:00:43 -0400",
+    "lastModified": "2025-08-30 19:17:27 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 3,
+    "estimatedHours": 3.3000000000000003,
+    "category": "application_logic"
+  },
+  {
+    "filename": ".github/workflows/database.yml",
+    "totalCommits": 9,
+    "totalInsertions": 126,
+    "totalDeletions": 57,
+    "firstSeen": "2025-08-30 19:00:43 -0400",
+    "lastModified": "2025-08-30 19:41:09 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 3.66,
+    "category": "application_logic"
+  },
+  {
+    "filename": "data/properties.json",
+    "totalCommits": 1,
+    "totalInsertions": 39,
+    "totalDeletions": 0,
+    "firstSeen": "2025-08-30 19:00:43 -0400",
+    "lastModified": "2025-08-30 19:00:43 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 0.39,
+    "category": "configuration"
+  },
+  {
+    "filename": "data/transactions.json",
+    "totalCommits": 1,
+    "totalInsertions": 39,
+    "totalDeletions": 0,
+    "firstSeen": "2025-08-30 19:00:43 -0400",
+    "lastModified": "2025-08-30 19:00:43 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 0.39,
+    "category": "configuration"
+  },
+  {
+    "filename": "data/users.json",
+    "totalCommits": 2,
+    "totalInsertions": 41,
+    "totalDeletions": 20,
+    "firstSeen": "2025-08-30 19:00:43 -0400",
+    "lastModified": "2025-08-30 23:22:59 +0000",
+    "authors": [
+      "SirsiMaster",
+      "GitHub Action"
+    ],
+    "complexity": 1,
+    "estimatedHours": 0.61,
+    "category": "configuration"
+  },
+  {
+    "filename": "src/services/dataservice.js",
+    "totalCommits": 1,
+    "totalInsertions": 157,
+    "totalDeletions": 0,
+    "firstSeen": "2025-08-30 19:00:43 -0400",
+    "lastModified": "2025-08-30 19:00:43 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 3,
+    "estimatedHours": 4.71,
+    "category": "backend_service"
+  },
+  {
+    "filename": "examples/database-usage.js",
+    "totalCommits": 1,
+    "totalInsertions": 253,
+    "totalDeletions": 0,
+    "firstSeen": "2025-08-30 19:03:07 -0400",
+    "lastModified": "2025-08-30 19:03:07 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 3,
+    "estimatedHours": 7.59,
+    "category": "application_logic"
+  },
+  {
+    "filename": "src/services/databaseutils.js",
+    "totalCommits": 1,
+    "totalInsertions": 216,
+    "totalDeletions": 0,
+    "firstSeen": "2025-08-30 19:03:07 -0400",
+    "lastModified": "2025-08-30 19:03:07 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 3,
+    "estimatedHours": 6.48,
+    "category": "backend_service"
+  },
+  {
+    "filename": "src/services/querybuilder.js",
+    "totalCommits": 1,
+    "totalInsertions": 187,
+    "totalDeletions": 0,
+    "firstSeen": "2025-08-30 19:03:07 -0400",
+    "lastModified": "2025-08-30 19:03:07 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 3,
+    "estimatedHours": 5.61,
+    "category": "ui_component"
+  },
+  {
+    "filename": "src/services/searchservice.js",
+    "totalCommits": 1,
+    "totalInsertions": 207,
+    "totalDeletions": 0,
+    "firstSeen": "2025-08-30 19:03:07 -0400",
+    "lastModified": "2025-08-30 19:03:07 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 3,
+    "estimatedHours": 6.209999999999999,
+    "category": "backend_service"
+  },
+  {
+    "filename": ".github/workflows/environments.yml",
+    "totalCommits": 2,
+    "totalInsertions": 40,
+    "totalDeletions": 12,
+    "firstSeen": "2025-08-30 19:06:20 -0400",
+    "lastModified": "2025-08-30 19:11:39 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 1.04,
+    "category": "application_logic"
+  },
+  {
+    "filename": "src/services/encryptionservice.js",
+    "totalCommits": 1,
+    "totalInsertions": 125,
+    "totalDeletions": 0,
+    "firstSeen": "2025-08-30 19:06:20 -0400",
+    "lastModified": "2025-08-30 19:06:20 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 3,
+    "estimatedHours": 3.75,
+    "category": "backend_service"
+  },
+  {
+    "filename": "src/services/Securedataservice.js",
+    "totalCommits": 1,
+    "totalInsertions": 148,
+    "totalDeletions": 0,
+    "firstSeen": "2025-08-30 19:06:20 -0400",
+    "lastModified": "2025-08-30 19:06:20 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 3,
+    "estimatedHours": 4.4399999999999995,
+    "category": "backend_service"
+  },
+  {
+    "filename": "docs/SECURITY_IMPLEMENTATION.md",
+    "totalCommits": 1,
+    "totalInsertions": 273,
+    "totalDeletions": 0,
+    "firstSeen": "2025-08-30 19:09:19 -0400",
+    "lastModified": "2025-08-30 19:09:19 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 2.73,
+    "category": "documentation"
+  },
+  {
+    "filename": "docs/SECURITY_QUICKSTART.md",
+    "totalCommits": 1,
+    "totalInsertions": 233,
+    "totalDeletions": 0,
+    "firstSeen": "2025-08-30 19:09:19 -0400",
+    "lastModified": "2025-08-30 19:09:19 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 2.33,
+    "category": "documentation"
+  },
+  {
+    "filename": ".github/scripts/validate-request.js",
+    "totalCommits": 2,
+    "totalInsertions": 45,
+    "totalDeletions": 0,
+    "firstSeen": "2025-08-30 19:11:39 -0400",
+    "lastModified": "2025-08-30 19:17:27 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 3,
+    "estimatedHours": 1.35,
+    "category": "application_logic"
+  },
+  {
+    "filename": ".github/workflows/secrets.env",
+    "totalCommits": 2,
+    "totalInsertions": 7,
+    "totalDeletions": 7,
+    "firstSeen": "2025-08-30 19:12:31 -0400",
+    "lastModified": "2025-08-30 19:13:28 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.28,
+    "category": "application_logic"
+  },
+  {
+    "filename": "package.json",
+    "totalCommits": 26,
+    "totalInsertions": 65,
+    "totalDeletions": 29,
+    "firstSeen": "2025-08-30 19:18:03 -0400",
+    "lastModified": "2025-09-06 23:19:54 -0400",
+    "authors": [
+      "SirsiMaster",
+      "github-actions[bot]",
+      "dependabot[bot]"
+    ],
+    "complexity": 1,
+    "estimatedHours": 0.94,
+    "category": "configuration"
+  },
+  {
+    "filename": ".github/scripts/database-operations.js",
+    "totalCommits": 2,
+    "totalInsertions": 225,
+    "totalDeletions": 6,
+    "firstSeen": "2025-08-30 19:21:37 -0400",
+    "lastModified": "2025-08-30 19:22:39 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 3,
+    "estimatedHours": 6.93,
+    "category": "application_logic"
+  },
+  {
+    "filename": "docs/SECURITY.md",
+    "totalCommits": 2,
+    "totalInsertions": 274,
+    "totalDeletions": 0,
+    "firstSeen": "2025-08-30 19:25:47 -0400",
+    "lastModified": "2025-08-30 19:35:44 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 2.74,
+    "category": "documentation"
+  },
+  {
+    "filename": "src/services/firebaseservice.js",
+    "totalCommits": 1,
+    "totalInsertions": 412,
+    "totalDeletions": 0,
+    "firstSeen": "2025-08-30 19:25:47 -0400",
+    "lastModified": "2025-08-30 19:25:47 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 3,
+    "estimatedHours": 12.36,
+    "category": "backend_service"
+  },
+  {
+    "filename": "jest.config.js",
+    "totalCommits": 1,
+    "totalInsertions": 31,
+    "totalDeletions": 0,
+    "firstSeen": "2025-08-30 19:29:32 -0400",
+    "lastModified": "2025-08-30 19:29:32 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 3,
+    "estimatedHours": 0.9299999999999999,
+    "category": "configuration"
+  },
+  {
+    "filename": "jest.setup.js",
+    "totalCommits": 1,
+    "totalInsertions": 56,
+    "totalDeletions": 0,
+    "firstSeen": "2025-08-30 19:29:32 -0400",
+    "lastModified": "2025-08-30 19:29:32 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 3,
+    "estimatedHours": 1.6800000000000002,
+    "category": "application_logic"
+  },
+  {
+    "filename": "src/pages/api/[collection]/[id].js",
+    "totalCommits": 1,
+    "totalInsertions": 45,
+    "totalDeletions": 0,
+    "firstSeen": "2025-08-30 19:29:32 -0400",
+    "lastModified": "2025-08-30 19:29:32 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 3,
+    "estimatedHours": 1.35,
+    "category": "backend_service"
+  },
+  {
+    "filename": "src/pages/api/[collection]/index.js",
+    "totalCommits": 1,
+    "totalInsertions": 45,
+    "totalDeletions": 0,
+    "firstSeen": "2025-08-30 19:29:32 -0400",
+    "lastModified": "2025-08-30 19:29:32 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 3,
+    "estimatedHours": 1.35,
+    "category": "backend_service"
+  },
+  {
+    "filename": "src/services/__tests__/firebaseservice.test.js",
+    "totalCommits": 1,
+    "totalInsertions": 259,
+    "totalDeletions": 0,
+    "firstSeen": "2025-08-30 19:29:32 -0400",
+    "lastModified": "2025-08-30 19:29:32 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 3,
+    "estimatedHours": 7.77,
+    "category": "testing"
+  },
+  {
+    "filename": "src/utils/auth.js",
+    "totalCommits": 1,
+    "totalInsertions": 73,
+    "totalDeletions": 0,
+    "firstSeen": "2025-08-30 19:29:32 -0400",
+    "lastModified": "2025-08-30 19:29:32 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 3,
+    "estimatedHours": 2.19,
+    "category": "utility"
+  },
+  {
+    "filename": "scripts/firebase-operations.js",
+    "totalCommits": 1,
+    "totalInsertions": 181,
+    "totalDeletions": 0,
+    "firstSeen": "2025-08-30 19:41:09 -0400",
+    "lastModified": "2025-08-30 19:41:09 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 3,
+    "estimatedHours": 5.43,
+    "category": "application_logic"
+  },
+  {
+    "filename": "{AssiduousRealty => AssiduousProperties}/changelog.md",
+    "totalCommits": 1,
+    "totalInsertions": 0,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-01 12:19:56 -0400",
+    "lastModified": "2025-09-01 12:19:56 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 0.1,
+    "category": "documentation"
+  },
+  {
+    "filename": "{AssiduousRealty => AssiduousProperties}/README_DASHBOARD.md",
+    "totalCommits": 1,
+    "totalInsertions": 0,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-01 12:19:56 -0400",
+    "lastModified": "2025-09-01 12:19:56 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 0.1,
+    "category": "documentation"
+  },
+  {
+    "filename": "{AssiduousRealty => AssiduousProperties}/TESTING_CHECKLIST.md",
+    "totalCommits": 1,
+    "totalInsertions": 0,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-01 12:19:56 -0400",
+    "lastModified": "2025-09-01 12:19:56 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 0.1,
+    "category": "documentation"
+  },
+  {
+    "filename": "{AssiduousRealty => AssiduousProperties}/admin/readme.md",
+    "totalCommits": 1,
+    "totalInsertions": 0,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-01 12:19:56 -0400",
+    "lastModified": "2025-09-01 12:19:56 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 0.1,
+    "category": "documentation"
+  },
+  {
+    "filename": "{AssiduousRealty => AssiduousProperties}/admin/agents.html",
+    "totalCommits": 1,
+    "totalInsertions": 0,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-01 12:19:56 -0400",
+    "lastModified": "2025-09-01 12:19:56 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.1,
+    "category": "application_logic"
+  },
+  {
+    "filename": "{AssiduousRealty => AssiduousProperties}/admin/analytics.html",
+    "totalCommits": 1,
+    "totalInsertions": 0,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-01 12:19:56 -0400",
+    "lastModified": "2025-09-01 12:19:56 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.1,
+    "category": "application_logic"
+  },
+  {
+    "filename": "{AssiduousRealty => AssiduousProperties}/admin/clients.html",
+    "totalCommits": 1,
+    "totalInsertions": 0,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-01 12:19:56 -0400",
+    "lastModified": "2025-09-01 12:19:56 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.1,
+    "category": "application_logic"
+  },
+  {
+    "filename": "{AssiduousRealty => AssiduousProperties}/admin/dashboard.html",
+    "totalCommits": 1,
+    "totalInsertions": 0,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-01 12:19:56 -0400",
+    "lastModified": "2025-09-01 12:19:56 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.1,
+    "category": "application_logic"
+  },
+  {
+    "filename": "{AssiduousRealty => AssiduousProperties}/admin/development/TEST_VERIFICATION.md",
+    "totalCommits": 1,
+    "totalInsertions": 0,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-01 12:19:56 -0400",
+    "lastModified": "2025-09-01 12:19:56 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 0.1,
+    "category": "documentation"
+  },
+  {
+    "filename": "{AssiduousRealty => AssiduousProperties}/admin/development/analytics.html",
+    "totalCommits": 1,
+    "totalInsertions": 0,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-01 12:19:56 -0400",
+    "lastModified": "2025-09-01 12:19:56 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.1,
+    "category": "application_logic"
+  },
+  {
+    "filename": "{AssiduousRealty => AssiduousProperties}/admin/development/backups/ROLLBACK_INSTRUCTIONS.md",
+    "totalCommits": 1,
+    "totalInsertions": 0,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-01 12:19:56 -0400",
+    "lastModified": "2025-09-01 12:19:56 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 0.1,
+    "category": "documentation"
+  },
+  {
+    "filename": "{AssiduousRealty => AssiduousProperties}/admin/development/backups/analytics_backup_20250829.html",
+    "totalCommits": 1,
+    "totalInsertions": 0,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-01 12:19:56 -0400",
+    "lastModified": "2025-09-01 12:19:56 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.1,
+    "category": "application_logic"
+  },
+  {
+    "filename": "{AssiduousRealty => AssiduousProperties}/admin/development/backups/dashboard_backup_20250829.html",
+    "totalCommits": 1,
+    "totalInsertions": 0,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-01 12:19:56 -0400",
+    "lastModified": "2025-09-01 12:19:56 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.1,
+    "category": "application_logic"
+  },
+  {
+    "filename": "{AssiduousRealty => AssiduousProperties}/admin/development/backups/docs_backup_20250829.html",
+    "totalCommits": 1,
+    "totalInsertions": 0,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-01 12:19:56 -0400",
+    "lastModified": "2025-09-01 12:19:56 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.1,
+    "category": "documentation"
+  },
+  {
+    "filename": "{AssiduousRealty => AssiduousProperties}/admin/development/backups/reports_backup_20250829.html",
+    "totalCommits": 1,
+    "totalInsertions": 0,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-01 12:19:56 -0400",
+    "lastModified": "2025-09-01 12:19:56 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.1,
+    "category": "application_logic"
+  },
+  {
+    "filename": "{AssiduousRealty => AssiduousProperties}/admin/development/dashboard.html",
+    "totalCommits": 1,
+    "totalInsertions": 0,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-01 12:19:56 -0400",
+    "lastModified": "2025-09-01 12:19:56 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.1,
+    "category": "application_logic"
+  },
+  {
+    "filename": "{AssiduousRealty => AssiduousProperties}/admin/development/dashboard_old.html",
+    "totalCommits": 1,
+    "totalInsertions": 0,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-01 12:19:56 -0400",
+    "lastModified": "2025-09-01 12:19:56 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.1,
+    "category": "application_logic"
+  },
+  {
+    "filename": "{AssiduousRealty => AssiduousProperties}/admin/development/docs.html",
+    "totalCommits": 1,
+    "totalInsertions": 0,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-01 12:19:56 -0400",
+    "lastModified": "2025-09-01 12:19:56 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.1,
+    "category": "documentation"
+  },
+  {
+    "filename": "{AssiduousRealty => AssiduousProperties}/admin/development/reports.html",
+    "totalCommits": 1,
+    "totalInsertions": 0,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-01 12:19:56 -0400",
+    "lastModified": "2025-09-01 12:19:56 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.1,
+    "category": "application_logic"
+  },
+  {
+    "filename": "{AssiduousRealty => AssiduousProperties}/admin/market.html",
+    "totalCommits": 1,
+    "totalInsertions": 0,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-01 12:19:56 -0400",
+    "lastModified": "2025-09-01 12:19:56 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.1,
+    "category": "application_logic"
+  },
+  {
+    "filename": "{AssiduousRealty => AssiduousProperties}/admin/properties.html",
+    "totalCommits": 1,
+    "totalInsertions": 0,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-01 12:19:56 -0400",
+    "lastModified": "2025-09-01 12:19:56 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.1,
+    "category": "application_logic"
+  },
+  {
+    "filename": "{AssiduousRealty => AssiduousProperties}/admin/settings.html",
+    "totalCommits": 1,
+    "totalInsertions": 0,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-01 12:19:56 -0400",
+    "lastModified": "2025-09-01 12:19:56 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.1,
+    "category": "application_logic"
+  },
+  {
+    "filename": "{AssiduousRealty => AssiduousProperties}/admin/transactions.html",
+    "totalCommits": 1,
+    "totalInsertions": 0,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-01 12:19:56 -0400",
+    "lastModified": "2025-09-01 12:19:56 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.1,
+    "category": "application_logic"
+  },
+  {
+    "filename": "{AssiduousRealty => AssiduousProperties}/assiduous.css",
+    "totalCommits": 1,
+    "totalInsertions": 0,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-01 12:19:56 -0400",
+    "lastModified": "2025-09-01 12:19:56 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.1,
+    "category": "styling"
+  },
+  {
+    "filename": "{AssiduousRealty => AssiduousProperties}/buyers/index.html",
+    "totalCommits": 1,
+    "totalInsertions": 0,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-01 12:19:56 -0400",
+    "lastModified": "2025-09-01 12:19:56 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.1,
+    "category": "application_logic"
+  },
+  {
+    "filename": "{AssiduousRealty => AssiduousProperties}/client/index.html",
+    "totalCommits": 1,
+    "totalInsertions": 1,
+    "totalDeletions": 1,
+    "firstSeen": "2025-09-01 12:19:56 -0400",
+    "lastModified": "2025-09-01 12:19:56 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.1,
+    "category": "application_logic"
+  },
+  {
+    "filename": "{AssiduousRealty => AssiduousProperties}/components/header-template.html",
+    "totalCommits": 1,
+    "totalInsertions": 0,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-01 12:19:56 -0400",
+    "lastModified": "2025-09-01 12:19:56 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.1,
+    "category": "ui_component"
+  },
+  {
+    "filename": "{AssiduousRealty => AssiduousProperties}/diagnostic.html",
+    "totalCommits": 1,
+    "totalInsertions": 0,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-01 12:19:56 -0400",
+    "lastModified": "2025-09-01 12:19:56 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.1,
+    "category": "application_logic"
+  },
+  {
+    "filename": "{AssiduousRealty => AssiduousProperties}/docs/API_DOCS.md",
+    "totalCommits": 1,
+    "totalInsertions": 0,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-01 12:19:56 -0400",
+    "lastModified": "2025-09-01 12:19:56 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 0.1,
+    "category": "documentation"
+  },
+  {
+    "filename": "{AssiduousRealty => AssiduousProperties}/docs/index.html",
+    "totalCommits": 1,
+    "totalInsertions": 0,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-01 12:19:56 -0400",
+    "lastModified": "2025-09-01 12:19:56 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.1,
+    "category": "documentation"
+  },
+  {
+    "filename": "{AssiduousRealty => AssiduousProperties}/docs/readme.html",
+    "totalCommits": 1,
+    "totalInsertions": 0,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-01 12:19:56 -0400",
+    "lastModified": "2025-09-01 12:19:56 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.1,
+    "category": "documentation"
+  },
+  {
+    "filename": "{AssiduousRealty => AssiduousProperties}/index-old.html",
+    "totalCommits": 1,
+    "totalInsertions": 0,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-01 12:19:56 -0400",
+    "lastModified": "2025-09-01 12:19:56 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.1,
+    "category": "application_logic"
+  },
+  {
+    "filename": "{AssiduousRealty => AssiduousProperties}/index.html",
+    "totalCommits": 1,
+    "totalInsertions": 5,
+    "totalDeletions": 5,
+    "firstSeen": "2025-09-01 12:19:56 -0400",
+    "lastModified": "2025-09-01 12:19:56 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.2,
+    "category": "application_logic"
+  },
+  {
+    "filename": "{AssiduousRealty => AssiduousProperties}/knowledge-base.html",
+    "totalCommits": 1,
+    "totalInsertions": 0,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-01 12:19:56 -0400",
+    "lastModified": "2025-09-01 12:19:56 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.1,
+    "category": "application_logic"
+  },
+  {
+    "filename": "{AssiduousRealty => AssiduousProperties}/reports.html",
+    "totalCommits": 1,
+    "totalInsertions": 0,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-01 12:19:56 -0400",
+    "lastModified": "2025-09-01 12:19:56 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.1,
+    "category": "application_logic"
+  },
+  {
+    "filename": "AssiduousProperties/index.html",
+    "totalCommits": 3,
+    "totalInsertions": 53,
+    "totalDeletions": 36,
+    "firstSeen": "2025-09-01 17:08:14 -0400",
+    "lastModified": "2025-09-01 17:34:55 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 1.78,
+    "category": "application_logic"
+  },
+  {
+    "filename": "AssiduousProperties/admin/agents.html",
+    "totalCommits": 1,
+    "totalInsertions": 14,
+    "totalDeletions": 14,
+    "firstSeen": "2025-09-01 17:34:55 -0400",
+    "lastModified": "2025-09-01 17:34:55 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.56,
+    "category": "application_logic"
+  },
+  {
+    "filename": "AssiduousProperties/admin/analytics.html",
+    "totalCommits": 1,
+    "totalInsertions": 14,
+    "totalDeletions": 14,
+    "firstSeen": "2025-09-01 17:34:55 -0400",
+    "lastModified": "2025-09-01 17:34:55 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.56,
+    "category": "application_logic"
+  },
+  {
+    "filename": "AssiduousProperties/admin/clients.html",
+    "totalCommits": 1,
+    "totalInsertions": 14,
+    "totalDeletions": 14,
+    "firstSeen": "2025-09-01 17:34:55 -0400",
+    "lastModified": "2025-09-01 17:34:55 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.56,
+    "category": "application_logic"
+  },
+  {
+    "filename": "AssiduousProperties/admin/dashboard.html",
+    "totalCommits": 1,
+    "totalInsertions": 14,
+    "totalDeletions": 14,
+    "firstSeen": "2025-09-01 17:34:55 -0400",
+    "lastModified": "2025-09-01 17:34:55 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.56,
+    "category": "application_logic"
+  },
+  {
+    "filename": "AssiduousProperties/admin/development/analytics.html",
+    "totalCommits": 1,
+    "totalInsertions": 14,
+    "totalDeletions": 14,
+    "firstSeen": "2025-09-01 17:34:55 -0400",
+    "lastModified": "2025-09-01 17:34:55 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.56,
+    "category": "application_logic"
+  },
+  {
+    "filename": "AssiduousProperties/admin/development/dashboard.html",
+    "totalCommits": 1,
+    "totalInsertions": 14,
+    "totalDeletions": 14,
+    "firstSeen": "2025-09-01 17:34:55 -0400",
+    "lastModified": "2025-09-01 17:34:55 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.56,
+    "category": "application_logic"
+  },
+  {
+    "filename": "AssiduousProperties/admin/development/docs.html",
+    "totalCommits": 1,
+    "totalInsertions": 14,
+    "totalDeletions": 14,
+    "firstSeen": "2025-09-01 17:34:55 -0400",
+    "lastModified": "2025-09-01 17:34:55 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.56,
+    "category": "documentation"
+  },
+  {
+    "filename": "AssiduousProperties/admin/development/reports.html",
+    "totalCommits": 1,
+    "totalInsertions": 14,
+    "totalDeletions": 14,
+    "firstSeen": "2025-09-01 17:34:55 -0400",
+    "lastModified": "2025-09-01 17:34:55 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.56,
+    "category": "application_logic"
+  },
+  {
+    "filename": "AssiduousProperties/admin/market.html",
+    "totalCommits": 1,
+    "totalInsertions": 14,
+    "totalDeletions": 14,
+    "firstSeen": "2025-09-01 17:34:55 -0400",
+    "lastModified": "2025-09-01 17:34:55 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.56,
+    "category": "application_logic"
+  },
+  {
+    "filename": "AssiduousProperties/admin/properties.html",
+    "totalCommits": 1,
+    "totalInsertions": 14,
+    "totalDeletions": 14,
+    "firstSeen": "2025-09-01 17:34:55 -0400",
+    "lastModified": "2025-09-01 17:34:55 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.56,
+    "category": "application_logic"
+  },
+  {
+    "filename": "AssiduousProperties/admin/settings.html",
+    "totalCommits": 1,
+    "totalInsertions": 14,
+    "totalDeletions": 14,
+    "firstSeen": "2025-09-01 17:34:55 -0400",
+    "lastModified": "2025-09-01 17:34:55 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.56,
+    "category": "application_logic"
+  },
+  {
+    "filename": "AssiduousProperties/admin/transactions.html",
+    "totalCommits": 1,
+    "totalInsertions": 14,
+    "totalDeletions": 14,
+    "firstSeen": "2025-09-01 17:34:55 -0400",
+    "lastModified": "2025-09-01 17:34:55 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.56,
+    "category": "application_logic"
+  },
+  {
+    "filename": "docs/CONTRACT_INTEGRATION_PLAN.md",
+    "totalCommits": 5,
+    "totalInsertions": 527,
+    "totalDeletions": 28,
+    "firstSeen": "2025-09-01 17:34:55 -0400",
+    "lastModified": "2025-09-05 15:47:55 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 5.55,
+    "category": "documentation"
+  },
+  {
+    "filename": "docs/IMPLEMENTATION_ROADMAP_30DAY.md",
+    "totalCommits": 5,
+    "totalInsertions": 496,
+    "totalDeletions": 24,
+    "firstSeen": "2025-09-01 17:34:55 -0400",
+    "lastModified": "2025-09-05 15:47:55 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 5.2,
+    "category": "documentation"
+  },
+  {
+    "filename": "AssiduousProperties/admin/index.html",
+    "totalCommits": 2,
+    "totalInsertions": 14,
+    "totalDeletions": 14,
+    "firstSeen": "2025-09-01 17:45:32 -0400",
+    "lastModified": "2025-09-01 17:46:38 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.56,
+    "category": "application_logic"
+  },
+  {
+    "filename": "docs/CORRECTED_PAYMENT_STRUCTURE.md",
+    "totalCommits": 3,
+    "totalInsertions": 209,
+    "totalDeletions": 2,
+    "firstSeen": "2025-09-05 14:03:48 -0400",
+    "lastModified": "2025-09-05 15:36:35 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 2.11,
+    "category": "documentation"
+  },
+  {
+    "filename": "docs/DOCUMENT_INDEX.md",
+    "totalCommits": 4,
+    "totalInsertions": 222,
+    "totalDeletions": 40,
+    "firstSeen": "2025-09-05 14:03:48 -0400",
+    "lastModified": "2025-09-06 12:23:57 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 2.62,
+    "category": "documentation"
+  },
+  {
+    "filename": "docs/SIRSI_CONTRACT_AMENDMENT.md",
+    "totalCommits": 4,
+    "totalInsertions": 327,
+    "totalDeletions": 15,
+    "firstSeen": "2025-09-05 14:03:48 -0400",
+    "lastModified": "2025-09-05 15:42:22 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 3.42,
+    "category": "documentation"
+  },
+  {
+    "filename": "docs/payment_structure.html",
+    "totalCommits": 2,
+    "totalInsertions": 682,
+    "totalDeletions": 1,
+    "firstSeen": "2025-09-05 14:03:48 -0400",
+    "lastModified": "2025-09-05 14:33:07 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 13.66,
+    "category": "documentation"
+  },
+  {
+    "filename": "docs/sirsi_contract_amendment.html",
+    "totalCommits": 4,
+    "totalInsertions": 666,
+    "totalDeletions": 10,
+    "firstSeen": "2025-09-05 14:03:48 -0400",
+    "lastModified": "2025-09-05 15:42:22 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 13.52,
+    "category": "documentation"
+  },
+  {
+    "filename": "docs/FINANCIAL_VERIFICATION.md",
+    "totalCommits": 3,
+    "totalInsertions": 194,
+    "totalDeletions": 11,
+    "firstSeen": "2025-09-05 14:39:24 -0400",
+    "lastModified": "2025-09-05 15:42:22 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 2.05,
+    "category": "documentation"
+  },
+  {
+    "filename": "{AssiduousProperties => assiduousflip}/changelog.md",
+    "totalCommits": 1,
+    "totalInsertions": 0,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-05 15:47:55 -0400",
+    "lastModified": "2025-09-05 15:47:55 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 0.1,
+    "category": "documentation"
+  },
+  {
+    "filename": "{AssiduousProperties => assiduousflip}/README_DASHBOARD.md",
+    "totalCommits": 1,
+    "totalInsertions": 0,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-05 15:47:55 -0400",
+    "lastModified": "2025-09-05 15:47:55 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 0.1,
+    "category": "documentation"
+  },
+  {
+    "filename": "{AssiduousProperties => assiduousflip}/TESTING_CHECKLIST.md",
+    "totalCommits": 1,
+    "totalInsertions": 0,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-05 15:47:55 -0400",
+    "lastModified": "2025-09-05 15:47:55 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 0.1,
+    "category": "documentation"
+  },
+  {
+    "filename": "{AssiduousProperties => assiduousflip}/admin/readme.md",
+    "totalCommits": 1,
+    "totalInsertions": 0,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-05 15:47:55 -0400",
+    "lastModified": "2025-09-05 15:47:55 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 0.1,
+    "category": "documentation"
+  },
+  {
+    "filename": "{AssiduousProperties => assiduousflip}/admin/agents.html",
+    "totalCommits": 1,
+    "totalInsertions": 14,
+    "totalDeletions": 14,
+    "firstSeen": "2025-09-05 15:47:55 -0400",
+    "lastModified": "2025-09-05 15:47:55 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.56,
+    "category": "application_logic"
+  },
+  {
+    "filename": "{AssiduousProperties => assiduousflip}/admin/analytics.html",
+    "totalCommits": 1,
+    "totalInsertions": 14,
+    "totalDeletions": 14,
+    "firstSeen": "2025-09-05 15:47:55 -0400",
+    "lastModified": "2025-09-05 15:47:55 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.56,
+    "category": "application_logic"
+  },
+  {
+    "filename": "{AssiduousProperties => assiduousflip}/admin/clients.html",
+    "totalCommits": 1,
+    "totalInsertions": 14,
+    "totalDeletions": 14,
+    "firstSeen": "2025-09-05 15:47:55 -0400",
+    "lastModified": "2025-09-05 15:47:55 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.56,
+    "category": "application_logic"
+  },
+  {
+    "filename": "{AssiduousProperties => assiduousflip}/admin/dashboard.html",
+    "totalCommits": 1,
+    "totalInsertions": 14,
+    "totalDeletions": 14,
+    "firstSeen": "2025-09-05 15:47:55 -0400",
+    "lastModified": "2025-09-05 15:47:55 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.56,
+    "category": "application_logic"
+  },
+  {
+    "filename": "{AssiduousProperties => assiduousflip}/admin/development/TEST_VERIFICATION.md",
+    "totalCommits": 1,
+    "totalInsertions": 0,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-05 15:47:55 -0400",
+    "lastModified": "2025-09-05 15:47:55 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 0.1,
+    "category": "documentation"
+  },
+  {
+    "filename": "{AssiduousProperties => assiduousflip}/admin/development/analytics.html",
+    "totalCommits": 1,
+    "totalInsertions": 14,
+    "totalDeletions": 14,
+    "firstSeen": "2025-09-05 15:47:55 -0400",
+    "lastModified": "2025-09-05 15:47:55 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.56,
+    "category": "application_logic"
+  },
+  {
+    "filename": "{AssiduousProperties => assiduousflip}/admin/development/backups/ROLLBACK_INSTRUCTIONS.md",
+    "totalCommits": 1,
+    "totalInsertions": 0,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-05 15:47:55 -0400",
+    "lastModified": "2025-09-05 15:47:55 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 0.1,
+    "category": "documentation"
+  },
+  {
+    "filename": "{AssiduousProperties => assiduousflip}/admin/development/backups/analytics_backup_20250829.html",
+    "totalCommits": 1,
+    "totalInsertions": 0,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-05 15:47:55 -0400",
+    "lastModified": "2025-09-05 15:47:55 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.1,
+    "category": "application_logic"
+  },
+  {
+    "filename": "{AssiduousProperties => assiduousflip}/admin/development/backups/dashboard_backup_20250829.html",
+    "totalCommits": 1,
+    "totalInsertions": 0,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-05 15:47:55 -0400",
+    "lastModified": "2025-09-05 15:47:55 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.1,
+    "category": "application_logic"
+  },
+  {
+    "filename": "{AssiduousProperties => assiduousflip}/admin/development/backups/docs_backup_20250829.html",
+    "totalCommits": 1,
+    "totalInsertions": 0,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-05 15:47:55 -0400",
+    "lastModified": "2025-09-05 15:47:55 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.1,
+    "category": "documentation"
+  },
+  {
+    "filename": "{AssiduousProperties => assiduousflip}/admin/development/backups/reports_backup_20250829.html",
+    "totalCommits": 1,
+    "totalInsertions": 0,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-05 15:47:55 -0400",
+    "lastModified": "2025-09-05 15:47:55 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.1,
+    "category": "application_logic"
+  },
+  {
+    "filename": "{AssiduousProperties => assiduousflip}/admin/development/dashboard.html",
+    "totalCommits": 1,
+    "totalInsertions": 14,
+    "totalDeletions": 14,
+    "firstSeen": "2025-09-05 15:47:55 -0400",
+    "lastModified": "2025-09-05 15:47:55 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.56,
+    "category": "application_logic"
+  },
+  {
+    "filename": "{AssiduousProperties => assiduousflip}/admin/development/dashboard_old.html",
+    "totalCommits": 1,
+    "totalInsertions": 0,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-05 15:47:55 -0400",
+    "lastModified": "2025-09-05 15:47:55 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.1,
+    "category": "application_logic"
+  },
+  {
+    "filename": "{AssiduousProperties => assiduousflip}/admin/development/docs.html",
+    "totalCommits": 1,
+    "totalInsertions": 14,
+    "totalDeletions": 14,
+    "firstSeen": "2025-09-05 15:47:55 -0400",
+    "lastModified": "2025-09-05 15:47:55 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.56,
+    "category": "documentation"
+  },
+  {
+    "filename": "{AssiduousProperties => assiduousflip}/admin/development/reports.html",
+    "totalCommits": 1,
+    "totalInsertions": 14,
+    "totalDeletions": 14,
+    "firstSeen": "2025-09-05 15:47:55 -0400",
+    "lastModified": "2025-09-05 15:47:55 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.56,
+    "category": "application_logic"
+  },
+  {
+    "filename": "{AssiduousProperties => assiduousflip}/admin/market.html",
+    "totalCommits": 1,
+    "totalInsertions": 14,
+    "totalDeletions": 14,
+    "firstSeen": "2025-09-05 15:47:55 -0400",
+    "lastModified": "2025-09-05 15:47:55 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.56,
+    "category": "application_logic"
+  },
+  {
+    "filename": "{AssiduousProperties => assiduousflip}/admin/properties.html",
+    "totalCommits": 1,
+    "totalInsertions": 14,
+    "totalDeletions": 14,
+    "firstSeen": "2025-09-05 15:47:55 -0400",
+    "lastModified": "2025-09-05 15:47:55 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.56,
+    "category": "application_logic"
+  },
+  {
+    "filename": "{AssiduousProperties => assiduousflip}/admin/settings.html",
+    "totalCommits": 1,
+    "totalInsertions": 14,
+    "totalDeletions": 14,
+    "firstSeen": "2025-09-05 15:47:55 -0400",
+    "lastModified": "2025-09-05 15:47:55 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.56,
+    "category": "application_logic"
+  },
+  {
+    "filename": "{AssiduousProperties => assiduousflip}/admin/transactions.html",
+    "totalCommits": 1,
+    "totalInsertions": 14,
+    "totalDeletions": 14,
+    "firstSeen": "2025-09-05 15:47:55 -0400",
+    "lastModified": "2025-09-05 15:47:55 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.56,
+    "category": "application_logic"
+  },
+  {
+    "filename": "{AssiduousProperties => assiduousflip}/assiduous.css",
+    "totalCommits": 1,
+    "totalInsertions": 0,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-05 15:47:55 -0400",
+    "lastModified": "2025-09-05 15:47:55 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.1,
+    "category": "styling"
+  },
+  {
+    "filename": "{AssiduousProperties => assiduousflip}/buyers/index.html",
+    "totalCommits": 1,
+    "totalInsertions": 0,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-05 15:47:55 -0400",
+    "lastModified": "2025-09-05 15:47:55 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.1,
+    "category": "application_logic"
+  },
+  {
+    "filename": "{AssiduousProperties => assiduousflip}/client/index.html",
+    "totalCommits": 1,
+    "totalInsertions": 0,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-05 15:47:55 -0400",
+    "lastModified": "2025-09-05 15:47:55 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.1,
+    "category": "application_logic"
+  },
+  {
+    "filename": "{AssiduousProperties => assiduousflip}/components/header-template.html",
+    "totalCommits": 1,
+    "totalInsertions": 0,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-05 15:47:55 -0400",
+    "lastModified": "2025-09-05 15:47:55 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.1,
+    "category": "ui_component"
+  },
+  {
+    "filename": "{AssiduousProperties => assiduousflip}/diagnostic.html",
+    "totalCommits": 1,
+    "totalInsertions": 0,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-05 15:47:55 -0400",
+    "lastModified": "2025-09-05 15:47:55 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.1,
+    "category": "application_logic"
+  },
+  {
+    "filename": "{AssiduousProperties => assiduousflip}/docs/API_DOCS.md",
+    "totalCommits": 1,
+    "totalInsertions": 0,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-05 15:47:55 -0400",
+    "lastModified": "2025-09-05 15:47:55 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 0.1,
+    "category": "documentation"
+  },
+  {
+    "filename": "{AssiduousProperties => assiduousflip}/docs/index.html",
+    "totalCommits": 1,
+    "totalInsertions": 0,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-05 15:47:55 -0400",
+    "lastModified": "2025-09-05 15:47:55 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.1,
+    "category": "documentation"
+  },
+  {
+    "filename": "{AssiduousProperties => assiduousflip}/docs/readme.html",
+    "totalCommits": 1,
+    "totalInsertions": 0,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-05 15:47:55 -0400",
+    "lastModified": "2025-09-05 15:47:55 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.1,
+    "category": "documentation"
+  },
+  {
+    "filename": "{AssiduousProperties => assiduousflip}/index-old.html",
+    "totalCommits": 1,
+    "totalInsertions": 0,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-05 15:47:55 -0400",
+    "lastModified": "2025-09-05 15:47:55 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.1,
+    "category": "application_logic"
+  },
+  {
+    "filename": "{AssiduousProperties => assiduousflip}/index.html",
+    "totalCommits": 1,
+    "totalInsertions": 10,
+    "totalDeletions": 10,
+    "firstSeen": "2025-09-05 15:47:55 -0400",
+    "lastModified": "2025-09-05 15:47:55 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.4,
+    "category": "application_logic"
+  },
+  {
+    "filename": "{AssiduousProperties => assiduousflip}/knowledge-base.html",
+    "totalCommits": 1,
+    "totalInsertions": 0,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-05 15:47:55 -0400",
+    "lastModified": "2025-09-05 15:47:55 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.1,
+    "category": "application_logic"
+  },
+  {
+    "filename": "{AssiduousProperties => assiduousflip}/reports.html",
+    "totalCommits": 1,
+    "totalInsertions": 0,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-05 15:47:55 -0400",
+    "lastModified": "2025-09-05 15:47:55 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.1,
+    "category": "application_logic"
+  },
+  {
+    "filename": "assiduousflip/admin/contracts/index.html",
+    "totalCommits": 2,
+    "totalInsertions": 510,
+    "totalDeletions": 57,
+    "firstSeen": "2025-09-05 15:59:21 -0400",
+    "lastModified": "2025-09-06 11:37:25 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 11.34,
+    "category": "application_logic"
+  },
+  {
+    "filename": "{docs => assiduousflip/admin/contracts}/payment_structure.html",
+    "totalCommits": 1,
+    "totalInsertions": 0,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-05 15:59:21 -0400",
+    "lastModified": "2025-09-05 15:59:21 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.1,
+    "category": "documentation"
+  },
+  {
+    "filename": "docs/sirsi_contract_amendment.html => assiduousflip/admin/contracts/sirsi_contract.html",
+    "totalCommits": 1,
+    "totalInsertions": 0,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-05 15:59:21 -0400",
+    "lastModified": "2025-09-05 15:59:21 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.1,
+    "category": "documentation"
+  },
+  {
+    "filename": "assiduousflip/admin/agents.html",
+    "totalCommits": 4,
+    "totalInsertions": 15,
+    "totalDeletions": 135,
+    "firstSeen": "2025-09-05 16:07:51 -0400",
+    "lastModified": "2025-09-06 23:19:36 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 3,
+    "category": "application_logic"
+  },
+  {
+    "filename": "assiduousflip/admin/analytics.html",
+    "totalCommits": 4,
+    "totalInsertions": 21,
+    "totalDeletions": 172,
+    "firstSeen": "2025-09-05 16:07:51 -0400",
+    "lastModified": "2025-09-06 23:19:36 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 3.86,
+    "category": "application_logic"
+  },
+  {
+    "filename": "assiduousflip/admin/clients.html",
+    "totalCommits": 4,
+    "totalInsertions": 15,
+    "totalDeletions": 135,
+    "firstSeen": "2025-09-05 16:07:51 -0400",
+    "lastModified": "2025-09-06 23:19:36 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 3,
+    "category": "application_logic"
+  },
+  {
+    "filename": "assiduousflip/admin/dashboard.html",
+    "totalCommits": 4,
+    "totalInsertions": 20,
+    "totalDeletions": 150,
+    "firstSeen": "2025-09-05 16:07:51 -0400",
+    "lastModified": "2025-09-06 23:19:36 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 3.4,
+    "category": "application_logic"
+  },
+  {
+    "filename": "assiduousflip/admin/knowledge-base.html",
+    "totalCommits": 3,
+    "totalInsertions": 1205,
+    "totalDeletions": 138,
+    "firstSeen": "2025-09-05 16:07:51 -0400",
+    "lastModified": "2025-09-06 11:37:25 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 26.86,
+    "category": "application_logic"
+  },
+  {
+    "filename": "assiduousflip/admin/market.html",
+    "totalCommits": 4,
+    "totalInsertions": 15,
+    "totalDeletions": 135,
+    "firstSeen": "2025-09-05 16:07:51 -0400",
+    "lastModified": "2025-09-06 23:19:36 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 3,
+    "category": "application_logic"
+  },
+  {
+    "filename": "assiduousflip/admin/properties.html",
+    "totalCommits": 4,
+    "totalInsertions": 21,
+    "totalDeletions": 163,
+    "firstSeen": "2025-09-05 16:07:51 -0400",
+    "lastModified": "2025-09-06 23:19:36 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 3.68,
+    "category": "application_logic"
+  },
+  {
+    "filename": "assiduousflip/admin/settings.html",
+    "totalCommits": 3,
+    "totalInsertions": 23,
+    "totalDeletions": 145,
+    "firstSeen": "2025-09-05 16:07:51 -0400",
+    "lastModified": "2025-09-06 11:37:25 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 3.36,
+    "category": "application_logic"
+  },
+  {
+    "filename": "assiduousflip/admin/transactions.html",
+    "totalCommits": 4,
+    "totalInsertions": 15,
+    "totalDeletions": 135,
+    "firstSeen": "2025-09-05 16:07:51 -0400",
+    "lastModified": "2025-09-06 23:19:36 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 3,
+    "category": "application_logic"
+  },
+  {
+    "filename": "assiduousflip/knowledge-base.html",
+    "totalCommits": 1,
+    "totalInsertions": 55,
+    "totalDeletions": 949,
+    "firstSeen": "2025-09-05 16:07:51 -0400",
+    "lastModified": "2025-09-05 16:07:51 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 20.08,
+    "category": "application_logic"
+  },
+  {
+    "filename": "assiduousflip/admin/development/analytics.html",
+    "totalCommits": 2,
+    "totalInsertions": 146,
+    "totalDeletions": 219,
+    "firstSeen": "2025-09-06 11:37:25 -0400",
+    "lastModified": "2025-09-06 17:34:39 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 7.3,
+    "category": "application_logic"
+  },
+  {
+    "filename": "assiduousflip/admin/development/dashboard.html",
+    "totalCommits": 12,
+    "totalInsertions": 5040,
+    "totalDeletions": 4802,
+    "firstSeen": "2025-09-06 11:37:25 -0400",
+    "lastModified": "2025-09-06 23:19:36 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 196.84,
+    "category": "application_logic"
+  },
+  {
+    "filename": "assiduousflip/admin/development/docs.html",
+    "totalCommits": 1,
+    "totalInsertions": 2,
+    "totalDeletions": 124,
+    "firstSeen": "2025-09-06 11:37:25 -0400",
+    "lastModified": "2025-09-06 11:37:25 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 2.52,
+    "category": "documentation"
+  },
+  {
+    "filename": "assiduousflip/admin/development/reports.html",
+    "totalCommits": 1,
+    "totalInsertions": 2,
+    "totalDeletions": 125,
+    "firstSeen": "2025-09-06 11:37:25 -0400",
+    "lastModified": "2025-09-06 11:37:25 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 2.54,
+    "category": "application_logic"
+  },
+  {
+    "filename": "assiduousflip/components/sidebar.html",
+    "totalCommits": 3,
+    "totalInsertions": 162,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 11:37:25 -0400",
+    "lastModified": "2025-09-06 20:25:27 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 3.24,
+    "category": "ui_component"
+  },
+  {
+    "filename": "assiduousflip/components/sidebar.js",
+    "totalCommits": 1,
+    "totalInsertions": 70,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 11:37:25 -0400",
+    "lastModified": "2025-09-06 11:37:25 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 3,
+    "estimatedHours": 2.0999999999999996,
+    "category": "ui_component"
+  },
+  {
+    "filename": "docs/MASTER_IMPLEMENTATION_GUIDE.md",
+    "totalCommits": 1,
+    "totalInsertions": 1559,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 12:23:57 -0400",
+    "lastModified": "2025-09-06 12:23:57 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 15.59,
+    "category": "documentation"
+  },
+  {
+    "filename": "docs/QUICK_REFERENCE.md",
+    "totalCommits": 1,
+    "totalInsertions": 322,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 12:23:57 -0400",
+    "lastModified": "2025-09-06 12:23:57 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 3.22,
+    "category": "documentation"
+  },
+  {
+    "filename": "docs/archive/ADMIN_PORTAL_IMPLEMENTATION_PLAN.md",
+    "totalCommits": 1,
+    "totalInsertions": 1051,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 12:23:57 -0400",
+    "lastModified": "2025-09-06 12:23:57 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 10.51,
+    "category": "documentation"
+  },
+  {
+    "filename": "docs/{ => archive}/CONTRACT_INTEGRATION_PLAN.md",
+    "totalCommits": 1,
+    "totalInsertions": 0,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 12:23:57 -0400",
+    "lastModified": "2025-09-06 12:23:57 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 0.1,
+    "category": "documentation"
+  },
+  {
+    "filename": "docs/{ => archive}/IMPLEMENTATION_CHECKLIST.md",
+    "totalCommits": 1,
+    "totalInsertions": 0,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 12:23:57 -0400",
+    "lastModified": "2025-09-06 12:23:57 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 0.1,
+    "category": "documentation"
+  },
+  {
+    "filename": "docs/{ => archive}/IMPLEMENTATION_ROADMAP_30DAY.md",
+    "totalCommits": 1,
+    "totalInsertions": 0,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 12:23:57 -0400",
+    "lastModified": "2025-09-06 12:23:57 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 0.1,
+    "category": "documentation"
+  },
+  {
+    "filename": "docs/{ => archive}/MICRO_FLIPPING_TECHNICAL_BLUEPRINT.md",
+    "totalCommits": 1,
+    "totalInsertions": 0,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 12:23:57 -0400",
+    "lastModified": "2025-09-06 12:23:57 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 0.1,
+    "category": "documentation"
+  },
+  {
+    "filename": "docs/archive/MODULE_IMPLEMENTATION_ROADMAP.md",
+    "totalCommits": 1,
+    "totalInsertions": 669,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 12:23:57 -0400",
+    "lastModified": "2025-09-06 12:23:57 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 6.69,
+    "category": "documentation"
+  },
+  {
+    "filename": "docs/{ => archive}/UNIFIED_ASSIDUOUS_BLUEPRINT.md",
+    "totalCommits": 1,
+    "totalInsertions": 0,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 12:23:57 -0400",
+    "lastModified": "2025-09-06 12:23:57 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 0.1,
+    "category": "documentation"
+  },
+  {
+    "filename": "version",
+    "totalCommits": 22,
+    "totalInsertions": 22,
+    "totalDeletions": 21,
+    "firstSeen": "2025-09-06 12:29:22 -0400",
+    "lastModified": "2025-09-06 23:19:54 -0400",
+    "authors": [
+      "SirsiMaster",
+      "github-actions[bot]"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.86,
+    "category": "application_logic"
+  },
+  {
+    "filename": "docs/versionING_GUIDE.md",
+    "totalCommits": 2,
+    "totalInsertions": 330,
+    "totalDeletions": 13,
+    "firstSeen": "2025-09-06 12:29:22 -0400",
+    "lastModified": "2025-09-06 12:37:19 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 3.43,
+    "category": "documentation"
+  },
+  {
+    "filename": "scripts/check-version.sh",
+    "totalCommits": 1,
+    "totalInsertions": 82,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 12:29:22 -0400",
+    "lastModified": "2025-09-06 12:29:22 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 1.64,
+    "category": "application_logic"
+  },
+  {
+    "filename": "scripts/update-version.sh",
+    "totalCommits": 1,
+    "totalInsertions": 67,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 12:29:22 -0400",
+    "lastModified": "2025-09-06 12:29:22 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 1.34,
+    "category": "application_logic"
+  },
+  {
+    "filename": ".github/workflows/auto-version.yml",
+    "totalCommits": 1,
+    "totalInsertions": 233,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 12:37:19 -0400",
+    "lastModified": "2025-09-06 12:37:19 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 4.66,
+    "category": "application_logic"
+  },
+  {
+    "filename": "scripts/auto-version.sh",
+    "totalCommits": 1,
+    "totalInsertions": 257,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 12:37:19 -0400",
+    "lastModified": "2025-09-06 12:37:19 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 5.14,
+    "category": "application_logic"
+  },
+  {
+    "filename": "scripts/hooks/prepare-commit-msg",
+    "totalCommits": 2,
+    "totalInsertions": 93,
+    "totalDeletions": 10,
+    "firstSeen": "2025-09-06 12:37:19 -0400",
+    "lastModified": "2025-09-06 21:19:57 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 2.06,
+    "category": "application_logic"
+  },
+  {
+    "filename": "docs/AUTOMATED_versionING.md",
+    "totalCommits": 1,
+    "totalInsertions": 242,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 12:38:31 -0400",
+    "lastModified": "2025-09-06 12:38:31 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 2.42,
+    "category": "documentation"
+  },
+  {
+    "filename": "DEPLOYMENT_REGISTRY.md",
+    "totalCommits": 1,
+    "totalInsertions": 272,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 17:34:39 -0400",
+    "lastModified": "2025-09-06 17:34:39 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 2.72,
+    "category": "documentation"
+  },
+  {
+    "filename": "assets/js/services/firebaseanalyticsservice.js",
+    "totalCommits": 1,
+    "totalInsertions": 408,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 17:34:39 -0400",
+    "lastModified": "2025-09-06 17:34:39 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 3,
+    "estimatedHours": 12.24,
+    "category": "backend_service"
+  },
+  {
+    "filename": "assets/js/services/developmentcostservice.js",
+    "totalCommits": 1,
+    "totalInsertions": 671,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 18:22:38 -0400",
+    "lastModified": "2025-09-06 18:22:38 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 3,
+    "estimatedHours": 20.13,
+    "category": "backend_service"
+  },
+  {
+    "filename": ".github/workflows/firebase-deploy.yml",
+    "totalCommits": 5,
+    "totalInsertions": 234,
+    "totalDeletions": 37,
+    "firstSeen": "2025-09-06 18:53:53 -0400",
+    "lastModified": "2025-09-06 19:34:18 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 5.42,
+    "category": "application_logic"
+  },
+  {
+    "filename": "assiduousflip/admin/development/dashboard_backup.html",
+    "totalCommits": 1,
+    "totalInsertions": 1312,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 18:53:53 -0400",
+    "lastModified": "2025-09-06 18:53:53 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 26.24,
+    "category": "application_logic"
+  },
+  {
+    "filename": "assets/js/services/githubactionstracker.js",
+    "totalCommits": 1,
+    "totalInsertions": 270,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 18:53:53 -0400",
+    "lastModified": "2025-09-06 18:53:53 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 3,
+    "estimatedHours": 8.100000000000001,
+    "category": "backend_service"
+  },
+  {
+    "filename": "firebase-migration-package/.firebase/hosting.YXNzaWR1b3VzLWJ1aWxk.cache",
+    "totalCommits": 5,
+    "totalInsertions": 294,
+    "totalDeletions": 211,
+    "firstSeen": "2025-09-06 18:53:53 -0400",
+    "lastModified": "2025-09-06 20:32:09 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 10.1,
+    "category": "application_logic"
+  },
+  {
+    "filename": "firebase-migration-package/assiduous-build/assiduousflip/admin/development/dashboard.html",
+    "totalCommits": 2,
+    "totalInsertions": 1743,
+    "totalDeletions": 2089,
+    "firstSeen": "2025-09-06 18:53:53 -0400",
+    "lastModified": "2025-09-06 20:46:18 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 76.64,
+    "category": "ui_component"
+  },
+  {
+    "filename": "scripts/setup-firebase-ci.sh",
+    "totalCommits": 1,
+    "totalInsertions": 64,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 18:53:53 -0400",
+    "lastModified": "2025-09-06 18:53:53 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 1.28,
+    "category": "application_logic"
+  },
+  {
+    "filename": "assiduousflip/admin/development/costs.html",
+    "totalCommits": 6,
+    "totalInsertions": 661,
+    "totalDeletions": 203,
+    "firstSeen": "2025-09-06 19:26:14 -0400",
+    "lastModified": "2025-09-06 20:46:18 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 17.28,
+    "category": "application_logic"
+  },
+  {
+    "filename": ".firebaserc",
+    "totalCommits": 1,
+    "totalInsertions": 15,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 19:34:18 -0400",
+    "lastModified": "2025-09-06 19:34:18 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.3,
+    "category": "application_logic"
+  },
+  {
+    "filename": "firebase-migration-package/assiduous-build/assiduousflip/admin/development/costs.html",
+    "totalCommits": 4,
+    "totalInsertions": 636,
+    "totalDeletions": 178,
+    "firstSeen": "2025-09-06 19:34:18 -0400",
+    "lastModified": "2025-09-06 20:46:18 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 16.28,
+    "category": "ui_component"
+  },
+  {
+    "filename": "firebase.json",
+    "totalCommits": 1,
+    "totalInsertions": 31,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 19:34:18 -0400",
+    "lastModified": "2025-09-06 19:34:18 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 0.31,
+    "category": "configuration"
+  },
+  {
+    "filename": "firebase-migration-package/assiduous-build/assiduousflip/components/sidebar.html",
+    "totalCommits": 1,
+    "totalInsertions": 7,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 20:25:48 -0400",
+    "lastModified": "2025-09-06 20:25:48 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.14,
+    "category": "ui_component"
+  },
+  {
+    "filename": "assiduousflip/admin/development/DEVELOPMENT_LOG_20250907.md",
+    "totalCommits": 1,
+    "totalInsertions": 231,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 20:32:09 -0400",
+    "lastModified": "2025-09-06 20:32:09 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 2.31,
+    "category": "documentation"
+  },
+  {
+    "filename": "firebase-migration-package/assiduous-build/README_DASHBOARD.md",
+    "totalCommits": 1,
+    "totalInsertions": 385,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 20:32:09 -0400",
+    "lastModified": "2025-09-06 20:32:09 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 3.85,
+    "category": "documentation"
+  },
+  {
+    "filename": "firebase-migration-package/assiduous-build/TESTING_CHECKLIST.md",
+    "totalCommits": 1,
+    "totalInsertions": 87,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 20:32:09 -0400",
+    "lastModified": "2025-09-06 20:32:09 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 0.87,
+    "category": "documentation"
+  },
+  {
+    "filename": "firebase-migration-package/assiduous-build/admin/readme.md",
+    "totalCommits": 1,
+    "totalInsertions": 84,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 20:32:09 -0400",
+    "lastModified": "2025-09-06 20:32:09 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 0.84,
+    "category": "documentation"
+  },
+  {
+    "filename": "firebase-migration-package/assiduous-build/admin/agents.html",
+    "totalCommits": 1,
+    "totalInsertions": 584,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 20:32:09 -0400",
+    "lastModified": "2025-09-06 20:32:09 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 11.68,
+    "category": "ui_component"
+  },
+  {
+    "filename": "firebase-migration-package/assiduous-build/admin/analytics.html",
+    "totalCommits": 1,
+    "totalInsertions": 1101,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 20:32:09 -0400",
+    "lastModified": "2025-09-06 20:32:09 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 22.02,
+    "category": "ui_component"
+  },
+  {
+    "filename": "firebase-migration-package/assiduous-build/admin/clients.html",
+    "totalCommits": 1,
+    "totalInsertions": 624,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 20:32:09 -0400",
+    "lastModified": "2025-09-06 20:32:09 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 12.48,
+    "category": "ui_component"
+  },
+  {
+    "filename": "firebase-migration-package/assiduous-build/admin/contracts/index.html",
+    "totalCommits": 1,
+    "totalInsertions": 453,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 20:32:09 -0400",
+    "lastModified": "2025-09-06 20:32:09 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 9.06,
+    "category": "ui_component"
+  },
+  {
+    "filename": "firebase-migration-package/assiduous-build/admin/contracts/payment_structure.html",
+    "totalCommits": 1,
+    "totalInsertions": 681,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 20:32:09 -0400",
+    "lastModified": "2025-09-06 20:32:09 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 13.62,
+    "category": "ui_component"
+  },
+  {
+    "filename": "firebase-migration-package/assiduous-build/admin/contracts/sirsi_contract.html",
+    "totalCommits": 1,
+    "totalInsertions": 656,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 20:32:09 -0400",
+    "lastModified": "2025-09-06 20:32:09 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 13.12,
+    "category": "ui_component"
+  },
+  {
+    "filename": "firebase-migration-package/assiduous-build/admin/dashboard.html",
+    "totalCommits": 1,
+    "totalInsertions": 665,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 20:32:09 -0400",
+    "lastModified": "2025-09-06 20:32:09 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 13.3,
+    "category": "ui_component"
+  },
+  {
+    "filename": "firebase-migration-package/assiduous-build/admin/development/TEST_VERIFICATION.md",
+    "totalCommits": 1,
+    "totalInsertions": 66,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 20:32:09 -0400",
+    "lastModified": "2025-09-06 20:32:09 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 0.66,
+    "category": "documentation"
+  },
+  {
+    "filename": "firebase-migration-package/assiduous-build/admin/development/analytics.html",
+    "totalCommits": 1,
+    "totalInsertions": 831,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 20:32:09 -0400",
+    "lastModified": "2025-09-06 20:32:09 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 16.62,
+    "category": "ui_component"
+  },
+  {
+    "filename": "firebase-migration-package/assiduous-build/admin/development/backups/ROLLBACK_INSTRUCTIONS.md",
+    "totalCommits": 1,
+    "totalInsertions": 69,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 20:32:09 -0400",
+    "lastModified": "2025-09-06 20:32:09 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 0.69,
+    "category": "documentation"
+  },
+  {
+    "filename": "firebase-migration-package/assiduous-build/admin/development/backups/analytics_backup_20250829.html",
+    "totalCommits": 1,
+    "totalInsertions": 904,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 20:32:09 -0400",
+    "lastModified": "2025-09-06 20:32:09 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 18.08,
+    "category": "ui_component"
+  },
+  {
+    "filename": "firebase-migration-package/assiduous-build/admin/development/backups/dashboard_backup_20250829.html",
+    "totalCommits": 1,
+    "totalInsertions": 942,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 20:32:09 -0400",
+    "lastModified": "2025-09-06 20:32:09 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 18.84,
+    "category": "ui_component"
+  },
+  {
+    "filename": "firebase-migration-package/assiduous-build/admin/development/backups/docs_backup_20250829.html",
+    "totalCommits": 1,
+    "totalInsertions": 697,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 20:32:09 -0400",
+    "lastModified": "2025-09-06 20:32:09 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 13.94,
+    "category": "documentation"
+  },
+  {
+    "filename": "firebase-migration-package/assiduous-build/admin/development/backups/reports_backup_20250829.html",
+    "totalCommits": 1,
+    "totalInsertions": 796,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 20:32:09 -0400",
+    "lastModified": "2025-09-06 20:32:09 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 15.92,
+    "category": "ui_component"
+  },
+  {
+    "filename": "firebase-migration-package/assiduous-build/admin/development/costs.html",
+    "totalCommits": 1,
+    "totalInsertions": 593,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 20:32:09 -0400",
+    "lastModified": "2025-09-06 20:32:09 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 11.86,
+    "category": "ui_component"
+  },
+  {
+    "filename": "firebase-migration-package/assiduous-build/admin/development/dashboard.html",
+    "totalCommits": 1,
+    "totalInsertions": 1326,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 20:32:09 -0400",
+    "lastModified": "2025-09-06 20:32:09 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 26.52,
+    "category": "ui_component"
+  },
+  {
+    "filename": "firebase-migration-package/assiduous-build/admin/development/dashboard_backup.html",
+    "totalCommits": 1,
+    "totalInsertions": 718,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 20:32:09 -0400",
+    "lastModified": "2025-09-06 20:32:09 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 14.36,
+    "category": "ui_component"
+  },
+  {
+    "filename": "firebase-migration-package/assiduous-build/admin/development/dashboard_old.html",
+    "totalCommits": 1,
+    "totalInsertions": 1312,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 20:32:09 -0400",
+    "lastModified": "2025-09-06 20:32:09 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 26.24,
+    "category": "ui_component"
+  },
+  {
+    "filename": "firebase-migration-package/assiduous-build/admin/development/docs.html",
+    "totalCommits": 1,
+    "totalInsertions": 985,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 20:32:09 -0400",
+    "lastModified": "2025-09-06 20:32:09 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 19.7,
+    "category": "documentation"
+  },
+  {
+    "filename": "firebase-migration-package/assiduous-build/admin/development/reports.html",
+    "totalCommits": 1,
+    "totalInsertions": 673,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 20:32:09 -0400",
+    "lastModified": "2025-09-06 20:32:09 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 13.46,
+    "category": "ui_component"
+  },
+  {
+    "filename": "firebase-migration-package/assiduous-build/admin/knowledge-base.html",
+    "totalCommits": 1,
+    "totalInsertions": 1067,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 20:32:09 -0400",
+    "lastModified": "2025-09-06 20:32:09 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 21.34,
+    "category": "ui_component"
+  },
+  {
+    "filename": "firebase-migration-package/assiduous-build/admin/market.html",
+    "totalCommits": 1,
+    "totalInsertions": 783,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 20:32:09 -0400",
+    "lastModified": "2025-09-06 20:32:09 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 15.66,
+    "category": "ui_component"
+  },
+  {
+    "filename": "firebase-migration-package/assiduous-build/admin/properties.html",
+    "totalCommits": 1,
+    "totalInsertions": 736,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 20:32:09 -0400",
+    "lastModified": "2025-09-06 20:32:09 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 14.72,
+    "category": "ui_component"
+  },
+  {
+    "filename": "firebase-migration-package/assiduous-build/admin/settings.html",
+    "totalCommits": 1,
+    "totalInsertions": 674,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 20:32:09 -0400",
+    "lastModified": "2025-09-06 20:32:09 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 13.48,
+    "category": "ui_component"
+  },
+  {
+    "filename": "firebase-migration-package/assiduous-build/admin/transactions.html",
+    "totalCommits": 1,
+    "totalInsertions": 602,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 20:32:09 -0400",
+    "lastModified": "2025-09-06 20:32:09 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 12.04,
+    "category": "ui_component"
+  },
+  {
+    "filename": "firebase-migration-package/assiduous-build/assiduous.css",
+    "totalCommits": 1,
+    "totalInsertions": 798,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 20:32:09 -0400",
+    "lastModified": "2025-09-06 20:32:09 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 15.96,
+    "category": "styling"
+  },
+  {
+    "filename": "firebase-migration-package/assiduous-build/buyers/index.html",
+    "totalCommits": 1,
+    "totalInsertions": 679,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 20:32:09 -0400",
+    "lastModified": "2025-09-06 20:32:09 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 13.58,
+    "category": "ui_component"
+  },
+  {
+    "filename": "firebase-migration-package/assiduous-build/client/index.html",
+    "totalCommits": 1,
+    "totalInsertions": 457,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 20:32:09 -0400",
+    "lastModified": "2025-09-06 20:32:09 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 9.14,
+    "category": "ui_component"
+  },
+  {
+    "filename": "firebase-migration-package/assiduous-build/components/header-template.html",
+    "totalCommits": 1,
+    "totalInsertions": 202,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 20:32:09 -0400",
+    "lastModified": "2025-09-06 20:32:09 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 4.04,
+    "category": "ui_component"
+  },
+  {
+    "filename": "firebase-migration-package/assiduous-build/components/sidebar.html",
+    "totalCommits": 1,
+    "totalInsertions": 148,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 20:32:09 -0400",
+    "lastModified": "2025-09-06 20:32:09 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 2.96,
+    "category": "ui_component"
+  },
+  {
+    "filename": "firebase-migration-package/assiduous-build/components/sidebar.js",
+    "totalCommits": 1,
+    "totalInsertions": 70,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 20:32:09 -0400",
+    "lastModified": "2025-09-06 20:32:09 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 3,
+    "estimatedHours": 2.0999999999999996,
+    "category": "ui_component"
+  },
+  {
+    "filename": "firebase-migration-package/assiduous-build/diagnostic.html",
+    "totalCommits": 1,
+    "totalInsertions": 87,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 20:32:09 -0400",
+    "lastModified": "2025-09-06 20:32:09 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 1.74,
+    "category": "ui_component"
+  },
+  {
+    "filename": "firebase-migration-package/assiduous-build/docs/API_DOCS.md",
+    "totalCommits": 1,
+    "totalInsertions": 342,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 20:32:09 -0400",
+    "lastModified": "2025-09-06 20:32:09 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 3.42,
+    "category": "documentation"
+  },
+  {
+    "filename": "firebase-migration-package/assiduous-build/docs/index.html",
+    "totalCommits": 1,
+    "totalInsertions": 411,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 20:32:09 -0400",
+    "lastModified": "2025-09-06 20:32:09 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 8.22,
+    "category": "documentation"
+  },
+  {
+    "filename": "firebase-migration-package/assiduous-build/docs/readme.html",
+    "totalCommits": 1,
+    "totalInsertions": 523,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 20:32:09 -0400",
+    "lastModified": "2025-09-06 20:32:09 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 10.46,
+    "category": "documentation"
+  },
+  {
+    "filename": "firebase-migration-package/assiduous-build/index-old.html",
+    "totalCommits": 1,
+    "totalInsertions": 1014,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 20:32:09 -0400",
+    "lastModified": "2025-09-06 20:32:09 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 20.28,
+    "category": "ui_component"
+  },
+  {
+    "filename": "firebase-migration-package/assiduous-build/knowledge-base.html",
+    "totalCommits": 1,
+    "totalInsertions": 97,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 20:32:09 -0400",
+    "lastModified": "2025-09-06 20:32:09 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 1.94,
+    "category": "ui_component"
+  },
+  {
+    "filename": "firebase-migration-package/assiduous-build/reports.html",
+    "totalCommits": 1,
+    "totalInsertions": 972,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 20:32:09 -0400",
+    "lastModified": "2025-09-06 20:32:09 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 19.44,
+    "category": "ui_component"
+  },
+  {
+    "filename": "assiduousflip/admin/development/FIREBASE_SCHEMA.md",
+    "totalCommits": 1,
+    "totalInsertions": 465,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 20:46:18 -0400",
+    "lastModified": "2025-09-06 20:46:18 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 4.65,
+    "category": "documentation"
+  },
+  {
+    "filename": "assiduousflip/admin/development/populate_session_data.js",
+    "totalCommits": 1,
+    "totalInsertions": 338,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 20:46:18 -0400",
+    "lastModified": "2025-09-06 20:46:18 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 3,
+    "estimatedHours": 10.14,
+    "category": "application_logic"
+  },
+  {
+    "filename": "assiduousflip/assets/js/services/developmentmetricsservice.js",
+    "totalCommits": 1,
+    "totalInsertions": 450,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 20:46:18 -0400",
+    "lastModified": "2025-09-06 20:46:18 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 3,
+    "estimatedHours": 13.5,
+    "category": "backend_service"
+  },
+  {
+    "filename": "firebase-migration-package/assiduous-build/assiduousflip/admin/development/DEVELOPMENT_LOG_20250907.md",
+    "totalCommits": 1,
+    "totalInsertions": 231,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 20:46:18 -0400",
+    "lastModified": "2025-09-06 20:46:18 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 2.31,
+    "category": "documentation"
+  },
+  {
+    "filename": "firebase-migration-package/assiduous-build/changelog.md",
+    "totalCommits": 1,
+    "totalInsertions": 226,
+    "totalDeletions": 1,
+    "firstSeen": "2025-09-06 20:46:18 -0400",
+    "lastModified": "2025-09-06 20:46:18 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 2.27,
+    "category": "documentation"
+  },
+  {
+    "filename": "firebase-migration-package/assiduous-build/assets/js/scripts/populate_session_data.js",
+    "totalCommits": 1,
+    "totalInsertions": 338,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 20:46:18 -0400",
+    "lastModified": "2025-09-06 20:46:18 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 3,
+    "estimatedHours": 10.14,
+    "category": "ui_component"
+  },
+  {
+    "filename": "firebase-migration-package/assiduous-build/assets/js/services/developmentmetricsservice.js",
+    "totalCommits": 1,
+    "totalInsertions": 450,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 20:46:18 -0400",
+    "lastModified": "2025-09-06 20:46:18 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 3,
+    "estimatedHours": 13.5,
+    "category": "ui_component"
+  },
+  {
+    "filename": "firebase-migration-package/assiduous-build/assets/js/services/githubactionstracker.js",
+    "totalCommits": 1,
+    "totalInsertions": 270,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 20:46:18 -0400",
+    "lastModified": "2025-09-06 20:46:18 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 3,
+    "estimatedHours": 8.100000000000001,
+    "category": "ui_component"
+  },
+  {
+    "filename": "docs/DEVELOPMENT_WORKFLOW.md",
+    "totalCommits": 2,
+    "totalInsertions": 476,
+    "totalDeletions": 55,
+    "firstSeen": "2025-09-06 20:57:15 -0400",
+    "lastModified": "2025-09-06 21:09:40 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 5.31,
+    "category": "documentation"
+  },
+  {
+    "filename": "test-automation-1757207940.txt",
+    "totalCommits": 2,
+    "totalInsertions": 1,
+    "totalDeletions": 1,
+    "firstSeen": "2025-09-06 21:19:42 -0400",
+    "lastModified": "2025-09-06 21:19:57 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 0.1,
+    "category": "testing"
+  },
+  {
+    "filename": "test-commit.txt",
+    "totalCommits": 2,
+    "totalInsertions": 1,
+    "totalDeletions": 1,
+    "firstSeen": "2025-09-06 21:19:42 -0400",
+    "lastModified": "2025-09-06 21:19:57 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 0.1,
+    "category": "testing"
+  },
+  {
+    "filename": "assets/js/services/githubdataprocessor.js",
+    "totalCommits": 1,
+    "totalInsertions": 349,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 21:19:57 -0400",
+    "lastModified": "2025-09-06 21:19:57 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 3,
+    "estimatedHours": 10.47,
+    "category": "backend_service"
+  },
+  {
+    "filename": "firebase-migration-package/functions/github-webhook.js",
+    "totalCommits": 3,
+    "totalInsertions": 469,
+    "totalDeletions": 7,
+    "firstSeen": "2025-09-06 21:19:57 -0400",
+    "lastModified": "2025-09-06 22:19:10 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 3,
+    "estimatedHours": 14.28,
+    "category": "application_logic"
+  },
+  {
+    "filename": "firebase-migration-package/functions/index.js",
+    "totalCommits": 1,
+    "totalInsertions": 10,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 21:19:57 -0400",
+    "lastModified": "2025-09-06 21:19:57 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 3,
+    "estimatedHours": 0.30000000000000004,
+    "category": "application_logic"
+  },
+  {
+    "filename": "firebase-migration-package/functions/sync-service.js",
+    "totalCommits": 2,
+    "totalInsertions": 417,
+    "totalDeletions": 1,
+    "firstSeen": "2025-09-06 21:19:57 -0400",
+    "lastModified": "2025-09-06 21:32:48 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 3,
+    "estimatedHours": 12.54,
+    "category": "backend_service"
+  },
+  {
+    "filename": "scripts/test-automation.sh",
+    "totalCommits": 1,
+    "totalInsertions": 337,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 21:19:57 -0400",
+    "lastModified": "2025-09-06 21:19:57 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 6.74,
+    "category": "testing"
+  },
+  {
+    "filename": "docs/AUTOMATION_DEPLOYMENT_GUIDE.md",
+    "totalCommits": 1,
+    "totalInsertions": 396,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 21:21:44 -0400",
+    "lastModified": "2025-09-06 21:21:44 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 3.96,
+    "category": "documentation"
+  },
+  {
+    "filename": "firebase-migration-package/assiduous-build/assets/js/services/githubdataprocessor.js",
+    "totalCommits": 1,
+    "totalInsertions": 349,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 21:21:44 -0400",
+    "lastModified": "2025-09-06 21:21:44 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 3,
+    "estimatedHours": 10.47,
+    "category": "ui_component"
+  },
+  {
+    "filename": "firebase-migration-package/assiduous-build/scripts/test-automation.sh",
+    "totalCommits": 1,
+    "totalInsertions": 337,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 21:21:44 -0400",
+    "lastModified": "2025-09-06 21:21:44 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 6.74,
+    "category": "testing"
+  },
+  {
+    "filename": "scripts/configure-github-webhook.sh",
+    "totalCommits": 1,
+    "totalInsertions": 293,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 21:32:48 -0400",
+    "lastModified": "2025-09-06 21:32:48 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 5.86,
+    "category": "configuration"
+  },
+  {
+    "filename": "docs/100_PERCENT_AUTOMATION_ACHIEVED.md",
+    "totalCommits": 1,
+    "totalInsertions": 296,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 21:37:14 -0400",
+    "lastModified": "2025-09-06 21:37:14 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 2.96,
+    "category": "documentation"
+  },
+  {
+    "filename": "scripts/test-webhook-manual.sh",
+    "totalCommits": 1,
+    "totalInsertions": 65,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 21:37:14 -0400",
+    "lastModified": "2025-09-06 21:37:14 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 1.3,
+    "category": "testing"
+  },
+  {
+    "filename": "webhook-setup-instructions.txt",
+    "totalCommits": 1,
+    "totalInsertions": 7,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 21:37:14 -0400",
+    "lastModified": "2025-09-06 21:37:14 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 0.1,
+    "category": "application_logic"
+  },
+  {
+    "filename": "scripts/complete-google-cloud-deployment.sh",
+    "totalCommits": 1,
+    "totalInsertions": 414,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 21:43:42 -0400",
+    "lastModified": "2025-09-06 21:43:42 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 8.28,
+    "category": "application_logic"
+  },
+  {
+    "filename": "TEST_ANALYTICS.md",
+    "totalCommits": 1,
+    "totalInsertions": 1,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 21:57:05 -0400",
+    "lastModified": "2025-09-06 21:57:05 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 0.1,
+    "category": "documentation"
+  },
+  {
+    "filename": "firebase-migration-package/functions/init-repo-security.js",
+    "totalCommits": 1,
+    "totalInsertions": 137,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 22:19:10 -0400",
+    "lastModified": "2025-09-06 22:19:10 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 3,
+    "estimatedHours": 4.11,
+    "category": "application_logic"
+  },
+  {
+    "filename": "storage.rules",
+    "totalCommits": 1,
+    "totalInsertions": 50,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 22:19:10 -0400",
+    "lastModified": "2025-09-06 22:19:10 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 1,
+    "category": "application_logic"
+  },
+  {
+    "filename": ".firebase/hosting.YXNzaWR1b3VzLWJ1aWxk.cache",
+    "totalCommits": 2,
+    "totalInsertions": 69,
+    "totalDeletions": 22,
+    "firstSeen": "2025-09-06 22:35:43 -0400",
+    "lastModified": "2025-09-06 23:19:36 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 1.82,
+    "category": "application_logic"
+  },
+  {
+    "filename": ".nojekyll",
+    "totalCommits": 1,
+    "totalInsertions": 3,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 22:35:43 -0400",
+    "lastModified": "2025-09-06 22:35:43 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.1,
+    "category": "application_logic"
+  },
+  {
+    "filename": "assiduousflip/docs/readme.html",
+    "totalCommits": 1,
+    "totalInsertions": 6,
+    "totalDeletions": 4,
+    "firstSeen": "2025-09-06 22:35:43 -0400",
+    "lastModified": "2025-09-06 22:35:43 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 0.2,
+    "category": "documentation"
+  },
+  {
+    "filename": "assiduous-build/changelog.md",
+    "totalCommits": 1,
+    "totalInsertions": 197,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 22:35:43 -0400",
+    "lastModified": "2025-09-06 22:35:43 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 1.97,
+    "category": "documentation"
+  },
+  {
+    "filename": "assiduous-build/README_DASHBOARD.md",
+    "totalCommits": 1,
+    "totalInsertions": 385,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 22:35:43 -0400",
+    "lastModified": "2025-09-06 22:35:43 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 3.85,
+    "category": "documentation"
+  },
+  {
+    "filename": "assiduous-build/TESTING_CHECKLIST.md",
+    "totalCommits": 1,
+    "totalInsertions": 87,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 22:35:43 -0400",
+    "lastModified": "2025-09-06 22:35:43 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 0.87,
+    "category": "documentation"
+  },
+  {
+    "filename": "assiduous-build/admin/readme.md",
+    "totalCommits": 1,
+    "totalInsertions": 84,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 22:35:43 -0400",
+    "lastModified": "2025-09-06 22:35:43 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 0.84,
+    "category": "documentation"
+  },
+  {
+    "filename": "assiduous-build/admin/agents.html",
+    "totalCommits": 1,
+    "totalInsertions": 584,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 22:35:43 -0400",
+    "lastModified": "2025-09-06 22:35:43 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 11.68,
+    "category": "ui_component"
+  },
+  {
+    "filename": "assiduous-build/admin/analytics.html",
+    "totalCommits": 1,
+    "totalInsertions": 1101,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 22:35:43 -0400",
+    "lastModified": "2025-09-06 22:35:43 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 22.02,
+    "category": "ui_component"
+  },
+  {
+    "filename": "assiduous-build/admin/clients.html",
+    "totalCommits": 1,
+    "totalInsertions": 624,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 22:35:43 -0400",
+    "lastModified": "2025-09-06 22:35:43 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 12.48,
+    "category": "ui_component"
+  },
+  {
+    "filename": "assiduous-build/admin/contracts/index.html",
+    "totalCommits": 1,
+    "totalInsertions": 453,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 22:35:43 -0400",
+    "lastModified": "2025-09-06 22:35:43 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 9.06,
+    "category": "ui_component"
+  },
+  {
+    "filename": "assiduous-build/admin/contracts/payment_structure.html",
+    "totalCommits": 1,
+    "totalInsertions": 681,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 22:35:43 -0400",
+    "lastModified": "2025-09-06 22:35:43 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 13.62,
+    "category": "ui_component"
+  },
+  {
+    "filename": "assiduous-build/admin/contracts/sirsi_contract.html",
+    "totalCommits": 1,
+    "totalInsertions": 656,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 22:35:43 -0400",
+    "lastModified": "2025-09-06 22:35:43 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 13.12,
+    "category": "ui_component"
+  },
+  {
+    "filename": "assiduous-build/admin/dashboard.html",
+    "totalCommits": 1,
+    "totalInsertions": 665,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 22:35:43 -0400",
+    "lastModified": "2025-09-06 22:35:43 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 13.3,
+    "category": "ui_component"
+  },
+  {
+    "filename": "assiduous-build/admin/development/DEVELOPMENT_LOG_20250907.md",
+    "totalCommits": 1,
+    "totalInsertions": 231,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 22:35:43 -0400",
+    "lastModified": "2025-09-06 22:35:43 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 2.31,
+    "category": "documentation"
+  },
+  {
+    "filename": "assiduous-build/admin/development/FIREBASE_SCHEMA.md",
+    "totalCommits": 1,
+    "totalInsertions": 465,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 22:35:43 -0400",
+    "lastModified": "2025-09-06 22:35:43 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 4.65,
+    "category": "documentation"
+  },
+  {
+    "filename": "assiduous-build/admin/development/TEST_VERIFICATION.md",
+    "totalCommits": 1,
+    "totalInsertions": 66,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 22:35:43 -0400",
+    "lastModified": "2025-09-06 22:35:43 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 0.66,
+    "category": "documentation"
+  },
+  {
+    "filename": "assiduous-build/admin/development/analytics.html",
+    "totalCommits": 1,
+    "totalInsertions": 831,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 22:35:43 -0400",
+    "lastModified": "2025-09-06 22:35:43 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 16.62,
+    "category": "ui_component"
+  },
+  {
+    "filename": "assiduous-build/admin/development/backups/ROLLBACK_INSTRUCTIONS.md",
+    "totalCommits": 1,
+    "totalInsertions": 69,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 22:35:43 -0400",
+    "lastModified": "2025-09-06 22:35:43 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 0.69,
+    "category": "documentation"
+  },
+  {
+    "filename": "assiduous-build/admin/development/backups/analytics_backup_20250829.html",
+    "totalCommits": 1,
+    "totalInsertions": 904,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 22:35:43 -0400",
+    "lastModified": "2025-09-06 22:35:43 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 18.08,
+    "category": "ui_component"
+  },
+  {
+    "filename": "assiduous-build/admin/development/backups/dashboard_backup_20250829.html",
+    "totalCommits": 1,
+    "totalInsertions": 942,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 22:35:43 -0400",
+    "lastModified": "2025-09-06 22:35:43 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 18.84,
+    "category": "ui_component"
+  },
+  {
+    "filename": "assiduous-build/admin/development/backups/docs_backup_20250829.html",
+    "totalCommits": 1,
+    "totalInsertions": 697,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 22:35:43 -0400",
+    "lastModified": "2025-09-06 22:35:43 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 13.94,
+    "category": "documentation"
+  },
+  {
+    "filename": "assiduous-build/admin/development/backups/reports_backup_20250829.html",
+    "totalCommits": 1,
+    "totalInsertions": 796,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 22:35:43 -0400",
+    "lastModified": "2025-09-06 22:35:43 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 15.92,
+    "category": "ui_component"
+  },
+  {
+    "filename": "assiduous-build/admin/development/costs.html",
+    "totalCommits": 1,
+    "totalInsertions": 528,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 22:35:43 -0400",
+    "lastModified": "2025-09-06 22:35:43 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 10.56,
+    "category": "ui_component"
+  },
+  {
+    "filename": "assiduous-build/admin/development/dashboard.html",
+    "totalCommits": 1,
+    "totalInsertions": 1451,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 22:35:43 -0400",
+    "lastModified": "2025-09-06 22:35:43 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 29.02,
+    "category": "ui_component"
+  },
+  {
+    "filename": "assiduous-build/admin/development/dashboard_backup.html",
+    "totalCommits": 1,
+    "totalInsertions": 1312,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 22:35:43 -0400",
+    "lastModified": "2025-09-06 22:35:43 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 26.24,
+    "category": "ui_component"
+  },
+  {
+    "filename": "assiduous-build/admin/development/dashboard_old.html",
+    "totalCommits": 1,
+    "totalInsertions": 1312,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 22:35:43 -0400",
+    "lastModified": "2025-09-06 22:35:43 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 26.24,
+    "category": "ui_component"
+  },
+  {
+    "filename": "assiduous-build/admin/development/docs.html",
+    "totalCommits": 1,
+    "totalInsertions": 985,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 22:35:43 -0400",
+    "lastModified": "2025-09-06 22:35:43 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 19.7,
+    "category": "documentation"
+  },
+  {
+    "filename": "assiduous-build/admin/development/populate_session_data.js",
+    "totalCommits": 1,
+    "totalInsertions": 338,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 22:35:43 -0400",
+    "lastModified": "2025-09-06 22:35:43 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 3,
+    "estimatedHours": 10.14,
+    "category": "ui_component"
+  },
+  {
+    "filename": "assiduous-build/admin/development/reports.html",
+    "totalCommits": 1,
+    "totalInsertions": 673,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 22:35:43 -0400",
+    "lastModified": "2025-09-06 22:35:43 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 13.46,
+    "category": "ui_component"
+  },
+  {
+    "filename": "assiduous-build/admin/knowledge-base.html",
+    "totalCommits": 1,
+    "totalInsertions": 1067,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 22:35:43 -0400",
+    "lastModified": "2025-09-06 22:35:43 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 21.34,
+    "category": "ui_component"
+  },
+  {
+    "filename": "assiduous-build/admin/market.html",
+    "totalCommits": 1,
+    "totalInsertions": 783,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 22:35:43 -0400",
+    "lastModified": "2025-09-06 22:35:43 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 15.66,
+    "category": "ui_component"
+  },
+  {
+    "filename": "assiduous-build/admin/properties.html",
+    "totalCommits": 1,
+    "totalInsertions": 736,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 22:35:43 -0400",
+    "lastModified": "2025-09-06 22:35:43 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 14.72,
+    "category": "ui_component"
+  },
+  {
+    "filename": "assiduous-build/admin/settings.html",
+    "totalCommits": 1,
+    "totalInsertions": 674,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 22:35:43 -0400",
+    "lastModified": "2025-09-06 22:35:43 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 13.48,
+    "category": "ui_component"
+  },
+  {
+    "filename": "assiduous-build/admin/transactions.html",
+    "totalCommits": 1,
+    "totalInsertions": 602,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 22:35:43 -0400",
+    "lastModified": "2025-09-06 22:35:43 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 12.04,
+    "category": "ui_component"
+  },
+  {
+    "filename": "assiduous-build/assets/js/services/developmentmetricsservice.js",
+    "totalCommits": 1,
+    "totalInsertions": 450,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 22:35:43 -0400",
+    "lastModified": "2025-09-06 22:35:43 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 3,
+    "estimatedHours": 13.5,
+    "category": "ui_component"
+  },
+  {
+    "filename": "assiduous-build/assiduous.css",
+    "totalCommits": 1,
+    "totalInsertions": 798,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 22:35:43 -0400",
+    "lastModified": "2025-09-06 22:35:43 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 15.96,
+    "category": "styling"
+  },
+  {
+    "filename": "assiduous-build/buyers/index.html",
+    "totalCommits": 1,
+    "totalInsertions": 679,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 22:35:43 -0400",
+    "lastModified": "2025-09-06 22:35:43 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 13.58,
+    "category": "ui_component"
+  },
+  {
+    "filename": "assiduous-build/client/index.html",
+    "totalCommits": 1,
+    "totalInsertions": 457,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 22:35:43 -0400",
+    "lastModified": "2025-09-06 22:35:43 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 9.14,
+    "category": "ui_component"
+  },
+  {
+    "filename": "assiduous-build/components/header-template.html",
+    "totalCommits": 1,
+    "totalInsertions": 202,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 22:35:43 -0400",
+    "lastModified": "2025-09-06 22:35:43 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 4.04,
+    "category": "ui_component"
+  },
+  {
+    "filename": "assiduous-build/components/sidebar.html",
+    "totalCommits": 1,
+    "totalInsertions": 155,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 22:35:43 -0400",
+    "lastModified": "2025-09-06 22:35:43 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 3.1,
+    "category": "ui_component"
+  },
+  {
+    "filename": "assiduous-build/components/sidebar.js",
+    "totalCommits": 1,
+    "totalInsertions": 70,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 22:35:43 -0400",
+    "lastModified": "2025-09-06 22:35:43 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 3,
+    "estimatedHours": 2.0999999999999996,
+    "category": "ui_component"
+  },
+  {
+    "filename": "assiduous-build/diagnostic.html",
+    "totalCommits": 1,
+    "totalInsertions": 87,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 22:35:43 -0400",
+    "lastModified": "2025-09-06 22:35:43 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 1.74,
+    "category": "ui_component"
+  },
+  {
+    "filename": "assiduous-build/docs/API_DOCS.md",
+    "totalCommits": 1,
+    "totalInsertions": 342,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 22:35:43 -0400",
+    "lastModified": "2025-09-06 22:35:43 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 1,
+    "estimatedHours": 3.42,
+    "category": "documentation"
+  },
+  {
+    "filename": "assiduous-build/docs/index.html",
+    "totalCommits": 1,
+    "totalInsertions": 411,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 22:35:43 -0400",
+    "lastModified": "2025-09-06 22:35:43 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 8.22,
+    "category": "documentation"
+  },
+  {
+    "filename": "assiduous-build/docs/readme.html",
+    "totalCommits": 1,
+    "totalInsertions": 525,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 22:35:43 -0400",
+    "lastModified": "2025-09-06 22:35:43 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 10.5,
+    "category": "documentation"
+  },
+  {
+    "filename": "assiduous-build/index-old.html",
+    "totalCommits": 1,
+    "totalInsertions": 1014,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 22:35:43 -0400",
+    "lastModified": "2025-09-06 22:35:43 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 20.28,
+    "category": "ui_component"
+  },
+  {
+    "filename": "assiduous-build/index.html",
+    "totalCommits": 1,
+    "totalInsertions": 1187,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 22:35:43 -0400",
+    "lastModified": "2025-09-06 22:35:43 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 23.74,
+    "category": "ui_component"
+  },
+  {
+    "filename": "assiduous-build/knowledge-base.html",
+    "totalCommits": 1,
+    "totalInsertions": 97,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 22:35:43 -0400",
+    "lastModified": "2025-09-06 22:35:43 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 1.94,
+    "category": "ui_component"
+  },
+  {
+    "filename": "assiduous-build/reports.html",
+    "totalCommits": 1,
+    "totalInsertions": 972,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 22:35:43 -0400",
+    "lastModified": "2025-09-06 22:35:43 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 19.44,
+    "category": "ui_component"
+  },
+  {
+    "filename": "assiduousflip/components/admin-header.html",
+    "totalCommits": 1,
+    "totalInsertions": 458,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 23:19:36 -0400",
+    "lastModified": "2025-09-06 23:19:36 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 9.16,
+    "category": "ui_component"
+  },
+  {
+    "filename": "assiduousflip/components/admin-header.js",
+    "totalCommits": 1,
+    "totalInsertions": 145,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 23:19:36 -0400",
+    "lastModified": "2025-09-06 23:19:36 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 3,
+    "estimatedHours": 4.35,
+    "category": "ui_component"
+  },
+  {
+    "filename": "assiduousflip/components/admin-layout.css",
+    "totalCommits": 1,
+    "totalInsertions": 481,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 23:19:36 -0400",
+    "lastModified": "2025-09-06 23:19:36 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 9.62,
+    "category": "styling"
+  },
+  {
+    "filename": "update_admin_headers.sh",
+    "totalCommits": 1,
+    "totalInsertions": 63,
+    "totalDeletions": 0,
+    "firstSeen": "2025-09-06 23:19:36 -0400",
+    "lastModified": "2025-09-06 23:19:36 -0400",
+    "authors": [
+      "SirsiMaster"
+    ],
+    "complexity": 2,
+    "estimatedHours": 1.26,
+    "category": "application_logic"
+  }
+]

@@ -1,0 +1,178 @@
+/* Landing Page CSS Fixes - Preserves all features while fixing issues */
+
+/* Fix 1: Prevent Carousel Overlap */
+.hero-bg {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    z-index: 1 !important;
+    overflow: hidden !important;
+}
+
+.hero-bg-image {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    opacity: 0 !important;
+    transition: opacity 2s ease-in-out !important;
+}
+
+.hero-bg-image.active {
+    opacity: 1 !important;
+}
+
+/* Fix 2: Text Visibility */
+.hero h1 {
+    opacity: 1 !important;
+    position: relative !important;
+    z-index: 10 !important;
+}
+
+.hero-subtitle {
+    opacity: 0.95 !important;
+    color: #e2e8f0 !important;
+    position: relative !important;
+    z-index: 10 !important;
+}
+
+.hero-content {
+    position: relative !important;
+    z-index: 10 !important;
+}
+
+/* Fix 3: Proper Z-index Layering */
+.header {
+    z-index: 1000 !important;
+}
+
+.hero {
+    position: relative !important;
+    overflow: hidden !important;
+}
+
+.stats-bar {
+    position: relative !important;
+    z-index: 20 !important;
+    background: white !important;
+}
+
+/* Fix 4: Mobile Responsiveness */
+@media (max-width: 768px) {
+    .hero {
+        padding-top: 72px;
+    }
+    
+    .hero-content {
+        padding: 40px 20px !important;
+    }
+    
+    .hero h1 {
+        font-size: 32px !important;
+        line-height: 1.2 !important;
+    }
+    
+    .hero-subtitle {
+        font-size: 16px !important;
+        line-height: 1.5 !important;
+    }
+    
+    .hero-actions {
+        flex-direction: column !important;
+        align-items: center !important;
+        width: 100% !important;
+        gap: 12px !important;
+    }
+    
+    .hero-btn {
+        width: 100% !important;
+        max-width: 300px !important;
+        justify-content: center !important;
+    }
+    
+    .stats-container {
+        grid-template-columns: 1fr !important;
+        gap: 20px !important;
+        padding: 20px !important;
+    }
+    
+    .features-grid {
+        grid-template-columns: 1fr !important;
+        padding: 20px !important;
+    }
+    
+    .nav {
+        display: none !important;
+    }
+    
+    /* Mobile menu button */
+    .mobile-menu-btn {
+        display: block !important;
+    }
+}
+
+/* Fix 5: Feature Cards Visibility */
+.feature-card {
+    opacity: 1 !important;
+    background: white !important;
+}
+
+.feature-title {
+    opacity: 1 !important;
+    color: #0f172a !important;
+}
+
+.feature-description {
+    opacity: 1 !important;
+    color: #64748b !important;
+}
+
+/* Fix 6: Button Styles (Keep your gradient buttons) */
+.btn-gradient {
+    background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%) !important;
+    color: white !important;
+    opacity: 1 !important;
+}
+
+.btn-gradient:hover {
+    background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%) !important;
+}
+
+/* Fix 7: Prevent Content Overflow */
+body {
+    overflow-x: hidden !important;
+}
+
+.container,
+.hero-content,
+.stats-container,
+.features-container {
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+}
+
+/* Fix 8: Ensure Modals Are Above Everything */
+.modal-overlay {
+    z-index: 9999 !important;
+}
+
+.modal-content {
+    z-index: 10000 !important;
+}
+
+/* Fix 9: Stats Bar Proper Spacing */
+.stats-bar {
+    margin-top: 0 !important;
+    padding: 40px 20px !important;
+}
+
+/* Fix 10: Responsive Images */
+@media (max-width: 768px) {
+    .hero-bg-image {
+        background-position: center center !important;
+        background-size: cover !important;
+    }
+}
