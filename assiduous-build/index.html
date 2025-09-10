@@ -256,7 +256,9 @@
         /* Hero Section - Fixed Positioning */
         .hero {
             margin-top: 72px;
-            min-height: 100vh;
+            /* Use small viewport height to avoid browser UI jumps; cap height on desktop */
+            min-height: min(100svh, 820px);
+            max-height: 820px;
             position: relative;
             display: flex;
             align-items: center;
@@ -564,7 +566,8 @@
         }
 
 @media (max-width: 768px) {
-            .hero { padding-bottom: 200px; }
+            /* On phones, use full viewport height without desktop cap */
+            .hero { min-height: 100svh; max-height: none; padding-bottom: 200px; }
             .stats-bar { left: 12px; right: 12px; bottom: 16px; max-width: none; }
         }
 
