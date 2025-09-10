@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.14.7] - 2025-09-09
+
+### Fixed
+- fix(ui): Comprehensive button modernization across ALL admin pages
+
+
 ## [0.14.6] - 2025-09-09
 
 ### Fixed
@@ -669,7 +675,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.14.6...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.14.7...HEAD
+
+
+## [0.14.7] - 2025-09-09
+
+### Fixed
+- fix(ui): Comprehensive button modernization across ALL admin pages
 
 
 ## [0.14.6] - 2025-09-09
@@ -928,3 +940,4 @@ To generate changelog entries:
 [0.14.4]: https://github.com/SirsiMaster/Assiduous/compare/v0.14.3...v0.14.4
 [0.14.5]: https://github.com/SirsiMaster/Assiduous/compare/v0.14.4...v0.14.5
 [0.14.6]: https://github.com/SirsiMaster/Assiduous/compare/v0.14.5...v0.14.6
+[0.14.7]: https://github.com/SirsiMaster/Assiduous/compare/v0.14.6...v0.14.7
