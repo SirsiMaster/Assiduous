@@ -1,6 +1,6 @@
 /* Landing Page CSS Fixes - Preserves all features while fixing issues */
 
-/* Fix 1: Prevent Carousel Overlap */
+/* Fix 1: Prevent Carousel Overlap - CRITICAL FIXES */
 .hero-bg {
     position: absolute !important;
     top: 0 !important;
@@ -17,12 +17,25 @@
     left: 0 !important;
     width: 100% !important;
     height: 100% !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
     opacity: 0 !important;
-    transition: opacity 2s ease-in-out !important;
+    visibility: hidden !important;
+    transition: opacity 2s ease-in-out, visibility 2s ease-in-out !important;
+    z-index: 1 !important;
 }
 
 .hero-bg-image.active {
     opacity: 1 !important;
+    visibility: visible !important;
+    z-index: 2 !important;
+}
+
+/* Hide all non-active images by default */
+.hero-bg-image:not(.active) {
+    opacity: 0 !important;
+    visibility: hidden !important;
 }
 
 /* Fix 2: Text Visibility */

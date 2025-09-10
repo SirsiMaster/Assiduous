@@ -885,29 +885,29 @@
         <!-- Rotating Background Images - Philadelphia Metro Area -->
         <div class="hero-bg" id="heroBg">
             <!-- Colonial home in Chester County PA -->
-            <div class="hero-bg-image active" style="background-image: url('https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=2400&h=1600&fit=crop&q=90')"></div>
+            <div class="hero-bg-image active" style="background-image: url('https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=2400&h=1600&fit=crop&q=90'); opacity: 1;"></div>
             <!-- Victorian townhouse style common in Philadelphia suburbs -->
-            <div class="hero-bg-image" style="background-image: url('https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=2400&h=1600&fit=crop&q=90')"></div>
+            <div class="hero-bg-image" style="background-image: url('https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=2400&h=1600&fit=crop&q=90'); opacity: 0;"></div>
             <!-- Traditional American home in Delaware County -->
-            <div class="hero-bg-image" style="background-image: url('https://images.unsplash.com/photo-1558036117-15d82a90b9b1?w=2400&h=1600&fit=crop&q=90')"></div>
+            <div class="hero-bg-image" style="background-image: url('https://images.unsplash.com/photo-1558036117-15d82a90b9b1?w=2400&h=1600&fit=crop&q=90'); opacity: 0;"></div>
             <!-- Modern suburban home common in South Jersey -->
-            <div class="hero-bg-image" style="background-image: url('https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=2400&h=1600&fit=crop&q=90')"></div>
+            <div class="hero-bg-image" style="background-image: url('https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=2400&h=1600&fit=crop&q=90'); opacity: 0;"></div>
             <!-- Luxury estate home in Main Line PA -->
-            <div class="hero-bg-image" style="background-image: url('https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=2400&h=1600&fit=crop&q=90')"></div>
+            <div class="hero-bg-image" style="background-image: url('https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=2400&h=1600&fit=crop&q=90'); opacity: 0;"></div>
             <!-- Craftsman bungalow style in Montgomery County -->
-            <div class="hero-bg-image" style="background-image: url('https://images.unsplash.com/photo-1600573472550-8090b5e0745e?w=2400&h=1600&fit=crop&q=90')"></div>
+            <div class="hero-bg-image" style="background-image: url('https://images.unsplash.com/photo-1600573472550-8090b5e0745e?w=2400&h=1600&fit=crop&q=90'); opacity: 0;"></div>
             <!-- Tudor revival home in Delaware -->
-            <div class="hero-bg-image" style="background-image: url('https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=2400&h=1600&fit=crop&q=90')"></div>
+            <div class="hero-bg-image" style="background-image: url('https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=2400&h=1600&fit=crop&q=90'); opacity: 0;"></div>
             <!-- Contemporary home in South Jersey suburbs -->
-            <div class="hero-bg-image" style="background-image: url('https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?w=2400&h=1600&fit=crop&q=90')"></div>
+            <div class="hero-bg-image" style="background-image: url('https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?w=2400&h=1600&fit=crop&q=90'); opacity: 0;"></div>
             <!-- Cape Cod style in Bucks County PA -->
-            <div class="hero-bg-image" style="background-image: url('https://images.unsplash.com/photo-1565538420870-da08ff96a207?w=2400&h=1600&fit=crop&q=90')"></div>
+            <div class="hero-bg-image" style="background-image: url('https://images.unsplash.com/photo-1565538420870-da08ff96a207?w=2400&h=1600&fit=crop&q=90'); opacity: 0;"></div>
             <!-- Georgian colonial in NE Maryland suburbs -->
-            <div class="hero-bg-image" style="background-image: url('https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=2400&h=1600&fit=crop&q=90')"></div>
+            <div class="hero-bg-image" style="background-image: url('https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=2400&h=1600&fit=crop&q=90'); opacity: 0;"></div>
             <!-- Ranch style home common in Delaware County -->
-            <div class="hero-bg-image" style="background-image: url('https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=2400&h=1600&fit=crop&q=90')"></div>
+            <div class="hero-bg-image" style="background-image: url('https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=2400&h=1600&fit=crop&q=90'); opacity: 0;"></div>
             <!-- Federal style rowhouse in historic districts -->
-            <div class="hero-bg-image" style="background-image: url('https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=2400&h=1600&fit=crop&q=90')"></div>
+            <div class="hero-bg-image" style="background-image: url('https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=2400&h=1600&fit=crop&q=90'); opacity: 0;"></div>
         </div>
         
         <!-- Animated Network Canvas -->
@@ -1878,38 +1878,64 @@
         });
     </script>
     <script>
-        // Additional fixes for hero background rotation
+        // FIXED: Hero background carousel rotation
         document.addEventListener('DOMContentLoaded', function() {
             const heroBgImages = document.querySelectorAll('.hero-bg-image');
+            console.log('Found', heroBgImages.length, 'background images');
+            
             if (heroBgImages.length > 1) {
                 let currentBg = 0;
                 
-                // Ensure only first image is visible initially
+                // CRITICAL FIX: Force all images to be positioned absolute and only show first
                 heroBgImages.forEach((img, index) => {
-                    img.style.position = 'absolute';
+                    img.style.position = 'absolute !important';
+                    img.style.top = '0';
+                    img.style.left = '0';
                     img.style.width = '100%';
                     img.style.height = '100%';
+                    img.style.backgroundSize = 'cover';
+                    img.style.backgroundPosition = 'center';
+                    img.style.backgroundRepeat = 'no-repeat';
+                    img.style.zIndex = index === 0 ? '2' : '1';
                     img.style.opacity = index === 0 ? '1' : '0';
                     img.style.transition = 'opacity 2s ease-in-out';
+                    
+                    // Remove active class from all except first
+                    if (index === 0) {
+                        img.classList.add('active');
+                    } else {
+                        img.classList.remove('active');
+                    }
                 });
                 
-                // Rotate backgrounds
+                // Rotate backgrounds every 5 seconds
                 setInterval(() => {
+                    console.log('Rotating from', currentBg, 'to', (currentBg + 1) % heroBgImages.length);
+                    
+                    // Hide current
                     heroBgImages[currentBg].style.opacity = '0';
+                    heroBgImages[currentBg].style.zIndex = '1';
+                    heroBgImages[currentBg].classList.remove('active');
+                    
+                    // Show next
                     currentBg = (currentBg + 1) % heroBgImages.length;
                     heroBgImages[currentBg].style.opacity = '1';
+                    heroBgImages[currentBg].style.zIndex = '2';
+                    heroBgImages[currentBg].classList.add('active');
                 }, 5000);
             }
             
-            // Fix any greyed out text
-            const allTextElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6, p, span');
-            allTextElements.forEach(el => {
-                const computed = window.getComputedStyle(el);
-                if (computed.opacity === '0' || computed.color === 'transparent') {
-                    el.style.opacity = '1';
-                    el.style.color = 'inherit';
-                }
-            });
+            // Fix text visibility
+            const heroTitle = document.querySelector('.hero h1');
+            const heroSubtitle = document.querySelector('.hero-subtitle');
+            if (heroTitle) {
+                heroTitle.style.opacity = '1';
+                heroTitle.style.visibility = 'visible';
+            }
+            if (heroSubtitle) {
+                heroSubtitle.style.opacity = '0.95';
+                heroSubtitle.style.visibility = 'visible';
+            }
         });
     </script>
     
