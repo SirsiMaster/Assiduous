@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.15.12] - 2025-09-10
+
+### Fixed
+- fix(landing): center stats overlay and anchor to bottom reliably\n\n- Span left/right with margin:auto to ensure centering\n- Increase bottom offset and width for balance\n- Mobile: tighter insets and no max-width
+
+
 ## [0.15.11] - 2025-09-10
 
 ### Fixed
@@ -747,7 +753,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.15.11...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.15.12...HEAD
+
+
+## [0.15.12] - 2025-09-10
+
+### Fixed
+- fix(landing): center stats overlay and anchor to bottom reliably\n\n- Span left/right with margin:auto to ensure centering\n- Increase bottom offset and width for balance\n- Mobile: tighter insets and no max-width
 
 
 ## [0.15.11] - 2025-09-10
@@ -1097,3 +1109,4 @@ To generate changelog entries:
 [0.15.9]: https://github.com/SirsiMaster/Assiduous/compare/v0.15.8...v0.15.9
 [0.15.10]: https://github.com/SirsiMaster/Assiduous/compare/v0.15.9...v0.15.10
 [0.15.11]: https://github.com/SirsiMaster/Assiduous/compare/v0.15.10...v0.15.11
+[0.15.12]: https://github.com/SirsiMaster/Assiduous/compare/v0.15.11...v0.15.12
