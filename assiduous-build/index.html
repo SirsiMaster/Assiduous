@@ -13,9 +13,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     
-    <!-- Critical Fixes for Responsive Design -->
-    <link rel="stylesheet" href="/assets/css/button-override.css">
-    <link rel="stylesheet" href="/assets/css/landing-mobile-fix.css">
+    <!-- SirsiMaster Component Library CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SirsiMaster/sirsimaster-component-library@latest/dist/sirsimaster-ui.css">
     
     <style>
         /* Reset & Base */
@@ -204,7 +203,7 @@
             color: white !important;
         }
 
-        /* Hero Section - Spacious & Stunning */
+        /* Hero Section - Fixed Positioning */
         .hero {
             margin-top: 72px;
             min-height: 100vh;
@@ -213,7 +212,7 @@
             align-items: center;
             justify-content: center;
             overflow: hidden;
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            background: #0f172a;
         }
 
         /* Hero Rotating Backgrounds */
@@ -392,17 +391,13 @@
             transform: translateY(-3px);
         }
 
-        /* Stats Bar */
+        /* Stats Bar - Fixed Positioning */
         .stats-bar {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            background: white;
             padding: 32px 0;
             z-index: 10;
+            border-top: 1px solid #e2e8f0;
         }
 
         .stats-container {
@@ -422,13 +417,13 @@
         .stat-number {
             font-size: 32px;
             font-weight: 800;
-            color: white;
+            color: #0f172a;
             margin-bottom: 8px;
         }
 
         .stat-label {
             font-size: 14px;
-            color: #94a3b8;
+            color: #64748b;
             text-transform: uppercase;
             letter-spacing: 0.1em;
         }
@@ -816,31 +811,7 @@
             transform: translateY(-4px);
         }
     </style>
-    <link rel="stylesheet" href="/assets/css/button-override.css">
     
-    <script>
-        // Ensure button styles are loaded
-        (function() {
-            const checkButtons = function() {
-                const testBtn = document.querySelector('button');
-                if (testBtn) {
-                    const styles = window.getComputedStyle(testBtn);
-                    if (styles.borderStyle === 'outset' || styles.backgroundColor.includes('192')) {
-                        // Force reload override styles
-                        const link = document.querySelector('link[href*="button-override"]');
-                        if (link) {
-                            link.href = link.href.split('?')[0] + '?v=' + Date.now();
-                        }
-                    }
-                }
-            };
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', checkButtons);
-            } else {
-                checkButtons();
-            }
-        })();
-    </script>
 </head>
 <body>
     <!-- Header -->
@@ -1903,8 +1874,6 @@
             }
         });
     </script>
-    <!-- Carousel and Mobile Fixes -->
-    <script src="/assets/js/carousel-fix.js"></script>
     <script>
         // Additional fixes for hero background rotation
         document.addEventListener('DOMContentLoaded', function() {

@@ -1,0 +1,19 @@
+# Git Aliases to Prevent Merge Commit Messages
+
+# Safe push that auto-syncs first
+alias gitsafe='./scripts/git-sync.sh && git push origin main'
+
+# Quick commit and push
+alias gitquick='git add -A && git commit -m "$1" && ./scripts/git-sync.sh && git push origin main'
+
+# Pull with rebase (no merge commits)
+alias gitpull='git pull --rebase origin main'
+
+# Force push after rebase (use carefully)
+alias gitforce='git push --force-with-lease origin main'
+
+# Status check
+alias gits='git status'
+
+# Add these to your ~/.zshrc or ~/.bashrc:
+# source /Users/thekryptodragon/Development/assiduous/.git-aliases
