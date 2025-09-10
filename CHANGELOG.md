@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- Landing page finalized: continuous hero rotation, bottom-centered glass stats overlay, desktop hero height capped, alignment polished.
 
 ## [0.15.14] - 2025-09-10
 
