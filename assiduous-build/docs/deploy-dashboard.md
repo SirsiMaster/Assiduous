@@ -8,6 +8,12 @@ https://sirsimaster.github.io/Assiduous/docs/ceo-dashboard.html
 
 ## Features Implemented
 
+> Deployment Badge: Landing Page Finalized at v0.15.14 (2025-09-10)
+
+- Hero: continuous single-layer rotation (resume on tab visibility)
+- Stats overlay: bottom-centered glass band (4 equal columns, single-line labels)
+- Hero cap: desktop svh clamp to prevent oversized zoom growth
+
 ### ✅ 1. Live Commit Tracking
 - **Visual Progress Bar**: Shows commits as they happen
 - **Text Display**: Lists the latest 10 commits with author, message, and timestamp
