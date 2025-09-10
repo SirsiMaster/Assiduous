@@ -13,6 +13,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     
+    <!-- Critical Fixes for Responsive Design -->
+    <link rel="stylesheet" href="/assets/css/button-override.css">
+    <link rel="stylesheet" href="/assets/css/landing-mobile-fix.css">
+    
     <style>
         /* Reset & Base */
         * {
@@ -2043,6 +2047,43 @@
             } catch (error) {
                 console.error('Signup error:', error);
             }
+        });
+    </script>
+    <!-- Carousel and Mobile Fixes -->
+    <script src="/assets/js/carousel-fix.js"></script>
+    <script>
+        // Additional fixes for hero background rotation
+        document.addEventListener('DOMContentLoaded', function() {
+            const heroBgImages = document.querySelectorAll('.hero-bg-image');
+            if (heroBgImages.length > 1) {
+                let currentBg = 0;
+                
+                // Ensure only first image is visible initially
+                heroBgImages.forEach((img, index) => {
+                    img.style.position = 'absolute';
+                    img.style.width = '100%';
+                    img.style.height = '100%';
+                    img.style.opacity = index === 0 ? '1' : '0';
+                    img.style.transition = 'opacity 2s ease-in-out';
+                });
+                
+                // Rotate backgrounds
+                setInterval(() => {
+                    heroBgImages[currentBg].style.opacity = '0';
+                    currentBg = (currentBg + 1) % heroBgImages.length;
+                    heroBgImages[currentBg].style.opacity = '1';
+                }, 5000);
+            }
+            
+            // Fix any greyed out text
+            const allTextElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6, p, span');
+            allTextElements.forEach(el => {
+                const computed = window.getComputedStyle(el);
+                if (computed.opacity === '0' || computed.color === 'transparent') {
+                    el.style.opacity = '1';
+                    el.style.color = 'inherit';
+                }
+            });
         });
     </script>
 </body>
