@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.15.6] - 2025-09-10
+
+### Fixed
+- fix(landing): CRITICAL FIX - Properly hide overlapping carousel images
+
+
 ## [0.15.5] - 2025-09-10
 
 ### Fixed
@@ -711,7 +717,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.15.5...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.15.6...HEAD
+
+
+## [0.15.6] - 2025-09-10
+
+### Fixed
+- fix(landing): CRITICAL FIX - Properly hide overlapping carousel images
 
 
 ## [0.15.5] - 2025-09-10
@@ -1019,3 +1031,4 @@ To generate changelog entries:
 [0.15.3]: https://github.com/SirsiMaster/Assiduous/compare/v0.15.2...v0.15.3
 [0.15.4]: https://github.com/SirsiMaster/Assiduous/compare/v0.15.3...v0.15.4
 [0.15.5]: https://github.com/SirsiMaster/Assiduous/compare/v0.15.4...v0.15.5
+[0.15.6]: https://github.com/SirsiMaster/Assiduous/compare/v0.15.5...v0.15.6
