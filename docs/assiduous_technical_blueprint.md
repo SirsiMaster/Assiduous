@@ -797,6 +797,17 @@ assiduousflip/
 
 ## User Interface & Experience
 
+### Landing Page (Current - Sep 2025)
+- Hero background: single-layer rotator (URLs swapped on one layer) with continuous rotation and resume on tab visibility
+- Hero height: capped on desktop (svh clamp) to avoid uncontrolled expansion; full-height on mobile
+- Stats band: bottom-centered glass overlay (blurred, translucent, 4 equal columns) with single-line labels and aligned baselines
+- How It Works: section has its own positioned wrapper; internal background carousel constrained to the section (no bleed into hero)
+- Buttons: gradient primary and glass secondary, with hover sheen and elevation
+
+### Accessibility & Responsiveness
+- Mobile grid rules ensure stats collapse to 2 columns; labels remain single-line
+- All interactive elements meet minimum target sizes and contrast
+
 ### Design System
 
 #### Design Principles

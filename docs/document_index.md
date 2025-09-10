@@ -71,6 +71,8 @@
 
 ## 📋 TECHNICAL DOCUMENTATION
 
+Updated (Sep 2025): Landing page finalized — continuous hero rotation (single-layer), bottom-centered glass stats overlay, desktop hero height cap, aligned baselines.
+
 ### 6. **ASSIDUOUS_TECHNICAL_BLUEPRINT.md**
 - **Purpose:** Complete technical requirements document
 - **Contents:** Full product specifications and architecture
