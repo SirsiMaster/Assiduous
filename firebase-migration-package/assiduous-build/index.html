@@ -1925,59 +1925,51 @@
         });
     </script>
     <script>
-        // IMMEDIATE CAROUSEL FIX - Execute immediately, no waiting
+        // HARDENED CAROUSEL FIX: Reduce DOM to a single background layer and rotate URLs
         (function() {
-            function fixCarousel() {
-                console.log('FIXING CAROUSEL NOW');
-                const heroBgImages = document.querySelectorAll('.hero-bg-image');
-                console.log('Found', heroBgImages.length, 'background images');
+            function hardenedCarouselFix() {
+                const nodes = Array.from(document.querySelectorAll('.hero-bg-image'));
+                if (!nodes.length) return;
+
+                // Collect URLs from all nodes
+                const urls = nodes.map(n => (n.style.backgroundImage || '').replace(/^url\(["']?/, '').replace(/["']?\)$/, ''))
+                                   .filter(Boolean);
                 
-                if (heroBgImages.length > 0) {
-                    // FORCE hide ALL images first
-                    heroBgImages.forEach((img, index) => {
-                        img.style.setProperty('position', 'absolute', 'important');
-                        img.style.setProperty('top', '0', 'important');
-                        img.style.setProperty('left', '0', 'important');
-                        img.style.setProperty('width', '100%', 'important');
-                        img.style.setProperty('height', '100%', 'important');
-                        img.style.setProperty('opacity', '0', 'important');
-                        img.style.setProperty('visibility', 'hidden', 'important');
-                        img.style.setProperty('z-index', '1', 'important');
-                        img.classList.remove('active');
-                        console.log('Hiding image', index);
-                    });
-                    
-                    // Show ONLY the first image
-                    const firstImage = heroBgImages[0];
-                    firstImage.style.setProperty('opacity', '1', 'important');
-                    firstImage.style.setProperty('visibility', 'visible', 'important');
-                    firstImage.style.setProperty('z-index', '2', 'important');
-                    firstImage.classList.add('active');
-                    console.log('Showing first image only');
-                    
-                    // Set up rotation
-                    let currentBg = 0;
-                    setInterval(() => {
-                        // Hide current
-                        heroBgImages[currentBg].style.setProperty('opacity', '0', 'important');
-                        heroBgImages[currentBg].style.setProperty('visibility', 'hidden', 'important');
-                        heroBgImages[currentBg].classList.remove('active');
-                        
-                        // Show next
-                        currentBg = (currentBg + 1) % heroBgImages.length;
-                        heroBgImages[currentBg].style.setProperty('opacity', '1', 'important');
-                        heroBgImages[currentBg].style.setProperty('visibility', 'visible', 'important');
-                        heroBgImages[currentBg].classList.add('active');
-                        console.log('Rotated to image', currentBg);
-                    }, 5000);
+                // Keep the first node as the only layer
+                const layer = nodes[0];
+                layer.classList.add('active');
+                layer.style.setProperty('opacity', '1', 'important');
+                layer.style.setProperty('visibility', 'visible', 'important');
+                layer.style.setProperty('z-index', '2', 'important');
+                
+                // Remove all other nodes to eliminate any chance of overlap
+                for (let i = 1; i < nodes.length; i++) {
+                    nodes[i].parentNode.removeChild(nodes[i]);
                 }
+                
+                // If we have fewer than 2 images, nothing to rotate
+                if (urls.length < 2) return;
+                
+                // Ensure the layer transitions opacity
+                layer.style.transition = 'opacity 2s ease-in-out';
+                let index = 0;
+                
+                setInterval(() => {
+                    // Fade out
+                    layer.style.opacity = '0';
+                    setTimeout(() => {
+                        index = (index + 1) % urls.length;
+                        layer.style.backgroundImage = `url('${urls[index]}')`;
+                        // Fade in
+                        layer.style.opacity = '1';
+                    }, 400); // brief crossfade gap
+                }, 5000);
             }
-            
-            // Run immediately if DOM ready, otherwise wait
+
             if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', fixCarousel);
+                document.addEventListener('DOMContentLoaded', hardenedCarouselFix);
             } else {
-                fixCarousel();
+                hardenedCarouselFix();
             }
         })();
     </script>
