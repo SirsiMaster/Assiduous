@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.15.9] - 2025-09-10
+
+### Fixed
+- fix(landing): contain how-it-works carousel inside its own section
+
+
 ## [0.15.8] - 2025-09-10
 
 ### Fixed
@@ -729,7 +735,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.15.8...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.15.9...HEAD
+
+
+## [0.15.9] - 2025-09-10
+
+### Fixed
+- fix(landing): contain how-it-works carousel inside its own section
 
 
 ## [0.15.8] - 2025-09-10
@@ -1058,3 +1070,4 @@ To generate changelog entries:
 [0.15.6]: https://github.com/SirsiMaster/Assiduous/compare/v0.15.5...v0.15.6
 [0.15.7]: https://github.com/SirsiMaster/Assiduous/compare/v0.15.6...v0.15.7
 [0.15.8]: https://github.com/SirsiMaster/Assiduous/compare/v0.15.7...v0.15.8
+[0.15.9]: https://github.com/SirsiMaster/Assiduous/compare/v0.15.8...v0.15.9
