@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.15.13] - 2025-09-10
+
+### Fixed
+- fix(landing): cap hero height on desktop with svh
+
+
 ## [0.15.12] - 2025-09-10
 
 ### Fixed
@@ -753,7 +759,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.15.12...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.15.13...HEAD
+
+
+## [0.15.13] - 2025-09-10
+
+### Fixed
+- fix(landing): cap hero height on desktop with svh
 
 
 ## [0.15.12] - 2025-09-10
@@ -1110,3 +1122,4 @@ To generate changelog entries:
 [0.15.10]: https://github.com/SirsiMaster/Assiduous/compare/v0.15.9...v0.15.10
 [0.15.11]: https://github.com/SirsiMaster/Assiduous/compare/v0.15.10...v0.15.11
 [0.15.12]: https://github.com/SirsiMaster/Assiduous/compare/v0.15.11...v0.15.12
+[0.15.13]: https://github.com/SirsiMaster/Assiduous/compare/v0.15.12...v0.15.13
