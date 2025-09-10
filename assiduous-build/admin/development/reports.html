@@ -8,7 +8,7 @@
     
     <!-- Assiduous Design System -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SirsiMaster/sirsi-ui@v0.1.1/dist/sirsi-ui.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SirsiMaster/ui-components@latest/dist/sirsimaster-ui.css">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     
     <link rel="stylesheet" href="../../assiduous.css">
@@ -294,7 +294,8 @@
             }
         }
     </style>
-    <script defer src="https://cdn.jsdelivr.net/gh/SirsiMaster/sirsi-ui@v0.1.2/dist/sirsi-ui.js"></script>
+    <!-- Removed old Sirsi UI -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SirsiMaster/ui-components@latest/dist/sirsimaster-ui.css">
 </head>
 <body>
     <div class="admin-wrapper">
@@ -450,7 +451,7 @@
 
                 <!-- Report Templates -->
                 <div class="reports-grid">
-                    <div class="report-card">
+                    <div class="report-sm-sm-card">
                         <div class="report-header">
                             <div class="report-icon">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -464,13 +465,13 @@
                         <div class="report-meta">
                             <span class="report-date">Updated daily</span>
                             <div class="report-format">
-                                <span class="format-badge">PDF</span>
-                                <span class="format-badge">CSV</span>
+                                <span class="format-sm-sm-badge">PDF</span>
+                                <span class="format-sm-sm-badge">CSV</span>
                             </div>
                         </div>
                     </div>
 
-                    <div class="report-card">
+                    <div class="report-sm-sm-card">
                         <div class="report-header">
                             <div class="report-icon">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -484,13 +485,13 @@
                         <div class="report-meta">
                             <span class="report-date">Updated hourly</span>
                             <div class="report-format">
-                                <span class="format-badge">PDF</span>
-                                <span class="format-badge">JSON</span>
+                                <span class="format-sm-sm-badge">PDF</span>
+                                <span class="format-sm-sm-badge">JSON</span>
                             </div>
                         </div>
                     </div>
 
-                    <div class="report-card">
+                    <div class="report-sm-sm-card">
                         <div class="report-header">
                             <div class="report-icon">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -503,13 +504,13 @@
                         <div class="report-meta">
                             <span class="report-date">Weekly report</span>
                             <div class="report-format">
-                                <span class="format-badge">HTML</span>
-                                <span class="format-badge">PDF</span>
+                                <span class="format-sm-sm-badge">HTML</span>
+                                <span class="format-sm-sm-badge">PDF</span>
                             </div>
                         </div>
                     </div>
 
-                    <div class="report-card">
+                    <div class="report-sm-sm-card">
                         <div class="report-header">
                             <div class="report-icon">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -524,13 +525,13 @@
                         <div class="report-meta">
                             <span class="report-date">After each build</span>
                             <div class="report-format">
-                                <span class="format-badge">HTML</span>
-                                <span class="format-badge">XML</span>
+                                <span class="format-sm-sm-badge">HTML</span>
+                                <span class="format-sm-sm-badge">XML</span>
                             </div>
                         </div>
                     </div>
 
-                    <div class="report-card">
+                    <div class="report-sm-sm-card">
                         <div class="report-header">
                             <div class="report-icon">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -543,13 +544,13 @@
                         <div class="report-meta">
                             <span class="report-date">Real-time</span>
                             <div class="report-format">
-                                <span class="format-badge">Dashboard</span>
-                                <span class="format-badge">PDF</span>
+                                <span class="format-sm-sm-badge">Dashboard</span>
+                                <span class="format-sm-sm-badge">PDF</span>
                             </div>
                         </div>
                     </div>
 
-                    <div class="report-card">
+                    <div class="report-sm-sm-card">
                         <div class="report-header">
                             <div class="report-icon">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -562,8 +563,8 @@
                         <div class="report-meta">
                             <span class="report-date">Daily</span>
                             <div class="report-format">
-                                <span class="format-badge">Grafana</span>
-                                <span class="format-badge">CSV</span>
+                                <span class="format-sm-sm-badge">Grafana</span>
+                                <span class="format-sm-sm-badge">CSV</span>
                             </div>
                         </div>
                     </div>
@@ -594,9 +595,9 @@
                                 <td>2.4 MB</td>
                                 <td>
                                     <div class="report-actions">
-                                        <sirsi-button variant="primary" size="sm">View</sirsi-button>
-                                        <sirsi-button variant="secondary" size="sm">Download</sirsi-button>
-                                        <sirsi-button variant="ghost" size="sm">Share</sirsi-button>
+                                        <button class="sm-btn sm-btn-primary">View</button>
+                                        <button class="sm-btn sm-btn-secondary">Download</button>
+                                        <button class="sm-btn sm-btn-ghost">Share</button>
                                     </div>
                                 </td>
                             </tr>
@@ -608,9 +609,9 @@
                                 <td>1.8 MB</td>
                                 <td>
                                     <div class="report-actions">
-                                        <sirsi-button variant="primary" size="sm">View</sirsi-button>
-                                        <sirsi-button variant="secondary" size="sm">Download</sirsi-button>
-                                        <sirsi-button variant="ghost" size="sm">Share</sirsi-button>
+                                        <button class="sm-btn sm-btn-primary">View</button>
+                                        <button class="sm-btn sm-btn-secondary">Download</button>
+                                        <button class="sm-btn sm-btn-ghost">Share</button>
                                     </div>
                                 </td>
                             </tr>
@@ -622,9 +623,9 @@
                                 <td>3.2 MB</td>
                                 <td>
                                     <div class="report-actions">
-                                        <sirsi-button variant="primary" size="sm">View</sirsi-button>
-                                        <sirsi-button variant="secondary" size="sm">Download</sirsi-button>
-                                        <sirsi-button variant="ghost" size="sm">Share</sirsi-button>
+                                        <button class="sm-btn sm-btn-primary">View</button>
+                                        <button class="sm-btn sm-btn-secondary">Download</button>
+                                        <button class="sm-btn sm-btn-ghost">Share</button>
                                     </div>
                                 </td>
                             </tr>
@@ -636,9 +637,9 @@
                                 <td>4.1 MB</td>
                                 <td>
                                     <div class="report-actions">
-                                        <sirsi-button variant="primary" size="sm">View</sirsi-button>
-                                        <sirsi-button variant="secondary" size="sm">Download</sirsi-button>
-                                        <sirsi-button variant="ghost" size="sm">Share</sirsi-button>
+                                        <button class="sm-btn sm-btn-primary">View</button>
+                                        <button class="sm-btn sm-btn-secondary">Download</button>
+                                        <button class="sm-btn sm-btn-ghost">Share</button>
                                     </div>
                                 </td>
                             </tr>
@@ -650,9 +651,9 @@
                                 <td>1.5 MB</td>
                                 <td>
                                     <div class="report-actions">
-                                        <sirsi-button variant="primary" size="sm">View</sirsi-button>
-                                        <sirsi-button variant="secondary" size="sm">Download</sirsi-button>
-                                        <sirsi-button variant="ghost" size="sm">Share</sirsi-button>
+                                        <button class="sm-btn sm-btn-primary">View</button>
+                                        <button class="sm-btn sm-btn-secondary">Download</button>
+                                        <button class="sm-btn sm-btn-ghost">Share</button>
                                     </div>
                                 </td>
                             </tr>

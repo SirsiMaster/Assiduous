@@ -6,27 +6,53 @@
     {
       "target": "prod",
       "public": "assiduous-build",
-      "ignore": ["firebase.json", "**/.*", "**/node_modules/**", "**/firebase-migration-package/**"],
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**",
+        "**/firebase-migration-package/**"
+      ],
       "redirects": [
-        { "source": "/", "destination": "/index.html", "type": 302 }
+        {
+          "source": "/",
+          "destination": "/index.html",
+          "type": 302
+        }
       ],
       "rewrites": [
-        { "source": "/api/**", "function": "app" }
+        {
+          "source": "/api/**",
+          "function": "app"
+        }
       ]
     },
     {
       "target": "assiduousflip",
       "public": "assiduous-build",
-      "ignore": ["firebase.json", "**/.*", "**/node_modules/**", "**/firebase-migration-package/**"],
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**",
+        "**/firebase-migration-package/**"
+      ],
       "redirects": [
-        { "source": "/", "destination": "/index.html", "type": 302 }
+        {
+          "source": "/",
+          "destination": "/index.html",
+          "type": 302
+        }
       ],
       "rewrites": [
-        { "source": "/api/**", "function": "app" }
+        {
+          "source": "/api/**",
+          "function": "app"
+        }
       ]
     }
   ],
   "firestore": {
+    "database": "(default)",
+    "location": "nam5",
     "rules": "firestore.rules",
     "indexes": "firestore.indexes.json"
   },
@@ -34,9 +60,17 @@
     "rules": "storage.rules"
   },
   "emulators": {
-    "functions": { "port": 5001 },
-    "firestore": { "port": 8080 },
-    "hosting": { "port": 5000 },
-    "ui": { "enabled": true }
+    "functions": {
+      "port": 5001
+    },
+    "firestore": {
+      "port": 8080
+    },
+    "hosting": {
+      "port": 5000
+    },
+    "ui": {
+      "enabled": true
+    }
   }
 }

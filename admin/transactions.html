@@ -8,7 +8,7 @@
     
     <!-- Assiduous Design System -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SirsiMaster/sirsi-ui@v0.1.2/dist/sirsi-ui.css">
+    <link rel="stylesheet" href="../assets/vendor/sirsimaster-ui/sirsimaster-ui.css">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     
     <link rel="stylesheet" href="../assiduous.css">
@@ -355,7 +355,8 @@
             }
         }
     </style>
-    <script defer src="https://cdn.jsdelivr.net/gh/SirsiMaster/sirsi-ui@v0.1.2/dist/sirsi-ui.js"></script>
+    <!-- Removed old Sirsi UI -->
+    <link rel="stylesheet" href="../assets/vendor/sirsimaster-ui/sirsimaster-ui.css">
 </head>
 <body>
     <div class="admin-wrapper">
@@ -511,23 +512,23 @@
 
                 <!-- Stats Cards -->
                 <div class="stats-grid">
-                    <div class="stat-card sirsi-card sirsi-card--elevated">
+                    <div class="stat-card sirsi-card sm-card--elevated">
                         <div class="stat-value">$48.6M</div>
                         <div class="stat-label">Total Volume</div>
                     </div>
-                    <div class="stat-card sirsi-card sirsi-card--elevated">
+                    <div class="stat-card sirsi-card sm-card--elevated">
                         <div class="stat-value">342</div>
                         <div class="stat-label">Total Transactions</div>
                     </div>
-                    <div class="stat-card sirsi-card sirsi-card--elevated">
+                    <div class="stat-card sirsi-card sm-card--elevated">
                         <div class="stat-value">89</div>
                         <div class="stat-label">Pending</div>
                     </div>
-                    <div class="stat-card sirsi-card sirsi-card--elevated">
+                    <div class="stat-card sirsi-card sm-card--elevated">
                         <div class="stat-value">253</div>
                         <div class="stat-label">Completed</div>
                     </div>
-                    <div class="stat-card sirsi-card sirsi-card--elevated">
+                    <div class="stat-card sirsi-card sm-card--elevated">
                         <div class="stat-value">$142K</div>
                         <div class="stat-label">Avg. Transaction</div>
                     </div>
@@ -574,10 +575,10 @@
                 </div>
 
                 <!-- Transactions Table -->
-                <div class="data-table sirsi-card">
+                <div class="data-table sm-card">
                     <div class="table-header">
                         <h3 class="table-title">Recent Transactions</h3>
-                        <sirsi-button variant="secondary" size="md">Export CSV</sirsi-button>
+                        <button class="sm-btn sm-btn-secondary">Export CSV</button>
                     </div>
                     <table>
                         <thead>
@@ -599,7 +600,7 @@
                                 <td>Sarah Johnson</td>
                                 <td>$450,000</td>
                                 <td>Dec 15, 2024</td>
-                                <td><span class="status-badge status-completed">Completed</span></td>
+                                <td><span class="status-sm-badge status-completed">Completed</span></td>
                             </tr>
                             <tr>
                                 <td>#TRX-2024-002</td>
@@ -608,7 +609,7 @@
                                 <td>Mike Wilson</td>
                                 <td>$325,000</td>
                                 <td>Dec 14, 2024</td>
-                                <td><span class="sirsi-badge sirsi-badge--warning">Pending</span></td>
+                                <td><span class="sm-badge sm-badge--warning">Pending</span></td>
                             </tr>
                             <tr>
                                 <td>#TRX-2024-003</td>
@@ -617,7 +618,7 @@
                                 <td>Lisa Anderson</td>
                                 <td>$580,000</td>
                                 <td>Dec 13, 2024</td>
-                                <td><span class="status-badge status-completed">Completed</span></td>
+                                <td><span class="status-sm-badge status-completed">Completed</span></td>
                             </tr>
                             <tr>
                                 <td>#TRX-2024-004</td>
@@ -626,7 +627,7 @@
                                 <td>Tom Martinez</td>
                                 <td>$275,000</td>
                                 <td>Dec 12, 2024</td>
-                                <td><span class="sirsi-badge sirsi-badge--warning">Pending</span></td>
+                                <td><span class="sm-badge sm-badge--warning">Pending</span></td>
                             </tr>
                             <tr>
                                 <td>#TRX-2024-005</td>
@@ -635,7 +636,7 @@
                                 <td>Sarah Johnson</td>
                                 <td>$420,000</td>
                                 <td>Dec 11, 2024</td>
-                                <td><span class="status-badge status-completed">Completed</span></td>
+                                <td><span class="status-sm-badge status-completed">Completed</span></td>
                             </tr>
                             <tr>
                                 <td>#TRX-2024-006</td>
@@ -644,7 +645,7 @@
                                 <td>Mike Wilson</td>
                                 <td>$380,000</td>
                                 <td>Dec 10, 2024</td>
-                                <td><span class="status-badge status-cancelled">Cancelled</span></td>
+                                <td><span class="status-sm-badge status-cancelled">Cancelled</span></td>
                             </tr>
                             <tr>
                                 <td>#TRX-2024-007</td>
@@ -653,7 +654,7 @@
                                 <td>Lisa Anderson</td>
                                 <td>$510,000</td>
                                 <td>Dec 9, 2024</td>
-                                <td><span class="status-badge status-completed">Completed</span></td>
+                                <td><span class="status-sm-badge status-completed">Completed</span></td>
                             </tr>
                             <tr>
                                 <td>#TRX-2024-008</td>
@@ -662,7 +663,7 @@
                                 <td>Tom Martinez</td>
                                 <td>$295,000</td>
                                 <td>Dec 8, 2024</td>
-                                <td><span class="sirsi-badge sirsi-badge--warning">Pending</span></td>
+                                <td><span class="sm-badge sm-badge--warning">Pending</span></td>
                             </tr>
                         </tbody>
                     </table>

@@ -8,7 +8,7 @@
     
     <!-- Assiduous Design System -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SirsiMaster/sirsi-ui@v0.1.1/dist/sirsi-ui.css">
+    <link rel="stylesheet" href="../assets/vendor/sirsimaster-ui/sirsimaster-ui.css">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     
     <link rel="stylesheet" href="../../assiduous.css">
@@ -582,7 +582,8 @@
             font-weight: 500;
         }
     </style>
-    <script defer src="https://cdn.jsdelivr.net/gh/SirsiMaster/sirsi-ui@v0.1.2/dist/sirsi-ui.js"></script>
+    <!-- Removed old Sirsi UI -->
+    <link rel="stylesheet" href="../assets/vendor/sirsimaster-ui/sirsimaster-ui.css">
 </head>
 <body>
     <div class="admin-wrapper">
@@ -765,25 +766,25 @@
                     <h3 style="font-size: 18px; font-weight: 600; color: var(--navy);">📊 Project Totals Since August 10, 2025</h3>
                 </div>
                 <div class="stats-grid">
-                    <div class="stat-card sirsi-card sirsi-card--elevated">
+                    <div class="stat-card sirsi-card sm-card--elevated">
                         <div class="stat-label tooltip" data-tooltip="Total hours worked on the Assiduous project">Total Hours</div>
                         <div class="stat-value" id="totalHours">50.25</div>
                         <div class="stat-change" id="avgHoursPerDay">4.57 hrs/day avg</div>
                     </div>
                     
-                    <div class="stat-card sirsi-card sirsi-card--elevated">
+                    <div class="stat-card sirsi-card sm-card--elevated">
                         <div class="stat-label tooltip" data-tooltip="Total project cost including labor and tools">Total Cost</div>
                         <div class="stat-value" id="totalCost">$7,988</div>
                         <div class="stat-change" id="costBreakdown">Labor + Tools</div>
                     </div>
                     
-                    <div class="stat-card sirsi-card sirsi-card--elevated">
+                    <div class="stat-card sirsi-card sm-card--elevated">
                         <div class="stat-label tooltip" data-tooltip="Total commits in the repository">Total Commits</div>
                         <div class="stat-value" id="totalCommits">196</div>
                         <div class="stat-change" id="velocityRate">17.8/day avg</div>
                     </div>
                     
-                    <div class="stat-card sirsi-card sirsi-card--elevated">
+                    <div class="stat-card sirsi-card sm-card--elevated">
                         <div class="stat-label tooltip" data-tooltip="Total files in the repository">Total Files</div>
                         <div class="stat-value" id="totalFiles">38,957</div>
                         <div class="stat-change" id="projectDays">11 active days</div>
@@ -796,7 +797,7 @@
                     <span style="font-size: 12px; color: var(--text-secondary);" id="todayDate"></span>
                 </div>
                 <div class="stats-grid">
-                    <div class="stat-card sirsi-card sirsi-card--elevated">
+                    <div class="stat-card sirsi-card sm-card--elevated">
                         <div class="stat-label tooltip" data-tooltip="Hours worked today">Today's Hours</div>
                         <div class="stat-value" id="todayHours">0.0</div>
                         <div class="stat-change" id="todayHoursStatus">No activity yet</div>
@@ -813,7 +814,7 @@
                         </div>
                     </div>
                     
-                    <div class="stat-card sirsi-card sirsi-card--elevated">
+                    <div class="stat-card sirsi-card sm-card--elevated">
                         <div class="stat-label tooltip" data-tooltip="Development cost for today">Today's Cost</div>
                         <div class="stat-value" id="todayCost">$0</div>
                         <div class="stat-change" id="todayCostRate">$150/hour</div>
@@ -830,7 +831,7 @@
                         </div>
                     </div>
                     
-                    <div class="stat-card sirsi-card sirsi-card--elevated">
+                    <div class="stat-card sirsi-card sm-card--elevated">
                         <div class="stat-label tooltip" data-tooltip="Commits made today">Today's Commits</div>
                         <div class="stat-value" id="todayCommitsCount">0</div>
                         <div class="stat-change" id="todayCommitsChange">0% of average</div>
@@ -847,7 +848,7 @@
                         </div>
                     </div>
                     
-                    <div class="stat-card sirsi-card sirsi-card--elevated">
+                    <div class="stat-card sirsi-card sm-card--elevated">
                         <div class="stat-label tooltip" data-tooltip="This week's development summary">Week Summary</div>
                         <div class="stat-value" id="weekHours">0.0 hrs</div>
                         <div class="stat-change" id="weekCommits">0 commits</div>
@@ -868,14 +869,14 @@
                 <!-- Content Grid -->
                 <div class="content-grid">
                     <!-- Activity Chart -->
-                    <div class="card">
-                        <div class="card-header">
-                            <div class="card-title">Activity Trend</div>
+                    <div class="sm-card">
+                        <div class="sm-sm-sm-card-header">
+                            <div class="sm-card-title">Activity Trend</div>
                             <span style="font-size: var(--text-xs); color: var(--text-secondary);">
                                 <span id="todayCommits">0</span> today
                             </span>
                         </div>
-                        <div class="card-body">
+                        <div class="sm-sm-sm-card-body">
                             <div class="chart-container">
                                 <canvas id="chart"></canvas>
                             </div>
@@ -883,15 +884,15 @@
                     </div>
                     
                 <!-- Comprehensive Metrics -->
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-title">Project Metrics</div>
+                <div class="sm-card">
+                    <div class="sm-sm-sm-card-header">
+                        <div class="sm-card-title">Project Metrics</div>
                         <div class="status-pill">
                             <div class="status-dot"></div>
                             Live Data
                         </div>
                     </div>
-                    <div class="card-body">
+                    <div class="sm-sm-sm-card-body">
                         <div class="metrics-grid">
                             <div class="metric-item">
                                 <div class="metric-value" id="projectCost">$16,200</div>
@@ -914,12 +915,12 @@
                 </div>
                 
                 <!-- Recent Development Activity -->
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-title">Recent Activity</div>
-                        <sirsi-button variant="secondary" size="md">Refresh</sirsi-button>
+                <div class="sm-card">
+                    <div class="sm-sm-sm-card-header">
+                        <div class="sm-card-title">Recent Activity</div>
+                        <button class="sm-btn sm-btn-secondary">Refresh</button>
                     </div>
-                    <div class="card-body" style="padding: 0;">
+                    <div class="sm-sm-sm-card-body" style="padding: 0;">
                         <div class="activity-list" id="commits">
                             <div class="activity-item">
                                 <div class="skeleton" style="height: 60px;"></div>
@@ -936,12 +937,12 @@
                 </div>
 
                 <!-- Development Progress -->
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-title">Development Progress</div>
-                        <sirsi-button variant="secondary" size="md" onclick="window.location.href='reports.html'">View Details</sirsi-button>
+                <div class="sm-card">
+                    <div class="sm-sm-sm-card-header">
+                        <div class="sm-card-title">Development Progress</div>
+                        <button class="sm-btn sm-btn-secondary">View Details</button>
                     </div>
-                    <div class="card-body">
+                    <div class="sm-sm-sm-card-body">
                         <div class="progress-item">
                             <div class="progress-header">
                                 <div class="progress-title">Phase 1: Foundation Complete</div>
@@ -999,14 +1000,14 @@
     <script>
         // Firebase configuration for Assiduous Production
         window.firebaseConfig = {
-            apiKey: "AIzaSyCYlJs10_cdfakekey_RdbxVB6Zjk",
-            authDomain: "assiduous-prod.firebaseapp.com",
-            projectId: "assiduous-prod",
-            storageBucket: "assiduous-prod.appspot.com",
-            messagingSenderId: "123456789012",
-            appId: "1:123456789012:web:abcdef123456789",
-            measurementId: "G-XXXXXXXXXX"
-        };
+          "apiKey": "AIzaSyCnQajchoBwP_VMEvc9mKH-vO0xlZjGCRE",
+          "authDomain": "assiduous-prod.firebaseapp.com",
+          "projectId": "assiduous-prod",
+          "storageBucket": "assiduous-prod.firebasestorage.app",
+          "messagingSenderId": "9355377564",
+          "appId": "1:9355377564:web:cee09f952eea43976ee659",
+          "measurementId": "G-DVBZP21459"
+};
     </script>
     
     <!-- Development Metrics Service -->
@@ -1735,13 +1736,13 @@
                 <div style="background: var(--white); border-radius: 12px; width: min(600px, 90vw); max-height: 80vh; overflow: hidden; box-shadow: 0 20px 25px rgba(0,0,0,0.15);">
                     <div style="padding: 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
                         <h2 style="color: var(--navy); font-size: 18px; font-weight: 600; flex: 1;">${title}</h2>
-                        <sirsi-button variant="secondary" size="md" onclick="closeModal()">×</sirsi-button>
+                        <button class="sm-btn sm-btn-secondary">×</button>
                     </div>
                     <div style="max-height: 60vh; overflow-y: auto;">
                         ${content}
                     </div>
                     <div style="padding: 16px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end;">
-                        <sirsi-button variant="ghost" size="md" onclick="closeModal()">Close</sirsi-button>
+                        <button class="sm-btn sm-btn-ghost">Close</button>
                     </div>
                 </div>
             `;

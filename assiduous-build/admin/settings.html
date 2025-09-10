@@ -8,12 +8,12 @@
     
     <!-- Assiduous Design System -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SirsiMaster/sirsi-ui@v0.1.4/dist/sirsi-ui.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SirsiMaster/ui-components@latest/dist/sirsimaster-ui.css">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     
     <link rel="stylesheet" href="../assiduous.css">
     <link rel="stylesheet" href="../components/admin-layout.css">
-    <script defer src="https://cdn.jsdelivr.net/gh/SirsiMaster/sirsi-ui@v0.1.4/dist/sirsi-ui.js"></script>
+    <!-- Removed old Sirsi UI -->
     
     <style>
         /* Admin Layout - Consistent across all admin pages */
@@ -404,6 +404,7 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SirsiMaster/ui-components@latest/dist/sirsimaster-ui.css">
 </head>
 <body>
     <div class="admin-wrapper">
@@ -612,15 +613,15 @@
                         <section id="general-section" class="settings-section">
                             <h2 class="section-title">General Settings</h2>
                             
-                            <div class="form-group">
-                                <label class="form-label">Company Name</label>
-                                <input type="text" class="form-input" value="Assiduous Realty">
+                            <div class="sm-sm-form-group">
+                                <label class="sm-sm-form-label">Company Name</label>
+                                <input type="text" class="sm-sm-form-input" value="Assiduous Realty">
                                 <p class="form-helper">This name appears in emails and reports</p>
                             </div>
 
                             <div class="form-row">
-                                <div class="form-group">
-                                    <label class="form-label">Default Language</label>
+                                <div class="sm-sm-form-group">
+                                    <label class="sm-sm-form-label">Default Language</label>
                                     <select class="form-select">
                                         <option>English (US)</option>
                                         <option>Spanish</option>
@@ -628,8 +629,8 @@
                                         <option>German</option>
                                     </select>
                                 </div>
-                                <div class="form-group">
-                                    <label class="form-label">Timezone</label>
+                                <div class="sm-sm-form-group">
+                                    <label class="sm-sm-form-label">Timezone</label>
                                     <select class="form-select">
                                         <option>Pacific Time (PT)</option>
                                         <option>Mountain Time (MT)</option>
@@ -640,16 +641,16 @@
                             </div>
 
                             <div class="form-row">
-                                <div class="form-group">
-                                    <label class="form-label">Date Format</label>
+                                <div class="sm-sm-form-group">
+                                    <label class="sm-sm-form-label">Date Format</label>
                                     <select class="form-select">
                                         <option>MM/DD/YYYY</option>
                                         <option>DD/MM/YYYY</option>
                                         <option>YYYY-MM-DD</option>
                                     </select>
                                 </div>
-                                <div class="form-group">
-                                    <label class="form-label">Currency</label>
+                                <div class="sm-sm-form-group">
+                                    <label class="sm-sm-form-label">Currency</label>
                                     <select class="form-select">
                                         <option>USD ($)</option>
                                         <option>EUR (€)</option>
@@ -722,8 +723,8 @@
 
                         <!-- Form Actions -->
                         <div class="form-actions">
-                            <sirsi-button variant="secondary" size="md">Cancel Changes</sirsi-button>
-                            <sirsi-button variant="primary" size="md" >Save Settings</sirsi-button>
+                            <button class="sm-btn sm-btn-secondary">Cancel Changes</button>
+                            <button class="sm-btn sm-btn-primary">Save Settings</button>
                         </div>
                     </div>
                 </div>

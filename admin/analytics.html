@@ -8,12 +8,12 @@
     
     <!-- Assiduous Design System -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SirsiMaster/sirsi-ui@v0.1.4/dist/sirsi-ui.css">
+    <link rel="stylesheet" href="../assets/vendor/sirsimaster-ui/sirsimaster-ui.css">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     
     <link rel="stylesheet" href="../assiduous.css">
     <link rel="stylesheet" href="../components/admin-layout.css">
-    <script defer src="https://cdn.jsdelivr.net/gh/SirsiMaster/sirsi-ui@v0.1.4/dist/sirsi-ui.js"></script>
+    <!-- Removed old Sirsi UI -->
     
     <style>
         /* Analytics-specific styles only */
@@ -370,6 +370,7 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="../assets/vendor/sirsimaster-ui/sirsimaster-ui.css">
 </head>
 <body>
     <div class="admin-wrapper">
@@ -533,25 +534,25 @@
                         <p class="text-sm" style="color: var(--text-secondary); margin-bottom: var(--space-sm);">
                             Quick snapshot of KPIs and current period highlights.
                         </p>
-                        <sirsi-button appearance="secondary" size="sm" onclick="document.getElementById('overview').scrollIntoView({behavior:'smooth'});">
+                        <button class="sm-btn sm-btn-primary sm-btn-sm">
                             Jump to Overview
-                        </sirsi-button>
+                        </button>
                     </div>
                     <div slot="panel">
                         <p class="text-sm" style="color: var(--text-secondary); margin-bottom: var(--space-sm);">
                             Explore sales volume trends and recent user activity.
                         </p>
-                        <sirsi-button appearance="secondary" size="sm" onclick="document.getElementById('trends').scrollIntoView({behavior:'smooth'});">
+                        <button class="sm-btn sm-btn-primary sm-btn-sm">
                             Jump to Trends
-                        </sirsi-button>
+                        </button>
                     </div>
                     <div slot="panel">
                         <p class="text-sm" style="color: var(--text-secondary); margin-bottom: var(--space-sm);">
                             Review agent performance, property type performance, ROI and commissions.
                         </p>
-                        <sirsi-button appearance="secondary" size="sm" onclick="document.getElementById('performance').scrollIntoView({behavior:'smooth'});">
+                        <button class="sm-btn sm-btn-primary sm-btn-sm">
                             Jump to Performance
-                        </sirsi-button>
+                        </button>
                     </div>
                 </sirsi-tabs>
 
@@ -559,7 +560,7 @@
 
                 <!-- KPI Cards -->
                 <div class="kpi-grid">
-                    <div class="kpi-card">
+                    <div class="kpi-sm-card">
                         <div class="kpi-header">
                             <div class="kpi-icon green">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -578,7 +579,7 @@
                         </div>
                     </div>
 
-                    <div class="kpi-card">
+                    <div class="kpi-sm-card">
                         <div class="kpi-header">
                             <div class="kpi-icon blue">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -596,7 +597,7 @@
                         </div>
                     </div>
 
-                    <div class="kpi-card">
+                    <div class="kpi-sm-card">
                         <div class="kpi-header">
                             <div class="kpi-icon yellow">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -615,7 +616,7 @@
                         </div>
                     </div>
 
-                    <div class="kpi-card">
+                    <div class="kpi-sm-card">
                         <div class="kpi-header">
                             <div class="kpi-icon purple">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -633,7 +634,7 @@
                         </div>
                     </div>
 
-                    <div class="kpi-card">
+                    <div class="kpi-sm-card">
                         <div class="kpi-header">
                             <div class="kpi-icon green">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -652,7 +653,7 @@
                         </div>
                     </div>
 
-                    <div class="kpi-card">
+                    <div class="kpi-sm-card">
                         <div class="kpi-header">
                             <div class="kpi-icon blue">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -673,7 +674,7 @@
 
                 <div id="trends"></div>
                 <!-- Sales & Revenue Chart -->
-                <div class="chart-card full-width" style="margin-bottom: var(--space-xl);">
+                <div class="chart-sm-card full-width" style="margin-bottom: var(--space-xl);">
                     <div class="chart-header">
                         <h3 class="chart-title">Sales Volume & Transaction Trends</h3>
                         <select style="border: 1px solid var(--border); border-radius: var(--radius); padding: 4px 8px; font-size: 12px;">
@@ -690,7 +691,7 @@
                 <!-- Analytics Grid -->
                 <div class="analytics-grid">
                     <!-- Sales Funnel -->
-                    <div class="chart-card">
+                    <div class="chart-sm-card">
                         <div class="chart-header">
                             <h3 class="chart-title">Sales Funnel</h3>
                         </div>
@@ -742,7 +743,7 @@
                     </div>
 
                     <!-- User Activity -->
-                    <div class="chart-card">
+                    <div class="chart-sm-card">
                         <div class="chart-header">
                             <h3 class="chart-title">Recent User Activity</h3>
                         </div>
@@ -931,7 +932,7 @@
 
                 <!-- ROI & Commission Analytics -->
                 <div class="analytics-grid" style="margin-top: var(--space-xl);">
-                    <div class="chart-card">
+                    <div class="chart-sm-card">
                         <div class="chart-header">
                             <h3 class="chart-title">Commission Distribution</h3>
                         </div>
@@ -940,7 +941,7 @@
                         </div>
                     </div>
 
-                    <div class="chart-card">
+                    <div class="chart-sm-card">
                         <div class="chart-header">
                             <h3 class="chart-title">Marketing ROI by Channel</h3>
                         </div>

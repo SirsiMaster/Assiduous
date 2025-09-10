@@ -8,7 +8,7 @@
     
     <!-- Assiduous Design System -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SirsiMaster/sirsi-ui@v0.1.2/dist/sirsi-ui.css">
+    <link rel="stylesheet" href="../assets/vendor/sirsimaster-ui/sirsimaster-ui.css">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     
     <link rel="stylesheet" href="../assiduous.css">
@@ -353,7 +353,8 @@
             }
         }
     </style>
-    <script defer src="https://cdn.jsdelivr.net/gh/SirsiMaster/sirsi-ui@v0.1.2/dist/sirsi-ui.js"></script>
+    <!-- Removed old Sirsi UI -->
+    <link rel="stylesheet" href="../assets/vendor/sirsimaster-ui/sirsimaster-ui.css">
 </head>
 <body>
     <div class="admin-wrapper">
@@ -509,33 +510,33 @@
 
                 <!-- Stats Cards -->
                 <div class="stats-grid">
-                    <div class="stat-card sirsi-card sirsi-card--elevated">
+                    <div class="stat-card sirsi-card sm-card--elevated">
                         <div class="stat-value">3,842</div>
                         <div class="stat-label">Total Clients</div>
                     </div>
-                    <div class="stat-card sirsi-card sirsi-card--elevated">
+                    <div class="stat-card sirsi-card sm-card--elevated">
                         <div class="stat-value">1,256</div>
                         <div class="stat-label">Active Clients</div>
                     </div>
-                    <div class="stat-card sirsi-card sirsi-card--elevated">
+                    <div class="stat-card sirsi-card sm-card--elevated">
                         <div class="stat-value">423</div>
                         <div class="stat-label">New This Month</div>
                     </div>
-                    <div class="stat-card sirsi-card sirsi-card--elevated">
+                    <div class="stat-card sirsi-card sm-card--elevated">
                         <div class="stat-value">89%</div>
                         <div class="stat-label">Satisfaction Rate</div>
                     </div>
-                    <div class="stat-card sirsi-card sirsi-card--elevated">
+                    <div class="stat-card sirsi-card sm-card--elevated">
                         <div class="stat-value">$2.8M</div>
                         <div class="stat-label">Total Value</div>
                     </div>
                 </div>
 
                 <!-- Clients Table -->
-                <div class="data-table sirsi-card">
+                <div class="data-table sm-card">
                     <div class="table-header">
                         <h3 class="table-title">Client Directory</h3>
-                        <sirsi-button variant="secondary" size="md">Export List</sirsi-button>
+                        <button class="sm-btn sm-btn-secondary">Export List</button>
                     </div>
                     <table>
                         <thead>
@@ -565,7 +566,7 @@
                                 <td>Sarah Johnson</td>
                                 <td>3</td>
                                 <td>$1.2M</td>
-                                <td><span class="sirsi-badge sirsi-badge--success">Active</span></td>
+                                <td><span class="sm-badge sm-badge--success">Active</span></td>
                             </tr>
                             <tr>
                                 <td>
@@ -582,7 +583,7 @@
                                 <td>Mike Wilson</td>
                                 <td>2</td>
                                 <td>$850K</td>
-                                <td><span class="status-badge status-lead">Lead</span></td>
+                                <td><span class="status-sm-badge status-lead">Lead</span></td>
                             </tr>
                             <tr>
                                 <td>
@@ -599,7 +600,7 @@
                                 <td>Lisa Anderson</td>
                                 <td>1</td>
                                 <td>$580K</td>
-                                <td><span class="sirsi-badge sirsi-badge--success">Active</span></td>
+                                <td><span class="sm-badge sm-badge--success">Active</span></td>
                             </tr>
                             <tr>
                                 <td>
@@ -616,7 +617,7 @@
                                 <td>Tom Martinez</td>
                                 <td>2</td>
                                 <td>$475K</td>
-                                <td><span class="sirsi-badge sirsi-badge--success">Active</span></td>
+                                <td><span class="sm-badge sm-badge--success">Active</span></td>
                             </tr>
                             <tr>
                                 <td>
@@ -633,7 +634,7 @@
                                 <td>Sarah Johnson</td>
                                 <td>1</td>
                                 <td>$420K</td>
-                                <td><span class="sirsi-badge sirsi-badge--success">Inactive</span></td>
+                                <td><span class="sm-badge sm-badge--success">Inactive</span></td>
                             </tr>
                             <tr>
                                 <td>
@@ -650,7 +651,7 @@
                                 <td>Mike Wilson</td>
                                 <td>3</td>
                                 <td>$920K</td>
-                                <td><span class="sirsi-badge sirsi-badge--success">Active</span></td>
+                                <td><span class="sm-badge sm-badge--success">Active</span></td>
                             </tr>
                             <tr>
                                 <td>
@@ -667,7 +668,7 @@
                                 <td>Lisa Anderson</td>
                                 <td>2</td>
                                 <td>$650K</td>
-                                <td><span class="status-badge status-lead">Lead</span></td>
+                                <td><span class="status-sm-badge status-lead">Lead</span></td>
                             </tr>
                             <tr>
                                 <td>
@@ -684,7 +685,7 @@
                                 <td>Tom Martinez</td>
                                 <td>1</td>
                                 <td>$295K</td>
-                                <td><span class="sirsi-badge sirsi-badge--success">Active</span></td>
+                                <td><span class="sm-badge sm-badge--success">Active</span></td>
                             </tr>
                         </tbody>
                     </table>

@@ -8,7 +8,7 @@
     
     <!-- Assiduous Design System -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SirsiMaster/sirsi-ui@v0.1.1/dist/sirsi-ui.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SirsiMaster/ui-components@latest/dist/sirsimaster-ui.css">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     
     <link rel="stylesheet" href="../../assiduous.css">
@@ -241,7 +241,8 @@
             color: var(--text-secondary);
         }
     </style>
-    <script defer src="https://cdn.jsdelivr.net/gh/SirsiMaster/sirsi-ui@v0.1.2/dist/sirsi-ui.js"></script>
+    <!-- Removed old Sirsi UI -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SirsiMaster/ui-components@latest/dist/sirsimaster-ui.css">
 </head>
 <body>
     <div class="admin-wrapper">
@@ -397,7 +398,7 @@
                 <!-- Contracts Grid -->
                 <div class="contracts-grid">
                     <!-- Sirsi Contract Card -->
-                    <a href="sirsi_contract.html" class="contract-card">
+                    <a href="sirsi_contract.html" class="contract-sm-sm-card">
                         <div class="contract-icon">📑</div>
                         <h3 class="contract-title">Sirsi Technologies Service Contract</h3>
                         <p class="contract-description">
@@ -411,7 +412,7 @@
                     </a>
 
                     <!-- Payment Structure Card -->
-                    <a href="payment_structure.html" class="contract-card">
+                    <a href="payment_structure.html" class="contract-sm-sm-card">
                         <div class="contract-icon">💳</div>
                         <h3 class="contract-title">Payment Structure</h3>
                         <p class="contract-description">
@@ -425,7 +426,7 @@
                     </a>
 
                     <!-- Contract Amendment Card -->
-                    <a href="../../../docs/SIRSI_CONTRACT_AMENDMENT.md" class="contract-card" target="_blank">
+                    <a href="../../../docs/SIRSI_CONTRACT_AMENDMENT.md" class="contract-sm-sm-card" target="_blank">
                         <div class="contract-icon">📋</div>
                         <h3 class="contract-title">Contract Amendment</h3>
                         <p class="contract-description">
@@ -439,7 +440,7 @@
                     </a>
 
                     <!-- Financial Verification Card -->
-                    <a href="../../../docs/FINANCIAL_VERIFICATION.md" class="contract-card" target="_blank">
+                    <a href="../../../docs/FINANCIAL_VERIFICATION.md" class="contract-sm-sm-card" target="_blank">
                         <div class="contract-icon">✅</div>
                         <h3 class="contract-title">Financial Verification</h3>
                         <p class="contract-description">
@@ -453,7 +454,7 @@
                     </a>
 
                     <!-- Add New Contract Card -->
-                    <div class="contract-card upload-zone" style="border: 2px dashed var(--border); background: var(--gray-50); cursor: pointer;"
+                    <div class="contract-sm-sm-card upload-zone" style="border: 2px dashed var(--border); background: var(--gray-50); cursor: pointer;"
                          data-upload-zone="true">
                         <div class="contract-icon" style="background: none; color: var(--text-secondary);">➕</div>
                         <h3 class="contract-title" style="color: var(--text-secondary);">Add New Document</h3>

@@ -8,7 +8,7 @@
     
     <!-- Assiduous Design System -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SirsiMaster/sirsi-ui@v0.1.2/dist/sirsi-ui.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SirsiMaster/ui-components@latest/dist/sirsimaster-ui.css">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     
     <link rel="stylesheet" href="../assiduous.css">
@@ -423,7 +423,8 @@
             }
         }
     </style>
-    <script defer src="https://cdn.jsdelivr.net/gh/SirsiMaster/sirsi-ui@v0.1.2/dist/sirsi-ui.js"></script>
+    <!-- Removed old Sirsi UI -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SirsiMaster/ui-components@latest/dist/sirsimaster-ui.css">
 </head>
 <body>
     <div class="admin-wrapper">
@@ -578,39 +579,39 @@
 
                 <!-- Navigation Tabs -->
                 <div class="nav-tabs">
-                    <sirsi-button variant="ghost" size="md" class="nav-tab active" onclick="showSection('overview')">Executive Overview</sirsi-button>
-                    <sirsi-button variant="ghost" size="md" class="nav-tab" onclick="showSection('accomplishments')">Accomplishments</sirsi-button>
-                    <sirsi-button variant="ghost" size="md" class="nav-tab" onclick="showSection('features')">System Features</sirsi-button>
-                    <sirsi-button variant="ghost" size="md" class="nav-tab" onclick="showSection('technical')">Technical Guide</sirsi-button>
-                    <sirsi-button variant="ghost" size="md" class="nav-tab" onclick="showSection('roadmap')">Future Roadmap</sirsi-button>
-                    <sirsi-button variant="ghost" size="md" class="nav-tab" onclick="showSection('quickstart')">Quick Start</sirsi-button>
+                    <button class="sm-btn sm-btn-ghost">Executive Overview</button>
+                    <button class="sm-btn sm-btn-ghost">Accomplishments</button>
+                    <button class="sm-btn sm-btn-ghost">System Features</button>
+                    <button class="sm-btn sm-btn-ghost">Technical Guide</button>
+                    <button class="sm-btn sm-btn-ghost">Future Roadmap</button>
+                    <button class="sm-btn sm-btn-ghost">Quick Start</button>
                 </div>
 
                 <!-- Executive Overview -->
                 <div id="overview" class="content-section active">
-                    <div class="content-card">
-                        <h2 class="card-title">Mission Accomplished</h2>
+                    <div class="content-sm-sm-card">
+                        <h2 class="sm-sm-card-title">Mission Accomplished</h2>
                         <p style="margin-bottom: var(--space-xl); color: var(--text-secondary);">
                             Assiduous Realty now operates a fully-integrated real estate management platform with zero external dependencies.
                         </p>
 
                         <div class="metrics-grid">
-                            <div class="metric-card">
+                            <div class="metric-sm-sm-card">
                                 <div class="metric-icon">6</div>
                                 <div class="metric-value">Modules Built</div>
                                 <div class="metric-label">Complete Systems</div>
                             </div>
-                            <div class="metric-card">
+                            <div class="metric-sm-sm-card">
                                 <div class="metric-icon">5K+</div>
                                 <div class="metric-value">Lines of Code</div>
                                 <div class="metric-label">Custom Development</div>
                             </div>
-                            <div class="metric-card">
+                            <div class="metric-sm-sm-card">
                                 <div class="metric-icon">50+</div>
                                 <div class="metric-value">Features</div>
                                 <div class="metric-label">Functionality</div>
                             </div>
-                            <div class="metric-card">
+                            <div class="metric-sm-sm-card">
                                 <div class="metric-icon">100%</div>
                                 <div class="metric-value">Completion</div>
                                 <div class="metric-label">Project Status</div>
@@ -618,8 +619,8 @@
                         </div>
                     </div>
 
-                    <div class="content-card">
-                        <h2 class="card-title">Business Impact</h2>
+                    <div class="content-sm-sm-card">
+                        <h2 class="sm-sm-card-title">Business Impact</h2>
                         <div class="feature-grid">
                             <div class="feature-item">
                                 <div class="feature-icon-box">80%</div>
@@ -652,8 +653,8 @@
                         </div>
                     </div>
 
-                    <div class="content-card">
-                        <h2 class="card-title">System Components</h2>
+                    <div class="content-sm-sm-card">
+                        <h2 class="sm-sm-card-title">System Components</h2>
                         <p style="margin-bottom: var(--space-lg); color: var(--text-secondary);">
                             The Assiduous Realty platform consists of two main components:
                         </p>
@@ -678,14 +679,14 @@
 
                 <!-- Accomplishments -->
                 <div id="accomplishments" class="content-section">
-                    <div class="content-card">
-                        <h2 class="card-title">Project Accomplishments</h2>
+                    <div class="content-sm-sm-card">
+                        <h2 class="sm-sm-card-title">Project Accomplishments</h2>
                         
                         <div class="timeline">
                             <div class="timeline-item">
                                 <div class="timeline-marker"></div>
                                 <div class="timeline-content">
-                                    <div class="timeline-title">Phase 1: Foundation <span class="status-badge status-complete">Complete</span></div>
+                                    <div class="timeline-title">Phase 1: Foundation <span class="status-sm-sm-badge status-complete">Complete</span></div>
                                     <div class="timeline-desc">Brand identity established, Color scheme implemented, Typography system deployed, Logo design completed, Design system documented</div>
                                 </div>
                             </div>
@@ -693,7 +694,7 @@
                             <div class="timeline-item">
                                 <div class="timeline-marker"></div>
                                 <div class="timeline-content">
-                                    <div class="timeline-title">Phase 2: Frontend <span class="status-badge status-complete">Complete</span></div>
+                                    <div class="timeline-title">Phase 2: Frontend <span class="status-sm-sm-badge status-complete">Complete</span></div>
                                     <div class="timeline-desc">Responsive website built, Property search implemented, Agent showcase created, Market insights dashboard, Contact forms integrated</div>
                                 </div>
                             </div>
@@ -701,7 +702,7 @@
                             <div class="timeline-item">
                                 <div class="timeline-marker"></div>
                                 <div class="timeline-content">
-                                    <div class="timeline-title">Phase 3: Backend <span class="status-badge status-complete">Complete</span></div>
+                                    <div class="timeline-title">Phase 3: Backend <span class="status-sm-sm-badge status-complete">Complete</span></div>
                                     <div class="timeline-desc">Property management system, Agent tracking platform, CRM implementation, Transaction pipeline, Market analytics tools</div>
                                 </div>
                             </div>
@@ -709,7 +710,7 @@
                             <div class="timeline-item">
                                 <div class="timeline-marker"></div>
                                 <div class="timeline-content">
-                                    <div class="timeline-title">Data Integration <span class="status-badge status-complete">Complete</span></div>
+                                    <div class="timeline-title">Data Integration <span class="status-sm-sm-badge status-complete">Complete</span></div>
                                     <div class="timeline-desc">localStorage implementation, Cross-module data sync, Real-time updates, Export functionality, Data persistence</div>
                                 </div>
                             </div>
@@ -717,7 +718,7 @@
                             <div class="timeline-item">
                                 <div class="timeline-marker"></div>
                                 <div class="timeline-content">
-                                    <div class="timeline-title">User Experience <span class="status-badge status-complete">Complete</span></div>
+                                    <div class="timeline-title">User Experience <span class="status-sm-sm-badge status-complete">Complete</span></div>
                                     <div class="timeline-desc">Intuitive navigation, Mobile responsiveness, Fast load times, Professional design, Accessibility features</div>
                                 </div>
                             </div>
@@ -725,7 +726,7 @@
                             <div class="timeline-item">
                                 <div class="timeline-marker"></div>
                                 <div class="timeline-content">
-                                    <div class="timeline-title">Documentation <span class="status-badge status-complete">Complete</span></div>
+                                    <div class="timeline-title">Documentation <span class="status-sm-sm-badge status-complete">Complete</span></div>
                                     <div class="timeline-desc">Technical blueprint, Project documentation, Knowledge base, Code comments, Future roadmap</div>
                                 </div>
                             </div>
@@ -735,10 +736,10 @@
 
                 <!-- System Features -->
                 <div id="features" class="content-section">
-                    <div class="content-card">
-                        <h2 class="card-title">System Features</h2>
+                    <div class="content-sm-sm-card">
+                        <h2 class="sm-sm-card-title">System Features</h2>
 
-                        <h3 class="card-subtitle">Property Management</h3>
+                        <h3 class="sm-sm-card-subtitle">Property Management</h3>
                         <div class="feature-grid">
                             <div class="feature-item">
                                 <div class="feature-icon-box">P</div>
@@ -770,7 +771,7 @@
                             </div>
                         </div>
 
-                        <h3 class="card-subtitle">Agent Management</h3>
+                        <h3 class="sm-sm-card-subtitle">Agent Management</h3>
                         <div class="feature-grid">
                             <div class="feature-item">
                                 <div class="feature-icon-box">P</div>
@@ -802,7 +803,7 @@
                             </div>
                         </div>
 
-                        <h3 class="card-subtitle">Client Management</h3>
+                        <h3 class="sm-sm-card-subtitle">Client Management</h3>
                         <div class="feature-grid">
                             <div class="feature-item">
                                 <div class="feature-icon-box">D</div>
@@ -834,7 +835,7 @@
                             </div>
                         </div>
 
-                        <h3 class="card-subtitle">Transaction Management</h3>
+                        <h3 class="sm-sm-card-subtitle">Transaction Management</h3>
                         <div class="feature-grid">
                             <div class="feature-item">
                                 <div class="feature-icon-box">D</div>
@@ -866,7 +867,7 @@
                             </div>
                         </div>
 
-                        <h3 class="card-subtitle">Market Analytics</h3>
+                        <h3 class="sm-sm-card-subtitle">Market Analytics</h3>
                         <div class="feature-grid">
                             <div class="feature-item">
                                 <div class="feature-icon-box">M</div>
@@ -902,13 +903,13 @@
 
                 <!-- Technical Guide -->
                 <div id="technical" class="content-section">
-                    <div class="content-card">
-                        <h2 class="card-title">Technical Documentation</h2>
+                    <div class="content-sm-sm-card">
+                        <h2 class="sm-sm-card-title">Technical Documentation</h2>
                         <p style="margin-bottom: var(--space-xl); color: var(--text-secondary);">
                             Complete technical reference for the Assiduous Realty platform, including architecture, development setup, and deployment procedures.
                         </p>
 
-                        <h3 class="card-subtitle">System Architecture</h3>
+                        <h3 class="sm-sm-card-subtitle">System Architecture</h3>
                         <div class="feature-grid">
                             <div class="feature-item">
                                 <div class="feature-icon-box">FE</div>
@@ -940,7 +941,7 @@
                             </div>
                         </div>
 
-                        <h3 class="card-subtitle">Technology Stack</h3>
+                        <h3 class="sm-sm-card-subtitle">Technology Stack</h3>
                         <div class="feature-grid">
                             <div class="feature-item">
                                 <div class="feature-icon-box">HTML</div>
@@ -972,7 +973,7 @@
                             </div>
                         </div>
 
-                        <h3 class="card-subtitle">Essential Development Commands</h3>
+                        <h3 class="sm-sm-card-subtitle">Essential Development Commands</h3>
                         <div style="background: var(--gray-50); padding: var(--space-lg); border-radius: var(--radius); margin-bottom: var(--space-xl);">
                             <h4 style="color: var(--sky); margin-bottom: var(--space-md);">Development Server</h4>
                             <p style="font-family: 'Monaco', monospace; font-size: 13px; margin-bottom: var(--space-sm);"><code>python -m http.server 8080</code> - Start local development server</p>
@@ -994,7 +995,7 @@
                             <p style="font-family: 'Monaco', monospace; font-size: 13px;"><code>./scripts/rollback/rollback_to_tag.sh v0.1.0</code> - Rollback to previous version</p>
                         </div>
 
-                        <h3 class="card-subtitle">Key Services & Components</h3>
+                        <h3 class="sm-sm-card-subtitle">Key Services & Components</h3>
                         <ul class="styled-list">
                             <li><code>firebaseservice.js</code> - Core database operations with encryption</li>
                             <li><code>auth.js</code> - Authentication and session management</li>
@@ -1002,7 +1003,7 @@
                             <li><code>encryptionservice.js</code> - Field-level encryption layer</li>
                         </ul>
 
-                        <h3 class="card-subtitle">Firebase Collections</h3>
+                        <h3 class="sm-sm-card-subtitle">Firebase Collections</h3>
                         <ul class="styled-list">
                             <li><code>users</code> - Encrypted user profiles (email, phone, SSN)</li>
                             <li><code>properties</code> - Listings with investment scoring</li>
@@ -1011,7 +1012,7 @@
                             <li><code>notifications</code> - Real-time alerts</li>
                         </ul>
 
-                        <h3 class="card-subtitle">Branching Strategy</h3>
+                        <h3 class="sm-sm-card-subtitle">Branching Strategy</h3>
                         <div class="feature-grid">
                             <div class="feature-item">
                                 <div class="feature-icon-box">M</div>
@@ -1043,7 +1044,7 @@
                             </div>
                         </div>
 
-                        <h3 class="card-subtitle">Live Application URLs</h3>
+                        <h3 class="sm-sm-card-subtitle">Live Application URLs</h3>
                         <div style="background: var(--success-light); padding: var(--space-lg); border-radius: var(--radius); margin-bottom: var(--space-xl);">
                             <h4 style="color: var(--success); margin-bottom: var(--space-md);">Production URLs (GitHub Pages)</h4>
                             <p style="font-size: 14px; margin-bottom: var(--space-sm);">Base: <a href="https://sirsimaster.github.io/Assiduous/" style="color: var(--sky);">https://sirsimaster.github.io/Assiduous/</a></p>
@@ -1052,41 +1053,41 @@
                             <p style="font-size: 14px;">Client: <a href="https://sirsimaster.github.io/Assiduous/client/" style="color: var(--sky);">Client Portal</a></p>
                         </div>
 
-                        <h3 class="card-subtitle">Business Model Priority</h3>
+                        <h3 class="sm-sm-card-subtitle">Business Model Priority</h3>
                         <div class="metrics-grid">
-                            <div class="metric-card">
+                            <div class="metric-sm-sm-card">
                                 <div class="metric-value">70%</div>
                                 <div class="metric-label">Micro-Flipping Engine</div>
                             </div>
-                            <div class="metric-card">
+                            <div class="metric-sm-sm-card">
                                 <div class="metric-value">$2-5K</div>
                                 <div class="metric-label">Per Deal Target</div>
                             </div>
-                            <div class="metric-card">
+                            <div class="metric-sm-sm-card">
                                 <div class="metric-value">30%</div>
                                 <div class="metric-label">Traditional Real Estate</div>
                             </div>
-                            <div class="metric-card">
+                            <div class="metric-sm-sm-card">
                                 <div class="metric-value">Lead Gen</div>
                                 <div class="metric-label">Focus Area</div>
                             </div>
                         </div>
 
-                        <h3 class="card-subtitle">Performance Metrics</h3>
+                        <h3 class="sm-sm-card-subtitle">Performance Metrics</h3>
                         <div class="metrics-grid">
-                            <div class="metric-card">
+                            <div class="metric-sm-sm-card">
                                 <div class="metric-label">Load Time</div>
                                 <div class="metric-value">&lt;2s</div>
                             </div>
-                            <div class="metric-card">
+                            <div class="metric-sm-sm-card">
                                 <div class="metric-label">Interactive</div>
                                 <div class="metric-value">&lt;3s</div>
                             </div>
-                            <div class="metric-card">
+                            <div class="metric-sm-sm-card">
                                 <div class="metric-label">Lighthouse</div>
                                 <div class="metric-value">90+</div>
                             </div>
-                            <div class="metric-card">
+                            <div class="metric-sm-sm-card">
                                 <div class="metric-label">Dependencies</div>
                                 <div class="metric-value">0 External</div>
                             </div>
@@ -1107,14 +1108,14 @@
 
                 <!-- Roadmap -->
                 <div id="roadmap" class="content-section">
-                    <div class="content-card">
-                        <h2 class="card-title">Future Development Roadmap</h2>
+                    <div class="content-sm-sm-card">
+                        <h2 class="sm-sm-card-title">Future Development Roadmap</h2>
 
                         <div class="timeline">
                             <div class="timeline-item">
                                 <div class="timeline-marker"></div>
                                 <div class="timeline-content">
-                                    <div class="timeline-title">Phase 3: Enhanced Analytics <span class="status-badge status-planned">Q1 2025</span></div>
+                                    <div class="timeline-title">Phase 3: Enhanced Analytics <span class="status-sm-sm-badge status-planned">Q1 2025</span></div>
                                     <div class="timeline-desc">Advanced predictive analytics, ML price recommendations, automated reports</div>
                                 </div>
                             </div>
@@ -1122,7 +1123,7 @@
                             <div class="timeline-item">
                                 <div class="timeline-marker"></div>
                                 <div class="timeline-content">
-                                    <div class="timeline-title">Phase 4: Mobile Applications <span class="status-badge status-planned">Q2 2025</span></div>
+                                    <div class="timeline-title">Phase 4: Mobile Applications <span class="status-sm-sm-badge status-planned">Q2 2025</span></div>
                                     <div class="timeline-desc">Native iOS/Android apps, Progressive Web App, offline capability</div>
                                 </div>
                             </div>
@@ -1130,7 +1131,7 @@
                             <div class="timeline-item">
                                 <div class="timeline-marker"></div>
                                 <div class="timeline-content">
-                                    <div class="timeline-title">Phase 5: Third-Party Integrations <span class="status-badge status-planned">Q3 2025</span></div>
+                                    <div class="timeline-title">Phase 5: Third-Party Integrations <span class="status-sm-sm-badge status-planned">Q3 2025</span></div>
                                     <div class="timeline-desc">MLS data feeds, payment processing, DocuSign, email automation</div>
                                 </div>
                             </div>
@@ -1138,13 +1139,13 @@
                             <div class="timeline-item">
                                 <div class="timeline-marker"></div>
                                 <div class="timeline-content">
-                                    <div class="timeline-title">Phase 6: Advanced Features <span class="status-badge status-planned">Q4 2025</span></div>
+                                    <div class="timeline-title">Phase 6: Advanced Features <span class="status-sm-sm-badge status-planned">Q4 2025</span></div>
                                     <div class="timeline-desc">Virtual tours, 3D modeling, blockchain records, AI chatbot</div>
                                 </div>
                             </div>
                         </div>
 
-                        <h3 class="card-subtitle">Immediate Priorities</h3>
+                        <h3 class="sm-sm-card-subtitle">Immediate Priorities</h3>
                         <div class="feature-grid">
                             <div class="feature-item">
                                 <div class="feature-icon-box">A</div>
@@ -1180,10 +1181,10 @@
 
                 <!-- Quick Start -->
                 <div id="quickstart" class="content-section">
-                    <div class="content-card">
-                        <h2 class="card-title">Quick Start Guide</h2>
+                    <div class="content-sm-sm-card">
+                        <h2 class="sm-sm-card-title">Quick Start Guide</h2>
 
-                        <h3 class="card-subtitle">For Executives</h3>
+                        <h3 class="sm-sm-card-subtitle">For Executives</h3>
                         <ol class="styled-list">
                             <li>Open the <a href="dashboard.html" style="color: var(--sky);">Executive Dashboard</a> for high-level overview</li>
                             <li>Review key metrics and performance indicators</li>
@@ -1191,7 +1192,7 @@
                             <li>Export data for board presentations</li>
                         </ol>
 
-                        <h3 class="card-subtitle">For Agents</h3>
+                        <h3 class="sm-sm-card-subtitle">For Agents</h3>
                         <ol class="styled-list">
                             <li>Access <a href="agents.html" style="color: var(--sky);">Agent Portal</a> to view your performance</li>
                             <li>Manage your property listings</li>
@@ -1199,7 +1200,7 @@
                             <li>Monitor deal progress in transactions</li>
                         </ol>
 
-                        <h3 class="card-subtitle">For Property Management</h3>
+                        <h3 class="sm-sm-card-subtitle">For Property Management</h3>
                         <ol class="styled-list">
                             <li>Navigate to <a href="properties.html" style="color: var(--sky);">Properties Module</a></li>
                             <li>Add new listings with images and details</li>
@@ -1207,7 +1208,7 @@
                             <li>Export inventory reports</li>
                         </ol>
 
-                        <h3 class="card-subtitle">For Market Analysis</h3>
+                        <h3 class="sm-sm-card-subtitle">For Market Analysis</h3>
                         <ol class="styled-list">
                             <li>Visit <a href="market.html" style="color: var(--sky);">Market Analytics</a></li>
                             <li>Review current market metrics</li>

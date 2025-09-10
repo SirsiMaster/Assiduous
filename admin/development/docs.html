@@ -8,7 +8,7 @@
     
     <!-- Assiduous Design System -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SirsiMaster/sirsi-ui@v0.1.1/dist/sirsi-ui.css">
+    <link rel="stylesheet" href="../assets/vendor/sirsimaster-ui/sirsimaster-ui.css">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     
     <link rel="stylesheet" href="../../assiduous.css">
@@ -261,7 +261,8 @@
             }
         }
     </style>
-    <script defer src="https://cdn.jsdelivr.net/gh/SirsiMaster/sirsi-ui@v0.1.2/dist/sirsi-ui.js"></script>
+    <!-- Removed old Sirsi UI -->
+    <link rel="stylesheet" href="../assets/vendor/sirsimaster-ui/sirsimaster-ui.css">
 </head>
 <body>
     <div class="admin-wrapper">
@@ -439,56 +440,56 @@
                                 <div style="background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: var(--space-md);">
                                     <h4 style="color: var(--sky); margin-bottom: var(--space-xs);">🎯 Unified Assiduous Blueprint</h4>
                                     <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: var(--space-sm);">Complete platform architecture combining micro-flipping with traditional real estate</p>
-                                    <sirsi-button variant="secondary" size="md" onclick="viewDocument('UNIFIED_ASSIDUOUS_BLUEPRINT.md')">View Document →</sirsi-button>
+                                    <button class="sm-btn sm-btn-secondary">View Document →</button>
                                 </div>
                                 
                                 <!-- Micro-Flipping Blueprint -->
                                 <div style="background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: var(--space-md);">
                                     <h4 style="color: var(--sky); margin-bottom: var(--space-xs);">💰 Micro-Flipping Technical Blueprint</h4>
                                     <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: var(--space-sm);">AI-powered wholesale system with PropStream and Zapier integrations</p>
-                                    <sirsi-button variant="secondary" size="md" onclick="viewDocument('MICRO_FLIPPING_TECHNICAL_BLUEPRINT.md')">View Document →</sirsi-button>
+                                    <button class="sm-btn sm-btn-secondary">View Document →</button>
                                 </div>
                                 
                                 <!-- Main Technical Blueprint -->
                                 <div style="background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: var(--space-md);">
                                     <h4 style="color: var(--sky); margin-bottom: var(--space-xs);">🏗️ Assiduous Technical Blueprint</h4>
                                     <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: var(--space-sm);">Core platform PRD with architecture and technical specifications</p>
-                                    <sirsi-button variant="secondary" size="md" onclick="viewDocument('ASSIDUOUS_TECHNICAL_BLUEPRINT.md')">View Document →</sirsi-button>
+                                    <button class="sm-btn sm-btn-secondary">View Document →</button>
                                 </div>
                                 
                                 <!-- Project Documentation -->
                                 <div style="background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: var(--space-md);">
                                     <h4 style="color: var(--sky); margin-bottom: var(--space-xs);">📖 Project Documentation</h4>
                                     <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: var(--space-sm);">Development guide, milestones, and project overview</p>
-                                    <sirsi-button variant="secondary" size="md" onclick="viewDocument('PROJECT_DOCUMENTATION.md')">View Document →</sirsi-button>
+                                    <button class="sm-btn sm-btn-secondary">View Document →</button>
                                 </div>
                                 
                                 <!-- Implementation Checklist -->
                                 <div style="background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: var(--space-md);">
                                     <h4 style="color: var(--sky); margin-bottom: var(--space-xs);">✅ Implementation Checklist</h4>
                                     <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: var(--space-sm);">Step-by-step checklist for platform implementation</p>
-                                    <sirsi-button variant="secondary" size="md" onclick="viewDocument('IMPLEMENTATION_CHECKLIST.md')">View Document →</sirsi-button>
+                                    <button class="sm-btn sm-btn-secondary">View Document →</button>
                                 </div>
                                 
                                 <!-- GitHub Setup -->
                                 <div style="background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: var(--space-md);">
                                     <h4 style="color: var(--sky); margin-bottom: var(--space-xs);">🔧 GitHub Setup Guide</h4>
                                     <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: var(--space-sm);">Repository configuration and workflow setup</p>
-                                    <sirsi-button variant="secondary" size="md" onclick="viewDocument('GITHUB_SETUP.md')">View Document →</sirsi-button>
+                                    <button class="sm-btn sm-btn-secondary">View Document →</button>
                                 </div>
                                 
                                 <!-- Deployment Guide -->
                                 <div style="background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: var(--space-md);">
                                     <h4 style="color: var(--sky); margin-bottom: var(--space-xs);">🚀 Deployment Dashboard</h4>
                                     <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: var(--space-sm);">Dashboard deployment and configuration guide</p>
-                                    <sirsi-button variant="secondary" size="md" onclick="viewDocument('deploy-dashboard.md')">View Document →</sirsi-button>
+                                    <button class="sm-btn sm-btn-secondary">View Document →</button>
                                 </div>
                                 
                                 <!-- Branch Protection -->
                                 <div style="background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: var(--space-md);">
                                     <h4 style="color: var(--sky); margin-bottom: var(--space-xs);">🔒 Branch Protection Rules</h4>
                                     <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: var(--space-sm);">Git workflow and branch protection setup</p>
-                                    <sirsi-button variant="secondary" size="md" onclick="viewDocument('BRANCH_PROTECTION_RULES.md')">View Document →</sirsi-button>
+                                    <button class="sm-btn sm-btn-secondary">View Document →</button>
                                 </div>
                             </div>
                         </section>
@@ -978,7 +979,7 @@ python -m pytest
                     <div class="doc-loading">
                         <p style="color: var(--danger);">⚠️ Error loading document</p>
                         <p>${error.message}</p>
-                        <sirsi-button variant="ghost" size="md" onclick="closeDocumentModal()">Close</sirsi-button>
+                        <button class="sm-btn sm-btn-ghost">Close</button>
                     </div>
                 `;
             }

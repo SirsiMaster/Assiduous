@@ -1,0 +1,520 @@
+name: Universal CI/CD Pipeline
+# This is a reusable workflow that can deploy to multiple cloud providers
+
+on:
+  workflow_call:
+    inputs:
+      provider:
+        description: 'Cloud provider (firebase, aws, azure, vercel, netlify, custom)'
+        required: false
+        type: string
+        default: 'firebase'
+      environment:
+        description: 'Deployment environment (development, staging, production)'
+        required: false
+        type: string
+        default: 'production'
+      node-version:
+        description: 'Node.js version to use'
+        required: false
+        type: string
+        default: '18'
+      build-command:
+        description: 'Build command to run'
+        required: false
+        type: string
+        default: 'npm run build'
+      test-command:
+        description: 'Test command to run'
+        required: false
+        type: string
+        default: 'npm test'
+      output-directory:
+        description: 'Build output directory'
+        required: false
+        type: string
+        default: 'dist'
+      enable-caching:
+        description: 'Enable dependency caching'
+        required: false
+        type: boolean
+        default: true
+      enable-testing:
+        description: 'Run tests before deployment'
+        required: false
+        type: boolean
+        default: true
+      enable-security-scan:
+        description: 'Run security scanning'
+        required: false
+        type: boolean
+        default: true
+      enable-metrics:
+        description: 'Track deployment metrics'
+        required: false
+        type: boolean
+        default: true
+
+  # Also support direct workflow dispatch
+  workflow_dispatch:
+    inputs:
+      provider:
+        description: 'Cloud provider'
+        required: true
+        type: choice
+        options:
+          - firebase
+          - aws
+          - azure
+          - vercel
+          - netlify
+          - custom
+      environment:
+        description: 'Deployment environment'
+        required: true
+        type: choice
+        options:
+          - development
+          - staging
+          - production
+
+  # And standard push triggers
+  push:
+    branches:
+      - main
+      - master
+      - develop
+      - staging
+
+jobs:
+  # ========================================
+  # STEP 1: Setup and Configuration
+  # ========================================
+  setup:
+    name: 🔧 Setup Pipeline
+    runs-on: ubuntu-latest
+    outputs:
+      provider: ${{ steps.config.outputs.provider }}
+      environment: ${{ steps.config.outputs.environment }}
+      should-deploy: ${{ steps.config.outputs.should-deploy }}
+      cache-key: ${{ steps.cache.outputs.cache-key }}
+    
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Full history for better analytics
+
+      - name: 🔍 Detect Configuration
+        id: config
+        run: |
+          # Determine provider and environment
+          PROVIDER="${{ inputs.provider }}"
+          ENVIRONMENT="${{ inputs.environment }}"
+          
+          # Auto-detect from branch if not specified
+          if [ -z "$ENVIRONMENT" ]; then
+            case "${{ github.ref_name }}" in
+              main|master) ENVIRONMENT="production" ;;
+              staging) ENVIRONMENT="staging" ;;
+              develop|development) ENVIRONMENT="development" ;;
+              *) ENVIRONMENT="development" ;;
+            esac
+          fi
+          
+          # Load from config file if exists
+          if [ -f ".cicd/config.json" ]; then
+            PROVIDER=$(jq -r ".providers.$ENVIRONMENT.type // \"$PROVIDER\"" .cicd/config.json)
+          fi
+          
+          echo "provider=$PROVIDER" >> $GITHUB_OUTPUT
+          echo "environment=$ENVIRONMENT" >> $GITHUB_OUTPUT
+          echo "should-deploy=true" >> $GITHUB_OUTPUT
+          
+          echo "🎯 Deployment Target: $PROVIDER ($ENVIRONMENT)"
+
+      - name: 🔑 Generate Cache Key
+        id: cache
+        run: |
+          HASH=${{ hashFiles('**/package-lock.json', '**/yarn.lock', '**/pnpm-lock.yaml') }}
+          echo "cache-key=deps-${{ runner.os }}-${{ inputs.node-version }}-$HASH" >> $GITHUB_OUTPUT
+
+  # ========================================
+  # STEP 2: Build and Test
+  # ========================================
+  build:
+    name: 🏗️ Build & Test
+    needs: setup
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 🔧 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ inputs.node-version }}
+          cache: ${{ inputs.enable-caching && 'npm' || '' }}
+
+      - name: 📦 Restore Dependencies Cache
+        if: inputs.enable-caching
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.npm
+            node_modules
+            .next/cache
+          key: ${{ needs.setup.outputs.cache-key }}
+          restore-keys: |
+            deps-${{ runner.os }}-${{ inputs.node-version }}-
+
+      - name: 📥 Install Dependencies
+        run: |
+          if [ -f "package-lock.json" ]; then
+            npm ci
+          elif [ -f "yarn.lock" ]; then
+            yarn install --frozen-lockfile
+          elif [ -f "pnpm-lock.yaml" ]; then
+            pnpm install --frozen-lockfile
+          else
+            npm install
+          fi
+
+      - name: 🔍 Security Scan
+        if: inputs.enable-security-scan
+        run: |
+          npm audit --audit-level=moderate || true
+          
+          # Check for secrets in code
+          if command -v trufflehog &> /dev/null; then
+            trufflehog filesystem . --no-verification || true
+          fi
+
+      - name: 🧪 Run Tests
+        if: inputs.enable-testing
+        run: |
+          ${{ inputs.test-command }} || {
+            echo "❌ Tests failed!"
+            exit 1
+          }
+
+      - name: 🏗️ Build Application
+        run: |
+          echo "📦 Building with: ${{ inputs.build-command }}"
+          ${{ inputs.build-command }}
+          
+          # Verify build output
+          if [ ! -d "${{ inputs.output-directory }}" ]; then
+            echo "❌ Build output directory not found: ${{ inputs.output-directory }}"
+            exit 1
+          fi
+          
+          echo "✅ Build successful!"
+          ls -la ${{ inputs.output-directory }} | head -20
+
+      - name: 📤 Upload Build Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-artifacts-${{ needs.setup.outputs.environment }}
+          path: ${{ inputs.output-directory }}
+          retention-days: 7
+
+      - name: 📊 Build Metrics
+        if: inputs.enable-metrics
+        run: |
+          BUILD_SIZE=$(du -sh ${{ inputs.output-directory }} | cut -f1)
+          BUILD_TIME=$((SECONDS))
+          
+          echo "📊 Build Metrics:"
+          echo "   Size: $BUILD_SIZE"
+          echo "   Time: ${BUILD_TIME}s"
+          echo "   Files: $(find ${{ inputs.output-directory }} -type f | wc -l)"
+          
+          # Save metrics for later
+          echo "{
+            \"buildSize\": \"$BUILD_SIZE\",
+            \"buildTime\": $BUILD_TIME,
+            \"timestamp\": \"$(date -u +%Y-%m-%dT%H:%M:%SZ)\",
+            \"commit\": \"${{ github.sha }}\",
+            \"environment\": \"${{ needs.setup.outputs.environment }}\"
+          }" > build-metrics.json
+
+  # ========================================
+  # STEP 3: Deploy to Provider
+  # ========================================
+  deploy:
+    name: 🚀 Deploy to ${{ needs.setup.outputs.provider }}
+    needs: [setup, build]
+    runs-on: ubuntu-latest
+    environment: ${{ needs.setup.outputs.environment }}
+    
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 📥 Download Build Artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: build-artifacts-${{ needs.setup.outputs.environment }}
+          path: ${{ inputs.output-directory }}
+
+      # ========================================
+      # FIREBASE DEPLOYMENT
+      # ========================================
+      - name: 🔥 Deploy to Firebase
+        if: needs.setup.outputs.provider == 'firebase'
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        run: |
+          echo "🔥 Deploying to Firebase..."
+          
+          # Install Firebase CLI
+          npm install -g firebase-tools
+          
+          # Get project ID from config or environment
+          PROJECT_ID="${{ secrets.FIREBASE_PROJECT }}"
+          if [ -f ".cicd/config.json" ]; then
+            PROJECT_ID=$(jq -r ".providers.${{ needs.setup.outputs.environment }}.projectId // \"$PROJECT_ID\"" .cicd/config.json)
+          fi
+          
+          # Deploy
+          firebase deploy \
+            --only hosting \
+            --project "$PROJECT_ID" \
+            --token "$FIREBASE_TOKEN" \
+            --message "Deploy: ${{ github.event.head_commit.message }}"
+          
+          echo "✅ Firebase deployment complete!"
+          echo "🌐 URL: https://$PROJECT_ID.web.app"
+
+      # ========================================
+      # AWS DEPLOYMENT
+      # ========================================
+      - name: ☁️ Deploy to AWS
+        if: needs.setup.outputs.provider == 'aws'
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION || 'us-east-1' }}
+        run: |
+          echo "☁️ Deploying to AWS S3..."
+          
+          # Get bucket from config
+          BUCKET="${{ secrets.AWS_S3_BUCKET }}"
+          if [ -f ".cicd/config.json" ]; then
+            BUCKET=$(jq -r ".providers.${{ needs.setup.outputs.environment }}.bucket // \"$BUCKET\"" .cicd/config.json)
+          fi
+          
+          # Sync to S3
+          aws s3 sync ${{ inputs.output-directory }} s3://$BUCKET \
+            --delete \
+            --cache-control "public, max-age=31536000, immutable" \
+            --exclude "*.html" \
+            --exclude "*.json"
+          
+          # HTML files with shorter cache
+          aws s3 sync ${{ inputs.output-directory }} s3://$BUCKET \
+            --cache-control "public, max-age=3600" \
+            --exclude "*" \
+            --include "*.html" \
+            --include "*.json"
+          
+          # Invalidate CloudFront if configured
+          if [ -n "${{ secrets.AWS_CLOUDFRONT_ID }}" ]; then
+            echo "🔄 Invalidating CloudFront cache..."
+            aws cloudfront create-invalidation \
+              --distribution-id ${{ secrets.AWS_CLOUDFRONT_ID }} \
+              --paths "/*"
+          fi
+          
+          echo "✅ AWS deployment complete!"
+
+      # ========================================
+      # AZURE DEPLOYMENT
+      # ========================================
+      - name: ☁️ Deploy to Azure
+        if: needs.setup.outputs.provider == 'azure'
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      
+      - name: 📤 Upload to Azure Storage
+        if: needs.setup.outputs.provider == 'azure'
+        run: |
+          echo "☁️ Deploying to Azure Storage..."
+          
+          STORAGE_ACCOUNT="${{ secrets.AZURE_STORAGE_ACCOUNT }}"
+          CONTAINER="${{ secrets.AZURE_CONTAINER || '$web' }}"
+          
+          # Upload files
+          az storage blob upload-batch \
+            --account-name $STORAGE_ACCOUNT \
+            --source ${{ inputs.output-directory }} \
+            --destination $CONTAINER \
+            --overwrite
+          
+          # Set cache control
+          az storage blob update-batch \
+            --account-name $STORAGE_ACCOUNT \
+            --source $CONTAINER \
+            --pattern "*.css;*.js" \
+            --content-cache-control "public, max-age=31536000"
+          
+          echo "✅ Azure deployment complete!"
+
+      # ========================================
+      # VERCEL DEPLOYMENT
+      # ========================================
+      - name: ▲ Deploy to Vercel
+        if: needs.setup.outputs.provider == 'vercel'
+        run: |
+          echo "▲ Deploying to Vercel..."
+          npm i -g vercel
+          
+          vercel \
+            --token ${{ secrets.VERCEL_TOKEN }} \
+            --prod \
+            --yes
+          
+          echo "✅ Vercel deployment complete!"
+
+      # ========================================
+      # NETLIFY DEPLOYMENT
+      # ========================================
+      - name: 🔷 Deploy to Netlify
+        if: needs.setup.outputs.provider == 'netlify'
+        run: |
+          echo "🔷 Deploying to Netlify..."
+          npm i -g netlify-cli
+          
+          netlify deploy \
+            --auth ${{ secrets.NETLIFY_AUTH_TOKEN }} \
+            --site ${{ secrets.NETLIFY_SITE_ID }} \
+            --dir ${{ inputs.output-directory }} \
+            --prod \
+            --message "Deploy: ${{ github.event.head_commit.message }}"
+          
+          echo "✅ Netlify deployment complete!"
+
+      # ========================================
+      # CUSTOM DEPLOYMENT
+      # ========================================
+      - name: 🔧 Custom Deployment
+        if: needs.setup.outputs.provider == 'custom'
+        run: |
+          echo "🔧 Running custom deployment script..."
+          
+          if [ -f ".cicd/deploy.sh" ]; then
+            chmod +x .cicd/deploy.sh
+            ./.cicd/deploy.sh
+          elif [ -f "scripts/deploy.js" ]; then
+            node scripts/deploy.js
+          else
+            echo "❌ No custom deployment script found!"
+            echo "Please create .cicd/deploy.sh or scripts/deploy.js"
+            exit 1
+          fi
+
+  # ========================================
+  # STEP 4: Post-Deployment
+  # ========================================
+  post-deploy:
+    name: 📋 Post-Deployment Tasks
+    needs: [setup, build, deploy]
+    runs-on: ubuntu-latest
+    if: always()
+    
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 🏷️ Create Deployment Tag
+        if: success() && needs.setup.outputs.environment == 'production'
+        run: |
+          VERSION="v$(date +%Y.%m.%d)-${{ github.run_number }}"
+          git tag $VERSION
+          git push origin $VERSION
+          echo "🏷️ Created tag: $VERSION"
+
+      - name: 📊 Update Metrics
+        if: inputs.enable-metrics
+        run: |
+          echo "📊 Deployment Metrics:"
+          echo "   Status: ${{ job.status }}"
+          echo "   Environment: ${{ needs.setup.outputs.environment }}"
+          echo "   Provider: ${{ needs.setup.outputs.provider }}"
+          echo "   Duration: ${{ github.run_duration }}s"
+          echo "   Commit: ${{ github.sha }}"
+
+      - name: 📢 Send Notifications
+        if: always()
+        run: |
+          STATUS_EMOJI="✅"
+          STATUS_TEXT="succeeded"
+          COLOR="good"
+          
+          if [ "${{ job.status }}" != "success" ]; then
+            STATUS_EMOJI="❌"
+            STATUS_TEXT="failed"
+            COLOR="danger"
+          fi
+          
+          MESSAGE="$STATUS_EMOJI Deployment $STATUS_TEXT for ${{ needs.setup.outputs.environment }} (${{ needs.setup.outputs.provider }})"
+          
+          # Slack notification
+          if [ -n "${{ secrets.SLACK_WEBHOOK }}" ]; then
+            curl -X POST ${{ secrets.SLACK_WEBHOOK }} \
+              -H 'Content-Type: application/json' \
+              -d "{
+                \"text\": \"$MESSAGE\",
+                \"attachments\": [{
+                  \"color\": \"$COLOR\",
+                  \"fields\": [
+                    {\"title\": \"Project\", \"value\": \"${{ github.repository }}\", \"short\": true},
+                    {\"title\": \"Environment\", \"value\": \"${{ needs.setup.outputs.environment }}\", \"short\": true},
+                    {\"title\": \"Commit\", \"value\": \"${{ github.sha }}\", \"short\": true},
+                    {\"title\": \"Author\", \"value\": \"${{ github.actor }}\", \"short\": true}
+                  ]
+                }]
+              }"
+          fi
+
+      - name: 🔄 Rollback on Failure
+        if: failure() && needs.setup.outputs.environment == 'production'
+        run: |
+          echo "❌ Deployment failed! Initiating rollback..."
+          
+          # Trigger rollback workflow
+          gh workflow run rollback.yml \
+            -f environment=${{ needs.setup.outputs.environment }} \
+            -f provider=${{ needs.setup.outputs.provider }}
+
+      - name: 📝 Update Deployment Status
+        if: always()
+        uses: actions/github-script@v6
+        with:
+          script: |
+            // Create deployment status
+            const deployment = await github.rest.repos.createDeploymentStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              deployment_id: context.payload.deployment?.id || 0,
+              state: '${{ job.status }}' === 'success' ? 'success' : 'failure',
+              environment: '${{ needs.setup.outputs.environment }}',
+              description: 'Deployment to ${{ needs.setup.outputs.provider }}'
+            });
+
+      - name: 📈 Generate Summary
+        if: always()
+        run: |
+          echo "## 🚀 Deployment Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Item | Value |" >> $GITHUB_STEP_SUMMARY
+          echo "|------|-------|" >> $GITHUB_STEP_SUMMARY
+          echo "| **Status** | ${{ job.status }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Environment** | ${{ needs.setup.outputs.environment }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Provider** | ${{ needs.setup.outputs.provider }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Commit** | \`${{ github.sha }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Author** | @${{ github.actor }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Time** | $(date -u +%Y-%m-%dT%H:%M:%SZ) |" >> $GITHUB_STEP_SUMMARY

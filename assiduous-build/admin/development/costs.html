@@ -8,7 +8,7 @@
     
     <!-- Assiduous Design System -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SirsiMaster/sirsi-ui@v0.1.1/dist/sirsi-ui.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SirsiMaster/ui-components@latest/dist/sirsimaster-ui.css">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     
     <link rel="stylesheet" href="../../assiduous.css">
@@ -312,7 +312,8 @@
             gap: 12px;
         }
     </style>
-    <script defer src="https://cdn.jsdelivr.net/gh/SirsiMaster/sirsi-ui@v0.1.2/dist/sirsi-ui.js"></script>
+    <!-- Removed old Sirsi UI -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SirsiMaster/ui-components@latest/dist/sirsimaster-ui.css">
 </head>
 <body>
     <div class="admin-wrapper">
@@ -468,25 +469,25 @@
 
         <!-- Cost Metrics Grid -->
         <div class="metrics-grid">
-            <div class="metric-card">
+            <div class="metric-sm-sm-card">
                 <div class="metric-label">📅 Today's Cost</div>
                 <div class="metric-value">$1,200</div>
                 <div class="metric-change positive">4h 00m worked</div>
             </div>
             
-            <div class="metric-card">
+            <div class="metric-sm-sm-card">
                 <div class="metric-label">📈 This Week</div>
                 <div class="metric-value">$1,200</div>
                 <div class="metric-change">4h 00m • 1 day</div>
             </div>
             
-            <div class="metric-card">
+            <div class="metric-sm-sm-card">
                 <div class="metric-label">📆 This Month</div>
                 <div class="metric-value">$6,789</div>
                 <div class="metric-change">September 2025</div>
             </div>
             
-            <div class="metric-card">
+            <div class="metric-sm-sm-card">
                 <div class="metric-label">🏆 Project Total</div>
                 <div class="metric-value">$7,989</div>
                 <div class="metric-change">Since Aug 2025</div>
@@ -494,12 +495,12 @@
         </div>
 
         <!-- Hourly Rate Card -->
-        <div class="card">
-            <div class="card-header">
-                <div class="card-title">⚙️ Rate Configuration</div>
-                <sirsi-button variant="primary" size="md">Update Rate</sirsi-button>
+        <div class="sm-sm-card">
+            <div class="sm-sm-sm-sm-card-header">
+                <div class="sm-sm-card-title">⚙️ Rate Configuration</div>
+                <button class="sm-btn sm-btn-primary">Update Rate</button>
             </div>
-            <div class="card-body">
+            <div class="sm-sm-sm-sm-card-body">
                 <div class="metrics-grid">
                     <div>
                         <div class="metric-label">Owner Rate</div>
@@ -518,13 +519,13 @@
         </div>
 
         <!-- Today's Activities -->
-        <div class="card">
-            <div class="card-header">
-                <div class="card-title">📋 Today's Activities</div>
-                <sirsi-button variant="primary" size="md">Add Entry</sirsi-button>
+        <div class="sm-sm-card">
+            <div class="sm-sm-sm-sm-card-header">
+                <div class="sm-sm-card-title">📋 Today's Activities</div>
+                <button class="sm-btn sm-btn-primary">Add Entry</button>
             </div>
-            <div class="card-body">
-                <table class="table">
+            <div class="sm-sm-sm-sm-card-body">
+                <table class="sm-table">
                     <thead>
                         <tr>
                             <th>Time</th>
@@ -564,11 +565,11 @@
         </div>
 
         <!-- Cost Breakdown -->
-        <div class="card">
-            <div class="card-header">
-                <div class="card-title">💵 Cost Breakdown</div>
+        <div class="sm-sm-card">
+            <div class="sm-sm-sm-sm-card-header">
+                <div class="sm-sm-card-title">💵 Cost Breakdown</div>
             </div>
-            <div class="card-body">
+            <div class="sm-sm-sm-sm-card-body">
                 <div class="metrics-grid">
                     <div>
                         <div class="metric-label">Labor Cost (97%)</div>
@@ -596,15 +597,15 @@
         </div>
 
         <!-- Export Options -->
-        <div class="card">
-            <div class="card-header">
-                <div class="card-title">📊 Export & Reports</div>
+        <div class="sm-sm-card">
+            <div class="sm-sm-sm-sm-card-header">
+                <div class="sm-sm-card-title">📊 Export & Reports</div>
             </div>
-            <div class="card-body">
+            <div class="sm-sm-sm-sm-card-body">
                 <div style="display: flex; gap: 12px;">
-                    <sirsi-button variant="primary" size="md">Export CSV</sirsi-button>
-                    <sirsi-button variant="secondary" size="md">Generate PDF Report</sirsi-button>
-                    <sirsi-button variant="ghost" size="md">Print Summary</sirsi-button>
+                    <button class="sm-btn sm-btn-primary">Export CSV</button>
+                    <button class="sm-btn sm-btn-secondary">Generate PDF Report</button>
+                    <button class="sm-btn sm-btn-ghost">Print Summary</button>
                 </div>
             </div>
             </div>
