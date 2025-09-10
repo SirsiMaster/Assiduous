@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.15.8] - 2025-09-10
+
+### Fixed
+- fix(landing): use single-layer rotator for hero background\n\n- Remove extra .hero-bg-image nodes at runtime (keep first only)\n- Rotate backgroundImage URL on a single layer with fade\n- Guarantees only one visual layer exists, eliminating overlap
+
+
 ## [0.15.7] - 2025-09-10
 
 ### Fixed
@@ -723,7 +729,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.15.7...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.15.8...HEAD
+
+
+## [0.15.8] - 2025-09-10
+
+### Fixed
+- fix(landing): use single-layer rotator for hero background\n\n- Remove extra .hero-bg-image nodes at runtime (keep first only)\n- Rotate backgroundImage URL on a single layer with fade\n- Guarantees only one visual layer exists, eliminating overlap
 
 
 ## [0.15.7] - 2025-09-10
@@ -1045,3 +1057,4 @@ To generate changelog entries:
 [0.15.5]: https://github.com/SirsiMaster/Assiduous/compare/v0.15.4...v0.15.5
 [0.15.6]: https://github.com/SirsiMaster/Assiduous/compare/v0.15.5...v0.15.6
 [0.15.7]: https://github.com/SirsiMaster/Assiduous/compare/v0.15.6...v0.15.7
+[0.15.8]: https://github.com/SirsiMaster/Assiduous/compare/v0.15.7...v0.15.8
