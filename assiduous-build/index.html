@@ -445,9 +445,11 @@
         /* Stats Bar - Glass overlay style within hero */
         .stats-bar {
             position: absolute;
-            left: 50%;
-            bottom: 24px;
-            transform: translateX(-50%);
+            left: 24px;
+            right: 24px;
+            bottom: 32px;
+            transform: none;
+            margin: 0 auto;
             background: rgba(255, 255, 255, 0.08);
             -webkit-backdrop-filter: blur(10px);
             backdrop-filter: blur(10px);
@@ -456,7 +458,7 @@
             z-index: 10;
             border-radius: 14px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-            max-width: 860px;
+            max-width: 920px;
         }
 
         .stats-container {
@@ -563,7 +565,7 @@
 
 @media (max-width: 768px) {
             .hero { padding-bottom: 200px; }
-            .stats-bar { bottom: 16px; max-width: 94%; }
+            .stats-bar { left: 12px; right: 12px; bottom: 16px; max-width: none; }
         }
 
         @media (max-width: 640px) {
