@@ -16,10 +16,57 @@
     <!-- SirsiMaster Component Library CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SirsiMaster/sirsimaster-component-library@latest/dist/sirsimaster-ui.css">
     
-    <!-- Landing Page Fixes -->
-    <link rel="stylesheet" href="/css/landing-fixes.css">
-    
     <style>
+        /* EMBEDDED CAROUSEL FIXES - CRITICAL */
+        .hero-bg {
+            position: absolute !important;
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            bottom: 0 !important;
+            z-index: 1 !important;
+            overflow: hidden !important;
+        }
+        
+        .hero-bg-image {
+            position: absolute !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
+            background-size: cover !important;
+            background-position: center !important;
+            background-repeat: no-repeat !important;
+            opacity: 0 !important;
+            visibility: hidden !important;
+            transition: opacity 2s ease-in-out !important;
+            z-index: 1 !important;
+        }
+        
+        .hero-bg-image.active {
+            opacity: 1 !important;
+            visibility: visible !important;
+            z-index: 2 !important;
+        }
+        
+        /* Force hide all non-active images */
+        .hero-bg-image:not(.active) {
+            opacity: 0 !important;
+            visibility: hidden !important;
+            display: block !important;
+        }
+        
+        /* Ensure hero content is visible above carousel */
+        .hero-content {
+            position: relative !important;
+            z-index: 10 !important;
+        }
+        
+        .hero h1, .hero-subtitle {
+            opacity: 1 !important;
+            visibility: visible !important;
+            z-index: 10 !important;
+        }
         /* Reset & Base */
         * {
             margin: 0;
@@ -1878,68 +1925,61 @@
         });
     </script>
     <script>
-        // FIXED: Hero background carousel rotation
-        document.addEventListener('DOMContentLoaded', function() {
-            const heroBgImages = document.querySelectorAll('.hero-bg-image');
-            console.log('Found', heroBgImages.length, 'background images');
-            
-            if (heroBgImages.length > 1) {
-                let currentBg = 0;
+        // IMMEDIATE CAROUSEL FIX - Execute immediately, no waiting
+        (function() {
+            function fixCarousel() {
+                console.log('FIXING CAROUSEL NOW');
+                const heroBgImages = document.querySelectorAll('.hero-bg-image');
+                console.log('Found', heroBgImages.length, 'background images');
                 
-                // CRITICAL FIX: Force all images to be positioned absolute and only show first
-                heroBgImages.forEach((img, index) => {
-                    img.style.position = 'absolute !important';
-                    img.style.top = '0';
-                    img.style.left = '0';
-                    img.style.width = '100%';
-                    img.style.height = '100%';
-                    img.style.backgroundSize = 'cover';
-                    img.style.backgroundPosition = 'center';
-                    img.style.backgroundRepeat = 'no-repeat';
-                    img.style.zIndex = index === 0 ? '2' : '1';
-                    img.style.opacity = index === 0 ? '1' : '0';
-                    img.style.transition = 'opacity 2s ease-in-out';
-                    
-                    // Remove active class from all except first
-                    if (index === 0) {
-                        img.classList.add('active');
-                    } else {
+                if (heroBgImages.length > 0) {
+                    // FORCE hide ALL images first
+                    heroBgImages.forEach((img, index) => {
+                        img.style.setProperty('position', 'absolute', 'important');
+                        img.style.setProperty('top', '0', 'important');
+                        img.style.setProperty('left', '0', 'important');
+                        img.style.setProperty('width', '100%', 'important');
+                        img.style.setProperty('height', '100%', 'important');
+                        img.style.setProperty('opacity', '0', 'important');
+                        img.style.setProperty('visibility', 'hidden', 'important');
+                        img.style.setProperty('z-index', '1', 'important');
                         img.classList.remove('active');
-                    }
-                });
-                
-                // Rotate backgrounds every 5 seconds
-                setInterval(() => {
-                    console.log('Rotating from', currentBg, 'to', (currentBg + 1) % heroBgImages.length);
+                        console.log('Hiding image', index);
+                    });
                     
-                    // Hide current
-                    heroBgImages[currentBg].style.opacity = '0';
-                    heroBgImages[currentBg].style.zIndex = '1';
-                    heroBgImages[currentBg].classList.remove('active');
+                    // Show ONLY the first image
+                    const firstImage = heroBgImages[0];
+                    firstImage.style.setProperty('opacity', '1', 'important');
+                    firstImage.style.setProperty('visibility', 'visible', 'important');
+                    firstImage.style.setProperty('z-index', '2', 'important');
+                    firstImage.classList.add('active');
+                    console.log('Showing first image only');
                     
-                    // Show next
-                    currentBg = (currentBg + 1) % heroBgImages.length;
-                    heroBgImages[currentBg].style.opacity = '1';
-                    heroBgImages[currentBg].style.zIndex = '2';
-                    heroBgImages[currentBg].classList.add('active');
-                }, 5000);
+                    // Set up rotation
+                    let currentBg = 0;
+                    setInterval(() => {
+                        // Hide current
+                        heroBgImages[currentBg].style.setProperty('opacity', '0', 'important');
+                        heroBgImages[currentBg].style.setProperty('visibility', 'hidden', 'important');
+                        heroBgImages[currentBg].classList.remove('active');
+                        
+                        // Show next
+                        currentBg = (currentBg + 1) % heroBgImages.length;
+                        heroBgImages[currentBg].style.setProperty('opacity', '1', 'important');
+                        heroBgImages[currentBg].style.setProperty('visibility', 'visible', 'important');
+                        heroBgImages[currentBg].classList.add('active');
+                        console.log('Rotated to image', currentBg);
+                    }, 5000);
+                }
             }
             
-            // Fix text visibility
-            const heroTitle = document.querySelector('.hero h1');
-            const heroSubtitle = document.querySelector('.hero-subtitle');
-            if (heroTitle) {
-                heroTitle.style.opacity = '1';
-                heroTitle.style.visibility = 'visible';
+            // Run immediately if DOM ready, otherwise wait
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', fixCarousel);
+            } else {
+                fixCarousel();
             }
-            if (heroSubtitle) {
-                heroSubtitle.style.opacity = '0.95';
-                heroSubtitle.style.visibility = 'visible';
-            }
-        });
+        })();
     </script>
-    
-    <!-- Landing Page Comprehensive Fixes -->
-    <script src="/css/landing-fixes.js"></script>
 </body>
 </html>
