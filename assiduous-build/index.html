@@ -263,6 +263,7 @@
             justify-content: center;
             overflow: hidden;
             background: #0f172a;
+            padding-bottom: 160px; /* space for bottom stats overlay */
         }
 
         /* Hero Rotating Backgrounds */
@@ -443,7 +444,10 @@
 
         /* Stats Bar - Glass overlay style within hero */
         .stats-bar {
-            position: relative;
+            position: absolute;
+            left: 50%;
+            bottom: 24px;
+            transform: translateX(-50%);
             background: rgba(255, 255, 255, 0.08);
             -webkit-backdrop-filter: blur(10px);
             backdrop-filter: blur(10px);
@@ -453,7 +457,6 @@
             border-radius: 14px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.15);
             max-width: 860px;
-            margin: 24px auto 0;
         }
 
         .stats-container {
@@ -556,6 +559,11 @@
             .features-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
+        }
+
+@media (max-width: 768px) {
+            .hero { padding-bottom: 200px; }
+            .stats-bar { bottom: 16px; max-width: 94%; }
         }
 
         @media (max-width: 640px) {
