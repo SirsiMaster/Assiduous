@@ -441,23 +441,30 @@
             transform: translateY(-3px);
         }
 
-        /* Stats Bar - Fixed Positioning */
+        /* Stats Bar - Glass overlay style within hero */
         .stats-bar {
             position: relative;
-            background: white;
-            padding: 32px 0;
+            background: rgba(255, 255, 255, 0.08);
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            padding: 18px 22px;
             z-index: 10;
-            border-top: 1px solid #e2e8f0;
+            border-radius: 14px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            max-width: 860px;
+            margin: 24px auto 0;
         }
 
         .stats-container {
-            max-width: 1440px;
+            max-width: 100%;
             margin: 0 auto;
-            padding: 0 40px;
+            padding: 0 4px;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 40px;
+            grid-template-columns: repeat(4, minmax(120px, 1fr));
+            gap: 24px;
             text-align: center;
+            align-items: center;
         }
 
         .stat-item {
@@ -465,17 +472,18 @@
         }
 
         .stat-number {
-            font-size: 32px;
+            font-size: 28px;
             font-weight: 800;
-            color: #0f172a;
-            margin-bottom: 8px;
+            color: #ffffff;
+            margin-bottom: 4px;
         }
 
         .stat-label {
-            font-size: 14px;
-            color: #64748b;
+            font-size: 12px;
+            color: #e2e8f0;
             text-transform: uppercase;
-            letter-spacing: 0.1em;
+            letter-spacing: 0.05em;
+            opacity: 0.9;
         }
 
         /* Features Section - Modern Cards */
@@ -990,8 +998,8 @@
             </div>
         </div>
 
-        <!-- Stats Bar -->
-        <div class="stats-bar">
+        <!-- Stats Bar overlay under buttons -->
+        <div class="stats-bar" role="group" aria-label="Key performance stats">
             <div class="stats-container">
                 <div class="stat-item">
                     <div class="stat-number">87%</div>
@@ -1660,20 +1668,8 @@
     <!-- Chat support moved to Contact page - removed from landing to reduce clutter -->
 
     <script>
-        // Rotating Hero Backgrounds
-        (function() {
-            const bgImages = document.querySelectorAll('.hero-bg-image');
-            let currentIndex = 0;
-            
-            function rotateBackground() {
-                bgImages[currentIndex].classList.remove('active');
-                currentIndex = (currentIndex + 1) % bgImages.length;
-                bgImages[currentIndex].classList.add('active');
-            }
-            
-            // Rotate every 30 seconds
-            setInterval(rotateBackground, 30000);
-        })();
+        // Rotating Hero Backgrounds (disabled; handled by hardenedCarouselFix)
+        // (function(){})();
 
         // Signup modal handlers
         (function() {
@@ -1929,6 +1925,7 @@
     <script>
         // HARDENED CAROUSEL FIX: Reduce DOM to a single background layer and rotate URLs
         (function() {
+            let rotationTimer;
             function hardenedCarouselFix() {
                 const nodes = Array.from(document.querySelectorAll('.hero-bg-image'));
                 if (!nodes.length) return;
@@ -1956,16 +1953,19 @@
                 layer.style.transition = 'opacity 2s ease-in-out';
                 let index = 0;
                 
-                setInterval(() => {
-                    // Fade out
-                    layer.style.opacity = '0';
-                    setTimeout(() => {
-                        index = (index + 1) % urls.length;
-                        layer.style.backgroundImage = `url('${urls[index]}')`;
-                        // Fade in
-                        layer.style.opacity = '1';
-                    }, 400); // brief crossfade gap
-                }, 5000);
+                function scheduleNext() {
+                    rotationTimer = setTimeout(() => {
+                        layer.style.opacity = '0';
+                        setTimeout(() => {
+                            index = (index + 1) % urls.length;
+                            layer.style.backgroundImage = `url('${urls[index]}')`;
+                            layer.style.opacity = '1';
+                            scheduleNext();
+                        }, 400);
+                    }, 5000);
+                }
+                try { clearTimeout(rotationTimer); } catch(e) {}
+                scheduleNext();
             }
 
             if (document.readyState === 'loading') {
@@ -1973,6 +1973,13 @@
             } else {
                 hardenedCarouselFix();
             }
+
+            document.addEventListener('visibilitychange', () => {
+                if (document.visibilityState === 'visible') {
+                    try { clearTimeout(rotationTimer); } catch(e) {}
+                    hardenedCarouselFix();
+                }
+            });
         })();
     </script>
 </body>
