@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.15.16] - 2025-09-29
+
+### Fixed
+- fix(ci): ensure all paths and references use lowercase consistently
+
+
 ## [0.15.15] - 2025-09-29
 
 ### Fixed
@@ -773,7 +779,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.15.15...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.15.16...HEAD
+
+
+## [0.15.16] - 2025-09-29
+
+### Fixed
+- fix(ci): ensure all paths and references use lowercase consistently
 
 
 ## [0.15.15] - 2025-09-29
@@ -1151,3 +1163,4 @@ To generate changelog entries:
 [0.15.13]: https://github.com/SirsiMaster/Assiduous/compare/v0.15.12...v0.15.13
 [0.15.14]: https://github.com/SirsiMaster/Assiduous/compare/v0.15.13...v0.15.14
 [0.15.15]: https://github.com/SirsiMaster/Assiduous/compare/v0.15.14...v0.15.15
+[0.15.16]: https://github.com/SirsiMaster/Assiduous/compare/v0.15.15...v0.15.16
