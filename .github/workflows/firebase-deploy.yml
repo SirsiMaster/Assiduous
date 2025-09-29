@@ -44,19 +44,28 @@ jobs:
           rm -rf firebase-migration-package/assiduous-build
           mkdir -p firebase-migration-package/assiduous-build
           
-          # Copy ALL files to Firebase public directory (remove the 2>/dev/null to see errors)
-          echo "Copying assiduousflip directory contents..."
-          cp -r assiduousflip/* firebase-migration-package/assiduous-build/
+          # Copy all necessary directories to Firebase public directory
+          echo "Copying admin directory..."
+          [ -d "admin" ] && cp -r admin firebase-migration-package/assiduous-build/
           
           echo "Copying assets directory..."
-          cp -r assets firebase-migration-package/assiduous-build/
+          [ -d "assets" ] && cp -r assets firebase-migration-package/assiduous-build/
           
-          # Copy other directories if they exist
+          echo "Copying client directory..."
+          [ -d "client" ] && cp -r client firebase-migration-package/assiduous-build/
+          
+          echo "Copying other directories..."
           [ -d "src" ] && cp -r src firebase-migration-package/assiduous-build/
           [ -d "docs" ] && cp -r docs firebase-migration-package/assiduous-build/
+          [ -d "data" ] && cp -r data firebase-migration-package/assiduous-build/
+          [ -d "components" ] && cp -r components firebase-migration-package/assiduous-build/
+          [ -d "css" ] && cp -r css firebase-migration-package/assiduous-build/
           
-          # IMPORTANT: Do NOT overwrite assiduousflip index with root redirect file.
-          echo "Skipping root index.html to preserve assiduousflip/index.html as site root"
+          # Copy root HTML files (these serve as the main entry points)
+          echo "Copying root HTML files..."
+          [ -f "index.html" ] && cp index.html firebase-migration-package/assiduous-build/
+          [ -f "knowledge-base.html" ] && cp knowledge-base.html firebase-migration-package/assiduous-build/
+          [ -f "reports.html" ] && cp reports.html firebase-migration-package/assiduous-build/
           
           # Copy root files
           [ -f "package.json" ] && cp package.json firebase-migration-package/assiduous-build/
@@ -129,7 +138,7 @@ jobs:
           
           # Update the analytics file with deployment info
           DEPLOYMENT_COUNT=$(git rev-list --count HEAD)
-          FILES_COUNT=$(find assiduousflip assets -type f | wc -l)
+          FILES_COUNT=$(find admin assets client docs -type f 2>/dev/null | wc -l)
           
           # Ensure analytics directory exists
           mkdir -p firebase-migration-package/assiduous-build/assets/js

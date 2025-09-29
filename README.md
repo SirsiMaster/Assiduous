@@ -1,4 +1,4 @@
-# AssiduousFlip - AI-Powered Micro-Flipping Platform 🏠💰
+# assiduousflip - AI-Powered Micro-Flipping Platform 🏠💰
 
 🌐 **Live Platform:** https://assiduousflip.web.app
 
@@ -9,11 +9,11 @@
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
 [![License](https://img.shields.io/badge/license-Proprietary-red.svg)](./LICENSE)
 
-**AssiduousFlip** is the premier micro-flipping platform for the Philadelphia metro area, empowering investors to identify, analyze, and flip properties with zero prior experience. Our AI-driven platform has facilitated over $2.4B in successful flips, with users averaging $47K profit in just 45 days. Whether you're a complete beginner or seasoned investor, AssiduousFlip provides the tools, data, and support to succeed in micro-flipping.
+**assiduousflip** is the premier micro-flipping platform for the Philadelphia metro area, empowering investors to identify, analyze, and flip properties with zero prior experience. Our AI-driven platform has facilitated over $2.4B in successful flips, with users averaging $47K profit in just 45 days. Whether you're a complete beginner or seasoned investor, assiduousflip provides the tools, data, and support to succeed in micro-flipping.
 
 ## 🚀 Overview
 
-AssiduousFlip leverages cutting-edge technology to transform micro-flipping in the Philadelphia metro area. Our platform provides:
+assiduousflip leverages cutting-edge technology to transform micro-flipping in the Philadelphia metro area. Our platform provides:
 
 - **AI Property Matching**: Smart algorithms that learn user preferences and automatically suggest optimal properties
 - **Instant Market Analysis**: Real-time property valuations and investment potential analysis
@@ -187,4 +187,4 @@ For inquiries about Assiduous AI Real Estate Platform, please contact the develo
 
 ---
 
-**AssiduousFlip** - *Your Path to Profitable Property Flipping in Philadelphia*
+**assiduousflip** - *Your Path to Profitable Property Flipping in Philadelphia*
