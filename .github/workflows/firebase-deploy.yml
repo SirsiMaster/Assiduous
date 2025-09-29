@@ -45,8 +45,8 @@ jobs:
           mkdir -p firebase-migration-package/assiduous-build
           
           # Copy ALL files to Firebase public directory (remove the 2>/dev/null to see errors)
-          echo "Copying AssiduousFlip directory contents..."
-          cp -r AssiduousFlip/* firebase-migration-package/assiduous-build/
+          echo "Copying assiduousflip directory contents..."
+          cp -r assiduousflip/* firebase-migration-package/assiduous-build/
           
           echo "Copying assets directory..."
           cp -r assets firebase-migration-package/assiduous-build/
@@ -55,8 +55,8 @@ jobs:
           [ -d "src" ] && cp -r src firebase-migration-package/assiduous-build/
           [ -d "docs" ] && cp -r docs firebase-migration-package/assiduous-build/
           
-          # IMPORTANT: Do NOT overwrite AssiduousFlip index with root redirect file.
-          echo "Skipping root index.html to preserve AssiduousFlip/index.html as site root"
+          # IMPORTANT: Do NOT overwrite assiduousflip index with root redirect file.
+          echo "Skipping root index.html to preserve assiduousflip/index.html as site root"
           
           # Copy root files
           [ -f "package.json" ] && cp package.json firebase-migration-package/assiduous-build/
@@ -129,7 +129,7 @@ jobs:
           
           # Update the analytics file with deployment info
           DEPLOYMENT_COUNT=$(git rev-list --count HEAD)
-          FILES_COUNT=$(find AssiduousFlip assets -type f | wc -l)
+          FILES_COUNT=$(find assiduousflip assets -type f | wc -l)
           
           # Ensure analytics directory exists
           mkdir -p firebase-migration-package/assiduous-build/assets/js
