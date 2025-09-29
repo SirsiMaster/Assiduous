@@ -358,48 +358,100 @@ Backend services should expose REST endpoints that the frontend JavaScript can c
 - Mobile-first responsive design
 - Accessibility compliance (WCAG 2.1)
 
-## 🔗 LIVE APPLICATION URLS (ALWAYS USE THESE)
+## 🔗 DEFINITIVE APPLICATION URLS (ALWAYS USE THESE)
 
 ### Production URLs (Firebase Hosting)
-**Base URL**: `https://assiduousflip.web.app/`
+**Primary Domain**: `https://assiduousflip.web.app/`  
+**Alternative Domain**: `https://assiduous-prod.web.app/`  
+**API Endpoint**: `https://us-central1-assiduous-prod.cloudfunctions.net/app`
 
-#### Main Application
-- **Root Redirect**: https://assiduousflip.web.app/
-- **Landing Page (Login/Signup)**: https://assiduousflip.web.app/
+#### Main Application Pages
+- **Landing Page**: https://assiduousflip.web.app/
+  - Login/Signup, micro-flipping features, 87% success rate showcase
 - **Knowledge Base**: https://assiduousflip.web.app/knowledge-base.html
-- **Reports**: https://assiduousflip.web.app/reports.html
+  - Redirects to Admin Portal for integrated experience
+- **Reports Center**: https://assiduousflip.web.app/reports.html
+  - Generate, schedule, export comprehensive reports
+  - Weekly performance, monthly summary, sprint retrospectives
 
-#### Admin Portal
+#### Admin Portal - Real Estate Operations
 - **Admin Dashboard**: https://assiduousflip.web.app/admin/dashboard.html
-- **Analytics**: https://assiduousflip.web.app/admin/analytics.html
-- **Properties Management**: https://assiduousflip.web.app/admin/properties.html
-- **Client Management**: https://assiduousflip.web.app/admin/clients.html
-- **Agent Management**: https://assiduousflip.web.app/admin/agents.html
-- **Transactions**: https://assiduousflip.web.app/admin/transactions.html
+  - 1,247 properties, $2.4M monthly revenue, 89 agents, 34 pending transactions
+- **Real Estate Analytics**: https://assiduousflip.web.app/admin/analytics.html
+  - $48.6M total sales volume, 342 properties sold, 12,384 active users
+  - Sales funnel, agent performance, property type metrics
 - **Market Analysis**: https://assiduousflip.web.app/admin/market.html
+  - $485K median price, 42 days on market, 3,542 active listings
+  - Price trends, market segments, top performing areas
+- **Properties Management**: https://assiduousflip.web.app/admin/properties.html
+  - 1,248 total properties (892 available, 234 pending, 122 sold)
+  - $425K average price, property search and filtering
+- **Agents Management**: https://assiduousflip.web.app/admin/agents.html
+  - 156 total agents (142 active), $12.4M total sales, 4.8 avg rating
+  - Agent directory with specializations and performance metrics
+- **Clients Management**: https://assiduousflip.web.app/admin/clients.html
+  - 3,842 total clients, 1,256 active, 89% satisfaction rate
+  - Client directory with agent assignments and property portfolios
+- **Transactions**: https://assiduousflip.web.app/admin/transactions.html
+  - $48.6M total volume, 342 transactions, 89 pending
+  - Transaction tracking, status updates, reporting
 - **Settings**: https://assiduousflip.web.app/admin/settings.html
+  - Company settings, notifications, security, integrations, API keys
 
-#### Development/Test Pages
+#### Development Portal
 - **Dev Dashboard**: https://assiduousflip.web.app/admin/development/dashboard.html
+  - Project totals: 50.25 hours, $7,988 cost, 196 commits, 38,957 files
+  - Live activity tracking, development progress (75% overall)
 - **Dev Analytics**: https://assiduousflip.web.app/admin/development/analytics.html
-- **Dev Docs**: https://assiduousflip.web.app/admin/development/docs.html
+  - 99.98% uptime, 1.8s page load, 200ms API response
+  - Service performance metrics for Firebase services
+- **Dev Documentation**: https://assiduousflip.web.app/admin/development/docs.html
+  - Technical blueprints, API reference, deployment guides
+  - Unified platform architecture documentation
 - **Dev Reports**: https://assiduousflip.web.app/admin/development/reports.html
+  - Sprint performance, GitHub activity, code quality metrics
+  - Test coverage, deployment pipeline reports
+- **Dev Costs**: https://assiduousflip.web.app/admin/development/costs.html
+  - Development cost tracking and analysis
 - **Old Dashboard (Backup)**: https://assiduousflip.web.app/admin/development/dashboard_old.html
 
 #### Client Portal
 - **Client Dashboard**: https://assiduousflip.web.app/client/
+  - Property search, saved properties, agent connections
+  - Viewing schedules, offers, property valuations
+  - Mortgage calculator, market analysis tools
 
-#### Documentation Pages
-- **API Docs**: https://assiduousflip.web.app/docs/
+#### Documentation Center
+- **Main Docs**: https://assiduousflip.web.app/docs/
+  - Technical documentation, micro-flipping blueprint
+  - Implementation checklist, development guides
+  - Changelog, rollback registry, README
 - **README (HTML)**: https://assiduousflip.web.app/docs/readme.html
 
 ### GitHub Repository URLs
-- **Repository Home**: https://github.com/SirsiMaster/Assiduous
+- **Main Repository**: https://github.com/SirsiMaster/Assiduous
+- **Component Library**: https://github.com/SirsiMaster/sirsimaster-component-library
 - **Implementation Checklist**: https://github.com/SirsiMaster/Assiduous/blob/main/docs/IMPLEMENTATION_CHECKLIST.md
 - **Security Docs**: https://github.com/SirsiMaster/Assiduous/blob/main/docs/SECURITY.md
 - **WARP Rules (This File)**: https://github.com/SirsiMaster/Assiduous/blob/main/warp.md
 - **Actions/Workflows**: https://github.com/SirsiMaster/Assiduous/actions
 - **Security Alerts**: https://github.com/SirsiMaster/Assiduous/security/dependabot
+- **Releases**: https://github.com/SirsiMaster/Assiduous/releases
+
+### Firebase Console URLs
+- **Project Overview**: https://console.firebase.google.com/project/assiduous-prod/overview
+- **Hosting**: https://console.firebase.google.com/project/assiduous-prod/hosting
+- **Cloud Functions**: https://console.firebase.google.com/project/assiduous-prod/functions
+- **Firestore Database**: https://console.firebase.google.com/project/assiduous-prod/firestore
+- **Cloud Storage**: https://console.firebase.google.com/project/assiduous-prod/storage
+- **Usage & Billing**: https://console.firebase.google.com/project/assiduous-prod/usage
+
+### External Resources & CDNs
+- **Google Fonts**: https://fonts.googleapis.com
+- **Font Awesome Icons**: https://cdnjs.cloudflare.com/ajax/libs/font-awesome/
+- **Sirsi UI Library**: https://cdn.jsdelivr.net/gh/SirsiMaster/sirsi-ui@v0.1.1/dist/sirsi-ui.css
+- **SirsiMaster Component Library**: https://cdn.jsdelivr.net/gh/SirsiMaster/sirsimaster-component-library@latest/dist/sirsimaster-ui.css
+- **Unsplash Images**: Multiple property images from https://images.unsplash.com/
 
 ### Local Development URLs
 ```bash
