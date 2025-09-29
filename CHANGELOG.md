@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+
+## [0.15.15] - 2025-09-29
+
+### Fixed
+- fix(ci): correct directory names in Firebase deployment workflow
+
 ### Changed
 - Landing page finalized: continuous hero rotation, bottom-centered glass stats overlay, desktop hero height capped, alignment polished.
 
@@ -767,7 +773,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.15.14...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.15.15...HEAD
+
+
+## [0.15.15] - 2025-09-29
+
+### Fixed
+- fix(ci): correct directory names in Firebase deployment workflow
 
 
 ## [0.15.14] - 2025-09-10
@@ -1138,3 +1150,4 @@ To generate changelog entries:
 [0.15.12]: https://github.com/SirsiMaster/Assiduous/compare/v0.15.11...v0.15.12
 [0.15.13]: https://github.com/SirsiMaster/Assiduous/compare/v0.15.12...v0.15.13
 [0.15.14]: https://github.com/SirsiMaster/Assiduous/compare/v0.15.13...v0.15.14
+[0.15.15]: https://github.com/SirsiMaster/Assiduous/compare/v0.15.14...v0.15.15
