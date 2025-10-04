@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.15.18] - 2025-10-04
+
+### Fixed
+- fix(cache): implement granular cache control headers to prevent stale content
+
+
 ## [0.15.17] - 2025-10-04
 
 ### Fixed
@@ -785,7 +791,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.15.17...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.15.18...HEAD
+
+
+## [0.15.18] - 2025-10-04
+
+### Fixed
+- fix(cache): implement granular cache control headers to prevent stale content
 
 
 ## [0.15.17] - 2025-10-04
@@ -1177,3 +1189,4 @@ To generate changelog entries:
 [0.15.15]: https://github.com/SirsiMaster/Assiduous/compare/v0.15.14...v0.15.15
 [0.15.16]: https://github.com/SirsiMaster/Assiduous/compare/v0.15.15...v0.15.16
 [0.15.17]: https://github.com/SirsiMaster/Assiduous/compare/v0.15.16...v0.15.17
+[0.15.18]: https://github.com/SirsiMaster/Assiduous/compare/v0.15.17...v0.15.18
