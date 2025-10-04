@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.17.0] - 2025-10-04
+
+### Added
+- feat(docs): implement comprehensive documentation hub with unified navigation
+
+
 ## [0.16.0] - 2025-10-04
 
 ### Added
@@ -797,7 +803,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.16.0...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.17.0...HEAD
+
+
+## [0.17.0] - 2025-10-04
+
+### Added
+- feat(docs): implement comprehensive documentation hub with unified navigation
 
 
 ## [0.16.0] - 2025-10-04
@@ -1203,3 +1215,4 @@ To generate changelog entries:
 [0.15.17]: https://github.com/SirsiMaster/Assiduous/compare/v0.15.16...v0.15.17
 [0.15.18]: https://github.com/SirsiMaster/Assiduous/compare/v0.15.17...v0.15.18
 [0.16.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.15.18...v0.16.0
+[0.17.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.16.0...v0.17.0
