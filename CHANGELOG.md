@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.15.17] - 2025-10-04
+
+### Fixed
+- fix: resolve carousel overlay issue by properly structuring How It Works section
+
+
 ## [0.15.16] - 2025-09-29
 
 ### Fixed
@@ -779,7 +785,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.15.16...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.15.17...HEAD
+
+
+## [0.15.17] - 2025-10-04
+
+### Fixed
+- fix: resolve carousel overlay issue by properly structuring How It Works section
 
 
 ## [0.15.16] - 2025-09-29
@@ -1164,3 +1176,4 @@ To generate changelog entries:
 [0.15.14]: https://github.com/SirsiMaster/Assiduous/compare/v0.15.13...v0.15.14
 [0.15.15]: https://github.com/SirsiMaster/Assiduous/compare/v0.15.14...v0.15.15
 [0.15.16]: https://github.com/SirsiMaster/Assiduous/compare/v0.15.15...v0.15.16
+[0.15.17]: https://github.com/SirsiMaster/Assiduous/compare/v0.15.16...v0.15.17
