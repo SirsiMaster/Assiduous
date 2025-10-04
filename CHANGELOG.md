@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.18.0] - 2025-10-04
+
+### Added
+- feat(tracking): complete Option 1 - PRD sync and dashboard milestone enhancement
+
+
 ## [0.17.0] - 2025-10-04
 
 ### Added
@@ -803,7 +809,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.17.0...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.18.0...HEAD
+
+
+## [0.18.0] - 2025-10-04
+
+### Added
+- feat(tracking): complete Option 1 - PRD sync and dashboard milestone enhancement
 
 
 ## [0.17.0] - 2025-10-04
@@ -1216,3 +1228,4 @@ To generate changelog entries:
 [0.15.18]: https://github.com/SirsiMaster/Assiduous/compare/v0.15.17...v0.15.18
 [0.16.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.15.18...v0.16.0
 [0.17.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.16.0...v0.17.0
+[0.18.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.17.0...v0.18.0
