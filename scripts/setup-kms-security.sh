@@ -69,27 +69,38 @@ gcloud config set project $PROJECT_ID
 
 # Check if user has necessary permissions
 print_info "Verifying IAM permissions..."
-REQUIRED_ROLES=("roles/cloudkms.admin" "roles/iam.serviceAccountAdmin")
-HAS_PERMISSIONS=true
 
-for role in "${REQUIRED_ROLES[@]}"; do
-    if gcloud projects get-iam-policy $PROJECT_ID \
-        --flatten="bindings[].members" \
-        --filter="bindings.members:user:$ACCOUNT AND bindings.role:$role" \
-        --format="value(bindings.role)" | grep -q "$role"; then
-        print_status "Has permission: $role"
-    else
-        print_warning "Missing permission: $role"
-        HAS_PERMISSIONS=false
+# Check if user is owner (owner role includes all permissions)
+if gcloud projects get-iam-policy $PROJECT_ID \
+    --flatten="bindings[].members" \
+    --filter="bindings.members:user:$ACCOUNT AND bindings.role:roles/owner" \
+    --format="value(bindings.role)" | grep -q "roles/owner"; then
+    print_status "Has permission: roles/owner (includes all required permissions)"
+else
+    # If not owner, check for specific roles
+    REQUIRED_ROLES=("roles/cloudkms.admin" "roles/iam.serviceAccountAdmin")
+    HAS_PERMISSIONS=true
+    
+    for role in "${REQUIRED_ROLES[@]}"; do
+        if gcloud projects get-iam-policy $PROJECT_ID \
+            --flatten="bindings[].members" \
+            --filter="bindings.members:user:$ACCOUNT AND bindings.role:$role" \
+            --format="value(bindings.role)" | grep -q "$role"; then
+            print_status "Has permission: $role"
+        else
+            print_warning "Missing permission: $role"
+            HAS_PERMISSIONS=false
+        fi
+    done
+    
+    if [ "$HAS_PERMISSIONS" = false ]; then
+        print_error "Insufficient permissions. Please ensure you have:"
+        echo "  - roles/owner, or"
+        echo "  - roles/cloudkms.admin"
+        echo "  - roles/iam.serviceAccountAdmin"
+        echo "  - roles/iam.securityAdmin"
+        exit 1
     fi
-done
-
-if [ "$HAS_PERMISSIONS" = false ]; then
-    print_error "Insufficient permissions. Please ensure you have:"
-    echo "  - roles/cloudkms.admin"
-    echo "  - roles/iam.serviceAccountAdmin"
-    echo "  - roles/iam.securityAdmin"
-    exit 1
 fi
 
 # Enable required APIs
