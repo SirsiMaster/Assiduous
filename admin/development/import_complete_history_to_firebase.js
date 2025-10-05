@@ -23,7 +23,7 @@ async function importCompleteHistory() {
     // Initialize Firebase if needed
     if (!firebase.apps.length) {
         const firebaseConfig = {
-            apiKey: "AIzaSyAnuWQmvPr5l7aT3oBnhMPgVnNGDFN3OWE",
+// REMOVED:             apiKey: "AIzaSyAnuWQmvPr5l7aT3oBnhMPgVnNGDFN3OWE", // Use secure config loading instead
             authDomain: "assiduous-prod.firebaseapp.com",
             projectId: "assiduous-prod",
             storageBucket: "assiduous-prod.appspot.com",

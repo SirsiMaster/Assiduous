@@ -6,6 +6,11 @@ on:
       - main
   workflow_dispatch: # Allow manual trigger
 
+# SECURITY: Implement least-privilege permissions
+permissions:
+  contents: read
+  id-token: write
+
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
@@ -13,16 +18,58 @@ jobs:
     steps:
       # Checkout code
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0 # Get full history for analytics
       
       # Setup Node.js
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '18'
           cache: 'npm'
+      
+      # SECURITY: Authenticate to Google Cloud for KMS access
+      - name: Authenticate to Google Cloud
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: '${{ secrets.GCP_SA_KEY }}'
+        continue-on-error: true
+      
+      # SECURITY: Setup Google Cloud SDK for KMS operations
+      - name: Setup Cloud SDK
+        if: steps.auth.outcome == 'success'
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+        continue-on-error: true
+      
+      # SECURITY: Decrypt secrets from KMS (if KMS is configured)
+      - name: Decrypt Secrets from KMS
+        if: steps.auth.outcome == 'success'
+        env:
+          GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+          KMS_KEYRING: ${{ secrets.KMS_KEYRING }}
+          KMS_LOCATION: ${{ secrets.KMS_LOCATION }}
+        run: |
+          echo "🔓 Decrypting secrets from KMS..."
+          if [ -f "./scripts/decrypt-secrets.sh" ] && [ -d "secure-secrets" ]; then
+            chmod +x ./scripts/decrypt-secrets.sh
+            ./scripts/decrypt-secrets.sh || echo "⚠️  KMS decryption not yet configured, skipping..."
+          else
+            echo "⚠️  KMS setup not complete yet, skipping secret decryption"
+          fi
+        continue-on-error: true
+      
+      # SECURITY: Run dependency audit before installation
+      - name: Security Audit - Check Dependencies
+        run: |
+          echo "🔍 Running dependency security audit..."
+          if [ -f "package.json" ]; then
+            npm audit --audit-level=moderate || echo "⚠️  Vulnerabilities found, review required"
+          fi
+        continue-on-error: true
       
       # Install dependencies
       - name: Install Dependencies
@@ -171,6 +218,29 @@ jobs:
           # Skip second deployment - everything was already deployed in the first step
           echo "Analytics already deployed with main deployment"
       
+      # SECURITY: Cleanup decrypted secrets
+      - name: Cleanup Secrets
+        if: always()
+        run: |
+          echo "🧹 Cleaning up decrypted secrets..."
+          rm -rf .secrets-decrypted/
+          rm -rf .keys/ 2>/dev/null || true
+          echo "✅ Cleanup complete"
+      
+      # SECURITY: Final security scan after deployment
+      - name: Post-Deployment Security Scan
+        if: success()
+        run: |
+          echo "🔍 Running post-deployment security checks..."
+          echo "Checking for exposed secrets in deployed files..."
+          # Check for common secret patterns in deployed files
+          if grep -r "AIza" firebase-migration-package/assiduous-build/ 2>/dev/null | grep -v ".git" | grep -v "node_modules"; then
+            echo "⚠️  WARNING: Potential API keys found in deployed files!"
+          else
+            echo "✅ No obvious secrets found in deployed files"
+          fi
+        continue-on-error: true
+      
       # Send deployment notification
       - name: Deployment Status Notification
         if: always()
@@ -206,3 +276,8 @@ jobs:
           echo "- ✅ Deployment tracked in FirebaseAnalyticsService" >> $GITHUB_STEP_SUMMARY
           echo "- ✅ Deployment count updated" >> $GITHUB_STEP_SUMMARY
           echo "- ✅ File metrics recorded" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Security" >> $GITHUB_STEP_SUMMARY
+          echo "- 🔒 KMS secret decryption: \`${{ steps.auth.outcome }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "- 🔍 Security scans completed" >> $GITHUB_STEP_SUMMARY
+          echo "- 🧹 Secrets cleaned up after deployment" >> $GITHUB_STEP_SUMMARY

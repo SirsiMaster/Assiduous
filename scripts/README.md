@@ -23,6 +23,23 @@ These scripts are regularly used and maintained:
   - Tests all claimed functionality
   - Required before any "task complete" report
 
+### Security Operations (NEW)
+- **`setup-kms-security.sh`** - Automated Google Cloud KMS setup
+  - Creates KMS keyring and encryption keys
+  - Provisions service accounts with IAM permissions
+  - One-command security infrastructure deployment
+  - Idempotent (safe to re-run)
+  
+- **`encrypt-secrets.sh`** - Encrypt secrets using KMS
+  - Encrypts plaintext secrets with Google Cloud KMS
+  - Securely deletes plaintext files after encryption
+  - Stores encrypted files in `secure-secrets/` (safe to commit)
+  
+- **`decrypt-secrets.sh`** - Decrypt secrets for local development
+  - Decrypts KMS-encrypted secrets to `.secrets-decrypted/`
+  - For local development use only
+  - Never commit decrypted secrets
+
 ### Version Control
 - **`git-sync.sh`** - Git synchronization operations
 - **`auto-version.sh`** - Automated version management

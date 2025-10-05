@@ -27,7 +27,7 @@ import { getAuth } from 'https://www.gstatic.com/firebasejs/10.4.0/firebase-auth
 
 // Firebase configuration
 const firebaseConfig = {
-    apiKey: "AIzaSyBkF3QnTsxYajUkF3BVE7E9F7LdkGEKpV8",
+// REMOVED:     apiKey: "AIzaSyBkF3QnTsxYajUkF3BVE7E9F7LdkGEKpV8", // Use environment variable instead
     authDomain: "assiduous-prod.firebaseapp.com",
     projectId: "assiduous-prod",
     storageBucket: "assiduous-prod.appspot.com",

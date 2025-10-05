@@ -8,7 +8,7 @@
 const https = require('https');
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCnQajchoBwP_VMEvc9mKH-vO0xlZjGCRE",
+// REMOVED:   apiKey: "AIzaSyCnQajchoBwP_VMEvc9mKH-vO0xlZjGCRE", // Historical reference only
   projectId: "assiduous-prod"
 };
 

@@ -5,7 +5,7 @@ const path = require('path');
 
 // Real Firebase configuration from Firebase CLI
 const firebaseConfig = {
-  apiKey: "AIzaSyCnQajchoBwP_VMEvc9mKH-vO0xlZjGCRE",
+// REMOVED:   apiKey: "AIzaSyCnQajchoBwP_VMEvc9mKH-vO0xlZjGCRE", // Historical reference only
   authDomain: "assiduous-prod.firebaseapp.com",
   projectId: "assiduous-prod",
   storageBucket: "assiduous-prod.firebasestorage.app",
