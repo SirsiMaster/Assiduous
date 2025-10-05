@@ -79,6 +79,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.21.0] - 2025-10-05
 
 ### Added
+- feat(security): complete KMS deployment and GitHub secrets configuration
+
+
+## [0.21.0] - 2025-10-05
+
+### Added
 - feat(security): Phase 1 Security Implementation Complete
   - Created comprehensive security audit report (482 lines)
   - Implemented Google Cloud KMS integration guide (975 lines)
@@ -923,7 +929,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.20.0...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.21.0...HEAD
+
+
+## [0.21.0] - 2025-10-05
+
+### Added
+- feat(security): complete KMS deployment and GitHub secrets configuration
 
 
 ## [0.20.0] - 2025-10-05
@@ -1357,3 +1369,4 @@ To generate changelog entries:
 [0.18.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.17.0...v0.18.0
 [0.19.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.18.0...v0.19.0
 [0.20.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.19.0...v0.20.0
+[0.21.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.20.0...v0.21.0
