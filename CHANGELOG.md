@@ -9,6 +9,56 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.29.0] - 2025-01-06
+
+### Changed - MAJOR RESTRUCTURE
+- **Complete directory reorganization to industry standard**
+  - Created `public/` directory for all deployed files
+  - Moved all portal files: admin/, client/, agent/ → public/
+  - Consolidated all assets → public/assets/
+  - Created `src/` for development source files
+  - Archived 18 legacy root HTML files → .archive/
+  - Updated firebase.json to point to public/
+  - Updated ALL file paths to use absolute paths (/assets/)
+  - Created new landing page at public/index.html
+  - Added index redirects for each portal
+
+### Structure
+```
+public/
+├── index.html (landing page)
+├── admin/ (19 files)
+├── client/ (3 files)
+├── agent/ (ready for Phase 3)
+└── assets/
+    ├── css/ (all stylesheets)
+    ├── js/ (services, components, utils)
+    └── vendor/ (third-party libraries)
+```
+
+### Benefits
+- ✅ Industry-standard structure (Next.js/React inspired)
+- ✅ Clear separation: public/ vs src/ vs functions/
+- ✅ Easy navigation - any file found in seconds
+- ✅ Clean Firebase deployment - just point to public/
+- ✅ Framework-ready for future migration
+- ✅ Zero confusion for developers or AI
+
+### Deployment
+- Deployed successfully to Firebase: https://assiduousflip.web.app
+- All portals accessible and functional
+- 73 files deployed
+- All URLs maintained (no breaking changes)
+
+### Documentation
+- Created `RESTRUCTURE_SUMMARY.md` - Executive summary
+- Created `docs/DIRECTORY_RESTRUCTURE_PLAN.md` - Technical plan
+- Created `scripts/restructure_directory.sh` - Automated execution
+- Created `scripts/update_paths.sh` - Path update automation
+- Created `.archive/path_mappings.txt` - Reference guide
+
+---
+
 ## [0.28.0] - 2025-01-06
 
 ### Added
