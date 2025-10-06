@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.24.0] - 2025-10-06
+
+### Added
+- feat(admin): integrate live API data into admin properties page
+
+
 ## [0.23.0] - 2025-10-06
 
 ### Added
@@ -942,7 +948,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.23.0...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.24.0...HEAD
+
+
+## [0.24.0] - 2025-10-06
+
+### Added
+- feat(admin): integrate live API data into admin properties page
 
 
 ## [0.23.0] - 2025-10-06
@@ -1398,3 +1410,4 @@ To generate changelog entries:
 [0.21.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.20.0...v0.21.0
 [0.22.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.21.0...v0.22.0
 [0.23.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.22.0...v0.23.0
+[0.24.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.23.0...v0.24.0
