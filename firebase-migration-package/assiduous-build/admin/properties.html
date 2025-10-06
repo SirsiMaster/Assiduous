@@ -8,7 +8,7 @@
     
     <!-- Assiduous Design System -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SirsiMaster/ui-components@latest/dist/sirsimaster-ui.css">
+    <link rel="stylesheet" href="../assets/vendor/sirsimaster-ui/sirsimaster-ui.css">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     
     <link rel="stylesheet" href="../assiduous.css">
@@ -368,7 +368,7 @@
             }
         }
     </style>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SirsiMaster/ui-components@latest/dist/sirsimaster-ui.css">
+    <link rel="stylesheet" href="../assets/vendor/sirsimaster-ui/sirsimaster-ui.css">
     <link rel="stylesheet" href="/assets/css/button-override.css">
     
     <script>
@@ -542,282 +542,92 @@
                     data-title="Properties Management" 
                     data-subtitle="Manage all property listings and their details"
                     data-search-placeholder="Search properties..."
-                    data-actions='[{"label":"Add Property","icon":"<line x1=\"12\" y1=\"5\" x2=\"12\" y2=\"19\"></line><line x1=\"5\" y1=\"12\" x2=\"19\" y2=\"12\"></line>","primary":true,"onclick":"HeaderActions.addProperty()"}]'></header>
+                    data-actions='[{"label":"Add Property","icon":"<line x1=\"12\" y1=\"5\" x2=\"12\" y2=\"19\"></line><line x1=\"5\" y1=\"12\" x2=\"19\" y2=\"12\"></line>","primary":true,"onclick":"window.location.href=\'property-form.html\'"}]'></header>
 
             <!-- Page Content -->
             <div class="page-content">
 
                 <!-- Stats Cards -->
-                <div class="stats-grid">
-                    <div class="stat-card sirsi-card sirsi-sm-sm-card--elevated">
-                        <div class="stat-value">1,248</div>
+                <div class="stats-grid" id="statsGrid">
+                    <div class="stat-card sirsi-card sm-card--elevated">
+                        <div class="stat-value" id="stat-total">-</div>
                         <div class="stat-label">Total Properties</div>
                     </div>
-                    <div class="stat-card sirsi-card sirsi-sm-sm-card--elevated">
-                        <div class="stat-value">892</div>
+                    <div class="stat-card sirsi-card sm-card--elevated">
+                        <div class="stat-value" id="stat-available">-</div>
                         <div class="stat-label">Available</div>
                     </div>
-                    <div class="stat-card sirsi-card sirsi-sm-sm-card--elevated">
-                        <div class="stat-value">234</div>
+                    <div class="stat-card sirsi-card sm-card--elevated">
+                        <div class="stat-value" id="stat-pending">-</div>
                         <div class="stat-label">Pending</div>
                     </div>
-                    <div class="stat-card sirsi-card sirsi-sm-sm-card--elevated">
-                        <div class="stat-value">122</div>
+                    <div class="stat-card sirsi-card sm-card--elevated">
+                        <div class="stat-value" id="stat-sold">-</div>
                         <div class="stat-label">Sold</div>
                     </div>
-                    <div class="stat-card sirsi-card sirsi-sm-sm-card--elevated">
-                        <div class="stat-value">$425K</div>
+                    <div class="stat-card sirsi-card sm-card--elevated">
+                        <div class="stat-value" id="stat-avg-price">-</div>
                         <div class="stat-label">Avg. Price</div>
                     </div>
                 </div>
 
                 <!-- Filters -->
-                <div class="filters-bar sirsi-sm-sm-card">
+                <div class="filters-bar sm-card">
                     <div class="filter-group">
                         <label class="filter-label">Status</label>
-                        <select class="sirsi-select">
-                            <option>All Status</option>
-                            <option>Available</option>
-                            <option>Pending</option>
-                            <option>Sold</option>
+                        <select class="sirsi-select" id="statusFilter">
+                            <option value="">All Status</option>
+                            <option value="available">Available</option>
+                            <option value="pending">Pending</option>
+                            <option value="sold">Sold</option>
                         </select>
                     </div>
                     <div class="filter-group">
                         <label class="filter-label">Type</label>
-                        <select class="sirsi-select">
-                            <option>All Types</option>
-                            <option>House</option>
-                            <option>Apartment</option>
-                            <option>Condo</option>
-                            <option>Townhouse</option>
+                        <select class="sirsi-select" id="typeFilter">
+                            <option value="">All Types</option>
+                            <option value="single_family">Single Family</option>
+                            <option value="townhouse">Townhouse</option>
+                            <option value="condo">Condo</option>
+                            <option value="multi_family">Multi Family</option>
                         </select>
                     </div>
                     <div class="filter-group">
-                        <label class="filter-label">Price Range</label>
-                        <select class="sirsi-select">
-                            <option>Any Price</option>
-                            <option>$0 - $200K</option>
-                            <option>$200K - $500K</option>
-                            <option>$500K - $1M</option>
-                            <option>$1M+</option>
+                        <label class="filter-label">Neighborhood</label>
+                        <select class="sirsi-select" id="neighborhoodFilter">
+                            <option value="">All Neighborhoods</option>
                         </select>
                     </div>
                     <div class="filter-group">
                         <label class="filter-label">Bedrooms</label>
-                        <select class="sirsi-select">
-                            <option>Any</option>
-                            <option>1+</option>
-                            <option>2+</option>
-                            <option>3+</option>
-                            <option>4+</option>
+                        <select class="sirsi-select" id="bedroomsFilter">
+                            <option value="">Any</option>
+                            <option value="1">1+</option>
+                            <option value="2">2+</option>
+                            <option value="3">3+</option>
+                            <option value="4">4+</option>
                         </select>
                     </div>
                     <div style="margin-left: auto;">
-                        <sirsi-button variant="secondary" size="sm" icon-leading="<svg width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'><line x1='4' y1='21' x2='4' y2='14'></line><line x1='4' y1='10' x2='4' y2='3'></line><line x1='12' y1='21' x2='12' y2='12'></line><line x1='12' y1='8' x2='12' y2='3'></line><line x1='20' y1='21' x2='20' y2='16'></line><line x1='20' y1='12' x2='20' y2='3'></line><line x1='1' y1='14' x2='7' y2='14'></line><line x1='9' y1='8' x2='15' y2='8'></line><line x1='17' y1='16' x2='23' y2='16'></line></svg>">
+                        <sirsi-button variant="secondary" size="sm" onclick="applyFilters()" icon-leading="<svg width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'><line x1='4' y1='21' x2='4' y2='14'></line><line x1='4' y1='10' x2='4' y2='3'></line><line x1='12' y1='21' x2='12' y2='12'></line><line x1='12' y1='8' x2='12' y2='3'></line><line x1='20' y1='21' x2='20' y2='16'></line><line x1='20' y1='12' x2='20' y2='3'></line><line x1='1' y1='14' x2='7' y2='14'></line><line x1='9' y1='8' x2='15' y2='8'></line><line x1='17' y1='16' x2='23' y2='16'></line></svg>">
                             Apply Filters
                         </sirsi-button>
                     </div>
                 </div>
 
+                <!-- Loading State -->
+                <div id="loadingState" style="text-align: center; padding: 60px; color: var(--text-secondary);">
+                    Loading properties...
+                </div>
+
+                <!-- Error State -->
+                <div id="errorState" style="display: none; background: #fee; border: 1px solid #fcc; border-radius: 8px; padding: 16px; color: #c00; margin-bottom: 24px;">
+                    <span id="errorMessage"></span>
+                </div>
+
                 <!-- Properties Grid -->
-                <div class="properties-grid">
-                    <!-- Property Card 1 -->
-                    <div class="property-card sirsi-card sirsi-sm-sm-card--elevated">
-                        <div class="property-image">
-                            <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&q=80" alt="Property" style="width: 100%; height: 100%; object-fit: cover;">
-                            <sirsi-badge variant="success" class="property-status">Available</sirsi-badge>
-                        </div>
-                        <div class="property-details">
-                            <div class="property-price">$450,000</div>
-                            <div class="property-address">123 Main Street, Downtown</div>
-                            <div class="property-features">
-                                <div class="property-feature">
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M3 20v-8a2 2 0 012-2h14a2 2 0 012 2v8"></path>
-                                        <path d="M5 10V6a2 2 0 012-2h10a2 2 0 012 2v4"></path>
-                                    </svg>
-                                    3 Beds
-                                </div>
-                                <div class="property-feature">
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M9 6h6M9 12h6M9 18h6M4 6h.01M4 12h.01M4 18h.01"></path>
-                                    </svg>
-                                    2 Baths
-                                </div>
-                                <div class="property-feature">
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <rect x="3" y="3" width="18" height="18"></rect>
-                                    </svg>
-                                    2,100 sqft
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Property Card 2 -->
-                    <div class="property-card sirsi-card sirsi-sm-sm-card--elevated">
-                        <div class="property-image">
-                            <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80" alt="Property" style="width: 100%; height: 100%; object-fit: cover;">
-                            <sirsi-badge variant="warning" class="property-status">Pending</sirsi-badge>
-                        </div>
-                        <div class="property-details">
-                            <div class="property-price">$325,000</div>
-                            <div class="property-address">456 Oak Avenue, Westside</div>
-                            <div class="property-features">
-                                <div class="property-feature">
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M3 20v-8a2 2 0 012-2h14a2 2 0 012 2v8"></path>
-                                        <path d="M5 10V6a2 2 0 012-2h10a2 2 0 012 2v4"></path>
-                                    </svg>
-                                    2 Beds
-                                </div>
-                                <div class="property-feature">
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M9 6h6M9 12h6M9 18h6M4 6h.01M4 12h.01M4 18h.01"></path>
-                                    </svg>
-                                    2 Baths
-                                </div>
-                                <div class="property-feature">
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <rect x="3" y="3" width="18" height="18"></rect>
-                                    </svg>
-                                    1,800 sqft
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Property Card 3 -->
-                    <div class="property-card sirsi-card sirsi-sm-sm-card--elevated">
-                        <div class="property-image">
-                            <img src="https://images.unsplash.com/photo-1605146769289-440113cc3d00?w=800&q=80" alt="Property" style="width: 100%; height: 100%; object-fit: cover;">
-                            <sirsi-badge variant="success" class="property-status">Available</sirsi-badge>
-                        </div>
-                        <div class="property-details">
-                            <div class="property-price">$580,000</div>
-                            <div class="property-address">789 Pine Road, Northside</div>
-                            <div class="property-features">
-                                <div class="property-feature">
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M3 20v-8a2 2 0 012-2h14a2 2 0 012 2v8"></path>
-                                        <path d="M5 10V6a2 2 0 012-2h10a2 2 0 012 2v4"></path>
-                                    </svg>
-                                    4 Beds
-                                </div>
-                                <div class="property-feature">
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M9 6h6M9 12h6M9 18h6M4 6h.01M4 12h.01M4 18h.01"></path>
-                                    </svg>
-                                    3 Baths
-                                </div>
-                                <div class="property-feature">
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <rect x="3" y="3" width="18" height="18"></rect>
-                                    </svg>
-                                    2,800 sqft
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Property Card 4 -->
-                    <div class="property-card sirsi-card sirsi-sm-sm-card--elevated">
-                        <div class="property-image">
-                            <img src="https://images.unsplash.com/photo-1558036117-15d82a90b9b1?w=800&q=80" alt="Property" style="width: 100%; height: 100%; object-fit: cover;">
-                            <sirsi-badge variant="danger" class="property-status">Sold</sirsi-badge>
-                        </div>
-                        <div class="property-details">
-                            <div class="property-price">$275,000</div>
-                            <div class="property-address">321 Elm Street, Eastside</div>
-                            <div class="property-features">
-                                <div class="property-feature">
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M3 20v-8a2 2 0 012-2h14a2 2 0 012 2v8"></path>
-                                        <path d="M5 10V6a2 2 0 012-2h10a2 2 0 012 2v4"></path>
-                                    </svg>
-                                    2 Beds
-                                </div>
-                                <div class="property-feature">
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M9 6h6M9 12h6M9 18h6M4 6h.01M4 12h.01M4 18h.01"></path>
-                                    </svg>
-                                    1 Bath
-                                </div>
-                                <div class="property-feature">
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <rect x="3" y="3" width="18" height="18"></rect>
-                                    </svg>
-                                    1,400 sqft
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Property Card 5 -->
-                    <div class="property-card sirsi-card sirsi-sm-sm-card--elevated">
-                        <div class="property-image">
-                            <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&q=80" alt="Property" style="width: 100%; height: 100%; object-fit: cover;">
-                            <sirsi-badge variant="success" class="property-status">Available</sirsi-badge>
-                        </div>
-                        <div class="property-details">
-                            <div class="property-price">$725,000</div>
-                            <div class="property-address">654 Maple Drive, Hills</div>
-                            <div class="property-features">
-                                <div class="property-feature">
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M3 20v-8a2 2 0 012-2h14a2 2 0 012 2v8"></path>
-                                        <path d="M5 10V6a2 2 0 012-2h10a2 2 0 012 2v4"></path>
-                                    </svg>
-                                    5 Beds
-                                </div>
-                                <div class="property-feature">
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M9 6h6M9 12h6M9 18h6M4 6h.01M4 12h.01M4 18h.01"></path>
-                                    </svg>
-                                    4 Baths
-                                </div>
-                                <div class="property-feature">
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <rect x="3" y="3" width="18" height="18"></rect>
-                                    </svg>
-                                    3,500 sqft
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Property Card 6 -->
-                    <div class="property-card sirsi-card sirsi-sm-sm-card--elevated">
-                        <div class="property-image">
-                            <img src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=800&q=80" alt="Property" style="width: 100%; height: 100%; object-fit: cover;">
-                            <sirsi-badge variant="warning" class="property-status">Pending</sirsi-badge>
-                        </div>
-                        <div class="property-details">
-                            <div class="property-price">$380,000</div>
-                            <div class="property-address">987 Cedar Lane, Riverside</div>
-                            <div class="property-features">
-                                <div class="property-feature">
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M3 20v-8a2 2 0 012-2h14a2 2 0 012 2v8"></path>
-                                        <path d="M5 10V6a2 2 0 012-2h10a2 2 0 012 2v4"></path>
-                                    </svg>
-                                    3 Beds
-                                </div>
-                                <div class="property-feature">
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M9 6h6M9 12h6M9 18h6M4 6h.01M4 12h.01M4 18h.01"></path>
-                                    </svg>
-                                    2 Baths
-                                </div>
-                                <div class="property-feature">
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <rect x="3" y="3" width="18" height="18"></rect>
-                                    </svg>
-                                    1,950 sqft
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="properties-grid" id="propertiesGrid" style="display: none;">
+                    <!-- Properties will be dynamically loaded here -->
                 </div>
             </div>
         </main>
@@ -958,28 +768,182 @@
                 }
             });
 
-            // Property card interactions
-            document.querySelectorAll('.property-card').forEach((card, index) => {
-                card.addEventListener('click', function() {
-                    // Extract property data from card
-                    const priceEl = card.querySelector('.property-price');
-                    const addressEl = card.querySelector('.property-address');
-                    const features = card.querySelectorAll('.property-feature');
-                    const imageEl = card.querySelector('.property-image img');
-                    
-                    const propertyData = {
-                        image: imageEl ? imageEl.src : 'https://via.placeholder.com/800x400',
-                        price: priceEl ? priceEl.textContent : '$0',
-                        address: addressEl ? addressEl.textContent : 'Unknown Address',
-                        beds: features[0] ? features[0].textContent.trim().split(' ')[0] : '0',
-                        baths: features[1] ? features[1].textContent.trim().split(' ')[0] : '0',
-                        sqft: features[2] ? features[2].textContent.trim().split(' ')[0] : '0'
-                    };
-                    
-                    showPropertyModal(propertyData);
-                });
-            });
+            // Initialize property management
+            initPropertyManagement();
         });
+
+        // ========================================
+        // PROPERTY MANAGEMENT WITH API INTEGRATION
+        // ========================================
+        
+        // Import PropertyService (using module script)
+        let propertyService;
+        
+        async function initPropertyManagement() {
+            try {
+                // Dynamically import PropertyService
+                const module = await import('../assets/js/services/propertyservice.js');
+                propertyService = new module.PropertyService();
+                
+                // Load initial data
+                await loadNeighborhoods();
+                await loadProperties();
+                await loadStats();
+            } catch (error) {
+                console.error('Failed to initialize property management:', error);
+                showError('Failed to load properties. Please refresh the page.');
+            }
+        }
+
+        // Load neighborhoods for filter
+        async function loadNeighborhoods() {
+            try {
+                const neighborhoods = await propertyService.getNeighborhoods();
+                const select = document.getElementById('neighborhoodFilter');
+                neighborhoods.forEach(neighborhood => {
+                    const option = document.createElement('option');
+                    option.value = neighborhood;
+                    option.textContent = neighborhood;
+                    select.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Failed to load neighborhoods:', error);
+            }
+        }
+
+        // Load properties from API
+        let currentFilters = {};
+        
+        async function loadProperties(filters = {}) {
+            const loadingEl = document.getElementById('loadingState');
+            const errorEl = document.getElementById('errorState');
+            const gridEl = document.getElementById('propertiesGrid');
+            
+            try {
+                loadingEl.style.display = 'block';
+                errorEl.style.display = 'none';
+                gridEl.style.display = 'none';
+                
+                const data = await propertyService.getProperties(filters);
+                
+                loadingEl.style.display = 'none';
+                gridEl.style.display = 'grid';
+                
+                if (data.properties && data.properties.length > 0) {
+                    renderProperties(data.properties);
+                } else {
+                    gridEl.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; padding: 40px; color: var(--text-secondary);">No properties found matching your criteria.</p>';
+                }
+            } catch (error) {
+                console.error('Error loading properties:', error);
+                loadingEl.style.display = 'none';
+                showError('Failed to load properties: ' + error.message);
+            }
+        }
+
+        // Render properties to grid
+        function renderProperties(properties) {
+            const grid = document.getElementById('propertiesGrid');
+            grid.innerHTML = properties.map(property => {
+                const formatted = propertyService.formatProperty(property);
+                const statusVariant = property.status === 'available' ? 'success' : 
+                                    property.status === 'pending' ? 'warning' : 'danger';
+                const statusText = property.status.charAt(0).toUpperCase() + property.status.slice(1);
+                const imageUrl = property.images?.[0]?.url || 'https://via.placeholder.com/400x300?text=No+Image';
+                
+                return `
+                    <div class="property-card sirsi-card sm-card--elevated" onclick="viewProperty('${property.id}')" style="cursor: pointer;">
+                        <div class="property-image">
+                            <img src="${imageUrl}" alt="Property" style="width: 100%; height: 100%; object-fit: cover;">
+                            <sirsi-badge variant="${statusVariant}" class="property-status">${statusText}</sirsi-badge>
+                        </div>
+                        <div class="property-details">
+                            <div class="property-price">${formatted.priceFormatted}</div>
+                            <div class="property-address">${property.address.street}, ${property.neighborhood}</div>
+                            <div class="property-features">
+                                <div class="property-feature">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M3 20v-8a2 2 0 012-2h14a2 2 0 012 2v8"></path>
+                                        <path d="M5 10V6a2 2 0 012-2h10a2 2 0 012 2v4"></path>
+                                    </svg>
+                                    ${property.details.bedrooms} Beds
+                                </div>
+                                <div class="property-feature">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M9 6h6M9 12h6M9 18h6M4 6h.01M4 12h.01M4 18h.01"></path>
+                                    </svg>
+                                    ${property.details.bathrooms} Baths
+                                </div>
+                                <div class="property-feature">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="3" y="3" width="18" height="18"></rect>
+                                    </svg>
+                                    ${property.details.sqft.toLocaleString()} sqft
+                                </div>
+                            </div>
+                            <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+                                <div style="font-size: 12px; color: var(--text-secondary);">ROI: <strong style="color: var(--success);">${property.flipEstimate?.roi}%</strong></div>
+                                <div style="font-size: 12px; color: var(--text-secondary);">Profit: <strong>${formatted.profitFormatted}</strong></div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Load statistics
+        async function loadStats() {
+            try {
+                const data = await propertyService.getProperties({ limit: 1000 });
+                const properties = data.properties || [];
+                
+                const total = properties.length;
+                const available = properties.filter(p => p.status === 'available').length;
+                const pending = properties.filter(p => p.status === 'pending').length;
+                const sold = properties.filter(p => p.status === 'sold').length;
+                const avgPrice = properties.length > 0 ? 
+                    properties.reduce((sum, p) => sum + (p.price?.list || 0), 0) / properties.length : 0;
+                
+                document.getElementById('stat-total').textContent = total.toLocaleString();
+                document.getElementById('stat-available').textContent = available.toLocaleString();
+                document.getElementById('stat-pending').textContent = pending.toLocaleString();
+                document.getElementById('stat-sold').textContent = sold.toLocaleString();
+                document.getElementById('stat-avg-price').textContent = propertyService.formatCurrency(avgPrice);
+            } catch (error) {
+                console.error('Failed to load stats:', error);
+            }
+        }
+
+        // Apply filters
+        window.applyFilters = async function() {
+            const filters = {};
+            
+            const status = document.getElementById('statusFilter').value;
+            const type = document.getElementById('typeFilter').value;
+            const neighborhood = document.getElementById('neighborhoodFilter').value;
+            const bedrooms = document.getElementById('bedroomsFilter').value;
+            
+            if (status) filters.status = status;
+            if (type) filters.type = type;
+            if (neighborhood) filters.neighborhood = neighborhood;
+            if (bedrooms) filters.minBedrooms = parseInt(bedrooms);
+            
+            currentFilters = filters;
+            await loadProperties(filters);
+        };
+
+        // View property detail
+        window.viewProperty = function(propertyId) {
+            window.location.href = `property-detail.html?id=${propertyId}`;
+        };
+
+        // Show error
+        function showError(message) {
+            const errorEl = document.getElementById('errorState');
+            const errorMessageEl = document.getElementById('errorMessage');
+            errorMessageEl.textContent = message;
+            errorEl.style.display = 'block';
+        }
         
         // Enhanced input styles
         const style = document.createElement('style');
