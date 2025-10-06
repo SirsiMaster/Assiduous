@@ -278,42 +278,41 @@
                                 <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
                             </svg>
                         </div>
-                        <div class="stat-value">3</div>
-                        <div class="stat-label">Active Listings</div>
+                        <div class="stat-value" id="recentlyViewedCount">0</div>
+                        <div class="stat-label">Recently Viewed</div>
                     </div>
 
                     <div class="stat-card">
                         <div class="stat-icon green">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
                             </svg>
                         </div>
-                        <div class="stat-value">12</div>
+                        <div class="stat-value" id="savedPropertiesCount">0</div>
                         <div class="stat-label">Saved Properties</div>
                     </div>
 
                     <div class="stat-card">
                         <div class="stat-icon yellow">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                                <circle cx="9" cy="7" r="4"></circle>
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                <line x1="16" y1="2" x2="16" y2="6"></line>
+                                <line x1="8" y1="2" x2="8" y2="6"></line>
+                                <line x1="3" y1="10" x2="21" y2="10"></line>
                             </svg>
                         </div>
-                        <div class="stat-value">5</div>
-                        <div class="stat-label">Agent Connections</div>
+                        <div class="stat-value" id="scheduledViewingsCount">0</div>
+                        <div class="stat-label">Scheduled Viewings</div>
                     </div>
 
                     <div class="stat-card">
                         <div class="stat-icon red">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <circle cx="12" cy="12" r="10"></circle>
-                                <line x1="12" y1="16" x2="12" y2="12"></line>
-                                <line x1="12" y1="8" x2="12" y2="8"></line>
+                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
                             </svg>
                         </div>
-                        <div class="stat-value">2</div>
-                        <div class="stat-label">Pending Actions</div>
+                        <div class="stat-value" id="contactRequestsCount">0</div>
+                        <div class="stat-label">Contact Requests</div>
                     </div>
                 </div>
 
@@ -384,30 +383,26 @@
 
                 <!-- Saved Properties -->
                 <div id="savedProperties" class="activity-panel">
-                    <div class="activity-card">
-                        <div class="activity-header">
-                            <h3 class="activity-title">789 Pine Rd</h3>
-                            <span class="activity-status status-active">Price Drop</span>
+                    <div id="savedPropertiesContent">
+                        <div style="text-align: center; padding: 40px; color: var(--text-secondary);">
+                            Loading saved properties...
                         </div>
-                        <div class="activity-details">
-                            <div class="detail-item">
-                                <span class="detail-label">New Price</span>
-                                <span class="detail-value">$399,000 (-$26,000)</span>
-                            </div>
-                            <div class="detail-item">
-                                <span class="detail-label">Property</span>
-                                <span class="detail-value">4 bed, 3 bath House</span>
-                            </div>
-                            <div class="detail-item">
-                                <span class="detail-label">Listed</span>
-                                <span class="detail-value">2 weeks ago</span>
-                            </div>
-                        </div>
-                        <div class="activity-actions">
-                            <button class="action-button">Remove</button>
-                            <button class="action-button">Set Alert</button>
-                            <button class="action-button primary">Schedule Viewing</button>
-                        </div>
+                    </div>
+                </div>
+
+                <!-- Recently Viewed Properties Section -->
+                <h2 style="font-size: 20px; font-weight: 700; color: var(--navy); margin-top: 48px; margin-bottom: 24px;">Recently Viewed Properties</h2>
+                <div id="recentlyViewedContent" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;">
+                    <div style="text-align: center; padding: 40px; color: var(--text-secondary); grid-column: 1 / -1;">
+                        Loading recently viewed properties...
+                    </div>
+                </div>
+
+                <!-- My Saved Properties Section -->
+                <h2 style="font-size: 20px; font-weight: 700; color: var(--navy); margin-top: 48px; margin-bottom: 24px;">My Saved Properties</h2>
+                <div id="mySavedPropertiesContent" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;">
+                    <div style="text-align: center; padding: 40px; color: var(--text-secondary); grid-column: 1 / -1;">
+                        Loading saved properties...
                     </div>
                 </div>
             </div>
@@ -416,9 +411,13 @@
         </div>
     </div>
 
-    <script>
+    <script type="module">
+        import { PropertyService } from '../assets/js/services/propertyservice.js';
+        
+        const propertyService = new PropertyService();
+
         // Activity Panel Switching
-        function showActivity(panel) {
+        window.showActivity = function(panel) {
             // Update tabs
             document.querySelectorAll('.activity-tab').forEach(tab => {
                 tab.classList.remove('active');
@@ -429,13 +428,195 @@
             document.querySelectorAll('.activity-panel').forEach(panel => {
                 panel.classList.remove('active');
             });
-            document.getElementById(`${panel}Activity`).classList.add('active');
-        }
+            
+            if (panel === 'saved') {
+                document.getElementById('savedProperties').classList.add('active');
+                loadSavedPropertiesTab();
+            } else {
+                document.getElementById(`${panel}Activity`).classList.add('active');
+            }
+        };
+
+        // Navigate to property detail
+        window.viewProperty = function(propertyId) {
+            window.location.href = `/client/property-detail.html?id=${propertyId}`;
+        };
+
+        // Remove from saved
+        window.removeSaved = function(propertyId) {
+            let savedProperties = JSON.parse(localStorage.getItem('savedProperties') || '[]');
+            savedProperties = savedProperties.filter(id => id !== propertyId);
+            localStorage.setItem('savedProperties', JSON.stringify(savedProperties));
+            
+            // Reload displays
+            loadSavedPropertiesTab();
+            loadMySavedProperties();
+            updateStats();
+        };
         
-        // Initialize any real-time updates or notifications
-        function initializeDashboard() {
-            // This would typically connect to your real-time services
-            console.log('Dashboard initialized');
+        // Initialize dashboard with real data
+        async function initializeDashboard() {
+            await updateStats();
+            await loadRecentlyViewed();
+            await loadMySavedProperties();
+            console.log('Dashboard initialized with real data');
+        }
+
+        // Update statistics
+        async function updateStats() {
+            const recentlyViewed = JSON.parse(localStorage.getItem('recentlyViewed') || '[]');
+            const savedProperties = JSON.parse(localStorage.getItem('savedProperties') || '[]');
+            const scheduledViewings = JSON.parse(localStorage.getItem('scheduledViewings') || '[]');
+            const contactRequests = JSON.parse(localStorage.getItem('contactRequests') || '[]');
+
+            document.getElementById('recentlyViewedCount').textContent = recentlyViewed.length;
+            document.getElementById('savedPropertiesCount').textContent = savedProperties.length;
+            document.getElementById('scheduledViewingsCount').textContent = scheduledViewings.length;
+            document.getElementById('contactRequestsCount').textContent = contactRequests.length;
+        }
+
+        // Load recently viewed properties
+        async function loadRecentlyViewed() {
+            const container = document.getElementById('recentlyViewedContent');
+            const recentlyViewed = JSON.parse(localStorage.getItem('recentlyViewed') || '[]');
+
+            if (recentlyViewed.length === 0) {
+                container.innerHTML = '<div style="text-align: center; padding: 40px; color: var(--text-secondary); grid-column: 1 / -1;">No recently viewed properties yet. <a href="/client/properties.html" style="color: var(--sky);">Browse properties</a></div>';
+                return;
+            }
+
+            try {
+                const propertyPromises = recentlyViewed.slice(0, 6).map(id => propertyService.getProperty(id));
+                const properties = await Promise.all(propertyPromises);
+                
+                container.innerHTML = properties.filter(p => p).map(property => renderPropertyCard(property)).join('');
+            } catch (error) {
+                console.error('Failed to load recently viewed:', error);
+                container.innerHTML = '<div style="text-align: center; padding: 40px; color: var(--danger); grid-column: 1 / -1;">Failed to load properties</div>';
+            }
+        }
+
+        // Load saved properties for the "My Saved Properties" section
+        async function loadMySavedProperties() {
+            const container = document.getElementById('mySavedPropertiesContent');
+            const savedPropertyIds = JSON.parse(localStorage.getItem('savedProperties') || '[]');
+
+            if (savedPropertyIds.length === 0) {
+                container.innerHTML = '<div style="text-align: center; padding: 40px; color: var(--text-secondary); grid-column: 1 / -1;">No saved properties yet. <a href="/client/properties.html" style="color: var(--sky);">Browse properties</a></div>';
+                return;
+            }
+
+            try {
+                const propertyPromises = savedPropertyIds.slice(0, 6).map(id => propertyService.getProperty(id));
+                const properties = await Promise.all(propertyPromises);
+                
+                container.innerHTML = properties.filter(p => p).map(property => renderPropertyCard(property, true)).join('');
+            } catch (error) {
+                console.error('Failed to load saved properties:', error);
+                container.innerHTML = '<div style="text-align: center; padding: 40px; color: var(--danger); grid-column: 1 / -1;">Failed to load properties</div>';
+            }
+        }
+
+        // Load saved properties tab
+        async function loadSavedPropertiesTab() {
+            const container = document.getElementById('savedPropertiesContent');
+            const savedPropertyIds = JSON.parse(localStorage.getItem('savedProperties') || '[]');
+
+            if (savedPropertyIds.length === 0) {
+                container.innerHTML = '<div style="text-align: center; padding: 40px; color: var(--text-secondary);">No saved properties yet. <a href="/client/properties.html" style="color: var(--sky);">Browse properties</a></div>';
+                return;
+            }
+
+            try {
+                container.innerHTML = '<div style="text-align: center; padding: 40px; color: var(--text-secondary);">Loading saved properties...</div>';
+                
+                const propertyPromises = savedPropertyIds.map(id => propertyService.getProperty(id));
+                const properties = await Promise.all(propertyPromises);
+                
+                container.innerHTML = properties.filter(p => p).map(property => {
+                    const formatted = propertyService.formatProperty(property);
+                    return `
+                        <div class="activity-card">
+                            <div class="activity-header">
+                                <h3 class="activity-title">${property.address?.street || 'Unknown Address'}</h3>
+                                <span class="activity-status status-active">${formatted.priceFormatted}</span>
+                            </div>
+                            <div class="activity-details">
+                                <div class="detail-item">
+                                    <span class="detail-label">Property</span>
+                                    <span class="detail-value">${property.details?.bedrooms} bed, ${property.details?.bathrooms} bath</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Est. Profit</span>
+                                    <span class="detail-value">${formatted.profitFormatted}</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">ROI</span>
+                                    <span class="detail-value">${property.flipEstimate?.roi || 0}%</span>
+                                </div>
+                            </div>
+                            <div class="activity-actions">
+                                <button class="action-button" onclick="removeSaved('${property.id}')">Remove</button>
+                                <button class="action-button primary" onclick="viewProperty('${property.id}')">View Details</button>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            } catch (error) {
+                console.error('Failed to load saved properties tab:', error);
+                container.innerHTML = '<div style="text-align: center; padding: 40px; color: var(--danger);">Failed to load properties</div>';
+            }
+        }
+
+        // Render property card
+        function renderPropertyCard(property, showRemoveButton = false) {
+            const formatted = propertyService.formatProperty(property);
+            
+            return `
+                <div style="background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); cursor: pointer; transition: all 0.2s;" 
+                     onmouseover="this.style.boxShadow='0 8px 16px rgba(0,0,0,0.1)'; this.style.transform='translateY(-2px)'"
+                     onmouseout="this.style.boxShadow='0 1px 3px rgba(0,0,0,0.1)'; this.style.transform='translateY(0)'">
+                    <div onclick="viewProperty('${property.id}')">
+                        <img src="${property.images?.[0]?.url || 'https://via.placeholder.com/400x300?text=No+Image'}" 
+                             alt="${formatted.fullAddress}"
+                             style="width: 100%; height: 180px; object-fit: cover;">
+                        <div style="padding: 16px;">
+                            <div style="font-size: 20px; font-weight: 700; color: var(--sky); margin-bottom: 8px;">
+                                ${formatted.priceFormatted}
+                            </div>
+                            <div style="font-size: 14px; font-weight: 600; color: var(--navy); margin-bottom: 4px;">
+                                ${property.address?.street}
+                            </div>
+                            <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 12px;">
+                                ${property.neighborhood}, PA
+                            </div>
+                            <div style="display: flex; gap: 12px; font-size: 13px; color: var(--text-primary); margin-bottom: 12px;">
+                                <span>🛏️ ${property.details?.bedrooms} beds</span>
+                                <span>🛁 ${property.details?.bathrooms} baths</span>
+                                <span>📐 ${property.details?.sqft?.toLocaleString()} sqft</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; padding-top: 12px; border-top: 1px solid var(--border); font-size: 12px;">
+                                <div style="text-align: center;">
+                                    <div style="color: var(--text-secondary);">ROI</div>
+                                    <div style="font-weight: 700; color: var(--success);">${property.flipEstimate?.roi}%</div>
+                                </div>
+                                <div style="text-align: center;">
+                                    <div style="color: var(--text-secondary);">Profit</div>
+                                    <div style="font-weight: 700; color: var(--success);">${formatted.profitFormatted}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    ${showRemoveButton ? `
+                    <div style="padding: 0 16px 16px;">
+                        <button onclick="event.stopPropagation(); removeSaved('${property.id}')" 
+                                style="width: 100%; padding: 8px; background: white; border: 1px solid var(--border); border-radius: 6px; color: var(--text-primary); font-weight: 500; cursor: pointer;">
+                            Remove from Saved
+                        </button>
+                    </div>
+                    ` : ''}
+                </div>
+            `;
         }
         
         // Run on load
