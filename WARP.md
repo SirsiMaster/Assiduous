@@ -212,7 +212,236 @@ After completing QA/QC, provide a report like this:
 **This QA/QC assessment is MANDATORY before any completion claim.**
 **Perform it EVERY TIME without exception.**
 
-**These rules apply to ALL repositories and ALL development work, current and future.**
+### **RULE 5: MANDATORY DEVELOPMENT PIPELINE (NEVER SKIP)**
+**ALL code changes MUST flow through this pipeline. NO EXCEPTIONS.**
+
+#### **A. Pipeline Flow (STRICT ORDER)**
+```
+DEV → TEST → STAGING → GITHUB → FIREBASE PRODUCTION
+```
+
+**Each stage is a mandatory checkpoint. You CANNOT skip stages.**
+
+#### **B. Environment Specifications**
+
+| Environment | Port | Directory | Purpose | Server URL |
+|-------------|------|-----------|---------|------------|
+| **DEV** | 8081 | `environments/dev/` | Active development, frequent changes | http://localhost:8081 |
+| **TEST** | 8082 | `environments/test/` | Testing and validation | http://localhost:8082 |
+| **STAGING** | 8083 | `environments/staging/` | Final verification before production | http://localhost:8083 |
+| **PROD** | N/A | `firebase-migration-package/assiduous-build/` | Live production site | https://assiduousflip.web.app |
+
+#### **C. Development Workflow (MANDATORY STEPS)**
+
+**Step 1: DEV Environment**
+1. Make ALL changes in `environments/dev/` directory
+2. Start dev server: `./scripts/dev-server.sh start`
+3. Test changes at http://localhost:8081
+4. Run RULE 4 QA/QC assessment (full browser testing)
+5. Fix ALL bugs found
+6. Document changes in commit message
+
+**Step 2: Promote DEV → TEST**
+1. Run promotion script: `./scripts/promote.sh dev-to-test`
+2. Review changes to be promoted
+3. Type `yes` to confirm promotion
+4. Test at http://localhost:8082
+5. Run RULE 4 QA/QC assessment again
+6. Verify no regressions introduced
+
+**Step 3: Promote TEST → STAGING**
+1. Run promotion script: `./scripts/promote.sh test-to-staging`
+2. Review changes to be promoted
+3. Type `yes` to confirm promotion
+4. Test at http://localhost:8083
+5. Run RULE 4 QA/QC assessment final time
+6. Verify ready for production
+
+**Step 4: Promote STAGING → PROD**
+1. Run promotion script: `./scripts/promote.sh staging-to-prod`
+2. Review changes to be promoted
+3. Type `yes` to confirm promotion
+4. Changes copied to `firebase-migration-package/assiduous-build/`
+5. Commit to GitHub: `git add . && git commit -m "..." && git push`
+
+**Step 5: Deploy PROD → Firebase**
+1. Run deployment script: `./scripts/promote.sh deploy`
+2. Complete pre-deployment checklist:
+   - [ ] Tested in staging
+   - [ ] Verified all pages load
+   - [ ] Verified all functionality works
+   - [ ] Screenshots taken
+3. Type `DEPLOY TO PRODUCTION` (exact text) to confirm
+4. Firebase deploys automatically
+5. Verify at https://assiduousflip.web.app
+6. Run post-deployment smoke tests
+
+#### **D. Pipeline Rules (ABSOLUTE)**
+
+**NEVER:**
+- ❌ Edit files directly in `test/`, `staging/`, or `assiduous-build/`
+- ❌ Skip environments (DEV → PROD is FORBIDDEN)
+- ❌ Deploy without testing in all environments
+- ❌ Promote with known bugs
+- ❌ Deploy without Git commit
+- ❌ Make changes directly in production
+- ❌ Bypass approval gates
+
+**ALWAYS:**
+- ✅ Start in DEV environment
+- ✅ Test in each environment before promoting
+- ✅ Run QA/QC at each stage
+- ✅ Document what changed
+- ✅ Get approval before promoting
+- ✅ Commit to GitHub before Firebase deploy
+- ✅ Verify deployment succeeded
+
+#### **E. Validation Requirements Per Stage**
+
+**DEV Stage Validation:**
+- ✅ Code compiles/runs without errors
+- ✅ All new features work as expected
+- ✅ No console errors in browser DevTools
+- ✅ All links and navigation work
+- ✅ Mobile responsive design works
+
+**TEST Stage Validation:**
+- ✅ All DEV features still work
+- ✅ No regressions in existing features
+- ✅ Integration with existing code works
+- ✅ API calls succeed
+- ✅ Data persists correctly
+
+**STAGING Stage Validation:**
+- ✅ Production-ready quality
+- ✅ All user workflows complete end-to-end
+- ✅ Performance acceptable (page load < 3s)
+- ✅ No known bugs
+- ✅ Ready to show stakeholders
+
+**PROD Stage Validation:**
+- ✅ Deployed successfully to Firebase
+- ✅ All pages accessible at production URL
+- ✅ All functionality works in production
+- ✅ No errors in production logs
+- ✅ Analytics tracking works
+
+#### **F. Emergency Hotfix Process**
+
+For CRITICAL production bugs only:
+
+1. Create hotfix in DEV
+2. Test in DEV (expedited but thorough)
+3. **MAY skip TEST if truly urgent**
+4. Test in STAGING (mandatory)
+5. Deploy to PROD
+6. Document why TEST was skipped
+7. Backfill TEST environment after hotfix
+
+**Criteria for emergency hotfix:**
+- Production is completely broken
+- Security vulnerability discovered
+- Data loss occurring
+- Revenue-impacting bug
+
+**NOT emergency hotfixes:**
+- UI cosmetic issues
+- Feature requests
+- Performance optimization
+- Nice-to-have improvements
+
+#### **G. Server Management**
+
+**Start all servers:**
+```bash
+./scripts/dev-server.sh start
+```
+
+**Check server status:**
+```bash
+./scripts/dev-server.sh status
+```
+
+**Stop all servers:**
+```bash
+./scripts/dev-server.sh stop
+```
+
+**Restart servers:**
+```bash
+./scripts/dev-server.sh restart
+```
+
+#### **H. Commit & Promotion Documentation**
+
+When promoting through pipeline, document:
+
+```markdown
+## Promotion: DEV → TEST
+**Date**: 2025-10-06
+**Changes**:
+- Added PropertyService with getProperty() method
+- Created client properties browse page
+- Created client property detail page
+
+**DEV Testing**:
+✅ All pages load without errors
+✅ Browser console clean
+✅ All links work
+✅ Mobile responsive verified
+
+**TEST Verification**:
+✅ No regressions detected
+✅ Integration with existing code successful
+✅ Ready for STAGING promotion
+```
+
+#### **I. Pipeline Violations**
+
+If pipeline is bypassed:
+- 🚨 Changes may break production
+- 🚨 No way to verify changes work
+- 🚨 No rollback plan
+- 🚨 No audit trail
+- 🚨 Stakeholder trust damaged
+
+**If you bypass pipeline:**
+1. Stop immediately
+2. Revert unauthorized changes
+3. Start over from DEV
+4. Follow pipeline correctly
+
+#### **J. GitHub as Source of Truth**
+
+**CRITICAL: GitHub is the single source of truth**
+
+- All code in `environments/dev/` is work-in-progress
+- All code in `firebase-migration-package/assiduous-build/` is committed to GitHub
+- GitHub main branch = what's in production
+- Never deploy to Firebase without pushing to GitHub first
+
+**Deployment flow:**
+```
+DEV → TEST → STAGING → assiduous-build → GitHub → Firebase
+```
+
+#### **K. CI/CD Integration**
+
+Once changes are in GitHub:
+
+1. **GitHub Actions triggered automatically**
+2. **Automated tests run** (when available)
+3. **Firebase deployment happens** (manual trigger currently)
+4. **Deployment verification** (manual currently)
+5. **Metrics updated** (automated)
+
+**Future automation goals:**
+- Automated testing on GitHub push
+- Automated Firebase deployment on main branch
+- Automated smoke tests post-deployment
+- Automated rollback on failure
+
+**These pipeline rules apply to ALL repositories and ALL development work, current and future.**
 
 ---
 
