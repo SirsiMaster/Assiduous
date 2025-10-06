@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Agent Dashboard — Assiduous</title>
+    
+    <!-- Assiduous Design System -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="/assets/vendor/sirsimaster-ui/sirsimaster-ui.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fontsource/geist-sans@5.0.6/latin.css" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <link rel="stylesheet" href="/assets/css/admin-layout.css">
+    
+    <style>
+        /* Agent Dashboard Specific Styles */
+        .dashboard-content {
+            padding: var(--space-xl);
+            overflow-y: auto;
+            background: var(--gray-50);
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: var(--space-lg);
+            margin-bottom: var(--space-2xl);
+        }
+
+        .stat-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: var(--space-lg);
+            transition: all 0.2s;
+        }
+
+        .stat-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .stat-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: var(--space-md);
+        }
+
+        .stat-icon.blue { background: rgba(96, 163, 217, 0.1); color: var(--sky); }
+        .stat-icon.green { background: rgba(5, 150, 105, 0.1); color: var(--success); }
+        .stat-icon.yellow { background: rgba(255, 217, 64, 0.1); color: var(--warning); }
+        .stat-icon.purple { background: rgba(139, 92, 246, 0.1); color: #8B5CF6; }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: var(--space-xs);
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+            margin-bottom: var(--space-sm);
+        }
+
+        .stat-change {
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .stat-change.up { color: var(--success); }
+        .stat-change.down { color: var(--danger); }
+
+        /* Content Grid */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: var(--space-xl);
+            margin-bottom: var(--space-xl);
+        }
+
+        /* Section Card */
+        .section-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+        }
+
+        .section-header {
+            padding: var(--space-md) var(--space-lg);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .section-action {
+            padding: var(--space-xs) var(--space-sm);
+            background: var(--sky);
+            color: var(--white);
+            border: none;
+            border-radius: var(--radius);
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s;
+            text-decoration: none;
+        }
+
+        .section-action:hover {
+            background: #4A8BC2;
+        }
+
+        /* Properties Grid */
+        .properties-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: var(--space-md);
+            padding: var(--space-lg);
+        }
+
+        .property-card {
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .property-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .property-image {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            background: var(--gray-100);
+        }
+
+        .property-info {
+            padding: var(--space-md);
+        }
+
+        .property-price {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--sky);
+            margin-bottom: var(--space-xs);
+        }
+
+        .property-address {
+            font-size: 14px;
+            color: var(--dark);
+            margin-bottom: var(--space-sm);
+        }
+
+        .property-meta {
+            display: flex;
+            gap: var(--space-md);
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        /* Leads List */
+        .leads-list {
+            padding: var(--space-lg);
+        }
+
+        .lead-item {
+            padding: var(--space-md);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .lead-item:last-child {
+            border-bottom: none;
+        }
+
+        .lead-info h4 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: var(--space-xs);
+        }
+
+        .lead-info p {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .lead-badge {
+            padding: var(--space-xs) var(--space-sm);
+            border-radius: var(--radius);
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .lead-badge.hot { background: rgba(220, 38, 38, 0.1); color: var(--danger); }
+        .lead-badge.warm { background: rgba(255, 217, 64, 0.1); color: var(--warning); }
+        .lead-badge.cold { background: rgba(96, 163, 217, 0.1); color: var(--sky); }
+
+        /* Calendar */
+        .calendar-grid {
+            padding: var(--space-lg);
+        }
+
+        .calendar-day {
+            padding: var(--space-sm);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            gap: var(--space-sm);
+        }
+
+        .calendar-day:last-child {
+            border-bottom: none;
+        }
+
+        .day-number {
+            font-weight: 600;
+            color: var(--dark);
+            min-width: 50px;
+        }
+
+        .day-events {
+            flex: 1;
+        }
+
+        .event-item {
+            font-size: 13px;
+            padding: var(--space-xs);
+            margin-bottom: var(--space-xs);
+            background: var(--gray-50);
+            border-radius: var(--radius);
+        }
+
+        .event-time {
+            color: var(--text-secondary);
+            margin-right: var(--space-xs);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .properties-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Agent Sidebar -->
+    <div class="admin-layout">
+        <aside class="admin-sidebar">
+            <div class="sidebar-brand">
+                <h1>Assiduous</h1>
+                <span class="badge">Agent</span>
+            </div>
+
+            <nav class="sidebar-nav">
+                <a href="/agent/dashboard.html" class="nav-item active">
+                    <span class="icon">📊</span>
+                    <span class="label">Dashboard</span>
+                </a>
+                <a href="/agent/listings.html" class="nav-item">
+                    <span class="icon">🏠</span>
+                    <span class="label">My Listings</span>
+                </a>
+                <a href="/agent/clients.html" class="nav-item">
+                    <span class="icon">👥</span>
+                    <span class="label">My Clients</span>
+                </a>
+                <a href="/agent/leads.html" class="nav-item">
+                    <span class="icon">🎯</span>
+                    <span class="label">Leads</span>
+                </a>
+                <div class="nav-divider"></div>
+                <a href="/admin/dashboard.html" class="nav-item">
+                    <span class="icon">⚙️</span>
+                    <span class="label">Admin Portal</span>
+                </a>
+                <a href="/" class="nav-item">
+                    <span class="icon">🏠</span>
+                    <span class="label">Main Site</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="dashboard-content">
+            <!-- Page Header -->
+            <div class="page-header" style="margin-bottom: var(--space-2xl);">
+                <div>
+                    <h1 style="font-size: 28px; font-weight: 700; margin-bottom: var(--space-xs);">Agent Dashboard</h1>
+                    <p style="color: var(--text-secondary);">Welcome back, Sarah Johnson</p>
+                </div>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon blue">🏠</div>
+                    <div class="stat-value">24</div>
+                    <div class="stat-label">Active Listings</div>
+                    <div class="stat-change up">↑ 3 this month</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon green">👥</div>
+                    <div class="stat-value">38</div>
+                    <div class="stat-label">Active Clients</div>
+                    <div class="stat-change up">↑ 5 new</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon yellow">💰</div>
+                    <div class="stat-value">$42.5K</div>
+                    <div class="stat-label">MTD Commission</div>
+                    <div class="stat-change up">↑ 18%</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon purple">🎯</div>
+                    <div class="stat-value">12</div>
+                    <div class="stat-label">New Leads</div>
+                    <div class="stat-change down">↓ 2 vs last week</div>
+                </div>
+            </div>
+
+            <!-- Content Grid -->
+            <div class="content-grid">
+                <!-- Recent Listings -->
+                <div class="section-card">
+                    <div class="section-header">
+                        <h2 class="section-title">Recent Listings</h2>
+                        <a href="/agent/listings.html" class="section-action">View All</a>
+                    </div>
+                    <div class="properties-grid">
+                        <div class="property-card">
+                            <img src="https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=400" alt="Property" class="property-image">
+                            <div class="property-info">
+                                <div class="property-price">$425,000</div>
+                                <div class="property-address">123 Oak Street, Austin, TX</div>
+                                <div class="property-meta">
+                                    <span>3 beds</span>
+                                    <span>2 baths</span>
+                                    <span>1,800 sq ft</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="property-card">
+                            <img src="https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=400" alt="Property" class="property-image">
+                            <div class="property-info">
+                                <div class="property-price">$595,000</div>
+                                <div class="property-address">456 Pine Avenue, Austin, TX</div>
+                                <div class="property-meta">
+                                    <span>4 beds</span>
+                                    <span>3 baths</span>
+                                    <span>2,400 sq ft</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="property-card">
+                            <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=400" alt="Property" class="property-image">
+                            <div class="property-info">
+                                <div class="property-price">$525,000</div>
+                                <div class="property-address">789 Maple Drive, Austin, TX</div>
+                                <div class="property-meta">
+                                    <span>3 beds</span>
+                                    <span>2.5 baths</span>
+                                    <span>2,100 sq ft</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sidebar -->
+                <div>
+                    <!-- New Leads -->
+                    <div class="section-card" style="margin-bottom: var(--space-xl);">
+                        <div class="section-header">
+                            <h2 class="section-title">New Leads</h2>
+                            <a href="/agent/leads.html" class="section-action">View All</a>
+                        </div>
+                        <div class="leads-list">
+                            <div class="lead-item">
+                                <div class="lead-info">
+                                    <h4>John Smith</h4>
+                                    <p>Looking for 3BR in Downtown</p>
+                                </div>
+                                <span class="lead-badge hot">Hot</span>
+                            </div>
+                            <div class="lead-item">
+                                <div class="lead-info">
+                                    <h4>Emily Davis</h4>
+                                    <p>Interested in 425K range</p>
+                                </div>
+                                <span class="lead-badge warm">Warm</span>
+                            </div>
+                            <div class="lead-item">
+                                <div class="lead-info">
+                                    <h4>Michael Brown</h4>
+                                    <p>First-time buyer</p>
+                                </div>
+                                <span class="lead-badge cold">Cold</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Upcoming Viewings -->
+                    <div class="section-card">
+                        <div class="section-header">
+                            <h2 class="section-title">Upcoming Viewings</h2>
+                        </div>
+                        <div class="calendar-grid">
+                            <div class="calendar-day">
+                                <div class="day-number">Today</div>
+                                <div class="day-events">
+                                    <div class="event-item">
+                                        <span class="event-time">2:00 PM</span>
+                                        <span>123 Oak Street</span>
+                                    </div>
+                                    <div class="event-item">
+                                        <span class="event-time">4:30 PM</span>
+                                        <span>456 Pine Avenue</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="calendar-day">
+                                <div class="day-number">Tomorrow</div>
+                                <div class="day-events">
+                                    <div class="event-item">
+                                        <span class="event-time">10:00 AM</span>
+                                        <span>789 Maple Drive</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="calendar-day">
+                                <div class="day-number">Wed</div>
+                                <div class="day-events">
+                                    <div class="event-item">
+                                        <span class="event-time">3:00 PM</span>
+                                        <span>321 Elm Street</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>
