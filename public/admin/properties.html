@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Properties Management - Assiduous Realty Admin</title>
+    
+    <!-- Assiduous Design System -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="/assets/vendor/sirsimaster-ui/sirsimaster-ui.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <link rel="stylesheet" href="/assets/css/admin-layout.css">
+    <!-- Removed old Sirsi UI -->
+    
+    <style>
+        /* Admin Layout - Consistent across all admin pages */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: "Geist Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+            background: var(--white);
+        }
+
+        .admin-wrapper {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 240px;
+            background: var(--navy);
+            color: var(--white);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-header {
+            padding: var(--space-lg);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .sidebar-logo {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            color: var(--white);
+            text-decoration: none;
+        }
+
+        .sidebar-logo svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .sidebar-logo-text {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: var(--space-md) 0;
+        }
+
+        .nav-section {
+            margin-bottom: var(--space-lg);
+        }
+
+        .nav-section-title {
+            padding: 0 var(--space-lg);
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            opacity: 0.6;
+            margin-bottom: var(--space-sm);
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: var(--space-sm) var(--space-lg);
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.15s;
+        }
+
+        .nav-item:hover {
+            background: rgba(255,255,255,0.05);
+            color: var(--white);
+        }
+
+        .nav-item.active {
+            background: var(--sky);
+            color: var(--white);
+        }
+
+        .nav-icon {
+            width: 18px;
+            height: 18px;
+            opacity: 0.8;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Top Bar */
+        .topbar {
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            padding: var(--space-md) var(--space-xl);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .topbar-left {
+            display: flex;
+            align-items: center;
+            gap: var(--space-lg);
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            background: var(--gray-50);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: var(--space-sm) var(--space-md);
+            min-width: 300px;
+        }
+
+        .search-input {
+            flex: 1;
+            border: none;
+            background: none;
+            font-size: 14px;
+            outline: none;
+        }
+        
+        /* Enhanced select styles */
+        .sirsi-select {
+            padding: var(--space-xs) var(--space-sm);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            font-size: 14px;
+            background: var(--white);
+            min-width: 150px;
+            transition: all 0.15s;
+            cursor: pointer;
+        }
+        
+        .sirsi-select:hover {
+            border-color: var(--sky);
+        }
+        
+        .sirsi-select:focus {
+            outline: none;
+            border-color: var(--sky);
+            box-shadow: 0 0 0 3px rgba(91, 165, 217, 0.1);
+        }
+
+        .topbar-actions {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+        }
+
+        /* Removed legacy button styles - now using sirsi-button */
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-weight: 600;
+            font-size: 12px;
+        }
+
+        /* Page Content */
+        .page-content {
+            flex: 1;
+            padding: var(--space-xl);
+            overflow-y: auto;
+            background: var(--gray-50);
+        }
+
+        .page-header {
+            margin-bottom: var(--space-xl);
+        }
+
+        .page-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: var(--space-xs);
+        }
+
+        .page-subtitle {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--space-md);
+            margin-bottom: var(--space-xl);
+        }
+
+        .stat-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: var(--space-lg);
+            transition: all 0.2s;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: var(--space-xs);
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+        }
+
+        /* Filters Bar */
+        .filters-bar {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: var(--space-md);
+            margin-bottom: var(--space-lg);
+            display: flex;
+            gap: var(--space-md);
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-xs);
+        }
+
+        .filter-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Filter select now uses sirsi-select class defined above */
+
+        /* Properties Grid */
+        .properties-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: var(--space-lg);
+        }
+
+        .property-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .property-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .property-image {
+            width: 100%;
+            height: 180px;
+            background: var(--gradient);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .property-image svg {
+            width: 48px;
+            height: 48px;
+            stroke: var(--white);
+            opacity: 0.8;
+        }
+
+        /* Status badges now use sirsi-badge component */
+        .property-status {
+            position: absolute;
+            top: var(--space-sm);
+            right: var(--space-sm);
+        }
+
+        .property-details {
+            padding: var(--space-md);
+        }
+
+        .property-price {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: var(--space-xs);
+        }
+
+        .property-address {
+            font-size: 14px;
+            color: var(--text-primary);
+            margin-bottom: var(--space-sm);
+        }
+
+        .property-features {
+            display: flex;
+            gap: var(--space-md);
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .property-feature {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+            
+            .properties-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="/assets/vendor/sirsimaster-ui/sirsimaster-ui.css">
+    <link rel="stylesheet" href="/assets/css/button-override.css">
+    
+    <script>
+        // Ensure button styles are loaded
+        (function() {
+            const checkButtons = function() {
+                const testBtn = document.querySelector('button');
+                if (testBtn) {
+                    const styles = window.getComputedStyle(testBtn);
+                    if (styles.borderStyle === 'outset' || styles.backgroundColor.includes('192')) {
+                        // Force reload override styles
+                        const link = document.querySelector('link[href*="button-override"]');
+                        if (link) {
+                            link.href = link.href.split('?')[0] + '?v=' + Date.now();
+                        }
+                    }
+                }
+            };
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', checkButtons);
+            } else {
+                checkButtons();
+            }
+        })();
+    </script>
+</head>
+<body>
+    <div class="admin-wrapper">
+        
+        <!-- Sidebar Component -->
+        <aside class="sidebar" id="sidebar-root" data-active="properties">
+<div class="sidebar-header">
+  <a href="dashboard.html" class="sidebar-logo">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+      <polyline points="9 22 9 12 15 12 15 22"></polyline>
+    </svg>
+    <span class="sidebar-logo-text">Admin Portal</span>
+  </a>
+</div>
+
+<nav class="sidebar-nav">
+  <div class="nav-section">
+    <div class="nav-section-title">Main</div>
+    <a href="dashboard.html" class="nav-item" data-key="dashboard">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="3" y="3" width="7" height="7"></rect>
+        <rect x="14" y="3" width="7" height="7"></rect>
+        <rect x="14" y="14" width="7" height="7"></rect>
+        <rect x="3" y="14" width="7" height="7"></rect>
+      </svg>
+      Dashboard
+    </a>
+    <a href="analytics.html" class="nav-item" data-key="analytics">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="12" y1="20" x2="12" y2="10"></line>
+        <line x1="18" y1="20" x2="18" y2="4"></line>
+        <line x1="6" y1="20" x2="6" y2="16"></line>
+      </svg>
+      Realty Analytics
+    </a>
+    <a href="market.html" class="nav-item" data-key="market">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+      </svg>
+      Market Analysis
+    </a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">Management</div>
+    <a href="properties.html" class="nav-item" data-key="properties" class="nav-item active">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+      </svg>
+      Properties
+    </a>
+    <a href="agents.html" class="nav-item" data-key="agents">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+        <circle cx="9" cy="7" r="4"></circle>
+      </svg>
+      Agents
+    </a>
+    <a href="clients.html" class="nav-item" data-key="clients">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+        <circle cx="12" cy="7" r="4"></circle>
+      </svg>
+      Clients
+    </a>
+    <a href="transactions.html" class="nav-item" data-key="transactions">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="12" y1="1" x2="12" y2="23"></line>
+        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+      </svg>
+      Transactions
+    </a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">Development</div>
+    <a href="development/dashboard.html" class="nav-item" data-key="dev-dashboard">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="16 18 22 12 16 6"></polyline>
+        <polyline points="8 6 2 12 8 18"></polyline>
+      </svg>
+      Dev Dashboard
+    </a>
+    <a href="development/costs.html" class="nav-item" data-key="dev-costs">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="12" y1="1" x2="12" y2="23"></line>
+        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+      </svg>
+      Dev Costs
+    </a>
+    <a href="development/analytics.html" class="nav-item" data-key="dev-analytics">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M22 2L11 13"></path>
+        <path d="M22 2L15 22L11 13L2 9L22 2Z"></path>
+      </svg>
+      Dev Analytics
+    </a>
+    <a href="development/reports.html" class="nav-item" data-key="dev-reports">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+        <polyline points="14 2 14 8 20 8"></polyline>
+        <line x1="16" y1="13" x2="8" y2="13"></line>
+        <line x1="16" y1="17" x2="8" y2="17"></line>
+      </svg>
+      Dev Reports
+    </a>
+    <a href="development/docs.html" class="nav-item" data-key="dev-docs">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+      </svg>
+      Dev Docs
+    </a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">System</div>
+    <a href="knowledge-base.html" class="nav-item" data-key="knowledge">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+      </svg>
+      Knowledge Base
+    </a>
+    <a href="contracts/index.html" class="nav-item" data-key="contracts">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+        <polyline points="14 2 14 8 20 8"></polyline>
+      </svg>
+      Contracts
+    </a>
+    <a href="settings.html" class="nav-item" data-key="settings">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="3"></circle>
+        <path d="M12 1v6m0 6v6m4.22-13.22l4.24 4.24M1.54 1.54l4.24 4.24M18.46 18.46l4.24 4.24M1.54 18.46l4.24-4.24"></path>
+      </svg>
+      Settings
+    </a>
+  </div>
+</nav>
+</aside>
+        <main class="main-content">
+            <!-- Standardized Admin Header -->
+            <header id="admin-header-root" 
+                    data-title="Properties Management" 
+                    data-subtitle="Manage all property listings and their details"
+                    data-search-placeholder="Search properties..."
+                    data-actions='[{"label":"Add Property","icon":"<line x1=\"12\" y1=\"5\" x2=\"12\" y2=\"19\"></line><line x1=\"5\" y1=\"12\" x2=\"19\" y2=\"12\"></line>","primary":true,"onclick":"window.location.href=\'property-form.html\'"}]'></header>
+
+            <!-- Page Content -->
+            <div class="page-content">
+
+                <!-- Stats Cards -->
+                <div class="stats-grid" id="statsGrid">
+                    <div class="stat-card sirsi-card sm-card--elevated">
+                        <div class="stat-value" id="stat-total">-</div>
+                        <div class="stat-label">Total Properties</div>
+                    </div>
+                    <div class="stat-card sirsi-card sm-card--elevated">
+                        <div class="stat-value" id="stat-available">-</div>
+                        <div class="stat-label">Available</div>
+                    </div>
+                    <div class="stat-card sirsi-card sm-card--elevated">
+                        <div class="stat-value" id="stat-pending">-</div>
+                        <div class="stat-label">Pending</div>
+                    </div>
+                    <div class="stat-card sirsi-card sm-card--elevated">
+                        <div class="stat-value" id="stat-sold">-</div>
+                        <div class="stat-label">Sold</div>
+                    </div>
+                    <div class="stat-card sirsi-card sm-card--elevated">
+                        <div class="stat-value" id="stat-avg-price">-</div>
+                        <div class="stat-label">Avg. Price</div>
+                    </div>
+                </div>
+
+                <!-- Filters -->
+                <div class="filters-bar sm-card">
+                    <div class="filter-group">
+                        <label class="filter-label">Status</label>
+                        <select class="sirsi-select" id="statusFilter">
+                            <option value="">All Status</option>
+                            <option value="available">Available</option>
+                            <option value="pending">Pending</option>
+                            <option value="sold">Sold</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">Type</label>
+                        <select class="sirsi-select" id="typeFilter">
+                            <option value="">All Types</option>
+                            <option value="single_family">Single Family</option>
+                            <option value="townhouse">Townhouse</option>
+                            <option value="condo">Condo</option>
+                            <option value="multi_family">Multi Family</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">Neighborhood</label>
+                        <select class="sirsi-select" id="neighborhoodFilter">
+                            <option value="">All Neighborhoods</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">Bedrooms</label>
+                        <select class="sirsi-select" id="bedroomsFilter">
+                            <option value="">Any</option>
+                            <option value="1">1+</option>
+                            <option value="2">2+</option>
+                            <option value="3">3+</option>
+                            <option value="4">4+</option>
+                        </select>
+                    </div>
+                    <div style="margin-left: auto;">
+                        <sirsi-button variant="secondary" size="sm" onclick="applyFilters()" icon-leading="<svg width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'><line x1='4' y1='21' x2='4' y2='14'></line><line x1='4' y1='10' x2='4' y2='3'></line><line x1='12' y1='21' x2='12' y2='12'></line><line x1='12' y1='8' x2='12' y2='3'></line><line x1='20' y1='21' x2='20' y2='16'></line><line x1='20' y1='12' x2='20' y2='3'></line><line x1='1' y1='14' x2='7' y2='14'></line><line x1='9' y1='8' x2='15' y2='8'></line><line x1='17' y1='16' x2='23' y2='16'></line></svg>">
+                            Apply Filters
+                        </sirsi-button>
+                    </div>
+                </div>
+
+                <!-- Loading State -->
+                <div id="loadingState" style="text-align: center; padding: 60px; color: var(--text-secondary);">
+                    Loading properties...
+                </div>
+
+                <!-- Error State -->
+                <div id="errorState" style="display: none; background: #fee; border: 1px solid #fcc; border-radius: 8px; padding: 16px; color: #c00; margin-bottom: 24px;">
+                    <span id="errorMessage"></span>
+                </div>
+
+                <!-- Properties Grid -->
+                <div class="properties-grid" id="propertiesGrid" style="display: none;">
+                    <!-- Properties will be dynamically loaded here -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Property Detail Modal -->
+    <sirsi-modal id="propertyModal" size="lg">
+        <div slot="header">
+            <h2 style="margin: 0; font-size: 20px; font-weight: 600;">Property Details</h2>
+        </div>
+        <div slot="body">
+            <div id="modalPropertyContent">
+                <!-- Dynamic content will be inserted here -->
+            </div>
+        </div>
+        <div slot="footer" style="display: flex; gap: 12px; justify-content: flex-end;">
+            <button class="sm-btn sm-btn-secondary">
+                Cancel
+            </button>
+            <sirsi-button variant="primary" size="sm" icon-leading="<svg width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'><path d='M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7'></path><path d='M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z'></path></svg>">
+                Edit Property
+            </sirsi-button>
+            <sirsi-button variant="danger" size="sm" icon-leading="<svg width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'><polyline points='3 6 5 6 21 6'></polyline><path d='M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2'></path></svg>">
+                Delete
+            </sirsi-button>
+        </div>
+    </sirsi-modal>
+
+    <script>
+        // Header Actions for Properties
+        const HeaderActions = {
+            addProperty: function() {
+                // Show add property modal
+                showAddPropertyModal();
+            }
+        };
+
+        // Show property details modal
+        function showPropertyModal(propertyData) {
+            const modal = document.getElementById('propertyModal');
+            const content = document.getElementById('modalPropertyContent');
+            
+            // Generate property detail HTML
+            content.innerHTML = `
+                <div style="display: grid; gap: 20px;">
+                    <img src="${propertyData.image}" alt="Property" style="width: 100%; height: 300px; object-fit: cover; border-radius: 8px;">
+                    <div>
+                        <h3 style="font-size: 24px; font-weight: 600; margin-bottom: 8px;">${propertyData.price}</h3>
+                        <p style="color: var(--text-secondary); margin-bottom: 16px;">${propertyData.address}</p>
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;">
+                            <div style="padding: 12px; background: var(--gray-50); border-radius: 8px;">
+                                <div style="font-size: 18px; font-weight: 600;">${propertyData.beds}</div>
+                                <div style="font-size: 12px; color: var(--text-secondary);">Bedrooms</div>
+                            </div>
+                            <div style="padding: 12px; background: var(--gray-50); border-radius: 8px;">
+                                <div style="font-size: 18px; font-weight: 600;">${propertyData.baths}</div>
+                                <div style="font-size: 12px; color: var(--text-secondary);">Bathrooms</div>
+                            </div>
+                            <div style="padding: 12px; background: var(--gray-50); border-radius: 8px;">
+                                <div style="font-size: 18px; font-weight: 600;">${propertyData.sqft}</div>
+                                <div style="font-size: 12px; color: var(--text-secondary);">Sq Ft</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            modal.open = true;
+        }
+        
+        function closePropertyModal() {
+            const modal = document.getElementById('propertyModal');
+            modal.open = false;
+        }
+        
+        function showAddPropertyModal() {
+            const modal = document.getElementById('propertyModal');
+            const content = document.getElementById('modalPropertyContent');
+            
+            // Generate add property form
+            content.innerHTML = `
+                <form style="display: grid; gap: 16px;">
+                    <div>
+                        <label style="display: block; margin-bottom: 4px; font-size: 14px; font-weight: 500;">Property Address</label>
+                        <input type="text" class="sirsi-input" placeholder="Enter property address" style="width: 100%;">
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                        <div>
+                            <label style="display: block; margin-bottom: 4px; font-size: 14px; font-weight: 500;">Price</label>
+                            <input type="text" class="sirsi-input" placeholder="$0.00">
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 4px; font-size: 14px; font-weight: 500;">Property Type</label>
+                            <select class="sirsi-select" style="width: 100%;">
+                                <option>House</option>
+                                <option>Apartment</option>
+                                <option>Condo</option>
+                                <option>Townhouse</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;">
+                        <div>
+                            <label style="display: block; margin-bottom: 4px; font-size: 14px; font-weight: 500;">Bedrooms</label>
+                            <input type="number" class="sirsi-input" placeholder="0">
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 4px; font-size: 14px; font-weight: 500;">Bathrooms</label>
+                            <input type="number" class="sirsi-input" placeholder="0">
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 4px; font-size: 14px; font-weight: 500;">Sq Ft</label>
+                            <input type="number" class="sirsi-input" placeholder="0">
+                        </div>
+                    </div>
+                    <div>
+                        <label style="display: block; margin-bottom: 4px; font-size: 14px; font-weight: 500;">Description</label>
+                        <textarea class="sirsi-input" rows="4" placeholder="Enter property description" style="width: 100%; resize: vertical;"></textarea>
+                    </div>
+                </form>
+            `;
+            
+            // Update modal header
+            const header = modal.querySelector('[slot="header"] h2');
+            if (header) header.textContent = 'Add New Property';
+            
+            modal.open = true;
+        }
+
+        // Highlight active page in sidebar
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentPath = window.location.pathname;
+            document.querySelectorAll('.nav-item').forEach(item => {
+                if (item.getAttribute('href') === currentPath) {
+                    item.classList.add('active');
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+
+            // Initialize property management
+            initPropertyManagement();
+        });
+
+        // ========================================
+        // PROPERTY MANAGEMENT WITH API INTEGRATION
+        // ========================================
+        
+        // Import PropertyService (using module script)
+        let propertyService;
+        
+        async function initPropertyManagement() {
+            try {
+                // Dynamically import PropertyService
+                const module = await import('../assets/js/services/propertyservice.js');
+                propertyService = new module.PropertyService();
+                
+                // Load initial data
+                await loadNeighborhoods();
+                await loadProperties();
+                await loadStats();
+            } catch (error) {
+                console.error('Failed to initialize property management:', error);
+                showError('Failed to load properties. Please refresh the page.');
+            }
+        }
+
+        // Load neighborhoods for filter
+        async function loadNeighborhoods() {
+            try {
+                const neighborhoods = await propertyService.getNeighborhoods();
+                const select = document.getElementById('neighborhoodFilter');
+                neighborhoods.forEach(neighborhood => {
+                    const option = document.createElement('option');
+                    option.value = neighborhood;
+                    option.textContent = neighborhood;
+                    select.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Failed to load neighborhoods:', error);
+            }
+        }
+
+        // Load properties from API
+        let currentFilters = {};
+        
+        async function loadProperties(filters = {}) {
+            const loadingEl = document.getElementById('loadingState');
+            const errorEl = document.getElementById('errorState');
+            const gridEl = document.getElementById('propertiesGrid');
+            
+            try {
+                loadingEl.style.display = 'block';
+                errorEl.style.display = 'none';
+                gridEl.style.display = 'none';
+                
+                const data = await propertyService.getProperties(filters);
+                
+                loadingEl.style.display = 'none';
+                gridEl.style.display = 'grid';
+                
+                if (data.properties && data.properties.length > 0) {
+                    renderProperties(data.properties);
+                } else {
+                    gridEl.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; padding: 40px; color: var(--text-secondary);">No properties found matching your criteria.</p>';
+                }
+            } catch (error) {
+                console.error('Error loading properties:', error);
+                loadingEl.style.display = 'none';
+                showError('Failed to load properties: ' + error.message);
+            }
+        }
+
+        // Render properties to grid
+        function renderProperties(properties) {
+            const grid = document.getElementById('propertiesGrid');
+            grid.innerHTML = properties.map(property => {
+                const formatted = propertyService.formatProperty(property);
+                const statusVariant = property.status === 'available' ? 'success' : 
+                                    property.status === 'pending' ? 'warning' : 'danger';
+                const statusText = property.status.charAt(0).toUpperCase() + property.status.slice(1);
+                const imageUrl = property.images?.[0]?.url || 'https://via.placeholder.com/400x300?text=No+Image';
+                
+                return `
+                    <div class="property-card sirsi-card sm-card--elevated" onclick="viewProperty('${property.id}')" style="cursor: pointer;">
+                        <div class="property-image">
+                            <img src="${imageUrl}" alt="Property" style="width: 100%; height: 100%; object-fit: cover;">
+                            <sirsi-badge variant="${statusVariant}" class="property-status">${statusText}</sirsi-badge>
+                        </div>
+                        <div class="property-details">
+                            <div class="property-price">${formatted.priceFormatted}</div>
+                            <div class="property-address">${property.address.street}, ${property.neighborhood}</div>
+                            <div class="property-features">
+                                <div class="property-feature">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M3 20v-8a2 2 0 012-2h14a2 2 0 012 2v8"></path>
+                                        <path d="M5 10V6a2 2 0 012-2h10a2 2 0 012 2v4"></path>
+                                    </svg>
+                                    ${property.details.bedrooms} Beds
+                                </div>
+                                <div class="property-feature">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M9 6h6M9 12h6M9 18h6M4 6h.01M4 12h.01M4 18h.01"></path>
+                                    </svg>
+                                    ${property.details.bathrooms} Baths
+                                </div>
+                                <div class="property-feature">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="3" y="3" width="18" height="18"></rect>
+                                    </svg>
+                                    ${property.details.sqft.toLocaleString()} sqft
+                                </div>
+                            </div>
+                            <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+                                <div style="font-size: 12px; color: var(--text-secondary);">ROI: <strong style="color: var(--success);">${property.flipEstimate?.roi}%</strong></div>
+                                <div style="font-size: 12px; color: var(--text-secondary);">Profit: <strong>${formatted.profitFormatted}</strong></div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Load statistics
+        async function loadStats() {
+            try {
+                const data = await propertyService.getProperties({ limit: 1000 });
+                const properties = data.properties || [];
+                
+                const total = properties.length;
+                const available = properties.filter(p => p.status === 'available').length;
+                const pending = properties.filter(p => p.status === 'pending').length;
+                const sold = properties.filter(p => p.status === 'sold').length;
+                const avgPrice = properties.length > 0 ? 
+                    properties.reduce((sum, p) => sum + (p.price?.list || 0), 0) / properties.length : 0;
+                
+                document.getElementById('stat-total').textContent = total.toLocaleString();
+                document.getElementById('stat-available').textContent = available.toLocaleString();
+                document.getElementById('stat-pending').textContent = pending.toLocaleString();
+                document.getElementById('stat-sold').textContent = sold.toLocaleString();
+                document.getElementById('stat-avg-price').textContent = propertyService.formatCurrency(avgPrice);
+            } catch (error) {
+                console.error('Failed to load stats:', error);
+            }
+        }
+
+        // Apply filters
+        window.applyFilters = async function() {
+            const filters = {};
+            
+            const status = document.getElementById('statusFilter').value;
+            const type = document.getElementById('typeFilter').value;
+            const neighborhood = document.getElementById('neighborhoodFilter').value;
+            const bedrooms = document.getElementById('bedroomsFilter').value;
+            
+            if (status) filters.status = status;
+            if (type) filters.type = type;
+            if (neighborhood) filters.neighborhood = neighborhood;
+            if (bedrooms) filters.minBedrooms = parseInt(bedrooms);
+            
+            currentFilters = filters;
+            await loadProperties(filters);
+        };
+
+        // View property detail
+        window.viewProperty = function(propertyId) {
+            window.location.href = `property-detail.html?id=${propertyId}`;
+        };
+
+        // Show error
+        function showError(message) {
+            const errorEl = document.getElementById('errorState');
+            const errorMessageEl = document.getElementById('errorMessage');
+            errorMessageEl.textContent = message;
+            errorEl.style.display = 'block';
+        }
+        
+        // Enhanced input styles
+        const style = document.createElement('style');
+        style.textContent = `
+            .sirsi-input {
+                padding: 8px 12px;
+                border: 1px solid var(--border);
+                border-radius: var(--radius);
+                font-size: 14px;
+                transition: all 0.15s;
+            }
+            .sirsi-input:focus {
+                outline: none;
+                border-color: var(--sky);
+                box-shadow: 0 0 0 3px rgba(91, 165, 217, 0.1);
+            }
+            .sirsi-input::placeholder {
+                color: var(--text-secondary);
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+    <!-- Sidebar pre-rendered, no JS needed -->
+    <script src="/src/components/admin-header.js"></script>
+</body>
+</html>
