@@ -7,6 +7,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+---
+
+## [0.28.0] - 2025-01-06
+
+### Added
+- **Phase 2: Client Portal Complete**
+  - Client dashboard with Recently Viewed and Saved Properties widgets
+  - Client properties browse page with filters (neighborhood, type, price, bedrooms)
+  - Client property detail page with Save, Schedule Viewing, Contact Agent
+  - localStorage integration for saved properties and viewing requests
+  - Mobile responsive design across all client pages
+  - PropertyService integration with getProperty() fix
+
+### Changed
+- Updated 10_DAY_MVP_PLAN.md with Phase 1-2 completion status
+- Added Phase 3 (Agent Portal) as next immediate priority
+- Streamlined documentation (removed redundant planning docs)
+
+### Fixed
+- Critical bug: Added getProperty() alias method to PropertyService
+- Fixed method name mismatch causing client pages to crash
+
+### Documentation
+- Added RULE 4 to WARP.md: Mandatory QA/QC assessment before completion claims
+- Consolidated all planning into existing documents (10_DAY_MVP_PLAN, CHANGELOG, PRD)
+- Removed redundant documents (NEXT_STEPS_ACTION_PLAN, QA_QC_RULE_IMPLEMENTATION, etc.)
+
+---
 
 ## [0.27.1] - 2025-10-06
 
