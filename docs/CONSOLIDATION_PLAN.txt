@@ -1,0 +1,52 @@
+DOCUMENTATION CONSOLIDATION PLAN
+=================================
+
+REDUNDANT PLANNING DOCUMENTS TO DELETE/ARCHIVE:
+1. ACTUAL_DEV_STATUS.md → Merge into 10_DAY_MVP_PLAN.md
+2. AUTOMATION_STATUS.md → Merge into CHANGELOG.md or delete
+3. CRITICAL_FIXES_PLAN.md → Merge into 10_DAY_MVP_PLAN.md or delete  
+4. DEPLOYMENT_SUMMARY_2025_09_09.md → Merge into CHANGELOG.md
+5. DEPLOYMENT_SUMMARY_2025_09_10.md → Merge into CHANGELOG.md
+6. FULL_SCALE_10DAY_DEPLOYMENT.md → DUPLICATE of 10_DAY_MVP_PLAN.md - DELETE
+7. PHASE2_COMPLETION_REPORT.md → Merge into CHANGELOG.md
+8. PROPERTY_INTEGRATION_PLAN.md → Merge into 10_DAY_MVP_PLAN.md
+9. 100_percent_automation_achieved.md → Merge into CHANGELOG.md or delete
+10. corrected_payment_structure.md → Archive or delete
+11. COST_CALCULATION_METHODOLOGY.md → Archive or delete
+12. deploy-dashboard.md → Delete (one-time instructions)
+13. document_index.md → DELETE (replaced by CANONICAL_DOCS.md)
+
+SPECIALIZED DOCS TO KEEP (but may consolidate):
+- GOOGLE_KMS_IMPLEMENTATION.md → Keep (technical implementation)
+- SECURITY_IMPLEMENTATION_SUMMARY.md → Merge into assiduous_technical_blueprint.md
+- SECURITY_AUDIT_REPORT.md → Keep or move to archive
+- SIRSIMASTER_UI_IMPLEMENTATION.md → Keep (technical implementation)
+- COMPONENT_LIBRARY_MIGRATION.md → Keep (technical implementation)
+
+REFERENCE DOCS TO KEEP:
+- api_docs.md
+- security.md
+- branch_protection_rules.md
+- development_workflow.md
+- github_setup.md
+- GITHUB_SECRETS_SETUP.md
+- quick_reference.md
+- versioning_guide.md
+- workflow_documentation.md
+- automated_versioning.md
+- automation_deployment_guide.md
+- financial_verification.md
+- project_documentation.md
+- security_implementation.md
+- security_quickstart.md
+- sirsi_contract_amendment.md
+- OPENSIGN_INTEGRATION.md
+- master_implementation_guide.md
+
+ACTION ITEMS:
+1. Delete obvious duplicates
+2. Merge completion reports into CHANGELOG
+3. Merge planning docs into 10_DAY_MVP_PLAN
+4. Keep technical implementation guides
+5. Archive old planning docs
+6. Update CANONICAL_DOCS.md with final list

@@ -236,12 +236,41 @@ README.md                         (OVERVIEW for everyone)
 
 ## 📖 Document Locations
 
+### Core Canonical Documents (USE THESE)
 ```
-/WARP.md                                          (Root)
-/README.md                                        (Root)
-/CHANGELOG.md                                     (Root)
-/docs/assiduous_technical_blueprint.md           (Docs)
-/docs/10_DAY_MVP_PLAN.md                         (Docs)
+/WARP.md                                          (Development rules)
+/README.md                                        (Project overview)
+/CHANGELOG.md                                     (Version history)
+/docs/assiduous_technical_blueprint.md           (Product vision)
+/docs/10_DAY_MVP_PLAN.md                         (Active development)
+```
+
+### Technical Reference Docs (Keep for specific implementations)
+```
+/docs/api_docs.md                                (API reference)
+/docs/GOOGLE_KMS_IMPLEMENTATION.md               (KMS setup)
+/docs/GITHUB_SECRETS_SETUP.md                    (Secrets config)
+/docs/SIRSIMASTER_UI_IMPLEMENTATION.md           (UI library)
+/docs/COMPONENT_LIBRARY_MIGRATION.md             (Component migration)
+/docs/OPENSIGN_INTEGRATION.md                    (Contract signing)
+/docs/SECURITY_AUDIT_REPORT.md                   (Security audit)
+```
+
+### Quick Reference Docs (Workflow helpers)
+```
+/docs/security.md                                (Security guide)
+/docs/branch_protection_rules.md                 (Git rules)
+/docs/development_workflow.md                    (Dev workflow)
+/docs/github_setup.md                            (GitHub setup)
+/docs/quick_reference.md                         (Quick commands)
+/docs/versioning_guide.md                        (Versioning)
+/docs/workflow_documentation.md                  (Workflow docs)
+/docs/automated_versioning.md                    (Auto versioning)
+/docs/automation_deployment_guide.md             (Deploy automation)
+/docs/security_implementation.md                 (Security impl)
+/docs/security_quickstart.md                     (Security quick start)
+/docs/master_implementation_guide.md             (Master guide)
+/docs/project_documentation.md                   (Project docs)
 ```
 
 ---
