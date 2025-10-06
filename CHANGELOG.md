@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.31.2] - 2025-10-06
+
+### Fixed
+- fix: restore professional landing page with hero and marketing content
+
+
 ## [0.31.1] - 2025-10-06
 
 ### Fixed
@@ -1105,7 +1111,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.31.1...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.31.2...HEAD
+
+
+## [0.31.2] - 2025-10-06
+
+### Fixed
+- fix: restore professional landing page with hero and marketing content
 
 
 ## [0.31.1] - 2025-10-06
@@ -1617,3 +1629,4 @@ To generate changelog entries:
 [0.30.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.29.0...v0.30.0
 [0.31.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.30.0...v0.31.0
 [0.31.1]: https://github.com/SirsiMaster/Assiduous/compare/v0.31.0...v0.31.1
+[0.31.2]: https://github.com/SirsiMaster/Assiduous/compare/v0.31.1...v0.31.2
