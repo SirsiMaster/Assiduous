@@ -7,9 +7,55 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+---
 
-## [0.30.0] - 2025-10-06
+## [0.30.0] - 2025-01-06
 
+### Added - PHASE 3: AGENT PORTAL COMPLETE
+- **Agent Dashboard** (`/agent/dashboard.html`)
+  - Personal metrics: 24 active listings, 38 clients, $42.5K MTD commission, 12 new leads
+  - Recent listings grid with property cards
+  - New leads section with hot/warm/cold scoring
+  - Upcoming viewings calendar
+  - Agent sidebar navigation
+
+- **Agent Listings** (`/agent/listings.html`)
+  - Property portfolio management with grid view
+  - Filters by status (Available, Pending, Sold) and type
+  - Search functionality
+  - View/Edit quick actions
+  - Property performance metrics (views, days on market)
+
+- **Agent Clients** (`/agent/clients.html`)
+  - Client relationship tracking (38 active clients)
+  - Client status badges (Active, Negotiating, Searching)
+  - Budget ranges and last contact tracking
+  - Next viewing scheduling
+  - Search and filter capabilities
+
+- **Agent Leads** (`/agent/leads.html`)
+  - Lead queue with scoring system
+  - Hot (5), Warm (4), Cold (3) lead segments
+  - Detailed lead cards with contact info and notes
+  - Quick action buttons (Contact, Convert, Schedule)
+  - Lead filtering and search
+
+### Features
+- ✅ Consistent design with admin/client portals
+- ✅ Mobile responsive layouts
+- ✅ Agent sidebar navigation across all pages
+- ✅ Status badges and filters throughout
+- ✅ Real-time metrics display
+- ✅ Property/client/lead management workflows
+
+### Deployment
+- Deployed to Firebase: https://assiduousflip.web.app/agent/
+- 74 files deployed
+- All agent portal URLs live and functional
+
+---
+
+## [0.29.0] - 2025-01-06
 ### Added
 
 
