@@ -502,8 +502,7 @@
 
         // View property details
         window.viewProperty = function(propertyId) {
-            console.log('Viewing property:', propertyId);
-            alert('Property details page coming soon!\n\nProperty ID: ' + propertyId);
+            window.location.href = `property-detail.html?id=${propertyId}`;
         };
 
         // Show error
