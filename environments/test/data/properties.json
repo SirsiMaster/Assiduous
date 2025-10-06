@@ -1,0 +1,39 @@
+{
+  "properties": [
+    {
+      "_id": "prop_001",
+      "basic": {
+        "address": "123 Main St, San Francisco, CA 94105",
+        "price": 750000,
+        "status": "available",
+        "type": "single_family"
+      },
+      "details": {
+        "bedrooms": 3,
+        "bathrooms": 2,
+        "sqft": 1500,
+        "lotSize": 5000,
+        "yearBuilt": 1990,
+        "amenities": ["garage", "garden", "updated_kitchen"],
+        "images": ["img_001.jpg", "img_002.jpg"]
+      },
+      "market": {
+        "listedDate": "2024-01-01T00:00:00Z",
+        "priceHistory": [
+          {
+            "date": "2024-01-01T00:00:00Z",
+            "price": 800000
+          }
+        ],
+        "viewCount": 150,
+        "favoriteCount": 25
+      },
+      "metadata": {
+        "ownerId": "usr_002",
+        "agentId": "usr_003",
+        "createdAt": "2024-01-01T00:00:00Z",
+        "updatedAt": "2024-01-01T00:00:00Z"
+      }
+    }
+  ]
+}

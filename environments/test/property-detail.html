@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Property Details - Assiduous</title>
+    
+    <link rel="stylesheet" href="assets/vendor/sirsimaster-ui/sirsimaster-ui.css">
+    <link rel="stylesheet" href="assiduous.css">
+    
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: "Geist Sans", system-ui, -apple-system, sans-serif;
+            background: var(--gray-50, #f9fafb);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--sky, #5ba5d9);
+            text-decoration: none;
+            font-weight: 600;
+            margin-bottom: 24px;
+            padding: 8px 16px;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        .back-button:hover {
+            background: rgba(91, 165, 217, 0.1);
+        }
+
+        .property-header {
+            background: white;
+            border-radius: 12px;
+            padding: 32px;
+            margin-bottom: 24px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .property-title {
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--navy, #1e3a5f);
+            margin: 0 0 8px 0;
+        }
+
+        .property-location {
+            font-size: 18px;
+            color: var(--gray-600, #4b5563);
+            margin: 0 0 24px 0;
+        }
+
+        .property-meta {
+            display: flex;
+            gap: 32px;
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .meta-label {
+            font-size: 12px;
+            color: var(--gray-600, #4b5563);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .meta-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--navy, #1e3a5f);
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        @media (max-width: 968px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .image-gallery {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .main-image {
+            width: 100%;
+            height: 500px;
+            object-fit: cover;
+            cursor: pointer;
+        }
+
+        .thumbnail-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            padding: 16px;
+        }
+
+        .thumbnail {
+            width: 100%;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 6px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .thumbnail:hover {
+            border-color: var(--sky, #5ba5d9);
+        }
+
+        .thumbnail.active {
+            border-color: var(--sky, #5ba5d9);
+        }
+
+        .investment-card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 20px;
+        }
+
+        .investment-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--navy, #1e3a5f);
+            margin: 0 0 24px 0;
+        }
+
+        .price-section {
+            background: linear-gradient(135deg, var(--sky, #5ba5d9) 0%, var(--navy, #1e3a5f) 100%);
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 24px;
+            color: white;
+        }
+
+        .price-label {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 8px;
+        }
+
+        .price-value {
+            font-size: 40px;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .investment-metric {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+            border-bottom: 1px solid var(--border, #e5e7eb);
+        }
+
+        .investment-metric:last-child {
+            border-bottom: none;
+        }
+
+        .metric-label {
+            font-size: 14px;
+            color: var(--gray-600, #4b5563);
+        }
+
+        .metric-value {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--navy, #1e3a5f);
+        }
+
+        .metric-value.positive {
+            color: var(--green-600, #16a34a);
+        }
+
+        .action-buttons {
+            display: grid;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        .btn {
+            padding: 14px 24px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 14px;
+            text-align: center;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: block;
+        }
+
+        .btn-primary {
+            background: var(--sky, #5ba5d9);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #4a94c8;
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--navy, #1e3a5f);
+            border: 1px solid var(--border, #e5e7eb);
+        }
+
+        .btn-secondary:hover {
+            background: var(--gray-50, #f9fafb);
+        }
+
+        .details-section {
+            background: white;
+            border-radius: 12px;
+            padding: 32px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--navy, #1e3a5f);
+            margin: 0 0 24px 0;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .detail-label {
+            font-size: 12px;
+            color: var(--gray-600, #4b5563);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .detail-value {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--navy, #1e3a5f);
+        }
+
+        .description {
+            font-size: 16px;
+            line-height: 1.6;
+            color: var(--gray-700, #374151);
+            margin-bottom: 32px;
+        }
+
+        .features-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: var(--gray-50, #f9fafb);
+            border-radius: 6px;
+            font-size: 14px;
+            color: var(--gray-700, #374151);
+        }
+
+        .analysis-section {
+            background: white;
+            border-radius: 12px;
+            padding: 32px;
+            margin-top: 24px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+        }
+
+        .analysis-card {
+            padding: 24px;
+            background: var(--gray-50, #f9fafb);
+            border-radius: 8px;
+        }
+
+        .analysis-card-title {
+            font-size: 14px;
+            color: var(--gray-600, #4b5563);
+            margin-bottom: 8px;
+        }
+
+        .analysis-card-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--navy, #1e3a5f);
+        }
+
+        .analysis-card-subtitle {
+            font-size: 12px;
+            color: var(--gray-500, #6b7280);
+            margin-top: 4px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--gray-600, #4b5563);
+        }
+
+        .error {
+            background: #fee;
+            border: 1px solid #fcc;
+            border-radius: 8px;
+            padding: 16px;
+            color: #c00;
+            margin: 20px 0;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .badge-success {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .badge-warning {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .badge-info {
+            background: #dbeafe;
+            color: #1e3a8a;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="demo-properties.html" class="back-button">
+            ← Back to Properties
+        </a>
+
+        <div id="loading" class="loading">Loading property details...</div>
+        <div id="error" class="error" style="display: none;"></div>
+        <div id="content" style="display: none;">
+            
+            <div class="property-header">
+                <h1 class="property-title" id="propertyTitle"></h1>
+                <p class="property-location" id="propertyLocation"></p>
+                <div class="property-meta" id="propertyMeta"></div>
+            </div>
+
+            <div class="content-grid">
+                <div>
+                    <div class="image-gallery">
+                        <img id="mainImage" class="main-image" alt="Property">
+                        <div class="thumbnail-grid" id="thumbnailGrid"></div>
+                    </div>
+
+                    <div class="details-section">
+                        <h2 class="section-title">Property Details</h2>
+                        <div class="details-grid" id="detailsGrid"></div>
+                        <p class="description" id="description"></p>
+                        
+                        <h3 class="section-title" style="font-size: 20px; margin-top: 32px;">Features & Amenities</h3>
+                        <div class="features-list" id="featuresList"></div>
+                    </div>
+
+                    <div class="analysis-section">
+                        <h2 class="section-title">Investment Analysis</h2>
+                        <div class="analysis-grid" id="analysisGrid"></div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="investment-card">
+                        <h2 class="investment-title">Investment Summary</h2>
+                        
+                        <div class="price-section">
+                            <div class="price-label">List Price</div>
+                            <div class="price-value" id="listPrice"></div>
+                        </div>
+
+                        <div id="investmentMetrics"></div>
+
+                        <div class="action-buttons">
+                            <button class="btn btn-primary" onclick="scheduleViewing()">Schedule Viewing</button>
+                            <button class="btn btn-secondary" onclick="saveProperty()">Save Property</button>
+                            <button class="btn btn-secondary" onclick="compareProperty()">Compare</button>
+                            <button class="btn btn-secondary" onclick="shareProperty()">Share</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script type="module">
+        import { PropertyService } from './assets/js/services/propertyservice.js';
+        
+        const propertyService = new PropertyService();
+        let currentProperty = null;
+
+        // Get property ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const propertyId = urlParams.get('id');
+
+        // DOM elements
+        const loadingEl = document.getElementById('loading');
+        const errorEl = document.getElementById('error');
+        const contentEl = document.getElementById('content');
+
+        // Initialize page
+        async function init() {
+            if (!propertyId) {
+                showError('No property ID provided. Please select a property from the listings.');
+                return;
+            }
+
+            try {
+                await loadProperty(propertyId);
+            } catch (error) {
+                showError('Failed to load property: ' + error.message);
+            }
+        }
+
+        // Load property data
+        async function loadProperty(id) {
+            try {
+                loadingEl.style.display = 'block';
+                contentEl.style.display = 'none';
+                errorEl.style.display = 'none';
+
+                currentProperty = await propertyService.getPropertyById(id);
+                
+                if (!currentProperty) {
+                    throw new Error('Property not found');
+                }
+
+                renderProperty(currentProperty);
+                
+                loadingEl.style.display = 'none';
+                contentEl.style.display = 'block';
+            } catch (error) {
+                loadingEl.style.display = 'none';
+                throw error;
+            }
+        }
+
+        // Render property
+        function renderProperty(property) {
+            const formatted = propertyService.formatProperty(property);
+
+            // Header
+            document.getElementById('propertyTitle').textContent = property.address.street;
+            document.getElementById('propertyLocation').textContent = 
+                `${property.neighborhood}, ${property.address.city}, ${property.address.state} ${property.address.zip}`;
+
+            // Meta data
+            const statusBadge = property.status === 'available' ? 'badge-success' : 
+                               property.status === 'pending' ? 'badge-warning' : 'badge-info';
+            
+            document.getElementById('propertyMeta').innerHTML = `
+                <div class="meta-item">
+                    <div class="meta-label">Status</div>
+                    <div class="meta-value">
+                        <span class="badge ${statusBadge}">${property.status}</span>
+                    </div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Property Type</div>
+                    <div class="meta-value">${formatType(property.details.type)}</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Investment Score</div>
+                    <div class="meta-value">${property.investmentScore}/100</div>
+                </div>
+            `;
+
+            // Images
+            const mainImage = property.images?.[0]?.url || 'https://via.placeholder.com/800x600?text=No+Image';
+            document.getElementById('mainImage').src = mainImage;
+            
+            const thumbnailGrid = document.getElementById('thumbnailGrid');
+            thumbnailGrid.innerHTML = (property.images || []).map((img, index) => `
+                <img src="${img.thumbnail}" 
+                     alt="${img.caption}" 
+                     class="thumbnail ${index === 0 ? 'active' : ''}"
+                     onclick="setMainImage('${img.url}', ${index})">
+            `).join('');
+
+            // Price
+            document.getElementById('listPrice').textContent = formatted.priceFormatted;
+
+            // Investment Metrics
+            document.getElementById('investmentMetrics').innerHTML = `
+                <div class="investment-metric">
+                    <span class="metric-label">After Repair Value (ARV)</span>
+                    <span class="metric-value">${formatted.arvFormatted}</span>
+                </div>
+                <div class="investment-metric">
+                    <span class="metric-label">Repair Cost</span>
+                    <span class="metric-value">${formatted.repairFormatted}</span>
+                </div>
+                <div class="investment-metric">
+                    <span class="metric-label">Estimated Profit</span>
+                    <span class="metric-value positive">${formatted.profitFormatted}</span>
+                </div>
+                <div class="investment-metric">
+                    <span class="metric-label">ROI</span>
+                    <span class="metric-value positive">${property.flipEstimate.roi}%</span>
+                </div>
+                <div class="investment-metric">
+                    <span class="metric-label">Holding Time</span>
+                    <span class="metric-value">${property.flipEstimate.holdingTime} days</span>
+                </div>
+            `;
+
+            // Details Grid
+            document.getElementById('detailsGrid').innerHTML = `
+                <div class="detail-item">
+                    <div class="detail-label">Bedrooms</div>
+                    <div class="detail-value">${property.details.bedrooms}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Bathrooms</div>
+                    <div class="detail-value">${property.details.bathrooms}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Square Feet</div>
+                    <div class="detail-value">${property.details.sqft.toLocaleString()}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Lot Size</div>
+                    <div class="detail-value">${property.details.lot.toLocaleString()} sqft</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Year Built</div>
+                    <div class="detail-value">${property.details.year}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Property Type</div>
+                    <div class="detail-value">${formatType(property.details.type)}</div>
+                </div>
+            `;
+
+            // Description
+            document.getElementById('description').textContent = property.description;
+
+            // Features
+            const featuresList = document.getElementById('featuresList');
+            featuresList.innerHTML = (property.features || []).map(feature => `
+                <div class="feature-item">
+                    ✓ ${formatFeature(feature)}
+                </div>
+            `).join('');
+
+            // Investment Analysis
+            const totalInvestment = property.price.list + property.price.repair;
+            const holdingCosts = property.price.arv * 0.10;
+            const monthlyPayment = (totalInvestment * 0.005).toFixed(0); // Rough estimate
+            const cashOnCash = ((property.flipEstimate.profit / totalInvestment) * 100).toFixed(1);
+
+            document.getElementById('analysisGrid').innerHTML = `
+                <div class="analysis-card">
+                    <div class="analysis-card-title">Total Investment</div>
+                    <div class="analysis-card-value">${propertyService.formatCurrency(totalInvestment)}</div>
+                    <div class="analysis-card-subtitle">Purchase + Repairs</div>
+                </div>
+                <div class="analysis-card">
+                    <div class="analysis-card-title">Holding Costs</div>
+                    <div class="analysis-card-value">${propertyService.formatCurrency(holdingCosts)}</div>
+                    <div class="analysis-card-subtitle">~10% of ARV</div>
+                </div>
+                <div class="analysis-card">
+                    <div class="analysis-card-title">Est. Monthly Payment</div>
+                    <div class="analysis-card-value">${propertyService.formatCurrency(monthlyPayment)}</div>
+                    <div class="analysis-card-subtitle">Hard money loan @ 6%</div>
+                </div>
+                <div class="analysis-card">
+                    <div class="analysis-card-title">Cash-on-Cash ROI</div>
+                    <div class="analysis-card-value">${cashOnCash}%</div>
+                    <div class="analysis-card-subtitle">Annual return</div>
+                </div>
+            `;
+        }
+
+        // Set main image
+        window.setMainImage = function(url, index) {
+            document.getElementById('mainImage').src = url;
+            document.querySelectorAll('.thumbnail').forEach((thumb, i) => {
+                thumb.classList.toggle('active', i === index);
+            });
+        };
+
+        // Action handlers
+        window.scheduleViewing = function() {
+            alert('Viewing scheduler coming soon!\n\nProperty: ' + currentProperty.address.street);
+        };
+
+        window.saveProperty = function() {
+            alert('Property saved to your favorites!\n\n' + currentProperty.address.street);
+        };
+
+        window.compareProperty = function() {
+            alert('Comparison tool coming soon!\n\nAdd more properties to compare side-by-side.');
+        };
+
+        window.shareProperty = function() {
+            const url = window.location.href;
+            if (navigator.share) {
+                navigator.share({
+                    title: currentProperty.address.street,
+                    text: currentProperty.description,
+                    url: url
+                });
+            } else {
+                navigator.clipboard.writeText(url);
+                alert('Property link copied to clipboard!');
+            }
+        };
+
+        // Helper functions
+        function formatType(type) {
+            return type.split('_').map(word => 
+                word.charAt(0).toUpperCase() + word.slice(1)
+            ).join(' ');
+        }
+
+        function formatFeature(feature) {
+            return feature.split('_').map(word => 
+                word.charAt(0).toUpperCase() + word.slice(1)
+            ).join(' ');
+        }
+
+        function showError(message) {
+            errorEl.textContent = message;
+            errorEl.style.display = 'block';
+            loadingEl.style.display = 'none';
+        }
+
+        // Initialize
+        init();
+    </script>
+</body>
+</html>
