@@ -8,6 +8,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.32.0] - 2025-10-06
+
+### Added
+- feat: add development pipeline with dev/test/staging environments and approval gates
+
+### Fixed
+- fix: restore firebase.json to correct deployment directory (assiduous-build)
+
+
 ## [0.31.2] - 2025-10-06
 
 ### Fixed
@@ -1111,7 +1120,16 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.31.2...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.32.0...HEAD
+
+
+## [0.32.0] - 2025-10-06
+
+### Added
+- feat: add development pipeline with dev/test/staging environments and approval gates
+
+### Fixed
+- fix: restore firebase.json to correct deployment directory (assiduous-build)
 
 
 ## [0.31.2] - 2025-10-06
@@ -1630,3 +1648,4 @@ To generate changelog entries:
 [0.31.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.30.0...v0.31.0
 [0.31.1]: https://github.com/SirsiMaster/Assiduous/compare/v0.31.0...v0.31.1
 [0.31.2]: https://github.com/SirsiMaster/Assiduous/compare/v0.31.1...v0.31.2
+[0.32.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.31.2...v0.32.0
