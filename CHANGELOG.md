@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.31.0] - 2025-10-06
+
+### Added
+- feat(agent): complete agent portal - all 4 pages
+
+
 ## [0.30.0] - 2025-10-06
 
 ### Added
@@ -1059,7 +1065,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.30.0...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.31.0...HEAD
+
+
+## [0.31.0] - 2025-10-06
+
+### Added
+- feat(agent): complete agent portal - all 4 pages
 
 
 ## [0.30.0] - 2025-10-06
@@ -1557,3 +1569,4 @@ To generate changelog entries:
 [0.27.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.26.0...v0.27.0
 [0.27.1]: https://github.com/SirsiMaster/Assiduous/compare/v0.27.0...v0.27.1
 [0.30.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.29.0...v0.30.0
+[0.31.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.30.0...v0.31.0
