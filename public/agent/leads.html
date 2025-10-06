@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leads — Agent Portal</title>
+    <link rel="stylesheet" href="/assets/vendor/sirsimaster-ui/sirsimaster-ui.css">
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <link rel="stylesheet" href="/assets/css/admin-layout.css">
+</head>
+<body>
+    <div class="admin-layout">
+        <aside class="admin-sidebar">
+            <div class="sidebar-brand"><h1>Assiduous</h1><span class="badge">Agent</span></div>
+            <nav class="sidebar-nav">
+                <a href="/agent/dashboard.html" class="nav-item"><span class="icon">📊</span><span class="label">Dashboard</span></a>
+                <a href="/agent/listings.html" class="nav-item"><span class="icon">🏠</span><span class="label">My Listings</span></a>
+                <a href="/agent/clients.html" class="nav-item"><span class="icon">👥</span><span class="label">My Clients</span></a>
+                <a href="/agent/leads.html" class="nav-item active"><span class="icon">🎯</span><span class="label">Leads</span></a>
+                <div class="nav-divider"></div>
+                <a href="/admin/dashboard.html" class="nav-item"><span class="icon">⚙️</span><span class="label">Admin Portal</span></a>
+            </nav>
+        </aside>
+
+        <main style="padding:var(--space-xl);overflow-y:auto;background:var(--gray-50);">
+            <div style="margin-bottom:var(--space-2xl);">
+                <h1 style="font-size:28px;font-weight:700;margin-bottom:var(--space-xs);">Leads Queue</h1>
+                <p style="color:var(--text-secondary);">Track and convert new opportunities</p>
+            </div>
+
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:var(--space-lg);margin-bottom:var(--space-xl);">
+                <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius-md);padding:var(--space-lg);">
+                    <div style="font-size:32px;font-weight:700;color:var(--danger);margin-bottom:var(--space-xs);">5</div>
+                    <div style="font-size:12px;color:var(--text-secondary);text-transform:uppercase;">Hot Leads</div>
+                </div>
+                <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius-md);padding:var(--space-lg);">
+                    <div style="font-size:32px;font-weight:700;color:var(--warning);margin-bottom:var(--space-xs);">4</div>
+                    <div style="font-size:12px;color:var(--text-secondary);text-transform:uppercase;">Warm Leads</div>
+                </div>
+                <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius-md);padding:var(--space-lg);">
+                    <div style="font-size:32px;font-weight:700;color:var(--sky);margin-bottom:var(--space-xs);">3</div>
+                    <div style="font-size:12px;color:var(--text-secondary);text-transform:uppercase;">Cold Leads</div>
+                </div>
+            </div>
+
+            <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius-md);overflow:hidden;">
+                <div style="padding:var(--space-md) var(--space-lg);border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
+                    <h2 style="font-weight:600;">Active Leads (12)</h2>
+                    <div style="display:flex;gap:var(--space-sm);">
+                        <select style="padding:var(--space-xs) var(--space-sm);border:1px solid var(--border);border-radius:var(--radius);"><option>All Scores</option><option>Hot</option><option>Warm</option><option>Cold</option></select>
+                        <input type="text" placeholder="Search..." style="padding:var(--space-xs) var(--space-sm);border:1px solid var(--border);border-radius:var(--radius);width:200px;">
+                    </div>
+                </div>
+                
+                <div style="padding:var(--space-lg);">
+                    <div style="border:1px solid var(--border);border-radius:var(--radius-md);padding:var(--space-lg);margin-bottom:var(--space-md);background:rgba(220,38,38,0.02);">
+                        <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:var(--space-md);">
+                            <div style="flex:1;">
+                                <div style="display:flex;align-items:center;gap:var(--space-sm);margin-bottom:var(--space-sm);">
+                                    <h3 style="font-size:18px;font-weight:600;">John Smith</h3>
+                                    <span style="padding:var(--space-xs) var(--space-sm);background:rgba(220,38,38,0.1);color:var(--danger);border-radius:var(--radius);font-size:11px;font-weight:600;">HOT</span>
+                                </div>
+                                <p style="color:var(--text-secondary);margin-bottom:var(--space-sm);">john.smith@email.com • (512) 555-0123</p>
+                                <p style="font-size:14px;">Looking for 3BR in Downtown Austin, budget $400K-$500K. Ready to move quickly.</p>
+                            </div>
+                            <div style="text-align:right;">
+                                <div style="font-size:12px;color:var(--text-secondary);margin-bottom:var(--space-xs);">Received</div>
+                                <div style="font-weight:600;">2 hours ago</div>
+                            </div>
+                        </div>
+                        <div style="display:flex;gap:var(--space-sm);">
+                            <button style="padding:var(--space-sm) var(--space-md);background:var(--sky);color:var(--white);border:none;border-radius:var(--radius);cursor:pointer;font-weight:600;">Contact Lead</button>
+                            <button style="padding:var(--space-sm) var(--space-md);background:var(--success);color:var(--white);border:none;border-radius:var(--radius);cursor:pointer;">Convert to Client</button>
+                            <button style="padding:var(--space-sm) var(--space-md);background:var(--white);border:1px solid var(--border);border-radius:var(--radius);cursor:pointer;">Schedule Viewing</button>
+                        </div>
+                    </div>
+
+                    <div style="border:1px solid var(--border);border-radius:var(--radius-md);padding:var(--space-lg);margin-bottom:var(--space-md);">
+                        <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:var(--space-md);">
+                            <div style="flex:1;">
+                                <div style="display:flex;align-items:center;gap:var(--space-sm);margin-bottom:var(--space-sm);">
+                                    <h3 style="font-size:18px;font-weight:600;">Emily Davis</h3>
+                                    <span style="padding:var(--space-xs) var(--space-sm);background:rgba(255,217,64,0.1);color:var(--warning);border-radius:var(--radius);font-size:11px;font-weight:600;">WARM</span>
+                                </div>
+                                <p style="color:var(--text-secondary);margin-bottom:var(--space-sm);">emily.d@email.com • (512) 555-0456</p>
+                                <p style="font-size:14px;">Interested in properties around $425K, flexible on location.</p>
+                            </div>
+                            <div style="text-align:right;">
+                                <div style="font-size:12px;color:var(--text-secondary);margin-bottom:var(--space-xs);">Received</div>
+                                <div style="font-weight:600;">1 day ago</div>
+                            </div>
+                        </div>
+                        <div style="display:flex;gap:var(--space-sm);">
+                            <button style="padding:var(--space-sm) var(--space-md);background:var(--sky);color:var(--white);border:none;border-radius:var(--radius);cursor:pointer;font-weight:600;">Contact Lead</button>
+                            <button style="padding:var(--space-sm) var(--space-md);background:var(--white);border:1px solid var(--border);border-radius:var(--radius);cursor:pointer;">Add Note</button>
+                        </div>
+                    </div>
+
+                    <div style="border:1px solid var(--border);border-radius:var(--radius-md);padding:var(--space-lg);">
+                        <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:var(--space-md);">
+                            <div style="flex:1;">
+                                <div style="display:flex;align-items:center;gap:var(--space-sm);margin-bottom:var(--space-sm);">
+                                    <h3 style="font-size:18px;font-weight:600;">Michael Brown</h3>
+                                    <span style="padding:var(--space-xs) var(--space-sm);background:rgba(96,163,217,0.1);color:var(--sky);border-radius:var(--radius);font-size:11px;font-weight:600;">COLD</span>
+                                </div>
+                                <p style="color:var(--text-secondary);margin-bottom:var(--space-sm);">mbrown@email.com • (512) 555-0789</p>
+                                <p style="font-size:14px;">First-time buyer, just browsing. Timeline: 6-12 months.</p>
+                            </div>
+                            <div style="text-align:right;">
+                                <div style="font-size:12px;color:var(--text-secondary);margin-bottom:var(--space-xs);">Received</div>
+                                <div style="font-weight:600;">3 days ago</div>
+                            </div>
+                        </div>
+                        <div style="display:flex;gap:var(--space-sm);">
+                            <button style="padding:var(--space-sm) var(--space-md);background:var(--sky);color:var(--white);border:none;border-radius:var(--radius);cursor:pointer;font-weight:600;">Contact Lead</button>
+                            <button style="padding:var(--space-sm) var(--space-md);background:var(--white);border:1px solid var(--border);border-radius:var(--radius);cursor:pointer;">Send Resources</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Clients — Agent Portal</title>
+    <link rel="stylesheet" href="/assets/vendor/sirsimaster-ui/sirsimaster-ui.css">
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <link rel="stylesheet" href="/assets/css/admin-layout.css">
+</head>
+<body>
+    <div class="admin-layout">
+        <aside class="admin-sidebar">
+            <div class="sidebar-brand"><h1>Assiduous</h1><span class="badge">Agent</span></div>
+            <nav class="sidebar-nav">
+                <a href="/agent/dashboard.html" class="nav-item"><span class="icon">📊</span><span class="label">Dashboard</span></a>
+                <a href="/agent/listings.html" class="nav-item"><span class="icon">🏠</span><span class="label">My Listings</span></a>
+                <a href="/agent/clients.html" class="nav-item active"><span class="icon">👥</span><span class="label">My Clients</span></a>
+                <a href="/agent/leads.html" class="nav-item"><span class="icon">🎯</span><span class="label">Leads</span></a>
+                <div class="nav-divider"></div>
+                <a href="/admin/dashboard.html" class="nav-item"><span class="icon">⚙️</span><span class="label">Admin Portal</span></a>
+            </nav>
+        </aside>
+
+        <main style="padding:var(--space-xl);overflow-y:auto;background:var(--gray-50);">
+            <div style="margin-bottom:var(--space-2xl);">
+                <h1 style="font-size:28px;font-weight:700;margin-bottom:var(--space-xs);">My Clients</h1>
+                <p style="color:var(--text-secondary);">Manage your client relationships</p>
+            </div>
+
+            <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius-md);overflow:hidden;">
+                <div style="padding:var(--space-md) var(--space-lg);border-bottom:1px solid var(--border);display:flex;justify-content:space-between;">
+                    <h2 style="font-weight:600;">Active Clients (38)</h2>
+                    <input type="text" placeholder="Search clients..." style="padding:var(--space-xs) var(--space-sm);border:1px solid var(--border);border-radius:var(--radius);width:250px;">
+                </div>
+                <table style="width:100%;border-collapse:collapse;">
+                    <thead>
+                        <tr style="background:var(--gray-50);">
+                            <th style="padding:var(--space-sm) var(--space-lg);text-align:left;font-size:12px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;">Client</th>
+                            <th style="padding:var(--space-sm) var(--space-lg);text-align:left;font-size:12px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;">Status</th>
+                            <th style="padding:var(--space-sm) var(--space-lg);text-align:left;font-size:12px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;">Budget</th>
+                            <th style="padding:var(--space-sm) var(--space-lg);text-align:left;font-size:12px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;">Last Contact</th>
+                            <th style="padding:var(--space-sm) var(--space-lg);text-align:left;font-size:12px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;">Next Viewing</th>
+                            <th style="padding:var(--space-sm) var(--space-lg);text-align:left;font-size:12px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="border-top:1px solid var(--border);">
+                            <td style="padding:var(--space-md) var(--space-lg);">
+                                <div style="font-weight:600;margin-bottom:var(--space-xs);">John & Mary Smith</div>
+                                <div style="font-size:12px;color:var(--text-secondary);">john.smith@email.com</div>
+                            </td>
+                            <td style="padding:var(--space-md) var(--space-lg);"><span style="padding:var(--space-xs) var(--space-sm);background:rgba(5,150,105,0.1);color:var(--success);border-radius:var(--radius);font-size:11px;font-weight:600;">ACTIVE</span></td>
+                            <td style="padding:var(--space-md) var(--space-lg);font-weight:600;">$400K-$500K</td>
+                            <td style="padding:var(--space-md) var(--space-lg);color:var(--text-secondary);">2 days ago</td>
+                            <td style="padding:var(--space-md) var(--space-lg);">Today, 2:00 PM</td>
+                            <td style="padding:var(--space-md) var(--space-lg);"><button style="padding:var(--space-xs) var(--space-sm);background:var(--sky);color:var(--white);border:none;border-radius:var(--radius);cursor:pointer;">View Details</button></td>
+                        </tr>
+                        <tr style="border-top:1px solid var(--border);">
+                            <td style="padding:var(--space-md) var(--space-lg);">
+                                <div style="font-weight:600;margin-bottom:var(--space-xs);">Emily Davis</div>
+                                <div style="font-size:12px;color:var(--text-secondary);">emily.d@email.com</div>
+                            </td>
+                            <td style="padding:var(--space-md) var(--space-lg);"><span style="padding:var(--space-xs) var(--space-sm);background:rgba(255,217,64,0.1);color:var(--warning);border-radius:var(--radius);font-size:11px;font-weight:600;">NEGOTIATING</span></td>
+                            <td style="padding:var(--space-md) var(--space-lg);font-weight:600;">$550K-$650K</td>
+                            <td style="padding:var(--space-md) var(--space-lg);color:var(--text-secondary);">1 day ago</td>
+                            <td style="padding:var(--space-md) var(--space-lg);">Tomorrow, 10:00 AM</td>
+                            <td style="padding:var(--space-md) var(--space-lg);"><button style="padding:var(--space-xs) var(--space-sm);background:var(--sky);color:var(--white);border:none;border-radius:var(--radius);cursor:pointer;">View Details</button></td>
+                        </tr>
+                        <tr style="border-top:1px solid var(--border);">
+                            <td style="padding:var(--space-md) var(--space-lg);">
+                                <div style="font-weight:600;margin-bottom:var(--space-xs);">Michael & Lisa Brown</div>
+                                <div style="font-size:12px;color:var(--text-secondary);">mbrown@email.com</div>
+                            </td>
+                            <td style="padding:var(--space-md) var(--space-lg);"><span style="padding:var(--space-xs) var(--space-sm);background:rgba(5,150,105,0.1);color:var(--success);border-radius:var(--radius);font-size:11px;font-weight:600;">ACTIVE</span></td>
+                            <td style="padding:var(--space-md) var(--space-lg);font-weight:600;">$300K-$400K</td>
+                            <td style="padding:var(--space-md) var(--space-lg);color:var(--text-secondary);">5 days ago</td>
+                            <td style="padding:var(--space-md) var(--space-lg);">Wed, 3:00 PM</td>
+                            <td style="padding:var(--space-md) var(--space-lg);"><button style="padding:var(--space-xs) var(--space-sm);background:var(--sky);color:var(--white);border:none;border-radius:var(--radius);cursor:pointer;">View Details</button></td>
+                        </tr>
+                        <tr style="border-top:1px solid var(--border);">
+                            <td style="padding:var(--space-md) var(--space-lg);">
+                                <div style="font-weight:600;margin-bottom:var(--space-xs);">Sarah Johnson</div>
+                                <div style="font-size:12px;color:var(--text-secondary);">sjohnson@email.com</div>
+                            </td>
+                            <td style="padding:var(--space-md) var(--space-lg);"><span style="padding:var(--space-xs) var(--space-sm);background:rgba(96,163,217,0.1);color:var(--sky);border-radius:var(--radius);font-size:11px;font-weight:600;">SEARCHING</span></td>
+                            <td style="padding:var(--space-md) var(--space-lg);font-weight:600;">$450K-$550K</td>
+                            <td style="padding:var(--space-md) var(--space-lg);color:var(--text-secondary);">3 days ago</td>
+                            <td style="padding:var(--space-md) var(--space-lg);">No viewing scheduled</td>
+                            <td style="padding:var(--space-md) var(--space-lg);"><button style="padding:var(--space-xs) var(--space-sm);background:var(--sky);color:var(--white);border:none;border-radius:var(--radius);cursor:pointer;">View Details</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+</body>
+</html>
