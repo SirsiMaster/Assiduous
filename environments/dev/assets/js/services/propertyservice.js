@@ -71,6 +71,15 @@ export class PropertyService {
   }
 
   /**
+   * Get a single property by ID (alias for getPropertyById)
+   * @param {string} propertyId - Property document ID
+   * @returns {Promise<Object>} Property data
+   */
+  async getProperty(propertyId) {
+    return this.getPropertyById(propertyId);
+  }
+
+  /**
    * Create a new property
    * @param {Object} propertyData - Property information
    * @returns {Promise<Object>} Created property with ID
