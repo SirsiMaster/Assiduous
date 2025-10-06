@@ -245,7 +245,7 @@ README.md                         (OVERVIEW for everyone)
 /docs/10_DAY_MVP_PLAN.md                         (Active development)
 ```
 
-### Technical Reference Docs (Keep for specific implementations)
+### Technical Reference Docs (Implementation Guides)
 ```
 /docs/api_docs.md                                (API reference)
 /docs/GOOGLE_KMS_IMPLEMENTATION.md               (KMS setup)
@@ -254,23 +254,16 @@ README.md                         (OVERVIEW for everyone)
 /docs/COMPONENT_LIBRARY_MIGRATION.md             (Component migration)
 /docs/OPENSIGN_INTEGRATION.md                    (Contract signing)
 /docs/SECURITY_AUDIT_REPORT.md                   (Security audit)
+/docs/SECURITY_IMPLEMENTATION_SUMMARY.md         (Security summary)
+/docs/sirsi_contract_amendment.md                (Contract amendment)
 ```
 
-### Quick Reference Docs (Workflow helpers)
+### Archive (Historical/Redundant docs moved)
 ```
-/docs/security.md                                (Security guide)
-/docs/branch_protection_rules.md                 (Git rules)
-/docs/development_workflow.md                    (Dev workflow)
-/docs/github_setup.md                            (GitHub setup)
-/docs/quick_reference.md                         (Quick commands)
-/docs/versioning_guide.md                        (Versioning)
-/docs/workflow_documentation.md                  (Workflow docs)
-/docs/automated_versioning.md                    (Auto versioning)
-/docs/automation_deployment_guide.md             (Deploy automation)
-/docs/security_implementation.md                 (Security impl)
-/docs/security_quickstart.md                     (Security quick start)
-/docs/master_implementation_guide.md             (Master guide)
-/docs/project_documentation.md                   (Project docs)
+/.archive/restructure/                           (Directory restructure docs)
+/.archive/redundant-workflow-docs/               (Consolidated into WARP.md)
+/.archive/redundant-security-docs/               (Consolidated into security docs)
+/.archive/admin-dev-docs/                        (Admin development logs)
 ```
 
 ---

@@ -51,8 +51,11 @@ public/
 - All URLs maintained (no breaking changes)
 
 ### Documentation
-- Created `RESTRUCTURE_SUMMARY.md` - Executive summary
-- Created `docs/DIRECTORY_RESTRUCTURE_PLAN.md` - Technical plan
+- Complete restructure documentation in `.archive/restructure/`
+  - RESTRUCTURE_SUMMARY.md - Executive summary
+  - RESTRUCTURE_COMPLETE.md - Completion report
+  - FINAL_VERIFICATION.md - GitHub/Firebase sync verification
+  - DIRECTORY_RESTRUCTURE_PLAN.md - Technical plan
 - Created `scripts/restructure_directory.sh` - Automated execution
 - Created `scripts/update_paths.sh` - Path update automation
 - Created `.archive/path_mappings.txt` - Reference guide
