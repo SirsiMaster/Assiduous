@@ -72,7 +72,7 @@ jobs:
         run: |
           cd firebase-migration-package
           firebase deploy \
-            --only hosting \
+            --only hosting:staging \
             --project assiduous-staging \
             --token "$FIREBASE_TOKEN" \
             --non-interactive \
