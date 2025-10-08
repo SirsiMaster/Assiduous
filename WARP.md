@@ -217,159 +217,201 @@ After completing QA/QC, provide a report like this:
 
 #### **A. Pipeline Flow (STRICT ORDER)**
 ```
-DEV → TEST → STAGING → GITHUB → FIREBASE PRODUCTION
+LOCAL DEV → FIREBASE DEV → FIREBASE STAGING → GITHUB → FIREBASE PRODUCTION
 ```
 
 **Each stage is a mandatory checkpoint. You CANNOT skip stages.**
 
-#### **B. Environment Specifications**
+#### **B. Environment Specifications - Firebase Multi-Project Architecture**
 
-| Environment | Port | Directory | Purpose | Server URL |
-|-------------|------|-----------|---------|------------|
-| **DEV** | 8081 | `environments/dev/` | Active development, frequent changes | http://localhost:8081 |
-| **TEST** | 8082 | `environments/test/` | Testing and validation | http://localhost:8082 |
-| **STAGING** | 8083 | `environments/staging/` | Final verification before production | http://localhost:8083 |
-| **PROD** | N/A | `firebase-migration-package/assiduous-build/` | Live production site | https://assiduousflip.web.app |
+| Environment | Firebase Project | Directory | Purpose | Deployment URL |
+|-------------|-----------------|-----------|---------|----------------|
+| **LOCAL** | N/A | `firebase-migration-package/assiduous-build/` | Local development & testing | http://localhost:8080 |
+| **DEV** | assiduous-dev | Same codebase | Active feature development with isolated backend | https://assiduous-dev.web.app |
+| **STAGING** | assiduous-staging | Same codebase | Pre-production validation with production-like config | https://assiduous-staging.web.app |
+| **PROD** | assiduous-prod | Same codebase | Live production site with real user data | https://assiduousflip.web.app |
+
+**Key Architecture Benefits:**
+- ✅ Each Firebase project has **isolated backend** (separate Firestore, Auth, Functions, Storage)
+- ✅ DEV environment on **free Spark plan** ($0/month)
+- ✅ STAGING environment on **minimal Blaze plan** (~$5-10/month)
+- ✅ Safe to test **destructive operations** without affecting production
+- ✅ **Real Firebase services** testing (not local emulators)
+- ✅ **Production parity** - same runtime characteristics
 
 #### **C. Development Workflow (MANDATORY STEPS)**
 
-**Step 1: DEV Environment**
-1. Make ALL changes in `environments/dev/` directory
-2. Start dev server: `./scripts/dev-server.sh start`
-3. Test changes at http://localhost:8081
+**Step 1: LOCAL Development**
+1. Make ALL changes in `firebase-migration-package/assiduous-build/` directory
+2. Start local server: `python -m http.server 8080` (from assiduous-build/)
+3. Test changes at http://localhost:8080
 4. Run RULE 4 QA/QC assessment (full browser testing)
 5. Fix ALL bugs found
 6. Document changes in commit message
 
-**Step 2: Promote DEV → TEST**
-1. Run promotion script: `./scripts/promote.sh dev-to-test`
-2. Review changes to be promoted
-3. Type `yes` to confirm promotion
-4. Test at http://localhost:8082
-5. Run RULE 4 QA/QC assessment again
-6. Verify no regressions introduced
+**Step 2: Deploy LOCAL → FIREBASE DEV**
+1. Navigate to: `cd firebase-migration-package`
+2. Run deployment script: `./deploy.sh dev`
+3. Review changes to be deployed
+4. Deployment happens automatically (no confirmation for dev)
+5. Test at https://assiduous-dev.web.app
+6. Run RULE 4 QA/QC assessment with **real Firebase backend**
+7. Test authentication, database operations, cloud functions
+8. Verify no regressions introduced
 
-**Step 3: Promote TEST → STAGING**
-1. Run promotion script: `./scripts/promote.sh test-to-staging`
-2. Review changes to be promoted
-3. Type `yes` to confirm promotion
-4. Test at http://localhost:8083
-5. Run RULE 4 QA/QC assessment final time
-6. Verify ready for production
+**Step 3: Deploy DEV → FIREBASE STAGING**
+1. Ensure all DEV testing passed
+2. Run deployment script: `./deploy.sh staging`
+3. Review changes to be deployed
+4. Confirm deployment (requires explicit approval)
+5. Test at https://assiduous-staging.web.app
+6. Run RULE 4 QA/QC assessment final time
+7. Test with production-like data and configuration
+8. Verify ready for production
+9. Take screenshots for documentation
 
-**Step 4: Promote STAGING → PROD**
-1. Run promotion script: `./scripts/promote.sh staging-to-prod`
-2. Review changes to be promoted
-3. Type `yes` to confirm promotion
-4. Changes copied to `firebase-migration-package/assiduous-build/`
-5. Commit to GitHub: `git add . && git commit -m "..." && git push`
+**Step 4: Commit to GitHub**
+1. Verify staging deployment successful
+2. Commit changes: `git add . && git commit -m "feat: ..." && git push`
+3. GitHub becomes the **source of truth**
+4. Tag release if major version: `git tag -a v1.0.0 -m "Release 1.0.0"`
+5. Push tags: `git push --tags`
 
-**Step 5: Deploy PROD → Firebase**
-1. Run deployment script: `./scripts/promote.sh deploy`
-2. Complete pre-deployment checklist:
+**Step 5: Deploy STAGING → FIREBASE PRODUCTION**
+1. Ensure code is committed to GitHub
+2. Run production deployment: `./deploy.sh production`
+3. Complete pre-deployment checklist:
    - [ ] Tested in staging
-   - [ ] Verified all pages load
-   - [ ] Verified all functionality works
+   - [ ] All pages load without errors
+   - [ ] All functionality works end-to-end
    - [ ] Screenshots taken
-3. Type `DEPLOY TO PRODUCTION` (exact text) to confirm
-4. Firebase deploys automatically
-5. Verify at https://assiduousflip.web.app
-6. Run post-deployment smoke tests
+   - [ ] Changes committed to GitHub
+4. Type `DEPLOY TO PRODUCTION` (exact text) to confirm
+5. Firebase deploys to production
+6. Verify at https://assiduousflip.web.app
+7. Run post-deployment smoke tests
+8. Monitor Firebase Console for errors
 
 #### **D. Pipeline Rules (ABSOLUTE)**
 
 **NEVER:**
-- ❌ Edit files directly in `test/`, `staging/`, or `assiduous-build/`
-- ❌ Skip environments (DEV → PROD is FORBIDDEN)
-- ❌ Deploy without testing in all environments
-- ❌ Promote with known bugs
-- ❌ Deploy without Git commit
-- ❌ Make changes directly in production
-- ❌ Bypass approval gates
+- ❌ Deploy directly to PRODUCTION without testing in DEV and STAGING
+- ❌ Skip Firebase DEV or STAGING environments
+- ❌ Deploy to production with known bugs
+- ❌ Deploy without Git commit to GitHub first
+- ❌ Make changes directly in production Firebase project
+- ❌ Edit production Firestore data without backup
+- ❌ Bypass approval gates for production deployment
+- ❌ Use production API keys in dev/staging code
 
 **ALWAYS:**
-- ✅ Start in DEV environment
-- ✅ Test in each environment before promoting
-- ✅ Run QA/QC at each stage
-- ✅ Document what changed
-- ✅ Get approval before promoting
-- ✅ Commit to GitHub before Firebase deploy
-- ✅ Verify deployment succeeded
+- ✅ Start in LOCAL development
+- ✅ Deploy to DEV first for backend testing
+- ✅ Deploy to STAGING for final validation
+- ✅ Commit to GitHub before production deployment
+- ✅ Test in each Firebase environment before promoting
+- ✅ Run QA/QC at each stage (LOCAL, DEV, STAGING)
+- ✅ Use environment-specific Firebase configs
+- ✅ Document what changed in commit messages
+- ✅ Verify deployment succeeded with smoke tests
+- ✅ Monitor Firebase Console after production deploy
 
 #### **E. Validation Requirements Per Stage**
 
-**DEV Stage Validation:**
-- ✅ Code compiles/runs without errors
+**LOCAL Stage Validation:**
+- ✅ Code runs without errors on localhost
 - ✅ All new features work as expected
 - ✅ No console errors in browser DevTools
 - ✅ All links and navigation work
 - ✅ Mobile responsive design works
+- ✅ CSS/JS assets load correctly
 
-**TEST Stage Validation:**
-- ✅ All DEV features still work
+**DEV Firebase Stage Validation:**
+- ✅ All LOCAL features still work
+- ✅ Firebase Authentication works (test users)
+- ✅ Firestore database operations succeed
+- ✅ Cloud Functions respond correctly
+- ✅ Cloud Storage uploads/downloads work
+- ✅ Security rules enforced properly
 - ✅ No regressions in existing features
-- ✅ Integration with existing code works
-- ✅ API calls succeed
-- ✅ Data persists correctly
+- ✅ API calls succeed with real Firebase backend
+- ✅ Data persists correctly in dev database
 
-**STAGING Stage Validation:**
+**STAGING Firebase Stage Validation:**
 - ✅ Production-ready quality
 - ✅ All user workflows complete end-to-end
 - ✅ Performance acceptable (page load < 3s)
 - ✅ No known bugs
 - ✅ Ready to show stakeholders
+- ✅ Production-like data configuration
+- ✅ All Firebase services work as expected
+- ✅ Security rules mirror production
+- ✅ Error handling works correctly
 
-**PROD Stage Validation:**
+**PRODUCTION Firebase Stage Validation:**
 - ✅ Deployed successfully to Firebase
 - ✅ All pages accessible at production URL
 - ✅ All functionality works in production
-- ✅ No errors in production logs
+- ✅ No errors in Firebase Console logs
 - ✅ Analytics tracking works
+- ✅ Cloud Functions responding normally
+- ✅ Firestore queries performing well
+- ✅ Authentication flows working
+- ✅ No spike in error rates
 
 #### **F. Emergency Hotfix Process**
 
 For CRITICAL production bugs only:
 
-1. Create hotfix in DEV
-2. Test in DEV (expedited but thorough)
-3. **MAY skip TEST if truly urgent**
-4. Test in STAGING (mandatory)
-5. Deploy to PROD
-6. Document why TEST was skipped
-7. Backfill TEST environment after hotfix
+1. Create hotfix in LOCAL
+2. Test in LOCAL (expedited but thorough)
+3. Deploy to DEV Firebase (expedited testing)
+4. **MAY skip DEV if truly urgent AND small change**
+5. Deploy to STAGING Firebase (mandatory - NO EXCEPTIONS)
+6. Commit to GitHub immediately
+7. Deploy to PRODUCTION
+8. Document why DEV was skipped (if applicable)
+9. Monitor production logs closely
 
 **Criteria for emergency hotfix:**
-- Production is completely broken
+- Production is completely broken (500 errors, white screen)
 - Security vulnerability discovered
 - Data loss occurring
 - Revenue-impacting bug
+- Authentication completely failing
 
 **NOT emergency hotfixes:**
 - UI cosmetic issues
 - Feature requests
 - Performance optimization
 - Nice-to-have improvements
+- Minor bugs with workarounds
 
-#### **G. Server Management**
+#### **G. Deployment Commands**
 
-**Start all servers:**
+**Deploy to DEV:**
 ```bash
-./scripts/dev-server.sh start
+cd firebase-migration-package
+./deploy.sh dev
 ```
 
-**Check server status:**
+**Deploy to STAGING:**
 ```bash
-./scripts/dev-server.sh status
+cd firebase-migration-package
+./deploy.sh staging
 ```
 
-**Stop all servers:**
+**Deploy to PRODUCTION:**
 ```bash
-./scripts/dev-server.sh stop
+cd firebase-migration-package
+./deploy.sh production  # Requires typing 'DEPLOY TO PRODUCTION'
 ```
 
-**Restart servers:**
+**Test locally:**
 ```bash
-./scripts/dev-server.sh restart
+cd firebase-migration-package/assiduous-build
+python -m http.server 8080
+open http://localhost:8080
 ```
 
 #### **H. Commit & Promotion Documentation**
@@ -411,19 +453,24 @@ If pipeline is bypassed:
 3. Start over from DEV
 4. Follow pipeline correctly
 
-#### **J. GitHub as Source of Truth**
+#### **H. GitHub as Source of Truth**
 
 **CRITICAL: GitHub is the single source of truth**
 
-- All code in `environments/dev/` is work-in-progress
-- All code in `firebase-migration-package/assiduous-build/` is committed to GitHub
-- GitHub main branch = what's in production
-- Never deploy to Firebase without pushing to GitHub first
+- All code in `firebase-migration-package/assiduous-build/` is the canonical codebase
+- GitHub main branch = what's deployed to production
+- **ALWAYS commit to GitHub BEFORE deploying to production**
+- Production deployments must match GitHub main branch exactly
 
 **Deployment flow:**
 ```
-DEV → TEST → STAGING → assiduous-build → GitHub → Firebase
+LOCAL → Firebase DEV → Firebase STAGING → GitHub Commit → Firebase PRODUCTION
 ```
+
+**Firebase Projects:**
+- `assiduous-dev` - Development testing (may not match GitHub)
+- `assiduous-staging` - Pre-production (should match GitHub after testing)
+- `assiduous-prod` - Production (MUST match GitHub main branch)
 
 #### **K. CI/CD Integration**
 

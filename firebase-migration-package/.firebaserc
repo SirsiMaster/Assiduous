@@ -1,6 +1,10 @@
 {
   "projects": {
-    "default": "assiduous-prod"
+    "default": "assiduous-prod",
+    "dev": "assiduous-dev",
+    "staging": "assiduous-staging",
+    "production": "assiduous-prod"
   },
+  "targets": {},
   "etags": {}
 }
