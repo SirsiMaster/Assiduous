@@ -72,8 +72,8 @@ jobs:
         run: |
           cd firebase-migration-package
           firebase deploy \
-            --only hosting:staging \
-            --project staging \
+            --only hosting \
+            --project assiduous-staging \
             --token "$FIREBASE_TOKEN" \
             --non-interactive \
             --message "Deployed from GitHub Actions - Run ${{ github.run_number }}"
@@ -85,7 +85,7 @@ jobs:
           cd firebase-migration-package
           firebase deploy \
             --only firestore:rules,firestore:indexes \
-            --project staging \
+            --project assiduous-staging \
             --token "$FIREBASE_TOKEN" \
             --non-interactive
       

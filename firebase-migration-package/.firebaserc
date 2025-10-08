@@ -6,13 +6,6 @@
     "production": "assiduous-prod"
   },
   "targets": {
-    "assiduous-prod": {
-      "hosting": {
-        "production": [
-          "assiduousflip"
-        ]
-      }
-    },
     "assiduous-dev": {
       "hosting": {
         "dev": [
@@ -24,6 +17,16 @@
       "hosting": {
         "staging": [
           "assiduous-staging"
+        ]
+      }
+    },
+    "assiduous-prod": {
+      "hosting": {
+        "production": [
+          "assiduousflip"
+        ],
+        "prod": [
+          "assiduous-prod"
         ]
       }
     }

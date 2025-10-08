@@ -141,7 +141,7 @@ jobs:
           
           firebase deploy \
             --only hosting:production \
-            --project production \
+            --project assiduous-prod \
             --token "$FIREBASE_TOKEN" \
             --non-interactive \
             --message "Production Release ${{ steps.version.outputs.version }} - Deployed by ${{ github.actor }}"
@@ -153,7 +153,7 @@ jobs:
           cd firebase-migration-package
           firebase deploy \
             --only firestore:rules,firestore:indexes \
-            --project production \
+            --project assiduous-prod \
             --token "$FIREBASE_TOKEN" \
             --non-interactive
       

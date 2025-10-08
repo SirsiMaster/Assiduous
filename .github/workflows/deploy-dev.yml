@@ -51,8 +51,8 @@ jobs:
         run: |
           cd firebase-migration-package
           firebase deploy \
-            --only hosting:dev \
-            --project dev \
+            --only hosting \
+            --project assiduous-dev \
             --token "$FIREBASE_TOKEN" \
             --non-interactive
       
