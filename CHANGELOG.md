@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.35.0] - 2025-10-08
+
+### Added
+- feat(hosting): configure separate hosting sites for each environment
+
+
 ## [0.34.0] - 2025-10-08
 
 ### Added
@@ -1138,7 +1144,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.34.0...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.35.0...HEAD
+
+
+## [0.35.0] - 2025-10-08
+
+### Added
+- feat(hosting): configure separate hosting sites for each environment
 
 
 ## [0.34.0] - 2025-10-08
@@ -1688,3 +1700,4 @@ To generate changelog entries:
 [0.32.1]: https://github.com/SirsiMaster/Assiduous/compare/v0.32.0...v0.32.1
 [0.33.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.32.1...v0.33.0
 [0.34.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.33.0...v0.34.0
+[0.35.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.34.0...v0.35.0
