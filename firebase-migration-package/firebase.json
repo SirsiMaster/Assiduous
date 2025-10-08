@@ -2,52 +2,146 @@
   "functions": {
     "source": "functions"
   },
-  "hosting": {
-    "site": "assiduousflip",
-    "public": "assiduous-build",
-    "ignore": ["firebase.json", "**/.*", "**/node_modules/**", "**/firebase-migration-package/**"],
-    "headers": [
-      {
-        "source": "**/*.@(jpg|jpeg|gif|png|webp|svg|ico)",
-        "headers": [
-          {
-            "key": "Cache-Control",
-            "value": "public, max-age=2592000, immutable"
-          }
-        ]
-      },
-      {
-        "source": "**/*.@(js|css)",
-        "headers": [
-          {
-            "key": "Cache-Control",
-            "value": "public, max-age=86400, must-revalidate"
-          }
-        ]
-      },
-      {
-        "source": "**/*.@(html|json)",
-        "headers": [
-          {
-            "key": "Cache-Control",
-            "value": "public, max-age=0, must-revalidate"
-          }
-        ]
-      },
-      {
-        "source": "**",
-        "headers": [
-          {
-            "key": "Cache-Control",
-            "value": "public, max-age=600, must-revalidate"
-          }
-        ]
-      }
-    ],
-    "rewrites": [
-      { "source": "/api/**", "function": "app" }
-    ]
-  },
+  "hosting": [
+    {
+      "target": "production",
+      "public": "assiduous-build",
+      "ignore": ["firebase.json", "**/.*", "**/node_modules/**", "**/firebase-migration-package/**"],
+      "headers": [
+        {
+          "source": "**/*.@(jpg|jpeg|gif|png|webp|svg|ico)",
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "public, max-age=2592000, immutable"
+            }
+          ]
+        },
+        {
+          "source": "**/*.@(js|css)",
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "public, max-age=86400, must-revalidate"
+            }
+          ]
+        },
+        {
+          "source": "**/*.@(html|json)",
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "public, max-age=0, must-revalidate"
+            }
+          ]
+        },
+        {
+          "source": "**",
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "public, max-age=600, must-revalidate"
+            }
+          ]
+        }
+      ],
+      "rewrites": [
+        { "source": "/api/**", "function": "app" }
+      ]
+    },
+    {
+      "target": "dev",
+      "public": "assiduous-build",
+      "ignore": ["firebase.json", "**/.*", "**/node_modules/**", "**/firebase-migration-package/**"],
+      "headers": [
+        {
+          "source": "**/*.@(jpg|jpeg|gif|png|webp|svg|ico)",
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "public, max-age=2592000, immutable"
+            }
+          ]
+        },
+        {
+          "source": "**/*.@(js|css)",
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "public, max-age=86400, must-revalidate"
+            }
+          ]
+        },
+        {
+          "source": "**/*.@(html|json)",
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "public, max-age=0, must-revalidate"
+            }
+          ]
+        },
+        {
+          "source": "**",
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "public, max-age=600, must-revalidate"
+            }
+          ]
+        }
+      ],
+      "rewrites": [
+        { "source": "/api/**", "function": "app" }
+      ]
+    },
+    {
+      "target": "staging",
+      "public": "assiduous-build",
+      "ignore": ["firebase.json", "**/.*", "**/node_modules/**", "**/firebase-migration-package/**"],
+      "headers": [
+        {
+          "source": "**/*.@(jpg|jpeg|gif|png|webp|svg|ico)",
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "public, max-age=2592000, immutable"
+            }
+          ]
+        },
+        {
+          "source": "**/*.@(js|css)",
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "public, max-age=86400, must-revalidate"
+            }
+          ]
+        },
+        {
+          "source": "**/*.@(html|json)",
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "public, max-age=0, must-revalidate"
+            }
+          ]
+        },
+        {
+          "source": "**",
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "public, max-age=600, must-revalidate"
+            }
+          ]
+        }
+      ],
+      "rewrites": [
+        { "source": "/api/**", "function": "app" }
+      ]
+    }
+  ],
   "firestore": {
     "rules": "firestore.rules",
     "indexes": "firestore.indexes.json"

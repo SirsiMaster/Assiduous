@@ -5,6 +5,28 @@
     "staging": "assiduous-staging",
     "production": "assiduous-prod"
   },
-  "targets": {},
+  "targets": {
+    "assiduous-prod": {
+      "hosting": {
+        "production": [
+          "assiduousflip"
+        ]
+      }
+    },
+    "assiduous-dev": {
+      "hosting": {
+        "dev": [
+          "assiduous-dev"
+        ]
+      }
+    },
+    "assiduous-staging": {
+      "hosting": {
+        "staging": [
+          "assiduous-staging"
+        ]
+      }
+    }
+  },
   "etags": {}
 }

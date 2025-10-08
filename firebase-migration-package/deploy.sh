@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 ###############################################################################
 # Multi-Environment Firebase Deployment Script
@@ -29,17 +29,23 @@ ENVIRONMENT=${1:-}
 # Valid environments
 VALID_ENVS=("dev" "staging" "production")
 
-# Project IDs
-declare -A PROJECT_IDS
-PROJECT_IDS[dev]="assiduous-dev"
-PROJECT_IDS[staging]="assiduous-staging"
-PROJECT_IDS[production]="assiduous-prod"
+# Helper function to get project ID
+get_project_id() {
+    case $1 in
+        dev) echo "assiduous-dev" ;;
+        staging) echo "assiduous-staging" ;;
+        production) echo "assiduous-prod" ;;
+    esac
+}
 
-# Deployment URLs
-declare -A DEPLOYMENT_URLS
-DEPLOYMENT_URLS[dev]="https://assiduous-dev.web.app"
-DEPLOYMENT_URLS[staging]="https://assiduous-staging.web.app"
-DEPLOYMENT_URLS[production]="https://assiduousflip.web.app"
+# Helper function to get deployment URL
+get_deployment_url() {
+    case $1 in
+        dev) echo "https://assiduous-dev.web.app" ;;
+        staging) echo "https://assiduous-staging.web.app" ;;
+        production) echo "https://assiduousflip.web.app" ;;
+    esac
+}
 
 ###############################################################################
 # Helper Functions
@@ -147,27 +153,30 @@ run_predeploy_checks() {
 
 check_environment_specific() {
     local env=$1
+    local url=$(get_deployment_url "$env")
+    local project_id=$(get_project_id "$env")
     
-    print_header "Environment: ${env^^}"
+    local env_upper=$(echo "$env" | tr '[:lower:]' '[:upper:]')
+    print_header "Environment: $env_upper"
     
     case $env in
         dev)
             print_info "Target: Development Environment"
-            print_info "URL: ${DEPLOYMENT_URLS[dev]}"
-            print_info "Project: ${PROJECT_IDS[dev]}"
+            print_info "URL: $url"
+            print_info "Project: $project_id"
             print_info "Safety: High (isolated backend)"
             ;;
         staging)
             print_info "Target: Staging Environment"
-            print_info "URL: ${DEPLOYMENT_URLS[staging]}"
-            print_info "Project: ${PROJECT_IDS[staging]}"
+            print_info "URL: $url"
+            print_info "Project: $project_id"
             print_info "Safety: Medium (pre-production)"
             print_warning "This deploys to pre-production environment"
             ;;
         production)
             print_info "Target: Production Environment"
-            print_info "URL: ${DEPLOYMENT_URLS[production]}"
-            print_info "Project: ${PROJECT_IDS[production]}"
+            print_info "URL: $url"
+            print_info "Project: $project_id"
             print_error "Safety: LOW (LIVE USER DATA)"
             print_warning "This deploys to LIVE PRODUCTION!"
             
@@ -189,19 +198,22 @@ check_environment_specific() {
 
 deploy_to_environment() {
     local env=$1
-    local project_id=${PROJECT_IDS[$env]}
+    local project_id=$(get_project_id "$env")
+    local url=$(get_deployment_url "$env")
     
-    print_header "Deploying to ${env^^}"
+    local env_upper=$(echo "$env" | tr '[:lower:]' '[:upper:]')
+    print_header "Deploying to $env_upper"
     
-    # Deploy using Firebase CLI
+    # Deploy using Firebase CLI with hosting targets
     print_info "Deploying to project: $project_id"
+    print_info "Hosting target: $env"
     
-    if firebase deploy --project "$env" --only hosting; then
+    if firebase deploy --project "$env" --only hosting:$env; then
         print_success "Deployment successful!"
         echo ""
         print_header "Deployment Complete"
-        print_success "Environment: ${env^^}"
-        print_success "URL: ${DEPLOYMENT_URLS[$env]}"
+        print_success "Environment: $env_upper"
+        print_success "URL: $url"
         print_success "Project: $project_id"
         
         # Post-deployment verification
@@ -209,7 +221,7 @@ deploy_to_environment() {
         print_info "Verifying deployment..."
         sleep 3
         
-        if curl -s -o /dev/null -w "%{http_code}" "${DEPLOYMENT_URLS[$env]}" | grep -q "200"; then
+        if curl -s -o /dev/null -w "%{http_code}" "$url" | grep -q "200"; then
             print_success "Site is responding (HTTP 200)"
         else
             print_warning "Site response check failed (might need a moment to propagate)"
@@ -254,8 +266,9 @@ main() {
     # Success
     echo ""
     print_header "🎉 Deployment Complete 🎉"
-    print_success "Successfully deployed to ${ENVIRONMENT^^}"
-    print_info "Visit: ${DEPLOYMENT_URLS[$ENVIRONMENT]}"
+    local env_upper=$(echo "$ENVIRONMENT" | tr '[:lower:]' '[:upper:]')
+    print_success "Successfully deployed to $env_upper"
+    print_info "Visit: $(get_deployment_url "$ENVIRONMENT")"
 }
 
 # Run main function
