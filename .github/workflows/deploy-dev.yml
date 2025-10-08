@@ -1,0 +1,95 @@
+name: Deploy to DEV
+
+# Triggers: Auto-deploy when code is pushed to main branch
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'firebase-migration-package/**'
+      - '.github/workflows/deploy-dev.yml'
+
+# Prevent concurrent deployments
+concurrency:
+  group: dev-deployment
+  cancel-in-progress: false
+
+jobs:
+  deploy-to-dev:
+    name: Deploy to DEV Environment
+    runs-on: ubuntu-latest
+    
+    # Set environment for GitHub secrets and protection rules
+    environment:
+      name: development
+      url: https://assiduous-dev.web.app
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: firebase-migration-package/package-lock.json
+      
+      - name: Install Firebase CLI
+        run: npm install -g firebase-tools
+      
+      - name: Verify build directory
+        run: |
+          if [ ! -d "firebase-migration-package/assiduous-build" ]; then
+            echo "❌ Build directory not found"
+            exit 1
+          fi
+          echo "✅ Build directory exists"
+          echo "📊 File count: $(find firebase-migration-package/assiduous-build -type f | wc -l)"
+      
+      - name: Deploy to Firebase DEV
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        run: |
+          cd firebase-migration-package
+          firebase deploy \
+            --only hosting:dev \
+            --project dev \
+            --token "$FIREBASE_TOKEN" \
+            --non-interactive
+      
+      - name: Verify deployment
+        run: |
+          echo "⏳ Waiting for CDN propagation..."
+          sleep 10
+          
+          HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" https://assiduous-dev.web.app)
+          if [ "$HTTP_CODE" = "200" ]; then
+            echo "✅ DEV deployment verified (HTTP $HTTP_CODE)"
+          else
+            echo "⚠️ DEV deployment check returned HTTP $HTTP_CODE"
+            exit 1
+          fi
+      
+      - name: Post deployment summary
+        if: always()
+        run: |
+          echo "## 🚀 DEV Deployment Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Environment**: DEV" >> $GITHUB_STEP_SUMMARY
+          echo "- **URL**: https://assiduous-dev.web.app" >> $GITHUB_STEP_SUMMARY
+          echo "- **Project**: assiduous-dev" >> $GITHUB_STEP_SUMMARY
+          echo "- **Commit**: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Branch**: ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Triggered by**: ${{ github.actor }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Files Deployed" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          echo "$(find firebase-migration-package/assiduous-build -type f | wc -l) files" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+      
+      - name: Notify on failure
+        if: failure()
+        run: |
+          echo "❌ DEV deployment failed"
+          echo "Check logs at: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"

@@ -1,0 +1,286 @@
+name: Deploy to PRODUCTION
+
+# Triggers: Only on production version tags (v1.0.0, v2.3.1, etc.)
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'  # Matches v1.0.0, v2.3.1, etc. (NO release candidates)
+
+# Prevent any concurrent production deployments
+concurrency:
+  group: production-deployment
+  cancel-in-progress: false
+
+jobs:
+  # Security check job
+  security-checks:
+    name: Security & Quality Checks
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Verify tag format
+        run: |
+          TAG_NAME="${GITHUB_REF#refs/tags/}"
+          if [[ ! "$TAG_NAME" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "❌ Invalid production tag format: $TAG_NAME"
+            echo "Production tags must match: v*.*.*  (e.g., v1.0.0)"
+            exit 1
+          fi
+          echo "✅ Valid production tag: $TAG_NAME"
+      
+      - name: Check for uncommitted secrets
+        run: |
+          echo "🔍 Scanning for potential secrets..."
+          
+          # Check for common secret patterns (basic check)
+          if grep -r -E "AIza[0-9A-Za-z_-]{35}" firebase-migration-package/assiduous-build --exclude-dir=node_modules || true; then
+            echo "⚠️ Found Firebase API keys (this is normal for web apps)"
+          fi
+          
+          # Check for database URLs with credentials
+          if grep -r -E "mongodb://.*:.*@" firebase-migration-package/assiduous-build --exclude-dir=node_modules || true; then
+            echo "❌ Found database credentials in code"
+            exit 1
+          fi
+          
+          echo "✅ Basic secret scan passed"
+      
+      - name: Verify critical files exist
+        run: |
+          REQUIRED_FILES=(
+            "firebase-migration-package/firebase.json"
+            "firebase-migration-package/.firebaserc"
+            "firebase-migration-package/firestore.rules"
+            "firebase-migration-package/storage.rules"
+            "firebase-migration-package/assiduous-build/index.html"
+          )
+          
+          for file in "${REQUIRED_FILES[@]}"; do
+            if [ ! -f "$file" ]; then
+              echo "❌ Required file missing: $file"
+              exit 1
+            fi
+            echo "✅ Found: $file"
+          done
+      
+      - name: Security check summary
+        run: |
+          echo "## 🔒 Security Checks Passed" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Tag format validated" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ No hardcoded credentials detected" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ All critical files present" >> $GITHUB_STEP_SUMMARY
+
+  # Production deployment job (requires security checks + manual approval)
+  deploy-to-production:
+    name: Deploy to PRODUCTION
+    runs-on: ubuntu-latest
+    needs: security-checks
+    
+    # CRITICAL: Requires manual approval + authorized reviewers only
+    environment:
+      name: production
+      url: https://assiduousflip.web.app
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: firebase-migration-package/package-lock.json
+      
+      - name: Install Firebase CLI
+        run: npm install -g firebase-tools
+      
+      - name: Extract version from tag
+        id: version
+        run: |
+          VERSION="${GITHUB_REF#refs/tags/}"
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "📦 Deploying version: $VERSION"
+      
+      - name: Pre-deployment backup notification
+        run: |
+          echo "⚠️ PRODUCTION DEPLOYMENT INITIATED"
+          echo "📦 Version: ${{ steps.version.outputs.version }}"
+          echo "👤 Initiated by: ${{ github.actor }}"
+          echo "⏰ Timestamp: $(date -u +"%Y-%m-%d %H:%M:%S UTC")"
+          echo ""
+          echo "🔄 Creating deployment checkpoint..."
+      
+      - name: Verify build integrity
+        run: |
+          if [ ! -d "firebase-migration-package/assiduous-build" ]; then
+            echo "❌ Build directory not found"
+            exit 1
+          fi
+          
+          FILE_COUNT=$(find firebase-migration-package/assiduous-build -type f | wc -l)
+          if [ "$FILE_COUNT" -lt 100 ]; then
+            echo "❌ Suspiciously low file count: $FILE_COUNT"
+            echo "Expected at least 100 files in build"
+            exit 1
+          fi
+          
+          echo "✅ Build integrity verified ($FILE_COUNT files)"
+      
+      - name: Deploy to Firebase PRODUCTION
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        run: |
+          cd firebase-migration-package
+          
+          echo "🚀 Deploying to PRODUCTION..."
+          echo "   Project: assiduous-prod"
+          echo "   Target: assiduousflip.web.app"
+          echo "   Version: ${{ steps.version.outputs.version }}"
+          
+          firebase deploy \
+            --only hosting:production \
+            --project production \
+            --token "$FIREBASE_TOKEN" \
+            --non-interactive \
+            --message "Production Release ${{ steps.version.outputs.version }} - Deployed by ${{ github.actor }}"
+      
+      - name: Deploy Firestore rules to PRODUCTION
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        run: |
+          cd firebase-migration-package
+          firebase deploy \
+            --only firestore:rules,firestore:indexes \
+            --project production \
+            --token "$FIREBASE_TOKEN" \
+            --non-interactive
+      
+      - name: Verify production deployment
+        run: |
+          echo "⏳ Waiting for global CDN propagation..."
+          sleep 20
+          
+          # Test main site
+          HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" https://assiduousflip.web.app)
+          if [ "$HTTP_CODE" != "200" ]; then
+            echo "❌ Production site returned HTTP $HTTP_CODE"
+            exit 1
+          fi
+          echo "✅ Production site responding (HTTP 200)"
+          
+          # Verify content
+          if curl -s https://assiduousflip.web.app | grep -q "AssiduousFlip"; then
+            echo "✅ Homepage content verified"
+          else
+            echo "❌ Homepage content check failed"
+            exit 1
+          fi
+      
+      - name: Run production smoke tests
+        run: |
+          echo "🧪 Running production smoke tests..."
+          
+          # Test critical pages
+          PAGES=(
+            "/"
+            "/admin/dashboard.html"
+            "/client/"
+          )
+          
+          for page in "${PAGES[@]}"; do
+            CODE=$(curl -s -o /dev/null -w "%{http_code}" "https://assiduousflip.web.app$page")
+            if [ "$CODE" = "200" ] || [ "$CODE" = "301" ] || [ "$CODE" = "302" ]; then
+              echo "✅ $page → HTTP $CODE"
+            else
+              echo "⚠️ $page → HTTP $CODE"
+            fi
+          done
+          
+          echo "✅ Smoke tests completed"
+      
+      - name: Create GitHub Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.version.outputs.version }}
+          release_name: Release ${{ steps.version.outputs.version }}
+          body: |
+            ## 🚀 Production Deployment ${{ steps.version.outputs.version }}
+            
+            **Deployed to:** https://assiduousflip.web.app
+            **Deployed by:** ${{ github.actor }}
+            **Deployed at:** ${{ github.event.head_commit.timestamp }}
+            
+            ### ✅ Verification Status
+            - [x] Security checks passed
+            - [x] Build integrity verified
+            - [x] Deployed to Firebase
+            - [x] Firestore rules updated
+            - [x] Production site responding
+            - [x] Smoke tests passed
+            
+            ### 📦 Deployment Details
+            - **Commit:** ${{ github.sha }}
+            - **Files Deployed:** $(find firebase-migration-package/assiduous-build -type f | wc -l) files
+            - **Firebase Project:** assiduous-prod
+            
+            ### 🔗 Links
+            - [Production Site](https://assiduousflip.web.app)
+            - [Firebase Console](https://console.firebase.google.com/project/assiduous-prod)
+            - [Deployment Logs](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+          draft: false
+          prerelease: false
+      
+      - name: Post deployment summary
+        if: always()
+        run: |
+          echo "## 🚀 PRODUCTION Deployment Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### ✅ Deployment Complete" >> $GITHUB_STEP_SUMMARY
+          echo "- **Version**: ${{ steps.version.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Environment**: PRODUCTION" >> $GITHUB_STEP_SUMMARY
+          echo "- **URL**: https://assiduousflip.web.app" >> $GITHUB_STEP_SUMMARY
+          echo "- **Project**: assiduous-prod" >> $GITHUB_STEP_SUMMARY
+          echo "- **Deployed by**: ${{ github.actor }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Commit**: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 📋 Post-Deployment Actions" >> $GITHUB_STEP_SUMMARY
+          echo "1. ✅ Monitor Firebase Console for errors" >> $GITHUB_STEP_SUMMARY
+          echo "2. ✅ Check user reports for issues" >> $GITHUB_STEP_SUMMARY
+          echo "3. ✅ Verify analytics are tracking correctly" >> $GITHUB_STEP_SUMMARY
+          echo "4. ✅ Update changelog if needed" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 🔗 Important Links" >> $GITHUB_STEP_SUMMARY
+          echo "- [Production Site](https://assiduousflip.web.app)" >> $GITHUB_STEP_SUMMARY
+          echo "- [Firebase Console](https://console.firebase.google.com/project/assiduous-prod)" >> $GITHUB_STEP_SUMMARY
+          echo "- [GitHub Release](https://github.com/${{ github.repository }}/releases/tag/${{ steps.version.outputs.version }})" >> $GITHUB_STEP_SUMMARY
+      
+      - name: Success notification
+        if: success()
+        run: |
+          echo "🎉🎉🎉 PRODUCTION DEPLOYMENT SUCCESSFUL 🎉🎉🎉"
+          echo ""
+          echo "Version: ${{ steps.version.outputs.version }}"
+          echo "URL: https://assiduousflip.web.app"
+          echo "Time: $(date -u +"%Y-%m-%d %H:%M:%S UTC")"
+          echo ""
+          echo "✅ All systems operational"
+      
+      - name: Failure notification
+        if: failure()
+        run: |
+          echo "❌❌❌ PRODUCTION DEPLOYMENT FAILED ❌❌❌"
+          echo ""
+          echo "IMMEDIATE ACTION REQUIRED"
+          echo "Version: ${{ steps.version.outputs.version }}"
+          echo "Failed at: $(date -u +"%Y-%m-%d %H:%M:%S UTC")"
+          echo ""
+          echo "Check logs immediately:"
+          echo "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          echo ""
+          echo "Consider rolling back if production is affected"

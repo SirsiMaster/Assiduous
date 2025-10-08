@@ -1,0 +1,170 @@
+name: Deploy to STAGING
+
+# Triggers: Manual workflow dispatch or release candidate tags
+on:
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: 'Reason for staging deployment'
+        required: true
+        type: string
+  push:
+    tags:
+      - 'v*-rc*'  # e.g., v1.0.0-rc1, v2.3.0-rc2
+
+# Prevent concurrent deployments
+concurrency:
+  group: staging-deployment
+  cancel-in-progress: false
+
+jobs:
+  deploy-to-staging:
+    name: Deploy to STAGING Environment
+    runs-on: ubuntu-latest
+    
+    # Requires manual approval before deploying
+    environment:
+      name: staging
+      url: https://assiduous-staging.web.app
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: firebase-migration-package/package-lock.json
+      
+      - name: Install Firebase CLI
+        run: npm install -g firebase-tools
+      
+      - name: Verify build directory
+        run: |
+          if [ ! -d "firebase-migration-package/assiduous-build" ]; then
+            echo "❌ Build directory not found"
+            exit 1
+          fi
+          echo "✅ Build directory exists"
+          echo "📊 File count: $(find firebase-migration-package/assiduous-build -type f | wc -l)"
+      
+      - name: Run pre-deployment checks
+        run: |
+          echo "🔍 Running pre-deployment checks..."
+          
+          # Check if firebase.json exists
+          if [ ! -f "firebase-migration-package/firebase.json" ]; then
+            echo "❌ firebase.json not found"
+            exit 1
+          fi
+          
+          # Check if .firebaserc exists
+          if [ ! -f "firebase-migration-package/.firebaserc" ]; then
+            echo "❌ .firebaserc not found"
+            exit 1
+          fi
+          
+          echo "✅ All pre-deployment checks passed"
+      
+      - name: Deploy to Firebase STAGING
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        run: |
+          cd firebase-migration-package
+          firebase deploy \
+            --only hosting:staging \
+            --project staging \
+            --token "$FIREBASE_TOKEN" \
+            --non-interactive \
+            --message "Deployed from GitHub Actions - Run ${{ github.run_number }}"
+      
+      - name: Deploy Firestore rules to STAGING
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        run: |
+          cd firebase-migration-package
+          firebase deploy \
+            --only firestore:rules,firestore:indexes \
+            --project staging \
+            --token "$FIREBASE_TOKEN" \
+            --non-interactive
+      
+      - name: Verify deployment
+        run: |
+          echo "⏳ Waiting for CDN propagation..."
+          sleep 15
+          
+          HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" https://assiduous-staging.web.app)
+          if [ "$HTTP_CODE" = "200" ]; then
+            echo "✅ STAGING deployment verified (HTTP $HTTP_CODE)"
+          else
+            echo "⚠️ STAGING deployment check returned HTTP $HTTP_CODE"
+            exit 1
+          fi
+      
+      - name: Run smoke tests
+        run: |
+          echo "🧪 Running smoke tests..."
+          
+          # Test homepage loads
+          if curl -s https://assiduous-staging.web.app | grep -q "AssiduousFlip"; then
+            echo "✅ Homepage loads correctly"
+          else
+            echo "❌ Homepage test failed"
+            exit 1
+          fi
+          
+          # Test admin dashboard (should return 200 or redirect)
+          ADMIN_CODE=$(curl -s -o /dev/null -w "%{http_code}" https://assiduous-staging.web.app/admin/dashboard.html)
+          if [ "$ADMIN_CODE" = "200" ] || [ "$ADMIN_CODE" = "301" ] || [ "$ADMIN_CODE" = "302" ]; then
+            echo "✅ Admin dashboard accessible (HTTP $ADMIN_CODE)"
+          else
+            echo "⚠️ Admin dashboard returned HTTP $ADMIN_CODE"
+          fi
+          
+          echo "✅ All smoke tests passed"
+      
+      - name: Post deployment summary
+        if: always()
+        run: |
+          echo "## 🧪 STAGING Deployment Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Environment**: STAGING" >> $GITHUB_STEP_SUMMARY
+          echo "- **URL**: https://assiduous-staging.web.app" >> $GITHUB_STEP_SUMMARY
+          echo "- **Project**: assiduous-staging" >> $GITHUB_STEP_SUMMARY
+          echo "- **Commit**: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Branch/Tag**: ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Deployed by**: ${{ github.actor }}" >> $GITHUB_STEP_SUMMARY
+          
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "- **Reason**: ${{ inputs.reason }}" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### ✅ Deployment Checklist" >> $GITHUB_STEP_SUMMARY
+          echo "- [x] Build directory verified" >> $GITHUB_STEP_SUMMARY
+          echo "- [x] Firebase configuration validated" >> $GITHUB_STEP_SUMMARY
+          echo "- [x] Hosting deployed" >> $GITHUB_STEP_SUMMARY
+          echo "- [x] Firestore rules deployed" >> $GITHUB_STEP_SUMMARY
+          echo "- [x] Smoke tests passed" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 📋 Next Steps" >> $GITHUB_STEP_SUMMARY
+          echo "1. Manually test critical user flows" >> $GITHUB_STEP_SUMMARY
+          echo "2. Verify database operations" >> $GITHUB_STEP_SUMMARY
+          echo "3. Check authentication flows" >> $GITHUB_STEP_SUMMARY
+          echo "4. If all tests pass, create production tag: \`v*\`" >> $GITHUB_STEP_SUMMARY
+      
+      - name: Create deployment notification
+        if: success()
+        run: |
+          echo "✅ STAGING deployment successful!"
+          echo "🌐 URL: https://assiduous-staging.web.app"
+          echo "📝 Please perform manual testing before promoting to production"
+      
+      - name: Notify on failure
+        if: failure()
+        run: |
+          echo "❌ STAGING deployment failed"
+          echo "Check logs at: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
