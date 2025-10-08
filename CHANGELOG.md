@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.36.2] - 2025-10-08
+
+### Fixed
+- fix(ci): correct Firebase project references in CI/CD workflows
+
+
 ## [0.36.1] - 2025-10-08
 
 ### Fixed
@@ -1156,7 +1162,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.36.1...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.36.2...HEAD
+
+
+## [0.36.2] - 2025-10-08
+
+### Fixed
+- fix(ci): correct Firebase project references in CI/CD workflows
 
 
 ## [0.36.1] - 2025-10-08
@@ -1727,3 +1739,4 @@ To generate changelog entries:
 [0.35.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.34.0...v0.35.0
 [0.36.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.35.0...v0.36.0
 [0.36.1]: https://github.com/SirsiMaster/Assiduous/compare/v0.36.0...v0.36.1
+[0.36.2]: https://github.com/SirsiMaster/Assiduous/compare/v0.36.1...v0.36.2
