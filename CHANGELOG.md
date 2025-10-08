@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.37.0] - 2025-10-08
+
+### Added
+- feat(metrics): update dashboard with complete project history
+
+
 ## [0.36.3] - 2025-10-08
 
 ### Added - COMPLETE CI/CD PIPELINE IMPLEMENTATION
@@ -1253,7 +1259,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.36.3...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.37.0...HEAD
+
+
+## [0.37.0] - 2025-10-08
+
+### Added
+- feat(metrics): update dashboard with complete project history
 
 
 ## [0.36.3] - 2025-10-08
@@ -1838,3 +1850,4 @@ To generate changelog entries:
 [0.36.1]: https://github.com/SirsiMaster/Assiduous/compare/v0.36.0...v0.36.1
 [0.36.2]: https://github.com/SirsiMaster/Assiduous/compare/v0.36.1...v0.36.2
 [0.36.3]: https://github.com/SirsiMaster/Assiduous/compare/v0.36.2...v0.36.3
+[0.37.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.36.3...v0.37.0
