@@ -13,22 +13,22 @@
 // Firebase configurations for each environment
 const FIREBASE_CONFIGS = {
   development: {
-    apiKey: "AIzaSyCYOUR_DEV_API_KEY_HERE",
+    apiKey: "AIzaSyDLi14oefCZVVlQm7cPfDb0WQ9nXlIF4jY",
     authDomain: "assiduous-dev.firebaseapp.com",
     projectId: "assiduous-dev",
     storageBucket: "assiduous-dev.firebasestorage.app",
     messagingSenderId: "186714044941",
-    appId: "1:186714044941:web:YOUR_DEV_APP_ID_HERE",
+    appId: "1:186714044941:web:1525a0503610519dd5f344",
     databaseURL: "https://assiduous-dev-default-rtdb.firebaseio.com"
   },
   
   staging: {
-    apiKey: "AIzaSyCYOUR_STAGING_API_KEY_HERE",
+    apiKey: "AIzaSyDnMkQbhC5kYl5O_07zQ2yfYvGjLRq6E0c",
     authDomain: "assiduous-staging.firebaseapp.com",
     projectId: "assiduous-staging",
     storageBucket: "assiduous-staging.firebasestorage.app",
     messagingSenderId: "853661742177",
-    appId: "1:853661742177:web:YOUR_STAGING_APP_ID_HERE",
+    appId: "1:853661742177:web:cf93349a7f50a2d9f2e620",
     databaseURL: "https://assiduous-staging-default-rtdb.firebaseio.com"
   },
   
