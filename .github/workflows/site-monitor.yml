@@ -1,0 +1,167 @@
+name: Site Health Monitor
+
+on:
+  schedule:
+    # Run every 15 minutes
+    - cron: '*/15 * * * *'
+  workflow_dispatch: # Allow manual trigger
+
+jobs:
+  monitor:
+    name: Check Site Health
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Check Production Site
+        id: check-prod
+        run: |
+          echo "🔍 Checking https://assiduousflip.web.app..."
+          
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" --max-time 10 https://assiduousflip.web.app)
+          
+          if [ "$RESPONSE" = "200" ]; then
+            echo "✅ Production site is UP (HTTP $RESPONSE)"
+            echo "status=up" >> $GITHUB_OUTPUT
+          else
+            echo "❌ Production site is DOWN (HTTP $RESPONSE)"
+            echo "status=down" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+      
+      - name: Check Admin Portal
+        if: always()
+        id: check-admin
+        run: |
+          echo "🔍 Checking admin portal..."
+          
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" --max-time 10 https://assiduousflip.web.app/admin/dashboard.html)
+          
+          if [ "$RESPONSE" = "200" ] || [ "$RESPONSE" = "302" ]; then
+            echo "✅ Admin portal is accessible (HTTP $RESPONSE)"
+            echo "status=up" >> $GITHUB_OUTPUT
+          else
+            echo "⚠️ Admin portal returned HTTP $RESPONSE"
+            echo "status=warning" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Check DEV Environment
+        if: always()
+        id: check-dev
+        run: |
+          echo "🔍 Checking DEV environment..."
+          
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" --max-time 10 https://assiduous-dev.web.app)
+          
+          if [ "$RESPONSE" = "200" ]; then
+            echo "✅ DEV environment is UP (HTTP $RESPONSE)"
+          else
+            echo "⚠️ DEV environment returned HTTP $RESPONSE"
+          fi
+      
+      - name: Check STAGING Environment
+        if: always()
+        id: check-staging
+        run: |
+          echo "🔍 Checking STAGING environment..."
+          
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" --max-time 10 https://assiduous-staging.web.app)
+          
+          if [ "$RESPONSE" = "200" ]; then
+            echo "✅ STAGING environment is UP (HTTP $RESPONSE)"
+          else
+            echo "⚠️ STAGING environment returned HTTP $RESPONSE"
+          fi
+      
+      - name: Test Critical Pages
+        if: always()
+        id: check-pages
+        run: |
+          echo "🔍 Testing critical pages..."
+          
+          PAGES=(
+            "https://assiduousflip.web.app/"
+            "https://assiduousflip.web.app/admin/dashboard.html"
+            "https://assiduousflip.web.app/admin/properties.html"
+            "https://assiduousflip.web.app/client/"
+          )
+          
+          FAILED=0
+          for page in "${PAGES[@]}"; do
+            RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" --max-time 10 "$page")
+            if [ "$RESPONSE" != "200" ] && [ "$RESPONSE" != "302" ]; then
+              echo "❌ Failed: $page (HTTP $RESPONSE)"
+              FAILED=$((FAILED + 1))
+            else
+              echo "✅ OK: $page"
+            fi
+          done
+          
+          if [ $FAILED -gt 0 ]; then
+            echo "failed_pages=$FAILED" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+      
+      - name: Post Status Summary
+        if: always()
+        run: |
+          echo "## 🏥 Site Health Report" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Time:** $(date -u +'%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Status" >> $GITHUB_STEP_SUMMARY
+          echo "- Production: ${{ steps.check-prod.outcome == 'success' && '✅ UP' || '❌ DOWN' }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Admin Portal: ${{ steps.check-admin.outcome == 'success' && '✅ UP' || '⚠️ WARNING' }}" >> $GITHUB_STEP_SUMMARY
+          echo "- DEV: ${{ steps.check-dev.outcome == 'success' && '✅ UP' || '⚠️ WARNING' }}" >> $GITHUB_STEP_SUMMARY
+          echo "- STAGING: ${{ steps.check-staging.outcome == 'success' && '✅ UP' || '⚠️ WARNING' }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Links" >> $GITHUB_STEP_SUMMARY
+          echo "- [Production Site](https://assiduousflip.web.app)" >> $GITHUB_STEP_SUMMARY
+          echo "- [Admin Dashboard](https://assiduousflip.web.app/admin/dashboard.html)" >> $GITHUB_STEP_SUMMARY
+          echo "- [Firebase Console](https://console.firebase.google.com/project/assiduous-prod)" >> $GITHUB_STEP_SUMMARY
+      
+      - name: Create Issue on Failure
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const title = '🚨 Production Site Down Alert';
+            const body = `## Site Health Check Failed
+            
+            **Time:** ${new Date().toISOString()}
+            **Workflow Run:** ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}
+            
+            ### Status
+            - Production: ${{ steps.check-prod.outcome }}
+            - Admin Portal: ${{ steps.check-admin.outcome }}
+            - Critical Pages: ${{ steps.check-pages.outputs.failed_pages || '0' }} failed
+            
+            ### Immediate Actions
+            1. Check Firebase Console: https://console.firebase.google.com/project/assiduous-prod
+            2. Review recent deployments
+            3. Check GitHub Actions: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions
+            
+            ### Quick Fix Commands
+            \`\`\`bash
+            cd firebase-migration-package
+            echo "DEPLOY TO PRODUCTION" | ./deploy.sh production
+            \`\`\`
+            
+            **This issue was automatically created by the site monitor.**`;
+            
+            // Check if there's already an open issue
+            const issues = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'site-down,automated'
+            });
+            
+            if (issues.data.length === 0) {
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: title,
+                body: body,
+                labels: ['site-down', 'automated', 'urgent']
+              });
+            }
