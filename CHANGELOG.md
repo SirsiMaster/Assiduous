@@ -8,6 +8,61 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.36.4] - 2025-10-09
+
+### Added - SITE MONITORING & MOBILE STATUS PAGE
+**Development Session**: October 9, 2025
+
+#### Automated Site Monitoring
+- **GitHub Actions workflow** (`site-monitor.yml`):
+  - Runs every 15 minutes automatically
+  - Checks production, admin portal, DEV, and STAGING environments
+  - Tests critical pages (landing, admin/dashboard, admin/properties, client portal)
+  - Creates GitHub issues automatically when site is down
+  - Maximum alert delay: 15 minutes from downtime
+  - Issue tags: 'site-down', 'automated', 'urgent'
+  - Prevents duplicate issues (checks for existing open issues)
+  - Provides detailed status reports with timestamps
+  - Links to Firebase Console and quick fix commands
+
+#### Mobile-Accessible Status Page
+- **URL**: https://assiduousflip.web.app/status.html
+- Real-time health monitoring for all environments:
+  - Production Site (assiduousflip.web.app)
+  - Admin Dashboard
+  - DEV Environment (assiduous-dev.web.app)
+  - STAGING Environment (assiduous-staging.web.app)
+- Response time tracking (milliseconds per endpoint)
+- Auto-refresh every 60 seconds
+- Mobile-responsive design (works on any device)
+- No authentication required for instant access
+- Quick links to:
+  - GitHub Actions (view monitoring runs)
+  - Firebase Console (emergency access)
+  - Main site
+- Clean, gradient UI with status badges
+- Loading states and error handling
+
+#### Benefits
+- **Proactive monitoring**: Know within 15 minutes if site goes down
+- **Mobile accessibility**: Check site health from anywhere, any device
+- **Automated alerts**: GitHub notifications via email/app
+- **No surprises**: Site downtime detected automatically
+- **Emergency visibility**: Quick access to all monitoring tools from phone
+- **Historical tracking**: GitHub Actions logs all monitoring runs
+
+#### Technical Details
+- Uses GitHub Actions scheduled cron jobs
+- No external monitoring service costs ($0/month)
+- Leverages existing GitHub infrastructure
+- Client-side JavaScript for real-time status checks
+- CORS-friendly HEAD requests for availability checks
+- Timeout protection (10s max per endpoint)
+- Graceful error handling and status reporting
+
+### Fixed
+
+
 ## [0.38.0] - 2025-10-09
 
 ### Added
