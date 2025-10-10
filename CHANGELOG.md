@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.45.0] - 2025-10-10
+
+### Added
+- feat: enhance site monitor with self-healing capabilities
+
+
 ## [0.48.0] - 2025-10-10
 
 ### Fixed - DOCUMENTATION GAPS ELIMINATED
@@ -1651,7 +1657,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.44.0...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.45.0...HEAD
+
+
+## [0.45.0] - 2025-10-10
+
+### Added
+- feat: enhance site monitor with self-healing capabilities
 
 
 ## [0.44.0] - 2025-10-10
@@ -2309,3 +2321,4 @@ To generate changelog entries:
 [0.43.1]: https://github.com/SirsiMaster/Assiduous/compare/v0.43.0...v0.43.1
 [0.43.2]: https://github.com/SirsiMaster/Assiduous/compare/v0.43.1...v0.43.2
 [0.44.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.43.2...v0.44.0
+[0.45.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.44.0...v0.45.0
