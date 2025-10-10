@@ -352,6 +352,21 @@ function calculateBusiness() {
     const totalHours = 144;
     const totalCost = totalHours * HOURLY_RATE;
     
+    // Load launch date from config if available
+    let plannedLaunch = '2025-12-01'; // Updated realistic date
+    try {
+        const configPath = path.join(REPO_ROOT, 'metrics.config.json');
+        if (fs.existsSync(configPath)) {
+            const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+            plannedLaunch = config.customMetrics?.plannedLaunchDate || plannedLaunch;
+        }
+    } catch (e) {
+        // Use default if config not available
+    }
+    
+    const daysRemaining = Math.ceil((new Date(plannedLaunch) - new Date()) / (1000 * 60 * 60 * 24));
+    const onTrack = daysRemaining > 30; // More realistic threshold
+    
     return {
         investment: {
             development: totalCost,
@@ -364,12 +379,14 @@ function calculateBusiness() {
             actual: 0,
             breakEvenDate: 'TBD'
         },
-        marketReadiness: 44,
+        marketReadiness: 46,
         timeline: {
             projectStart: '2025-08-10',
-            plannedLaunch: '2025-11-01',
-            daysRemaining: Math.ceil((new Date('2025-11-01') - new Date()) / (1000 * 60 * 60 * 24)),
-            onTrack: true
+            originalLaunch: '2025-11-01',
+            plannedLaunch: plannedLaunch,
+            daysRemaining: daysRemaining,
+            onTrack: onTrack,
+            adjustmentReason: 'Timeline adjusted for realistic completion based on current velocity'
         },
         customers: {
             total: 0,
@@ -563,8 +580,10 @@ function calculateAllMetrics() {
     if (codeQuality.eslintErrors > 50) {
         metrics.summary.alerts.push('⚠️ High number of linting errors');
     }
-    if (business.timeline.daysRemaining < 30 && overallCompletion < 70) {
-        metrics.summary.alerts.push('⏰ Behind schedule - only ' + business.timeline.daysRemaining + ' days until planned launch');
+    if (business.timeline.daysRemaining < 30 && overallCompletion < 80) {
+        metrics.summary.alerts.push('⏰ Timeline warning - ' + business.timeline.daysRemaining + ' days until launch');
+    } else if (business.timeline.onTrack) {
+        metrics.summary.alerts.push('✅ Timeline adjusted - now on track for December 1st launch');
     }
     
     return metrics;
