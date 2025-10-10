@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent Approvals — Admin Portal</title>
+    
+    <!-- Assiduous Design System -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SirsiMaster/ui-components@latest/dist/sirsimaster-ui.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assiduous.css">
+    <link rel="stylesheet" href="../components/admin-layout.css">
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    
+    <style>
+        .approvals-container {
+            padding: var(--space-xl);
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .page-header {
+            margin-bottom: var(--space-2xl);
+        }
+        
+        .page-title {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--navy);
+            margin-bottom: var(--space-sm);
+        }
+        
+        .page-subtitle {
+            color: var(--text-secondary);
+            font-size: 16px;
+        }
+        
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--space-lg);
+            margin-bottom: var(--space-2xl);
+        }
+        
+        .stat-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: var(--space-lg);
+        }
+        
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: var(--space-xs);
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+        }
+        
+        .filter-bar {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: var(--space-md);
+            margin-bottom: var(--space-lg);
+            display: flex;
+            gap: var(--space-md);
+            align-items: center;
+        }
+        
+        .filter-group {
+            display: flex;
+            gap: var(--space-sm);
+        }
+        
+        .filter-btn {
+            padding: var(--space-xs) var(--space-md);
+            border: 1px solid var(--border);
+            background: var(--white);
+            border-radius: var(--radius);
+            color: var(--text-primary);
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+        
+        .filter-btn:hover {
+            background: var(--gray-50);
+        }
+        
+        .filter-btn.active {
+            background: var(--sky);
+            color: var(--white);
+            border-color: var(--sky);
+        }
+        
+        .applications-list {
+            display: grid;
+            gap: var(--space-lg);
+        }
+        
+        .application-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            transition: all 0.2s;
+        }
+        
+        .application-card:hover {
+            box-shadow: var(--shadow-md);
+        }
+        
+        .application-header {
+            padding: var(--space-lg);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .applicant-info {
+            flex: 1;
+        }
+        
+        .applicant-name {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: var(--space-xs);
+        }
+        
+        .applicant-email {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+        
+        .application-status {
+            padding: var(--space-xs) var(--space-sm);
+            border-radius: var(--radius);
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+        }
+        
+        .status-pending {
+            background: rgba(255, 217, 64, 0.1);
+            color: var(--warning);
+        }
+        
+        .status-approved {
+            background: rgba(5, 150, 105, 0.1);
+            color: var(--success);
+        }
+        
+        .status-rejected {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+        }
+        
+        .application-body {
+            padding: var(--space-lg);
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--space-lg);
+        }
+        
+        .info-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .info-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+            margin-bottom: var(--space-xs);
+        }
+        
+        .info-value {
+            font-size: 14px;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+        
+        .documents-section {
+            padding: var(--space-md) var(--space-lg);
+            background: var(--gray-50);
+            border-top: 1px solid var(--border);
+        }
+        
+        .document-link {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-xs);
+            padding: var(--space-xs) var(--space-sm);
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            color: var(--sky);
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+        
+        .document-link:hover {
+            background: var(--sky);
+            color: var(--white);
+            border-color: var(--sky);
+        }
+        
+        .application-actions {
+            padding: var(--space-lg);
+            display: flex;
+            gap: var(--space-md);
+            justify-content: flex-end;
+            border-top: 1px solid var(--border);
+        }
+        
+        .btn-approve {
+            padding: var(--space-sm) var(--space-lg);
+            background: var(--success);
+            color: var(--white);
+            border: none;
+            border-radius: var(--radius);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .btn-approve:hover {
+            background: #059669;
+        }
+        
+        .btn-reject {
+            padding: var(--space-sm) var(--space-lg);
+            background: var(--danger);
+            color: var(--white);
+            border: none;
+            border-radius: var(--radius);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .btn-reject:hover {
+            background: #dc2626;
+        }
+        
+        .btn-request-info {
+            padding: var(--space-sm) var(--space-lg);
+            background: var(--white);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .btn-request-info:hover {
+            background: var(--gray-50);
+        }
+        
+        .empty-state {
+            padding: var(--space-4xl) var(--space-2xl);
+            text-align: center;
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+        }
+        
+        .empty-icon {
+            font-size: 48px;
+            margin-bottom: var(--space-lg);
+        }
+        
+        .empty-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: var(--space-sm);
+        }
+        
+        .empty-text {
+            color: var(--text-secondary);
+        }
+        
+        .verification-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 8px;
+            border-radius: var(--radius);
+            font-size: 11px;
+            font-weight: 600;
+        }
+        
+        .verified {
+            background: rgba(5, 150, 105, 0.1);
+            color: var(--success);
+        }
+        
+        .unverified {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-wrapper">
+        <!-- Header Placeholder -->
+        <header id="universal-header-root" 
+                data-title="Agent Approvals"
+                data-subtitle="Review and approve agent registration applications"
+                data-search-placeholder="Search applications..."
+                data-user-role="admin"
+                data-user-name="Admin User"
+                data-user-email="admin@assiduousrealty.com">
+        </header>
+        
+        <div class="approvals-container">
+            <!-- Stats Overview -->
+            <div class="stats-row">
+                <div class="stat-card">
+                    <div class="stat-value" id="pendingCount">5</div>
+                    <div class="stat-label">Pending Applications</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="approvedToday">3</div>
+                    <div class="stat-label">Approved Today</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="totalAgents">47</div>
+                    <div class="stat-label">Total Active Agents</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">24h</div>
+                    <div class="stat-label">Avg. Approval Time</div>
+                </div>
+            </div>
+            
+            <!-- Filter Bar -->
+            <div class="filter-bar">
+                <div class="filter-group">
+                    <button class="filter-btn active" data-filter="pending">Pending</button>
+                    <button class="filter-btn" data-filter="approved">Approved</button>
+                    <button class="filter-btn" data-filter="rejected">Rejected</button>
+                    <button class="filter-btn" data-filter="all">All</button>
+                </div>
+            </div>
+            
+            <!-- Applications List -->
+            <div class="applications-list" id="applicationsList">
+                <!-- Example Application Card -->
+                <div class="application-card" data-status="pending">
+                    <div class="application-header">
+                        <div class="applicant-info">
+                            <div class="applicant-name">Sarah Johnson</div>
+                            <div class="applicant-email">sarah.johnson@email.com</div>
+                        </div>
+                        <div class="application-status status-pending">Pending Review</div>
+                    </div>
+                    
+                    <div class="application-body">
+                        <div class="info-group">
+                            <div class="info-label">License Number</div>
+                            <div class="info-value">
+                                PA-RS-123456
+                                <span class="verification-badge verified">✓ Verified</span>
+                            </div>
+                        </div>
+                        <div class="info-group">
+                            <div class="info-label">License State</div>
+                            <div class="info-value">Pennsylvania</div>
+                        </div>
+                        <div class="info-group">
+                            <div class="info-label">License Expiry</div>
+                            <div class="info-value">Dec 31, 2025</div>
+                        </div>
+                        <div class="info-group">
+                            <div class="info-label">Brokerage</div>
+                            <div class="info-value">Assiduous Realty Group</div>
+                        </div>
+                        <div class="info-group">
+                            <div class="info-label">Phone</div>
+                            <div class="info-value">(555) 123-4567</div>
+                        </div>
+                        <div class="info-group">
+                            <div class="info-label">Applied</div>
+                            <div class="info-value">2 hours ago</div>
+                        </div>
+                    </div>
+                    
+                    <div class="documents-section">
+                        <a href="#" class="document-link">
+                            📄 View License Document
+                        </a>
+                    </div>
+                    
+                    <div class="application-actions">
+                        <button class="btn-request-info" onclick="requestMoreInfo('123')">Request More Info</button>
+                        <button class="btn-reject" onclick="rejectApplication('123')">Reject</button>
+                        <button class="btn-approve" onclick="approveApplication('123')">Approve Agent</button>
+                    </div>
+                </div>
+                
+                <!-- More applications would be loaded dynamically -->
+            </div>
+            
+            <!-- Empty State (shown when no applications match filter) -->
+            <div class="empty-state" id="emptyState" style="display: none;">
+                <div class="empty-icon">📋</div>
+                <div class="empty-title">No Applications Found</div>
+                <div class="empty-text">There are no applications matching your current filter.</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Load Universal Header -->
+    <script src="../components/universal-header.js"></script>
+    
+    <!-- Firebase Integration -->
+    <script src="../firebase-config.js"></script>
+    
+    <script>
+        // Initialize Firebase
+        const db = firebase.firestore();
+        const auth = firebase.auth();
+        
+        // Load applications
+        async function loadApplications(filter = 'pending') {
+            const applicationsList = document.getElementById('applicationsList');
+            applicationsList.innerHTML = 'Loading...';
+            
+            try {
+                let query = db.collection('users').where('role', '==', 'agent');
+                
+                if (filter === 'pending') {
+                    query = query.where('agentInfo.status', '==', 'pending_approval');
+                } else if (filter === 'approved') {
+                    query = query.where('agentInfo.status', '==', 'approved');
+                } else if (filter === 'rejected') {
+                    query = query.where('agentInfo.status', '==', 'rejected');
+                }
+                
+                const snapshot = await query.get();
+                
+                if (snapshot.empty) {
+                    document.getElementById('emptyState').style.display = 'block';
+                    applicationsList.innerHTML = '';
+                    return;
+                }
+                
+                document.getElementById('emptyState').style.display = 'none';
+                applicationsList.innerHTML = '';
+                
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    const card = createApplicationCard(doc.id, data);
+                    applicationsList.appendChild(card);
+                });
+                
+                // Update counts
+                updateStatistics();
+                
+            } catch (error) {
+                console.error('Error loading applications:', error);
+                applicationsList.innerHTML = 'Error loading applications';
+            }
+        }
+        
+        // Create application card HTML
+        function createApplicationCard(userId, userData) {
+            const card = document.createElement('div');
+            card.className = 'application-card';
+            card.dataset.status = userData.agentInfo?.status || 'pending';
+            
+            const statusClass = userData.agentInfo?.status === 'approved' ? 'status-approved' : 
+                               userData.agentInfo?.status === 'rejected' ? 'status-rejected' : 
+                               'status-pending';
+            
+            const statusText = userData.agentInfo?.status === 'approved' ? 'Approved' : 
+                              userData.agentInfo?.status === 'rejected' ? 'Rejected' : 
+                              'Pending Review';
+            
+            card.innerHTML = `
+                <div class="application-header">
+                    <div class="applicant-info">
+                        <div class="applicant-name">${userData.firstName} ${userData.lastName}</div>
+                        <div class="applicant-email">${userData.email}</div>
+                    </div>
+                    <div class="application-status ${statusClass}">${statusText}</div>
+                </div>
+                
+                <div class="application-body">
+                    <div class="info-group">
+                        <div class="info-label">License Number</div>
+                        <div class="info-value">
+                            ${userData.agentInfo?.licenseNumber || 'N/A'}
+                            ${userData.agentInfo?.licenseVerified ? 
+                              '<span class="verification-badge verified">✓ Verified</span>' : 
+                              '<span class="verification-badge unverified">✗ Unverified</span>'}
+                        </div>
+                    </div>
+                    <div class="info-group">
+                        <div class="info-label">License State</div>
+                        <div class="info-value">${userData.agentInfo?.licenseState || 'N/A'}</div>
+                    </div>
+                    <div class="info-group">
+                        <div class="info-label">License Expiry</div>
+                        <div class="info-value">${formatDate(userData.agentInfo?.licenseExpiry)}</div>
+                    </div>
+                    <div class="info-group">
+                        <div class="info-label">Brokerage</div>
+                        <div class="info-value">${userData.agentInfo?.brokerageName || 'N/A'}</div>
+                    </div>
+                    <div class="info-group">
+                        <div class="info-label">Phone</div>
+                        <div class="info-value">${userData.phone || 'N/A'}</div>
+                    </div>
+                    <div class="info-group">
+                        <div class="info-label">Applied</div>
+                        <div class="info-value">${timeAgo(userData.createdAt)}</div>
+                    </div>
+                </div>
+                
+                ${userData.agentInfo?.licenseDocName ? `
+                <div class="documents-section">
+                    <a href="#" class="document-link" onclick="viewDocument('${userId}'); return false;">
+                        📄 View License Document
+                    </a>
+                </div>
+                ` : ''}
+                
+                ${userData.agentInfo?.status === 'pending_approval' ? `
+                <div class="application-actions">
+                    <button class="btn-request-info" onclick="requestMoreInfo('${userId}')">Request More Info</button>
+                    <button class="btn-reject" onclick="rejectApplication('${userId}')">Reject</button>
+                    <button class="btn-approve" onclick="approveApplication('${userId}')">Approve Agent</button>
+                </div>
+                ` : ''}
+            `;
+            
+            return card;
+        }
+        
+        // Approve application
+        async function approveApplication(userId) {
+            if (!confirm('Are you sure you want to approve this agent application?')) return;
+            
+            try {
+                await db.collection('users').doc(userId).update({
+                    'agentInfo.status': 'approved',
+                    'agentInfo.approvedAt': firebase.firestore.FieldValue.serverTimestamp(),
+                    'agentInfo.approvedBy': auth.currentUser?.uid
+                });
+                
+                // Send approval email (in production)
+                console.log('Agent approved:', userId);
+                
+                // Reload applications
+                loadApplications(currentFilter);
+                
+                alert('Agent application approved successfully!');
+            } catch (error) {
+                console.error('Error approving application:', error);
+                alert('Failed to approve application. Please try again.');
+            }
+        }
+        
+        // Reject application
+        async function rejectApplication(userId) {
+            const reason = prompt('Please provide a reason for rejection:');
+            if (!reason) return;
+            
+            try {
+                await db.collection('users').doc(userId).update({
+                    'agentInfo.status': 'rejected',
+                    'agentInfo.rejectedAt': firebase.firestore.FieldValue.serverTimestamp(),
+                    'agentInfo.rejectedBy': auth.currentUser?.uid,
+                    'agentInfo.rejectionReason': reason
+                });
+                
+                console.log('Agent rejected:', userId);
+                
+                // Reload applications
+                loadApplications(currentFilter);
+                
+                alert('Agent application rejected.');
+            } catch (error) {
+                console.error('Error rejecting application:', error);
+                alert('Failed to reject application. Please try again.');
+            }
+        }
+        
+        // Request more information
+        async function requestMoreInfo(userId) {
+            const message = prompt('What additional information do you need?');
+            if (!message) return;
+            
+            try {
+                await db.collection('users').doc(userId).update({
+                    'agentInfo.additionalInfoRequested': true,
+                    'agentInfo.infoRequestMessage': message,
+                    'agentInfo.infoRequestedAt': firebase.firestore.FieldValue.serverTimestamp()
+                });
+                
+                console.log('Additional info requested:', userId);
+                alert('Request for additional information sent.');
+            } catch (error) {
+                console.error('Error requesting info:', error);
+                alert('Failed to send request. Please try again.');
+            }
+        }
+        
+        // View document
+        function viewDocument(userId) {
+            // In production, retrieve document from Firebase Storage
+            console.log('Viewing document for user:', userId);
+            window.open('#', '_blank');
+        }
+        
+        // Update statistics
+        async function updateStatistics() {
+            try {
+                const pendingSnapshot = await db.collection('users')
+                    .where('role', '==', 'agent')
+                    .where('agentInfo.status', '==', 'pending_approval')
+                    .get();
+                
+                document.getElementById('pendingCount').textContent = pendingSnapshot.size;
+                
+                // Get today's approvals
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                
+                const approvedTodaySnapshot = await db.collection('users')
+                    .where('role', '==', 'agent')
+                    .where('agentInfo.status', '==', 'approved')
+                    .where('agentInfo.approvedAt', '>=', today)
+                    .get();
+                
+                document.getElementById('approvedToday').textContent = approvedTodaySnapshot.size;
+                
+                // Get total active agents
+                const totalAgentsSnapshot = await db.collection('users')
+                    .where('role', '==', 'agent')
+                    .where('agentInfo.status', '==', 'approved')
+                    .get();
+                
+                document.getElementById('totalAgents').textContent = totalAgentsSnapshot.size;
+                
+            } catch (error) {
+                console.error('Error updating statistics:', error);
+            }
+        }
+        
+        // Format date
+        function formatDate(dateString) {
+            if (!dateString) return 'N/A';
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-US', { 
+                year: 'numeric', 
+                month: 'short', 
+                day: 'numeric' 
+            });
+        }
+        
+        // Time ago function
+        function timeAgo(dateString) {
+            if (!dateString) return 'Unknown';
+            
+            const date = new Date(dateString);
+            const now = new Date();
+            const seconds = Math.floor((now - date) / 1000);
+            
+            if (seconds < 60) return 'just now';
+            if (seconds < 3600) return Math.floor(seconds / 60) + ' minutes ago';
+            if (seconds < 86400) return Math.floor(seconds / 3600) + ' hours ago';
+            if (seconds < 604800) return Math.floor(seconds / 86400) + ' days ago';
+            
+            return date.toLocaleDateString();
+        }
+        
+        // Filter handling
+        let currentFilter = 'pending';
+        
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentFilter = btn.dataset.filter;
+                loadApplications(currentFilter);
+            });
+        });
+        
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            // Check if user is admin
+            auth.onAuthStateChanged(user => {
+                if (!user) {
+                    window.location.href = '/login.html';
+                    return;
+                }
+                
+                // Load initial data
+                loadApplications('pending');
+            });
+        });
+        
+        // Auto-refresh every 30 seconds
+        setInterval(() => {
+            loadApplications(currentFilter);
+        }, 30000);
+    </script>
+</body>
+</html>
