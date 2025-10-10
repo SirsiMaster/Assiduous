@@ -119,34 +119,66 @@ jobs:
           echo "- [Admin Dashboard](https://assiduousflip.web.app/admin/dashboard.html)" >> $GITHUB_STEP_SUMMARY
           echo "- [Firebase Console](https://console.firebase.google.com/project/assiduous-prod)" >> $GITHUB_STEP_SUMMARY
       
-      - name: Create Issue on Failure
-        if: failure()
+      # AUTO-FIX: Attempt to redeploy when site is down
+      - name: Auto-Fix - Attempt Redeploy
+        if: steps.check-prod.outcome == 'failure'
+        id: auto-fix
+        run: |
+          echo "🔧 Site is down - attempting automatic redeploy..."
+          
+          # Install Firebase CLI
+          npm install -g firebase-tools
+          
+          # Attempt to redeploy
+          cd firebase-migration-package
+          firebase deploy --only hosting --project assiduous-prod --token "${{ secrets.FIREBASE_TOKEN }}" 
+          
+          # Wait 30 seconds for deployment to propagate
+          sleep 30
+          
+          # Verify fix
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" --max-time 10 https://assiduousflip.web.app)
+          if [ "$RESPONSE" = "200" ]; then
+            echo "✅ AUTO-FIX SUCCESSFUL! Site is back up."
+            echo "fix_status=success" >> $GITHUB_OUTPUT
+          else
+            echo "❌ Auto-fix failed. Manual intervention required."
+            echo "fix_status=failed" >> $GITHUB_OUTPUT
+          fi
+      
+      # Send email notification when site goes down
+      - name: Send Email Notification
+        if: steps.check-prod.outcome == 'failure'
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{ secrets.EMAIL_USERNAME }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          subject: 🚨 URGENT - Assiduous Production Site Down
+          body: |
+            The Assiduous production site (https://assiduousflip.web.app) is currently DOWN.
+            
+            Detection Time: ${{ steps.check-prod.outputs.time }}
+            Auto-Fix Status: ${{ steps.auto-fix.outputs.fix_status == 'success' && '✅ FIXED AUTOMATICALLY' || '❌ MANUAL FIX REQUIRED' }}
+            
+            View monitoring details:
+            https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+            
+            If auto-fix failed, please redeploy manually:
+            1. SSH to deployment server
+            2. cd firebase-migration-package
+            3. Run: firebase deploy --only hosting --project assiduous-prod
+          to: ${{ secrets.NOTIFICATION_EMAIL }}
+          from: Assiduous Site Monitor <monitor@assiduousflip.com>
+      
+      - name: Create or Update Issue
+        if: always()
         uses: actions/github-script@v7
         with:
           script: |
-            const title = '🚨 Production Site Down Alert';
-            const body = `## Site Health Check Failed
-            
-            **Time:** ${new Date().toISOString()}
-            **Workflow Run:** ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}
-            
-            ### Status
-            - Production: ${{ steps.check-prod.outcome }}
-            - Admin Portal: ${{ steps.check-admin.outcome }}
-            - Critical Pages: ${{ steps.check-pages.outputs.failed_pages || '0' }} failed
-            
-            ### Immediate Actions
-            1. Check Firebase Console: https://console.firebase.google.com/project/assiduous-prod
-            2. Review recent deployments
-            3. Check GitHub Actions: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions
-            
-            ### Quick Fix Commands
-            \`\`\`bash
-            cd firebase-migration-package
-            echo "DEPLOY TO PRODUCTION" | ./deploy.sh production
-            \`\`\`
-            
-            **This issue was automatically created by the site monitor.**`;
+            const isProdDown = '${{ steps.check-prod.outcome }}' === 'failure';
+            const wasAutoFixed = '${{ steps.auto-fix.outputs.fix_status }}' === 'success';
             
             // Check if there's already an open issue
             const issues = await github.rest.issues.listForRepo({
@@ -156,12 +188,73 @@ jobs:
               labels: 'site-down,automated'
             });
             
-            if (issues.data.length === 0) {
-              await github.rest.issues.create({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                title: title,
-                body: body,
-                labels: ['site-down', 'automated', 'urgent']
-              });
+            if (isProdDown && !wasAutoFixed) {
+              // Site is down and auto-fix failed - create or update issue
+              const title = '🚨 Production Site Down Alert';
+              const body = `## Site Health Check Failed
+              
+              **Time:** ${new Date().toISOString()}
+              **Workflow Run:** ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}
+              
+              ### Status
+              - Production: ❌ DOWN
+              - Auto-Fix Attempted: ❌ FAILED
+              - Manual Intervention: ⚠️ REQUIRED
+              
+              ### Email Notification
+              ✅ Email alert has been sent to configured recipients.
+              
+              ### Immediate Actions
+              1. Check Firebase Console: https://console.firebase.google.com/project/assiduous-prod
+              2. Review recent deployments
+              3. Check GitHub Actions: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions
+              
+              ### Manual Fix Commands
+              \`\`\`bash
+              cd firebase-migration-package
+              firebase deploy --only hosting --project assiduous-prod
+              \`\`\`
+              
+              **This issue was automatically created by the site monitor after auto-fix failed.**`;
+              
+              if (issues.data.length === 0) {
+                await github.rest.issues.create({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  title: title,
+                  body: body,
+                  labels: ['site-down', 'automated', 'urgent', 'auto-fix-failed']
+                });
+              }
+            } else if (!isProdDown || wasAutoFixed) {
+              // Site is up (either never went down or was auto-fixed) - close any open issues
+              for (const issue of issues.data) {
+                let closeComment = '✅ Site is back online!\n\n';
+                
+                if (wasAutoFixed) {
+                  closeComment += '🔧 **Auto-Fix Status:** The site was automatically redeployed and is now working.\n';
+                }
+                
+                closeComment += `**Confirmed at:** ${new Date().toISOString()}\n`;
+                closeComment += `**Monitoring Run:** ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}\n\n`;
+                closeComment += 'This issue has been automatically closed by the site monitor.';
+                
+                // Add closing comment
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issue.number,
+                  body: closeComment
+                });
+                
+                // Close the issue
+                await github.rest.issues.update({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issue.number,
+                  state: 'closed'
+                });
+                
+                console.log(`Closed issue #${issue.number}`);
+              }
             }
