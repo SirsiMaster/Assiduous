@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.43.1] - 2025-10-10
+
+### Fixed
+- fix: Update Firebase config with actual development credentials
+
+
 ## [0.43.0] - 2025-10-10
 
 ### Added
@@ -1391,7 +1397,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.43.0...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.43.1...HEAD
+
+
+## [0.43.1] - 2025-10-10
+
+### Fixed
+- fix: Update Firebase config with actual development credentials
 
 
 ## [0.43.0] - 2025-10-10
@@ -2025,3 +2037,4 @@ To generate changelog entries:
 [0.41.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.40.0...v0.41.0
 [0.42.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.41.0...v0.42.0
 [0.43.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.42.0...v0.43.0
+[0.43.1]: https://github.com/SirsiMaster/Assiduous/compare/v0.43.0...v0.43.1
