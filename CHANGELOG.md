@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+
+## [0.39.0] - 2025-10-10
+
+### Added
+- feat: add agent dashboard and comprehensive documentation
+
 ## [0.39.0] - 2025-10-09
 
 ### Changed - DOCUMENTATION RECALIBRATION
@@ -1361,7 +1367,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.38.0...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.39.0...HEAD
+
+
+## [0.39.0] - 2025-10-10
+
+### Added
+- feat: add agent dashboard and comprehensive documentation
 
 
 ## [0.38.0] - 2025-10-09
@@ -1960,3 +1972,4 @@ To generate changelog entries:
 [0.36.3]: https://github.com/SirsiMaster/Assiduous/compare/v0.36.2...v0.36.3
 [0.37.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.36.3...v0.37.0
 [0.38.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.37.0...v0.38.0
+[0.39.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.38.0...v0.39.0
