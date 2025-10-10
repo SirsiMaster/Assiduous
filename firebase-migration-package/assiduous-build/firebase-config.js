@@ -7,15 +7,15 @@
  */
 
 // Firebase configuration object
-// Using development environment configuration
+// Using production environment configuration (dev auth not configured)
 const firebaseConfig = {
-    apiKey: "AIzaSyDLi14oefCZVVlQm7cPfDb0WQ9nXlIF4jY",
-    authDomain: "assiduous-dev.firebaseapp.com",
-    projectId: "assiduous-dev",
-    storageBucket: "assiduous-dev.firebasestorage.app",
-    messagingSenderId: "186714044941",
-    appId: "1:186714044941:web:1525a0503610519dd5f344",
-    databaseURL: "https://assiduous-dev-default-rtdb.firebaseio.com"
+    apiKey: "AIzaSyCL8Y7cQ-kZfhCXaM1KBTnAI6_LXq2J8fE",
+    authDomain: "assiduous-prod.firebaseapp.com",
+    projectId: "assiduous-prod",
+    storageBucket: "assiduous-prod.firebasestorage.app",
+    messagingSenderId: "9355377564",
+    appId: "1:9355377564:web:84bd6fa0e7c8a2e7c3f56b",
+    databaseURL: "https://assiduous-prod-default-rtdb.firebaseio.com"
 };
 
 // Make available globally
