@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.46.0] - 2025-10-10
+
+### Added
+- feat: enhance site monitor with robust auto-recovery and retry logic
+
+
 ## [0.45.0] - 2025-10-10
 
 ### Added
@@ -1657,7 +1663,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.45.0...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.46.0...HEAD
+
+
+## [0.46.0] - 2025-10-10
+
+### Added
+- feat: enhance site monitor with robust auto-recovery and retry logic
 
 
 ## [0.45.0] - 2025-10-10
@@ -2322,3 +2334,4 @@ To generate changelog entries:
 [0.43.2]: https://github.com/SirsiMaster/Assiduous/compare/v0.43.1...v0.43.2
 [0.44.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.43.2...v0.44.0
 [0.45.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.44.0...v0.45.0
+[0.46.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.45.0...v0.46.0
