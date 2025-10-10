@@ -210,6 +210,12 @@ Based on comprehensive audit showing excellent documentation but only 27% implem
 - Deployed styling fixes to production at https://assiduousflip.web.app
 
 
+## [0.43.2] - 2025-10-10
+
+### Fixed
+- fix: switch to production Firebase and add test accounts
+
+
 ## [0.43.1] - 2025-10-10
 
 ### Fixed
@@ -1599,7 +1605,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.43.1...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.43.2...HEAD
+
+
+## [0.43.2] - 2025-10-10
+
+### Fixed
+- fix: switch to production Firebase and add test accounts
 
 
 ## [0.43.1] - 2025-10-10
@@ -2240,3 +2252,4 @@ To generate changelog entries:
 [0.42.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.41.0...v0.42.0
 [0.43.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.42.0...v0.43.0
 [0.43.1]: https://github.com/SirsiMaster/Assiduous/compare/v0.43.0...v0.43.1
+[0.43.2]: https://github.com/SirsiMaster/Assiduous/compare/v0.43.1...v0.43.2
