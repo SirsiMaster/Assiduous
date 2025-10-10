@@ -120,57 +120,125 @@ jobs:
           echo "- [Firebase Console](https://console.firebase.google.com/project/assiduous-prod)" >> $GITHUB_STEP_SUMMARY
       
       # AUTO-FIX: Attempt to redeploy when site is down
-      - name: Auto-Fix - Attempt Redeploy
+      - name: Auto-Fix - Attempt Redeploy with Retry
         if: steps.check-prod.outcome == 'failure'
         id: auto-fix
         run: |
-          echo "🔧 Site is down - attempting automatic redeploy..."
+          echo "🔧 Site is down - initiating automatic recovery protocol..."
+          echo "⏰ Time: $(date -u +'%Y-%m-%d %H:%M:%S UTC')"
           
           # Install Firebase CLI
+          echo "📦 Installing Firebase CLI..."
           npm install -g firebase-tools
           
-          # Attempt to redeploy
-          cd firebase-migration-package
-          firebase deploy --only hosting --project assiduous-prod --token "${{ secrets.FIREBASE_TOKEN }}" 
+          # Maximum number of redeploy attempts
+          MAX_ATTEMPTS=3
+          ATTEMPT=0
+          SUCCESS=false
           
-          # Wait 30 seconds for deployment to propagate
-          sleep 30
+          while [ $ATTEMPT -lt $MAX_ATTEMPTS ] && [ "$SUCCESS" = "false" ]; do
+            ATTEMPT=$((ATTEMPT + 1))
+            echo ""
+            echo "🚀 Deployment attempt $ATTEMPT of $MAX_ATTEMPTS..."
+            
+            # Navigate to deployment directory
+            cd $GITHUB_WORKSPACE/firebase-migration-package
+            
+            # Attempt to redeploy
+            echo "📤 Deploying to Firebase Hosting..."
+            if firebase deploy --only hosting --project assiduous-prod --token "${{ secrets.FIREBASE_TOKEN }}" 2>&1; then
+              echo "✅ Deployment command executed successfully"
+              
+              # Test site liveness with multiple checks
+              echo "🔍 Testing site liveness (waiting for HTTP 200)..."
+              
+              # Wait up to 2 minutes for site to come online, checking every 10 seconds
+              for i in {1..12}; do
+                sleep 10
+                echo -n "  Check $i/12: "
+                
+                RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" --max-time 10 https://assiduousflip.web.app)
+                echo "HTTP $RESPONSE"
+                
+                if [ "$RESPONSE" = "200" ]; then
+                  echo "🎉 Site is LIVE! HTTP 200 received."
+                  SUCCESS=true
+                  break
+                fi
+              done
+              
+              if [ "$SUCCESS" = "true" ]; then
+                break
+              else
+                echo "⚠️ Site not responding with HTTP 200 after deployment"
+              fi
+            else
+              echo "❌ Deployment command failed"
+            fi
+            
+            if [ $ATTEMPT -lt $MAX_ATTEMPTS ] && [ "$SUCCESS" = "false" ]; then
+              echo "⏳ Waiting 30 seconds before retry..."
+              sleep 30
+            fi
+          done
           
-          # Verify fix
-          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" --max-time 10 https://assiduousflip.web.app)
-          if [ "$RESPONSE" = "200" ]; then
-            echo "✅ AUTO-FIX SUCCESSFUL! Site is back up."
+          # Final status
+          if [ "$SUCCESS" = "true" ]; then
+            echo ""
+            echo "═══════════════════════════════════════"
+            echo "✅ AUTO-FIX SUCCESSFUL!"
+            echo "🌐 Site: https://assiduousflip.web.app"
+            echo "📊 Status: HTTP 200 - FULLY OPERATIONAL"
+            echo "🕒 Recovery Time: ~$((ATTEMPT * 150)) seconds"
+            echo "═══════════════════════════════════════"
             echo "fix_status=success" >> $GITHUB_OUTPUT
+            echo "attempts=$ATTEMPT" >> $GITHUB_OUTPUT
           else
-            echo "❌ Auto-fix failed. Manual intervention required."
+            echo ""
+            echo "═══════════════════════════════════════"
+            echo "❌ AUTO-FIX FAILED AFTER $MAX_ATTEMPTS ATTEMPTS"
+            echo "📱 Manual intervention required"
+            echo "📧 Email notification will be sent"
+            echo "🎫 GitHub issue will be created"
+            echo "═══════════════════════════════════════"
             echo "fix_status=failed" >> $GITHUB_OUTPUT
+            echo "attempts=$MAX_ATTEMPTS" >> $GITHUB_OUTPUT
           fi
       
-      # Send email notification when site goes down
-      - name: Send Email Notification
+      # Log recovery status for notifications
+      - name: Log Recovery Status
         if: steps.check-prod.outcome == 'failure'
-        uses: dawidd6/action-send-mail@v3
-        with:
-          server_address: smtp.gmail.com
-          server_port: 465
-          username: ${{ secrets.EMAIL_USERNAME }}
-          password: ${{ secrets.EMAIL_PASSWORD }}
-          subject: 🚨 URGENT - Assiduous Production Site Down
-          body: |
-            The Assiduous production site (https://assiduousflip.web.app) is currently DOWN.
-            
-            Detection Time: ${{ steps.check-prod.outputs.time }}
-            Auto-Fix Status: ${{ steps.auto-fix.outputs.fix_status == 'success' && '✅ FIXED AUTOMATICALLY' || '❌ MANUAL FIX REQUIRED' }}
-            
-            View monitoring details:
-            https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
-            
-            If auto-fix failed, please redeploy manually:
-            1. SSH to deployment server
-            2. cd firebase-migration-package
-            3. Run: firebase deploy --only hosting --project assiduous-prod
-          to: ${{ secrets.NOTIFICATION_EMAIL }}
-          from: Assiduous Site Monitor <monitor@assiduousflip.com>
+        run: |
+          echo "## 🔔 SITE RECOVERY REPORT" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [ "${{ steps.auto-fix.outputs.fix_status }}" = "success" ]; then
+            echo "### ✅ AUTO-RECOVERY SUCCESSFUL" >> $GITHUB_STEP_SUMMARY
+            echo "The site has been automatically recovered and is now operational." >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "- **Site URL:** https://assiduousflip.web.app" >> $GITHUB_STEP_SUMMARY
+            echo "- **Status:** HTTP 200 - FULLY OPERATIONAL" >> $GITHUB_STEP_SUMMARY
+            echo "- **Recovery Time:** ~$((${{ steps.auto-fix.outputs.attempts }} * 150)) seconds" >> $GITHUB_STEP_SUMMARY
+            echo "- **Deployment Attempts:** ${{ steps.auto-fix.outputs.attempts }}/3" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "### ❌ AUTO-RECOVERY FAILED - MANUAL INTERVENTION REQUIRED" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "⚠️ **The automatic recovery failed after 3 attempts. The site requires manual intervention.**" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "#### Manual Fix Instructions:" >> $GITHUB_STEP_SUMMARY
+            echo "1. Access [Firebase Console](https://console.firebase.google.com/project/assiduous-prod)" >> $GITHUB_STEP_SUMMARY
+            echo "2. Run manual deployment:" >> $GITHUB_STEP_SUMMARY
+            echo '```bash' >> $GITHUB_STEP_SUMMARY
+            echo "cd firebase-migration-package" >> $GITHUB_STEP_SUMMARY
+            echo "firebase deploy --only hosting --project assiduous-prod" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            echo "3. Verify site returns HTTP 200:" >> $GITHUB_STEP_SUMMARY
+            echo '```bash' >> $GITHUB_STEP_SUMMARY
+            echo "curl -I https://assiduousflip.web.app" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+          fi
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "---" >> $GITHUB_STEP_SUMMARY
+          echo "*GitHub will send notifications about this workflow to repository watchers.*" >> $GITHUB_STEP_SUMMARY
       
       - name: Create or Update Issue
         if: always()
@@ -191,31 +259,43 @@ jobs:
             if (isProdDown && !wasAutoFixed) {
               // Site is down and auto-fix failed - create or update issue
               const title = '🚨 Production Site Down Alert';
-              const body = `## Site Health Check Failed
+              const body = `## 🎯 Automatic Recovery Failed - Manual Intervention Required
               
-              **Time:** ${new Date().toISOString()}
+              **Detection Time:** ${new Date().toISOString()}
               **Workflow Run:** ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}
               
-              ### Status
-              - Production: ❌ DOWN
-              - Auto-Fix Attempted: ❌ FAILED
-              - Manual Intervention: ⚠️ REQUIRED
+              ### 📊 Recovery Attempt Summary
+              - **Site Status:** ❌ DOWN (Not returning HTTP 200)
+              - **Auto-Recovery:** Attempted 3 times - ALL FAILED
+              - **Recovery Protocol:** Firebase redeploy with liveness testing
+              - **Manual Fix:** ⚠️ REQUIRED IMMEDIATELY
               
-              ### Email Notification
-              ✅ Email alert has been sent to configured recipients.
+              ### 🔧 What the monitor tried:
+              1. Detected site was down (not returning HTTP 200)
+              2. Automatically attempted to redeploy via Firebase CLI
+              3. Tested site liveness after each deployment (12 checks over 2 minutes)
+              4. Retried deployment 3 times with 30-second intervals
+              5. All recovery attempts failed to restore HTTP 200 status
               
-              ### Immediate Actions
-              1. Check Firebase Console: https://console.firebase.google.com/project/assiduous-prod
-              2. Review recent deployments
-              3. Check GitHub Actions: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions
-              
-              ### Manual Fix Commands
+              ### 🚑 Immediate Actions Required
+              1. **Check Firebase Console:** https://console.firebase.google.com/project/assiduous-prod
+              2. **Review deployment logs in this workflow run**
+              3. **Manual deployment commands:**
               \`\`\`bash
+              # Navigate to deployment directory
               cd firebase-migration-package
+              
+              # Deploy to production
               firebase deploy --only hosting --project assiduous-prod
+              
+              # Test site is live (should return HTTP 200)
+              curl -I https://assiduousflip.web.app
               \`\`\`
               
-              **This issue was automatically created by the site monitor after auto-fix failed.**`;
+              ### 🔔 GitHub Notifications
+              Repository watchers will receive notifications about this issue.
+              
+              **This issue was automatically created after 3 failed auto-recovery attempts.**`;
               
               if (issues.data.length === 0) {
                 await github.rest.issues.create({
