@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Agent Authentication</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 40px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        .test-result {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 4px;
+            background: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        pre {
+            background: #f4f4f4;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Agent Dashboard Authentication Test</h1>
+    
+    <div class="test-section">
+        <h2>1. Authentication Component Status</h2>
+        <div id="auth-status"></div>
+        <button onclick="testAuthComponent()">Test Auth Component</button>
+        <button onclick="testAuthGuard()">Test Auth Guard</button>
+    </div>
+    
+    <div class="test-section">
+        <h2>2. Current User</h2>
+        <div id="current-user"></div>
+        <button onclick="checkCurrentUser()">Check Current User</button>
+    </div>
+    
+    <div class="test-section">
+        <h2>3. Test Agent Login</h2>
+        <input type="email" id="test-email" placeholder="Email" value="agent@sirsimaster.com">
+        <input type="password" id="test-password" placeholder="Password" value="Test123!">
+        <button onclick="testAgentLogin()">Login as Agent</button>
+        <button onclick="testLogout()">Logout</button>
+    </div>
+    
+    <div class="test-section">
+        <h2>4. Test Dashboard Access</h2>
+        <div id="dashboard-access"></div>
+        <button onclick="testDashboardAccess()">Test Dashboard Access</button>
+        <button onclick="openDashboard()">Open Agent Dashboard</button>
+    </div>
+    
+    <div class="test-section">
+        <h2>Test Results</h2>
+        <div id="test-results"></div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    
+    <!-- Sirsi Auth Components -->
+    <script src="components/sirsi-auth.js"></script>
+    <script src="components/auth-guard.js"></script>
+    
+    <!-- Firebase Config -->
+    <script src="firebase-config.js"></script>
+    
+    <script>
+        let auth;
+        let guard;
+        
+        function addResult(message, type = 'info') {
+            const resultsDiv = document.getElementById('test-results');
+            const resultDiv = document.createElement('div');
+            resultDiv.className = `test-result ${type}`;
+            resultDiv.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            resultsDiv.insertBefore(resultDiv, resultsDiv.firstChild);
+        }
+        
+        async function testAuthComponent() {
+            try {
+                addResult('Testing SirsiAuth component...', 'info');
+                auth = new SirsiAuth({
+                    firebaseConfig: window.firebaseConfig || {}
+                });
+                await auth.initialize();
+                addResult('SirsiAuth initialized successfully!', 'success');
+                document.getElementById('auth-status').innerHTML = '<div class="test-result success">Auth Component: Ready</div>';
+            } catch (error) {
+                addResult(`Auth component error: ${error.message}`, 'error');
+                document.getElementById('auth-status').innerHTML = `<div class="test-result error">Auth Component Error: ${error.message}</div>`;
+            }
+        }
+        
+        async function testAuthGuard() {
+            try {
+                addResult('Testing AuthGuard component...', 'info');
+                if (!auth) {
+                    await testAuthComponent();
+                }
+                guard = new AuthGuard();
+                await guard.initialize(auth);
+                addResult('AuthGuard initialized successfully!', 'success');
+                document.getElementById('auth-status').innerHTML += '<div class="test-result success">Auth Guard: Ready</div>';
+            } catch (error) {
+                addResult(`Auth guard error: ${error.message}`, 'error');
+                document.getElementById('auth-status').innerHTML += `<div class="test-result error">Auth Guard Error: ${error.message}</div>`;
+            }
+        }
+        
+        async function checkCurrentUser() {
+            try {
+                if (!auth) {
+                    await testAuthComponent();
+                }
+                const user = await auth.getCurrentUser();
+                if (user) {
+                    document.getElementById('current-user').innerHTML = `
+                        <div class="test-result success">
+                            <strong>Logged in as:</strong><br>
+                            Email: ${user.email}<br>
+                            Role: ${user.role}<br>
+                            Name: ${user.firstName} ${user.lastName}<br>
+                            UID: ${user.uid}
+                        </div>
+                    `;
+                    addResult(`Current user: ${user.email} (${user.role})`, 'success');
+                } else {
+                    document.getElementById('current-user').innerHTML = '<div class="test-result info">No user logged in</div>';
+                    addResult('No user currently logged in', 'info');
+                }
+            } catch (error) {
+                addResult(`Error checking user: ${error.message}`, 'error');
+            }
+        }
+        
+        async function testAgentLogin() {
+            try {
+                if (!auth) {
+                    await testAuthComponent();
+                }
+                
+                const email = document.getElementById('test-email').value;
+                const password = document.getElementById('test-password').value;
+                
+                addResult(`Attempting login as ${email}...`, 'info');
+                
+                const result = await auth.signIn(email, password);
+                
+                if (result.success) {
+                    addResult(`Login successful! Role: ${result.user.role}`, 'success');
+                    await checkCurrentUser();
+                } else {
+                    addResult(`Login failed: ${result.error}`, 'error');
+                }
+            } catch (error) {
+                addResult(`Login error: ${error.message}`, 'error');
+            }
+        }
+        
+        async function testLogout() {
+            try {
+                if (!auth) {
+                    await testAuthComponent();
+                }
+                await auth.signOut();
+                addResult('Logged out successfully', 'success');
+                document.getElementById('current-user').innerHTML = '<div class="test-result info">Logged out</div>';
+            } catch (error) {
+                addResult(`Logout error: ${error.message}`, 'error');
+            }
+        }
+        
+        async function testDashboardAccess() {
+            try {
+                if (!guard) {
+                    await testAuthGuard();
+                }
+                
+                addResult('Testing agent dashboard access...', 'info');
+                
+                // Test the protect agent method
+                const canAccess = await new Promise((resolve) => {
+                    guard.protectAgent(
+                        (user) => {
+                            document.getElementById('dashboard-access').innerHTML = `
+                                <div class="test-result success">
+                                    <strong>Dashboard Access Granted!</strong><br>
+                                    Agent: ${user.firstName} ${user.lastName}<br>
+                                    Verification Status: ${user.agentVerificationStatus || 'Not specified'}
+                                </div>
+                            `;
+                            addResult('Agent dashboard access granted!', 'success');
+                            resolve(true);
+                        },
+                        '/login.html' // Redirect URL if not authorized
+                    ).catch((error) => {
+                        document.getElementById('dashboard-access').innerHTML = `
+                            <div class="test-result error">
+                                <strong>Dashboard Access Denied</strong><br>
+                                ${error.message || 'Not authorized as agent'}
+                            </div>
+                        `;
+                        addResult(`Dashboard access denied: ${error.message}`, 'error');
+                        resolve(false);
+                    });
+                });
+                
+            } catch (error) {
+                addResult(`Access test error: ${error.message}`, 'error');
+            }
+        }
+        
+        function openDashboard() {
+            window.open('agent/dashboard.html', '_blank');
+        }
+        
+        // Initialize on load
+        window.addEventListener('DOMContentLoaded', async () => {
+            addResult('Test page loaded', 'info');
+            await testAuthComponent();
+            await testAuthGuard();
+            await checkCurrentUser();
+        });
+    </script>
+</body>
+</html>

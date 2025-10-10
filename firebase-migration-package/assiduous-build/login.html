@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In — AssiduousFlip</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    
+    <!-- Firebase Configuration -->
+    <script src="firebase-config.js"></script>
+    
+    <!-- Sirsi Auth Component -->
+    <script src="components/sirsi-auth.js"></script>
+</head>
+<body>
+    <!-- Login container will be populated by SirsiAuth -->
+    <div id="auth-container"></div>
+    
+    <script>
+        // Initialize SirsiAuth with configuration
+        const auth = new SirsiAuth({
+            firebaseConfig: window.firebaseConfig, // Should be defined in firebase-config.js
+            redirects: {
+                admin: '/admin/dashboard.html',
+                agent: '/agent/dashboard.html',
+                client: '/client/dashboard.html',
+                investor: '/investor/dashboard.html',
+                pending: '/agent-pending.html',
+                login: '/login.html',
+                signup: '/signup.html'
+            },
+            styles: {
+                primaryColor: '#667eea',
+                secondaryColor: '#764ba2',
+                successColor: '#10b981',
+                errorColor: '#ef4444'
+            }
+        });
+        
+        // Initialize and create login form
+        (async function() {
+            try {
+                // Initialize Firebase
+                await auth.initialize();
+                
+                // Check if already logged in
+                auth.onAuthStateChanged((user) => {
+                    if (user) {
+                        // Already logged in, redirect to appropriate dashboard
+                        window.location.href = auth.getRedirectUrl(user.role);
+                    } else {
+                        // Not logged in, show login form
+                        auth.injectStyles();
+                        auth.createLoginForm('auth-container');
+                    }
+                });
+                
+            } catch (error) {
+                console.error('Failed to initialize auth:', error);
+                document.getElementById('auth-container').innerHTML = `
+                    <div style="text-align: center; padding: 40px;">
+                        <h2>Unable to load sign in</h2>
+                        <p>Please check your connection and try again.</p>
+                        <a href="/">Back to Home</a>
+                    </div>
+                `;
+            }
+        })();
+    </script>
+</body>
+</html>
