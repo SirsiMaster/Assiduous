@@ -7,15 +7,19 @@
  */
 
 // Firebase configuration object
+// Using development environment configuration
 const firebaseConfig = {
-    apiKey: "AIzaSyB3Z5qO9KgXn4F7sHVNqV8tqvGxYZ6QZWE",  // Replace with actual key
-    authDomain: "assiduous-realty.firebaseapp.com",
-    projectId: "assiduous-realty",
-    storageBucket: "assiduous-realty.appspot.com",
-    messagingSenderId: "123456789012",
-    appId: "1:123456789012:web:abc123def456ghi789jkl",
-    measurementId: "G-XXXXXXXXXX"
+    apiKey: "AIzaSyDLi14oefCZVVlQm7cPfDb0WQ9nXlIF4jY",
+    authDomain: "assiduous-dev.firebaseapp.com",
+    projectId: "assiduous-dev",
+    storageBucket: "assiduous-dev.firebasestorage.app",
+    messagingSenderId: "186714044941",
+    appId: "1:186714044941:web:1525a0503610519dd5f344",
+    databaseURL: "https://assiduous-dev-default-rtdb.firebaseio.com"
 };
+
+// Make available globally
+window.firebaseConfig = firebaseConfig;
 
 // Initialize Firebase (will be done when SDK is loaded)
 let app, auth, db, storage, analytics;
