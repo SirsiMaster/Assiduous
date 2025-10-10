@@ -927,6 +927,7 @@
                 <a href="#deals">Properties</a>
                 <a href="#insights">Insights</a>
                 <a href="#about">About</a>
+                <a href="/agent/dashboard.html" style="color: #3b82f6; font-weight: 600;">Agent Portal</a>
                 <div class="nav-actions">
                     <a href="#" class="btn-ghost" onclick="showLogin(); return false;">Sign In</a>
                     <a href="#" class="btn-gradient" id="openSignup">Get Started Free</a>
@@ -1931,22 +1932,51 @@
         // Override the basic login form handler with proper auth
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-            const email = document.getElementById('loginEmail').value;
+            const email = document.getElementById('loginEmail').value.toLowerCase();
             const password = document.getElementById('loginPassword').value;
+            
+            // Determine role based on email domain or pattern
+            // Agents typically have @assiduousrealty.com emails
+            // You can also check for specific known agent emails
+            let role = 'client'; // default
+            let redirectUrl = '/client/dashboard.html';
+            
+            // Check if it's an agent email
+            if (email.includes('@assiduousrealty.com') || 
+                email === 'sarah.johnson@example.com' || 
+                email === 'agent@demo.com') {
+                role = 'agent';
+                redirectUrl = '/agent/dashboard.html';
+            } 
+            // Check if it's an admin email
+            else if (email.includes('admin') || email === 'admin@assiduousrealty.com') {
+                role = 'admin';
+                redirectUrl = '/admin/dashboard.html';
+            }
             
             try {
                 // Use the existing auth service
-                const result = await AuthService.login(email, password, 'client');
+                const result = await AuthService.login(email, password, role);
                 if (result.success) {
                     // Redirect based on role
-                    window.location.href = result.role === 'agent' ? '/admin/dashboard.html' : '/client/dashboard.html';
+                    window.location.href = redirectUrl;
                 } else {
                     alert('Login failed. Please check your credentials.');
                 }
             } catch (error) {
                 console.error('Login error:', error);
-                // Fallback to basic redirect for now
-                window.location.href = '/admin/dashboard.html';
+                // For demo purposes, allow login without backend
+                // Store mock data in localStorage
+                localStorage.setItem('user_role', role);
+                localStorage.setItem('user_email', email);
+                localStorage.setItem('user_data', JSON.stringify({
+                    email: email,
+                    role: role,
+                    name: email.split('@')[0].replace('.', ' ').split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')
+                }));
+                
+                // Redirect to appropriate dashboard
+                window.location.href = redirectUrl;
             }
         });
         
