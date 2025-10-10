@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Setup Test Account</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 40px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .form-group {
+            margin: 20px 0;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        button {
+            padding: 12px 24px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .message {
+            padding: 15px;
+            border-radius: 4px;
+            margin: 20px 0;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+    </style>
+</head>
+<body>
+    <h1>Setup Test Agent Account</h1>
+    
+    <div class="message info">
+        This page will help you create a test agent account in Firebase Auth.
+    </div>
+    
+    <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" value="agent@sirsimaster.com" placeholder="agent@example.com">
+    </div>
+    
+    <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" value="Test123!" placeholder="Minimum 6 characters">
+    </div>
+    
+    <div class="form-group">
+        <label for="firstName">First Name</label>
+        <input type="text" id="firstName" value="Test" placeholder="First Name">
+    </div>
+    
+    <div class="form-group">
+        <label for="lastName">Last Name</label>
+        <input type="text" id="lastName" value="Agent" placeholder="Last Name">
+    </div>
+    
+    <button onclick="createTestAccount()">Create Test Agent Account</button>
+    <button onclick="testLogin()">Test Login</button>
+    
+    <div id="result"></div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    
+    <!-- Firebase Config -->
+    <script src="firebase-config.js"></script>
+    
+    <script>
+        // Initialize Firebase
+        firebase.initializeApp(window.firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+        
+        function showMessage(message, type) {
+            document.getElementById('result').innerHTML = 
+                `<div class="message ${type}">${message}</div>`;
+        }
+        
+        async function createTestAccount() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            
+            try {
+                showMessage('Creating account...', 'info');
+                
+                // Create user in Firebase Auth
+                const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+                const user = userCredential.user;
+                
+                // Create user profile in Firestore
+                await db.collection('users').doc(user.uid).set({
+                    email: email,
+                    firstName: firstName,
+                    lastName: lastName,
+                    role: 'agent',
+                    agentVerificationStatus: 'approved', // Auto-approve for testing
+                    createdAt: firebase.firestore.Timestamp.now(),
+                    lastLogin: firebase.firestore.Timestamp.now(),
+                    isActive: true,
+                    profileComplete: true,
+                    agentInfo: {
+                        licenseNumber: 'TEST-12345',
+                        brokerage: 'Test Brokerage',
+                        yearsExperience: 5,
+                        specializations: ['Residential', 'Commercial']
+                    }
+                });
+                
+                // Create agent stats document
+                await db.collection('agent_stats').doc(user.uid).set({
+                    activeListings: 24,
+                    commissionYTD: 45200,
+                    activeClients: 18,
+                    newLeads: 7,
+                    totalSales: 12,
+                    averageDaysToClose: 18
+                });
+                
+                showMessage(`✅ Test account created successfully!<br>
+                    Email: ${email}<br>
+                    Password: ${password}<br>
+                    UID: ${user.uid}<br><br>
+                    You can now <a href="login.html">login</a> or <a href="agent/dashboard.html">go to dashboard</a>`, 
+                    'success');
+                    
+            } catch (error) {
+                if (error.code === 'auth/email-already-in-use') {
+                    showMessage(`Account already exists for ${email}. Try logging in instead.`, 'info');
+                } else {
+                    showMessage(`Error: ${error.message}`, 'error');
+                }
+                console.error('Error creating account:', error);
+            }
+        }
+        
+        async function testLogin() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            try {
+                showMessage('Testing login...', 'info');
+                
+                const userCredential = await auth.signInWithEmailAndPassword(email, password);
+                const user = userCredential.user;
+                
+                // Get user data from Firestore
+                const userDoc = await db.collection('users').doc(user.uid).get();
+                const userData = userDoc.data();
+                
+                showMessage(`✅ Login successful!<br>
+                    Email: ${user.email}<br>
+                    Role: ${userData?.role || 'Not set'}<br>
+                    Name: ${userData?.firstName} ${userData?.lastName}<br>
+                    Verification: ${userData?.agentVerificationStatus || 'Not set'}<br><br>
+                    <a href="agent/dashboard.html">Go to Agent Dashboard</a>`, 
+                    'success');
+                    
+            } catch (error) {
+                showMessage(`Login failed: ${error.message}`, 'error');
+            }
+        }
+        
+        // Check if user is already logged in
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                console.log('Current user:', user.email);
+            }
+        });
+    </script>
+</body>
+</html>
