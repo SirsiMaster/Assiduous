@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Commission Tracker - Assiduous Agent Portal</title>
+    
+    <!-- Assiduous Design System -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="../assets/vendor/sirsimaster-ui/sirsimaster-ui.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <link rel="stylesheet" href="../assiduous.css">
+    <link rel="stylesheet" href="../components/admin-layout.css">
+    
+    <style>
+        /* Admin Layout - Consistent across all admin pages */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: "Geist Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+            background: var(--white);
+        }
+
+        .admin-wrapper {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 240px;
+            background: var(--navy);
+            color: var(--white);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-header {
+            padding: var(--space-lg);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .sidebar-logo {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            color: var(--white);
+            text-decoration: none;
+        }
+
+        .sidebar-logo svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .sidebar-logo-text {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: var(--space-md) 0;
+        }
+
+        .nav-section {
+            margin-bottom: var(--space-lg);
+        }
+
+        .nav-section-title {
+            padding: 0 var(--space-lg);
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            opacity: 0.6;
+            margin-bottom: var(--space-sm);
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: var(--space-sm) var(--space-lg);
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.15s;
+        }
+
+        .nav-item:hover {
+            background: rgba(255,255,255,0.05);
+            color: var(--white);
+        }
+
+        .nav-item.active {
+            background: var(--sky);
+            color: var(--white);
+        }
+
+        .nav-icon {
+            width: 18px;
+            height: 18px;
+            opacity: 0.8;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Page Content */
+        .page-content {
+            flex: 1;
+            padding: var(--space-xl);
+            overflow-y: auto;
+            background: var(--gray-50);
+        }
+
+        /* Commission Stats */
+        .commission-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--space-lg);
+            margin-bottom: var(--space-xl);
+        }
+
+        .stat-card {
+            background: var(--white);
+            padding: var(--space-lg);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border);
+        }
+
+        .stat-card.featured {
+            background: linear-gradient(135deg, var(--sky), var(--navy));
+            color: var(--white);
+            border: none;
+        }
+
+        .stat-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: var(--space-md);
+        }
+
+        .stat-card.featured .stat-icon {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .stat-card:not(.featured) .stat-icon {
+            background: var(--gray-100);
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: var(--space-xs);
+        }
+
+        .stat-card:not(.featured) .stat-value {
+            color: var(--navy);
+        }
+
+        .stat-label {
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            opacity: 0.8;
+        }
+
+        .stat-change {
+            margin-top: var(--space-sm);
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+        }
+
+        .stat-change.positive {
+            color: var(--success);
+        }
+
+        .stat-change.negative {
+            color: var(--danger);
+        }
+
+        .stat-card.featured .stat-change {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Commission Table */
+        .commission-table-container {
+            background: var(--white);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border);
+            margin-bottom: var(--space-xl);
+        }
+
+        .table-header {
+            padding: var(--space-lg);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .table-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--navy);
+        }
+
+        .table-filters {
+            display: flex;
+            gap: var(--space-sm);
+        }
+
+        .commission-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .commission-table th {
+            text-align: left;
+            padding: var(--space-md);
+            background: var(--gray-50);
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .commission-table td {
+            padding: var(--space-md);
+            border-bottom: 1px solid var(--border);
+            font-size: 14px;
+            color: var(--text-primary);
+        }
+
+        .commission-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .commission-table tr:hover {
+            background: var(--gray-50);
+        }
+
+        .property-info {
+            font-weight: 600;
+            color: var(--navy);
+        }
+
+        .property-address {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .commission-amount {
+            font-weight: 700;
+            color: var(--success);
+        }
+
+        .commission-status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: var(--radius);
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .commission-status.paid {
+            background: rgba(34, 197, 94, 0.1);
+            color: var(--success);
+        }
+
+        .commission-status.pending {
+            background: rgba(251, 191, 36, 0.1);
+            color: var(--warning);
+        }
+
+        .commission-status.processing {
+            background: rgba(96, 163, 217, 0.1);
+            color: var(--sky);
+        }
+
+        /* Charts Section */
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: var(--space-lg);
+        }
+
+        .chart-container {
+            background: var(--white);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border);
+            padding: var(--space-lg);
+        }
+
+        .chart-header {
+            margin-bottom: var(--space-lg);
+        }
+
+        .chart-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--navy);
+        }
+
+        .chart-placeholder {
+            height: 200px;
+            background: var(--gray-50);
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-wrapper">
+        
+        <!-- Sidebar Component -->
+        <aside class="sidebar" id="sidebar-root" data-active="commissions">
+<div class="sidebar-header">
+  <a href="dashboard.html" class="sidebar-logo">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+      <polyline points="9 22 9 12 15 12 15 22"></polyline>
+    </svg>
+    <span class="sidebar-logo-text">Agent Portal</span>
+  </a>
+</div>
+
+<nav class="sidebar-nav">
+  <div class="nav-section">
+    <div class="nav-section-title">Main</div>
+    <a href="dashboard.html" class="nav-item" data-key="dashboard">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="3" y="3" width="7" height="7"></rect>
+        <rect x="14" y="3" width="7" height="7"></rect>
+        <rect x="14" y="14" width="7" height="7"></rect>
+        <rect x="3" y="14" width="7" height="7"></rect>
+      </svg>
+      Dashboard
+    </a>
+    <a href="listings.html" class="nav-item" data-key="listings">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+      </svg>
+      My Listings
+    </a>
+    <a href="clients.html" class="nav-item" data-key="clients">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+        <circle cx="12" cy="7" r="4"></circle>
+      </svg>
+      My Clients
+    </a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">Activity</div>
+    <a href="leads.html" class="nav-item" data-key="leads">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+        <circle cx="9" cy="7" r="4"></circle>
+        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+      </svg>
+      My Leads
+    </a>
+    <a href="schedule.html" class="nav-item" data-key="schedule">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+        <line x1="16" y1="2" x2="16" y2="6"></line>
+        <line x1="8" y1="2" x2="8" y2="6"></line>
+        <line x1="3" y1="10" x2="21" y2="10"></line>
+      </svg>
+      Schedule
+    </a>
+    <a href="commissions.html" class="nav-item active" data-key="commissions">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="12" y1="1" x2="12" y2="23"></line>
+        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+      </svg>
+      Commission Tracker
+    </a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">Tools</div>
+    <a href="resources.html" class="nav-item" data-key="resources">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+      </svg>
+      Resources
+    </a>
+    <a href="settings.html" class="nav-item" data-key="settings">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="3"></circle>
+        <path d="M12 1v6m0 6v6m4.22-13.22l4.24 4.24M1.54 1.54l4.24 4.24M18.46 18.46l4.24 4.24M1.54 18.46l4.24-4.24"></path>
+      </svg>
+      My Settings
+    </a>
+  </div>
+</nav>
+</aside>
+        <main class="main-content">
+            <!-- Standardized Admin Header -->
+            <header id="admin-header-root" 
+                    data-title="Commission Tracker" 
+                    data-subtitle="Track your earnings and commission status"
+                    data-search-placeholder="Search transactions..."
+                    data-user-role="agent"
+                    data-user-name="Sarah Johnson"
+                    data-user-email="sarah.johnson@assiduousrealty.com"></header>
+
+            <!-- Page Content -->
+            <div class="page-content">
+                
+                <!-- Commission Statistics -->
+                <div class="commission-stats">
+                    <div class="stat-card featured">
+                        <div class="stat-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="12" y1="1" x2="12" y2="23"></line>
+                                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                            </svg>
+                        </div>
+                        <div class="stat-value" id="ytdCommission">$45,280</div>
+                        <div class="stat-label">Year-to-Date Earnings</div>
+                        <div class="stat-change positive">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+                                <polyline points="17 6 23 6 23 12"></polyline>
+                            </svg>
+                            <span>+15.3% from last year</span>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                <line x1="16" y1="2" x2="16" y2="6"></line>
+                                <line x1="8" y1="2" x2="8" y2="6"></line>
+                                <line x1="3" y1="10" x2="21" y2="10"></line>
+                            </svg>
+                        </div>
+                        <div class="stat-value" id="monthCommission">$8,450</div>
+                        <div class="stat-label">This Month</div>
+                        <div class="stat-change positive">
+                            <span>+$2,300 from last month</span>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg>
+                        </div>
+                        <div class="stat-value" id="pendingCommission">$12,500</div>
+                        <div class="stat-label">Pending Payment</div>
+                        <div class="stat-change">
+                            <span>3 transactions</span>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M3 3h18v18H3zM12 8v8m-4-4h8"></path>
+                            </svg>
+                        </div>
+                        <div class="stat-value" id="avgCommission">$3,773</div>
+                        <div class="stat-label">Average Commission</div>
+                        <div class="stat-change">
+                            <span>Per transaction</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Recent Commissions Table -->
+                <div class="commission-table-container">
+                    <div class="table-header">
+                        <h3 class="table-title">Recent Commissions</h3>
+                        <div class="table-filters">
+                            <select class="sirsi-select">
+                                <option>All Status</option>
+                                <option>Paid</option>
+                                <option>Pending</option>
+                                <option>Processing</option>
+                            </select>
+                            <button class="sm-btn sm-btn-secondary">Export</button>
+                        </div>
+                    </div>
+                    
+                    <table class="commission-table">
+                        <thead>
+                            <tr>
+                                <th>Property</th>
+                                <th>Transaction Type</th>
+                                <th>Sale Price</th>
+                                <th>Commission Rate</th>
+                                <th>Commission</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody id="commissionsTableBody">
+                            <tr>
+                                <td>
+                                    <div class="property-info">123 Main Street</div>
+                                    <div class="property-address">Los Angeles, CA 90210</div>
+                                </td>
+                                <td>Buyer Rep</td>
+                                <td>$450,000</td>
+                                <td>3%</td>
+                                <td class="commission-amount">$13,500</td>
+                                <td><span class="commission-status paid">Paid</span></td>
+                                <td>Oct 5, 2025</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="property-info">456 Oak Avenue</div>
+                                    <div class="property-address">Beverly Hills, CA 90212</div>
+                                </td>
+                                <td>Listing</td>
+                                <td>$850,000</td>
+                                <td>2.5%</td>
+                                <td class="commission-amount">$21,250</td>
+                                <td><span class="commission-status pending">Pending</span></td>
+                                <td>Oct 8, 2025</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="property-info">789 Pine Road</div>
+                                    <div class="property-address">Santa Monica, CA 90401</div>
+                                </td>
+                                <td>Dual Agency</td>
+                                <td>$320,000</td>
+                                <td>2%</td>
+                                <td class="commission-amount">$6,400</td>
+                                <td><span class="commission-status processing">Processing</span></td>
+                                <td>Oct 9, 2025</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="property-info">321 Elm Street</div>
+                                    <div class="property-address">Malibu, CA 90265</div>
+                                </td>
+                                <td>Buyer Rep</td>
+                                <td>$1,200,000</td>
+                                <td>2.5%</td>
+                                <td class="commission-amount">$30,000</td>
+                                <td><span class="commission-status paid">Paid</span></td>
+                                <td>Sep 28, 2025</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Charts Section -->
+                <div class="charts-grid">
+                    <div class="chart-container">
+                        <div class="chart-header">
+                            <h3 class="chart-title">Monthly Commission Trend</h3>
+                        </div>
+                        <div class="chart-placeholder">
+                            Chart will be rendered here with Chart.js
+                        </div>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <div class="chart-header">
+                            <h3 class="chart-title">Commission by Property Type</h3>
+                        </div>
+                        <div class="chart-placeholder">
+                            Pie chart showing commission distribution
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Load Component Scripts -->
+    <script src="../components/admin-header.js"></script>
+    
+    <!-- Firebase Integration -->
+    <script src="../firebase-config.js"></script>
+    
+    <!-- Page-specific functionality -->
+    <script>
+        // Load commission data
+        async function loadCommissionData() {
+            try {
+                // Check authentication
+                const user = await FirebaseServices.auth.checkAuth();
+                if (!user) {
+                    window.location.href = '/agent/login.html';
+                    return;
+                }
+                
+                // Get commission statistics
+                const stats = await FirebaseServices.stats.getAgentStats(user.uid);
+                
+                // Update UI with real data
+                document.getElementById('ytdCommission').textContent = 
+                    FirebaseServices.utils.formatCurrency(stats.commissionYTD);
+                
+                // Load commission transactions
+                const commissions = await FirebaseServices.db.getAgentCommissions(user.uid);
+                renderCommissionTable(commissions);
+                
+            } catch (error) {
+                console.error('Error loading commission data:', error);
+                // Using static data for demo
+            }
+        }
+        
+        function renderCommissionTable(commissions) {
+            const tbody = document.getElementById('commissionsTableBody');
+            tbody.innerHTML = '';
+            
+            commissions.forEach(commission => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>
+                        <div class="property-info">${commission.propertyAddress}</div>
+                        <div class="property-address">${commission.city}, ${commission.state} ${commission.zip}</div>
+                    </td>
+                    <td>${commission.transactionType}</td>
+                    <td>${FirebaseServices.utils.formatCurrency(commission.salePrice)}</td>
+                    <td>${commission.commissionRate}%</td>
+                    <td class="commission-amount">${FirebaseServices.utils.formatCurrency(commission.amount)}</td>
+                    <td><span class="commission-status ${commission.status.toLowerCase()}">${commission.status}</span></td>
+                    <td>${FirebaseServices.utils.formatDate(commission.date)}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+        
+        // Calculate monthly commission
+        function calculateMonthlyCommission() {
+            // This would calculate from real data
+            const thisMonth = new Date().getMonth();
+            // Filter commissions for current month and sum
+        }
+        
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadCommissionData();
+        });
+    </script>
+</body>
+</html>

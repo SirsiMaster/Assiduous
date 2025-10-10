@@ -1,14 +1,25 @@
 /**
- * Standardized Admin Header Loader
+ * Universal Header Loader - Dynamic Role-Based Header Component
  *
+ * TODO: BEFORE PRODUCTION:
+ * - Integrate with Firebase Auth to get actual user data
+ * - Implement role-based access control
+ * - Add real user profile pictures
+ * - Connect logout to Firebase Auth signOut
+ * - Implement actual search functionality
+ * 
  * How it works:
  * - On DOMContentLoaded, replaces <header id="admin-header-root"> with the shared template
+ * - Detects user role from URL path or data attribute
  * - Uses data attributes for configuration:
  *   - data-title: Page title
  *   - data-subtitle: Page subtitle  
  *   - data-search-placeholder: Search input placeholder
  *   - data-actions: JSON string of action buttons
- * - Ensures consistent professional header across all admin pages
+ *   - data-user-role: 'admin', 'agent', or 'client'
+ *   - data-user-name: User's display name
+ *   - data-user-email: User's email
+ * - Dynamically adjusts content based on user role
  */
 (function () {
   function resolveBase(el) {
@@ -72,6 +83,53 @@
     return breadcrumbItems.join('');
   }
 
+  function getUserDataFromConfig(config) {
+    // TODO: In production, get this from Firebase Auth
+    // const user = firebase.auth().currentUser;
+    
+    // Determine role from URL path or config
+    var path = window.location.pathname;
+    var role = config.userRole || 'admin'; // default
+    
+    if (path.includes('/agent/')) {
+      role = 'agent';
+    } else if (path.includes('/client/')) {
+      role = 'client';
+    } else if (path.includes('/admin/')) {
+      role = 'admin';
+    }
+    
+    // Role display names
+    var roleDisplayNames = {
+      'admin': 'Administrator',
+      'agent': 'Real Estate Agent',
+      'client': 'Client'
+    };
+    
+    // Get user initials from name
+    var userName = config.userName || 'User';
+    var initials = userName.split(' ').map(function(n) { return n[0]; }).join('').toUpperCase().slice(0, 2);
+    
+    return {
+      role: role,
+      roleDisplay: roleDisplayNames[role],
+      name: userName,
+      email: config.userEmail || role + '@assiduousrealty.com',
+      initials: initials,
+      avatarContent: '<span>' + initials + '</span>'
+    };
+  }
+  
+  function getRoleSpecificUrls(role) {
+    var basePrefix = role === 'admin' ? '../admin/' : (role === 'agent' ? '../agent/' : '../client/');
+    
+    return {
+      settings: basePrefix + 'settings.html',
+      help: basePrefix + 'help.html',
+      logout: '/' // TODO: Should be '/login?role=' + role in production
+    };
+  }
+  
   function injectHeader(root, base, config) {
     var xhr = new XMLHttpRequest();
     // Determine the correct path based on current page location
@@ -104,12 +162,28 @@
     xhr.onreadystatechange = function () {
       if (xhr.readyState === 4) {
         if (xhr.status >= 200 && xhr.status < 300) {
-          var html = xhr.responseText.replace(/\[\[BASE\]\]/g, base);
-          root.outerHTML = '<header class="admin-header" data-base="' + base + '">' + html + '</header>';
+          var userData = getUserDataFromConfig(config);
+          var urls = getRoleSpecificUrls(userData.role);
+          
+          // Replace all placeholders in the template
+          var html = xhr.responseText
+            .replace(/\[\[BASE\]\]/g, base)
+            .replace(/\[\[USER_NAME\]\]/g, userData.name)
+            .replace(/\[\[USER_EMAIL\]\]/g, userData.email)
+            .replace(/\[\[USER_ROLE\]\]/g, userData.role)
+            .replace(/\[\[USER_ROLE_DISPLAY\]\]/g, userData.roleDisplay)
+            .replace(/\[\[USER_INITIALS\]\]/g, userData.initials)
+            .replace(/\[\[USER_AVATAR_CONTENT\]\]/g, userData.avatarContent)
+            .replace(/\[\[SETTINGS_URL\]\]/g, urls.settings)
+            .replace(/\[\[HELP_URL\]\]/g, urls.help)
+            .replace(/\[\[LOGOUT_URL\]\]/g, urls.logout);
+          
+          root.outerHTML = '<header class="admin-header" data-base="' + base + '" data-user-role="' + userData.role + '">' + html + '</header>';
           
           // Configure the header after injection
           setTimeout(function() {
             configureHeader(config);
+            addRoleSpecificMenuItems(userData.role);
           }, 0);
         } else {
           console.error('Failed to load admin header template:', xhr.status, xhr.statusText);
@@ -169,11 +243,59 @@
     }
   }
 
+  function addRoleSpecificMenuItems(role) {
+    var container = document.getElementById('role-specific-menu-items');
+    if (!container) return;
+    
+    var menuItems = [];
+    
+    if (role === 'agent') {
+      menuItems = [
+        { icon: '<line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>', 
+          text: 'Commission Dashboard', 
+          href: '../agent/commissions.html' },
+        { icon: '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle>', 
+          text: 'Lead Manager', 
+          href: '../agent/leads.html' }
+      ];
+    } else if (role === 'admin') {
+      menuItems = [
+        { icon: '<path d="M3 3h18v18H3zM12 8v8m-4-4h8"></path>', 
+          text: 'System Settings', 
+          href: '../admin/system-settings.html' },
+        { icon: '<rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>', 
+          text: 'User Management', 
+          href: '../admin/users.html' }
+      ];
+    } else if (role === 'client') {
+      menuItems = [
+        { icon: '<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>', 
+          text: 'My Properties', 
+          href: '../client/properties.html' },
+        { icon: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>', 
+          text: 'Documents', 
+          href: '../client/documents.html' }
+      ];
+    }
+    
+    if (menuItems.length > 0) {
+      var html = menuItems.map(function(item) {
+        return '<a href="' + item.href + '" class="dropdown-item">' +
+               '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">' +
+               item.icon + '</svg>' + item.text + '</a>';
+      }).join('');
+      container.innerHTML = html;
+    }
+  }
+  
   function parseConfig(root) {
     var config = {
-      title: root.getAttribute('data-title') || 'Admin Portal',
-      subtitle: root.getAttribute('data-subtitle') || 'Manage your platform efficiently',
-      searchPlaceholder: root.getAttribute('data-search-placeholder') || 'Search across all modules...',
+      title: root.getAttribute('data-title') || 'Dashboard',
+      subtitle: root.getAttribute('data-subtitle') || 'Welcome to your portal',
+      searchPlaceholder: root.getAttribute('data-search-placeholder') || 'Search...',
+      userRole: root.getAttribute('data-user-role'),
+      userName: root.getAttribute('data-user-name') || 'User',
+      userEmail: root.getAttribute('data-user-email'),
       actions: []
     };
 

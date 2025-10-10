@@ -1,19 +1,27 @@
-<!-- Standardized Admin Header Component
+<!-- Universal Header Component - Works for Admin, Agent, and Client portals
 
 Usage via admin-header.js loader:
   <header id="admin-header-root" 
           data-title="Dashboard" 
-          data-subtitle="Welcome back! Here's what's happening with your platform today."
-          data-search-placeholder="Search..."></header>
+          data-subtitle="Welcome back! Here's what's happening today."
+          data-search-placeholder="Search..."
+          data-user-role="admin|agent|client"
+          data-user-name="John Doe"
+          data-user-email="john@example.com"></header>
   <script src="../components/admin-header.js"></script>
 
 Tokens:
-  [[BASE]] -> base path to project root (e.g., /Assiduous/assiduousflip)
+  [[BASE]] -> base path to project root
+  [[USER_NAME]] -> Dynamically replaced with actual user name
+  [[USER_EMAIL]] -> Dynamically replaced with user email
+  [[USER_ROLE]] -> Dynamically replaced with user role
+  [[USER_AVATAR]] -> User initials or image
 
 Features:
+- Role-aware display (Admin/Agent/Client)
 - Consistent page title and subtitle
 - Professional search bar
-- User avatar and menu
+- Dynamic user info
 - Breadcrumb support (optional)
 - Action buttons (customizable)
 -->
@@ -57,43 +65,42 @@ Features:
     <!-- User Menu -->
     <div class="user-menu">
       <div class="user-info">
-        <span class="user-name">Admin User</span>
-        <span class="user-role">Administrator</span>
+        <span class="user-name" data-user-name>[[USER_NAME]]</span>
+        <span class="user-role" data-user-role-display>[[USER_ROLE_DISPLAY]]</span>
       </div>
-      <div class="user-avatar" onclick="toggleUserMenu()">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-          <circle cx="12" cy="7" r="4"></circle>
-        </svg>
+      <div class="user-avatar" onclick="toggleUserMenu()" data-user-avatar>
+        [[USER_AVATAR_CONTENT]]
       </div>
     </div>
 
     <!-- User Dropdown Menu -->
     <div class="user-dropdown" id="userDropdown" style="display: none;">
       <div class="dropdown-header">
-        <div class="dropdown-user-avatar">AU</div>
+        <div class="dropdown-user-avatar" data-dropdown-avatar>[[USER_INITIALS]]</div>
         <div class="dropdown-user-info">
-          <div class="dropdown-user-name">Admin User</div>
-          <div class="dropdown-user-email">admin@assiduousrealty.com</div>
+          <div class="dropdown-user-name" data-dropdown-name>[[USER_NAME]]</div>
+          <div class="dropdown-user-email" data-dropdown-email>[[USER_EMAIL]]</div>
         </div>
       </div>
       <div class="dropdown-divider"></div>
-      <a href="../admin/settings.html" class="dropdown-item">
+      <a href="[[SETTINGS_URL]]" class="dropdown-item" data-settings-link>
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <circle cx="12" cy="12" r="3"></circle>
           <path d="M12 1v6m0 6v6m4.22-13.22l4.24 4.24M1.54 1.54l4.24 4.24M18.46 18.46l4.24 4.24M1.54 18.46l4.24-4.24"></path>
         </svg>
         Account Settings
       </a>
-      <a href="../admin/knowledge-base.html" class="dropdown-item">
+      <a href="[[HELP_URL]]" class="dropdown-item" data-help-link>
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <circle cx="12" cy="12" r="10"></circle>
           <path d="M12 6v6l4 2"></path>
         </svg>
         Help Center
       </a>
+      <!-- Role-specific menu items will be injected here -->
+      <div id="role-specific-menu-items"></div>
       <div class="dropdown-divider"></div>
-      <a href="../" class="dropdown-item logout">
+      <a href="[[LOGOUT_URL]]" class="dropdown-item logout" data-logout-link>
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
           <polyline points="16 17 21 12 16 7"></polyline>

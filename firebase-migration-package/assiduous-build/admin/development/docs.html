@@ -440,81 +440,158 @@
             <!-- Page Content -->
             <div class="page-content">
 
-                <!-- Documentation Layout -->
+                        <!-- Documentation Layout -->
                 <div class="docs-layout">
                     <!-- Docs Sidebar -->
                     <aside class="docs-sidebar">
                         <nav class="docs-nav">
-                            <a href="#getting-started" class="docs-link active">Getting Started</a>
-                            <a href="#architecture" class="docs-link">Architecture</a>
-                            <a href="#api-reference" class="docs-link">API Reference</a>
-                            <a href="#deployment" class="docs-link">Deployment</a>
-                            <a href="#contributing" class="docs-link">Contributing</a>
+                            <a href="#canonical-docs" class="docs-link active">Canonical Documents</a>
+                            <a href="#technical-docs" class="docs-link">Technical Guides</a>
+                            <a href="#security-docs" class="docs-link">Security & Compliance</a>
+                            <a href="#deployment-docs" class="docs-link">Deployment</a>
+                            <a href="#qa-reports" class="docs-link">QA Reports</a>
                         </nav>
                     </aside>
 
                     <!-- Documentation Content -->
                     <div class="docs-content">
                         <!-- Main Documentation Repository -->
-                        <section class="doc-section" style="background: linear-gradient(135deg, rgba(96,163,217,0.1) 0%, rgba(11,31,65,0.1) 100%); padding: var(--space-lg); border-radius: var(--radius-md); margin-bottom: var(--space-xl);">
-                            <h2 style="color: var(--navy); margin-bottom: var(--space-lg);">📚 Documentation Repository</h2>
-                            <p style="margin-bottom: var(--space-lg);">Access comprehensive technical blueprints and implementation guides for the Assiduous platform.</p>
+                        <section id="canonical-docs" class="doc-section" style="background: linear-gradient(135deg, rgba(96,163,217,0.1) 0%, rgba(11,31,65,0.1) 100%); padding: var(--space-lg); border-radius: var(--radius-md); margin-bottom: var(--space-xl);">
+                            <h2 style="color: var(--navy); margin-bottom: var(--space-lg);">📚 Canonical Documentation (19 Core Documents + Index)</h2>
+                            <p style="margin-bottom: var(--space-lg);">Consolidated from 263 files. Every document name tells you EXACTLY what's inside. Updated: October 9, 2025</p>
                             
                             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: var(--space-md);">
-                                <!-- Unified Blueprint -->
+                                <!-- Root Canonical Documents -->
                                 <div style="background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: var(--space-md);">
-                                    <h4 style="color: var(--sky); margin-bottom: var(--space-xs);">🎯 Unified Assiduous Blueprint</h4>
-                                    <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: var(--space-sm);">Complete platform architecture combining micro-flipping with traditional real estate</p>
-                                    <button class="sm-btn sm-btn-secondary">View Document →</button>
+                                    <h4 style="color: var(--error); margin-bottom: var(--space-xs);">🎯 PRD (Product Requirements Doc)</h4>
+                                    <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: var(--space-sm);">THE MAIN REQUIREMENTS - Was 'technical_blueprint'</p>
+                                    <a href="../../../docs/REQUIREMENTS_SPECIFICATION.md" class="sm-btn sm-btn-primary" target="_blank">View PRD →</a>
                                 </div>
                                 
-                                <!-- Micro-Flipping Blueprint -->
                                 <div style="background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: var(--space-md);">
-                                    <h4 style="color: var(--sky); margin-bottom: var(--space-xs);">💰 Micro-Flipping Technical Blueprint</h4>
-                                    <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: var(--space-sm);">AI-powered wholesale system with PropStream and Zapier integrations</p>
-                                    <button class="sm-btn sm-btn-secondary">View Document →</button>
+                                    <h4 style="color: var(--navy); margin-bottom: var(--space-xs);">📜 CHANGELOG.md</h4>
+                                    <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: var(--space-sm);">Version history and release notes (v0.39.0)</p>
+                                    <a href="../../../CHANGELOG.md" class="sm-btn sm-btn-secondary" target="_blank">View →</a>
                                 </div>
                                 
-                                <!-- Main Technical Blueprint -->
                                 <div style="background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: var(--space-md);">
-                                    <h4 style="color: var(--sky); margin-bottom: var(--space-xs);">🏗️ Assiduous Technical Blueprint</h4>
-                                    <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: var(--space-sm);">Core platform PRD with architecture and technical specifications</p>
-                                    <button class="sm-btn sm-btn-secondary">View Document →</button>
+                                    <h4 style="color: var(--navy); margin-bottom: var(--space-xs);">⚙️ WARP.md</h4>
+                                    <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: var(--space-sm);">Development rules, governance, and QA procedures</p>
+                                    <a href="../../../WARP.md" class="sm-btn sm-btn-secondary" target="_blank">View →</a>
                                 </div>
                                 
-                                <!-- Project Documentation -->
                                 <div style="background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: var(--space-md);">
-                                    <h4 style="color: var(--sky); margin-bottom: var(--space-xs);">📖 Project Documentation</h4>
-                                    <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: var(--space-sm);">Development guide, milestones, and project overview</p>
-                                    <button class="sm-btn sm-btn-secondary">View Document →</button>
+                                    <h4 style="color: var(--navy); margin-bottom: var(--space-xs);">📖 README.md</h4>
+                                    <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: var(--space-sm);">Master index to all 19 documents</p>
+                                    <a href="../../../README.md" class="sm-btn sm-btn-secondary" target="_blank">View Index →</a>
                                 </div>
                                 
-                                <!-- Implementation Checklist -->
                                 <div style="background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: var(--space-md);">
-                                    <h4 style="color: var(--sky); margin-bottom: var(--space-xs);">✅ Implementation Checklist</h4>
-                                    <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: var(--space-sm);">Step-by-step checklist for platform implementation</p>
-                                    <button class="sm-btn sm-btn-secondary">View Document →</button>
+                                    <h4 style="color: var(--navy); margin-bottom: var(--space-xs);">📈 PROJECT_MANAGEMENT.md</h4>
+                                    <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: var(--space-sm);">Project status, tracking (27% complete)</p>
+                                    <a href="../../../docs/PROJECT_MANAGEMENT.md" class="sm-btn sm-btn-secondary" target="_blank">View →</a>
                                 </div>
                                 
-                                <!-- GitHub Setup -->
                                 <div style="background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: var(--space-md);">
-                                    <h4 style="color: var(--sky); margin-bottom: var(--space-xs);">🔧 GitHub Setup Guide</h4>
-                                    <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: var(--space-sm);">Repository configuration and workflow setup</p>
-                                    <button class="sm-btn sm-btn-secondary">View Document →</button>
+                                    <h4 style="color: var(--sky); margin-bottom: var(--space-xs);">📐 PROJECT_SCOPE.md</h4>
+                                    <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: var(--space-sm);">MVP scope, phases, deliverables</p>
+                                    <a href="../../../docs/PROJECT_SCOPE.md" class="sm-btn sm-btn-secondary" target="_blank">View →</a>
                                 </div>
                                 
-                                <!-- Deployment Guide -->
                                 <div style="background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: var(--space-md);">
-                                    <h4 style="color: var(--sky); margin-bottom: var(--space-xs);">🚀 Deployment Dashboard</h4>
-                                    <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: var(--space-sm);">Dashboard deployment and configuration guide</p>
-                                    <button class="sm-btn sm-btn-secondary">View Document →</button>
+                                    <h4 style="color: var(--sky); margin-bottom: var(--space-xs);">🏗️ ARCHITECTURE_DESIGN.md</h4>
+                                    <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: var(--space-sm);">System architecture, CI/CD design</p>
+                                    <a href="../../../docs/ARCHITECTURE_DESIGN.md" class="sm-btn sm-btn-secondary" target="_blank">View →</a>
                                 </div>
                                 
-                                <!-- Branch Protection -->
                                 <div style="background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: var(--space-md);">
-                                    <h4 style="color: var(--sky); margin-bottom: var(--space-xs);">🔒 Branch Protection Rules</h4>
-                                    <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: var(--space-sm);">Git workflow and branch protection setup</p>
-                                    <button class="sm-btn sm-btn-secondary">View Document →</button>
+                                    <h4 style="color: var(--sky); margin-bottom: var(--space-xs);">🔄 CONSOLIDATION_MAPPING.md</h4>
+                                    <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: var(--space-sm);">Shows where ALL 263 files went!</p>
+                                    <a href="../../../docs/CONSOLIDATION_MAPPING.md" class="sm-btn sm-btn-warning" target="_blank">See Mapping →</a>
+                                </div>
+                                <!-- Add all remaining canonical documents -->
+                                <div style="background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: var(--space-md);">
+                                    <h4 style="color: var(--sky); margin-bottom: var(--space-xs);">🔧 TECHNICAL_DESIGN.md</h4>
+                                    <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: var(--space-sm);">Implementation details, components</p>
+                                    <a href="../../../docs/TECHNICAL_DESIGN.md" class="sm-btn sm-btn-secondary" target="_blank">View →</a>
+                                </div>
+                                
+                                <div style="background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: var(--space-md);">
+                                    <h4 style="color: var(--sky); margin-bottom: var(--space-xs);">🗺️ DATA_MODEL.md</h4>
+                                    <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: var(--space-sm);">Database schemas, Firestore collections</p>
+                                    <a href="../../../docs/DATA_MODEL.md" class="sm-btn sm-btn-secondary" target="_blank">View →</a>
+                                </div>
+                                
+                                <div style="background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: var(--space-md);">
+                                    <h4 style="color: var(--sky); margin-bottom: var(--space-xs);">🔌 API_SPECIFICATION.md</h4>
+                                    <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: var(--space-sm);">All API endpoints and contracts</p>
+                                    <a href="../../../docs/API_SPECIFICATION.md" class="sm-btn sm-btn-secondary" target="_blank">View →</a>
+                                </div>
+                                
+                                <div style="background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: var(--space-md);">
+                                    <h4 style="color: var(--sky); margin-bottom: var(--space-xs);">👥 USER_STORIES.md</h4>
+                                    <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: var(--space-sm);">User personas and use cases</p>
+                                    <a href="../../../docs/USER_STORIES.md" class="sm-btn sm-btn-secondary" target="_blank">View →</a>
+                                </div>
+                                
+                                <div style="background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: var(--space-md);">
+                                    <h4 style="color: var(--success); margin-bottom: var(--space-xs);">🧪 TEST_PLAN.md</h4>
+                                    <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: var(--space-sm);">Test cases and test results</p>
+                                    <a href="../../../docs/TEST_PLAN.md" class="sm-btn sm-btn-secondary" target="_blank">View →</a>
+                                </div>
+                                
+                                <div style="background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: var(--space-md);">
+                                    <h4 style="color: var(--success); margin-bottom: var(--space-xs);">✅ QA_PLAN.md</h4>
+                                    <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: var(--space-sm);">Quality assurance procedures</p>
+                                    <a href="../../../docs/QA_PLAN.md" class="sm-btn sm-btn-secondary" target="_blank">View →</a>
+                                </div>
+                                
+                                <div style="background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: var(--space-md);">
+                                    <h4 style="color: var(--success); margin-bottom: var(--space-xs);">🚀 DEPLOYMENT_GUIDE.md</h4>
+                                    <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: var(--space-sm);">CI/CD, Firebase deployment</p>
+                                    <a href="../../../docs/DEPLOYMENT_GUIDE.md" class="sm-btn sm-btn-secondary" target="_blank">View →</a>
+                                </div>
+                                
+                                <div style="background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: var(--space-md);">
+                                    <h4 style="color: var(--warning); margin-bottom: var(--space-xs);">🔒 SECURITY_COMPLIANCE.md</h4>
+                                    <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: var(--space-sm);">Security audit, compliance</p>
+                                    <a href="../../../docs/SECURITY_COMPLIANCE.md" class="sm-btn sm-btn-secondary" target="_blank">View →</a>
+                                </div>
+                                
+                                <div style="background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: var(--space-md);">
+                                    <h4 style="color: var(--warning); margin-bottom: var(--space-xs);">⚠️ RISK_MANAGEMENT.md</h4>
+                                    <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: var(--space-sm);">Risk register and mitigation</p>
+                                    <a href="../../../docs/RISK_MANAGEMENT.md" class="sm-btn sm-btn-secondary" target="_blank">View →</a>
+                                </div>
+                                
+                                <div style="background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: var(--space-md);">
+                                    <h4 style="color: var(--info); margin-bottom: var(--space-xs);">🔄 CHANGE_MANAGEMENT.md</h4>
+                                    <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: var(--space-sm);">Change control, rollback procedures</p>
+                                    <a href="../../../docs/CHANGE_MANAGEMENT.md" class="sm-btn sm-btn-secondary" target="_blank">View →</a>
+                                </div>
+                                
+                                <div style="background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: var(--space-md);">
+                                    <h4 style="color: var(--info); margin-bottom: var(--space-xs);">🔧 MAINTENANCE_SUPPORT.md</h4>
+                                    <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: var(--space-sm);">System maintenance procedures</p>
+                                    <a href="../../../docs/MAINTENANCE_SUPPORT.md" class="sm-btn sm-btn-secondary" target="_blank">View →</a>
+                                </div>
+                                
+                                <div style="background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: var(--space-md);">
+                                    <h4 style="color: var(--info); margin-bottom: var(--space-xs);">📣 COMMUNICATION_PLAN.md</h4>
+                                    <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: var(--space-sm);">Stakeholder communication strategy</p>
+                                    <a href="../../../docs/COMMUNICATION_PLAN.md" class="sm-btn sm-btn-secondary" target="_blank">View →</a>
+                                </div>
+                                
+                                <div style="background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: var(--space-md);">
+                                    <h4 style="color: var(--info); margin-bottom: var(--space-xs);">🎓 TRAINING_DOCUMENTATION.md</h4>
+                                    <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: var(--space-sm);">User guides, contributing guide</p>
+                                    <a href="../../../docs/TRAINING_DOCUMENTATION.md" class="sm-btn sm-btn-secondary" target="_blank">View →</a>
+                                </div>
+                                
+                                <div style="background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: var(--space-md);">
+                                    <h4 style="color: var(--dark); margin-bottom: var(--space-xs);">🔍 POST_IMPLEMENTATION_REVIEW.md</h4>
+                                    <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: var(--space-sm);">Honest assessment, lessons learned</p>
+                                    <a href="../../../docs/POST_IMPLEMENTATION_REVIEW.md" class="sm-btn sm-btn-secondary" target="_blank">View →</a>
                                 </div>
                             </div>
                         </section>

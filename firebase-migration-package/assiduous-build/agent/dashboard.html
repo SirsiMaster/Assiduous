@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Agent Dashboard — Assiduous</title>
+    <meta property="og:title" content="Agent Dashboard — Assiduous">
+    <meta name="twitter:title" content="Agent Dashboard — Assiduous">
+    
+    <!-- Assiduous Design System -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SirsiMaster/ui-components@latest/dist/sirsimaster-ui.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fontsource/geist-sans@5.0.6/latin.css" rel="stylesheet">
+    <link rel="stylesheet" href="../assiduous.css">
+    <link rel="stylesheet" href="../components/admin-layout.css">
+    <link rel="stylesheet" href="../assets/css/button-override.css">
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics-compat.js"></script>
+    
+    <style>
+        /* Minimal dashboard-specific styles only */
+        .dashboard-content {
+            padding: var(--space-xl);
+            overflow-y: auto;
+            background: var(--gray-50);
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--space-lg);
+            margin-bottom: var(--space-2xl);
+        }
+
+        .stat-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: var(--space-lg);
+            transition: all 0.2s;
+        }
+
+        .stat-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .stat-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: var(--space-md);
+        }
+
+        .stat-icon.blue { background: rgba(96, 163, 217, 0.1); color: var(--sky); }
+        .stat-icon.green { background: rgba(5, 150, 105, 0.1); color: var(--success); }
+        .stat-icon.yellow { background: rgba(255, 217, 64, 0.1); color: var(--warning); }
+        .stat-icon.red { background: rgba(220, 38, 38, 0.1); color: var(--danger); }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: var(--space-xs);
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+            margin-bottom: var(--space-sm);
+        }
+
+        .stat-change {
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .stat-change.up { color: var(--success); }
+        .stat-change.down { color: var(--danger); }
+
+        /* Content Grid */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: var(--space-xl);
+        }
+
+        /* Tables */
+        .data-table {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+        }
+
+        .table-header {
+            padding: var(--space-md) var(--space-lg);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .table-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .table-action {
+            padding: var(--space-xs) var(--space-sm);
+            background: var(--sky);
+            color: var(--white);
+            border: none;
+            border-radius: var(--radius);
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .table-action:hover {
+            background: #4A8BC2;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            padding: var(--space-sm) var(--space-lg);
+            text-align: left;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+            background: var(--gray-50);
+        }
+
+        td {
+            padding: var(--space-md) var(--space-lg);
+            border-top: 1px solid var(--border);
+            font-size: 14px;
+        }
+
+        .status {
+            padding: var(--space-xs) var(--space-sm);
+            border-radius: var(--radius);
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+        }
+
+        .status.active { background: rgba(5, 150, 105, 0.1); color: var(--success); }
+        .status.pending { background: rgba(255, 217, 64, 0.1); color: var(--warning); }
+        .status.inactive { background: rgba(107, 114, 128, 0.1); color: var(--text-secondary); }
+
+        /* Activity Feed */
+        .activity-feed {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+        }
+
+        .activity-item {
+            padding: var(--space-md) var(--space-lg);
+            display: flex;
+            gap: var(--space-md);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--gray-50);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            color: var(--text-secondary);
+        }
+
+        .activity-content {
+            flex: 1;
+        }
+
+        /* Header Styles */
+        .admin-topbar {
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            padding: 0 var(--space-xl);
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .topbar-left {
+            flex: 0 0 auto;
+            min-width: 0;
+        }
+
+        .page-header-inline {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .page-title-header {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--navy);
+            margin: 0;
+            line-height: 1.2;
+        }
+
+        .page-subtitle-header {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin: 0;
+            line-height: 1.3;
+        }
+
+        .topbar-center {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            max-width: 500px;
+            margin: 0 var(--space-xl);
+        }
+
+        .global-search {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            pointer-events: none;
+        }
+
+        .global-search-input {
+            width: 100%;
+            padding: 8px 12px 8px 44px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            background: var(--gray-50);
+            font-size: 14px;
+            color: var(--text-primary);
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .global-search-input:focus {
+            background: var(--white);
+            border-color: var(--sky);
+            box-shadow: 0 0 0 3px rgba(96, 163, 217, 0.1);
+        }
+
+        .topbar-right {
+            flex: 0 0 auto;
+            display: flex;
+            align-items: center;
+            gap: var(--space-lg);
+        }
+
+        .header-logout-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: var(--radius);
+            color: var(--text-secondary);
+            transition: all 0.2s;
+            background: transparent;
+        }
+
+        .header-logout-btn:hover {
+            background: var(--gray-100);
+            color: var(--danger);
+        }
+
+        .user-menu {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            text-align: right;
+        }
+
+        .user-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            line-height: 1.2;
+        }
+
+        .user-role {
+            font-size: 12px;
+            color: var(--text-secondary);
+            line-height: 1.2;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--sky), var(--navy));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .user-avatar:hover {
+            border-color: var(--sky);
+            transform: scale(1.05);
+        }
+
+        .user-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 8px;
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            min-width: 280px;
+            z-index: 1000;
+            overflow: hidden;
+        }
+
+        .dropdown-header {
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--gray-50);
+        }
+
+        .dropdown-user-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--sky), var(--navy));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-weight: 600;
+            font-size: 18px;
+        }
+
+        .dropdown-user-info {
+            flex: 1;
+        }
+
+        .dropdown-user-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 2px;
+        }
+
+        .dropdown-user-email {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .dropdown-divider {
+            height: 1px;
+            background: var(--border);
+            margin: 4px 0;
+        }
+
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 16px;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .dropdown-item:hover {
+            background: var(--gray-50);
+            color: var(--navy);
+        }
+
+        .dropdown-item.logout {
+            color: var(--danger);
+        }
+
+        .dropdown-item.logout:hover {
+            background: rgba(239, 68, 68, 0.05);
+            color: var(--danger);
+        }
+
+        .activity-text {
+            font-size: 14px;
+            color: var(--dark);
+            margin-bottom: var(--space-xs);
+        }
+
+        .activity-time {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+    </style>
+    <!-- Removed old Sirsi UI -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SirsiMaster/ui-components@latest/dist/sirsimaster-ui.css">
+    <link rel="stylesheet" href="/assets/css/button-override.css">
+    
+    <script>
+        // Ensure button styles are loaded
+        (function() {
+            const checkButtons = function() {
+                const testBtn = document.querySelector('button');
+                if (testBtn) {
+                    const styles = window.getComputedStyle(testBtn);
+                    if (styles.borderStyle === 'outset' || styles.backgroundColor.includes('192')) {
+                        // Force reload override styles
+                        const link = document.querySelector('link[href*="button-override"]');
+                        if (link) {
+                            link.href = link.href.split('?')[0] + '?v=' + Date.now();
+                        }
+                    }
+                }
+            };
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', checkButtons);
+            } else {
+                checkButtons();
+            }
+        })();
+    </script>
+</head>
+<body>
+    <div class="admin-wrapper">
+        
+        <!-- Sidebar Component -->
+        <aside class="sidebar" id="sidebar-root" data-active="dashboard">
+<div class="sidebar-header">
+  <a href="dashboard.html" class="sidebar-logo">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+      <polyline points="9 22 9 12 15 12 15 22"></polyline>
+    </svg>
+    <span class="sidebar-logo-text">Agent Portal</span>
+  </a>
+</div>
+
+<nav class="sidebar-nav">
+  <div class="nav-section">
+    <div class="nav-section-title">Main</div>
+    <a href="dashboard.html" class="nav-item" data-key="dashboard" class="nav-item active">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="3" y="3" width="7" height="7"></rect>
+        <rect x="14" y="3" width="7" height="7"></rect>
+        <rect x="14" y="14" width="7" height="7"></rect>
+        <rect x="3" y="14" width="7" height="7"></rect>
+      </svg>
+      Dashboard
+    </a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">My Business</div>
+    <a href="listings.html" class="nav-item" data-key="listings">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+      </svg>
+      My Listings
+    </a>
+    <a href="clients.html" class="nav-item" data-key="clients">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+        <circle cx="12" cy="7" r="4"></circle>
+      </svg>
+      My Clients
+    </a>
+    <a href="leads.html" class="nav-item" data-key="leads">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M22 17H2a3 3 0 0 0 3-3V9a7 7 0 0 1 14 0v5a3 3 0 0 0 3 3zm-8.27 4a2 2 0 0 1-3.46 0"></path>
+      </svg>
+      My Leads
+    </a>
+    <a href="schedule.html" class="nav-item" data-key="schedule">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+        <line x1="16" y1="2" x2="16" y2="6"></line>
+        <line x1="8" y1="2" x2="8" y2="6"></line>
+        <line x1="3" y1="10" x2="21" y2="10"></line>
+      </svg>
+      Schedule
+    </a>
+  </div>
+
+
+  <div class="nav-section">
+    <div class="nav-section-title">Tools</div>
+    <a href="commissions.html" class="nav-item" data-key="commissions">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="12" y1="1" x2="12" y2="23"></line>
+        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+      </svg>
+      Commission Tracker
+    </a>
+    <a href="resources.html" class="nav-item" data-key="resources">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+      </svg>
+      Resources
+    </a>
+    <a href="settings.html" class="nav-item" data-key="settings">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="3"></circle>
+        <path d="M12 1v6m0 6v6m4.22-13.22l4.24 4.24M1.54 1.54l4.24 4.24M18.46 18.46l4.24 4.24M1.54 18.46l4.24-4.24"></path>
+      </svg>
+      Settings
+    </a>
+  </div>
+</nav>
+</aside>
+        <main class="main-content">
+            <!-- Standardized Header -->
+            <header class="admin-header">
+                <!-- Professional Admin Top Bar -->
+                <div class="admin-topbar">
+                    <!-- Left Section: Page Title -->
+                    <div class="topbar-left">
+                        <div class="page-header-inline">
+                            <h1 class="page-title-header">Agent Dashboard</h1>
+                            <p class="page-subtitle-header">Welcome back! Here's an overview of your real estate business.</p>
+                        </div>
+                    </div>
+
+                    <!-- Center Section: Global Search -->
+                    <div class="topbar-center">
+                        <div class="global-search">
+                            <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <path d="m21 21-4.35-4.35"></path>
+                            </svg>
+                            <input type="text" class="global-search-input" placeholder="Search your listings, clients, leads...">
+                        </div>
+                    </div>
+
+                    <!-- Right Section: Actions & User -->
+                    <div class="topbar-right">
+                        <!-- Logout Button -->
+                        <a href="/" class="header-logout-btn" title="Sign Out">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                                <polyline points="16 17 21 12 16 7"></polyline>
+                                <line x1="21" y1="12" x2="9" y2="12"></line>
+                            </svg>
+                        </a>
+                        
+                        <!-- User Menu -->
+                        <div class="user-menu">
+                            <div class="user-info">
+                                <span class="user-name">Sarah Johnson</span>
+                                <span class="user-role">Real Estate Agent</span>
+                            </div>
+                            <div class="user-avatar" onclick="toggleUserMenu()">
+                                <span>SJ</span>
+                            </div>
+                        </div>
+
+                        <!-- User Dropdown Menu -->
+                        <div class="user-dropdown" id="userDropdown" style="display: none;">
+                            <div class="dropdown-header">
+                                <div class="dropdown-user-avatar">SJ</div>
+                                <div class="dropdown-user-info">
+                                    <div class="dropdown-user-name">Sarah Johnson</div>
+                                    <div class="dropdown-user-email">sarah.johnson@assiduousrealty.com</div>
+                                </div>
+                            </div>
+                            <div class="dropdown-divider"></div>
+                            <a href="settings.html" class="dropdown-item">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                    <path d="M12 1v6m0 6v6m4.22-13.22l4.24 4.24M1.54 1.54l4.24 4.24M18.46 18.46l4.24 4.24M1.54 18.46l4.24-4.24"></path>
+                                </svg>
+                                Account Settings
+                            </a>
+                            <a href="commissions.html" class="dropdown-item">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <line x1="12" y1="1" x2="12" y2="23"></line>
+                                    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                                </svg>
+                                Commission Dashboard
+                            </a>
+                            <a href="leads.html" class="dropdown-item">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="9" cy="7" r="4"></circle>
+                                </svg>
+                                Lead Manager
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a href="/" class="dropdown-item logout">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                                    <polyline points="16 17 21 12 16 7"></polyline>
+                                    <line x1="21" y1="12" x2="9" y2="12"></line>
+                                </svg>
+                                Sign Out
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dashboard Content -->
+            <div class="dashboard-content">
+                <!-- Stats Grid -->
+                <div class="stats-grid" id="statsGrid">
+                    <div class="stat-card sirsi-card sirsi-sm-sm-card--elevated">
+                        <div class="stat-icon blue">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                            </svg>
+                        </div>
+                        <div class="stat-value" id="activeListingsCount">24</div>
+                        <div class="stat-label">My Active Listings</div>
+                        <div class="stat-change up">+3 this month</div>
+                    </div>
+
+                    <div class="stat-card sirsi-card sirsi-sm-sm-card--elevated">
+                        <div class="stat-icon green">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="12" y1="1" x2="12" y2="23"></line>
+                                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                            </svg>
+                        </div>
+                        <div class="stat-value" id="commissionYTD">$45.2K</div>
+                        <div class="stat-label">Commission YTD</div>
+                        <div class="stat-change up">+15% from last year</div>
+                    </div>
+
+                    <div class="stat-card sirsi-card sirsi-sm-sm-card--elevated">
+                        <div class="stat-icon yellow">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                        </div>
+                        <div class="stat-value" id="activeClientsCount">18</div>
+                        <div class="stat-label">Active Clients</div>
+                        <div class="stat-change up">+2 this week</div>
+                    </div>
+
+                    <div class="stat-card sirsi-card sirsi-sm-sm-card--elevated">
+                        <div class="stat-icon red">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="12" y1="20" x2="12" y2="10"></line>
+                                <line x1="18" y1="20" x2="18" y2="4"></line>
+                                <line x1="6" y1="20" x2="6" y2="16"></line>
+                            </svg>
+                        </div>
+                        <div class="stat-value" id="newLeadsCount">7</div>
+                        <div class="stat-label">New Leads</div>
+                        <div class="stat-change up">+2 today</div>
+                    </div>
+                </div>
+
+                <!-- Content Grid -->
+                <div class="content-grid">
+                    <!-- Recent Properties Table -->
+                    <div class="data-table sirsi-sm-sm-card">
+                        <div class="table-header">
+                            <h3 class="table-title">My Recent Listings</h3>
+                            <a href="listings.html" class="sm-btn sm-btn-primary">View All</a>
+                        </div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Property</th>
+                                    <th>Type</th>
+                                    <th>Price</th>
+                                    <th>Status</th>
+                                    <th>Views</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div style="font-weight: 600;">123 Sunset Boulevard</div>
+                                        <div style="font-size: 12px; color: var(--text-secondary);">Los Angeles, CA 90210</div>
+                                    </td>
+                                    <td>Single Family</td>
+                                    <td>$850,000</td>
+                                    <td><span class="sirsi-badge sirsi-sm-sm-badge--success">Active</span></td>
+                                    <td>142</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div style="font-weight: 600;">456 Ocean Drive</div>
+                                        <div style="font-size: 12px; color: var(--text-secondary);">Miami Beach, FL 33139</div>
+                                    </td>
+                                    <td>Condo</td>
+                                    <td>$1,200,000</td>
+                                    <td><span class="sirsi-badge sirsi-sm-sm-badge--warning">Pending</span></td>
+                                    <td>89</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div style="font-weight: 600;">789 Park Avenue</div>
+                                        <div style="font-size: 12px; color: var(--text-secondary);">New York, NY 10021</div>
+                                    </td>
+                                    <td>Penthouse</td>
+                                    <td>$2,300,000</td>
+                                    <td><span class="sirsi-badge sirsi-sm-sm-badge--success">Active</span></td>
+                                    <td>234</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div style="font-weight: 600;">321 Pine Street</div>
+                                        <div style="font-size: 12px; color: var(--text-secondary);">Seattle, WA 98101</div>
+                                    </td>
+                                    <td>Townhouse</td>
+                                    <td>$695,000</td>
+                                    <td><span class="sirsi-badge sirsi-sm-sm-badge--success">Sold</span></td>
+                                    <td>567</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Activity Feed -->
+                    <div>
+                        <div class="activity-feed sirsi-sm-sm-card">
+                            <div class="table-header">
+                                <h3 class="table-title">Recent Activity</h3>
+                            </div>
+                            
+                            <div class="activity-item">
+                                <div class="activity-icon">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                    </svg>
+                                </div>
+                                <div class="activity-content">
+                                    <div class="activity-text">Your listing at 789 Sunset Blvd received 5 new inquiries</div>
+                                    <div class="activity-time">2 hours ago</div>
+                                </div>
+                            </div>
+                            
+                            <div class="activity-item">
+                                <div class="activity-icon">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="12" cy="7" r="4"></circle>
+                                    </svg>
+                                </div>
+                                <div class="activity-content">
+                                    <div class="activity-text">New client lead: Jennifer Williams - Looking for 3BR home</div>
+                                    <div class="activity-time">3 hours ago</div>
+                                </div>
+                            </div>
+                            
+                            <div class="activity-item">
+                                <div class="activity-icon">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <line x1="12" y1="1" x2="12" y2="23"></line>
+                                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                                    </svg>
+                                </div>
+                                <div class="activity-content">
+                                    <div class="activity-text">Commission earned: $13,500 from 123 Main St sale</div>
+                                    <div class="activity-time">5 hours ago</div>
+                                </div>
+                            </div>
+                            
+                            <div class="activity-item">
+                                <div class="activity-icon">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                        <polyline points="14 2 14 8 20 8"></polyline>
+                                    </svg>
+                                </div>
+                                <div class="activity-content">
+                                    <div class="activity-text">Showing scheduled: 456 Oak Ave with the Johnsons at 3 PM</div>
+                                    <div class="activity-time">6 hours ago</div>
+                                </div>
+                            </div>
+                            
+                            <div class="activity-item">
+                                <div class="activity-icon">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="11" cy="11" r="8"></circle>
+                                        <path d="m21 21-4.35-4.35"></path>
+                                    </svg>
+                                </div>
+                                <div class="activity-content">
+                                    <div class="activity-text">Offer received on your listing: 321 Elm St - $425,000</div>
+                                    <div class="activity-time">8 hours ago</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Load Component Scripts -->
+    <!-- Sidebar pre-rendered, no JS needed -->
+    <script src="../components/admin-header.js"></script>
+    
+    <!-- Firebase Integration -->
+    <script src="../firebase-config.js"></script>
+    
+    <!-- Dashboard-specific functionality -->
+    <script>
+        // Initialize dashboard with Firebase data
+        async function loadAgentDashboard() {
+            try {
+                // Check authentication
+                const user = await FirebaseServices.auth.checkAuth();
+                if (!user) {
+                    // For demo purposes, using mock data
+                    console.log('No authenticated user, using demo data');
+                    return;
+                }
+                
+                // Get agent statistics
+                const stats = await FirebaseServices.stats.getAgentStats(user.uid);
+                
+                // Update dashboard stats
+                document.getElementById('activeListingsCount').textContent = stats.activeListings;
+                document.getElementById('commissionYTD').textContent = FirebaseServices.utils.formatCurrency(stats.commissionYTD);
+                document.getElementById('activeClientsCount').textContent = stats.activeClients;
+                document.getElementById('newLeadsCount').textContent = stats.newLeads;
+                
+                // Set up real-time listeners for live updates
+                setupRealtimeListeners(user.uid);
+                
+            } catch (error) {
+                console.error('Error loading dashboard:', error);
+                // Continue with static data for demo
+            }
+        }
+        
+        function setupRealtimeListeners(agentId) {
+            // Listen for listing updates
+            FirebaseServices.db.subscribeToListings(agentId, (listings) => {
+                const activeCount = listings.filter(l => l.status === 'active').length;
+                document.getElementById('activeListingsCount').textContent = activeCount;
+                updateListingsTable(listings.slice(0, 4)); // Show first 4
+            });
+            
+            // Listen for lead updates
+            FirebaseServices.db.subscribeToLeads(agentId, (leads) => {
+                const newLeads = leads.filter(l => {
+                    const created = l.createdAt?.toDate?.() || new Date(l.createdAt);
+                    const weekAgo = new Date();
+                    weekAgo.setDate(weekAgo.getDate() - 7);
+                    return created > weekAgo;
+                }).length;
+                document.getElementById('newLeadsCount').textContent = newLeads;
+            });
+        }
+        
+        function updateListingsTable(listings) {
+            // Update the listings table with real data
+            const tbody = document.querySelector('.data-table tbody');
+            if (!tbody || listings.length === 0) return;
+            
+            tbody.innerHTML = listings.map(listing => `
+                <tr>
+                    <td>
+                        <div style="font-weight: 600;">${listing.address}</div>
+                        <div style="font-size: 12px; color: var(--text-secondary);">${listing.city}, ${listing.state} ${listing.zip}</div>
+                    </td>
+                    <td>${listing.type}</td>
+                    <td>${FirebaseServices.utils.formatCurrency(listing.price)}</td>
+                    <td><span class="sirsi-badge sirsi-sm-sm-badge--${listing.status === 'active' ? 'success' : 'warning'}">${listing.status}</span></td>
+                    <td>${listing.views || 0}</td>
+                </tr>
+            `).join('');
+        }
+        
+        // User dropdown toggle
+        function toggleUserMenu() {
+            const dropdown = document.getElementById('userDropdown');
+            const isVisible = dropdown.style.display !== 'none';
+            dropdown.style.display = isVisible ? 'none' : 'block';
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const userMenu = document.querySelector('.user-menu');
+            const dropdown = document.getElementById('userDropdown');
+            
+            if (!userMenu.contains(event.target) && dropdown.style.display !== 'none') {
+                dropdown.style.display = 'none';
+            }
+        });
+        
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadAgentDashboard();
+        });
+    </script>
+</body>
+</html>
