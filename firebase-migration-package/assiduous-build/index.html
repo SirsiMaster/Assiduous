@@ -927,7 +927,6 @@
                 <a href="#deals">Properties</a>
                 <a href="#insights">Insights</a>
                 <a href="#about">About</a>
-                <a href="/agent/dashboard.html" style="color: #3b82f6; font-weight: 600;">Agent Portal</a>
                 <div class="nav-actions">
                     <a href="#" class="btn-ghost" onclick="showLogin(); return false;">Sign In</a>
                     <a href="#" class="btn-gradient" id="openSignup">Get Started Free</a>
@@ -940,21 +939,46 @@
     <div id="signupModal" style="position: fixed; inset: 0; background: rgba(15,23,42,0.6); display: none; align-items: center; justify-content: center; z-index: 2000;">
         <div style="background: white; border-radius: 16px; width: 92%; max-width: 520px; padding: 28px; box-shadow: 0 30px 60px rgba(0,0,0,0.3);">
             <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
-                <h3 style="font-size: 22px; font-weight: 800; color: #0f172a;">Start Free</h3>
+                <h3 style="font-size: 22px; font-weight: 800; color: #0f172a;">Create Account</h3>
                 <button id="closeSignup" aria-label="Close" style="background: transparent; border: none; cursor: pointer; color: #64748b;">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M18 6L6 18M6 6l12 12"/>
                     </svg>
                 </button>
             </div>
-            <p style="color: #64748b; margin-bottom: 16px;">Create your free account to analyze your first property in minutes.</p>
+            <p style="color: #64748b; margin-bottom: 16px;">Join thousands of successful real estate investors.</p>
+            
+            <div id="signupError" style="display: none; margin-bottom: 12px; padding: 12px; background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; border-radius: 8px;"></div>
+            
             <form id="signupForm" style="display: grid; gap: 12px;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                    <input id="signupFirstName" type="text" required placeholder="First name" style="padding: 14px 16px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 15px;">
+                    <input id="signupLastName" type="text" required placeholder="Last name" style="padding: 14px 16px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 15px;">
+                </div>
                 <input id="signupEmail" type="email" required placeholder="Email address" style="padding: 14px 16px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 15px;">
-                <input id="signupZip" type="text" placeholder="ZIP Code (optional)" style="padding: 14px 16px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 15px;">
-                <button type="submit" style="padding: 12px 16px; background: linear-gradient(135deg, #3b82f6, #2563eb); color: white; border: none; border-radius: 10px; font-size: 16px; font-weight: 700; cursor: pointer;">Create Free Account →</button>
-                <small style="color: #94a3b8;">No credit card required</small>
+                <input id="signupPassword" type="password" required placeholder="Password (min 8 chars)" style="padding: 14px 16px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 15px;">
+                <select id="signupRole" required style="padding: 14px 16px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 15px; background: white;">
+                    <option value="">Select your role</option>
+                    <option value="client">Property Investor</option>
+                    <option value="agent">Real Estate Agent</option>
+                    <option value="investor">Accredited Investor</option>
+                </select>
+                
+                <!-- Agent-specific fields (hidden by default) -->
+                <div id="agentFields" style="display: none; grid-template-columns: 1fr; gap: 12px;">
+                    <input id="signupLicenseNumber" type="text" placeholder="License number" style="padding: 14px 16px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 15px;">
+                    <input id="signupLicenseState" type="text" placeholder="License state (e.g., PA)" style="padding: 14px 16px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 15px;">
+                    <input id="signupBrokerageName" type="text" placeholder="Brokerage name" style="padding: 14px 16px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 15px;">
+                </div>
+                
+                <button type="submit" style="padding: 12px 16px; background: linear-gradient(135deg, #3b82f6, #2563eb); color: white; border: none; border-radius: 10px; font-size: 16px; font-weight: 700; cursor: pointer;">Create Account →</button>
+                <small style="color: #94a3b8;">By signing up, you agree to our Terms of Service</small>
             </form>
-            <div id="signupSuccess" style="display: none; margin-top: 12px; padding: 12px; background: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0; border-radius: 8px; font-weight: 600;">Thanks! We just sent you a verification email.</div>
+            <div id="signupSuccess" style="display: none; margin-top: 12px; padding: 12px; background: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0; border-radius: 8px; font-weight: 600;">Account created! Redirecting...</div>
+            
+            <div style="margin-top: 16px; text-align: center;">
+                <p style="color: #64748b; font-size: 14px;">Already have an account? <a href="#" onclick="showLogin(); return false;" style="color: #3b82f6; text-decoration: none; font-weight: 600;">Sign in</a></p>
+            </div>
         </div>
     </div>
 
@@ -970,14 +994,22 @@
                 </button>
             </div>
             <p style="color: #64748b; margin-bottom: 16px;">Sign in to access your dashboard and tools.</p>
+            
+            <div id="loginError" style="display: none; margin-bottom: 12px; padding: 12px; background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; border-radius: 8px;"></div>
+            <div id="loginSuccess" style="display: none; margin-bottom: 12px; padding: 12px; background: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0; border-radius: 8px;"></div>
+            
             <form id="loginForm" style="display: grid; gap: 12px;">
                 <input id="loginEmail" type="email" required placeholder="Email address" style="padding: 14px 16px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 15px;">
                 <input id="loginPassword" type="password" required placeholder="Password" style="padding: 14px 16px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 15px;">
-                <button type="submit" style="padding: 12px 16px; background: linear-gradient(135deg, #3b82f6, #2563eb); color: white; border: none; border-radius: 10px; font-size: 16px; font-weight: 700; cursor: pointer;">Sign In →</button>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <input type="checkbox" id="rememberMe" style="width: auto;">
+                    <label for="rememberMe" style="color: #64748b; font-size: 14px; cursor: pointer;">Remember me</label>
+                </div>
+                <button type="submit" id="loginSubmit" style="padding: 12px 16px; background: linear-gradient(135deg, #3b82f6, #2563eb); color: white; border: none; border-radius: 10px; font-size: 16px; font-weight: 700; cursor: pointer;">Sign In →</button>
             </form>
             <div style="margin-top: 16px; text-align: center;">
                 <p style="color: #64748b; font-size: 14px;">Don't have an account? <a href="#" onclick="showSignup(); return false;" style="color: #3b82f6; text-decoration: none; font-weight: 600;">Sign up</a></p>
-                <p style="color: #64748b; font-size: 14px; margin-top: 8px;"><a href="#" style="color: #3b82f6; text-decoration: none;">Forgot password?</a></p>
+                <p style="color: #64748b; font-size: 14px; margin-top: 8px;"><a href="#" id="forgotPasswordLink" style="color: #3b82f6; text-decoration: none;">Forgot password?</a></p>
             </div>
         </div>
     </div>
@@ -1922,107 +1954,210 @@
             });
         }
     </script>
-    <!-- Load existing auth service -->
+    <!-- Load SirsiAuth and integrate with modals -->
+    <script src="/firebase-config.js"></script>
+    <script src="/components/sirsi-auth.js"></script>
+    <script src="/components/auth-guard.js"></script>
     <script type="module">
-        import { AuthService } from './assets/js/services/index.js';
-        
-        // Make auth functions globally available
-        window.AuthService = AuthService;
-        
-        // Override the basic login form handler with proper auth
-        document.getElementById('loginForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const email = document.getElementById('loginEmail').value.toLowerCase();
-            const password = document.getElementById('loginPassword').value;
-            
-            try {
-                // Authenticate with Firebase
-                const auth = firebase.auth();
-                const { user } = await auth.signInWithEmailAndPassword(email, password);
-                
-                // Get user data from Firestore to determine role
-                const db = firebase.firestore();
-                const userDoc = await db.collection('users').doc(user.uid).get();
-                
-                if (!userDoc.exists) {
-                    alert('User profile not found. Please contact support.');
-                    return;
-                }
-                
-                const userData = userDoc.data();
-                const role = userData.role;
-                
-                // Check if agent account is approved
-                if (role === 'agent' && userData.agentInfo?.status !== 'approved') {
-                    if (userData.agentInfo?.status === 'pending_approval') {
-                        // Redirect to pending page
-                        window.location.href = '/agent-pending.html';
-                    } else if (userData.agentInfo?.status === 'rejected') {
-                        alert('Your agent application was rejected. Reason: ' + 
-                              (userData.agentInfo?.rejectionReason || 'Not specified'));
-                        await auth.signOut();
-                    } else {
-                        alert('Your agent account is not yet verified. Please complete your profile.');
-                        window.location.href = '/signup.html';
-                    }
-                    return;
-                }
-                
-                // Store user data in localStorage for quick access
-                localStorage.setItem('user_role', role);
-                localStorage.setItem('user_email', userData.email);
-                localStorage.setItem('user_data', JSON.stringify({
-                    uid: user.uid,
-                    email: userData.email,
-                    role: role,
-                    name: `${userData.firstName} ${userData.lastName}`,
-                    firstName: userData.firstName,
-                    lastName: userData.lastName
-                }));
-                
-                // Redirect based on role
-                let redirectUrl = '/client/dashboard.html'; // default
-                
-                if (role === 'admin') {
-                    redirectUrl = '/admin/dashboard.html';
-                } else if (role === 'agent') {
-                    redirectUrl = '/agent/dashboard.html';
-                } else if (role === 'investor') {
-                    redirectUrl = '/investor/dashboard.html';
-                }
-                
-                window.location.href = redirectUrl;
-                
-            } catch (error) {
-                console.error('Login error:', error);
-                
-                if (error.code === 'auth/user-not-found') {
-                    alert('No account found with this email. Please sign up first.');
-                } else if (error.code === 'auth/wrong-password') {
-                    alert('Incorrect password. Please try again.');
-                } else if (error.code === 'auth/invalid-email') {
-                    alert('Invalid email address format.');
-                } else {
-                    alert('Login failed. Please try again.');
-                }
+        // Initialize SirsiAuth
+        const sirsiAuth = new SirsiAuth({
+            firebaseConfig: window.firebaseConfig,
+            redirects: {
+                admin: '/admin/dashboard.html',
+                agent: '/agent/dashboard.html',
+                client: '/client/dashboard.html',
+                investor: '/investor/dashboard.html',
+                pending: '/agent-pending.html'
             }
         });
         
-        // Handle signup form with existing auth
+        // Initialize auth system
+        await sirsiAuth.initialize();
+        
+        // Initialize AuthGuard
+        const authGuard = new AuthGuard();
+        await authGuard.initialize(sirsiAuth);
+        
+        // Make auth globally available
+        window.sirsiAuth = sirsiAuth;
+        window.authGuard = authGuard;
+        
+        // Handle role field change to show/hide agent fields
+        document.getElementById('signupRole').addEventListener('change', (e) => {
+            const agentFields = document.getElementById('agentFields');
+            if (e.target.value === 'agent') {
+                agentFields.style.display = 'grid';
+                // Make agent fields required
+                document.getElementById('signupLicenseNumber').required = true;
+                document.getElementById('signupLicenseState').required = true;
+                document.getElementById('signupBrokerageName').required = true;
+            } else {
+                agentFields.style.display = 'none';
+                // Remove required from agent fields
+                document.getElementById('signupLicenseNumber').required = false;
+                document.getElementById('signupLicenseState').required = false;
+                document.getElementById('signupBrokerageName').required = false;
+            }
+        });
+        
+        // Handle signup form with SirsiAuth
         document.getElementById('signupForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-            const email = document.getElementById('signupEmail').value;
-            const zip = document.getElementById('signupZip').value;
+            
+            const errorEl = document.getElementById('signupError');
+            const successEl = document.getElementById('signupSuccess');
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            
+            // Clear previous messages
+            errorEl.style.display = 'none';
+            successEl.style.display = 'none';
+            
+            // Get form data
+            const userData = {
+                firstName: document.getElementById('signupFirstName').value,
+                lastName: document.getElementById('signupLastName').value,
+                email: document.getElementById('signupEmail').value,
+                password: document.getElementById('signupPassword').value,
+                role: document.getElementById('signupRole').value,
+                phone: '' // Optional field not in form
+            };
+            
+            // Add agent-specific data if agent role
+            if (userData.role === 'agent') {
+                userData.licenseNumber = document.getElementById('signupLicenseNumber').value;
+                userData.licenseState = document.getElementById('signupLicenseState').value;
+                userData.brokerageName = document.getElementById('signupBrokerageName').value;
+                userData.licenseExpiry = new Date(Date.now() + 365*24*60*60*1000).toISOString(); // Default 1 year
+            }
+            
+            // Show loading state
+            submitBtn.textContent = 'Creating account...';
+            submitBtn.disabled = true;
             
             try {
-                // For now, just show success
-                document.getElementById('signupSuccess').style.display = 'block';
-                setTimeout(() => {
-                    document.getElementById('signupSuccess').style.display = 'none';
-                    document.getElementById('signupModal').style.display = 'none';
-                }, 2000);
+                const result = await sirsiAuth.signUp(userData);
+                
+                if (result.success) {
+                    successEl.textContent = result.message || 'Account created successfully!';
+                    successEl.style.display = 'block';
+                    
+                    // Clear form
+                    e.target.reset();
+                    
+                    // Redirect or close modal after delay
+                    setTimeout(() => {
+                        if (result.requiresApproval) {
+                            window.location.href = '/agent-pending.html';
+                        } else {
+                            // Auto sign in for non-agents
+                            showLogin();
+                            document.getElementById('loginEmail').value = userData.email;
+                        }
+                    }, 2000);
+                } else {
+                    errorEl.textContent = result.error || 'Failed to create account';
+                    errorEl.style.display = 'block';
+                }
             } catch (error) {
                 console.error('Signup error:', error);
+                errorEl.textContent = 'An unexpected error occurred. Please try again.';
+                errorEl.style.display = 'block';
+            } finally {
+                // Reset button
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            }
+        });
+        
+        // Handle login form with SirsiAuth
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const errorEl = document.getElementById('loginError');
+            const successEl = document.getElementById('loginSuccess');
+            const submitBtn = document.getElementById('loginSubmit');
+            const originalText = submitBtn.textContent;
+            
+            // Clear previous messages
+            errorEl.style.display = 'none';
+            successEl.style.display = 'none';
+            
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            const rememberMe = document.getElementById('rememberMe').checked;
+            
+            // Show loading state
+            submitBtn.textContent = 'Signing in...';
+            submitBtn.disabled = true;
+            
+            try {
+                const result = await sirsiAuth.signIn(email, password, rememberMe);
+                
+                if (result.success) {
+                    successEl.textContent = 'Login successful! Redirecting...';
+                    successEl.style.display = 'block';
+                    
+                    // Store user info for quick access
+                    localStorage.setItem('user_role', result.user.role);
+                    localStorage.setItem('user_email', result.user.email);
+                    localStorage.setItem('user_data', JSON.stringify({
+                        uid: result.user.uid,
+                        email: result.user.email,
+                        role: result.user.role,
+                        name: `${result.user.firstName} ${result.user.lastName}`,
+                        firstName: result.user.firstName,
+                        lastName: result.user.lastName
+                    }));
+                    
+                    // Redirect to appropriate dashboard
+                    setTimeout(() => {
+                        window.location.href = result.redirect;
+                    }, 1000);
+                } else if (result.needsApproval) {
+                    errorEl.textContent = result.message;
+                    errorEl.style.display = 'block';
+                    
+                    if (result.status === 'pending_approval') {
+                        setTimeout(() => {
+                            window.location.href = '/agent-pending.html';
+                        }, 2000);
+                    }
+                } else {
+                    errorEl.textContent = result.error || 'Login failed';
+                    errorEl.style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                errorEl.textContent = 'An unexpected error occurred. Please try again.';
+                errorEl.style.display = 'block';
+            } finally {
+                // Reset button
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            }
+        });
+        
+        // Handle forgot password
+        document.getElementById('forgotPasswordLink').addEventListener('click', async (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('loginEmail').value || prompt('Enter your email address:');
+            if (email) {
+                const result = await sirsiAuth.resetPassword(email);
+                
+                const errorEl = document.getElementById('loginError');
+                const successEl = document.getElementById('loginSuccess');
+                
+                if (result.success) {
+                    successEl.textContent = 'Password reset email sent! Please check your inbox.';
+                    successEl.style.display = 'block';
+                    errorEl.style.display = 'none';
+                } else {
+                    errorEl.textContent = result.error || 'Failed to send reset email';
+                    errorEl.style.display = 'block';
+                    successEl.style.display = 'none';
+                }
             }
         });
     </script>

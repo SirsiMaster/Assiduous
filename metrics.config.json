@@ -1,0 +1,83 @@
+{
+  "enabled": true,
+  "version": "2.0",
+  "description": "Comprehensive metrics tracking configuration for Assiduous project",
+  "tracking": {
+    "features": {
+      "enabled": true,
+      "description": "Track feature completion and status"
+    },
+    "quality": {
+      "enabled": true,
+      "description": "Code quality, test coverage, and technical debt",
+      "tools": {
+        "eslint": true,
+        "jest": true,
+        "coverage": true
+      }
+    },
+    "security": {
+      "enabled": true,
+      "description": "Security vulnerabilities and dependency audits",
+      "tools": {
+        "npmAudit": true,
+        "secretScanning": true
+      }
+    },
+    "performance": {
+      "enabled": true,
+      "description": "Bundle size, load times, and Lighthouse scores",
+      "tools": {
+        "lighthouse": false,
+        "bundleAnalyzer": false
+      }
+    },
+    "deployment": {
+      "enabled": true,
+      "description": "Deployment frequency and environment status",
+      "environments": ["production", "staging", "development"]
+    },
+    "documentation": {
+      "enabled": true,
+      "description": "Documentation coverage and completeness"
+    },
+    "productivity": {
+      "enabled": true,
+      "description": "Team velocity and contribution metrics"
+    },
+    "business": {
+      "enabled": true,
+      "description": "ROI, timeline, and market readiness"
+    },
+    "infrastructure": {
+      "enabled": true,
+      "description": "Firebase and hosting costs"
+    }
+  },
+  "alerts": {
+    "enabled": true,
+    "thresholds": {
+      "criticalVulnerabilities": 0,
+      "testCoverageMinimum": 20,
+      "eslintErrorsMaximum": 50,
+      "daysBeforeLaunchWarning": 30
+    }
+  },
+  "automation": {
+    "gitHooks": true,
+    "updateFrequency": "on-commit",
+    "backgroundProcessing": true,
+    "outputFormats": ["json", "console"]
+  },
+  "reporting": {
+    "dashboardUrl": "https://assiduousflip.web.app/admin/development",
+    "metricsPath": "firebase-migration-package/assiduous-build/admin/development/metrics_cache.json",
+    "backupPath": "metrics_cache_enhanced.json"
+  },
+  "customMetrics": {
+    "hourlyRate": 150,
+    "avgHoursPerCommit": 0.33,
+    "projectStartDate": "2025-08-10",
+    "plannedLaunchDate": "2025-11-01"
+  }
+}

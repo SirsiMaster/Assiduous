@@ -1,0 +1,54 @@
+{
+  "extends": "stylelint-config-standard",
+  "rules": {
+    "color-no-hex": [true, {
+      "message": "Use CSS variables instead of hex colors (e.g., var(--sky) instead of #3b82f6)"
+    }],
+    "color-no-invalid-hex": true,
+    "color-named": ["never", {
+      "message": "Use CSS variables instead of named colors"
+    }],
+    "declaration-property-value-disallowed-list": {
+      "/.*/": ["/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/", "/^rgb/", "/^rgba/", "/^hsl/"],
+      "message": "Use CSS variables for colors (var(--color-name))"
+    },
+    "custom-property-pattern": "^--[a-z]+(-[a-z]+)*$",
+    "selector-class-pattern": "^[a-z]+(-[a-z]+)*$",
+    "selector-id-pattern": "^[a-z]+(-[a-z]+)*$",
+    "value-keyword-case": ["lower", {
+      "ignoreProperties": ["font-family"]
+    }],
+    "declaration-block-no-redundant-longhand-properties": true,
+    "shorthand-property-no-redundant-values": true,
+    "length-zero-no-unit": true,
+    "number-leading-zero": "always",
+    "number-no-trailing-zeros": true,
+    "string-quotes": "double",
+    "declaration-colon-space-after": "always",
+    "declaration-colon-space-before": "never",
+    "block-opening-brace-space-before": "always",
+    "comment-whitespace-inside": "always",
+    "indentation": 2,
+    "max-empty-lines": 1,
+    "no-missing-end-of-source-newline": true,
+    "no-duplicate-selectors": true,
+    "no-duplicate-at-import-rules": true,
+    "declaration-property-value-blacklist": {
+      "padding": ["/\\d+px/", "/\\d+em/", "/\\d+rem/"],
+      "margin": ["/\\d+px/", "/\\d+em/", "/\\d+rem/"],
+      "gap": ["/\\d+px/", "/\\d+em/", "/\\d+rem/"],
+      "message": "Use CSS spacing variables (e.g., var(--space-md) instead of 16px)"
+    },
+    "plugin/no-hardcoded-values": [true, {
+      "ignore": ["0", "1", "100%", "50%", "auto", "inherit", "none", "transparent"],
+      "message": "Use CSS variables instead of hardcoded values"
+    }]
+  },
+  "ignoreFiles": [
+    "node_modules/**",
+    "dist/**",
+    "build/**",
+    ".next/**",
+    "firebase-migration-package/y/**"
+  ]
+}

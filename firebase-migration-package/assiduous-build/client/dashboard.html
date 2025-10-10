@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Client Dashboard — Assiduous</title>
+    <meta property="og:title" content="Client Dashboard — Assiduous">
+    <meta name="twitter:title" content="Client Dashboard — Assiduous">
+    
+    <!-- Assiduous Design System -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SirsiMaster/ui-components@latest/dist/sirsimaster-ui.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fontsource/geist-sans@5.0.6/latin.css" rel="stylesheet">
+    <link rel="stylesheet" href="../assiduous.css">
+    <link rel="stylesheet" href="../components/admin-layout.css">
+    <link rel="stylesheet" href="../assets/css/button-override.css">
+    
+    <style>
+        /* Minimal dashboard-specific styles only */
+        .dashboard-content {
+            padding: var(--space-xl);
+            overflow-y: auto;
+            background: var(--gray-50);
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--space-lg);
+            margin-bottom: var(--space-2xl);
+        }
+
+        .stat-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: var(--space-lg);
+            transition: all 0.2s;
+        }
+
+        .stat-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .stat-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: var(--space-md);
+        }
+
+        .stat-icon.blue { background: rgba(96, 163, 217, 0.1); color: var(--sky); }
+        .stat-icon.green { background: rgba(5, 150, 105, 0.1); color: var(--success); }
+        .stat-icon.yellow { background: rgba(255, 217, 64, 0.1); color: var(--warning); }
+        .stat-icon.purple { background: rgba(139, 92, 246, 0.1); color: #8b5cf6; }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: var(--space-xs);
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+            margin-bottom: var(--space-sm);
+        }
+
+        .stat-change {
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .stat-change.up { color: var(--success); }
+        .stat-change.down { color: var(--danger); }
+
+        /* Quick Actions */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--space-md);
+            margin-bottom: var(--space-xl);
+        }
+
+        .action-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: var(--space-lg);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            color: var(--dark);
+        }
+
+        .action-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+            border-color: var(--sky);
+        }
+
+        .action-icon {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto var(--space-md);
+            background: var(--gradient);
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+        }
+
+        /* Properties Section */
+        .data-table {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            margin-bottom: var(--space-xl);
+        }
+
+        .table-header {
+            padding: var(--space-md) var(--space-lg);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .table-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .properties-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: var(--space-lg);
+            padding: var(--space-lg);
+        }
+
+        .property-card {
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .property-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .property-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            background: var(--gray-100);
+        }
+
+        .property-details {
+            padding: var(--space-md);
+        }
+
+        .property-price {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: var(--space-xs);
+        }
+
+        .property-address {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-bottom: var(--space-md);
+        }
+
+        .property-features {
+            display: flex;
+            gap: var(--space-md);
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .property-roi {
+            display: inline-block;
+            background: rgba(96, 163, 217, 0.1);
+            color: var(--sky);
+            padding: 4px 8px;
+            border-radius: var(--radius);
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+            margin-top: var(--space-sm);
+        }
+        
+        /* Icon button styles */
+        .icon-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            background: var(--white);
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .icon-btn:hover {
+            background: var(--gray-50);
+            color: var(--dark);
+        }
+        
+        /* Button styles */
+        .btn-primary {
+            padding: var(--space-sm) var(--space-md);
+            background: var(--sky);
+            color: var(--white);
+            border: none;
+            border-radius: var(--radius);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-xs);
+        }
+        
+        .btn-primary:hover {
+            background: #4A8BC2;
+            transform: translateY(-1px);
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-wrapper">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <a href="/" class="sidebar-logo">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                    </svg>
+                    <span class="sidebar-logo-text">Assiduous</span>
+                </a>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <div class="nav-section-title">Main</div>
+                    <a href="#dashboard" class="nav-item active">
+                        <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                        </svg>
+                        Dashboard
+                    </a>
+                    <a href="#properties" class="nav-item">
+                        <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                        Search Properties
+                    </a>
+                    <a href="/client/deal-analyzer.html" class="nav-item">
+                        <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                        </svg>
+                        Deal Analyzer
+                    </a>
+                </div>
+                
+                <div class="nav-section">
+                    <div class="nav-section-title">Portfolio</div>
+                    <a href="#portfolio" class="nav-item">
+                        <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                        </svg>
+                        My Properties
+                    </a>
+                    <a href="#saved" class="nav-item">
+                        <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                        </svg>
+                        Saved
+                    </a>
+                    <a href="#insights" class="nav-item">
+                        <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                        </svg>
+                        Market Insights
+                    </a>
+                </div>
+                
+                <div class="nav-section">
+                    <div class="nav-section-title">Account</div>
+                    <a href="#settings" class="nav-item">
+                        <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        </svg>
+                        Settings
+                    </a>
+                    <a href="#" class="nav-item" onclick="logout(); return false;">
+                        <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                        </svg>
+                        Sign Out
+                    </a>
+                </div>
+            </nav>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Universal Header -->
+            <header id="universal-header-root" 
+                    data-user-name="" 
+                    data-user-role="client"
+                    data-user-email=""
+                    data-current-page="Client Dashboard"
+                    data-breadcrumb-items='[{"label": "Home", "url": "/"}, {"label": "Client Portal", "url": "/client/dashboard.html"}]'>
+            </header>
+            
+            <!-- Dashboard Content -->
+            <div class="dashboard-content">
+                <!-- Page Header -->
+                <div class="page-header">
+                    <h2 class="page-title">Welcome back, <span data-user-firstname>John</span>!</h2>
+                    <p class="page-subtitle">Here's what's happening with your real estate investments today.</p>
+                </div>
+                
+                <!-- Stats Grid -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-label">
+                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            Portfolio Value
+                        </div>
+                        <div class="stat-value">$0</div>
+                        <div class="stat-change positive">
+                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                            </svg>
+                            Start investing today
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-label">
+                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                            </svg>
+                            Active Properties
+                        </div>
+                        <div class="stat-value">0</div>
+                        <div class="stat-change">
+                            Browse available properties
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-label">
+                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                            </svg>
+                            Avg. ROI
+                        </div>
+                        <div class="stat-value">22.5%</div>
+                        <div class="stat-change positive">
+                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                            </svg>
+                            Industry average: 15%
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-label">
+                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                            </svg>
+                            Deal Opportunities
+                        </div>
+                        <div class="stat-value">47</div>
+                        <div class="stat-change positive">
+                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                            </svg>
+                            +12 new this week
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Quick Actions -->
+                <div class="quick-actions">
+                    <a href="#search" class="action-card" onclick="showSearchProperties()">
+                        <div class="action-icon">
+                            <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                        </div>
+                        <div class="action-title">Search Properties</div>
+                        <div class="action-desc">Find investment opportunities</div>
+                    </a>
+                    
+                    <a href="#analyzer" class="action-card" onclick="showDealAnalyzer()">
+                        <div class="action-icon">
+                            <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                            </svg>
+                        </div>
+                        <div class="action-title">Analyze Deal</div>
+                        <div class="action-desc">Calculate ROI & profits</div>
+                    </a>
+                    
+                    <a href="#market" class="action-card" onclick="showMarketTrends()">
+                        <div class="action-icon">
+                            <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                            </svg>
+                        </div>
+                        <div class="action-title">Market Trends</div>
+                        <div class="action-desc">View latest insights</div>
+                    </a>
+                    
+                    <a href="#connect" class="action-card" onclick="showAgentConnect()">
+                        <div class="action-icon">
+                            <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                            </svg>
+                        </div>
+                        <div class="action-title">Connect with Agent</div>
+                        <div class="action-desc">Get expert guidance</div>
+                    </a>
+                </div>
+                
+                <!-- Featured Properties -->
+                <div class="data-table">
+                    <div class="table-header">
+                        <h3 class="table-title">Featured Investment Opportunities</h3>
+                        <a href="#properties" class="btn-primary">View all →</a>
+                    </div>
+                    <div class="properties-grid">
+                        <div class="property-card" onclick="viewProperty('1')">
+                            <div class="property-image"></div>
+                            <div class="property-details">
+                                <div class="property-price">$285,000</div>
+                                <div class="property-address">1234 Market St, Philadelphia, PA 19107</div>
+                                <div class="property-features">
+                                    <span>3 beds</span>
+                                    <span>2 baths</span>
+                                    <span>1,850 sqft</span>
+                                </div>
+                                <div class="property-roi">Est. ROI: 28%</div>
+                            </div>
+                        </div>
+                        
+                        <div class="property-card" onclick="viewProperty('2')">
+                            <div class="property-image"></div>
+                            <div class="property-details">
+                                <div class="property-price">$175,000</div>
+                                <div class="property-address">567 Broad St, Camden, NJ 08102</div>
+                                <div class="property-features">
+                                    <span>2 beds</span>
+                                    <span>1 bath</span>
+                                    <span>1,200 sqft</span>
+                                </div>
+                                <div class="property-roi">Est. ROI: 35%</div>
+                            </div>
+                        </div>
+                        
+                        <div class="property-card" onclick="viewProperty('3')">
+                            <div class="property-image"></div>
+                            <div class="property-details">
+                                <div class="property-price">$425,000</div>
+                                <div class="property-address">890 Main Line Ave, Wayne, PA 19087</div>
+                                <div class="property-features">
+                                    <span>4 beds</span>
+                                    <span>3 baths</span>
+                                    <span>2,400 sqft</span>
+                                </div>
+                                <div class="property-roi">Est. ROI: 22%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Market Insights -->
+                <div class="data-table">
+                    <div class="table-header">
+                        <h3 class="table-title">Market Insights - Philadelphia Metro</h3>
+                        <a href="#insights" class="btn-primary">View detailed report →</a>
+                    </div>
+                    <div class="chart-container">
+                        <p>📊 Interactive market trends chart will appear here</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Firebase and Auth Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+    <script src="/firebase-config.js"></script>
+    <script src="/components/sirsi-auth.js"></script>
+    <script src="/components/auth-guard.js"></script>
+    <script src="/components/universal-header.js"></script>
+    
+    <script>
+        // Initialize auth
+        const sirsiAuth = new SirsiAuth({
+            firebaseConfig: window.firebaseConfig
+        });
+        
+        const authGuard = new AuthGuard();
+        
+        // Initialize and protect page
+        async function initializeDashboard() {
+            await sirsiAuth.initialize();
+            await authGuard.initialize(sirsiAuth);
+            
+            // Protect this page - only clients can access
+            await authGuard.protectClient((user) => {
+                // Update UI with user info
+                updateUserInterface(user);
+                // Load user's portfolio data
+                loadPortfolioData(user);
+            });
+        }
+        
+        // Update UI with user information
+        function updateUserInterface(user) {
+            // Update universal header with user data
+            const headerRoot = document.getElementById('universal-header-root');
+            if (headerRoot) {
+                headerRoot.setAttribute('data-user-name', `${user.firstName} ${user.lastName}`);
+                headerRoot.setAttribute('data-user-email', user.email || '');
+            }
+            
+            // Update first name in welcome message
+            const firstNameElements = document.querySelectorAll('[data-user-firstname]');
+            firstNameElements.forEach(el => {
+                el.textContent = user.firstName;
+            });
+        }
+        
+        // Load portfolio data
+        async function loadPortfolioData(user) {
+            try {
+                const db = firebase.firestore();
+                
+                // Load user's saved properties
+                const savedProperties = await db.collection('users')
+                    .doc(user.uid)
+                    .collection('savedProperties')
+                    .get();
+                
+                // Load user's active investments
+                const activeInvestments = await db.collection('users')
+                    .doc(user.uid)
+                    .collection('investments')
+                    .where('status', '==', 'active')
+                    .get();
+                
+                // Update stats based on actual data
+                if (!savedProperties.empty || !activeInvestments.empty) {
+                    console.log('Loading user portfolio data...');
+                }
+            } catch (error) {
+                console.error('Error loading portfolio data:', error);
+            }
+        }
+        
+        // Navigation functions
+        function showSearchProperties() {
+            console.log('Navigating to property search...');
+            // Will implement property search page
+        }
+        
+        function showDealAnalyzer() {
+            window.location.href = '/client/deal-analyzer.html';
+        }
+        
+        function showMarketTrends() {
+            console.log('Loading market trends...');
+            // Will implement market trends
+        }
+        
+        function showAgentConnect() {
+            console.log('Opening agent connection...');
+            // Will implement agent connection
+        }
+        
+        function viewProperty(propertyId) {
+            console.log('Viewing property:', propertyId);
+            // Will implement property details view
+        }
+        
+        // Logout function
+        async function logout() {
+            try {
+                await sirsiAuth.signOut();
+                window.location.href = '/';
+            } catch (error) {
+                console.error('Logout error:', error);
+            }
+        }
+        
+        // Handle navigation menu clicks
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.preventDefault();
+                
+                // Remove active class from all items
+                document.querySelectorAll('.nav-item').forEach(nav => {
+                    nav.classList.remove('active');
+                });
+                
+                // Add active class to clicked item
+                item.classList.add('active');
+                
+                // Handle navigation (will implement page switching)
+                const target = item.getAttribute('href').substring(1);
+                console.log('Navigating to:', target);
+            });
+        });
+        
+        // Initialize dashboard on page load
+        initializeDashboard();
+    </script>
+</body>
+</html>
