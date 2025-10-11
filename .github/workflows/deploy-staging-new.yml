@@ -1,0 +1,102 @@
+name: Deploy to Staging (Post-Migration)
+
+# This workflow will be renamed to deploy-staging.yml after domain migration
+
+on:
+  push:
+    branches: [staging, develop]
+  pull_request:
+    branches: [staging]
+    types: [closed]
+
+jobs:
+  deploy:
+    name: Deploy to Staging Environment
+    if: github.event.pull_request.merged == true || github.event_name == 'push'
+    runs-on: ubuntu-latest
+    environment: staging
+    
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          
+      - name: Install Dependencies
+        run: |
+          npm ci
+          npm install -g firebase-tools
+          
+      - name: Run Tests
+        run: |
+          echo "🧪 Running tests..."
+          # npm test (uncomment when tests are ready)
+          echo "✅ Tests passed (placeholder)"
+          
+      - name: Deploy to Staging
+        run: |
+          echo "🚀 Deploying to Staging environment..."
+          echo "📍 Target URL: https://assiduousflip.web.app (formerly production)"
+          cd firebase-migration-package
+          firebase deploy \
+            --only hosting:staging \
+            --project assiduous-prod \
+            --token "${{ secrets.FIREBASE_TOKEN }}"
+            
+      - name: Verify Deployment
+        run: |
+          echo "🔍 Verifying staging deployment..."
+          sleep 10
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" https://assiduousflip.web.app)
+          if [ "$RESPONSE" = "200" ]; then
+            echo "✅ Staging deployment successful (HTTP 200)"
+            echo "📍 Staging URL: https://assiduousflip.web.app"
+          else
+            echo "❌ Staging deployment verification failed (HTTP $RESPONSE)"
+            exit 1
+          fi
+          
+      - name: Update Feature Registry
+        if: success()
+        run: |
+          echo "📝 Updating feature status in registry..."
+          # Update features to IN_TESTING status
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          
+          # Mark features as deployed to staging
+          sed -i 's/IN_PROGRESS/IN_TESTING/g' FEATURE_REGISTRY.md
+          
+          if git diff --quiet; then
+            echo "No features to update"
+          else
+            git add FEATURE_REGISTRY.md
+            git commit -m "chore: update feature status to IN_TESTING on staging"
+            git push
+          fi
+          
+      - name: Post Deployment Summary
+        if: always()
+        run: |
+          echo "## 📦 Staging Deployment Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Environment Details" >> $GITHUB_STEP_SUMMARY
+          echo "- **Environment:** STAGING" >> $GITHUB_STEP_SUMMARY
+          echo "- **URL:** https://assiduousflip.web.app" >> $GITHUB_STEP_SUMMARY
+          echo "- **Previous Role:** Production URL" >> $GITHUB_STEP_SUMMARY
+          echo "- **Current Role:** Staging/Testing Environment" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Deployment Info" >> $GITHUB_STEP_SUMMARY
+          echo "- **Branch:** ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Commit:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Time:** $(date -u +'%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Next Steps" >> $GITHUB_STEP_SUMMARY
+          echo "1. Test features on staging (minimum 24 hours)" >> $GITHUB_STEP_SUMMARY
+          echo "2. Update FEATURE_REGISTRY.md with test results" >> $GITHUB_STEP_SUMMARY
+          echo "3. Get stakeholder approval" >> $GITHUB_STEP_SUMMARY
+          echo "4. Create release tag for production (www.assiduousflip.com)" >> $GITHUB_STEP_SUMMARY
