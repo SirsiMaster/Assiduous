@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Assiduous Documentation Hub</title>
+    <title>Assiduous Complete Documentation Hub - All 39 Documents</title>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
             line-height: 1.6;
             color: #333;
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             padding: 20px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -27,20 +27,42 @@
             padding-bottom: 10px;
             margin-bottom: 30px;
         }
+        .stats {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            display: flex;
+            justify-content: space-around;
+        }
+        .stat {
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+        }
+        .stat-label {
+            font-size: 12px;
+            color: #666;
+            text-transform: uppercase;
+        }
         .doc-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-            margin-top: 30px;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
         }
         .doc-card {
             border: 1px solid #e1e4e8;
             border-radius: 8px;
-            padding: 20px;
+            padding: 15px;
             transition: all 0.3s;
             text-decoration: none;
             color: #333;
             display: block;
+            position: relative;
         }
         .doc-card:hover {
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
@@ -48,13 +70,35 @@
             border-color: #667eea;
         }
         .doc-card h3 {
-            margin-top: 0;
+            margin: 0 0 8px 0;
             color: #667eea;
+            font-size: 16px;
         }
         .doc-card p {
-            margin: 10px 0 0 0;
+            margin: 0;
             color: #666;
-            font-size: 14px;
+            font-size: 13px;
+        }
+        .doc-format {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            gap: 5px;
+        }
+        .format-badge {
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 10px;
+            text-transform: uppercase;
+        }
+        .format-md {
+            background: #0366d6;
+            color: white;
+        }
+        .format-html {
+            background: #28a745;
+            color: white;
         }
         .category {
             margin: 30px 0;
@@ -63,155 +107,275 @@
             color: #764ba2;
             border-left: 4px solid #667eea;
             padding-left: 10px;
+            font-size: 20px;
         }
-        .status {
-            display: inline-block;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-size: 12px;
-            margin-left: 10px;
+        .search-box {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border: 2px solid #e1e4e8;
+            border-radius: 8px;
+            margin-bottom: 20px;
         }
-        .status.active { background: #28a745; color: white; }
-        .status.draft { background: #ffc107; color: #333; }
-        .status.archived { background: #6c757d; color: white; }
+        .search-box:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #e1e4e8;
+            color: #666;
+            font-size: 14px;
+            text-align: center;
+        }
+        .footer a {
+            color: #667eea;
+            text-decoration: none;
+        }
+        .footer a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>📚 Assiduous Documentation Hub</h1>
-        <p>Complete documentation for the Assiduous AI-Powered Real Estate Platform</p>
+        <h1>📚 Assiduous Complete Documentation Hub</h1>
+        <p>Every single document in the Assiduous AI-Powered Real Estate Platform - All 39 MD files with HTML versions</p>
         
+        <div class="stats">
+            <div class="stat">
+                <div class="stat-number">39</div>
+                <div class="stat-label">Total Documents</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">16</div>
+                <div class="stat-label">Root Docs</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">23</div>
+                <div class="stat-label">Canonical Docs</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">100%</div>
+                <div class="stat-label">HTML Coverage</div>
+            </div>
+        </div>
+
+        <input type="text" class="search-box" placeholder="Search all 39 documents..." id="searchBox">
+        
+        <!-- ROOT LEVEL DOCUMENTS (16) -->
         <div class="category">
-            <h2>🚀 Getting Started</h2>
+            <h2>📌 Root Level Documents (16)</h2>
             <div class="doc-grid">
                 <a href="readme.html" class="doc-card">
                     <h3>README</h3>
-                    <p>Project overview, setup instructions, and quick start guide</p>
-                </a>
-                <a href="warp.html" class="doc-card">
-                    <h3>WARP Development Rules</h3>
-                    <p>Critical governance rules for development with WARP</p>
+                    <p>Project overview and documentation index</p>
                 </a>
                 <a href="changelog.html" class="doc-card">
-                    <h3>Changelog</h3>
-                    <p>All notable changes and version history</p>
+                    <h3>CHANGELOG</h3>
+                    <p>Version history and release notes</p>
                 </a>
-            </div>
-        </div>
-        
-        <div class="category">
-            <h2>📋 Project Management</h2>
-            <div class="doc-grid">
-                <a href="project_scope.html" class="doc-card">
-                    <h3>Project Scope</h3>
-                    <p>Detailed project boundaries and deliverables</p>
+                <a href="environments.html" class="doc-card">
+                    <h3>ENVIRONMENTS</h3>
+                    <p>Deployment environments and URLs</p>
                 </a>
-                <a href="project_management.html" class="doc-card">
-                    <h3>Project Management</h3>
-                    <p>Timeline, milestones, and resource planning</p>
+                <a href="mvp_acceleration_plan.html" class="doc-card">
+                    <h3>MVP ACCELERATION PLAN</h3>
+                    <p>30-day sprint to MVP launch</p>
                 </a>
-                <a href="requirements_specification.html" class="doc-card">
-                    <h3>Requirements Specification</h3>
-                    <p>Complete functional and technical requirements</p>
+                <a href="100_percent_acceleration_plan.html" class="doc-card">
+                    <h3>100% ACCELERATION PLAN</h3>
+                    <p>Complete acceleration strategy</p>
                 </a>
-            </div>
-        </div>
-        
-        <div class="category">
-            <h2>🏗️ Technical Documentation</h2>
-            <div class="doc-grid">
-                <a href="architecture_design.html" class="doc-card">
-                    <h3>Architecture Design</h3>
-                    <p>System architecture and design patterns</p>
-                </a>
-                <a href="technical_design.html" class="doc-card">
-                    <h3>Technical Design</h3>
-                    <p>Detailed technical specifications</p>
-                </a>
-                <a href="api_specification.html" class="doc-card">
-                    <h3>API Specification</h3>
-                    <p>REST API endpoints and data contracts</p>
-                </a>
-                <a href="data_model.html" class="doc-card">
-                    <h3>Data Model</h3>
-                    <p>Database schema and relationships</p>
-                </a>
-            </div>
-        </div>
-        
-        <div class="category">
-            <h2>🔒 Security & Compliance</h2>
-            <div class="doc-grid">
-                <a href="security_compliance.html" class="doc-card">
-                    <h3>Security & Compliance</h3>
-                    <p>Security policies and compliance requirements</p>
+                <a href="warp.html" class="doc-card">
+                    <h3>WARP</h3>
+                    <p>WARP development rules</p>
                 </a>
                 <a href="test_accounts.html" class="doc-card">
-                    <h3>Test Accounts</h3>
-                    <p>Test credentials for development and QA</p>
+                    <h3>TEST ACCOUNTS</h3>
+                    <p>Test credentials for development</p>
+                </a>
+                <a href="feature_registry.html" class="doc-card">
+                    <h3>FEATURE REGISTRY</h3>
+                    <p>Feature tracking and status</p>
+                </a>
+                <a href="day1_checklist.html" class="doc-card">
+                    <h3>DAY1 CHECKLIST</h3>
+                    <p>First day setup and onboarding</p>
+                </a>
+                <a href="custom_domain_setup.html" class="doc-card">
+                    <h3>CUSTOM DOMAIN SETUP</h3>
+                    <p>Custom domain configuration</p>
+                </a>
+                <a href="domain_migration_plan.html" class="doc-card">
+                    <h3>DOMAIN MIGRATION PLAN</h3>
+                    <p>Domain migration strategy</p>
+                </a>
+                <a href="documentation_progress.html" class="doc-card">
+                    <h3>DOCUMENTATION PROGRESS</h3>
+                    <p>Documentation completion tracking</p>
+                </a>
+                <a href="documentation_reality_check.html" class="doc-card">
+                    <h3>DOCUMENTATION REALITY CHECK</h3>
+                    <p>Documentation audit and review</p>
+                </a>
+                <a href="documentation_sprint_plan.html" class="doc-card">
+                    <h3>DOCUMENTATION SPRINT PLAN</h3>
+                    <p>Documentation completion strategy</p>
+                </a>
+                <a href="project_tracking_enhancements.html" class="doc-card">
+                    <h3>PROJECT TRACKING ENHANCEMENTS</h3>
+                    <p>Enhanced tracking features</p>
+                </a>
+                <a href="claude.html" class="doc-card">
+                    <h3>CLAUDE</h3>
+                    <p>Claude AI integration context</p>
                 </a>
             </div>
         </div>
-        
+
+        <!-- CANONICAL DOCUMENTS (23) -->
         <div class="category">
-            <h2>✅ Quality Assurance</h2>
+            <h2>📋 Canonical Documentation (23)</h2>
             <div class="doc-grid">
-                <a href="test_plan.html" class="doc-card">
-                    <h3>Test Plan</h3>
-                    <p>Comprehensive testing strategy</p>
+                <!-- Project Management (6) -->
+                <a href="project_scope.html" class="doc-card">
+                    <h3>PROJECT SCOPE</h3>
+                    <p>Project boundaries and deliverables</p>
                 </a>
-                <a href="qa_plan.html" class="doc-card">
-                    <h3>QA Plan</h3>
-                    <p>Quality assurance processes</p>
+                <a href="project_management.html" class="doc-card">
+                    <h3>PROJECT MANAGEMENT</h3>
+                    <p>Timeline, milestones, resources</p>
                 </a>
-                <a href="test-automation.html" class="doc-card">
-                    <h3>Test Automation</h3>
-                    <p>Automated testing framework</p>
+                <a href="requirements_specification.html" class="doc-card">
+                    <h3>REQUIREMENTS SPECIFICATION</h3>
+                    <p>Functional and technical requirements</p>
                 </a>
-            </div>
-        </div>
-        
-        <div class="category">
-            <h2>🚀 Deployment & Operations</h2>
-            <div class="doc-grid">
-                <a href="deployment_guide.html" class="doc-card">
-                    <h3>Deployment Guide</h3>
-                    <p>Step-by-step deployment instructions</p>
-                </a>
-                <a href="maintenance_support.html" class="doc-card">
-                    <h3>Maintenance & Support</h3>
-                    <p>Ongoing maintenance procedures</p>
-                </a>
-                <a href="change_management.html" class="doc-card">
-                    <h3>Change Management</h3>
-                    <p>Change control processes</p>
-                </a>
-            </div>
-        </div>
-        
-        <div class="category">
-            <h2>📚 Additional Resources</h2>
-            <div class="doc-grid">
-                <a href="training_documentation.html" class="doc-card">
-                    <h3>Training Documentation</h3>
-                    <p>User and developer training materials</p>
+                <a href="prd.html" class="doc-card">
+                    <h3>PRD</h3>
+                    <p>Product requirements document</p>
                 </a>
                 <a href="user_stories.html" class="doc-card">
-                    <h3>User Stories</h3>
-                    <p>User scenarios and acceptance criteria</p>
+                    <h3>USER STORIES</h3>
+                    <p>User scenarios and acceptance</p>
+                </a>
+                <a href="risk_management.html" class="doc-card">
+                    <h3>RISK MANAGEMENT</h3>
+                    <p>Risk register and mitigation</p>
+                </a>
+
+                <!-- Technical (5) -->
+                <a href="architecture_design.html" class="doc-card">
+                    <h3>ARCHITECTURE DESIGN</h3>
+                    <p>System architecture</p>
+                </a>
+                <a href="technical_design.html" class="doc-card">
+                    <h3>TECHNICAL DESIGN</h3>
+                    <p>Technical specifications</p>
+                </a>
+                <a href="api_specification.html" class="doc-card">
+                    <h3>API SPECIFICATION</h3>
+                    <p>REST API endpoints</p>
+                </a>
+                <a href="data_model.html" class="doc-card">
+                    <h3>DATA MODEL</h3>
+                    <p>Database schema</p>
+                </a>
+                <a href="deployment_guide.html" class="doc-card">
+                    <h3>DEPLOYMENT GUIDE</h3>
+                    <p>Deployment instructions</p>
+                </a>
+
+                <!-- Quality (3) -->
+                <a href="test_plan.html" class="doc-card">
+                    <h3>TEST PLAN</h3>
+                    <p>Testing strategy</p>
+                </a>
+                <a href="qa_plan.html" class="doc-card">
+                    <h3>QA PLAN</h3>
+                    <p>Quality assurance</p>
+                </a>
+                <a href="security_compliance.html" class="doc-card">
+                    <h3>SECURITY COMPLIANCE</h3>
+                    <p>Security policies</p>
+                </a>
+
+                <!-- Operations (4) -->
+                <a href="maintenance_support.html" class="doc-card">
+                    <h3>MAINTENANCE SUPPORT</h3>
+                    <p>Maintenance procedures</p>
+                </a>
+                <a href="change_management.html" class="doc-card">
+                    <h3>CHANGE MANAGEMENT</h3>
+                    <p>Change control</p>
                 </a>
                 <a href="communication_plan.html" class="doc-card">
-                    <h3>Communication Plan</h3>
-                    <p>Stakeholder communication strategy</p>
+                    <h3>COMMUNICATION PLAN</h3>
+                    <p>Stakeholder communication</p>
+                </a>
+                <a href="training_documentation.html" class="doc-card">
+                    <h3>TRAINING DOCUMENTATION</h3>
+                    <p>Training materials</p>
+                </a>
+
+                <!-- Review (1) -->
+                <a href="post_implementation_review.html" class="doc-card">
+                    <h3>POST IMPLEMENTATION REVIEW</h3>
+                    <p>Lessons learned</p>
+                </a>
+
+                <!-- Process (2) -->
+                <a href="feature_development_process.html" class="doc-card">
+                    <h3>FEATURE DEVELOPMENT PROCESS</h3>
+                    <p>Development workflow</p>
+                </a>
+                <a href="release_management.html" class="doc-card">
+                    <h3>RELEASE MANAGEMENT</h3>
+                    <p>Release procedures</p>
+                </a>
+
+                <!-- Meta (2) -->
+                <a href="consolidation_mapping.html" class="doc-card">
+                    <h3>CONSOLIDATION MAPPING</h3>
+                    <p>Document history</p>
+                </a>
+                <a href="document_template.html" class="doc-card">
+                    <h3>DOCUMENT TEMPLATE</h3>
+                    <p>Documentation template</p>
                 </a>
             </div>
         </div>
-        
-        <p style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #e1e4e8; color: #666; font-size: 14px;">
-            Last updated: 2025-10-11 11:14:19 | 
-            <a href="https://github.com/SirsiMaster/Assiduous">GitHub Repository</a> |
-            <a href="https://assiduousflip.web.app">Live Application</a>
-        </p>
+
+        <div class="footer">
+            <strong>All 39 Documents Listed</strong> • Each has both MD and HTML versions<br><br>
+            Last updated: <span id="updateTime"></span> | 
+            <a href="https://github.com/SirsiMaster/Assiduous">GitHub</a> |
+            <a href="https://assiduous-prod.web.app">Production</a> |
+            <a href="https://assiduous-staging.web.app">Staging</a>
+        </div>
     </div>
+
+    <script>
+        // Search functionality
+        document.getElementById('searchBox').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const cards = document.querySelectorAll('.doc-card');
+            
+            cards.forEach(card => {
+                const title = card.querySelector('h3').textContent.toLowerCase();
+                const description = card.querySelector('p').textContent.toLowerCase();
+                
+                if (title.includes(searchTerm) || description.includes(searchTerm)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+
+        // Update time
+        document.getElementById('updateTime').textContent = new Date().toLocaleString();
+    </script>
 </body>
 </html>
