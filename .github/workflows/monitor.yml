@@ -15,9 +15,9 @@ jobs:
       - name: Check Production Site
         id: check-prod
         run: |
-          echo "🔍 Checking https://assiduousflip.web.app..."
+          echo "🔍 Checking https://assiduous-prod.web.app..."
           
-          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" --max-time 10 https://assiduousflip.web.app)
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" --max-time 10 https://assiduous-prod.web.app)
           
           if [ "$RESPONSE" = "200" ]; then
             echo "✅ Production site is UP (HTTP $RESPONSE)"
@@ -50,11 +50,11 @@ jobs:
           echo "**Time:** $(date -u +'%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### Status" >> $GITHUB_STEP_SUMMARY
-          echo "- **Production** (assiduousflip.web.app): ${{ steps.check-prod.outputs.status == 'up' && '✅ UP' || '⚠️ Check Required' }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Production** (assiduous-prod.web.app): ${{ steps.check-prod.outputs.status == 'up' && '✅ UP' || '⚠️ Check Required' }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Staging** (assiduous-staging.web.app): ${{ steps.check-staging.outcome == 'success' && '✅ UP' || '⚠️ Check Required' }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### Links" >> $GITHUB_STEP_SUMMARY
-          echo "- [Production Site](https://assiduousflip.web.app)" >> $GITHUB_STEP_SUMMARY
+          echo "- [Production Site](https://assiduous-prod.web.app)" >> $GITHUB_STEP_SUMMARY
           echo "- [Staging Site](https://assiduous-staging.web.app)" >> $GITHUB_STEP_SUMMARY
           echo "- [Firebase Console - Production](https://console.firebase.google.com/project/assiduous-prod)" >> $GITHUB_STEP_SUMMARY
           echo "- [Firebase Console - Staging](https://console.firebase.google.com/project/assiduous-staging)" >> $GITHUB_STEP_SUMMARY

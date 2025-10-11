@@ -137,9 +137,9 @@ jobs:
       - name: Deploy to Production
         run: |
           echo "🚀 DEPLOYING TO PRODUCTION..."
-          echo "🌐 Target: assiduousflip.web.app (and www.assiduousflip.com when configured)"
+          echo "🌐 Target: assiduous-prod.web.app (and www.assiduousflip.com when configured)"
           firebase deploy \
-            --only hosting:assiduousflip \
+            --only hosting:production \
             --project assiduous-prod \
             --token "${{ secrets.FIREBASE_TOKEN }}"
             
@@ -149,10 +149,10 @@ jobs:
           sleep 15
           
           # Check Firebase URL first (always available)
-          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" https://assiduousflip.web.app)
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" https://assiduous-prod.web.app)
           if [ "$RESPONSE" = "200" ]; then
             echo "✅ PRODUCTION DEPLOYMENT SUCCESSFUL"
-            echo "🌐 Live at: https://assiduousflip.web.app"
+            echo "🌐 Live at: https://assiduous-prod.web.app"
             
             # Check custom domain if configured
             CUSTOM_RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" https://www.assiduousflip.com)
@@ -163,7 +163,7 @@ jobs:
             fi
           else
             echo "❌ PRODUCTION DEPLOYMENT FAILED (HTTP $RESPONSE)"
-            echo "Site not accessible at https://assiduousflip.web.app"
+            echo "Site not accessible at https://assiduous-prod.web.app"
             exit 1
           fi
           

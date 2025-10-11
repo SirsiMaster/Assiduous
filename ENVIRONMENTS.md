@@ -10,9 +10,9 @@
 
 ## 🚀 PRODUCTION Environment  
 **Primary URLs**:
-- https://assiduousflip.com (custom domain)
-- https://www.assiduousflip.com (custom domain)
-- https://assiduousflip.web.app (Firebase URL - backup)
+- https://assiduous-prod.web.app (Firebase URL - main)
+- https://assiduousflip.com (custom domain - when configured)
+- https://www.assiduousflip.com (custom domain - when configured)
 
 **Firebase Project**: assiduous-prod  
 **Purpose**: Live production site for users  
@@ -70,7 +70,7 @@ firebase deploy --only hosting:production --project assiduous-prod
 | Environment | Firebase Project | URLs | Purpose |
 |------------|-----------------|------|---------|
 | **STAGING** | assiduous-staging | https://assiduous-staging.web.app | Testing |
-| **PRODUCTION** | assiduous-prod | https://assiduousflip.com<br>https://www.assiduousflip.com<br>https://assiduousflip.web.app | Live Site |
+| **PRODUCTION** | assiduous-prod | https://assiduous-prod.web.app<br>https://assiduousflip.com (future)<br>https://www.assiduousflip.com (future) | Live Site |
 
 ---
 
