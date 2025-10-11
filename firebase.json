@@ -24,6 +24,40 @@
       "**/node_modules/**",
       "**/firebase-migration-package/**"
     ],
+    "redirects": [
+      {
+        "source": "/",
+        "destination": "https://www.assiduousflip.com",
+        "type": 301,
+        "condition": {
+          "host": "assiduous-prod.web.app"
+        }
+      },
+      {
+        "source": "/**",
+        "destination": "https://www.assiduousflip.com/:splat",
+        "type": 301,
+        "condition": {
+          "host": "assiduous-prod.web.app"
+        }
+      },
+      {
+        "source": "/",
+        "destination": "https://www.assiduousflip.com",
+        "type": 301,
+        "condition": {
+          "host": "assiduousflip.com"
+        }
+      },
+      {
+        "source": "/**",
+        "destination": "https://www.assiduousflip.com/:splat",
+        "type": 301,
+        "condition": {
+          "host": "assiduousflip.com"
+        }
+      }
+    ],
     "headers": [
       {
         "source": "**/*.@(jpg|jpeg|gif|png|webp|svg|ico)",
