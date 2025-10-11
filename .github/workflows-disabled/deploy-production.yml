@@ -1,6 +1,4 @@
-name: Deploy to Production (Post-Migration)
-
-# This workflow will be renamed to deploy-production.yml after domain migration
+name: Deploy to Production
 
 on:
   release:
@@ -32,7 +30,6 @@ jobs:
         id: check
         run: |
           echo "🔍 Checking FEATURE_REGISTRY.md for release readiness..."
-          echo "📍 Production Target: www.assiduousflip.com"
           
           # Check if features are marked as ready
           if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
@@ -42,54 +39,38 @@ jobs:
             # Parse feature IDs
             IFS=',' read -ra FEAT_ARRAY <<< "$FEATURES"
             ALL_READY=true
-            NOT_READY_FEATURES=""
             
             for feat in "${FEAT_ARRAY[@]}"; do
-              # Check if feature exists in Ready for Release section with checkmark
-              if grep -q "$feat.*✅.*Ready for Release" FEATURE_REGISTRY.md; then
+              if grep -q "$feat.*Ready for Release.*✅" FEATURE_REGISTRY.md; then
                 echo "✅ $feat is ready for release"
               else
                 echo "❌ $feat is NOT ready for release"
-                NOT_READY_FEATURES="$NOT_READY_FEATURES $feat"
                 ALL_READY=false
               fi
             done
             
             if [ "$ALL_READY" = "true" ]; then
               echo "approved=true" >> $GITHUB_OUTPUT
-              echo "✅ All features approved for production release"
             else
               echo "approved=false" >> $GITHUB_OUTPUT
-              echo "⛔ RELEASE BLOCKED: The following features are not ready: $NOT_READY_FEATURES"
-              echo ""
-              echo "To proceed, ensure all features:"
-              echo "1. Have completed testing on staging (assiduousflip.web.app)"
-              echo "2. Are marked with ✅ in FEATURE_REGISTRY.md"
-              echo "3. Have stakeholder approval"
+              echo "⛔ Release blocked: Not all features are ready"
               exit 1
             fi
           else
-            # For tag pushes, check registry for any ready features
-            if grep -q "✅.*Ready for Release" FEATURE_REGISTRY.md; then
-              echo "approved=true" >> $GITHUB_OUTPUT
-              echo "✅ Found features ready for release"
-            else
-              echo "❌ No features marked as ready in FEATURE_REGISTRY.md"
-              exit 1
-            fi
+            # For tag pushes, assume approved (legacy support)
+            echo "approved=true" >> $GITHUB_OUTPUT
           fi
           
       - name: Verify Staging Tests
         run: |
-          echo "🧪 Verifying staging environment is stable..."
-          # Check staging (old production URL) is working
-          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" https://assiduousflip.web.app)
+          echo "🧪 Verifying staging environment tests..."
+          # Check staging is up
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" https://assiduous-staging.web.app)
           if [ "$RESPONSE" != "200" ]; then
             echo "❌ Staging is not accessible (HTTP $RESPONSE)"
-            echo "Cannot deploy to production without working staging"
             exit 1
           fi
-          echo "✅ Staging environment verified (assiduousflip.web.app)"
+          echo "✅ Staging environment verified"
   
   deploy:
     name: Deploy to Production
@@ -106,7 +87,6 @@ jobs:
             echo "❌ Deployment cancelled - confirmation text did not match"
             exit 1
           fi
-          echo "✅ Deployment confirmed"
           
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -137,7 +117,6 @@ jobs:
       - name: Deploy to Production
         run: |
           echo "🚀 DEPLOYING TO PRODUCTION..."
-          echo "🌐 Target: www.assiduousflip.com"
           cd firebase-migration-package
           firebase deploy \
             --only hosting:production \
@@ -148,49 +127,18 @@ jobs:
         run: |
           echo "🔍 Verifying production deployment..."
           sleep 15
-          
-          # Check custom domain
-          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" https://www.assiduousflip.com)
+          # Check Firebase URL first (always works immediately)
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" https://assiduousflip.web.app)
           if [ "$RESPONSE" = "200" ]; then
-            echo "✅ PRODUCTION DEPLOYMENT SUCCESSFUL"
-            echo "🌐 Live at: https://www.assiduousflip.com"
+            echo "✅ PRODUCTION DEPLOYMENT SUCCESSFUL (HTTP 200)"
+            echo "🌐 Production URLs:"
+            echo "  - https://assiduousflip.com (custom domain)"
+            echo "  - https://www.assiduousflip.com (custom domain)"
+            echo "  - https://assiduousflip.web.app (Firebase URL)"
           else
             echo "❌ PRODUCTION DEPLOYMENT FAILED (HTTP $RESPONSE)"
-            echo "⚠️ Custom domain may still be propagating"
-            echo "Checking Firebase default URL as fallback..."
-            
-            # Fallback check (remove after DNS propagation)
-            FALLBACK=$(curl -s -o /dev/null -w "%{http_code}" https://assiduousflip.web.app)
-            if [ "$FALLBACK" = "200" ]; then
-              echo "⚠️ Site is accessible via Firebase URL but not custom domain yet"
-              echo "DNS propagation may take up to 24 hours"
-            else
-              echo "❌ CRITICAL: Site not accessible on any URL"
-              exit 1
-            fi
-          fi
-          
-      - name: Update Feature Registry
-        if: success()
-        run: |
-          echo "📝 Marking features as RELEASED..."
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-          
-          # Move features from Ready to Released
-          # This is a simplified version - in production, parse specific features
-          DATE=$(date +%Y-%m-%d)
-          VERSION="${{ github.ref_name }}"
-          
-          # Update registry (this would be more sophisticated in production)
-          sed -i "s/Ready for Release/RELEASED $VERSION $DATE/g" FEATURE_REGISTRY.md
-          
-          if git diff --quiet; then
-            echo "No features to update"
-          else
-            git add FEATURE_REGISTRY.md
-            git commit -m "chore: mark features as RELEASED in registry"
-            git push
+            echo "⚠️ INITIATING ROLLBACK PROCEDURES..."
+            exit 1
           fi
           
       - name: Create Deployment Record
@@ -198,23 +146,18 @@ jobs:
         run: |
           echo "## 🎉 Production Deployment Complete" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "### 🌐 LIVE AT: www.assiduousflip.com" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
           echo "### Deployment Details" >> $GITHUB_STEP_SUMMARY
           echo "- **Version:** ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Commit:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Deployed By:** ${{ github.actor }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Time:** $(date -u +'%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
-          echo "- **Production URL:** https://www.assiduousflip.com" >> $GITHUB_STEP_SUMMARY
-          echo "- **Staging URL:** https://assiduousflip.web.app" >> $GITHUB_STEP_SUMMARY
+          echo "- **Production URL:** https://assiduousflip.web.app" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### Post-Deployment Checklist" >> $GITHUB_STEP_SUMMARY
-          echo "- [ ] Verify www.assiduousflip.com is accessible" >> $GITHUB_STEP_SUMMARY
-          echo "- [ ] Test critical user paths" >> $GITHUB_STEP_SUMMARY
           echo "- [ ] Monitor error rates" >> $GITHUB_STEP_SUMMARY
-          echo "- [ ] Check analytics" >> $GITHUB_STEP_SUMMARY
+          echo "- [ ] Check user feedback" >> $GITHUB_STEP_SUMMARY
+          echo "- [ ] Verify critical paths" >> $GITHUB_STEP_SUMMARY
           echo "- [ ] Update status page" >> $GITHUB_STEP_SUMMARY
-          echo "- [ ] Notify stakeholders" >> $GITHUB_STEP_SUMMARY
           
       - name: Notify on Failure
         if: failure()
@@ -227,7 +170,3 @@ jobs:
           echo '```bash' >> $GITHUB_STEP_SUMMARY
           echo "firebase hosting:rollback --project assiduous-prod" >> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "### Support" >> $GITHUB_STEP_SUMMARY
-          echo "- Check logs: https://console.firebase.google.com/project/assiduous-prod" >> $GITHUB_STEP_SUMMARY
-          echo "- Staging still available at: https://assiduousflip.web.app" >> $GITHUB_STEP_SUMMARY

@@ -1,0 +1,62 @@
+name: Site Health Check
+
+on:
+  schedule:
+    # Run every hour (less aggressive than every 15 minutes)
+    - cron: '0 * * * *'
+  workflow_dispatch: # Allow manual trigger
+
+jobs:
+  health-check:
+    name: Check Site Health
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Check Production Site
+        id: check-prod
+        run: |
+          echo "🔍 Checking https://assiduousflip.web.app..."
+          
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" --max-time 10 https://assiduousflip.web.app)
+          
+          if [ "$RESPONSE" = "200" ]; then
+            echo "✅ Production site is UP (HTTP $RESPONSE)"
+            echo "status=up" >> $GITHUB_OUTPUT
+          else
+            echo "⚠️ Production site returned HTTP $RESPONSE"
+            echo "status=warning" >> $GITHUB_OUTPUT
+            # Don't fail the job, just report the status
+          fi
+      
+      - name: Check Staging Site
+        if: always()
+        id: check-staging
+        run: |
+          echo "🔍 Checking https://assiduous-staging.web.app..."
+          
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" --max-time 10 https://assiduous-staging.web.app)
+          
+          if [ "$RESPONSE" = "200" ]; then
+            echo "✅ Staging site is UP (HTTP $RESPONSE)"
+          else
+            echo "⚠️ Staging site returned HTTP $RESPONSE"
+          fi
+      
+      - name: Post Status Summary
+        if: always()
+        run: |
+          echo "## 🏥 Site Health Report" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Time:** $(date -u +'%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Status" >> $GITHUB_STEP_SUMMARY
+          echo "- **Production** (assiduousflip.web.app): ${{ steps.check-prod.outputs.status == 'up' && '✅ UP' || '⚠️ Check Required' }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Staging** (assiduous-staging.web.app): ${{ steps.check-staging.outcome == 'success' && '✅ UP' || '⚠️ Check Required' }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Links" >> $GITHUB_STEP_SUMMARY
+          echo "- [Production Site](https://assiduousflip.web.app)" >> $GITHUB_STEP_SUMMARY
+          echo "- [Staging Site](https://assiduous-staging.web.app)" >> $GITHUB_STEP_SUMMARY
+          echo "- [Firebase Console - Production](https://console.firebase.google.com/project/assiduous-prod)" >> $GITHUB_STEP_SUMMARY
+          echo "- [Firebase Console - Staging](https://console.firebase.google.com/project/assiduous-staging)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Note:** This monitor only reports status. It does NOT auto-deploy or make changes." >> $GITHUB_STEP_SUMMARY
