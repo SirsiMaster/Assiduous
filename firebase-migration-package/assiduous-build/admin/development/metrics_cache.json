@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-10-11T14:06:13.643Z",
+  "lastUpdated": "2025-10-11T14:20:45.898Z",
   "summary": {
     "health": "Good",
     "score": 46,
@@ -109,34 +109,34 @@
     "totalCost": 22650,
     "laborCost": 22650,
     "toolsCost": 450,
-    "totalCommits": 458,
-    "totalFiles": 38818,
+    "totalCommits": 459,
+    "totalFiles": 38820,
     "activeDays": 62,
     "projectAgeDays": 62,
-    "linesAdded": 9360931,
-    "linesDeleted": 912090,
-    "netLines": 8448841,
+    "linesAdded": 9361312,
+    "linesDeleted": 912151,
+    "netLines": 8449161,
     "velocity": "7.4",
     "completionPercentage": 46,
     "actualStartDate": "2025-08-10"
   },
   "today": {
     "date": "2025-10-11",
-    "hours": "4.0",
-    "cost": 594,
-    "commits": 12,
+    "hours": "4.3",
+    "cost": 644,
+    "commits": 13,
     "deployments": 0
   },
   "thisWeek": {
-    "hours": "45.2",
-    "cost": 6782,
-    "commits": 137,
+    "hours": "45.5",
+    "cost": 6831,
+    "commits": 138,
     "days": 7
   },
   "thisMonth": {
-    "hours": "47.2",
-    "cost": 7079,
-    "commits": 143
+    "hours": "47.5",
+    "cost": 7128,
+    "commits": 144
   },
   "quality": {
     "testCoverage": {
@@ -170,7 +170,7 @@
       "critical": 0,
       "total": 0
     },
-    "lastAudit": "2025-10-11T14:05:51.913Z",
+    "lastAudit": "2025-10-11T14:20:24.276Z",
     "dependencies": {
       "total": {
         "prod": 192,
@@ -249,7 +249,7 @@
     }
   },
   "documentation": {
-    "markdownFiles": 1178,
+    "markdownFiles": 1180,
     "jsFilesTotal": 13520,
     "jsFilesDocumented": 13520,
     "coverage": 536,
@@ -265,11 +265,11 @@
     "changelog": true,
     "contributing": false,
     "license": false,
-    "lastUpdate": "2025-10-11 10:05:32 -0400"
+    "lastUpdate": "2025-10-11 10:20:05 -0400"
   },
   "productivity": {
     "velocityTrend": "increasing",
-    "weeklyCommits": 137,
+    "weeklyCommits": 138,
     "contributors": {
       "total": 0,
       "active": 0
@@ -347,6 +347,12 @@
   },
   "recentActivity": [
     {
+      "hash": "c27fe8e6e6493ed3ee267759e2adb82ab602b205",
+      "message": "fix: clarify environment structure and URLs",
+      "author": "SirsiMaster",
+      "date": "2025-10-11 10:20:05 -0400"
+    },
+    {
       "hash": "6f88915127705f56729b08b258a89a4637bb72ac",
       "message": "feat: implement complete release management system with approval gates",
       "author": "SirsiMaster",
@@ -399,16 +405,10 @@
       "message": "chore: update metrics cache files",
       "author": "SirsiMaster",
       "date": "2025-10-10 10:55:54 -0400"
-    },
-    {
-      "hash": "82f1fc5bdf6c90038243f61b28dc2903e9fc3fa1",
-      "message": "chore: resolve stash conflicts after rebase - keep v0.48.0",
-      "author": "SirsiMaster",
-      "date": "2025-10-10 10:55:29 -0400"
     }
   ],
   "automation": {
-    "lastRun": "2025-10-11T14:06:13.643Z",
+    "lastRun": "2025-10-11T14:20:45.898Z",
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",
