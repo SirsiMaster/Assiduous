@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CUSTOM DOMAIN SETUP - Assiduous Documentation</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3, h4, h5, h6 {
+            margin-top: 24px;
+            margin-bottom: 16px;
+            font-weight: 600;
+            line-height: 1.25;
+        }
+        h1 { font-size: 2em; border-bottom: 1px solid #e1e4e8; padding-bottom: 0.3em; }
+        h2 { font-size: 1.5em; border-bottom: 1px solid #e1e4e8; padding-bottom: 0.3em; }
+        h3 { font-size: 1.25em; }
+        code {
+            background: #f6f8fa;
+            padding: 0.2em 0.4em;
+            border-radius: 3px;
+            font-size: 85%;
+        }
+        pre {
+            background: #f6f8fa;
+            padding: 16px;
+            overflow: auto;
+            border-radius: 6px;
+            line-height: 1.45;
+        }
+        pre code {
+            background: transparent;
+            padding: 0;
+        }
+        ul, ol {
+            padding-left: 2em;
+            margin-bottom: 16px;
+        }
+        li {
+            margin-bottom: 4px;
+        }
+        a {
+            color: #0366d6;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        blockquote {
+            padding: 0 1em;
+            color: #6a737d;
+            border-left: 0.25em solid #dfe2e5;
+            margin: 0 0 16px 0;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 16px;
+        }
+        table th, table td {
+            padding: 6px 13px;
+            border: 1px solid #dfe2e5;
+        }
+        table tr:nth-child(2n) {
+            background-color: #f6f8fa;
+        }
+        .nav-link {
+            display: inline-block;
+            padding: 8px 16px;
+            background: #0366d6;
+            color: white;
+            border-radius: 6px;
+            margin: 10px 5px;
+            text-decoration: none;
+        }
+        .nav-link:hover {
+            background: #0256c7;
+            text-decoration: none;
+        }
+        .timestamp {
+            color: #6a737d;
+            font-size: 0.85em;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e1e4e8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <a href="/docs/index.html" class="nav-link">📚 Documentation Hub</a>
+            <a href="/docs/readme.html" class="nav-link">📖 README</a>
+            <a href="/docs/changelog.html" class="nav-link">📝 Changelog</a>
+            <a href="/docs/warp.html" class="nav-link">⚙️ WARP Rules</a>
+        </nav>
+        <h1>CUSTOM DOMAIN SETUP</h1>
+        <div class="content">
+<h1>Setting Up www.assiduousflip.com with Firebase (FREE) - For assiduous-prod.web.app</h1>
+<br>
+<h2>✅ No Additional Costs!</h2>
+Firebase custom domain hosting is <strong>FREE</strong> - you only pay for your GoDaddy domain registration.
+<br>
+<hr>
+<br>
+<h2>Step 1: Add Custom Domain to Firebase (2 minutes)</h2>
+<br>
+Run this command to add your domain to Firebase:
+<br>
+<code></code>`bash
+<h1>Your production site is now assiduous-prod (the default site)</h1>
+<h1>No need to create a new site, just add the domain to the existing one</h1>
+firebase hosting:site:domain:add www.assiduousflip.com --project assiduous-prod
+<code></code>`
+<br>
+<hr>
+<br>
+<h2>Step 2: Connect Domain in Firebase Console (3 minutes)</h2>
+<br>
+1. Go to: https://console.firebase.google.com/project/assiduous-prod/hosting/sites
+2. Click on <code>assiduous-prod</code> (your main production site)
+3. Click "Add custom domain"
+4. Enter: <code>www.assiduousflip.com</code>
+5. Click "Continue"
+6. Firebase will show you DNS records - KEEP THIS PAGE OPEN
+<br>
+<hr>
+<br>
+<h2>Step 3: Update GoDaddy DNS (5 minutes)</h2>
+<br>
+1. Go to: https://dcc.godaddy.com/control/assiduousflip.com/dns
+2. Sign in to your GoDaddy account
+3. Delete any existing A records for "www"
+4. Add these records:
+<br>
+<h3>A Records (for www subdomain):</h3>
+<code></code>`
+Type: A
+Name: www
+Value: 151.101.1.195
+TTL: 600
+<code></code>`
+<br>
+<code></code>`
+Type: A
+Name: www  
+Value: 151.101.65.195
+TTL: 600
+<code></code>`
+<br>
+<h3>For root domain redirect (assiduousflip.com → www.assiduousflip.com):</h3>
+<code></code>`
+Type: A
+Name: @
+Value: 151.101.1.195
+TTL: 600
+<code></code>`
+<br>
+<code></code>`
+Type: A
+Name: @
+Value: 151.101.65.195
+TTL: 600
+<code></code>`
+<br>
+<h3>TXT Record (for SSL verification):</h3>
+<code></code>`
+Type: TXT
+Name: _acme-challenge.www
+Value: [Firebase will provide this in the console]
+TTL: 600
+<code></code>`
+<br>
+<hr>
+<br>
+<h2>Step 4: Verify in Firebase (5-10 minutes)</h2>
+<br>
+1. Go back to Firebase Console
+2. Click "Verify" 
+3. Firebase will check DNS propagation
+4. Once verified, Firebase automatically provisions SSL certificate (FREE via Let's Encrypt)
+<br>
+<hr>
+<br>
+<h2>Step 5: Update Firebase Configuration</h2>
+<br>
+<code></code>`bash
+cd firebase-migration-package
+<code></code>`
+<br>
+Edit <code>.firebaserc</code>:
+<code></code>`json
+{
+  "projects": {
+    "default": "assiduous-prod",
+    "production": "assiduous-prod"
+  },
+  "targets": {
+    "assiduous-prod": {
+      "hosting": {
+        "production": ["assiduous-prod"]
+      }
+    }
+  }
+}
+<code></code>`
+<br>
+<hr>
+<br>
+<h2>Step 6: Deploy to Your Custom Domain</h2>
+<br>
+<code></code>`bash
+firebase deploy --only hosting --project assiduous-prod
+<code></code>`
+<br>
+Your site will now be live at:
+<li>https://www.assiduousflip.com (primary custom domain)</li>
+<li>https://assiduousflip.com (redirects to www)</li>
+<li>https://assiduous-prod.web.app (Firebase URL - still works)</li>
+<br>
+<hr>
+<br>
+<h2>DNS Propagation Timeline</h2>
+<br>
+<li><strong>5-15 minutes</strong>: Site accessible for most users</li>
+<li><strong>1-4 hours</strong>: SSL certificate fully active</li>
+<li><strong>24-48 hours</strong>: Complete global DNS propagation</li>
+<br>
+During propagation, both URLs work:
+<li>https://assiduous-prod.web.app (immediate)</li>
+<li>https://www.assiduousflip.com (after DNS updates)</li>
+<br>
+<hr>
+<br>
+<h2>Testing Your Domain</h2>
+<br>
+<code></code>`bash
+<h1>Check DNS propagation</h1>
+nslookup www.assiduousflip.com
+<br>
+<h1>Test site availability  </h1>
+curl -I https://www.assiduousflip.com
+<br>
+<h1>Check SSL certificate</h1>
+openssl s_client -connect www.assiduousflip.com:443 -servername www.assiduousflip.com
+<code></code>`
+<br>
+<hr>
+<br>
+<h2>Troubleshooting</h2>
+<br>
+<h3>"DNS not propagated" error</h3>
+<li>Wait 15 more minutes</li>
+<li>Clear browser cache</li>
+<li>Try different browser/incognito mode</li>
+<br>
+<h3>SSL Certificate Warning</h3>
+<li>Normal during first 1-4 hours</li>
+<li>Firebase auto-provisions certificate</li>
+<li>No action needed, just wait</li>
+<br>
+<h3>Site not loading</h3>
+<li>Verify DNS records in GoDaddy</li>
+<li>Check Firebase Console for domain status</li>
+<li>Ensure deployment completed successfully</li>
+<br>
+<hr>
+<br>
+<h2>Benefits of This Setup</h2>
+<br>
+✅ <strong>FREE</strong> - No additional Firebase costs  
+✅ <strong>Professional</strong> - Custom domain looks better  
+✅ <strong>Secure</strong> - Free SSL certificate included  
+✅ <strong>Fast</strong> - Firebase CDN serves globally  
+✅ <strong>Reliable</strong> - 99.95% uptime SLA  
+✅ <strong>Simple</strong> - One deployment serves all URLs  
+<br>
+<hr>
+<br>
+<h2>Quick Reference</h2>
+<br>
+<h3>Your URLs After Setup:</h3>
+<li><strong>Production</strong>: https://www.assiduousflip.com</li>
+<li><strong>Firebase URL</strong>: https://assiduous-prod.web.app  </li>
+<li><strong>Root redirect</strong>: https://assiduousflip.com → www</li>
+<br>
+<h3>GoDaddy DNS Management:</h3>
+https://dcc.godaddy.com/control/assiduousflip.com/dns
+<br>
+<h3>Firebase Hosting Console:</h3>
+https://console.firebase.google.com/project/assiduous-prod/hosting/sites
+<br>
+<h3>Deploy Command:</h3>
+<code></code>`bash
+firebase deploy --only hosting --project assiduous-prod
+<code></code>`
+<br>
+<hr>
+<br>
+<em>Setup Time: 15-20 minutes</em>  
+<em>Cost: $0 (just your existing GoDaddy domain fee)</em>  
+<em>Result: Professional website at www.assiduousflip.com</em>
+        </div>
+        <div class="timestamp">
+            Last updated: 2025-10-11 11:14:17
+        </div>
+    </div>
+</body>
+</html>

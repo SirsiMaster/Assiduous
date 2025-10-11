@@ -111,13 +111,14 @@
         <h1>DATA MODEL</h1>
         <div class="content">
 <h1>DATA MODEL DOCUMENT</h1>
-<h2>Database Schema and Data Structures</h2>
+<h2>Complete Database Schema, Relationships, and Data Architecture</h2>
 <br>
 <strong>Document Type:</strong> Data Model  
-<strong>Version:</strong> 2.0.0  
-<strong>Last Updated:</strong> October 9, 2025  
-<strong>Status:</strong> Authoritative Data Model Document
-<strong>Consolidation Note:</strong> Extracted from technical blueprint and MVP plan
+<strong>Version:</strong> 3.0.0  
+<strong>Last Updated:</strong> October 10, 2025  
+<strong>Status:</strong> Comprehensive Data Model Documentation  
+<strong>Implementation Status:</strong> Schema defined, 0% implemented in production  
+<strong>Reality Check:</strong> Using mock data, no real database connections
 <br>
 <hr>
 <br>
@@ -201,9 +202,359 @@
 }
 <code></code>`
 <br>
+<hr>
+<br>
+<h2>Extended Collection Schemas</h2>
+<br>
+<h3>Analytics Collection</h3>
+<code></code>`javascript
+{
+  id: string,
+  userId: string,
+  propertyId: string,
+  event: 'view' | 'save' | 'share' | 'inquiry' | 'tour',
+  metadata: {
+    source: string,
+    device: string,
+    location: geopoint,
+    referrer: string,
+    duration: number // seconds on page
+  },
+  timestamp: timestamp
+}
+<code></code>`
+<br>
+<h3>Messages Collection</h3>
+<code></code>`javascript
+{
+  id: string,
+  conversationId: string,
+  senderId: string,
+  recipientId: string,
+  propertyId: string, // optional
+  message: string,
+  attachments: string[],
+  read: boolean,
+  createdAt: timestamp
+}
+<code></code>`
+<br>
+<h3>Documents Collection  </h3>
+<code></code>`javascript
+{
+  id: string,
+  transactionId: string,
+  userId: string,
+  type: 'contract' | 'disclosure' | 'inspection' | 'financial',
+  name: string,
+  url: string, // Cloud Storage URL
+  status: 'draft' | 'pending' | 'signed' | 'expired',
+  signatures: [
+    {
+      userId: string,
+      signedAt: timestamp,
+      ipAddress: string
+    }
+  ],
+  createdAt: timestamp,
+  expiresAt: timestamp
+}
+<code></code>`
+<br>
+<h3>Appointments Collection</h3>
+<code></code>`javascript
+{
+  id: string,
+  propertyId: string,
+  agentId: string,
+  clientId: string,
+  type: 'showing' | 'inspection' | 'closing',
+  scheduledFor: timestamp,
+  duration: number, // minutes
+  status: 'scheduled' | 'confirmed' | 'completed' | 'cancelled',
+  location: {
+    address: string,
+    coordinates: geopoint
+  },
+  notes: string,
+  reminders: [
+    {
+      type: 'email' | 'sms',
+      sentAt: timestamp
+    }
+  ],
+  createdAt: timestamp
+}
+<code></code>`
+<br>
+<h3>Offers Collection</h3>
+<code></code>`javascript
+{
+  id: string,
+  propertyId: string,
+  buyerId: string,
+  sellerId: string,
+  agentId: string,
+  amount: number,
+  type: 'cash' | 'conventional' | 'fha' | 'va',
+  contingencies: string[],
+  earnestMoney: number,
+  closingDate: date,
+  status: 'draft' | 'submitted' | 'countered' | 'accepted' | 'rejected' | 'expired',
+  counterHistory: [
+    {
+      amount: number,
+      terms: string,
+      counteredBy: string,
+      timestamp: timestamp
+    }
+  ],
+  expiresAt: timestamp,
+  createdAt: timestamp
+}
+<code></code>`
+<br>
+<h3>Commissions Collection</h3>
+<code></code>`javascript
+{
+  id: string,
+  transactionId: string,
+  agentId: string,
+  propertyId: string,
+  salePrice: number,
+  commissionRate: number, // percentage
+  commissionAmount: number,
+  splits: [
+    {
+      agentId: string,
+      percentage: number,
+      amount: number
+    }
+  ],
+  status: 'pending' | 'approved' | 'paid',
+  paidAt: timestamp,
+  createdAt: timestamp
+}
+<code></code>`
+<br>
+<hr>
+<br>
+<h2>Database Relationships</h2>
+<br>
+<h3>Primary Relationships</h3>
+<code></code>`
+Users (1) ---- (*) Properties (via agentId)
+Users (1) ---- (*) Leads (via agentId)
+Users (1) ---- (*) Transactions (buyer/seller/agent)
+Properties (1) ---- (*) Offers
+Properties (1) ---- (*) Appointments
+Transactions (1) ---- (*) Documents
+Transactions (1) ---- (1) Commissions
+<code></code>`
+<br>
+<h3>Data Flow Diagram</h3>
+<code></code>`
+User Registration
+    ↓
+Profile Creation → Role Assignment
+    ↓
+Property Search → Analytics Tracking
+    ↓
+Property View → Lead Generation
+    ↓
+Appointment Scheduling → Calendar Sync
+    ↓
+Offer Submission → Document Generation
+    ↓
+Transaction Creation → Commission Calculation
+    ↓
+Closing → Payment Processing
+<code></code>`
+<br>
+<hr>
+<br>
+<h2>Firestore Indexes</h2>
+<br>
+<h3>Composite Indexes Required</h3>
+<code></code>`javascript
+// Properties - search and filter
+properties: [
+  ['status', 'price', 'createdAt'],
+  ['type', 'bedrooms', 'price'],
+  ['agentId', 'status', 'createdAt'],
+  ['location.city', 'price', 'squareFeet']
+]
+<br>
+// Leads - agent management
+leads: [
+  ['agentId', 'status', 'createdAt'],
+  ['propertyId', 'status', 'createdAt']
+]
+<br>
+// Transactions - tracking
+transactions: [
+  ['agentId', 'status', 'closedAt'],
+  ['buyerId', 'status', 'createdAt'],
+  ['propertyId', 'status']
+]
+<br>
+// Analytics - reporting
+analytics: [
+  ['propertyId', 'event', 'timestamp'],
+  ['userId', 'event', 'timestamp']
+]
+<code></code>`
+<br>
+<hr>
+<br>
+<h2>Data Validation Rules</h2>
+<br>
+<h3>Field Validation</h3>
+<code></code>`javascript
+// Email validation
+email: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+<br>
+// Phone validation (US)
+phone: /^\+1[0-9]{10}$/
+<br>
+// Price ranges
+price: { min: 0, max: 100000000 }
+<br>
+// Required fields by collection
+required: {
+  properties: ['address', 'price', 'type', 'agentId'],
+  users: ['email', 'displayName', 'role'],
+  transactions: ['propertyId', 'buyerId', 'amount'],
+  leads: ['name', 'email', 'agentId']
+}
+<code></code>`
+<br>
+<hr>
+<br>
+<h2>Security Rules</h2>
+<br>
+<h3>Firestore Security Rules</h3>
+<code></code>`javascript
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Users can read their own profile
+    match /users/{userId} {
+      allow read: if request.auth != null &amp;&amp; 
+        (request.auth.uid == userId || 
+         get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin');
+      allow write: if request.auth != null &amp;&amp; 
+        request.auth.uid == userId;
+    }
+    
+    // Properties are public read, agent write
+    match /properties/{propertyId} {
+      allow read: if true;
+      allow create, update: if request.auth != null &amp;&amp; 
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role in ['agent', 'admin'];
+      allow delete: if request.auth != null &amp;&amp; 
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+    
+    // Transactions require authentication
+    match /transactions/{transactionId} {
+      allow read: if request.auth != null &amp;&amp; 
+        (resource.data.buyerId == request.auth.uid || 
+         resource.data.sellerId == request.auth.uid ||
+         resource.data.agentId == request.auth.uid ||
+         get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin');
+      allow create, update: if request.auth != null &amp;&amp; 
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role in ['agent', 'admin'];
+    }
+  }
+}
+<code></code>`
+<br>
+<hr>
+<br>
+<h2>Data Migration Strategy</h2>
+<br>
+<h3>From Mock to Production</h3>
+1. <strong>Phase 1:</strong> Create Firestore collections
+2. <strong>Phase 2:</strong> Import mock data with validation
+3. <strong>Phase 3:</strong> Connect frontend to Firestore
+4. <strong>Phase 4:</strong> Enable real-time listeners
+5. <strong>Phase 5:</strong> Implement security rules
+6. <strong>Phase 6:</strong> Create backup procedures
+<br>
+<h3>Data Seeding Script</h3>
+<code></code>`javascript
+// Sample data seeding for development
+const seedData = {
+  users: 50,        // Generate 50 test users
+  properties: 200,  // Generate 200 properties
+  leads: 100,       // Generate 100 leads
+  transactions: 30  // Generate 30 transactions
+};
+<code></code>`
+<br>
+<hr>
+<br>
+<h2>Performance Considerations</h2>
+<br>
+<h3>Query Optimization</h3>
+<li>Use composite indexes for complex queries</li>
+<li>Limit results to 20-50 per page</li>
+<li>Implement cursor-based pagination</li>
+<li>Cache frequently accessed data</li>
+<li>Use Firestore bundles for static data</li>
+<br>
+<h3>Data Denormalization</h3>
+<li>Store user names in transactions (avoid joins)</li>
+<li>Cache property counts per agent</li>
+<li>Duplicate critical fields to avoid lookups</li>
+<li>Pre-calculate aggregates (totals, averages)</li>
+<br>
+<hr>
+<br>
+<h2>Backup &amp; Recovery</h2>
+<br>
+<h3>Backup Strategy</h3>
+<li><strong>Daily:</strong> Automated Firestore exports to Cloud Storage</li>
+<li><strong>Weekly:</strong> Full database backup with point-in-time recovery</li>
+<li><strong>Monthly:</strong> Archive to cold storage</li>
+<br>
+<h3>Recovery Procedures</h3>
+1. Point-in-time recovery (last 7 days)
+2. Full restore from backup
+3. Selective collection restore
+4. Document-level recovery
+<br>
+<hr>
+<br>
+<h2>Implementation Checklist</h2>
+<br>
+<h3>Priority 1 (Week 1)</h3>
+<li>[ ] Create Firestore project structure</li>
+<li>[ ] Define security rules</li>
+<li>[ ] Create composite indexes</li>
+<li>[ ] Implement Users collection</li>
+<li>[ ] Connect authentication</li>
+<br>
+<h3>Priority 2 (Week 2)  </h3>
+<li>[ ] Implement Properties collection</li>
+<li>[ ] Create property CRUD operations</li>
+<li>[ ] Add search functionality</li>
+<li>[ ] Connect to frontend</li>
+<br>
+<h3>Priority 3 (Week 3)</h3>
+<li>[ ] Implement Leads collection</li>
+<li>[ ] Create Transactions collection</li>
+<li>[ ] Add Offers functionality</li>
+<li>[ ] Commission calculations</li>
+<br>
+<h3>Current Status: 0% Implemented</h3>
+<strong>Reality:</strong> All data is currently hardcoded or mocked in frontend. No actual database connections exist.
+<br>
         </div>
         <div class="timestamp">
-            Last updated: 2025-10-10 01:05:37
+            Last updated: 2025-10-11 11:14:18
         </div>
     </div>
 </body>

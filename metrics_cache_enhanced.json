@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-10-11T15:03:02.235Z",
+  "lastUpdated": "2025-10-11T15:08:37.311Z",
   "summary": {
     "health": "Good",
     "score": 46,
@@ -109,34 +109,34 @@
     "totalCost": 22950,
     "laborCost": 22950,
     "toolsCost": 450,
-    "totalCommits": 463,
+    "totalCommits": 464,
     "totalFiles": 38821,
     "activeDays": 62,
     "projectAgeDays": 62,
-    "linesAdded": 9362147,
-    "linesDeleted": 912903,
-    "netLines": 8449244,
+    "linesAdded": 9362530,
+    "linesDeleted": 913292,
+    "netLines": 8449238,
     "velocity": "7.5",
     "completionPercentage": 46,
     "actualStartDate": "2025-08-10"
   },
   "today": {
     "date": "2025-10-11",
-    "hours": "4.3",
-    "cost": 644,
-    "commits": 13,
+    "hours": "4.6",
+    "cost": 693,
+    "commits": 14,
     "deployments": 0
   },
   "thisWeek": {
-    "hours": "46.9",
-    "cost": 7029,
-    "commits": 142,
+    "hours": "47.2",
+    "cost": 7079,
+    "commits": 143,
     "days": 7
   },
   "thisMonth": {
-    "hours": "48.8",
-    "cost": 7326,
-    "commits": 148
+    "hours": "49.2",
+    "cost": 7376,
+    "commits": 149
   },
   "quality": {
     "testCoverage": {
@@ -170,7 +170,7 @@
       "critical": 0,
       "total": 0
     },
-    "lastAudit": "2025-10-11T15:02:47.710Z",
+    "lastAudit": "2025-10-11T15:08:15.990Z",
     "dependencies": {
       "total": {
         "prod": 192,
@@ -216,14 +216,14 @@
     }
   },
   "deployment": {
-    "lastDeployment": "2025-10-11 11:02:29 -0400",
-    "totalDeployments": 63,
+    "lastDeployment": "2025-10-11 11:07:59 -0400",
+    "totalDeployments": 64,
     "deploymentFrequency": "Weekly",
     "environments": {
       "production": {
-        "url": "https://assiduousflip.web.app",
+        "url": "https://assiduous-prod.web.app",
         "status": "Active",
-        "lastDeploy": "2025-10-11 11:02:29 -0400"
+        "lastDeploy": "2025-10-11 11:07:59 -0400"
       },
       "staging": {
         "url": "https://assiduous-staging.web.app",
@@ -265,11 +265,11 @@
     "changelog": true,
     "contributing": false,
     "license": false,
-    "lastUpdate": "2025-10-11 11:02:29 -0400"
+    "lastUpdate": "2025-10-11 11:07:59 -0400"
   },
   "productivity": {
     "velocityTrend": "increasing",
-    "weeklyCommits": 142,
+    "weeklyCommits": 143,
     "contributors": {
       "total": 0,
       "active": 0
@@ -347,6 +347,12 @@
   },
   "recentActivity": [
     {
+      "hash": "1ae97552902636155eaaadcc0f51e2f343f26f09",
+      "message": "docs: Update all documentation to reflect new production URL structure",
+      "author": "SirsiMaster",
+      "date": "2025-10-11 11:07:59 -0400"
+    },
+    {
       "hash": "225b5fe3e959460f27e16ea1da3f65ecea691f94",
       "message": "refactor: Simplify production hosting to use assiduous-prod.web.app directly",
       "author": "SirsiMaster",
@@ -399,16 +405,10 @@
       "message": "fix: correct auto-recovery deployment command to use production target",
       "author": "SirsiMaster",
       "date": "2025-10-11 09:39:40 -0400"
-    },
-    {
-      "hash": "61fab0e628f0ac068a164554bccf1094ba7f7b79",
-      "message": "chore(release): Bump version to 0.46.0 [skip ci]",
-      "author": "github-actions[bot]",
-      "date": "2025-10-10 19:25:35 +0000"
     }
   ],
   "automation": {
-    "lastRun": "2025-10-11T15:03:02.235Z",
+    "lastRun": "2025-10-11T15:08:37.312Z",
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",
