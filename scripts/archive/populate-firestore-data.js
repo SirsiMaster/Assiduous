@@ -185,5 +185,5 @@ function updateLocalCache() {
   console.log('\n🎉 Metrics cache updated with realistic development data!');
   console.log('\n📊 View your metrics at:');
   console.log('   Local: http://localhost:8080/admin/development/dashboard.html');
-  console.log('   Live: https://assiduousflip.web.app/admin/development/dashboard.html');
+  console.log('   Live: https://assiduous-prod.web.app/admin/development/dashboard.html');
 }

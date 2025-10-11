@@ -341,7 +341,7 @@ DEV → TEST → STAGING → GITHUB → FIREBASE PRODUCTION
 | <strong>DEV</strong> | 8081 | <code>environments/dev/</code> | Active development, frequent changes | http://localhost:8081 |
 | <strong>TEST</strong> | 8082 | <code>environments/test/</code> | Testing and validation | http://localhost:8082 |
 | <strong>STAGING</strong> | 8083 | <code>environments/staging/</code> | Final verification before production | http://localhost:8083 |
-| <strong>PROD</strong> | N/A | <code>firebase-migration-package/assiduous-build/</code> | Live production site | https://assiduousflip.web.app |
+| <strong>PROD</strong> | N/A | <code>firebase-migration-package/assiduous-build/</code> | Live production site | https://assiduous-prod.web.app |
 <br>
 #### <strong>C. Development Workflow (MANDATORY STEPS)</strong>
 <br>
@@ -385,7 +385,7 @@ DEV → TEST → STAGING → GITHUB → FIREBASE PRODUCTION
    - [ ] Screenshots taken
 3. Type <code>DEPLOY TO PRODUCTION</code> (exact text) to confirm
 4. Firebase deploys automatically
-5. Verify at https://assiduousflip.web.app
+5. Verify at https://assiduous-prod.web.app
 6. Run post-deployment smoke tests
 <br>
 #### <strong>D. Pipeline Rules (ABSOLUTE)</strong>
@@ -608,7 +608,7 @@ git commit --no-verify
 Assiduous is an AI-powered real estate platform with dual-purpose architecture:
 <br>
 <h3>Current Stack (Firebase Migration Complete - Sep 6, 2025)</h3>
-<li><strong>Frontend</strong>: Firebase Hosting (assiduousflip.web.app)</li>
+<li><strong>Frontend</strong>: Firebase Hosting (assiduous-prod.web.app)</li>
 <li><strong>Backend</strong>: Firebase (Firestore DB, Authentication, Cloud Storage, Functions)</li>
 <li><strong>API</strong>: Cloud Functions at <code>https://us-central1-assiduous-prod.cloudfunctions.net/app</code></li>
 <li><strong>Security</strong>: AES-256-GCM encryption for sensitive fields + Firebase Security Rules</li>
@@ -875,72 +875,72 @@ Backend services should expose REST endpoints that the frontend JavaScript can c
 <h2>🔗 DEFINITIVE APPLICATION URLS (ALWAYS USE THESE)</h2>
 <br>
 <h3>Production URLs (Firebase Hosting)</h3>
-<strong>Primary Domain</strong>: <code>https://assiduousflip.web.app/</code>  
+<strong>Primary Domain</strong>: <code>https://assiduous-prod.web.app/</code>  
 <strong>Alternative Domain</strong>: <code>https://assiduous-prod.web.app/</code>  
 <strong>API Endpoint</strong>: <code>https://us-central1-assiduous-prod.cloudfunctions.net/app</code>
 <br>
 #### Main Application Pages
-<li><strong>Landing Page</strong>: https://assiduousflip.web.app/</li>
+<li><strong>Landing Page</strong>: https://assiduous-prod.web.app/</li>
   - Login/Signup, micro-flipping features, 87% success rate showcase
-<li><strong>Knowledge Base</strong>: https://assiduousflip.web.app/knowledge-base.html</li>
+<li><strong>Knowledge Base</strong>: https://assiduous-prod.web.app/knowledge-base.html</li>
   - Redirects to Admin Portal for integrated experience
-<li><strong>Reports Center</strong>: https://assiduousflip.web.app/reports.html</li>
+<li><strong>Reports Center</strong>: https://assiduous-prod.web.app/reports.html</li>
   - Generate, schedule, export comprehensive reports
   - Weekly performance, monthly summary, sprint retrospectives
 <br>
 #### Admin Portal - Real Estate Operations
-<li><strong>Admin Dashboard</strong>: https://assiduousflip.web.app/admin/dashboard.html</li>
+<li><strong>Admin Dashboard</strong>: https://assiduous-prod.web.app/admin/dashboard.html</li>
   - 1,247 properties, $2.4M monthly revenue, 89 agents, 34 pending transactions
-<li><strong>Real Estate Analytics</strong>: https://assiduousflip.web.app/admin/analytics.html</li>
+<li><strong>Real Estate Analytics</strong>: https://assiduous-prod.web.app/admin/analytics.html</li>
   - $48.6M total sales volume, 342 properties sold, 12,384 active users
   - Sales funnel, agent performance, property type metrics
-<li><strong>Market Analysis</strong>: https://assiduousflip.web.app/admin/market.html</li>
+<li><strong>Market Analysis</strong>: https://assiduous-prod.web.app/admin/market.html</li>
   - $485K median price, 42 days on market, 3,542 active listings
   - Price trends, market segments, top performing areas
-<li><strong>Properties Management</strong>: https://assiduousflip.web.app/admin/properties.html</li>
+<li><strong>Properties Management</strong>: https://assiduous-prod.web.app/admin/properties.html</li>
   - 1,248 total properties (892 available, 234 pending, 122 sold)
   - $425K average price, property search and filtering
-<li><strong>Agents Management</strong>: https://assiduousflip.web.app/admin/agents.html</li>
+<li><strong>Agents Management</strong>: https://assiduous-prod.web.app/admin/agents.html</li>
   - 156 total agents (142 active), $12.4M total sales, 4.8 avg rating
   - Agent directory with specializations and performance metrics
-<li><strong>Clients Management</strong>: https://assiduousflip.web.app/admin/clients.html</li>
+<li><strong>Clients Management</strong>: https://assiduous-prod.web.app/admin/clients.html</li>
   - 3,842 total clients, 1,256 active, 89% satisfaction rate
   - Client directory with agent assignments and property portfolios
-<li><strong>Transactions</strong>: https://assiduousflip.web.app/admin/transactions.html</li>
+<li><strong>Transactions</strong>: https://assiduous-prod.web.app/admin/transactions.html</li>
   - $48.6M total volume, 342 transactions, 89 pending
   - Transaction tracking, status updates, reporting
-<li><strong>Settings</strong>: https://assiduousflip.web.app/admin/settings.html</li>
+<li><strong>Settings</strong>: https://assiduous-prod.web.app/admin/settings.html</li>
   - Company settings, notifications, security, integrations, API keys
 <br>
 #### Development Portal
-<li><strong>Dev Dashboard</strong>: https://assiduousflip.web.app/admin/development/dashboard.html</li>
+<li><strong>Dev Dashboard</strong>: https://assiduous-prod.web.app/admin/development/dashboard.html</li>
   - Project totals: 50.25 hours, $7,988 cost, 196 commits, 38,957 files
   - Live activity tracking, development progress (75% overall)
-<li><strong>Dev Analytics</strong>: https://assiduousflip.web.app/admin/development/analytics.html</li>
+<li><strong>Dev Analytics</strong>: https://assiduous-prod.web.app/admin/development/analytics.html</li>
   - 99.98% uptime, 1.8s page load, 200ms API response
   - Service performance metrics for Firebase services
-<li><strong>Dev Documentation</strong>: https://assiduousflip.web.app/admin/development/docs.html</li>
+<li><strong>Dev Documentation</strong>: https://assiduous-prod.web.app/admin/development/docs.html</li>
   - Technical blueprints, API reference, deployment guides
   - Unified platform architecture documentation
-<li><strong>Dev Reports</strong>: https://assiduousflip.web.app/admin/development/reports.html</li>
+<li><strong>Dev Reports</strong>: https://assiduous-prod.web.app/admin/development/reports.html</li>
   - Sprint performance, GitHub activity, code quality metrics
   - Test coverage, deployment pipeline reports
-<li><strong>Dev Costs</strong>: https://assiduousflip.web.app/admin/development/costs.html</li>
+<li><strong>Dev Costs</strong>: https://assiduous-prod.web.app/admin/development/costs.html</li>
   - Development cost tracking and analysis
-<li><strong>Old Dashboard (Backup)</strong>: https://assiduousflip.web.app/admin/development/dashboard_old.html</li>
+<li><strong>Old Dashboard (Backup)</strong>: https://assiduous-prod.web.app/admin/development/dashboard_old.html</li>
 <br>
 #### Client Portal
-<li><strong>Client Dashboard</strong>: https://assiduousflip.web.app/client/</li>
+<li><strong>Client Dashboard</strong>: https://assiduous-prod.web.app/client/</li>
   - Property search, saved properties, agent connections
   - Viewing schedules, offers, property valuations
   - Mortgage calculator, market analysis tools
 <br>
 #### Documentation Center
-<li><strong>Main Docs</strong>: https://assiduousflip.web.app/docs/</li>
+<li><strong>Main Docs</strong>: https://assiduous-prod.web.app/docs/</li>
   - Technical documentation, micro-flipping blueprint
   - Implementation checklist, development guides
   - Changelog, rollback registry, README
-<li><strong>README (HTML)</strong>: https://assiduousflip.web.app/docs/readme.html</li>
+<li><strong>README (HTML)</strong>: https://assiduous-prod.web.app/docs/readme.html</li>
 <br>
 <h3>GitHub Repository URLs</h3>
 <li><strong>Main Repository</strong>: https://github.com/SirsiMaster/Assiduous</li>
@@ -979,7 +979,7 @@ http://localhost:8080/assiduousflip/client/
 <br>
 <h3>URL Construction Rules for AI</h3>
 <strong>IMPORTANT</strong>: When providing URLs, ALWAYS use this format:
-<li><strong>Production</strong>: <code>https://assiduousflip.web.app/[path-to-file]</code></li>
+<li><strong>Production</strong>: <code>https://assiduous-prod.web.app/[path-to-file]</code></li>
 <li><strong>Local Dev</strong>: <code>http://localhost:8080/assiduousflip/[path-to-file]</code></li>
 <li>File paths are case-sensitive</li>
 <li>Most HTML files are in <code>/assiduousflip/</code> subdirectory</li>
@@ -1044,13 +1044,13 @@ cd firebase-migration-package
 firebase deploy
 <br>
 <h1>4. Verify deployment</h1>
-curl https://assiduousflip.web.app/assiduousflip/
+curl https://assiduous-prod.web.app/assiduousflip/
 <code></code>`
 <br>
 #### Analytics &amp; Monitoring
 <code></code>`bash
 <h1>View Firebase analytics in dev dashboard</h1>
-open https://assiduousflip.web.app/assiduousflip/admin/development/dashboard.html
+open https://assiduous-prod.web.app/assiduousflip/admin/development/dashboard.html
 <br>
 <h1>Check Firebase Console metrics</h1>
 open https://console.firebase.google.com/project/assiduous-prod/usage
@@ -1178,7 +1178,7 @@ firebase deploy --only hosting
 <h1>- Project total calculations</h1>
 <br>
 <h1>View cost breakdown:</h1>
-open https://assiduousflip.web.app/assiduousflip/admin/development/costs.html
+open https://assiduous-prod.web.app/assiduousflip/admin/development/costs.html
 <br>
 <h1>Check Firebase usage costs:</h1>
 open https://console.firebase.google.com/project/assiduous-prod/usage

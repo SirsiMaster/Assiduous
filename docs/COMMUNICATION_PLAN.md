@@ -188,7 +188,7 @@ Low Power   | MONITOR             | KEEP INFORMED
 - [Any requests]
 
 ### Links
-- [Dashboard]: https://assiduousflip.web.app/admin/development
+- [Dashboard]: https://assiduous-prod.web.app/admin/development
 - [Demo]: [If available]
 ```
 

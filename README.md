@@ -100,7 +100,7 @@
 - ⭕ Payment Processing: 0%
 
 ### Automated Metrics
-- **Real-time Dashboard:** https://assiduousflip.web.app/admin/development
+- **Real-time Dashboard:** https://assiduous-prod.web.app/admin/development
 - **Auto-updates:** Every commit via git hooks
 - **Tracking Categories:** 10+ comprehensive metrics
 - **Alert System:** Critical issues flagged automatically
@@ -142,9 +142,9 @@ Each of the 19 documents contains a "Consolidation Note" header explaining:
 ## 📞 Contact & Support
 
 - **GitHub Repository:** https://github.com/SirsiMaster/Assiduous
-- **Production Site:** https://assiduousflip.web.app
-- **Admin Portal:** https://assiduousflip.web.app/admin/development/dashboard.html
-- **Documentation Hub:** https://assiduousflip.web.app/admin/development/docs.html
+- **Production Site:** https://assiduous-prod.web.app
+- **Admin Portal:** https://assiduous-prod.web.app/admin/development/dashboard.html
+- **Documentation Hub:** https://assiduous-prod.web.app/admin/development/docs.html
 
 ---
 

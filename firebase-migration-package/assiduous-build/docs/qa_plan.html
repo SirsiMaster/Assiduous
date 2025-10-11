@@ -311,7 +311,7 @@ LOCAL DEV → FIREBASE DEV → FIREBASE STAGING → GITHUB → FIREBASE PRODUCTI
 | <strong>LOCAL</strong> | N/A | <code>firebase-migration-package/assiduous-build/</code> | Local development &amp; testing | http://localhost:8080 |
 | <strong>DEV</strong> | assiduous-dev | Same codebase | Active feature development with isolated backend | https://assiduous-dev.web.app |
 | <strong>STAGING</strong> | assiduous-staging | Same codebase | Pre-production validation with production-like config | https://assiduous-staging.web.app |
-| <strong>PROD</strong> | assiduous-prod | Same codebase | Live production site with real user data | https://assiduousflip.web.app |
+| <strong>PROD</strong> | assiduous-prod | Same codebase | Live production site with real user data | https://assiduous-prod.web.app |
 <br>
 <strong>Key Architecture Benefits:</strong>
 <li>✅ Each Firebase project has <strong>isolated backend</strong> (separate Firestore, Auth, Functions, Storage)</li>
@@ -370,7 +370,7 @@ LOCAL DEV → FIREBASE DEV → FIREBASE STAGING → GITHUB → FIREBASE PRODUCTI
    - [ ] Changes committed to GitHub
 4. Type <code>DEPLOY TO PRODUCTION</code> (exact text) to confirm
 5. Firebase deploys to production
-6. Verify at https://assiduousflip.web.app
+6. Verify at https://assiduous-prod.web.app
 7. Run post-deployment smoke tests
 8. Monitor Firebase Console for errors
 <br>

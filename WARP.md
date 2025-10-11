@@ -229,7 +229,7 @@ DEV → TEST → STAGING → GITHUB → FIREBASE PRODUCTION
 | **DEV** | 8081 | `environments/dev/` | Active development, frequent changes | http://localhost:8081 |
 | **TEST** | 8082 | `environments/test/` | Testing and validation | http://localhost:8082 |
 | **STAGING** | 8083 | `environments/staging/` | Final verification before production | http://localhost:8083 |
-| **PROD** | N/A | `firebase-migration-package/assiduous-build/` | Live production site | https://assiduousflip.web.app |
+| **PROD** | N/A | `firebase-migration-package/assiduous-build/` | Live production site | https://assiduous-prod.web.app |
 
 #### **C. Development Workflow (MANDATORY STEPS)**
 
@@ -273,7 +273,7 @@ DEV → TEST → STAGING → GITHUB → FIREBASE PRODUCTION
    - [ ] Screenshots taken
 3. Type `DEPLOY TO PRODUCTION` (exact text) to confirm
 4. Firebase deploys automatically
-5. Verify at https://assiduousflip.web.app
+5. Verify at https://assiduous-prod.web.app
 6. Run post-deployment smoke tests
 
 #### **D. Pipeline Rules (ABSOLUTE)**
@@ -496,7 +496,7 @@ git commit --no-verify
 Assiduous is an AI-powered real estate platform with dual-purpose architecture:
 
 ### Current Stack (Firebase Migration Complete - Sep 6, 2025)
-- **Frontend**: Firebase Hosting (assiduousflip.web.app)
+- **Frontend**: Firebase Hosting (assiduous-prod.web.app)
 - **Backend**: Firebase (Firestore DB, Authentication, Cloud Storage, Functions)
 - **API**: Cloud Functions at `https://us-central1-assiduous-prod.cloudfunctions.net/app`
 - **Security**: AES-256-GCM encryption for sensitive fields + Firebase Security Rules
@@ -763,72 +763,72 @@ Backend services should expose REST endpoints that the frontend JavaScript can c
 ## 🔗 DEFINITIVE APPLICATION URLS (ALWAYS USE THESE)
 
 ### Production URLs (Firebase Hosting)
-**Primary Domain**: `https://assiduousflip.web.app/`  
+**Primary Domain**: `https://assiduous-prod.web.app/`  
 **Alternative Domain**: `https://assiduous-prod.web.app/`  
 **API Endpoint**: `https://us-central1-assiduous-prod.cloudfunctions.net/app`
 
 #### Main Application Pages
-- **Landing Page**: https://assiduousflip.web.app/
+- **Landing Page**: https://assiduous-prod.web.app/
   - Login/Signup, micro-flipping features, 87% success rate showcase
-- **Knowledge Base**: https://assiduousflip.web.app/knowledge-base.html
+- **Knowledge Base**: https://assiduous-prod.web.app/knowledge-base.html
   - Redirects to Admin Portal for integrated experience
-- **Reports Center**: https://assiduousflip.web.app/reports.html
+- **Reports Center**: https://assiduous-prod.web.app/reports.html
   - Generate, schedule, export comprehensive reports
   - Weekly performance, monthly summary, sprint retrospectives
 
 #### Admin Portal - Real Estate Operations
-- **Admin Dashboard**: https://assiduousflip.web.app/admin/dashboard.html
+- **Admin Dashboard**: https://assiduous-prod.web.app/admin/dashboard.html
   - 1,247 properties, $2.4M monthly revenue, 89 agents, 34 pending transactions
-- **Real Estate Analytics**: https://assiduousflip.web.app/admin/analytics.html
+- **Real Estate Analytics**: https://assiduous-prod.web.app/admin/analytics.html
   - $48.6M total sales volume, 342 properties sold, 12,384 active users
   - Sales funnel, agent performance, property type metrics
-- **Market Analysis**: https://assiduousflip.web.app/admin/market.html
+- **Market Analysis**: https://assiduous-prod.web.app/admin/market.html
   - $485K median price, 42 days on market, 3,542 active listings
   - Price trends, market segments, top performing areas
-- **Properties Management**: https://assiduousflip.web.app/admin/properties.html
+- **Properties Management**: https://assiduous-prod.web.app/admin/properties.html
   - 1,248 total properties (892 available, 234 pending, 122 sold)
   - $425K average price, property search and filtering
-- **Agents Management**: https://assiduousflip.web.app/admin/agents.html
+- **Agents Management**: https://assiduous-prod.web.app/admin/agents.html
   - 156 total agents (142 active), $12.4M total sales, 4.8 avg rating
   - Agent directory with specializations and performance metrics
-- **Clients Management**: https://assiduousflip.web.app/admin/clients.html
+- **Clients Management**: https://assiduous-prod.web.app/admin/clients.html
   - 3,842 total clients, 1,256 active, 89% satisfaction rate
   - Client directory with agent assignments and property portfolios
-- **Transactions**: https://assiduousflip.web.app/admin/transactions.html
+- **Transactions**: https://assiduous-prod.web.app/admin/transactions.html
   - $48.6M total volume, 342 transactions, 89 pending
   - Transaction tracking, status updates, reporting
-- **Settings**: https://assiduousflip.web.app/admin/settings.html
+- **Settings**: https://assiduous-prod.web.app/admin/settings.html
   - Company settings, notifications, security, integrations, API keys
 
 #### Development Portal
-- **Dev Dashboard**: https://assiduousflip.web.app/admin/development/dashboard.html
+- **Dev Dashboard**: https://assiduous-prod.web.app/admin/development/dashboard.html
   - Project totals: 50.25 hours, $7,988 cost, 196 commits, 38,957 files
   - Live activity tracking, development progress (75% overall)
-- **Dev Analytics**: https://assiduousflip.web.app/admin/development/analytics.html
+- **Dev Analytics**: https://assiduous-prod.web.app/admin/development/analytics.html
   - 99.98% uptime, 1.8s page load, 200ms API response
   - Service performance metrics for Firebase services
-- **Dev Documentation**: https://assiduousflip.web.app/admin/development/docs.html
+- **Dev Documentation**: https://assiduous-prod.web.app/admin/development/docs.html
   - Technical blueprints, API reference, deployment guides
   - Unified platform architecture documentation
-- **Dev Reports**: https://assiduousflip.web.app/admin/development/reports.html
+- **Dev Reports**: https://assiduous-prod.web.app/admin/development/reports.html
   - Sprint performance, GitHub activity, code quality metrics
   - Test coverage, deployment pipeline reports
-- **Dev Costs**: https://assiduousflip.web.app/admin/development/costs.html
+- **Dev Costs**: https://assiduous-prod.web.app/admin/development/costs.html
   - Development cost tracking and analysis
-- **Old Dashboard (Backup)**: https://assiduousflip.web.app/admin/development/dashboard_old.html
+- **Old Dashboard (Backup)**: https://assiduous-prod.web.app/admin/development/dashboard_old.html
 
 #### Client Portal
-- **Client Dashboard**: https://assiduousflip.web.app/client/
+- **Client Dashboard**: https://assiduous-prod.web.app/client/
   - Property search, saved properties, agent connections
   - Viewing schedules, offers, property valuations
   - Mortgage calculator, market analysis tools
 
 #### Documentation Center
-- **Main Docs**: https://assiduousflip.web.app/docs/
+- **Main Docs**: https://assiduous-prod.web.app/docs/
   - Technical documentation, micro-flipping blueprint
   - Implementation checklist, development guides
   - Changelog, rollback registry, README
-- **README (HTML)**: https://assiduousflip.web.app/docs/readme.html
+- **README (HTML)**: https://assiduous-prod.web.app/docs/readme.html
 
 ### GitHub Repository URLs
 - **Main Repository**: https://github.com/SirsiMaster/Assiduous
@@ -867,7 +867,7 @@ http://localhost:8080/assiduousflip/client/
 
 ### URL Construction Rules for AI
 **IMPORTANT**: When providing URLs, ALWAYS use this format:
-- **Production**: `https://assiduousflip.web.app/[path-to-file]`
+- **Production**: `https://assiduous-prod.web.app/[path-to-file]`
 - **Local Dev**: `http://localhost:8080/assiduousflip/[path-to-file]`
 - File paths are case-sensitive
 - Most HTML files are in `/assiduousflip/` subdirectory
@@ -932,13 +932,13 @@ cd firebase-migration-package
 firebase deploy
 
 # 4. Verify deployment
-curl https://assiduousflip.web.app/assiduousflip/
+curl https://assiduous-prod.web.app/assiduousflip/
 ```
 
 #### Analytics & Monitoring
 ```bash
 # View Firebase analytics in dev dashboard
-open https://assiduousflip.web.app/assiduousflip/admin/development/dashboard.html
+open https://assiduous-prod.web.app/assiduousflip/admin/development/dashboard.html
 
 # Check Firebase Console metrics
 open https://console.firebase.google.com/project/assiduous-prod/usage
@@ -1066,7 +1066,7 @@ firebase deploy --only hosting
 # - Project total calculations
 
 # View cost breakdown:
-open https://assiduousflip.web.app/assiduousflip/admin/development/costs.html
+open https://assiduous-prod.web.app/assiduousflip/admin/development/costs.html
 
 # Check Firebase usage costs:
 open https://console.firebase.google.com/project/assiduous-prod/usage

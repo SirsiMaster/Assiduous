@@ -579,9 +579,9 @@ Visit these URLs to see the new UI in action:
 - http://localhost:8080/admin/clients.html
 
 **Production (Firebase):**
-- https://assiduousflip.web.app/admin/dashboard.html
-- https://assiduousflip.web.app/admin/properties.html
-- https://assiduousflip.web.app/admin/clients.html
+- https://assiduous-prod.web.app/admin/dashboard.html
+- https://assiduous-prod.web.app/admin/properties.html
+- https://assiduous-prod.web.app/admin/clients.html
 
 ## Benefits
 
@@ -633,7 +633,7 @@ Each environment has its own local server running continuously in the background
 | **Dev** | http://localhost:8081 | 8081 | Active development, frequent changes |
 | **Test** | http://localhost:8082 | 8082 | Testing and validation |
 | **Staging** | http://localhost:8083 | 8083 | Final verification before production |
-| **Prod** | https://assiduousflip.web.app | N/A | Live production site |
+| **Prod** | https://assiduous-prod.web.app | N/A | Live production site |
 
 ---
 
@@ -734,7 +734,7 @@ open http://localhost:8081
 ```
 - Shows pre-deployment checklist
 - Requires typing "DEPLOY TO PRODUCTION" to confirm
-- Deploys to https://assiduousflip.web.app
+- Deploys to https://assiduous-prod.web.app
 - Shows post-deployment verification steps
 
 ---
@@ -826,7 +826,7 @@ open http://localhost:8083/admin/new-feature.html
 # (Type "DEPLOY TO PRODUCTION" when prompted)
 
 # 9. Verify production
-open -na "Google Chrome" --args --incognito "https://assiduousflip.web.app/admin/new-feature.html"
+open -na "Google Chrome" --args --incognito "https://assiduous-prod.web.app/admin/new-feature.html"
 ```
 
 ---

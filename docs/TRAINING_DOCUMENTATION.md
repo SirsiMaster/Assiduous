@@ -137,7 +137,7 @@ DEV → TEST → STAGING → GITHUB → FIREBASE PRODUCTION
 | **DEV** | 8081 | `environments/dev/` | Active development, frequent changes | http://localhost:8081 |
 | **TEST** | 8082 | `environments/test/` | Testing and validation | http://localhost:8082 |
 | **STAGING** | 8083 | `environments/staging/` | Final verification before production | http://localhost:8083 |
-| **PROD** | N/A | `firebase-migration-package/assiduous-build/` | Live production site | https://assiduousflip.web.app |
+| **PROD** | N/A | `firebase-migration-package/assiduous-build/` | Live production site | https://assiduous-prod.web.app |
 
 #### **C. Development Workflow (MANDATORY STEPS)**
 
@@ -177,7 +177,7 @@ DEV → TEST → STAGING → GITHUB → FIREBASE PRODUCTION
 2. Complete pre-deployment checklist
 3. Type `DEPLOY TO PRODUCTION` (exact text)
 4. Firebase deploys automatically
-5. Verify at https://assiduousflip.web.app
+5. Verify at https://assiduous-prod.web.app
 6. Run post-deployment smoke tests
 
 #### **D. Pipeline Rules (ABSOLUTE)**
@@ -344,7 +344,7 @@ DEV → TEST → STAGING → assiduous-build → GitHub → Firebase
 - Dev: http://localhost:8081
 - Test: http://localhost:8082
 - Staging: http://localhost:8083
-- Production: https://assiduousflip.web.app
+- Production: https://assiduous-prod.web.app
 
 ---
 

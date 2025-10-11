@@ -26,7 +26,7 @@ Assiduous is an AI-powered real estate platform for micro-flipping with multiple
 - Applied Assiduous design system CSS variables
 - Created comprehensive style guide documentation at `/firebase-migration-package/assiduous-build/docs/STYLE_GUIDE.md`
 - Updated client dashboard.html and deal-analyzer.html to use consistent styling
-- Successfully deployed to production at https://assiduousflip.web.app
+- Successfully deployed to production at https://assiduous-prod.web.app
 
 ## Critical Files & Locations
 
@@ -80,7 +80,7 @@ Assiduous is an AI-powered real estate platform for micro-flipping with multiple
 
 ## Firebase Configuration
 - **Production**: assiduous-prod (Firebase Project)
-- **Hosting**: assiduousflip.web.app
+- **Hosting**: assiduous-prod.web.app
 - **Deploy Command**: `firebase deploy --only hosting:production`
 
 ## Common Issues & Solutions
@@ -116,6 +116,6 @@ Assiduous is an AI-powered real estate platform for micro-flipping with multiple
 ## Contact
 - Project Lead: SirsiMaster
 - Platform: Assiduous Real Estate
-- Domain: assiduousflip.com / assiduousflip.web.app
+- Domain: assiduousflip.com / assiduous-prod.web.app
 
 Last Updated: October 10, 2025 04:58 UTC

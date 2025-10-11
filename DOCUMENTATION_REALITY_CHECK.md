@@ -122,7 +122,7 @@ $ git log --oneline | wc -l
 - ✅ Consistent styling across portals
 - ✅ Deal analyzer tool
 - ✅ Basic CRUD for properties/agents/clients
-- ✅ Live deployment at assiduousflip.web.app
+- ✅ Live deployment at assiduous-prod.web.app
 
 ## 7. To Fix the Dashboard Metrics
 

@@ -279,7 +279,7 @@ console.log('   node scripts/populate-firebase-metrics.js\n');
 
 console.log('4. Test the dashboards:');
 console.log('   - Local: http://localhost:8080/admin/development/dashboard.html');
-console.log('   - Production: https://assiduousflip.web.app/admin/development/dashboard.html\n');
+console.log('   - Production: https://assiduous-prod.web.app/admin/development/dashboard.html\n');
 
 console.log('5. Trigger GitHub Actions deployment:');
 console.log('   git add .');

@@ -273,7 +273,7 @@ infrastructure: {
   "metrics:lint": "eslint . --format json > metrics/eslint.json",
   "metrics:security": "npm audit --json > metrics/audit.json",
   "metrics:bundle": "webpack-bundle-analyzer",
-  "metrics:lighthouse": "lighthouse https://assiduousflip.web.app --output json",
+  "metrics:lighthouse": "lighthouse https://assiduous-prod.web.app --output json",
   "metrics:all": "npm run metrics:update && npm run metrics:test && npm run metrics:lint"
 }
 ```

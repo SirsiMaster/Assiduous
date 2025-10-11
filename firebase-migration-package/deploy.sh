@@ -43,7 +43,7 @@ get_deployment_url() {
     case $1 in
         dev) echo "https://assiduous-dev.web.app" ;;
         staging) echo "https://assiduous-staging.web.app" ;;
-        production) echo "https://assiduousflip.web.app" ;;
+        production) echo "https://assiduous-prod.web.app" ;;
     esac
 }
 
@@ -91,7 +91,7 @@ show_usage() {
     echo "Environments:"
     echo "  dev        - Deploy to development (assiduous-dev.web.app)"
     echo "  staging    - Deploy to staging (assiduous-staging.web.app)"
-    echo "  production - Deploy to production (assiduousflip.web.app)"
+    echo "  production - Deploy to production (assiduous-prod.web.app)"
     echo ""
     echo "Examples:"
     echo "  $0 dev"

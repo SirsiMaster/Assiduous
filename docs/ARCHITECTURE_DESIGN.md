@@ -36,7 +36,7 @@ You have **THREE separate Firebase projects** for proper environment isolation.
 3. **Production Project**
    - **Project ID**: `assiduous-prod`
    - **Project Number**: 9355377564
-   - **Default URL**: https://assiduousflip.web.app
+   - **Default URL**: https://assiduous-prod.web.app
    - **Console**: https://console.firebase.google.com/project/assiduous-prod
    - **Purpose**: Live production, requires version tags + manual approval
 
@@ -77,7 +77,7 @@ You have **THREE separate Firebase projects** for proper environment isolation.
 │ FIREBASE PRODUCTION (Strict controls)                         │
 ├────────────────────────────────────────────────────────────────┤
 │ Project: assiduous-prod                                        │
-│ URL: https://assiduousflip.web.app                            │
+│ URL: https://assiduous-prod.web.app                            │
 │ Trigger: Semantic version tags (v1.0.0, v2.3.1, etc.)         │
 │ Requirements: Security checks + Manual approval                │
 └────────────────────────────────────────────────────────────────┘
@@ -116,7 +116,7 @@ You have **THREE separate Firebase projects** for proper environment isolation.
    - GitHub Action detects push to main
    - Deploys from `firebase-migration-package/assiduous-build/`
    - Targets: `hosting:assiduousflip` (or `hosting:prod`)
-   - Deploys to: https://assiduousflip.web.app
+   - Deploys to: https://assiduous-prod.web.app
 
 ### What Should NOT Happen
 
@@ -133,7 +133,7 @@ Keep **ONE** production deployment workflow:
 - Triggered by: Push to `main` branch OR version tags
 - Deploys to: `assiduous-prod` project
 - Target: `hosting:assiduousflip`
-- URL: https://assiduousflip.web.app
+- URL: https://assiduous-prod.web.app
 
 ### 2. Remove Incorrect Workflows
 
@@ -206,8 +206,8 @@ firebase deploy \
 ## Verification
 
 After deployment, check:
-- ✅ https://assiduousflip.web.app/ (should return 200)
-- ✅ https://assiduousflip.web.app/admin/dashboard.html (should load)
+- ✅ https://assiduous-prod.web.app/ (should return 200)
+- ✅ https://assiduous-prod.web.app/admin/dashboard.html (should load)
 - ✅ Browser console has no errors
 - ✅ All pages accessible
 
@@ -303,7 +303,7 @@ Assiduous uses a **multi-project Firebase architecture** with three isolated Fir
 │           ↓ (Deploy with ./deploy.sh production)            │
 │                                                              │
 │  FIREBASE PRODUCTION (assiduous-prod)                       │
-│  └─ URL: https://assiduousflip.web.app                      │
+│  └─ URL: https://assiduous-prod.web.app                      │
 │  └─ Plan: Blaze (Pay-as-you-go)                             │
 │  └─ Testing: Live production                                │
 │  └─ Data: Real user data                                    │
@@ -336,7 +336,7 @@ Assiduous uses a **multi-project Firebase architecture** with three isolated Fir
 ### 3. assiduous-prod (Production)
 - **Project ID:** `assiduous-prod`
 - **Project Number:** `9355377564`
-- **Hosting URL:** https://assiduousflip.web.app
+- **Hosting URL:** https://assiduous-prod.web.app
 - **Billing Plan:** Blaze (Pay-as-you-go, varies with usage)
 - **Purpose:** Live production with real users
 - **Data:** Real user data
@@ -480,7 +480,7 @@ The `.firebaserc` file in `firebase-migration-package/` configures all three pro
 
 3. **Type confirmation:** `DEPLOY TO PRODUCTION`
 
-4. **Verify at:** https://assiduousflip.web.app
+4. **Verify at:** https://assiduous-prod.web.app
 
 5. **Post-deployment:**
    - Run smoke tests
@@ -754,7 +754,7 @@ cd firebase-migration-package && ./deploy.sh production
 - **Local:** http://localhost:8080
 - **DEV:** https://assiduous-dev.web.app
 - **STAGING:** https://assiduous-staging.web.app
-- **PRODUCTION:** https://assiduousflip.web.app
+- **PRODUCTION:** https://assiduous-prod.web.app
 
 ### Firebase Console Links
 

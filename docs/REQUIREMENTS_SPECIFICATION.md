@@ -66,7 +66,7 @@ Assiduous is a next-generation AI-powered real estate platform that revolutioniz
 
 ### ✅ AssiduousFlip Micro-Flipping Platform - LAUNCHED (September 9, 2025)
 
-#### Platform URL: https://assiduousflip.web.app
+#### Platform URL: https://assiduous-prod.web.app
 
 ##### Key Features Delivered:
 - **Interactive Property Estimator**: Instant flip profit calculations
@@ -1712,7 +1712,7 @@ User Matching Model:
 
 # assiduousflip - AI-Powered Micro-Flipping Platform 🏠💰
 
-🌐 **Live Platform:** https://assiduousflip.web.app
+🌐 **Live Platform:** https://assiduous-prod.web.app
 
 [![Version](https://img.shields.io/badge/version-0.38.0-blue.svg)](https://github.com/SirsiMaster/Assiduous/releases)
 [![Changelog](https://img.shields.io/badge/changelog-Keep%20a%20Changelog-brightgreen.svg)](./changelog.md)
@@ -1855,7 +1855,7 @@ assiduous/
 ## 🌐 Deployment
 
 Assiduous is deployed using Firebase Hosting:
-- **Production**: https://assiduousflip.web.app
+- **Production**: https://assiduous-prod.web.app
 - **Firebase Console**: https://console.firebase.google.com/project/assiduous-prod
 - **API Endpoints**: https://us-central1-assiduous-prod.cloudfunctions.net/app
 - Progressive Web App (PWA) ready

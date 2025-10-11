@@ -198,7 +198,7 @@ We measure progress against **9 Core MVP Deliverables**:
 ## 🎯 EXECUTIVE SUMMARY
 
 ### Current State (Reality Check - October 10, 2025)
-- **Production URL:** https://assiduousflip.web.app/ (404 errors on many pages)
+- **Production URL:** https://assiduous-prod.web.app/ (404 errors on many pages)
 - **Documentation:** 9 comprehensive docs (58KB+ each) ✅
 - **Implementation:** Only 27% built vs documented plans ⚠️
 - **Critical Gaps:** Authentication (0%), Database Integration (0%), Agent Portal (0%)
@@ -231,12 +231,12 @@ We measure progress against **9 Core MVP Deliverables**:
 - [x] Security Rules & Field-Level Encryption
 - [x] Cloud Storage Configuration
 - [x] CI/CD Pipeline (GitHub Actions)
-- [x] Domain Configuration (assiduousflip.web.app)
+- [x] Domain Configuration (assiduous-prod.web.app)
 - [x] Development Environment Setup
 
 **Evidence:** 
 - Firebase Console: https://console.firebase.google.com/project/assiduous-prod
-- Live Site: https://assiduousflip.web.app/
+- Live Site: https://assiduous-prod.web.app/
 
 ---
 
@@ -269,7 +269,7 @@ We measure progress against **9 Core MVP Deliverables**:
 - [x] Knowledge Base (`/knowledge-base.html`) - Resources
 - [x] Reports Center (`/reports.html`) - Market reports
 
-**Evidence:** All pages live and functional at https://assiduousflip.web.app/
+**Evidence:** All pages live and functional at https://assiduous-prod.web.app/
 
 ---
 
@@ -310,7 +310,7 @@ We measure progress against **9 Core MVP Deliverables**:
 - [x] Live Chat Widget
 - [x] Mobile App CTAs
 
-**Evidence:** https://assiduousflip.web.app/
+**Evidence:** https://assiduous-prod.web.app/
 
 ---
 
@@ -611,7 +611,7 @@ We measure progress against **9 Core MVP Deliverables**:
 
 ### External Services
 - **Firebase Console:** https://console.firebase.google.com/project/assiduous-prod
-- **Production Site:** https://assiduousflip.web.app/
+- **Production Site:** https://assiduous-prod.web.app/
 - **GitHub Actions:** https://github.com/SirsiMaster/Assiduous/actions
 
 ---

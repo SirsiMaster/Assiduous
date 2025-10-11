@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-10-11T14:55:42.402Z",
+  "lastUpdated": "2025-10-11T15:03:02.235Z",
   "summary": {
     "health": "Good",
     "score": 46,
@@ -104,39 +104,39 @@
     }
   },
   "project": {
-    "totalHours": "152",
+    "totalHours": "153",
     "avgHoursPerDay": "2.5",
-    "totalCost": 22800,
-    "laborCost": 22800,
+    "totalCost": 22950,
+    "laborCost": 22950,
     "toolsCost": 450,
-    "totalCommits": 462,
-    "totalFiles": 38825,
+    "totalCommits": 463,
+    "totalFiles": 38821,
     "activeDays": 62,
     "projectAgeDays": 62,
-    "linesAdded": 9362012,
-    "linesDeleted": 912659,
-    "netLines": 8449353,
+    "linesAdded": 9362147,
+    "linesDeleted": 912903,
+    "netLines": 8449244,
     "velocity": "7.5",
     "completionPercentage": 46,
     "actualStartDate": "2025-08-10"
   },
   "today": {
     "date": "2025-10-11",
-    "hours": "4.6",
-    "cost": 693,
-    "commits": 14,
+    "hours": "4.3",
+    "cost": 644,
+    "commits": 13,
     "deployments": 0
   },
   "thisWeek": {
-    "hours": "46.5",
-    "cost": 6980,
-    "commits": 141,
+    "hours": "46.9",
+    "cost": 7029,
+    "commits": 142,
     "days": 7
   },
   "thisMonth": {
-    "hours": "48.5",
-    "cost": 7277,
-    "commits": 147
+    "hours": "48.8",
+    "cost": 7326,
+    "commits": 148
   },
   "quality": {
     "testCoverage": {
@@ -170,7 +170,7 @@
       "critical": 0,
       "total": 0
     },
-    "lastAudit": "2025-10-11T14:55:21.081Z",
+    "lastAudit": "2025-10-11T15:02:47.710Z",
     "dependencies": {
       "total": {
         "prod": 192,
@@ -216,14 +216,14 @@
     }
   },
   "deployment": {
-    "lastDeployment": "2025-10-11 10:51:16 -0400",
-    "totalDeployments": 62,
+    "lastDeployment": "2025-10-11 11:02:29 -0400",
+    "totalDeployments": 63,
     "deploymentFrequency": "Weekly",
     "environments": {
       "production": {
         "url": "https://assiduousflip.web.app",
         "status": "Active",
-        "lastDeploy": "2025-10-11 10:51:16 -0400"
+        "lastDeploy": "2025-10-11 11:02:29 -0400"
       },
       "staging": {
         "url": "https://assiduous-staging.web.app",
@@ -265,11 +265,11 @@
     "changelog": true,
     "contributing": false,
     "license": false,
-    "lastUpdate": "2025-10-11 10:20:05 -0400"
+    "lastUpdate": "2025-10-11 11:02:29 -0400"
   },
   "productivity": {
     "velocityTrend": "increasing",
-    "weeklyCommits": 141,
+    "weeklyCommits": 142,
     "contributors": {
       "total": 0,
       "active": 0
@@ -347,6 +347,12 @@
   },
   "recentActivity": [
     {
+      "hash": "225b5fe3e959460f27e16ea1da3f65ecea691f94",
+      "message": "refactor: Simplify production hosting to use assiduous-prod.web.app directly",
+      "author": "SirsiMaster",
+      "date": "2025-10-11 11:02:29 -0400"
+    },
+    {
       "hash": "83755fcbbdc86cf12a9282c080a140d497d71a2e",
       "message": "fix: Deploy redirect page to assiduous-prod.web.app to prevent confusion",
       "author": "SirsiMaster",
@@ -399,16 +405,10 @@
       "message": "chore(release): Bump version to 0.46.0 [skip ci]",
       "author": "github-actions[bot]",
       "date": "2025-10-10 19:25:35 +0000"
-    },
-    {
-      "hash": "02cf6803127a2d6cdcd902fcb4fb4adba3bc2634",
-      "message": "feat: enhance site monitor with robust auto-recovery and retry logic",
-      "author": "SirsiMaster",
-      "date": "2025-10-10 15:24:46 -0400"
     }
   ],
   "automation": {
-    "lastRun": "2025-10-11T14:55:42.402Z",
+    "lastRun": "2025-10-11T15:03:02.235Z",
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",

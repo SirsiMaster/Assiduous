@@ -75,7 +75,7 @@ The technical blueprint envisions:
 
 #### Technical Infrastructure - COMPLETE
 1. ✅ **PropertyService** - Full CRUD API client (with getProperty fix)
-2. ✅ **Firebase Hosting** - Deployed to assiduousflip.web.app
+2. ✅ **Firebase Hosting** - Deployed to assiduous-prod.web.app
 3. ✅ **Design System** - Consistent UI across portals
 4. ✅ **localStorage Integration** - Client-side persistence
 5. ✅ **Backend API** - Cloud Functions at us-central1

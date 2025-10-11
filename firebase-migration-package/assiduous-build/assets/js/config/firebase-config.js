@@ -7,7 +7,7 @@
  * Environments:
  * - DEV: assiduous-dev.web.app (isolated development)
  * - STAGING: assiduous-staging.web.app (pre-production validation)
- * - PRODUCTION: assiduousflip.web.app (live production)
+ * - PRODUCTION: assiduous-prod.web.app (live production)
  */
 
 // Firebase configurations for each environment

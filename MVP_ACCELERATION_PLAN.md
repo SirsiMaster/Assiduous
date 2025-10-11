@@ -176,7 +176,7 @@ Can be added after launch:
 
 ### Stakeholder Updates
 - **Weekly:** Progress report every Friday
-- **Metrics:** Dashboard at https://assiduousflip.web.app/admin/development
+- **Metrics:** Dashboard at https://assiduous-prod.web.app/admin/development
 - **Blockers:** Immediate escalation via Slack/email
 
 ### Launch Communications

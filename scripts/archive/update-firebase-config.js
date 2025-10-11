@@ -73,5 +73,5 @@ console.log('   Measurement ID:', firebaseConfig.measurementId);
 console.log('\n🚀 Next Steps:');
 console.log('1. Deploy to Firebase: firebase deploy --only hosting');
 console.log('2. Test live dashboards:');
-console.log('   https://assiduousflip.web.app/admin/development/dashboard.html');
-console.log('   https://assiduousflip.web.app/admin/development/costs.html');
+console.log('   https://assiduous-prod.web.app/admin/development/dashboard.html');
+console.log('   https://assiduous-prod.web.app/admin/development/costs.html');

@@ -271,7 +271,7 @@ Based on comprehensive audit showing excellent documentation but only 27% implem
 - refactor: Universal header component implemented across all dashboards
 
 ### Deployed
-- Deployed styling fixes to production at https://assiduousflip.web.app
+- Deployed styling fixes to production at https://assiduous-prod.web.app
 
 
 ## [0.43.2] - 2025-10-10
@@ -375,9 +375,9 @@ Based on comprehensive audit showing excellent documentation but only 27% implem
   - Links to Firebase Console and quick fix commands
 
 #### Mobile-Accessible Status Page
-- **URL**: https://assiduousflip.web.app/status.html
+- **URL**: https://assiduous-prod.web.app/status.html
 - Real-time health monitoring for all environments:
-  - Production Site (assiduousflip.web.app)
+  - Production Site (assiduous-prod.web.app)
   - Admin Dashboard
   - DEV Environment (assiduous-dev.web.app)
   - STAGING Environment (assiduous-staging.web.app)
@@ -482,7 +482,7 @@ Based on comprehensive audit showing excellent documentation but only 27% implem
 #### Deployment URLs (All Verified HTTP 200)
 - **DEV**: https://assiduous-dev.web.app (auto-deploy)
 - **STAGING**: https://assiduous-staging.web.app (manual approval)
-- **PRODUCTION**: https://assiduousflip.web.app (strict controls)
+- **PRODUCTION**: https://assiduous-prod.web.app (strict controls)
 
 #### Technical Metrics (Sep 8 - Oct 8, 2025)
 - **Total Commits**: 209 (156 by SirsiMaster, 53 by github-actions[bot])
@@ -619,7 +619,7 @@ Based on comprehensive audit showing excellent documentation but only 27% implem
 - ✅ Property/client/lead management workflows
 
 ### Deployment
-- Deployed to Firebase: https://assiduousflip.web.app/agent/
+- Deployed to Firebase: https://assiduous-prod.web.app/agent/
 - 74 files deployed
 - All agent portal URLs live and functional
 
@@ -661,7 +661,7 @@ public/
 - ✅ Zero confusion for developers or AI
 
 ### Deployment
-- Deployed successfully to Firebase: https://assiduousflip.web.app
+- Deployed successfully to Firebase: https://assiduous-prod.web.app
 - All portals accessible and functional
 - 73 files deployed
 - All URLs maintained (no breaking changes)
@@ -1133,7 +1133,7 @@ public/
 - Implemented 7 major platform improvements inspired by HouseCanary
 - Added JavaScript handlers for all interactive elements
 - Created functional email capture forms with inline validation
-- Deployed to Firebase Hosting (https://assiduousflip.web.app)
+- Deployed to Firebase Hosting (https://assiduous-prod.web.app)
 - Total lines of code added: ~1,200
 - New interactive components: 8
 - Performance: Maintained <2s load time despite additions

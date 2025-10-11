@@ -8,7 +8,7 @@
 git tag -a v1.2.0 -m "Release: Feature Name"
 git push origin v1.2.0
 # 3. Automatic production deployment triggered
-# 4. Monitor: https://assiduousflip.com (or assiduousflip.web.app)
+# 4. Monitor: https://assiduousflip.com (or assiduous-prod.web.app)
 ```
 
 ## Release Types
@@ -99,7 +99,7 @@ git push origin v1.2.0
 gh run watch
 
 # Monitor production
-curl -I https://assiduousflip.web.app
+curl -I https://assiduous-prod.web.app
 
 # Check for errors
 firebase functions:log --project assiduous-prod

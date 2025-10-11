@@ -261,7 +261,7 @@ function calculateDeployment() {
         deploymentFrequency: 'Weekly',
         environments: {
             production: {
-                url: 'https://assiduousflip.web.app',
+                url: 'https://assiduous-prod.web.app',
                 status: 'Active',
                 lastDeploy: lastDeployCommit || 'Unknown'
             },

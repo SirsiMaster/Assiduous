@@ -3,7 +3,7 @@
 ## 🎯 Objective
 Restructure domains to establish clear staging/production separation:
 - **Current Staging**: `assiduous-staging.web.app` → **REMOVE**
-- **Current Production**: `assiduousflip.web.app` → **BECOMES STAGING**  
+- **Current Production**: `assiduous-prod.web.app` → **BECOMES STAGING**  
 - **New Production**: `www.assiduousflip.com` → **PUBLIC PRODUCTION**
 
 ---
@@ -99,12 +99,12 @@ Restructure domains to establish clear staging/production separation:
 ### Phase 3: Workflow Updates (5 minutes)
 
 1. **Update GitHub Actions**
-   - `deploy-staging.yml`: Deploy to `assiduousflip.web.app`
+   - `deploy-staging.yml`: Deploy to `assiduous-prod.web.app`
    - `deploy-production.yml`: Deploy to `www.assiduousflip.com`
 
 2. **Update Monitoring**
    - Site monitor checks `www.assiduousflip.com` for production
-   - Site monitor checks `assiduousflip.web.app` for staging
+   - Site monitor checks `assiduous-prod.web.app` for staging
 
 ### Phase 4: Testing & Cutover (5 minutes)
 
@@ -120,7 +120,7 @@ Restructure domains to establish clear staging/production separation:
 2. **Verify Both Sites**
    ```bash
    # Check staging
-   curl -I https://assiduousflip.web.app
+   curl -I https://assiduous-prod.web.app
    
    # Check production  
    curl -I https://www.assiduousflip.com
@@ -177,12 +177,12 @@ firebase deploy --only hosting --project assiduous-prod
 ### Current Architecture
 ```
 assiduous-staging.web.app (Staging) → Firebase Project: assiduous-staging
-assiduousflip.web.app (Production) → Firebase Project: assiduous-prod
+assiduous-prod.web.app (Production) → Firebase Project: assiduous-prod
 ```
 
 ### New Architecture  
 ```
-assiduousflip.web.app (Staging) → Firebase Project: assiduous-prod (staging target)
+assiduous-prod.web.app (Staging) → Firebase Project: assiduous-prod (staging target)
 www.assiduousflip.com (Production) → Firebase Project: assiduous-prod (production target)
 ```
 
@@ -220,7 +220,7 @@ firebase target:apply hosting staging assiduousflip --project assiduous-prod
 firebase target:apply hosting production www-assiduousflip-com --project assiduous-prod
 
 # Step 3: Deploy to new URLs
-echo "📦 Deploying to new staging (assiduousflip.web.app)..."
+echo "📦 Deploying to new staging (assiduous-prod.web.app)..."
 firebase deploy --only hosting:staging --project assiduous-prod
 
 echo "📦 Deploying to new production (www.assiduousflip.com)..."
@@ -229,7 +229,7 @@ firebase deploy --only hosting:production --project assiduous-prod
 echo "✅ Domain migration complete!"
 echo ""
 echo "New URLs:"
-echo "  Staging: https://assiduousflip.web.app"
+echo "  Staging: https://assiduous-prod.web.app"
 echo "  Production: https://www.assiduousflip.com"
 ```
 
@@ -244,7 +244,7 @@ Subject: Domain Migration - Action Required
 Team,
 
 We're migrating to our new domain structure:
-- Staging: assiduousflip.web.app (formerly production)
+- Staging: assiduous-prod.web.app (formerly production)
 - Production: www.assiduousflip.com (new custom domain)
 
 Migration window: [DATE] at [TIME]

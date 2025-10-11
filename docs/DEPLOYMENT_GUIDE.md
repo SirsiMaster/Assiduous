@@ -86,7 +86,7 @@ This CI/CD pipeline automates deployments to all three Firebase environments wit
 │     └─ Triggered ONLY by production tag (v1.0.0)           │
 │     └─ Security checks run first                            │
 │     └─ Requires explicit approval                           │
-│     └─ Deploys to https://assiduousflip.web.app            │
+│     └─ Deploys to https://assiduous-prod.web.app            │
 │     └─ Creates GitHub Release                               │
 │     └─ Post-deployment verification                         │
 │                                                              │
@@ -164,7 +164,7 @@ GitHub Environments provide deployment protection rules and approval gates.
    - Add ONLY authorized production deployers
    - Requires at least 1 approval (recommend 2 for production)
 4. **Optional:** Set deployment branch pattern to `main` only
-5. Set **Environment URL:** `https://assiduousflip.web.app`
+5. Set **Environment URL:** `https://assiduous-prod.web.app`
 6. Save
 
 ### Step 4: Enable GitHub Actions
@@ -494,7 +494,7 @@ After deployment, check:
 |-------------|-----|------------------|
 | **DEV** | https://assiduous-dev.web.app | [Console](https://console.firebase.google.com/project/assiduous-dev) |
 | **STAGING** | https://assiduous-staging.web.app | [Console](https://console.firebase.google.com/project/assiduous-staging) |
-| **PRODUCTION** | https://assiduousflip.web.app | [Console](https://console.firebase.google.com/project/assiduous-prod) |
+| **PRODUCTION** | https://assiduous-prod.web.app | [Console](https://console.firebase.google.com/project/assiduous-prod) |
 
 ---
 
@@ -613,7 +613,7 @@ console.log('Firebase Config:', getFirebaseConfig());
    ↓
 5. Deploy to PRODUCTION (./deploy.sh production)
    ↓ Type 'DEPLOY TO PRODUCTION' to confirm
-6. Verify at https://assiduousflip.web.app
+6. Verify at https://assiduous-prod.web.app
 ```
 
 ### Emergency Hotfix Flow
@@ -677,7 +677,7 @@ firebase hosting:channel:list --project production
 # Test site availability
 curl -s -o /dev/null -w "%{http_code}\n" https://assiduous-dev.web.app
 curl -s -o /dev/null -w "%{http_code}\n" https://assiduous-staging.web.app
-curl -s -o /dev/null -w "%{http_code}\n" https://assiduousflip.web.app
+curl -s -o /dev/null -w "%{http_code}\n" https://assiduous-prod.web.app
 ```
 
 ---
@@ -848,7 +848,7 @@ You now have a **production-grade, multi-environment CI/CD pipeline** with autom
 |-------------|------------------|-----|--------|----------------|
 | **DEV** | assiduous-dev | https://assiduous-dev.web.app | ✅ HTTP 200 | Auto on `push main` |
 | **STAGING** | assiduous-staging | https://assiduous-staging.web.app | ✅ HTTP 200 | Manual or `v*-rc*` tags |
-| **PRODUCTION** | assiduous-prod | https://assiduousflip.web.app | ⚠️ Needs deploy | Semantic tags `v*.*.*` |
+| **PRODUCTION** | assiduous-prod | https://assiduous-prod.web.app | ⚠️ Needs deploy | Semantic tags `v*.*.*` |
 
 ---
 
@@ -987,7 +987,7 @@ git push origin v1.0.0
                    ↓
 ┌──────────────────────────────────────────────────────────────┐
 │ FIREBASE PRODUCTION ENVIRONMENT                               │
-│ 🌐 https://assiduousflip.web.app                             │
+│ 🌐 https://assiduous-prod.web.app                             │
 │ 🚀 Live production with real users                           │
 │ 💾 Isolated Firestore, Auth, Storage                         │
 │ 📊 Monitored and protected                                   │
@@ -1033,7 +1033,7 @@ git push origin v0.1.0
 
 # Wait for security checks
 # Approve deployment in GitHub Actions UI
-# Verify at https://assiduousflip.web.app
+# Verify at https://assiduous-prod.web.app
 ```
 
 ---
@@ -1044,7 +1044,7 @@ git push origin v0.1.0
 # Check all environment status
 curl -sS -o /dev/null -w "DEV: %{http_code}\n" https://assiduous-dev.web.app
 curl -sS -o /dev/null -w "STAGING: %{http_code}\n" https://assiduous-staging.web.app
-curl -sS -o /dev/null -w "PROD: %{http_code}\n" https://assiduousflip.web.app
+curl -sS -o /dev/null -w "PROD: %{http_code}\n" https://assiduous-prod.web.app
 
 # List recent workflow runs
 gh run list --repo SirsiMaster/Assiduous --limit 5
@@ -1070,7 +1070,7 @@ firebase hosting:sites:list --project assiduous-prod
    - Create initial production tag: `git tag v0.1.0 -m "Initial release"`
    - Push tag: `git push origin v0.1.0`
    - Approve deployment in GitHub Actions
-   - Verify at https://assiduousflip.web.app
+   - Verify at https://assiduous-prod.web.app
 
 2. **Test Full Pipeline**
    - Make a test change
@@ -1132,7 +1132,7 @@ firebase hosting:sites:list --project assiduous-prod
 ### Live Sites
 - **DEV:** https://assiduous-dev.web.app ✅
 - **STAGING:** https://assiduous-staging.web.app ✅
-- **PROD:** https://assiduousflip.web.app ⚠️
+- **PROD:** https://assiduous-prod.web.app ⚠️
 
 ---
 

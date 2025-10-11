@@ -109,7 +109,7 @@ git tag -a v1.2.0 -m "Release v1.2.0: Payment Integration"
 git push origin v1.2.0
 
 # Automatic deployment to production happens
-# Live at: https://assiduousflip.web.app
+# Live at: https://assiduous-prod.web.app
 ```
 
 ## Emergency Hotfix Process (10 minutes)

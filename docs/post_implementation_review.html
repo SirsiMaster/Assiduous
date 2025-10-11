@@ -335,7 +335,7 @@
 <strong>Severity</strong>: CRITICAL  
 <strong>Impact</strong>: Production site completely inaccessible  
 <strong>Details</strong>:
-<li>Main site (assiduousflip.web.app) shows Firebase 404 page</li>
+<li>Main site (assiduous-prod.web.app) shows Firebase 404 page</li>
 <li>All admin pages return 404</li>
 <li>All client pages return 404</li>
 <li>Agent pages return 404 (also don't exist)</li>
@@ -604,11 +604,11 @@ git log -1 --pretty=format:"%ad|%s" --date=short
 <h3>Production Status Verification</h3>
 <code></code>`bash
 <h1>Main site status</h1>
-curl -s https://assiduousflip.web.app/ | grep "Page Not Found"
+curl -s https://assiduous-prod.web.app/ | grep "Page Not Found"
 <h1>Output: Shows 404 page</h1>
 <br>
 <h1>Admin dashboard status</h1>
-curl -I https://assiduousflip.web.app/admin/dashboard.html
+curl -I https://assiduous-prod.web.app/admin/dashboard.html
 <h1>Output: HTTP 404</h1>
 <br>
 <h1>API status</h1>

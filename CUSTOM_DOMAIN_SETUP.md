@@ -1,4 +1,4 @@
-# Setting Up www.assiduousflip.com with Firebase (FREE)
+# Setting Up www.assiduousflip.com with Firebase (FREE) - For assiduous-prod.web.app
 
 ## ✅ No Additional Costs!
 Firebase custom domain hosting is **FREE** - you only pay for your GoDaddy domain registration.
@@ -10,15 +10,9 @@ Firebase custom domain hosting is **FREE** - you only pay for your GoDaddy domai
 Run this command to add your domain to Firebase:
 
 ```bash
-cd firebase-migration-package
-firebase hosting:site:create www-assiduousflip-com --project assiduous-prod
-```
-
-Or if that doesn't work, use the existing site:
-
-```bash
-# Connect domain to existing assiduousflip site
-firebase hosting:channel:create live --site assiduousflip
+# Your production site is now assiduous-prod (the default site)
+# No need to create a new site, just add the domain to the existing one
+firebase hosting:site:domain:add www.assiduousflip.com --project assiduous-prod
 ```
 
 ---
@@ -26,7 +20,7 @@ firebase hosting:channel:create live --site assiduousflip
 ## Step 2: Connect Domain in Firebase Console (3 minutes)
 
 1. Go to: https://console.firebase.google.com/project/assiduous-prod/hosting/sites
-2. Click on `assiduousflip`
+2. Click on `assiduous-prod` (your main production site)
 3. Click "Add custom domain"
 4. Enter: `www.assiduousflip.com`
 5. Click "Continue"
@@ -106,7 +100,7 @@ Edit `.firebaserc`:
   "targets": {
     "assiduous-prod": {
       "hosting": {
-        "production": ["assiduousflip"]
+        "production": ["assiduous-prod"]
       }
     }
   }
@@ -122,9 +116,9 @@ firebase deploy --only hosting --project assiduous-prod
 ```
 
 Your site will now be live at:
-- https://www.assiduousflip.com (primary)
+- https://www.assiduousflip.com (primary custom domain)
 - https://assiduousflip.com (redirects to www)
-- https://assiduousflip.web.app (still works as backup)
+- https://assiduous-prod.web.app (Firebase URL - still works)
 
 ---
 
@@ -135,7 +129,7 @@ Your site will now be live at:
 - **24-48 hours**: Complete global DNS propagation
 
 During propagation, both URLs work:
-- https://assiduousflip.web.app (immediate)
+- https://assiduous-prod.web.app (immediate)
 - https://www.assiduousflip.com (after DNS updates)
 
 ---
@@ -189,7 +183,7 @@ openssl s_client -connect www.assiduousflip.com:443 -servername www.assiduousfli
 
 ### Your URLs After Setup:
 - **Production**: https://www.assiduousflip.com
-- **Backup**: https://assiduousflip.web.app  
+- **Firebase URL**: https://assiduous-prod.web.app  
 - **Root redirect**: https://assiduousflip.com → www
 
 ### GoDaddy DNS Management:

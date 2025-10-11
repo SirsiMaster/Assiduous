@@ -53,7 +53,7 @@
 ## COMPREHENSIVE MONITORING PROCEDURES
 
 ### Real-Time Monitoring Dashboard
-**URL:** https://assiduousflip.web.app/admin/development  
+**URL:** https://assiduous-prod.web.app/admin/development  
 **Frequency:** Check every 4 hours during business hours
 
 #### Key Metrics to Monitor
@@ -83,7 +83,7 @@
 **File:** `.github/workflows/site-monitor.yml`  
 **Frequency:** Every 15 minutes  
 **Checks:**
-- Production site (https://assiduousflip.web.app)
+- Production site (https://assiduous-prod.web.app)
 - Admin portal (/admin)
 - Client portal (/client)
 - API endpoints health
@@ -145,7 +145,7 @@
 cd firebase-migration-package
 firebase deploy --only hosting:production
 ```
-**Verification:** `curl -I https://assiduousflip.web.app`
+**Verification:** `curl -I https://assiduous-prod.web.app`
 
 #### Issue 2: Authentication Not Working
 **Symptoms:** Users can't log in, "Auth failed" errors  
@@ -632,7 +632,7 @@ During this time, you may experience:
 
 We apologize for any inconvenience.
 
-Status Updates: https://assiduousflip.web.app/status
+Status Updates: https://assiduous-prod.web.app/status
 
 Thank you for your patience.
 
@@ -646,8 +646,8 @@ The Assiduous Team
 ### Monitoring Tools
 - **Firebase Console:** https://console.firebase.google.com/project/assiduous-prod
 - **GitHub Actions:** https://github.com/SirsiMaster/Assiduous/actions
-- **Status Page:** https://assiduousflip.web.app/status.html
-- **Metrics Dashboard:** https://assiduousflip.web.app/admin/development
+- **Status Page:** https://assiduous-prod.web.app/status.html
+- **Metrics Dashboard:** https://assiduous-prod.web.app/admin/development
 
 ### Command Line Tools
 ```bash
@@ -679,7 +679,7 @@ brew install gh
 ### Critical Commands
 ```bash
 # Check site status
-curl -I https://assiduousflip.web.app
+curl -I https://assiduous-prod.web.app
 
 # View recent errors
 firebase functions:log --limit 50
