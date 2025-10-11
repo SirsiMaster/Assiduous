@@ -146,7 +146,7 @@ jobs:
             
             # Attempt to redeploy
             echo "📤 Deploying to Firebase Hosting..."
-            if firebase deploy --only hosting --project assiduous-prod --token "${{ secrets.FIREBASE_TOKEN }}" 2>&1; then
+            if firebase deploy --only hosting:production --project assiduous-prod --token "${{ secrets.FIREBASE_TOKEN }}" 2>&1; then
               echo "✅ Deployment command executed successfully"
               
               # Test site liveness with multiple checks
