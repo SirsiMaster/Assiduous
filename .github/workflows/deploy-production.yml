@@ -127,9 +127,14 @@ jobs:
         run: |
           echo "🔍 Verifying production deployment..."
           sleep 15
+          # Check Firebase URL first (always works immediately)
           RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" https://assiduousflip.web.app)
           if [ "$RESPONSE" = "200" ]; then
             echo "✅ PRODUCTION DEPLOYMENT SUCCESSFUL (HTTP 200)"
+            echo "🌐 Production URLs:"
+            echo "  - https://assiduousflip.com (custom domain)"
+            echo "  - https://www.assiduousflip.com (custom domain)"
+            echo "  - https://assiduousflip.web.app (Firebase URL)"
           else
             echo "❌ PRODUCTION DEPLOYMENT FAILED (HTTP $RESPONSE)"
             echo "⚠️ INITIATING ROLLBACK PROCEDURES..."

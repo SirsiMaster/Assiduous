@@ -3,12 +3,12 @@
 ## Release in 3 Minutes
 
 ```bash
-# 1. Ensure staging is tested
+# 1. Ensure staging is tested (https://assiduous-staging.web.app)
 # 2. Create and push tag
 git tag -a v1.2.0 -m "Release: Feature Name"
 git push origin v1.2.0
 # 3. Automatic production deployment triggered
-# 4. Monitor: https://assiduousflip.web.app
+# 4. Monitor: https://assiduousflip.com (or assiduousflip.web.app)
 ```
 
 ## Release Types
