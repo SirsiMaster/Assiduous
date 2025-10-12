@@ -6,11 +6,11 @@
   "targets": {
     "assiduous-prod": {
       "hosting": {
-        "production": [
-          "assiduous-prod"
-        ],
         "assiduousflip": [
           "assiduousflip"
+        ],
+        "prod": [
+          "assiduous-prod"
         ]
       }
     },
