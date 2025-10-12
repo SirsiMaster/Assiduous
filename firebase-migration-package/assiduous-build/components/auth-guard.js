@@ -8,7 +8,7 @@ class AuthGuard {
     constructor(config = {}) {
         this.auth = null;
         this.config = {
-            loginUrl: '/login.html',
+            loginUrl: '/',
             unauthorizedUrl: '/unauthorized.html',
             checkInterval: 30000, // Check session every 30 seconds
             sessionTimeout: 3600000, // 1 hour
