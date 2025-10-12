@@ -16,7 +16,7 @@
     },
     {
       "target": "assiduousflip",
-      "public": "assiduous-build",
+      "public": ".",
       "ignore": ["firebase.json", "**/.*", "**/node_modules/**", "**/firebase-migration-package/**"],
       "redirects": [
         { "source": "/", "destination": "/index.html", "type": 302 }
