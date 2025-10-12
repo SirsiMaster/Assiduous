@@ -2,10 +2,11 @@
 ## RESTful API Endpoints and Contracts
 
 **Document Type:** API Specification
-**Version:** 2.0.0
-**Last Updated:** October 9, 2025
+**Version:** 2.1.0
+**Last Updated:** October 12, 2025
 **Status:** Authoritative API Document
 **Consolidation Note:** Renamed from api_docs.md
+**Day 3 Update:** Added Firebase Auth API and Auth Guard documentation
 
 ---
 # Assiduous Realty API Documentation
@@ -16,15 +17,222 @@ The Assiduous Realty API provides programmatic access to the platform's function
 
 ## Authentication
 
-### Token-based Authentication
+### Overview
+Assiduous uses **Firebase Authentication** for user authentication, combined with Firestore for role-based access control (RBAC).
 
-All API requests must include a valid JWT token in the Authorization header:
+### Firebase Auth API
+**Implementation Status**: ✅ Fully operational (Day 3 - October 12, 2025)
 
-```http
-Authorization: Bearer <jwt_token>
+#### User Registration (Signup)
+```javascript
+// Frontend: index.html signup form
+firebase.auth().createUserWithEmailAndPassword(email, password)
+  .then((userCredential) => {
+    const user = userCredential.user;
+    
+    // Store user profile in Firestore
+    return firebase.firestore().collection('users').doc(user.uid).set({
+      email: user.email,
+      firstName: firstName,
+      lastName: lastName,
+      displayName: `${firstName} ${lastName}`,
+      role: selectedRole, // 'admin' | 'agent' | 'client' | 'investor'
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+      profileComplete: true,
+      emailVerified: false,
+      
+      // Agent-specific fields (if role === 'agent')
+      agentInfo: {
+        status: 'pending_approval',
+        licenseNumber: licenseNumber,
+        licenseState: licenseState,
+        brokerageName: brokerageName,
+        appliedAt: firebase.firestore.FieldValue.serverTimestamp()
+      }
+    });
+  });
 ```
 
-### Obtaining Tokens
+**Response**:
+- Success: User object with `uid`, `email`, `displayName`
+- Error codes:
+  - `auth/email-already-in-use` - Email already registered
+  - `auth/weak-password` - Password too weak (< 6 characters)
+  - `auth/invalid-email` - Invalid email format
+
+#### User Login (Sign In)
+```javascript
+// Frontend: index.html login form
+firebase.auth().signInWithEmailAndPassword(email, password)
+  .then((userCredential) => {
+    const user = userCredential.user;
+    
+    // Fetch user profile from Firestore to get role
+    return firebase.firestore().collection('users').doc(user.uid).get();
+  })
+  .then((doc) => {
+    if (doc.exists) {
+      const userData = doc.data();
+      const role = userData.role;
+      
+      // Store session
+      const sessionData = {
+        uid: user.uid,
+        email: user.email,
+        displayName: userData.displayName,
+        role: role,
+        loginTime: new Date().toISOString()
+      };
+      
+      sessionStorage.setItem('assiduousUser', JSON.stringify(sessionData));
+      if (rememberMe) {
+        localStorage.setItem('assiduousUser', JSON.stringify(sessionData));
+      }
+      
+      // Redirect based on role
+      redirectToRoleDashboard(role, userData);
+    }
+  });
+```
+
+**Response**:
+- Success: User object + Firestore profile data
+- Error codes:
+  - `auth/user-not-found` - No account with this email
+  - `auth/wrong-password` - Incorrect password
+  - `auth/invalid-email` - Invalid email format
+  - `auth/too-many-requests` - Too many failed attempts
+
+#### Role-Based Redirects
+```javascript
+function redirectToRoleDashboard(role, userData) {
+  switch (role) {
+    case 'admin':
+      window.location.href = '/admin/dashboard.html';
+      break;
+    case 'agent':
+      if (userData.agentInfo?.status === 'approved') {
+        window.location.href = '/agent/dashboard.html';
+      } else if (userData.agentInfo?.status === 'pending_approval') {
+        window.location.href = '/agent-pending.html';
+      } else {
+        alert('Your agent application was rejected.');
+        window.location.href = '/';
+      }
+      break;
+    case 'client':
+    case 'investor':
+      window.location.href = '/client/dashboard.html';
+      break;
+  }
+}
+```
+
+#### Session Management
+```javascript
+// Check current auth state
+firebase.auth().onAuthStateChanged((user) => {
+  if (user) {
+    // User is signed in
+    console.log('Authenticated:', user.email);
+  } else {
+    // User is signed out
+    console.log('Not authenticated');
+  }
+});
+
+// Sign out
+firebase.auth().signOut().then(() => {
+  sessionStorage.removeItem('assiduousUser');
+  localStorage.removeItem('assiduousUser');
+  window.location.href = '/';
+});
+```
+
+### Auth Guard API
+**Implementation Status**: ✅ Fully operational (Day 3 - October 12, 2025)
+**Location**: `/components/auth-guard-simple.js`
+
+The Auth Guard provides page-level access control based on user roles.
+
+#### Auto-Protect via HTML Attribute (Recommended)
+```html
+<!DOCTYPE html>
+<html data-auth-protect="admin,agent">
+<head>
+  <title>Admin Dashboard</title>
+  <script src="/components/auth-guard-simple.js"></script>
+</head>
+<body>
+  <!-- Page automatically protected -->
+  <!-- Only admins and agents can access -->
+</body>
+</html>
+```
+
+#### Manual Protection
+```javascript
+// Protect current page for specific roles
+await authGuard.protect(['admin'], {
+  requireEmailVerification: false,
+  onSuccess: (user) => {
+    console.log('Authorized:', user.email);
+    initializeDashboard(user);
+  },
+  onUnauthorized: (role) => {
+    alert(`Access denied. This page requires admin role.`);
+  }
+});
+```
+
+#### Auth Guard Global API
+```javascript
+// Available on window.authGuard
+
+// 1. Protect current page
+await authGuard.protect(allowedRoles, options);
+
+// 2. Check if user is authenticated
+const user = await authGuard.checkAuth();
+if (user) {
+  console.log('User:', user.email, user.uid);
+}
+
+// 3. Get user data from Firestore
+const userData = await authGuard.getUserData(user.uid);
+console.log('Role:', userData.role);
+
+// 4. Sign out
+await authGuard.signOut();
+
+// 5. Redirect to login
+authGuard.redirectToLogin('/admin/dashboard.html');
+
+// 6. Redirect to role dashboard
+authGuard.redirectToRoleDashboard('admin');
+
+// 7. Update UI with user data
+authGuard.updateUI(user);
+```
+
+#### Auto-Update UI Elements
+```html
+<!-- These elements automatically populate when auth guard runs -->
+<span data-user-email></span>        <!-- Displays: user.email -->
+<span data-user-name></span>         <!-- Displays: user.displayName -->
+<span data-user-initials></span>     <!-- Displays: user initials (e.g., "JD") -->
+```
+
+### Token-based Authentication (Legacy/Deprecated)
+
+All Cloud Functions API requests should include Firebase Auth token:
+
+```http
+Authorization: Bearer <firebase_id_token>
+```
+
+### Obtaining Tokens (Legacy)
 
 ```http
 POST /api/v1/auth/login
@@ -37,9 +245,14 @@ Content-Type: application/json
 
 Response:
 {
-  "access_token": "jwt_token",
+  "access_token": "firebase_id_token",
   "refresh_token": "refresh_token",
-  "expires_in": 3600
+  "expires_in": 3600,
+  "user": {
+    "uid": "firebase_uid",
+    "email": "user@example.com",
+    "role": "client"
+  }
 }
 ```
 

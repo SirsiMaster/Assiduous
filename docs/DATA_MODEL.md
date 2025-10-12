@@ -2,11 +2,11 @@
 ## Complete Database Schema, Relationships, and Data Architecture
 
 **Document Type:** Data Model  
-**Version:** 3.0.0  
-**Last Updated:** October 10, 2025  
+**Version:** 3.1.0  
+**Last Updated:** October 12, 2025  
 **Status:** Comprehensive Data Model Documentation  
-**Implementation Status:** Schema defined, 0% implemented in production  
-**Reality Check:** Using mock data, no real database connections
+**Implementation Status:** Users collection implemented (Day 3), properties partial  
+**Reality Check:** Authentication schema live in production, property data pending Day 4
 
 ---
 
@@ -40,22 +40,77 @@
 ```
 
 ### Users Collection
+**Implementation Status**: ✅ Fully implemented in production (Day 3 - October 12, 2025)
+
 ```javascript
 {
-  uid: string,
-  email: string,
-  displayName: string,
-  role: 'client' | 'agent' | 'admin',
-  phone: string,
-  createdAt: timestamp,
-  preferences: {
+  // Core Identity Fields
+  uid: string,                    // Firebase Auth user ID
+  email: string,                  // User email (unique)
+  firstName: string,              // User first name
+  lastName: string,               // User last name
+  displayName: string,            // Full name (firstName + lastName)
+  phone?: string,                 // Optional phone number
+  
+  // Role and Permissions
+  role: 'admin' | 'agent' | 'client' | 'investor',
+  
+  // Timestamps
+  createdAt: timestamp,           // Account creation timestamp
+  updatedAt: timestamp,           // Last profile update
+  
+  // Account Status
+  profileComplete: boolean,       // Whether user completed onboarding
+  emailVerified: boolean,         // Whether email is verified
+  
+  // User Preferences (Optional)
+  preferences?: {
     priceRange: {min: number, max: number},
-    locations: string[],
-    propertyTypes: string[]
+    locations: string[],          // Preferred neighborhoods/cities
+    propertyTypes: string[]       // e.g., ['single_family', 'condo']
   },
-  favorites: string[] // property IDs
+  
+  // Favorites and Activity
+  favorites?: string[],           // Array of property IDs
+  recentlyViewed?: string[],      // Last 10 viewed property IDs
+  
+  // Agent-Specific Fields (only present if role === 'agent')
+  agentInfo?: {
+    status: 'pending_approval' | 'approved' | 'rejected',
+    licenseNumber: string,        // Real estate license number
+    licenseState: string,         // State of license (e.g., 'PA', 'NJ')
+    brokerageName: string,        // Name of brokerage firm
+    appliedAt: timestamp,         // When agent applied for approval
+    approvedAt?: timestamp,       // When admin approved agent
+    rejectedAt?: timestamp,       // When admin rejected agent
+    rejectionReason?: string,     // Reason for rejection (if rejected)
+    approvedBy?: string,          // Admin UID who approved/rejected
+    specialties?: string[],       // e.g., ['luxury', 'commercial']
+    bio?: string,                 // Agent bio/description
+    websiteUrl?: string,          // Agent personal website
+    socialLinks?: {               // Social media profiles
+      linkedin?: string,
+      facebook?: string,
+      instagram?: string
+    }
+  }
 }
 ```
+
+**Implementation Notes (Day 3)**:
+- ✅ Signup flow creates user profiles with role selection
+- ✅ Agent approval workflow implemented (pending → approved/rejected)
+- ✅ Session management stores user data in sessionStorage
+- ✅ Auth guards verify role before granting page access
+- ✅ Firebase Auth + Firestore combined for complete user management
+
+**Agent Approval Workflow**:
+1. User signs up with role = 'agent' and fills agent-specific fields
+2. User profile created with `agentInfo.status = 'pending_approval'`
+3. Agent redirected to `/agent-pending.html` (awaiting admin approval)
+4. Admin reviews agent in Admin Portal and approves/rejects
+5. If approved: `status = 'approved'`, agent can access `/agent/dashboard.html`
+6. If rejected: `status = 'rejected'`, agent sees rejection reason
 
 ### Transactions Collection
 ```javascript
