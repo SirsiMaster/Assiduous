@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-10-12T07:19:12.040Z",
+  "lastUpdated": "2025-10-12T07:29:54.991Z",
   "summary": {
     "health": "Good",
     "score": 46,
@@ -109,34 +109,34 @@
     "totalCost": 25500,
     "laborCost": 25500,
     "toolsCost": 450,
-    "totalCommits": 514,
+    "totalCommits": 516,
     "totalFiles": 38880,
     "activeDays": 63,
     "projectAgeDays": 63,
-    "linesAdded": 9390448,
-    "linesDeleted": 918769,
-    "netLines": 8471679,
+    "linesAdded": 9390563,
+    "linesDeleted": 919048,
+    "netLines": 8471515,
     "velocity": "8.2",
     "completionPercentage": 46,
     "actualStartDate": "2025-08-10"
   },
   "today": {
     "date": "2025-10-12",
-    "hours": "19.8",
-    "cost": 2970,
-    "commits": 60,
+    "hours": "20.5",
+    "cost": 3069,
+    "commits": 62,
     "deployments": 0
   },
   "thisWeek": {
-    "hours": "59.4",
-    "cost": 8910,
-    "commits": 180,
+    "hours": "60.1",
+    "cost": 9009,
+    "commits": 182,
     "days": 7
   },
   "thisMonth": {
-    "hours": "65.7",
-    "cost": 9851,
-    "commits": 199
+    "hours": "66.3",
+    "cost": 9950,
+    "commits": 201
   },
   "quality": {
     "testCoverage": {
@@ -170,7 +170,7 @@
       "critical": 0,
       "total": 0
     },
-    "lastAudit": "2025-10-12T07:18:50.917Z",
+    "lastAudit": "2025-10-12T07:29:33.248Z",
     "dependencies": {
       "total": {
         "prod": 192,
@@ -216,14 +216,14 @@
     }
   },
   "deployment": {
-    "lastDeployment": "2025-10-12 03:15:51 -0400",
-    "totalDeployments": 86,
+    "lastDeployment": "2025-10-12 03:29:12 -0400",
+    "totalDeployments": 88,
     "deploymentFrequency": "Weekly",
     "environments": {
       "production": {
         "url": "https://assiduous-prod.web.app",
         "status": "Active",
-        "lastDeploy": "2025-10-12 03:15:51 -0400"
+        "lastDeploy": "2025-10-12 03:29:12 -0400"
       },
       "staging": {
         "url": "https://assiduous-staging.web.app",
@@ -269,12 +269,12 @@
   },
   "productivity": {
     "velocityTrend": "increasing",
-    "weeklyCommits": 180,
+    "weeklyCommits": 182,
     "contributors": {
       "total": 0,
       "active": 0
     },
-    "averageCommitSize": 89,
+    "averageCommitSize": 88,
     "pullRequests": {
       "open": 0,
       "merged": 0,
@@ -347,6 +347,18 @@
   },
   "recentActivity": [
     {
+      "hash": "f8dba740d41554279dead01572d0d2a63b26959c",
+      "message": "fix(ci): deploy production from correct directory",
+      "author": "SirsiMaster",
+      "date": "2025-10-12 03:29:12 -0400"
+    },
+    {
+      "hash": "e76dd127b83c099b1f55eb6513821ad192cd7cc3",
+      "message": "fix(deployment): clean up redirects and simplify production workflow",
+      "author": "SirsiMaster",
+      "date": "2025-10-12 03:23:46 -0400"
+    },
+    {
       "hash": "ca75c71880051a88c93ccc181950fb94133ac25f",
       "message": "fix(config): sync root firebase.json with correct CSP headers",
       "author": "SirsiMaster",
@@ -393,22 +405,10 @@
       "message": "fix(auth): make auth-guard.js dynamic and environment-aware",
       "author": "SirsiMaster",
       "date": "2025-10-12 02:42:03 -0400"
-    },
-    {
-      "hash": "cf3e14287c1dedbe61b775aadd326a4574ae3bcb",
-      "message": "fix(firebase): redirect all login/signup page requests to index.html",
-      "author": "SirsiMaster",
-      "date": "2025-10-12 02:39:43 -0400"
-    },
-    {
-      "hash": "94af752116051887013c86082f0dad3a566097ee",
-      "message": "fix(auth): delete standalone login/signup pages - use modals only",
-      "author": "SirsiMaster",
-      "date": "2025-10-12 02:35:16 -0400"
     }
   ],
   "automation": {
-    "lastRun": "2025-10-12T07:19:12.040Z",
+    "lastRun": "2025-10-12T07:29:54.991Z",
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",
