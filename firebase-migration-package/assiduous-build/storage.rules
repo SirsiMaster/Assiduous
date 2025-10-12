@@ -1,0 +1,10 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    // STAGING ENVIRONMENT - Open rules for testing
+    // WARNING: This is for staging only - production has stricter rules
+    match /{allPaths=**} {
+      allow read, write: if true;
+    }
+  }
+}
