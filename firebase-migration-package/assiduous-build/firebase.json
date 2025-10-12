@@ -8,7 +8,12 @@
       "public": ".",
       "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
       "redirects": [
-        { "source": "/", "destination": "/index.html", "type": 302 }
+        { "source": "/", "destination": "/index.html", "type": 302 },
+        { "source": "/login.html", "destination": "/index.html", "type": 301 },
+        { "source": "/signin.html", "destination": "/index.html", "type": 301 },
+        { "source": "/signup.html", "destination": "/index.html", "type": 301 },
+        { "source": "/sign-up.html", "destination": "/index.html", "type": 301 },
+        { "source": "/sign-in.html", "destination": "/index.html", "type": 301 }
       ],
       "rewrites": [
         { "source": "/api/**", "function": "app" }
@@ -19,7 +24,12 @@
       "public": ".",
       "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
       "redirects": [
-        { "source": "/", "destination": "/index.html", "type": 302 }
+        { "source": "/", "destination": "/index.html", "type": 302 },
+        { "source": "/login.html", "destination": "/index.html", "type": 301 },
+        { "source": "/signin.html", "destination": "/index.html", "type": 301 },
+        { "source": "/signup.html", "destination": "/index.html", "type": 301 },
+        { "source": "/sign-up.html", "destination": "/index.html", "type": 301 },
+        { "source": "/sign-in.html", "destination": "/index.html", "type": 301 }
       ],
       "rewrites": [
         { "source": "/api/**", "function": "app" }

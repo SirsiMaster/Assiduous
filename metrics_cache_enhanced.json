@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-10-12T06:27:59.427Z",
+  "lastUpdated": "2025-10-12T06:35:52.908Z",
   "summary": {
     "health": "Good",
     "score": 46,
@@ -104,39 +104,39 @@
     }
   },
   "project": {
-    "totalHours": "166",
-    "avgHoursPerDay": "2.6",
-    "totalCost": 24900,
-    "laborCost": 24900,
+    "totalHours": "167",
+    "avgHoursPerDay": "2.7",
+    "totalCost": 25050,
+    "laborCost": 25050,
     "toolsCost": 450,
-    "totalCommits": 504,
-    "totalFiles": 38881,
+    "totalCommits": 505,
+    "totalFiles": 38880,
     "activeDays": 63,
     "projectAgeDays": 63,
-    "linesAdded": 9390004,
-    "linesDeleted": 917566,
-    "netLines": 8472438,
+    "linesAdded": 9390050,
+    "linesDeleted": 918279,
+    "netLines": 8471771,
     "velocity": "8.0",
     "completionPercentage": 46,
     "actualStartDate": "2025-08-10"
   },
   "today": {
     "date": "2025-10-12",
-    "hours": "16.5",
-    "cost": 2475,
-    "commits": 50,
+    "hours": "16.8",
+    "cost": 2525,
+    "commits": 51,
     "deployments": 0
   },
   "thisWeek": {
-    "hours": "56.1",
-    "cost": 8415,
-    "commits": 170,
+    "hours": "56.4",
+    "cost": 8465,
+    "commits": 171,
     "days": 7
   },
   "thisMonth": {
-    "hours": "62.4",
-    "cost": 9356,
-    "commits": 189
+    "hours": "62.7",
+    "cost": 9405,
+    "commits": 190
   },
   "quality": {
     "testCoverage": {
@@ -170,7 +170,7 @@
       "critical": 0,
       "total": 0
     },
-    "lastAudit": "2025-10-12T06:27:38.719Z",
+    "lastAudit": "2025-10-12T06:35:33.989Z",
     "dependencies": {
       "total": {
         "prod": 192,
@@ -269,7 +269,7 @@
   },
   "productivity": {
     "velocityTrend": "increasing",
-    "weeklyCommits": 170,
+    "weeklyCommits": 171,
     "contributors": {
       "total": 0,
       "active": 0
@@ -347,6 +347,12 @@
   },
   "recentActivity": [
     {
+      "hash": "94af752116051887013c86082f0dad3a566097ee",
+      "message": "fix(auth): delete standalone login/signup pages - use modals only",
+      "author": "SirsiMaster",
+      "date": "2025-10-12 02:35:16 -0400"
+    },
+    {
       "hash": "f103142d1ba1ac4f556c046059cecfc1e1bdd161",
       "message": "chore: update metrics cache",
       "author": "SirsiMaster",
@@ -399,16 +405,10 @@
       "message": "chore: update metrics cache after recent commits",
       "author": "SirsiMaster",
       "date": "2025-10-12 02:07:23 -0400"
-    },
-    {
-      "hash": "0f4e654d1885f97c0caaab8fa51373b4d030b09c",
-      "message": "chore: update cache files after auth-guard fix",
-      "author": "SirsiMaster",
-      "date": "2025-10-12 02:06:51 -0400"
     }
   ],
   "automation": {
-    "lastRun": "2025-10-12T06:27:59.427Z",
+    "lastRun": "2025-10-12T06:35:52.908Z",
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",
