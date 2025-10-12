@@ -2,9 +2,9 @@ name: Deploy to Staging
 
 on:
   push:
-    branches: [staging, develop]
+    branches: [main]
   pull_request:
-    branches: [staging]
+    branches: [main]
     types: [closed]
 
 jobs:
@@ -40,7 +40,7 @@ jobs:
           echo "🚀 Deploying to Staging environment..."
           echo "📍 Target URL: https://assiduous-staging.web.app"
           firebase deploy \
-            --only hosting:staging \
+            --only hosting:assiduousflip \
             --project assiduous-staging \
             --token "${{ secrets.FIREBASE_TOKEN }}"
             

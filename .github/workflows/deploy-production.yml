@@ -139,7 +139,7 @@ jobs:
           echo "🚀 DEPLOYING TO PRODUCTION..."
           echo "🌐 Target: assiduous-prod.web.app (and www.assiduousflip.com when configured)"
           firebase deploy \
-            --only hosting:production \
+            --only hosting:prod \
             --project assiduous-prod \
             --token "${{ secrets.FIREBASE_TOKEN }}"
             
