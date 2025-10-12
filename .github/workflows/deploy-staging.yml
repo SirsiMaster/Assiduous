@@ -12,7 +12,6 @@ jobs:
     name: Deploy to Staging Environment
     if: github.event.pull_request.merged == true || github.event_name == 'push'
     runs-on: ubuntu-latest
-    environment: staging
     
     steps:
       - name: Checkout Code
