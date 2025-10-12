@@ -96,7 +96,6 @@ jobs:
     needs: approval-check
     if: needs.approval-check.outputs.approved == 'true'
     runs-on: ubuntu-latest
-    environment: production
     
     steps:
       - name: Validate Manual Deployment
