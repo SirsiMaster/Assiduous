@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-auth-protect="client,investor">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -358,7 +358,7 @@
                             </svg>
                             Portfolio Value
                         </div>
-                        <div class="stat-value">$0</div>
+                        <div class="stat-value" id="portfolio-value">...</div>
                         <div class="stat-change positive">
                             <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
@@ -380,14 +380,14 @@
                         </div>
                     </div>
                     
-                    <div class="stat-card">
+                        <div class="stat-value" id="saved-properties">...</div>
                         <div class="stat-label">
                             <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
                             </svg>
                             Avg. ROI
                         </div>
-                        <div class="stat-value">22.5%</div>
+                        <div class="stat-value" id="active-deals">...</div>
                         <div class="stat-change positive">
                             <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
@@ -403,7 +403,7 @@
                             </svg>
                             Deal Opportunities
                         </div>
-                        <div class="stat-value">47</div>
+                        <div class="stat-value" id="opportunities">...</div>
                         <div class="stat-change positive">
                             <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
@@ -462,47 +462,9 @@
                         <h3 class="table-title">Featured Investment Opportunities</h3>
                         <a href="#properties" class="btn-primary">View all →</a>
                     </div>
-                    <div class="properties-grid">
-                        <div class="property-card" onclick="viewProperty('1')">
-                            <div class="property-image"></div>
-                            <div class="property-details">
-                                <div class="property-price">$285,000</div>
-                                <div class="property-address">1234 Market St, Philadelphia, PA 19107</div>
-                                <div class="property-features">
-                                    <span>3 beds</span>
-                                    <span>2 baths</span>
-                                    <span>1,850 sqft</span>
-                                </div>
-                                <div class="property-roi">Est. ROI: 28%</div>
-                            </div>
-                        </div>
-                        
-                        <div class="property-card" onclick="viewProperty('2')">
-                            <div class="property-image"></div>
-                            <div class="property-details">
-                                <div class="property-price">$175,000</div>
-                                <div class="property-address">567 Broad St, Camden, NJ 08102</div>
-                                <div class="property-features">
-                                    <span>2 beds</span>
-                                    <span>1 bath</span>
-                                    <span>1,200 sqft</span>
-                                </div>
-                                <div class="property-roi">Est. ROI: 35%</div>
-                            </div>
-                        </div>
-                        
-                        <div class="property-card" onclick="viewProperty('3')">
-                            <div class="property-image"></div>
-                            <div class="property-details">
-                                <div class="property-price">$425,000</div>
-                                <div class="property-address">890 Main Line Ave, Wayne, PA 19087</div>
-                                <div class="property-features">
-                                    <span>4 beds</span>
-                                    <span>3 baths</span>
-                                    <span>2,400 sqft</span>
-                                </div>
-                                <div class="property-roi">Est. ROI: 22%</div>
-                            </div>
+                    <div class="properties-grid" id="featured-properties">
+                        <div style="grid-column: 1 / -1; text-align: center; padding: var(--space-xl); color: var(--text-secondary);">
+                            Loading properties...
                         </div>
                     </div>
                 </div>
@@ -522,135 +484,213 @@
     </div>
     
     <!-- Firebase and Auth Scripts -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
-    <script src="/firebase-config.js"></script>
-    <script src="/components/sirsi-auth.js"></script>
-    <script src="/components/auth-guard.js"></script>
-    <script src="/components/universal-header.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="../firebase-config.js"></script>
+    <script src="../components/auth-guard-simple.js"></script>
+    <script src="../components/universal-header.js"></script>
     
     <script>
-        // Initialize auth
-        const sirsiAuth = new SirsiAuth({
-            firebaseConfig: window.firebaseConfig
-        });
-        
-        const authGuard = new AuthGuard();
-        
-        // Initialize and protect page
-        async function initializeDashboard() {
-            await sirsiAuth.initialize();
-            await authGuard.initialize(sirsiAuth);
+        // Wait for Firebase to be ready
+        document.addEventListener('firebase-ready', async () => {
+            console.log('🔥 Firebase ready, loading client dashboard data...');
             
-            // Protect this page - only clients can access
-            await authGuard.protectClient((user) => {
-                // Update UI with user info
-                updateUserInterface(user);
-                // Load user's portfolio data
-                loadPortfolioData(user);
-            });
-        }
-        
-        // Update UI with user information
-        function updateUserInterface(user) {
-            // Update universal header with user data
-            const headerRoot = document.getElementById('universal-header-root');
-            if (headerRoot) {
-                headerRoot.setAttribute('data-user-name', `${user.firstName} ${user.lastName}`);
-                headerRoot.setAttribute('data-user-email', user.email || '');
-            }
-            
-            // Update first name in welcome message
-            const firstNameElements = document.querySelectorAll('[data-user-firstname]');
-            firstNameElements.forEach(el => {
-                el.textContent = user.firstName;
-            });
-        }
-        
-        // Load portfolio data
-        async function loadPortfolioData(user) {
             try {
                 const db = firebase.firestore();
+                const user = firebase.auth().currentUser;
                 
-                // Load user's saved properties
-                const savedProperties = await db.collection('users')
-                    .doc(user.uid)
-                    .collection('savedProperties')
-                    .get();
-                
-                // Load user's active investments
-                const activeInvestments = await db.collection('users')
-                    .doc(user.uid)
-                    .collection('investments')
-                    .where('status', '==', 'active')
-                    .get();
-                
-                // Update stats based on actual data
-                if (!savedProperties.empty || !activeInvestments.empty) {
-                    console.log('Loading user portfolio data...');
+                if (!user) {
+                    console.error('No user logged in');
+                    return;
                 }
+                
+                // Load client dashboard data
+                await loadClientDashboard(db, user);
+                await loadFeaturedProperties(db);
+                
+                console.log('✅ Client dashboard data loaded successfully');
             } catch (error) {
-                console.error('Error loading portfolio data:', error);
+                console.error('❌ Error loading dashboard data:', error);
+                showError('Failed to load dashboard data. Please refresh the page.');
             }
+        });
+        
+        // Load Client Dashboard Data
+        async function loadClientDashboard(db, user) {
+            // Get user's profile
+            const userDoc = await db.collection('users').doc(user.uid).get();
+            const userData = userDoc.data();
+            
+            // Get user's saved/favorite properties
+            const favorites = userData?.favorites || [];
+            document.getElementById('saved-properties').textContent = favorites.length;
+            
+            // Calculate portfolio value (sample based on saved properties)
+            let portfolioValue = 0;
+            if (favorites.length > 0) {
+                // Get first 10 favorites to calculate approximate portfolio value
+                const favoritesSlice = favorites.slice(0, 10);
+                if (favoritesSlice.length > 0) {
+                    const favPropsSnapshot = await db.collection('properties')
+                        .where(firebase.firestore.FieldPath.documentId(), 'in', favoritesSlice)
+                        .get();
+                    
+                    favPropsSnapshot.forEach(doc => {
+                        const data = doc.data();
+                        if (data.price && data.price.list) {
+                            portfolioValue += data.price.list;
+                        }
+                    });
+                }
+            }
+            
+            const portfolioFormatted = '$' + (portfolioValue / 1000).toFixed(0) + 'K';
+            document.getElementById('portfolio-value').textContent = portfolioValue > 0 ? portfolioFormatted : '$0';
+            
+            // Active deals (for now, set to 0 - will implement later)
+            document.getElementById('active-deals').textContent = '0';
+            
+            // Available opportunities (total available properties)
+            const availableSnapshot = await db.collection('properties')
+                .where('status', '==', 'available')
+                .get();
+            document.getElementById('opportunities').textContent = availableSnapshot.size;
         }
         
-        // Navigation functions
+        // Load Featured Properties
+        async function loadFeaturedProperties(db) {
+            const featuredSnapshot = await db.collection('properties')
+                .where('status', '==', 'available')
+                .orderBy('flipEstimate.roi', 'desc')
+                .limit(6)
+                .get();
+            
+            const propertiesGrid = document.getElementById('featured-properties');
+            propertiesGrid.innerHTML = '';
+            
+            if (featuredSnapshot.empty) {
+                propertiesGrid.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: var(--space-xl); color: var(--text-secondary);">
+                        No properties available at the moment
+                    </div>
+                `;
+                return;
+            }
+            
+            featuredSnapshot.forEach(doc => {
+                const data = doc.data();
+                const card = createPropertyCard(doc.id, data);
+                propertiesGrid.appendChild(card);
+            });
+        }
+        
+        // Create Property Card
+        function createPropertyCard(id, data) {
+            const card = document.createElement('div');
+            card.className = 'property-card';
+            card.onclick = () => viewProperty(id);
+            
+            // Format data
+            const price = data.price?.list || 0;
+            const priceFormatted = '$' + price.toLocaleString();
+            
+            const street = data.address?.street || 'N/A';
+            const city = data.address?.city || 'Philadelphia';
+            const state = data.address?.state || 'PA';
+            const zip = data.address?.zip || '';
+            
+            const bedrooms = data.details?.bedrooms || 0;
+            const bathrooms = data.details?.bathrooms || 0;
+            const sqft = data.details?.sqft || 0;
+            
+            const roi = data.flipEstimate?.roi || 0;
+            
+            // Get first image or use placeholder
+            const imageUrl = data.images?.[0]?.url || 'https://images.unsplash.com/photo-1560184897-ae75f418493e?w=400';
+            
+            card.innerHTML = `
+                <img src="${imageUrl}" alt="Property" class="property-image" onerror="this.src='https://images.unsplash.com/photo-1560184897-ae75f418493e?w=400'">
+                <div class="property-details">
+                    <div class="property-price">${priceFormatted}</div>
+                    <div class="property-address">${street}, ${city}, ${state} ${zip}</div>
+                    <div class="property-features">
+                        <span>${bedrooms} beds</span>
+                        <span>${bathrooms} baths</span>
+                        <span>${sqft.toLocaleString()} sqft</span>
+                    </div>
+                    <div class="property-roi">Est. ROI: ${roi.toFixed(1)}%</div>
+                </div>
+            `;
+            
+            return card;
+        }
+        
+        // View Property Details
+        function viewProperty(propertyId) {
+            console.log('Viewing property:', propertyId);
+            window.location.href = `property-detail.html?id=${propertyId}`;
+        }
+        
+        // Navigation Functions
         function showSearchProperties() {
-            console.log('Navigating to property search...');
-            // Will implement property search page
+            window.location.href = 'properties-browse.html';
         }
         
         function showDealAnalyzer() {
-            window.location.href = '/client/deal-analyzer.html';
+            window.location.href = 'deal-analyzer.html';
         }
         
         function showMarketTrends() {
-            console.log('Loading market trends...');
-            // Will implement market trends
+            window.location.href = 'market-trends.html';
         }
         
         function showAgentConnect() {
-            console.log('Opening agent connection...');
-            // Will implement agent connection
+            window.location.href = 'agent-connect.html';
         }
         
-        function viewProperty(propertyId) {
-            console.log('Viewing property:', propertyId);
-            // Will implement property details view
+        // Show Error Message
+        function showError(message) {
+            const errorDiv = document.createElement('div');
+            errorDiv.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: var(--danger);
+                color: white;
+                padding: var(--space-md) var(--space-lg);
+                border-radius: var(--radius-md);
+                box-shadow: var(--shadow-lg);
+                z-index: 9999;
+            `;
+            errorDiv.textContent = message;
+            document.body.appendChild(errorDiv);
+            
+            setTimeout(() => {
+                errorDiv.remove();
+            }, 5000);
         }
         
-        // Logout function
-        async function logout() {
-            try {
-                await sirsiAuth.signOut();
-                window.location.href = '/';
-            } catch (error) {
-                console.error('Logout error:', error);
-            }
-        }
-        
-        // Handle navigation menu clicks
-        document.querySelectorAll('.nav-item').forEach(item => {
-            item.addEventListener('click', (e) => {
-                e.preventDefault();
-                
-                // Remove active class from all items
-                document.querySelectorAll('.nav-item').forEach(nav => {
-                    nav.classList.remove('active');
-                });
-                
-                // Add active class to clicked item
-                item.classList.add('active');
-                
-                // Handle navigation (will implement page switching)
-                const target = item.getAttribute('href').substring(1);
-                console.log('Navigating to:', target);
-            });
+        // Add logout button to header
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                const header = document.querySelector('header');
+                if (header) {
+                    const logoutBtn = document.createElement('button');
+                    logoutBtn.id = 'logout-btn';
+                    logoutBtn.className = 'sm-btn sm-btn-outline';
+                    logoutBtn.innerHTML = '<i class="fas fa-sign-out-alt"></i> Logout';
+                    logoutBtn.style.cssText = 'position: absolute; top: 20px; right: 20px;';
+                    logoutBtn.addEventListener('click', async () => {
+                        if (confirm('Are you sure you want to logout?')) {
+                            await authGuard.signOut();
+                        }
+                    });
+                    header.style.position = 'relative';
+                    header.appendChild(logoutBtn);
+                }
+            }, 500);
         });
-        
-        // Initialize dashboard on page load
-        initializeDashboard();
     </script>
 </body>
 </html>
