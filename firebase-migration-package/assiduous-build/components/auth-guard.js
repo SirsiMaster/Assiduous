@@ -7,9 +7,11 @@
 class AuthGuard {
     constructor(config = {}) {
         this.auth = null;
+        
+        // Dynamic environment detection
+        this.environment = this.detectEnvironment();
+        
         this.config = {
-            loginUrl: '/',
-            unauthorizedUrl: '/unauthorized.html',
             checkInterval: 30000, // Check session every 30 seconds
             sessionTimeout: 3600000, // 1 hour
             ...config
@@ -17,6 +19,23 @@ class AuthGuard {
         
         this.lastActivity = Date.now();
         this.sessionCheckInterval = null;
+    }
+    
+    /**
+     * Detect current environment (staging or production)
+     */
+    detectEnvironment() {
+        const hostname = window.location.hostname;
+        
+        if (hostname.includes('staging')) {
+            return 'staging';
+        } else if (hostname.includes('prod') || hostname === 'assiduousflip.com' || hostname === 'www.assiduousflip.com') {
+            return 'production';
+        } else if (hostname === 'localhost' || hostname === '127.0.0.1') {
+            return 'development';
+        }
+        
+        return 'production'; // default
     }
 
     /**
@@ -230,12 +249,36 @@ class AuthGuard {
     }
 
     /**
-     * Redirect to login page
+     * Handle login requirement - dynamically based on current page
      */
     redirectToLogin() {
         const currentPath = window.location.pathname;
+        
+        // If already on landing page, trigger login modal
+        if (currentPath === '/' || currentPath === '/index.html') {
+            this.triggerLoginModal();
+            return;
+        }
+        
+        // If on a protected page, go to landing page (modals will be available)
         const returnUrl = encodeURIComponent(currentPath);
-        window.location.href = `${this.config.loginUrl}?returnUrl=${returnUrl}`;
+        window.location.href = `/?return=${returnUrl}`;
+    }
+    
+    /**
+     * Trigger the login modal on landing page
+     */
+    triggerLoginModal() {
+        // Try to trigger the existing modal
+        const loginModal = document.getElementById('loginModal');
+        if (loginModal) {
+            loginModal.classList.add('active');
+            return;
+        }
+        
+        // If modal doesn't exist, show a simple prompt
+        alert('Please sign in to continue. You will be redirected to the sign-in page.');
+        window.location.href = '/';
     }
 
     /**
