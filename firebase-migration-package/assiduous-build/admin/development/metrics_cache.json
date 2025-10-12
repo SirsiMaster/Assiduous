@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-10-12T06:08:02.061Z",
+  "lastUpdated": "2025-10-12T06:26:32.877Z",
   "summary": {
     "health": "Good",
     "score": 46,
@@ -104,39 +104,39 @@
     }
   },
   "project": {
-    "totalHours": "164",
+    "totalHours": "166",
     "avgHoursPerDay": "2.6",
-    "totalCost": 24600,
-    "laborCost": 24600,
+    "totalCost": 24900,
+    "laborCost": 24900,
     "toolsCost": 450,
-    "totalCommits": 496,
+    "totalCommits": 503,
     "totalFiles": 38881,
     "activeDays": 63,
     "projectAgeDays": 63,
-    "linesAdded": 9389810,
-    "linesDeleted": 917375,
-    "netLines": 8472435,
-    "velocity": "7.9",
+    "linesAdded": 9389894,
+    "linesDeleted": 917456,
+    "netLines": 8472438,
+    "velocity": "8.0",
     "completionPercentage": 46,
     "actualStartDate": "2025-08-10"
   },
   "today": {
     "date": "2025-10-12",
-    "hours": "13.9",
-    "cost": 2079,
-    "commits": 42,
+    "hours": "16.2",
+    "cost": 2426,
+    "commits": 49,
     "deployments": 0
   },
   "thisWeek": {
-    "hours": "53.5",
-    "cost": 8019,
-    "commits": 162,
+    "hours": "55.8",
+    "cost": 8366,
+    "commits": 169,
     "days": 7
   },
   "thisMonth": {
-    "hours": "59.7",
-    "cost": 8960,
-    "commits": 181
+    "hours": "62.0",
+    "cost": 9306,
+    "commits": 188
   },
   "quality": {
     "testCoverage": {
@@ -170,7 +170,7 @@
       "critical": 0,
       "total": 0
     },
-    "lastAudit": "2025-10-12T06:07:41.320Z",
+    "lastAudit": "2025-10-12T06:26:12.512Z",
     "dependencies": {
       "total": {
         "prod": 192,
@@ -216,14 +216,14 @@
     }
   },
   "deployment": {
-    "lastDeployment": "2025-10-12 01:51:55 -0400",
-    "totalDeployments": 76,
+    "lastDeployment": "2025-10-12 02:25:55 -0400",
+    "totalDeployments": 82,
     "deploymentFrequency": "Weekly",
     "environments": {
       "production": {
         "url": "https://assiduous-prod.web.app",
         "status": "Active",
-        "lastDeploy": "2025-10-12 01:51:55 -0400"
+        "lastDeploy": "2025-10-12 02:25:55 -0400"
       },
       "staging": {
         "url": "https://assiduous-staging.web.app",
@@ -269,12 +269,12 @@
   },
   "productivity": {
     "velocityTrend": "increasing",
-    "weeklyCommits": 162,
+    "weeklyCommits": 169,
     "contributors": {
       "total": 0,
       "active": 0
     },
-    "averageCommitSize": 92,
+    "averageCommitSize": 91,
     "pullRequests": {
       "open": 0,
       "merged": 0,
@@ -347,6 +347,48 @@
   },
   "recentActivity": [
     {
+      "hash": "7bf2997b1761609ba47ce3dc58a831470a50a276",
+      "message": "fix(config): add missing comma in firebase.json",
+      "author": "SirsiMaster",
+      "date": "2025-10-12 02:25:55 -0400"
+    },
+    {
+      "hash": "47a5584d565c4a4958faf4bfbd04f3f406c72659",
+      "message": "fix(config): both staging and prod deploy from same source",
+      "author": "SirsiMaster",
+      "date": "2025-10-12 02:25:12 -0400"
+    },
+    {
+      "hash": "6a697812f23eb4abcdc9240099ae7ab0431aeae5",
+      "message": "fix(ci): correct pipeline flow - main auto-deploys to staging",
+      "author": "SirsiMaster",
+      "date": "2025-10-12 02:14:59 -0400"
+    },
+    {
+      "hash": "be00bcca5dfe37caee6499508f4e6c84537d4a65",
+      "message": "fix(pipeline): separate staging and prod deployments",
+      "author": "SirsiMaster",
+      "date": "2025-10-12 02:12:34 -0400"
+    },
+    {
+      "hash": "1c1cce1333417f2ae803ce2a23b495793d3312f7",
+      "message": "fix(config): add prod hosting target to staging Firebase config",
+      "author": "SirsiMaster",
+      "date": "2025-10-12 02:10:14 -0400"
+    },
+    {
+      "hash": "dbdfa2d68ebb5d79ae14105a5423f8ffa6f19787",
+      "message": "chore: update cache after pipeline fix",
+      "author": "SirsiMaster",
+      "date": "2025-10-12 02:09:18 -0400"
+    },
+    {
+      "hash": "235c093778559e771c99cf15841c556884880f2d",
+      "message": "fix(pipeline): specify --only hosting for staging deployment",
+      "author": "SirsiMaster",
+      "date": "2025-10-12 02:08:53 -0400"
+    },
+    {
       "hash": "473f74ab120e735cbbdbec2e2cf3ba311708a20a",
       "message": "chore: update metrics cache after recent commits",
       "author": "SirsiMaster",
@@ -363,52 +405,10 @@
       "message": "fix(auth): redirect to landing page modal instead of non-existent login.html",
       "author": "SirsiMaster",
       "date": "2025-10-12 02:06:21 -0400"
-    },
-    {
-      "hash": "2995218b0195e4cf62c778e348a5738d998fff94",
-      "message": "chore: update metrics cache",
-      "author": "SirsiMaster",
-      "date": "2025-10-12 01:55:06 -0400"
-    },
-    {
-      "hash": "c8eb4f27d836fe64f1e2685c4c0d08f95e99e798",
-      "message": "chore: configure firebase project aliases for staging and production",
-      "author": "SirsiMaster",
-      "date": "2025-10-12 01:54:15 -0400"
-    },
-    {
-      "hash": "7ca0d625d6928eabbdd6730c3bc46f16d04a0b83",
-      "message": "chore: update changelog and metrics cache after v0.52.0 deployment",
-      "author": "SirsiMaster",
-      "date": "2025-10-12 01:51:55 -0400"
-    },
-    {
-      "hash": "15b2f3659f5f949afbcda9b0ff8be7458d60d203",
-      "message": "feat(auth): add enhanced authentication with username/accountId and pipeline enforcement",
-      "author": "SirsiMaster",
-      "date": "2025-10-12 01:50:29 -0400"
-    },
-    {
-      "hash": "6a434a0a5b1b44e9e0ba2a39d17fd47c684c21d3",
-      "message": "feat: Phase 1 branding fixes + ID generator service",
-      "author": "SirsiMaster",
-      "date": "2025-10-12 01:23:01 -0400"
-    },
-    {
-      "hash": "cd7108a74ed309da120dddf703e6f05364711e16",
-      "message": "fix: Remove orphaned login pages, enforce modal-based auth",
-      "author": "SirsiMaster",
-      "date": "2025-10-12 01:13:36 -0400"
-    },
-    {
-      "hash": "bac187a3c236b6b2e582da9f97b1045aa67baf1e",
-      "message": "feat(staging): Complete infrastructure parity",
-      "author": "SirsiMaster",
-      "date": "2025-10-12 01:01:52 -0400"
     }
   ],
   "automation": {
-    "lastRun": "2025-10-12T06:08:02.061Z",
+    "lastRun": "2025-10-12T06:26:32.877Z",
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",
