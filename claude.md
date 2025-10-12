@@ -1,32 +1,57 @@
 # Claude AI Context for Assiduous Project
 
-## Project Overview
-Assiduous is an AI-powered real estate platform for micro-flipping with multiple user portals (Client, Agent, Admin).
+## CRITICAL: Always Check WARP.md First
+**WARP.md is the authoritative source.** This file supplements it with Claude-specific context.
 
-## Current State (October 10, 2025)
-- **Project Started**: August 10, 2025
-- **Overall Completion**: ~40%
-- **Latest Work**: Unified authentication system and consistent styling across all portals
+## Brutal Reality Check (October 12, 2025)
+- **Project Started**: August 10, 2025 (2 months ago)
+- **Actual Completion**: ~35% (mostly UI, minimal backend integration)
+- **Critical Issue**: Almost nothing has been tested in Firebase staging
+- **Latest Work**: Updated Rule 5 to mandate Firebase staging testing (never local)
 
-## Recent Updates (October 9-10, 2025)
-### Authentication System
-- Implemented unified SirsiAuth component for all portals
-- Created AuthGuard middleware for role-based access control
-- Set up Firebase Authentication with role claims
-- Test accounts created for all user types
+## MANDATORY RULES (Enforced Harshly)
 
-### Portal Development
-- **Admin Portal**: Fully functional with properties, agents, clients management
-- **Agent Portal**: Dashboard implemented with universal auth
-- **Client Portal**: Dashboard and deal analyzer deployed with consistent styling
+### RULE 0: Check SirsiMaster Component Library First
+**Before creating ANY component:**
+- Check `/Users/thekryptodragon/Development/sirsimaster-component-library`
+- Use existing components, don't duplicate
+- Contribute generic components to library, not this project
 
-### Styling Consistency Fix (October 10, 2025)
-- Removed custom purple gradient styling from client portal
-- Implemented universal header component across all dashboards
-- Applied Assiduous design system CSS variables
-- Created comprehensive style guide documentation at `/firebase-migration-package/assiduous-build/docs/STYLE_GUIDE.md`
-- Updated client dashboard.html and deal-analyzer.html to use consistent styling
-- Successfully deployed to production at https://assiduous-prod.web.app
+### RULE 5: NEVER Test Locally - Firebase Staging Only
+**Pipeline**: LOCAL (code only) → GIT → STAGING (Firebase) → PROD (Firebase)
+- ❌ NEVER use `python -m http.server` or local static servers
+- ❌ NEVER claim features work without Firebase staging testing
+- ✅ ALWAYS deploy to staging Firebase first
+- ✅ ALWAYS test with full Firebase backend (Auth, Firestore, Functions)
+- ✅ ONLY deploy to prod after 100% staging validation
+
+### RULE 4: Harsh QA/QC Before Any Completion Claims
+**NEVER say something works without:**
+- Opening in actual browser (staging Firebase)
+- Checking DevTools console for errors
+- Testing complete user workflows end-to-end
+- Verifying Firebase services (Auth, Firestore, Storage)
+- Testing on mobile/responsive view
+
+## What Actually Works (Honest Assessment)
+
+### ✅ Partially Working
+- Basic HTML/CSS structure for portals
+- Firebase SDK loaded in pages
+- Git hooks update local metrics
+- Charts render with Chart.js (mock data only)
+- Some auth UI exists
+
+### ❌ NOT Working / NOT Tested
+- **Firebase staging**: Not configured, never tested there
+- **Real data**: Dashboards use 100% mock data
+- **Firestore integration**: Not connected to real collections
+- **Auth workflows**: Not tested end-to-end in Firebase
+- **User workflows**: None tested in actual Firebase environment
+- **GitHub webhook**: Code exists but not configured in repo
+- **Real-time updates**: Firestore listeners not implemented
+- **Client portal**: Not loading real properties from Firestore
+- **Analytics**: Completely mock data, no real metrics
 
 ## Critical Files & Locations
 
@@ -99,23 +124,46 @@ Assiduous is an AI-powered real estate platform for micro-flipping with multiple
 - **Agent**: agent@assiduous.ai / Agent123!
 - **Client**: client@assiduous.ai / Client123!
 
-## Next Development Priorities
-1. Complete agent portal features (properties, leads, transactions)
-2. Implement client property search and portfolio management
-3. Add micro-flipping deal flow automation
-4. Integrate AI property analysis
-5. Set up payment processing
+## Current Critical Issues
+1. **No staging environment** - Cannot test Firebase features
+2. **Mock data everywhere** - Nothing connected to real Firestore
+3. **Never tested in Firebase** - All features unverified
+4. **GitHub webhook not configured** - Metrics not syncing
+5. **No real user testing** - Workflows untested end-to-end
 
-## Important Notes
-- Always check this file before starting work
-- Update this file after significant changes
-- Verify CSS variable usage in all new code
-- Test across all three portals after changes
-- Deploy to production only after testing
+## Immediate Next Steps (In Order)
+1. Configure Firebase staging project
+2. Deploy current code to staging
+3. Test everything in staging browser with Firebase
+4. Connect dashboards to real Firestore collections
+5. Implement Firestore real-time listeners
+6. Test all auth flows in Firebase
+7. Fix all bugs found in staging
+8. Only then consider production deployment
 
-## Contact
-- Project Lead: SirsiMaster
-- Platform: Assiduous Real Estate
-- Domain: assiduousflip.com / assiduous-prod.web.app
+## Key Metrics (Be Honest)
+- Total Commits: 478
+- Estimated Cost: $23,550
+- Time Spent: 2 months
+- **Actual Working Features**: ~10%
+- **Code Written**: ~70%
+- **Code Tested in Firebase**: 0%
+- **Production-Ready Features**: 0
 
-Last Updated: October 10, 2025 04:58 UTC
+## Firebase Info
+- **Production**: assiduous-prod.web.app
+- **Staging**: NOT CONFIGURED YET
+- **Test Accounts**: Exist but untested in Firebase
+
+## Harsh Assessment Standards
+**When evaluating progress, ALWAYS:**
+- Assume nothing works until tested in Firebase staging
+- Count only features tested end-to-end as "complete"
+- Mock data = NOT complete
+- UI only = NOT complete
+- Code written but not tested = 0% complete
+- Be pessimistic about estimates
+- Report bugs immediately, honestly
+- Never inflate completion percentages
+
+Last Updated: October 12, 2025 03:52 UTC
