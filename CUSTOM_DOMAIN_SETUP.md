@@ -35,35 +35,27 @@ firebase hosting:site:domain:add www.assiduousflip.com --project assiduous-prod
 3. Delete any existing A records for "www"
 4. Add these records:
 
-### A Records (for www subdomain):
+### A Record (for root domain - assiduousflip.com):
+```
+Type: A
+Name: @
+Value: 199.36.158.100
+TTL: 600 (or 1 Hour)
+```
+
+**Note**: Firebase now uses a **single IP address** for custom domains.
+This is the current recommended configuration from Firebase Hosting.
+
+### Optional: WWW Subdomain (www.assiduousflip.com):
+If you want www.assiduousflip.com to also work, add:
 ```
 Type: A
 Name: www
-Value: 151.101.1.195
-TTL: 600
+Value: 199.36.158.100
+TTL: 600 (or 1 Hour)
 ```
 
-```
-Type: A
-Name: www  
-Value: 151.101.65.195
-TTL: 600
-```
-
-### For root domain redirect (assiduousflip.com → www.assiduousflip.com):
-```
-Type: A
-Name: @
-Value: 151.101.1.195
-TTL: 600
-```
-
-```
-Type: A
-Name: @
-Value: 151.101.65.195
-TTL: 600
-```
+**Firebase will automatically handle redirects between root and www domains.**
 
 ### TXT Record (for SSL verification):
 ```
