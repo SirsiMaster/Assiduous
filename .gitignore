@@ -89,3 +89,9 @@ tmp/
 .keys/
 .secrets/
 .secrets-decrypted/
+
+# Service account keys (sensitive)
+firebase-admin-sdk-*.json
+firebase-config-staging.json
+*.temp-open
+
