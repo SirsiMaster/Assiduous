@@ -1,5 +1,8 @@
 {
-  "projects": {},
+  "projects": {
+    "staging": "assiduous-staging",
+    "production": "assiduous-prod"
+  },
   "targets": {
     "assiduous-prod": {
       "hosting": {
