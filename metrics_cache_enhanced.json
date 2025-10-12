@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-10-12T03:54:20.065Z",
+  "lastUpdated": "2025-10-12T04:01:30.113Z",
   "summary": {
     "health": "Good",
     "score": 46,
@@ -109,34 +109,34 @@
     "totalCost": 23700,
     "laborCost": 23700,
     "toolsCost": 450,
-    "totalCommits": 479,
-    "totalFiles": 38854,
+    "totalCommits": 480,
+    "totalFiles": 38855,
     "activeDays": 63,
     "projectAgeDays": 63,
-    "linesAdded": 9379960,
-    "linesDeleted": 914906,
-    "netLines": 8465054,
+    "linesAdded": 9380057,
+    "linesDeleted": 914976,
+    "netLines": 8465081,
     "velocity": "7.6",
     "completionPercentage": 46,
     "actualStartDate": "2025-08-10"
   },
   "today": {
     "date": "2025-10-12",
-    "hours": "8.3",
-    "cost": 1238,
-    "commits": 25,
+    "hours": "8.6",
+    "cost": 1287,
+    "commits": 26,
     "deployments": 0
   },
   "thisWeek": {
-    "hours": "47.9",
-    "cost": 7178,
-    "commits": 145,
+    "hours": "48.2",
+    "cost": 7227,
+    "commits": 146,
     "days": 7
   },
   "thisMonth": {
-    "hours": "54.1",
-    "cost": 8118,
-    "commits": 164
+    "hours": "54.5",
+    "cost": 8168,
+    "commits": 165
   },
   "quality": {
     "testCoverage": {
@@ -170,7 +170,7 @@
       "critical": 0,
       "total": 0
     },
-    "lastAudit": "2025-10-12T03:53:59.411Z",
+    "lastAudit": "2025-10-12T04:01:09.408Z",
     "dependencies": {
       "total": {
         "prod": 192,
@@ -216,14 +216,14 @@
     }
   },
   "deployment": {
-    "lastDeployment": "2025-10-11 23:47:30 -0400",
-    "totalDeployments": 68,
+    "lastDeployment": "2025-10-12 00:00:51 -0400",
+    "totalDeployments": 69,
     "deploymentFrequency": "Weekly",
     "environments": {
       "production": {
         "url": "https://assiduous-prod.web.app",
         "status": "Active",
-        "lastDeploy": "2025-10-11 23:47:30 -0400"
+        "lastDeploy": "2025-10-12 00:00:51 -0400"
       },
       "staging": {
         "url": "https://assiduous-staging.web.app",
@@ -269,7 +269,7 @@
   },
   "productivity": {
     "velocityTrend": "increasing",
-    "weeklyCommits": 145,
+    "weeklyCommits": 146,
     "contributors": {
       "total": 0,
       "active": 0
@@ -347,6 +347,12 @@
   },
   "recentActivity": [
     {
+      "hash": "41cc1fbcf88f8435e7ef5da1fcd62e2c3d4accf2",
+      "message": "fix(staging): configure Firebase staging environment and auto-detect",
+      "author": "SirsiMaster",
+      "date": "2025-10-12 00:00:51 -0400"
+    },
+    {
       "hash": "b00d7f6e29dfa9c88f38d4d4145a2707e5ee299a",
       "message": "docs(reality): brutal honesty pass - sync WARP.md and claude.md",
       "author": "SirsiMaster",
@@ -399,16 +405,10 @@
       "message": "docs: add Day 3 authentication implementation documentation",
       "author": "SirsiMaster",
       "date": "2025-10-11 22:48:45 -0400"
-    },
-    {
-      "hash": "812e5770edfab98d3ee75a5ec22eecd3d02ddc71",
-      "message": "feat(auth): implement Firebase authentication system",
-      "author": "SirsiMaster",
-      "date": "2025-10-11 22:39:52 -0400"
     }
   ],
   "automation": {
-    "lastRun": "2025-10-12T03:54:20.065Z",
+    "lastRun": "2025-10-12T04:01:30.113Z",
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",
