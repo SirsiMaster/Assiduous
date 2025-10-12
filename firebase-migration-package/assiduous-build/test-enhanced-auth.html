@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced Auth Testing | Assiduous</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: white;
+            font-size: 42px;
+            margin-bottom: 16px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .subtitle {
+            text-align: center;
+            color: rgba(255,255,255,0.9);
+            font-size: 18px;
+            margin-bottom: 40px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 28px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .card h2 {
+            font-size: 24px;
+            color: #1e293b;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .card p {
+            color: #64748b;
+            margin-bottom: 24px;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #334155;
+            margin-bottom: 6px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 15px;
+            transition: border-color 0.2s;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #3b82f6;
+        }
+
+        .helper-text {
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 4px;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(59, 130, 246, 0.4);
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .success {
+            background: #ecfdf5;
+            color: #065f46;
+            border: 1px solid #a7f3d0;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 16px;
+            display: none;
+        }
+
+        .error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fca5a5;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 16px;
+            display: none;
+        }
+
+        .info {
+            background: #dbeafe;
+            color: #1e40af;
+            border: 1px solid #93c5fd;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 16px;
+        }
+
+        .result-box {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 16px;
+            margin-top: 16px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            white-space: pre-wrap;
+            word-break: break-all;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            background: #f1f5f9;
+            color: #475569;
+            border-radius: 100px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .badge.success {
+            background: #dcfce7;
+            color: #166534;
+            border: 1px solid #bbf7d0;
+        }
+
+        .badge.error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fca5a5;
+        }
+
+        .icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .icon-register {
+            background: linear-gradient(135deg, #ec4899, #f43f5e);
+        }
+
+        .icon-login {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+        }
+
+        .icon-profile {
+            background: linear-gradient(135deg, #8b5cf6, #a855f7);
+        }
+
+        .icon-collection {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+
+        .logs {
+            background: #0f172a;
+            color: #e2e8f0;
+            border-radius: 10px;
+            padding: 16px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            max-height: 400px;
+            overflow-y: auto;
+            margin-top: 24px;
+        }
+
+        .log-entry {
+            margin-bottom: 8px;
+            padding: 8px;
+            border-left: 3px solid #475569;
+            padding-left: 12px;
+        }
+
+        .log-entry.success {
+            border-left-color: #10b981;
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .log-entry.error {
+            border-left-color: #ef4444;
+            background: rgba(239, 68, 68, 0.1);
+        }
+
+        .log-entry.info {
+            border-left-color: #3b82f6;
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        .timestamp {
+            color: #94a3b8;
+            font-size: 11px;
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔐 Enhanced Authentication Tester</h1>
+        <p class="subtitle">Test email, username, and account ID authentication</p>
+
+        <div class="grid">
+            <!-- Registration Card -->
+            <div class="card">
+                <h2>
+                    <span class="icon icon-register">👤</span>
+                    Register Account
+                </h2>
+                <p>Create a new account with optional username</p>
+
+                <div class="success" id="registerSuccess"></div>
+                <div class="error" id="registerError"></div>
+
+                <form id="registerForm">
+                    <div class="form-group">
+                        <label>First Name *</label>
+                        <input type="text" id="regFirstName" required placeholder="John">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Last Name *</label>
+                        <input type="text" id="regLastName" required placeholder="Doe">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Email Address *</label>
+                        <input type="email" id="regEmail" required placeholder="john@example.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Username (Optional)</label>
+                        <input type="text" id="regUsername" placeholder="johndoe123" 
+                               pattern="[a-zA-Z0-9_-]+" minlength="3" maxlength="30">
+                        <div class="helper-text">Letters, numbers, underscores, and hyphens only</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Password *</label>
+                        <input type="password" id="regPassword" required placeholder="Min 6 characters" minlength="6">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Role *</label>
+                        <select id="regRole" required>
+                            <option value="client">Client (Investor)</option>
+                            <option value="agent">Real Estate Agent</option>
+                            <option value="investor">Accredited Investor</option>
+                        </select>
+                    </div>
+
+                    <button type="submit">Create Account</button>
+                </form>
+
+                <div class="result-box" id="registerResult" style="display: none;"></div>
+            </div>
+
+            <!-- Login Card -->
+            <div class="card">
+                <h2>
+                    <span class="icon icon-login">🔑</span>
+                    Login
+                </h2>
+                <p>Sign in with email, username, or account ID</p>
+
+                <div class="success" id="loginSuccess"></div>
+                <div class="error" id="loginError"></div>
+
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label>Email / Username / Account ID *</label>
+                        <input type="text" id="loginIdentifier" required 
+                               placeholder="john@example.com or johndoe123 or ACCT-2025-000001">
+                        <div class="helper-text">You can use any of: email, username, or account ID</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Password *</label>
+                        <input type="password" id="loginPassword" required placeholder="Your password">
+                    </div>
+
+                    <button type="submit">Sign In</button>
+                </form>
+
+                <div class="result-box" id="loginResult" style="display: none;"></div>
+            </div>
+
+            <!-- Current User Card -->
+            <div class="card">
+                <h2>
+                    <span class="icon icon-profile">👨‍💼</span>
+                    Current User
+                </h2>
+                <p>View currently authenticated user profile</p>
+
+                <div class="info" id="currentUserStatus">
+                    <strong>Status:</strong> <span id="authStatus">Not authenticated</span>
+                </div>
+
+                <button onclick="refreshCurrentUser()">Refresh User Info</button>
+                <button onclick="logoutUser()" style="margin-top: 12px; background: linear-gradient(135deg, #ef4444, #dc2626);">Logout</button>
+
+                <div class="result-box" id="currentUserResult" style="display: none;"></div>
+            </div>
+
+            <!-- Firestore Collections Viewer -->
+            <div class="card">
+                <h2>
+                    <span class="icon icon-collection">📊</span>
+                    Firestore Collections
+                </h2>
+                <p>View user data, usernames, and account IDs</p>
+
+                <div class="form-group">
+                    <label>Collection</label>
+                    <select id="collectionSelect">
+                        <option value="users">users</option>
+                        <option value="usernames">usernames</option>
+                        <option value="accountIds">accountIds</option>
+                    </select>
+                </div>
+
+                <button onclick="viewCollection()">View Collection</button>
+
+                <div class="result-box" id="collectionResult" style="display: none;"></div>
+            </div>
+        </div>
+
+        <!-- Activity Logs -->
+        <div class="card full-width">
+            <h2>📋 Activity Logs</h2>
+            <div class="logs" id="activityLogs"></div>
+            <button onclick="clearLogs()" style="margin-top: 16px; background: #64748b;">Clear Logs</button>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    
+    <!-- Firebase Config -->
+    <script src="/firebase-config.js"></script>
+    
+    <!-- Services -->
+    <script src="/assets/js/services/id-generator.js"></script>
+    <script src="/assets/js/services/enhanced-auth.js"></script>
+
+    <script>
+        // Activity Logger
+        const logs = [];
+
+        function addLog(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            logs.unshift({ timestamp, message, type });
+            
+            const logsContainer = document.getElementById('activityLogs');
+            const logEntry = document.createElement('div');
+            logEntry.className = `log-entry ${type}`;
+            logEntry.innerHTML = `<span class="timestamp">[${timestamp}]</span> ${message}`;
+            logsContainer.prepend(logEntry);
+            
+            console.log(`[${type.toUpperCase()}]`, message);
+        }
+
+        function clearLogs() {
+            document.getElementById('activityLogs').innerHTML = '';
+            addLog('Logs cleared', 'info');
+        }
+
+        // Registration Handler
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const successEl = document.getElementById('registerSuccess');
+            const errorEl = document.getElementById('registerError');
+            const resultEl = document.getElementById('registerResult');
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            
+            successEl.style.display = 'none';
+            errorEl.style.display = 'none';
+            resultEl.style.display = 'none';
+            
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Creating account...';
+            submitBtn.disabled = true;
+            
+            try {
+                const userData = {
+                    email: document.getElementById('regEmail').value,
+                    password: document.getElementById('regPassword').value,
+                    username: document.getElementById('regUsername').value.trim() || null,
+                    firstName: document.getElementById('regFirstName').value,
+                    lastName: document.getElementById('regLastName').value,
+                    role: document.getElementById('regRole').value
+                };
+                
+                addLog(`Attempting to register: ${userData.email}${userData.username ? ' (username: ' + userData.username + ')' : ''}`, 'info');
+                
+                const result = await enhancedAuth.register(userData);
+                
+                successEl.textContent = `✅ Account created successfully! UID: ${result.uid.substring(0, 8)}... | Account ID: ${result.accountId}`;
+                successEl.style.display = 'block';
+                
+                resultEl.textContent = JSON.stringify(result, null, 2);
+                resultEl.style.display = 'block';
+                
+                addLog(`✅ Registration successful: ${result.accountId}`, 'success');
+                
+                e.target.reset();
+                refreshCurrentUser();
+                
+            } catch (error) {
+                errorEl.textContent = `❌ ${error.message}`;
+                errorEl.style.display = 'block';
+                addLog(`❌ Registration failed: ${error.message}`, 'error');
+            } finally {
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            }
+        });
+
+        // Login Handler
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const successEl = document.getElementById('loginSuccess');
+            const errorEl = document.getElementById('loginError');
+            const resultEl = document.getElementById('loginResult');
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            
+            successEl.style.display = 'none';
+            errorEl.style.display = 'none';
+            resultEl.style.display = 'none';
+            
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Signing in...';
+            submitBtn.disabled = true;
+            
+            try {
+                const identifier = document.getElementById('loginIdentifier').value.trim();
+                const password = document.getElementById('loginPassword').value;
+                
+                addLog(`Attempting login with identifier: ${identifier}`, 'info');
+                
+                const userCredential = await enhancedAuth.login(identifier, password);
+                const user = userCredential.user;
+                
+                // Get full profile
+                const profile = await enhancedAuth.getUserProfile(user.uid);
+                
+                successEl.textContent = `✅ Login successful! Welcome ${profile.firstName} ${profile.lastName}`;
+                successEl.style.display = 'block';
+                
+                resultEl.textContent = JSON.stringify({
+                    uid: user.uid,
+                    email: user.email,
+                    accountId: profile.accountId,
+                    username: profile.username,
+                    role: profile.role
+                }, null, 2);
+                resultEl.style.display = 'block';
+                
+                addLog(`✅ Login successful: ${profile.email} (${profile.accountId})`, 'success');
+                
+                refreshCurrentUser();
+                
+            } catch (error) {
+                errorEl.textContent = `❌ ${error.message}`;
+                errorEl.style.display = 'block';
+                addLog(`❌ Login failed: ${error.message}`, 'error');
+            } finally {
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            }
+        });
+
+        // Current User
+        async function refreshCurrentUser() {
+            const statusEl = document.getElementById('authStatus');
+            const resultEl = document.getElementById('currentUserResult');
+            
+            try {
+                const currentUser = enhancedAuth.getCurrentUser();
+                
+                if (currentUser) {
+                    const profile = await enhancedAuth.getUserProfile(currentUser.uid);
+                    
+                    statusEl.innerHTML = `✅ Authenticated as <strong>${profile.firstName} ${profile.lastName}</strong>`;
+                    
+                    resultEl.textContent = JSON.stringify({
+                        uid: currentUser.uid,
+                        email: currentUser.email,
+                        emailVerified: currentUser.emailVerified,
+                        accountId: profile.accountId,
+                        username: profile.username,
+                        role: profile.role,
+                        createdAt: profile.createdAt
+                    }, null, 2);
+                    resultEl.style.display = 'block';
+                    
+                    addLog(`Current user: ${profile.email} (${profile.accountId})`, 'info');
+                } else {
+                    statusEl.textContent = '❌ Not authenticated';
+                    resultEl.style.display = 'none';
+                    addLog('No user currently authenticated', 'info');
+                }
+            } catch (error) {
+                statusEl.textContent = `❌ Error: ${error.message}`;
+                addLog(`Error fetching current user: ${error.message}`, 'error');
+            }
+        }
+
+        // Logout
+        async function logoutUser() {
+            try {
+                await enhancedAuth.logout();
+                addLog('✅ Logged out successfully', 'success');
+                refreshCurrentUser();
+            } catch (error) {
+                addLog(`❌ Logout failed: ${error.message}`, 'error');
+            }
+        }
+
+        // View Collections
+        async function viewCollection() {
+            const collection = document.getElementById('collectionSelect').value;
+            const resultEl = document.getElementById('collectionResult');
+            
+            try {
+                addLog(`Fetching collection: ${collection}`, 'info');
+                
+                const snapshot = await firebase.firestore().collection(collection).limit(10).get();
+                
+                const docs = [];
+                snapshot.forEach(doc => {
+                    docs.push({ id: doc.id, ...doc.data() });
+                });
+                
+                resultEl.textContent = JSON.stringify(docs, null, 2);
+                resultEl.style.display = 'block';
+                
+                addLog(`✅ Fetched ${docs.length} documents from ${collection}`, 'success');
+            } catch (error) {
+                resultEl.textContent = `Error: ${error.message}`;
+                resultEl.style.display = 'block';
+                addLog(`❌ Failed to fetch ${collection}: ${error.message}`, 'error');
+            }
+        }
+
+        // Initialize
+        window.addEventListener('load', () => {
+            addLog('🚀 Enhanced Auth Tester loaded', 'success');
+            refreshCurrentUser();
+        });
+
+        // Listen for auth state changes
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+                addLog(`🔄 Auth state changed: User logged in (${user.email})`, 'info');
+            } else {
+                addLog('🔄 Auth state changed: User logged out', 'info');
+            }
+        });
+    </script>
+</body>
+</html>

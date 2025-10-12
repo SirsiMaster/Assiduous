@@ -1,0 +1,36 @@
+#!/bin/bash
+
+##############################################################################
+# PRE-COMMIT HOOK: Pipeline Enforcement
+# This hook ensures commits follow the pipeline rules
+##############################################################################
+
+# Colors
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m'
+
+echo -e "${GREEN}✅${NC} Pre-commit: Pipeline enforcement check"
+
+# Check if we're in the assiduous project
+if [[ ! -f ".pipeline-state.json" ]]; then
+    echo -e "${YELLOW}⚠${NC} Warning: .pipeline-state.json not found"
+    echo -e "${YELLOW}⚠${NC} Pipeline enforcement may not be active"
+fi
+
+# Check for direct modifications to production build without going through pipeline
+if git diff --cached --name-only | grep -q "firebase-migration-package/assiduous-build/"; then
+    echo -e "${YELLOW}⚠${NC} Warning: You're modifying production build files"
+    echo -e "${YELLOW}⚠${NC} Remember: After commit, you MUST:"
+    echo "    1. Push to GitHub"
+    echo "    2. Deploy to STAGING"
+    echo "    3. Test in STAGING"
+    echo "    4. Only then deploy to PRODUCTION"
+fi
+
+# Reminder about pipeline
+echo -e "${GREEN}ℹ${NC} Pipeline: LOCAL → GITHUB → STAGING → PRODUCTION"
+echo -e "${GREEN}ℹ${NC} After pushing, run: ./scripts/enforce-pipeline.sh deploy-staging"
+
+exit 0

@@ -1,0 +1,312 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // ===================================================================
+    // HELPER FUNCTIONS
+    // ===================================================================
+    
+    // Check if user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    // Check if user is owner of the document
+    function isOwner(uid) {
+      return isAuthenticated() && request.auth.uid == uid;
+    }
+    
+    // Check if user has a specific role
+    function hasRole(role) {
+      return isAuthenticated() && 
+             get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == role;
+    }
+    
+    // Check if user is admin
+    function isAdmin() {
+      return hasRole('admin');
+    }
+    
+    // Check if user is agent
+    function isAgent() {
+      return hasRole('agent');
+    }
+    
+    // Validate email format
+    function isValidEmail(email) {
+      return email.matches('.*@.*\\..*');
+    }
+    
+    // Validate username format (3-30 chars, alphanumeric + underscore/hyphen)
+    function isValidUsername(username) {
+      return username.size() >= 3 && 
+             username.size() <= 30 && 
+             username.matches('[a-zA-Z0-9_-]+');
+    }
+    
+    // Validate account ID format (ACCT-YYYY-NNNNNN)
+    function isValidAccountId(accountId) {
+      return accountId.matches('ACCT-[0-9]{4}-[0-9]{6}');
+    }
+    
+    // Check if account status is active
+    function isActiveAccount(uid) {
+      return get(/databases/$(database)/documents/users/$(uid)).data.accountStatus == 'active';
+    }
+    
+    // ===================================================================
+    // USERS COLLECTION
+    // ===================================================================
+    
+    match /users/{userId} {
+      // Anyone can create their own user document during signup
+      allow create: if isAuthenticated() && 
+                       request.auth.uid == userId &&
+                       request.resource.data.uid == userId &&
+                       isValidEmail(request.resource.data.email) &&
+                       isValidAccountId(request.resource.data.accountId) &&
+                       // Username is optional but must be valid if provided
+                       (request.resource.data.username == null || 
+                        isValidUsername(request.resource.data.username)) &&
+                       // Required fields must be present
+                       request.resource.data.keys().hasAll([
+                         'uid', 'email', 'accountId', 'role', 
+                         'firstName', 'lastName', 'createdAt'
+                       ]) &&
+                       // Role must be valid
+                       request.resource.data.role in ['client', 'agent', 'investor', 'admin'];
+      
+      // Users can read their own profile
+      // Admins can read any profile
+      allow read: if isOwner(userId) || isAdmin();
+      
+      // Users can update their own profile (but not critical fields)
+      allow update: if isOwner(userId) &&
+                       // Cannot change these critical fields
+                       request.resource.data.uid == resource.data.uid &&
+                       request.resource.data.email == resource.data.email &&
+                       request.resource.data.accountId == resource.data.accountId &&
+                       request.resource.data.createdAt == resource.data.createdAt &&
+                       // Username can only be changed if it was null before (set once)
+                       (resource.data.username == null || 
+                        request.resource.data.username == resource.data.username);
+      
+      // Admins can update any user
+      allow update: if isAdmin();
+      
+      // Only admins can delete users
+      allow delete: if isAdmin();
+    }
+    
+    // ===================================================================
+    // USERNAMES COLLECTION (Username → UID Lookup)
+    // ===================================================================
+    
+    match /usernames/{username} {
+      // Anyone can create a username reservation during signup
+      allow create: if isAuthenticated() &&
+                       isValidUsername(username) &&
+                       request.resource.data.username.lower() == username &&
+                       request.resource.data.uid is string &&
+                       isValidAccountId(request.resource.data.accountId);
+      
+      // Anyone can read usernames (needed for login lookup)
+      // This is safe because it only exposes the mapping, not sensitive data
+      allow read: if true;
+      
+      // Users cannot update their username once set
+      // Only admins can update (for moderation purposes)
+      allow update: if isAdmin();
+      
+      // Users cannot delete their username
+      // Only admins can delete (for moderation purposes)
+      allow delete: if isAdmin();
+    }
+    
+    // ===================================================================
+    // ACCOUNT IDS COLLECTION (AccountID → UID Lookup)
+    // ===================================================================
+    
+    match /accountIds/{accountId} {
+      // Anyone can create an account ID mapping during signup
+      allow create: if isAuthenticated() &&
+                       isValidAccountId(accountId) &&
+                       request.resource.data.accountId == accountId &&
+                       request.resource.data.uid is string &&
+                       isValidEmail(request.resource.data.email);
+      
+      // Anyone can read account IDs (needed for login lookup)
+      // This is safe because it only exposes the mapping, not sensitive data
+      allow read: if true;
+      
+      // Account IDs cannot be updated once created
+      allow update: if false;
+      
+      // Only admins can delete account IDs
+      allow delete: if isAdmin();
+    }
+    
+    // ===================================================================
+    // PROPERTIES COLLECTION
+    // ===================================================================
+    
+    match /properties/{propertyId} {
+      // Anyone can read properties (public listings)
+      allow read: if true;
+      
+      // Agents and admins can create properties
+      allow create: if isAgent() || isAdmin();
+      
+      // Agents can update their own properties, admins can update any
+      allow update: if (isAgent() && resource.data.agentId == request.auth.uid) || isAdmin();
+      
+      // Only admins can delete properties
+      allow delete: if isAdmin();
+    }
+    
+    // ===================================================================
+    // TRANSACTIONS COLLECTION
+    // ===================================================================
+    
+    match /transactions/{transactionId} {
+      // Users can read their own transactions, agents can read their deals, admins can read all
+      allow read: if isAuthenticated() && (
+                       resource.data.buyerId == request.auth.uid ||
+                       resource.data.sellerId == request.auth.uid ||
+                       resource.data.agentId == request.auth.uid ||
+                       isAdmin()
+                     );
+      
+      // Agents and clients can create transactions
+      allow create: if isAuthenticated() && 
+                       (isAgent() || hasRole('client')) &&
+                       request.resource.data.createdAt == request.time;
+      
+      // Participants can update transactions, admins can update any
+      allow update: if isAuthenticated() && (
+                       resource.data.buyerId == request.auth.uid ||
+                       resource.data.sellerId == request.auth.uid ||
+                       resource.data.agentId == request.auth.uid ||
+                       isAdmin()
+                     );
+      
+      // Only admins can delete transactions
+      allow delete: if isAdmin();
+    }
+    
+    // ===================================================================
+    // MESSAGES COLLECTION
+    // ===================================================================
+    
+    match /messages/{messageId} {
+      // Users can read messages they sent or received
+      allow read: if isAuthenticated() && (
+                       resource.data.senderId == request.auth.uid ||
+                       resource.data.recipientId == request.auth.uid ||
+                       isAdmin()
+                     );
+      
+      // Authenticated users can create messages
+      allow create: if isAuthenticated() &&
+                       request.resource.data.senderId == request.auth.uid &&
+                       request.resource.data.createdAt == request.time;
+      
+      // Users cannot update messages once sent
+      allow update: if false;
+      
+      // Users can delete their own messages, admins can delete any
+      allow delete: if isAuthenticated() && (
+                       resource.data.senderId == request.auth.uid ||
+                       isAdmin()
+                     );
+    }
+    
+    // ===================================================================
+    // NOTIFICATIONS COLLECTION
+    // ===================================================================
+    
+    match /notifications/{notificationId} {
+      // Users can read their own notifications, admins can read all
+      allow read: if isAuthenticated() && (
+                       resource.data.userId == request.auth.uid ||
+                       isAdmin()
+                     );
+      
+      // System or admins can create notifications
+      allow create: if isAdmin();
+      
+      // Users can mark their notifications as read
+      allow update: if isAuthenticated() && 
+                       resource.data.userId == request.auth.uid &&
+                       request.resource.data.diff(resource.data).affectedKeys().hasOnly(['read', 'readAt']);
+      
+      // Users can delete their own notifications, admins can delete any
+      allow delete: if isAuthenticated() && (
+                       resource.data.userId == request.auth.uid ||
+                       isAdmin()
+                     );
+    }
+    
+    // ===================================================================
+    // SAVED PROPERTIES COLLECTION
+    // ===================================================================
+    
+    match /savedProperties/{savedPropertyId} {
+      // Users can read their own saved properties
+      allow read: if isAuthenticated() && resource.data.userId == request.auth.uid;
+      
+      // Users can save properties
+      allow create: if isAuthenticated() && 
+                       request.resource.data.userId == request.auth.uid &&
+                       request.resource.data.savedAt == request.time;
+      
+      // Users can update their saved properties (notes, tags, etc.)
+      allow update: if isAuthenticated() && resource.data.userId == request.auth.uid;
+      
+      // Users can delete their saved properties
+      allow delete: if isAuthenticated() && resource.data.userId == request.auth.uid;
+    }
+    
+    // ===================================================================
+    // VIEWINGS/APPOINTMENTS COLLECTION
+    // ===================================================================
+    
+    match /viewings/{viewingId} {
+      // Users can read viewings they're involved in
+      allow read: if isAuthenticated() && (
+                       resource.data.clientId == request.auth.uid ||
+                       resource.data.agentId == request.auth.uid ||
+                       isAdmin()
+                     );
+      
+      // Clients can request viewings
+      allow create: if isAuthenticated() && 
+                       request.resource.data.clientId == request.auth.uid &&
+                       request.resource.data.scheduledAt == request.time;
+      
+      // Participants can update viewing status
+      allow update: if isAuthenticated() && (
+                       resource.data.clientId == request.auth.uid ||
+                       resource.data.agentId == request.auth.uid ||
+                       isAdmin()
+                     );
+      
+      // Only participants can delete viewings
+      allow delete: if isAuthenticated() && (
+                       resource.data.clientId == request.auth.uid ||
+                       resource.data.agentId == request.auth.uid ||
+                       isAdmin()
+                     );
+    }
+    
+    // ===================================================================
+    // DEFAULT DENY ALL
+    // ===================================================================
+    
+    // Any collection not explicitly defined above is denied by default
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

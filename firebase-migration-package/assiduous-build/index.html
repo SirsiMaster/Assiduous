@@ -956,6 +956,10 @@
                     <input id="signupLastName" type="text" required placeholder="Last name" style="padding: 14px 16px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 15px;">
                 </div>
                 <input id="signupEmail" type="email" required placeholder="Email address" style="padding: 14px 16px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 15px;">
+                <div style="position: relative;">
+                    <input id="signupUsername" type="text" placeholder="Username (optional)" minlength="3" maxlength="30" pattern="[a-zA-Z0-9_-]+" style="padding: 14px 16px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 15px; width: 100%;">
+                    <small style="color: #64748b; font-size: 12px; display: block; margin-top: 4px;">Choose a unique username (letters, numbers, _ or - only)</small>
+                </div>
                 <input id="signupPassword" type="password" required placeholder="Password (min 8 chars)" style="padding: 14px 16px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 15px;">
                 <select id="signupRole" required style="padding: 14px 16px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 15px; background: white;">
                     <option value="">Select your role</option>
@@ -999,7 +1003,10 @@
             <div id="loginSuccess" style="display: none; margin-bottom: 12px; padding: 12px; background: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0; border-radius: 8px;"></div>
             
             <form id="loginForm" style="display: grid; gap: 12px;">
-                <input id="loginEmail" type="email" required placeholder="Email address" style="padding: 14px 16px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 15px;">
+                <div style="position: relative;">
+                    <input id="loginEmail" type="text" required placeholder="Email, Username, or Account ID" style="padding: 14px 16px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 15px; width: 100%;">
+                    <small style="color: #64748b; font-size: 12px; display: block; margin-top: 4px;">Enter your email, username, or account ID (ACCT-YYYY-NNNNNN)</small>
+                </div>
                 <input id="loginPassword" type="password" required placeholder="Password" style="padding: 14px 16px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 15px;">
                 <div style="display: flex; align-items: center; gap: 8px;">
                     <input type="checkbox" id="rememberMe" style="width: auto;">
@@ -1793,6 +1800,7 @@
                     
                     // Get form values
                     const email = document.getElementById('signupEmail').value;
+                    const username = document.getElementById('signupUsername').value.trim();
                     const password = document.getElementById('signupPassword').value;
                     const firstName = document.getElementById('signupFirstName').value;
                     const lastName = document.getElementById('signupLastName').value;
@@ -1818,43 +1826,36 @@
                             throw new Error('Firebase not initialized. Please refresh the page.');
                         }
                         
-                        // Create user account
-                        const userCredential = await window.firebaseAuth.createUserWithEmailAndPassword(email, password);
-                        const user = userCredential.user;
+                        // Wait for enhancedAuth to be ready
+                        if (typeof enhancedAuth === 'undefined') {
+                            throw new Error('Enhanced authentication service not loaded. Please refresh the page.');
+                        }
                         
-                        // Prepare user data
+                        // Prepare user data for enhanced auth
                         const userData = {
                             email: email,
+                            password: password,
+                            username: username || null, // Optional username
                             firstName: firstName,
                             lastName: lastName,
-                            displayName: `${firstName} ${lastName}`,
-                            role: role,
-                            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                            updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
-                            profileComplete: role !== 'agent', // Agents need approval
-                            emailVerified: false
+                            role: role
                         };
                         
                         // Add agent-specific fields
                         if (role === 'agent') {
-                            userData.agentInfo = {
-                                status: 'pending_approval',
-                                licenseNumber: document.getElementById('signupLicenseNumber')?.value || '',
-                                licenseState: document.getElementById('signupLicenseState')?.value || '',
-                                brokerageName: document.getElementById('signupBrokerageName')?.value || '',
-                                appliedAt: firebase.firestore.FieldValue.serverTimestamp()
-                            };
+                            userData.licenseNumber = document.getElementById('signupLicenseNumber')?.value || '';
+                            userData.licenseState = document.getElementById('signupLicenseState')?.value || '';
+                            userData.brokerageName = document.getElementById('signupBrokerageName')?.value || '';
                         }
                         
-                        // Store user data in Firestore
-                        await window.firebaseDb.collection('users').doc(user.uid).set(userData);
+                        // Register user with enhanced auth (includes accountId generation)
+                        const result = await enhancedAuth.register(userData);
                         
-                        // Update Firebase Auth profile
-                        await user.updateProfile({
-                            displayName: userData.displayName
-                        });
-                        
-                        console.log('[Signup] User created successfully:', user.uid);
+                        console.log('[Signup] User created successfully:', result.uid);
+                        console.log('[Signup] Account ID:', result.accountId);
+                        if (result.username) {
+                            console.log('[Signup] Username:', result.username);
+                        }
                         
                         // Show success message
                         success.style.display = 'block';
@@ -1927,7 +1928,7 @@
                     e.preventDefault();
                     
                     // Get form values
-                    const email = document.getElementById('loginEmail').value;
+                    const identifier = document.getElementById('loginEmail').value.trim(); // Can be email, username, or accountId
                     const password = document.getElementById('loginPassword').value;
                     const rememberMe = document.getElementById('rememberMe')?.checked || false;
                     
@@ -1944,8 +1945,13 @@
                             throw new Error('Firebase not initialized. Please refresh the page.');
                         }
                         
-                        // Sign in with Firebase Auth
-                        const userCredential = await window.firebaseAuth.signInWithEmailAndPassword(email, password);
+                        // Wait for enhancedAuth to be ready
+                        if (typeof enhancedAuth === 'undefined') {
+                            throw new Error('Enhanced authentication service not loaded. Please refresh the page.');
+                        }
+                        
+                        // Sign in using enhanced auth (supports email/username/accountId)
+                        const userCredential = await enhancedAuth.login(identifier, password);
                         const user = userCredential.user;
                         
                         console.log('[Login] User signed in:', user.uid);
@@ -2178,6 +2184,12 @@
     
     <!-- Firebase Configuration - Depends on SDK above -->
     <script src="/firebase-config.js"></script>
+    
+    <!-- ID Generator Service - Required by Enhanced Auth -->
+    <script src="/assets/js/services/id-generator.js"></script>
+    
+    <!-- Enhanced Authentication Service - Supports username & accountId -->
+    <script src="/assets/js/services/enhanced-auth.js"></script>
     
     <!-- Authentication Components - Depend on firebase-config.js -->
     <script src="/components/sirsi-auth.js"></script>
