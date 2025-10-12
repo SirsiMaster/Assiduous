@@ -29,38 +29,54 @@ function initializeFirebase() {
     try {
         // Check if Firebase is loaded
         if (typeof firebase === 'undefined') {
-            console.error('Firebase SDK not loaded. Please include Firebase scripts.');
+            console.error('[Firebase] ❌ SDK not loaded. Please include Firebase scripts.');
             return false;
         }
 
         // Initialize app
         app = firebase.initializeApp(firebaseConfig);
+        console.log('[Firebase] ✓ App initialized');
         
         // Initialize services
         auth = firebase.auth();
         db = firebase.firestore();
         storage = firebase.storage();
         
+        // Export to window immediately
+        window.firebaseApp = app;
+        window.firebaseAuth = auth;
+        window.firebaseDb = db;
+        window.firebaseStorage = storage;
+        
+        console.log('[Firebase] ✓ Services initialized (auth, db, storage)');
+        
         // Initialize Analytics if available
         if (firebase.analytics) {
             analytics = firebase.analytics();
+            window.firebaseAnalytics = analytics;
         }
         
         // Enable offline persistence for Firestore
-        db.enablePersistence()
+        db.enablePersistence({ synchronizeTabs: true })
+            .then(() => console.log('[Firebase] ✓ Offline persistence enabled'))
             .catch((err) => {
                 if (err.code == 'failed-precondition') {
-                    console.warn('Multiple tabs open, persistence can only be enabled in one tab at a time.');
+                    console.warn('[Firebase] Multiple tabs open, persistence enabled in first tab only');
                 } else if (err.code == 'unimplemented') {
-                    console.warn('The current browser does not support offline persistence');
+                    console.warn('[Firebase] Browser doesn\'t support offline persistence');
                 }
             });
         
-        console.log('Firebase initialized successfully');
+        // Dispatch firebase-ready event for dependent scripts
+        window.dispatchEvent(new CustomEvent('firebase-ready', {
+            detail: { app, auth, db, storage, analytics }
+        }));
+        
+        console.log('[Firebase] 🚀 All services ready and exported to window');
         return true;
         
     } catch (error) {
-        console.error('Error initializing Firebase:', error);
+        console.error('[Firebase] ❌ Initialization error:', error);
         return false;
     }
 }

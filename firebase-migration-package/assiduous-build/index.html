@@ -1750,6 +1750,24 @@
         // Rotating Hero Backgrounds (disabled; handled by hardenedCarouselFix)
         // (function(){})();
 
+        // Wait for Firebase to be ready
+        window.addEventListener('firebase-ready', () => {
+            console.log('[Auth] Firebase ready, initializing signup/login handlers');
+            
+            // Role selection handler for signup
+            const roleSelect = document.getElementById('signupRole');
+            const agentFields = document.getElementById('agentFields');
+            if (roleSelect && agentFields) {
+                roleSelect.addEventListener('change', (e) => {
+                    if (e.target.value === 'agent') {
+                        agentFields.style.display = 'grid';
+                    } else {
+                        agentFields.style.display = 'none';
+                    }
+                });
+            }
+        });
+        
         // Signup modal handlers
         (function() {
             const openBtn = document.getElementById('openSignup');
@@ -1757,6 +1775,8 @@
             const closeBtn = document.getElementById('closeSignup');
             const form = document.getElementById('signupForm');
             const success = document.getElementById('signupSuccess');
+            const errorDiv = document.getElementById('signupError');
+            
             if (openBtn && modal) {
                 openBtn.addEventListener('click', (e) => { e.preventDefault(); modal.style.display = 'flex'; });
             }
@@ -1766,11 +1786,109 @@
             if (modal) {
                 modal.addEventListener('click', (e) => { if (e.target === modal) modal.style.display = 'none'; });
             }
+            
             if (form) {
-                form.addEventListener('submit', (e) => {
+                form.addEventListener('submit', async (e) => {
                     e.preventDefault();
-                    success.style.display = 'block';
-                    setTimeout(() => { success.style.display = 'none'; modal.style.display = 'none'; }, 1800);
+                    
+                    // Get form values
+                    const email = document.getElementById('signupEmail').value;
+                    const password = document.getElementById('signupPassword').value;
+                    const firstName = document.getElementById('signupFirstName').value;
+                    const lastName = document.getElementById('signupLastName').value;
+                    const role = document.getElementById('signupRole').value;
+                    
+                    // Validate role selection
+                    if (!role) {
+                        errorDiv.textContent = 'Please select your role';
+                        errorDiv.style.display = 'block';
+                        return;
+                    }
+                    
+                    // Hide error, show loading
+                    errorDiv.style.display = 'none';
+                    const submitBtn = form.querySelector('button[type="submit"]');
+                    const originalText = submitBtn.textContent;
+                    submitBtn.textContent = 'Creating account...';
+                    submitBtn.disabled = true;
+                    
+                    try {
+                        // Wait for Firebase to be ready
+                        if (!window.firebaseAuth || !window.firebaseDb) {
+                            throw new Error('Firebase not initialized. Please refresh the page.');
+                        }
+                        
+                        // Create user account
+                        const userCredential = await window.firebaseAuth.createUserWithEmailAndPassword(email, password);
+                        const user = userCredential.user;
+                        
+                        // Prepare user data
+                        const userData = {
+                            email: email,
+                            firstName: firstName,
+                            lastName: lastName,
+                            displayName: `${firstName} ${lastName}`,
+                            role: role,
+                            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                            updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                            profileComplete: role !== 'agent', // Agents need approval
+                            emailVerified: false
+                        };
+                        
+                        // Add agent-specific fields
+                        if (role === 'agent') {
+                            userData.agentInfo = {
+                                status: 'pending_approval',
+                                licenseNumber: document.getElementById('signupLicenseNumber')?.value || '',
+                                licenseState: document.getElementById('signupLicenseState')?.value || '',
+                                brokerageName: document.getElementById('signupBrokerageName')?.value || '',
+                                appliedAt: firebase.firestore.FieldValue.serverTimestamp()
+                            };
+                        }
+                        
+                        // Store user data in Firestore
+                        await window.firebaseDb.collection('users').doc(user.uid).set(userData);
+                        
+                        // Update Firebase Auth profile
+                        await user.updateProfile({
+                            displayName: userData.displayName
+                        });
+                        
+                        console.log('[Signup] User created successfully:', user.uid);
+                        
+                        // Show success message
+                        success.style.display = 'block';
+                        form.style.display = 'none';
+                        
+                        // Redirect based on role after 2 seconds
+                        setTimeout(() => {
+                            const redirects = {
+                                admin: '/admin/dashboard.html',
+                                agent: '/agent-pending.html', // Agents wait for approval
+                                client: '/client/dashboard.html',
+                                investor: '/client/dashboard.html'
+                            };
+                            window.location.href = redirects[role] || '/client/dashboard.html';
+                        }, 2000);
+                        
+                    } catch (error) {
+                        console.error('[Signup] Error:', error);
+                        let errorMessage = error.message;
+                        
+                        // User-friendly error messages
+                        if (error.code === 'auth/email-already-in-use') {
+                            errorMessage = 'This email is already registered. Please sign in instead.';
+                        } else if (error.code === 'auth/weak-password') {
+                            errorMessage = 'Password is too weak. Please use at least 6 characters.';
+                        } else if (error.code === 'auth/invalid-email') {
+                            errorMessage = 'Invalid email address.';
+                        }
+                        
+                        errorDiv.textContent = errorMessage;
+                        errorDiv.style.display = 'block';
+                        submitBtn.textContent = originalText;
+                        submitBtn.disabled = false;
+                    }
                 });
             }
         })();
@@ -1794,6 +1912,8 @@
             const closeBtn = document.getElementById('closeLogin');
             const modal = document.getElementById('loginModal');
             const form = document.getElementById('loginForm');
+            const errorDiv = document.getElementById('loginError');
+            const successDiv = document.getElementById('loginSuccess');
             
             if (closeBtn && modal) {
                 closeBtn.addEventListener('click', () => { modal.style.display = 'none'; });
@@ -1801,11 +1921,105 @@
             if (modal) {
                 modal.addEventListener('click', (e) => { if (e.target === modal) modal.style.display = 'none'; });
             }
+            
             if (form) {
-                form.addEventListener('submit', (e) => {
+                form.addEventListener('submit', async (e) => {
                     e.preventDefault();
-                    // For now, just redirect to admin dashboard
-                    window.location.href = '/admin/dashboard.html';
+                    
+                    // Get form values
+                    const email = document.getElementById('loginEmail').value;
+                    const password = document.getElementById('loginPassword').value;
+                    const rememberMe = document.getElementById('rememberMe')?.checked || false;
+                    
+                    // Hide errors, show loading
+                    if (errorDiv) errorDiv.style.display = 'none';
+                    const submitBtn = form.querySelector('button[type="submit"]');
+                    const originalText = submitBtn.textContent;
+                    submitBtn.textContent = 'Signing in...';
+                    submitBtn.disabled = true;
+                    
+                    try {
+                        // Wait for Firebase to be ready
+                        if (!window.firebaseAuth || !window.firebaseDb) {
+                            throw new Error('Firebase not initialized. Please refresh the page.');
+                        }
+                        
+                        // Sign in with Firebase Auth
+                        const userCredential = await window.firebaseAuth.signInWithEmailAndPassword(email, password);
+                        const user = userCredential.user;
+                        
+                        console.log('[Login] User signed in:', user.uid);
+                        
+                        // Get user data from Firestore to determine role
+                        const userDoc = await window.firebaseDb.collection('users').doc(user.uid).get();
+                        
+                        if (!userDoc.exists) {
+                            throw new Error('User profile not found. Please contact support.');
+                        }
+                        
+                        const userData = userDoc.data();
+                        const role = userData.role || 'client';
+                        
+                        console.log('[Login] User role:', role);
+                        
+                        // Store user session
+                        const sessionData = {
+                            uid: user.uid,
+                            email: user.email,
+                            displayName: userData.displayName || user.displayName,
+                            role: role,
+                            loginTime: new Date().toISOString()
+                        };
+                        
+                        sessionStorage.setItem('assiduousUser', JSON.stringify(sessionData));
+                        
+                        if (rememberMe) {
+                            localStorage.setItem('assiduousUser', JSON.stringify(sessionData));
+                            localStorage.setItem('assiduousRememberMe', 'true');
+                        }
+                        
+                        // Show success
+                        if (successDiv) {
+                            successDiv.textContent = 'Success! Redirecting...';
+                            successDiv.style.display = 'block';
+                        }
+                        
+                        // Redirect based on role
+                        setTimeout(() => {
+                            const redirects = {
+                                admin: '/admin/dashboard.html',
+                                agent: userData.agentInfo?.status === 'approved' ? '/agent/dashboard.html' : '/agent-pending.html',
+                                client: '/client/dashboard.html',
+                                investor: '/client/dashboard.html'
+                            };
+                            
+                            const redirectUrl = redirects[role] || '/client/dashboard.html';
+                            console.log('[Login] Redirecting to:', redirectUrl);
+                            window.location.href = redirectUrl;
+                        }, 500);
+                        
+                    } catch (error) {
+                        console.error('[Login] Error:', error);
+                        let errorMessage = error.message;
+                        
+                        // User-friendly error messages
+                        if (error.code === 'auth/user-not-found') {
+                            errorMessage = 'No account found with this email. Please sign up.';
+                        } else if (error.code === 'auth/wrong-password') {
+                            errorMessage = 'Incorrect password. Please try again.';
+                        } else if (error.code === 'auth/invalid-email') {
+                            errorMessage = 'Invalid email address.';
+                        } else if (error.code === 'auth/too-many-requests') {
+                            errorMessage = 'Too many failed attempts. Please try again later.';
+                        }
+                        
+                        if (errorDiv) {
+                            errorDiv.textContent = errorMessage;
+                            errorDiv.style.display = 'block';
+                        }
+                        submitBtn.textContent = originalText;
+                        submitBtn.disabled = false;
+                    }
                 });
             }
         })();
@@ -1954,10 +2168,21 @@
             });
         }
     </script>
-    <!-- Load SirsiAuth and integrate with modals -->
+    
+    <!-- Firebase SDK - MUST load before firebase-config.js -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics-compat.js"></script>
+    
+    <!-- Firebase Configuration - Depends on SDK above -->
     <script src="/firebase-config.js"></script>
+    
+    <!-- Authentication Components - Depend on firebase-config.js -->
     <script src="/components/sirsi-auth.js"></script>
     <script src="/components/auth-guard.js"></script>
+    
     <script type="module">
         // Initialize SirsiAuth
         const sirsiAuth = new SirsiAuth({
