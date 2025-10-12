@@ -1,0 +1,212 @@
+# CONVERSATION CONTINUATION PROMPT - AssiduousFlip MVP Sprint
+**Use this prompt to start a new conversation while maintaining full context**
+
+---
+
+## COPY EVERYTHING BELOW THIS LINE FOR NEW CONVERSATION:
+
+I need immediate help continuing my AssiduousFlip MVP development. I'm in Day 3 of a 6-day sprint with a hard deadline of October 17, 2025. Here's my complete context and technical plan:
+
+## PROJECT CONTEXT
+- **Project:** AssiduousFlip - Real estate micro-flipping platform
+- **Location:** `/Users/thekryptodragon/Development/assiduous`
+- **Production URL:** https://www.assiduousflip.com
+- **Firebase Project:** assiduous-prod
+- **Current Date/Time:** [UPDATE THIS]
+- **Deadline:** October 17, 2025 (Thursday)
+
+## CURRENT STATUS (Day 3 of 6)
+
+### ✅ COMPLETED WORK:
+1. **Infrastructure:**
+   - Firebase hosting configured (assiduous-prod and assiduousflip sites)
+   - Custom domains working (www.assiduousflip.com, assiduousflip.com redirects to www)
+   - SSL certificates active
+   - GoDaddy DNS configured with domain forwarding
+
+2. **Frontend Pages Built:**
+   - Admin Portal: dashboard, properties, agents, clients (90% complete)
+   - Client Portal: dashboard, properties, deal-analyzer (70% complete)  
+   - Agent Portal: dashboard, listings, leads, clients, commissions (60% complete)
+   - Auth Pages: login.html, signup.html
+   - Landing page: index.html
+
+3. **Documentation:**
+   - 39 documentation files synced with HTML versions
+   - Document hub created at /docs/index.html
+   - All deployment and security docs updated
+
+4. **Configuration:**
+   - firebase.json configured for both hosting targets
+   - .firebaserc with production and staging environments
+   - CSP headers and security policies configured
+   - Firebase SDK integrated in pages
+
+### ❌ CRITICAL GAPS (Must Complete):
+
+#### 1. AUTHENTICATION SYSTEM (0% functional)
+**Files exist but not working:**
+- `/assiduous-build/firebase-config.js` - needs auth implementation
+- `/assiduous-build/components/sirsi-auth.js` - failing to initialize
+- `/assiduous-build/components/auth-guard.js` - not protecting routes
+
+**Required Implementation:**
+```javascript
+// firebase-config.js needs:
+import { initializeApp } from 'firebase/app';
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
+import { getFirestore } from 'firebase/firestore';
+
+const firebaseConfig = {
+  // Config exists in file
+};
+
+const app = initializeApp(firebaseConfig);
+export const auth = getAuth(app);
+export const db = getFirestore(app);
+```
+
+#### 2. BACKEND APIs (0% complete)
+**Need Cloud Functions in `/functions/index.js`:**
+```javascript
+// Property CRUD
+exports.properties = functions.https.onRequest(async (req, res) => {
+  // GET, POST, PUT, DELETE operations
+});
+
+// User management
+exports.users = functions.https.onRequest(async (req, res) => {
+  // Role assignment, profile updates
+});
+
+// Lead management  
+exports.leads = functions.https.onRequest(async (req, res) => {
+  // Lead creation, assignment to agents
+});
+```
+
+#### 3. DATABASE CONNECTIONS (0% complete)
+**All portals using mock data, need Firestore integration:**
+- Admin portal: `/admin/dashboard.html` - replace mockProperties with Firestore
+- Client portal: `/client/dashboard.html` - connect to real properties
+- Agent portal: `/agent/dashboard.html` - show agent's actual data
+
+#### 4. ROLE-BASED ACCESS CONTROL (0% complete)
+**Need to implement:**
+- Role selection on signup (admin/agent/client/investor)
+- Role storage in Firestore users collection
+- Protected routes based on roles
+- Redirects after login based on role
+
+## TECHNICAL EXECUTION PLAN
+
+### PRIORITY 1: Fix Authentication (3 hours)
+1. Fix Firebase initialization error in index.html
+2. Update firebase-config.js with proper imports
+3. Implement signup flow with role selection
+4. Implement login with role-based redirects
+5. Add logout functionality
+6. Test auth persistence
+
+**Files to modify:**
+- `/assiduous-build/firebase-config.js`
+- `/assiduous-build/login.html`
+- `/assiduous-build/signup.html`
+- `/assiduous-build/index.html` (fix Firebase loading order)
+
+### PRIORITY 2: Create Backend APIs (4 hours)
+1. Set up Cloud Functions project structure
+2. Create property CRUD endpoints
+3. Create user management endpoints
+4. Create lead management endpoints
+5. Deploy functions to Firebase
+
+**Commands to run:**
+```bash
+cd functions
+npm install firebase-functions firebase-admin
+firebase deploy --only functions
+```
+
+### PRIORITY 3: Connect Admin Portal (2 hours)
+1. Replace mock data in `/admin/properties.html`
+2. Implement real CRUD operations
+3. Test data persistence
+4. Add error handling
+
+### PRIORITY 4: Connect Client Portal (2 hours)
+1. Query real properties from Firestore
+2. Implement search/filter functionality
+3. Save favorites to user profile
+4. Add lead submission
+
+### PRIORITY 5: Connect Agent Portal (2 hours)
+1. Show agent's assigned properties
+2. Display agent's clients
+3. Implement lead management
+4. Add commission tracking
+
+### PRIORITY 6: Add Sample Data (1 hour)
+1. Create script to populate 50+ Philadelphia properties
+2. Add test users for each role
+3. Create sample leads and transactions
+
+## FILE STRUCTURE REFERENCE
+```
+/assiduous/
+├── assiduous-build/         # Main deployment directory
+│   ├── admin/               # Admin portal pages
+│   ├── agent/               # Agent portal pages  
+│   ├── client/              # Client portal pages
+│   ├── components/          # Shared components
+│   ├── firebase-config.js   # Firebase configuration
+│   ├── index.html          # Landing page
+│   ├── login.html          # Login page
+│   └── signup.html         # Signup page
+├── functions/              # Cloud Functions directory
+│   ├── index.js           # Main functions file
+│   └── package.json       # Functions dependencies
+├── firebase.json          # Firebase configuration
+├── .firebaserc           # Firebase project configuration
+└── docs/                 # Documentation files
+```
+
+## IMMEDIATE NEXT STEPS
+1. Check current Firebase Auth error: `ReferenceError: firebase is not defined`
+2. Fix script loading order in index.html
+3. Implement basic auth flow
+4. Test with: `firebase serve --only hosting`
+
+## SUCCESS CRITERIA FOR TODAY (Day 3)
+- [ ] Users can sign up and log in
+- [ ] Role-based redirects work
+- [ ] Admin can create/edit/delete properties
+- [ ] Data persists in Firestore
+- [ ] Client can browse real properties
+- [ ] Agent can see their dashboard
+
+## TESTING CHECKLIST
+```bash
+# Local testing
+firebase serve --only hosting
+
+# Deploy to production
+firebase deploy --only hosting --project assiduous-prod
+
+# Check live site
+open https://www.assiduousflip.com
+```
+
+## CRITICAL NOTES
+- We have 5 days until October 17 deadline
+- Need 27X acceleration from normal development pace
+- Skip: Email notifications, payment processing, AI features, animations
+- Focus: Core CRUD, auth, and data persistence
+
+Please help me complete the authentication system first, as everything depends on it. The Firebase SDK is loaded but throwing "firebase is not defined" errors. Let's fix this and get auth working.
+
+---
+
+## END OF PROMPT
+
+Save this file and use it to continue in a new conversation if needed.

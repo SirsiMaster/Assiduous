@@ -1,0 +1,37 @@
+{
+  "description": "Add these redirects to firebase.json after www.assiduousflip.com is verified",
+  "redirects": [
+    {
+      "source": "**",
+      "destination": "https://www.assiduousflip.com",
+      "type": 301,
+      "condition": {
+        "host": "assiduous-prod.web.app"
+      }
+    },
+    {
+      "source": "**", 
+      "destination": "https://www.assiduousflip.com",
+      "type": 301,
+      "condition": {
+        "host": "assiduous-prod.firebaseapp.com"
+      }
+    },
+    {
+      "source": "**",
+      "destination": "https://www.assiduousflip.com",
+      "type": 301,
+      "condition": {
+        "host": "assiduousflip.com"
+      }
+    },
+    {
+      "source": "**",
+      "destination": "https://www.assiduousflip.com", 
+      "type": 301,
+      "condition": {
+        "host": "assiduousflip.web.app"
+      }
+    }
+  ]
+}

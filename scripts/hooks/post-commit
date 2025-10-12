@@ -1,0 +1,53 @@
+#!/bin/bash
+#
+# Post-commit hook for Assiduous
+# Captures commit metadata and syncs to Firebase metrics
+#
+
+# Get commit information
+COMMIT_HASH=$(git rev-parse HEAD)
+COMMIT_SHORT=$(git rev-parse --short HEAD)
+COMMIT_MESSAGE=$(git log -1 --pretty=%B)
+COMMIT_AUTHOR=$(git log -1 --pretty=%an)
+COMMIT_EMAIL=$(git log -1 --pretty=%ae)
+COMMIT_DATE=$(git log -1 --pretty=%cI)
+
+# Get file statistics
+FILES_CHANGED=$(git diff-tree --no-commit-id --name-only -r HEAD | wc -l | tr -d ' ')
+LINES_ADDED=$(git diff HEAD^ HEAD --numstat | awk '{add+=$1} END {print add}')
+LINES_DELETED=$(git diff HEAD^ HEAD --numstat | awk '{del+=$2} END {print del}')
+
+# Create JSON payload
+JSON_PAYLOAD=$(cat <<EOF
+{
+  "commitHash": "$COMMIT_HASH",
+  "shortHash": "$COMMIT_SHORT",
+  "message": "$COMMIT_MESSAGE",
+  "author": "$COMMIT_AUTHOR",
+  "email": "$COMMIT_EMAIL",
+  "timestamp": "$COMMIT_DATE",
+  "filesChanged": $FILES_CHANGED,
+  "linesAdded": ${LINES_ADDED:-0},
+  "linesDeleted": ${LINES_DELETED:-0},
+  "repository": "assiduous",
+  "branch": "$(git branch --show-current)"
+}
+EOF
+)
+
+# Log to local file as backup
+METRICS_DIR="$(git rev-parse --show-toplevel)/data/metrics"
+mkdir -p "$METRICS_DIR"
+echo "$JSON_PAYLOAD" >> "$METRICS_DIR/commits_$(date +%Y-%m-%d).jsonl"
+
+# Try to push to Firebase via Cloud Function (if available)
+if command -v curl &> /dev/null; then
+    WEBHOOK_URL="https://us-central1-assiduous-prod.cloudfunctions.net/app/api/metrics/commit"
+    curl -X POST "$WEBHOOK_URL" \
+        -H "Content-Type: application/json" \
+        -d "$JSON_PAYLOAD" \
+        --silent --show-error --max-time 5 > /dev/null 2>&1 &
+fi
+
+echo "✅ Commit tracked: $COMMIT_SHORT"
+echo "   Files: $FILES_CHANGED | +$LINES_ADDED/-$LINES_DELETED lines"
