@@ -169,25 +169,8 @@ jobs:
       - name: Update Feature Registry
         if: success()
         run: |
-          echo "📝 Marking features as RELEASED..."
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-          
-          # Move features from Ready to Released
-          # This is a simplified version - in production, parse specific features
-          DATE=$(date +%Y-%m-%d)
-          VERSION="${{ github.ref_name }}"
-          
-          # Update registry (this would be more sophisticated in production)
-          sed -i "s/Ready for Release/RELEASED $VERSION $DATE/g" FEATURE_REGISTRY.md
-          
-          if git diff --quiet; then
-            echo "No features to update"
-          else
-            git add FEATURE_REGISTRY.md
-            git commit -m "chore: mark features as RELEASED in registry"
-            git push
-          fi
+          echo "📝 Feature registry updates skipped (manual updates only)"
+          echo "ℹ️  Update FEATURE_REGISTRY.md manually after successful deployment"
           
       - name: Create Deployment Record
         if: success()

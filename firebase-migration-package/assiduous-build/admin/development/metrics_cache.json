@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-10-12T06:40:21.231Z",
+  "lastUpdated": "2025-10-12T06:54:45.889Z",
   "summary": {
     "health": "Good",
     "score": 46,
@@ -104,39 +104,39 @@
     }
   },
   "project": {
-    "totalHours": "167",
+    "totalHours": "168",
     "avgHoursPerDay": "2.7",
-    "totalCost": 25050,
-    "laborCost": 25050,
+    "totalCost": 25200,
+    "laborCost": 25200,
     "toolsCost": 450,
-    "totalCommits": 506,
+    "totalCommits": 509,
     "totalFiles": 38880,
     "activeDays": 63,
     "projectAgeDays": 63,
-    "linesAdded": 9390118,
-    "linesDeleted": 918337,
-    "netLines": 8471781,
-    "velocity": "8.0",
+    "linesAdded": 9390213,
+    "linesDeleted": 918387,
+    "netLines": 8471826,
+    "velocity": "8.1",
     "completionPercentage": 46,
     "actualStartDate": "2025-08-10"
   },
   "today": {
     "date": "2025-10-12",
-    "hours": "17.2",
-    "cost": 2574,
-    "commits": 52,
+    "hours": "18.2",
+    "cost": 2723,
+    "commits": 55,
     "deployments": 0
   },
   "thisWeek": {
-    "hours": "56.8",
-    "cost": 8514,
-    "commits": 172,
+    "hours": "57.8",
+    "cost": 8663,
+    "commits": 175,
     "days": 7
   },
   "thisMonth": {
-    "hours": "63.0",
-    "cost": 9455,
-    "commits": 191
+    "hours": "64.0",
+    "cost": 9603,
+    "commits": 194
   },
   "quality": {
     "testCoverage": {
@@ -170,7 +170,7 @@
       "critical": 0,
       "total": 0
     },
-    "lastAudit": "2025-10-12T06:40:00.473Z",
+    "lastAudit": "2025-10-12T06:54:25.694Z",
     "dependencies": {
       "total": {
         "prod": 192,
@@ -216,14 +216,14 @@
     }
   },
   "deployment": {
-    "lastDeployment": "2025-10-12 02:25:55 -0400",
-    "totalDeployments": 82,
+    "lastDeployment": "2025-10-12 02:54:08 -0400",
+    "totalDeployments": 84,
     "deploymentFrequency": "Weekly",
     "environments": {
       "production": {
         "url": "https://assiduous-prod.web.app",
         "status": "Active",
-        "lastDeploy": "2025-10-12 02:25:55 -0400"
+        "lastDeploy": "2025-10-12 02:54:08 -0400"
       },
       "staging": {
         "url": "https://assiduous-staging.web.app",
@@ -269,12 +269,12 @@
   },
   "productivity": {
     "velocityTrend": "increasing",
-    "weeklyCommits": 172,
+    "weeklyCommits": 175,
     "contributors": {
       "total": 0,
       "active": 0
     },
-    "averageCommitSize": 90,
+    "averageCommitSize": 89,
     "pullRequests": {
       "open": 0,
       "merged": 0,
@@ -347,6 +347,24 @@
   },
   "recentActivity": [
     {
+      "hash": "4c2a113c0e4841e0906e92afc4a6c568efe36c43",
+      "message": "fix(ci): remove GitHub environment approval from production",
+      "author": "SirsiMaster",
+      "date": "2025-10-12 02:54:08 -0400"
+    },
+    {
+      "hash": "3c4073868ad392b7f927806551027e26e5aa59eb",
+      "message": "fix(ci): remove approval requirement from staging deployment",
+      "author": "SirsiMaster",
+      "date": "2025-10-12 02:48:31 -0400"
+    },
+    {
+      "hash": "01f7985a5b688b4a6a3da600dc4e65c447e12c47",
+      "message": "fix(auth): make auth-guard.js dynamic and environment-aware",
+      "author": "SirsiMaster",
+      "date": "2025-10-12 02:42:03 -0400"
+    },
+    {
       "hash": "cf3e14287c1dedbe61b775aadd326a4574ae3bcb",
       "message": "fix(firebase): redirect all login/signup page requests to index.html",
       "author": "SirsiMaster",
@@ -387,28 +405,10 @@
       "message": "fix(pipeline): separate staging and prod deployments",
       "author": "SirsiMaster",
       "date": "2025-10-12 02:12:34 -0400"
-    },
-    {
-      "hash": "1c1cce1333417f2ae803ce2a23b495793d3312f7",
-      "message": "fix(config): add prod hosting target to staging Firebase config",
-      "author": "SirsiMaster",
-      "date": "2025-10-12 02:10:14 -0400"
-    },
-    {
-      "hash": "dbdfa2d68ebb5d79ae14105a5423f8ffa6f19787",
-      "message": "chore: update cache after pipeline fix",
-      "author": "SirsiMaster",
-      "date": "2025-10-12 02:09:18 -0400"
-    },
-    {
-      "hash": "235c093778559e771c99cf15841c556884880f2d",
-      "message": "fix(pipeline): specify --only hosting for staging deployment",
-      "author": "SirsiMaster",
-      "date": "2025-10-12 02:08:53 -0400"
     }
   ],
   "automation": {
-    "lastRun": "2025-10-12T06:40:21.231Z",
+    "lastRun": "2025-10-12T06:54:45.889Z",
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",

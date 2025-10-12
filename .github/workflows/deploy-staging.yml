@@ -59,21 +59,8 @@ jobs:
       - name: Update Feature Registry
         if: success()
         run: |
-          echo "📝 Updating feature status in registry..."
-          # Update features to IN_TESTING status
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-          
-          # Mark features as deployed to staging
-          sed -i 's/IN_PROGRESS/IN_TESTING/g' FEATURE_REGISTRY.md
-          
-          if git diff --quiet; then
-            echo "No features to update"
-          else
-            git add FEATURE_REGISTRY.md
-            git commit -m "chore: update feature status to IN_TESTING on staging"
-            git push
-          fi
+          echo "📝 Feature registry updates skipped (manual updates only)"
+          echo "ℹ️  Update FEATURE_REGISTRY.md manually as needed"
           
       - name: Post Deployment Summary
         if: always()
