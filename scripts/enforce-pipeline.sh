@@ -186,9 +186,9 @@ enforce_github_to_staging() {
         exit 1
     }
     
-    # Deploy to staging
+    # Deploy to staging (all hosting targets)
     log_info "Deploying to Firebase Staging..."
-    firebase deploy || {
+    firebase deploy --only hosting || {
         log_error "Deployment to staging FAILED"
         exit 1
     }
