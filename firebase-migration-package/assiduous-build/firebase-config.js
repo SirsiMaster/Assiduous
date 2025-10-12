@@ -6,17 +6,34 @@
  * for authentication, database operations, and real-time updates
  */
 
-// Firebase configuration object
-// Using production environment configuration (dev auth not configured)
-const firebaseConfig = {
-    apiKey: "AIzaSyCL8Y7cQ-kZfhCXaM1KBTnAI6_LXq2J8fE",
-    authDomain: "assiduous-prod.firebaseapp.com",
-    projectId: "assiduous-prod",
-    storageBucket: "assiduous-prod.firebasestorage.app",
-    messagingSenderId: "9355377564",
-    appId: "1:9355377564:web:84bd6fa0e7c8a2e7c3f56b",
-    databaseURL: "https://assiduous-prod-default-rtdb.firebaseio.com"
+// Firebase configuration objects for different environments
+const firebaseConfigs = {
+    staging: {
+        apiKey: "AIzaSyDnMkQbhC5kYl5O_07zQ2yfYvGjLRq6E0c",
+        authDomain: "assiduous-staging.firebaseapp.com",
+        projectId: "assiduous-staging",
+        storageBucket: "assiduous-staging.firebasestorage.app",
+        messagingSenderId: "853661742177",
+        appId: "1:853661742177:web:cf93349a7f50a2d9f2e620"
+    },
+    production: {
+        apiKey: "AIzaSyCL8Y7cQ-kZfhCXaM1KBTnAI6_LXq2J8fE",
+        authDomain: "assiduous-prod.firebaseapp.com",
+        projectId: "assiduous-prod",
+        storageBucket: "assiduous-prod.firebasestorage.app",
+        messagingSenderId: "9355377564",
+        appId: "1:9355377564:web:84bd6fa0e7c8a2e7c3f56b",
+        databaseURL: "https://assiduous-prod-default-rtdb.firebaseio.com"
+    }
 };
+
+// Auto-detect environment based on hostname
+const isStaging = window.location.hostname.includes('staging');
+const currentEnv = isStaging ? 'staging' : 'production';
+const firebaseConfig = firebaseConfigs[currentEnv];
+
+console.log(`[Firebase] 🌐 Environment detected: ${currentEnv}`);
+console.log(`[Firebase] 📍 Project: ${firebaseConfig.projectId}`);
 
 // Make available globally
 window.firebaseConfig = firebaseConfig;
