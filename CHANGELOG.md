@@ -7,6 +7,214 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.52.0] - 2025-10-12
+
+### Added - ENHANCED AUTHENTICATION & PIPELINE ENFORCEMENT
+**Development Session**: October 12, 2025, 05:25-05:48 AM  
+**Sprint**: Day 3→4 Transition (Deadline: October 17, 2025)  
+**Status**: ✅ COMMITTED TO GITHUB (Awaiting Staging)
+
+#### Enhanced Authentication System
+1. **Username Support (Optional)**
+   - Added optional username field to registration form
+   - Username validation: 3-30 chars, alphanumeric + underscore/hyphen
+   - Case-insensitive storage (all lowercase)
+   - Unique constraint enforced in Firestore
+   - File: `firebase-migration-package/assiduous-build/index.html`
+
+2. **Account ID Auto-Generation**
+   - Format: `ACCT-YYYY-NNNNNN` (e.g., ACCT-2025-000001)
+   - Automatically assigned to every user on registration
+   - Stored in Firestore: users, accountIds collections
+   - File: `firebase-migration-package/assiduous-build/assets/js/services/id-generator.js`
+
+3. **Flexible Login System**
+   - Users can login with ANY of:
+     - Email address (user@example.com)
+     - Username (cool_user)
+     - Account ID (ACCT-2025-000001)
+   - Backend resolves username/accountId to email
+   - File: `firebase-migration-package/assiduous-build/assets/js/services/enhanced-auth.js` (357 lines)
+
+4. **Enhanced Auth Service API**
+   - `register(userData)` - Create account with optional username
+   - `login(identifier, password)` - Login with email/username/accountId
+   - `getUserProfile(uid)` - Get profile by Firebase UID
+   - `getUserByUsername(username)` - Get profile by username
+   - `getUserByAccountId(accountId)` - Get profile by account ID
+   - `validateUsername(username)` - Check availability and format
+   - Error handling with user-friendly messages
+
+5. **Test Interface**
+   - Comprehensive testing page created
+   - Test all 3 login methods (email/username/accountId)
+   - Real-time activity logs
+   - Firestore collection viewer
+   - Registration with/without username testing
+   - File: `firebase-migration-package/assiduous-build/test-enhanced-auth.html` (638 lines)
+
+#### Firestore Security Rules
+- **NEW FILE**: `firebase-migration-package/firestore-enhanced-auth.rules` (312 lines)
+- Collections secured:
+  - `users/{uid}` - User profiles (owner/admin read)
+  - `usernames/{username}` - Username lookups (public read for login)
+  - `accountIds/{accountId}` - Account ID lookups (public read for login)
+  - `properties`, `transactions`, `messages`, `notifications`, `savedProperties`, `viewings`
+- Email, username, accountId format validation
+- Role-based access control (client, agent, investor, admin)
+- Critical fields immutable (uid, email, accountId, createdAt)
+- Username can only be set once
+
+#### Pipeline Enforcement System (MANDATORY)
+- **NEW FILE**: `scripts/enforce-pipeline.sh` (502 lines)
+- **Pipeline Flow**: LOCAL → GITHUB → STAGING → PRODUCTION
+- **State Tracking**: `.pipeline-state.json` (gitignored)
+- **Features**:
+  - Blocks deployment to staging without GitHub commit
+  - Blocks deployment to production without staging testing
+  - Requires explicit QA/QC confirmation
+  - Tracks deployment history
+  - Cannot skip pipeline stages
+
+#### Owner Authorization System
+- **Two-Tier Access Control**:
+  - **AI Assistants**: Can ONLY deploy to staging (hard-blocked from production)
+  - **Project Owner**: Can deploy to production + expedite deployments
+- **NEW FILE**: `scripts/ai-deploy.sh` (98 lines) - AI assistant wrapper
+- **Owner Commands**:
+  - `deploy-prod` - Normal production deployment (requires testing)
+  - `owner-expedite-prod` - Expedited deployment (bypasses testing)
+- **Confirmations Required**:
+  - Production: Type "DEPLOY TO PRODUCTION"
+  - Owner Expedite: Type "I AM THE OWNER"
+
+#### Git Hooks & Wrappers
+- **NEW FILE**: `scripts/hooks/pre-commit-pipeline` - Git pre-commit reminder
+- **NEW FILE**: `scripts/firebase-wrapper.sh` - Blocks direct firebase deploy
+- **NEW FILE**: `scripts/setup-pipeline-enforcement.sh` (152 lines) - One-command installer
+- Git hook auto-installed to `.git/hooks/pre-commit`
+- Requires jq (JSON processor) for state management
+
+#### Documentation Created
+1. **ENHANCED-AUTH-DEPLOYMENT.md** (424 lines)
+   - Full deployment guide
+   - Testing scenarios (5 test cases)
+   - API reference
+   - Troubleshooting guide
+   - Firestore data structure examples
+
+2. **ENHANCED-AUTH-SUMMARY.md** (443 lines)
+   - Implementation summary
+   - Architecture diagrams
+   - Security highlights
+   - Files created/modified list
+   - Quick start guide
+
+3. **PIPELINE-ENFORCEMENT-README.md** (277 lines)
+   - Usage guide with examples
+   - Scenario-based blocking demonstrations
+   - Emergency reset procedures
+   - AI assistant checklist
+
+4. **PIPELINE-ENFORCEMENT-SUMMARY.md** (290 lines)
+   - Technical implementation details
+   - State machine logic
+   - Protection layers explanation
+   - Success criteria validation
+
+5. **OWNER-AUTHORIZATION.md** (259 lines)
+   - Two-tier access control explanation
+   - Owner vs AI command reference
+   - Voice command guide
+   - Best practices
+
+### Changed
+- Login input now accepts text instead of email-only
+- Signup form includes optional username field
+- Auth handlers updated to use enhanced-auth service
+- Pipeline enforcement now mandatory for all deployments
+
+### Security
+- Username format validation (regex)
+- Account ID format validation (ACCT-YYYY-NNNNNN)
+- Firestore security rules with field-level validation
+- AI assistants blocked from production deployments
+- Owner authorization required for production
+- Lookup collections publicly readable (safe - no sensitive data)
+
+### Technical Metrics
+- **New Files Created**: 13 files
+- **Scripts Created**: 5 executable bash scripts
+- **Lines of Code**: 2,500+ lines (scripts + services)
+- **Lines of Documentation**: 1,700+ lines
+- **Firestore Collections**: 3 new (users, usernames, accountIds)
+- **Security Rules**: 312 lines covering 9 collections
+
+### Firestore Schema Extended
+```javascript
+users/{uid} = {
+  uid, accountId: "ACCT-YYYY-NNNNNN",
+  email, username: string | null,
+  firstName, lastName, role,
+  createdAt, lastLogin,
+  emailVerified, accountStatus,
+  preferences: { notifications, emailNotifications }
+}
+
+usernames/{username} = {
+  username: lowercase,
+  originalUsername: original case,
+  uid, accountId,
+  createdAt
+}
+
+accountIds/{accountId} = {
+  accountId, uid, email,
+  createdAt
+}
+```
+
+### Pipeline State Management
+```json
+{
+  "currentStage": "local|github|staging|production",
+  "stagingDeployment": {
+    "commit": "git hash",
+    "tested": boolean,
+    "qaApproved": boolean
+  },
+  "productionDeployment": {
+    "commit": "git hash",
+    "sourceCommit": "staging commit"
+  }
+}
+```
+
+### Deployment Commands
+```bash
+# AI Assistant (restricted to staging)
+./scripts/ai-deploy.sh deploy-staging
+./scripts/ai-deploy.sh mark-tested
+
+# Project Owner (full access)
+./scripts/enforce-pipeline.sh deploy-prod
+./scripts/enforce-pipeline.sh owner-expedite-prod
+```
+
+### Breaking Changes
+- Direct `firebase deploy` commands now blocked
+- Must use `./scripts/enforce-pipeline.sh` for deployments
+- Production deployments require owner authorization
+- AI assistants cannot deploy to production
+
+### Next Steps
+1. Run setup: `./scripts/setup-pipeline-enforcement.sh`
+2. Deploy to staging: `./scripts/ai-deploy.sh deploy-staging`
+3. Test in staging: https://assiduous-staging.web.app/test-enhanced-auth.html
+4. Owner deploys to prod: `./scripts/enforce-pipeline.sh deploy-prod`
+
+**Sprint Progress**: Day 3-4 transition, authentication system enhanced, pipeline enforcement mandatory
+
 ## [0.51.0] - 2025-10-12
 
 ### Added - DOCUMENTATION SYNC & DAY 4 PREPARATION
