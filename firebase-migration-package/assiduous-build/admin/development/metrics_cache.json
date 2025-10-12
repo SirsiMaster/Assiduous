@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-10-12T05:52:35.189Z",
+  "lastUpdated": "2025-10-12T05:54:55.545Z",
   "summary": {
     "health": "Good",
     "score": 46,
@@ -109,34 +109,34 @@
     "totalCost": 24300,
     "laborCost": 24300,
     "toolsCost": 450,
-    "totalCommits": 491,
+    "totalCommits": 492,
     "totalFiles": 38881,
     "activeDays": 63,
     "projectAgeDays": 63,
-    "linesAdded": 9389599,
-    "linesDeleted": 917170,
-    "netLines": 8472429,
+    "linesAdded": 9389657,
+    "linesDeleted": 917225,
+    "netLines": 8472432,
     "velocity": "7.8",
     "completionPercentage": 46,
     "actualStartDate": "2025-08-10"
   },
   "today": {
     "date": "2025-10-12",
-    "hours": "12.2",
-    "cost": 1832,
-    "commits": 37,
+    "hours": "12.5",
+    "cost": 1881,
+    "commits": 38,
     "deployments": 0
   },
   "thisWeek": {
-    "hours": "51.8",
-    "cost": 7772,
-    "commits": 157,
+    "hours": "52.1",
+    "cost": 7821,
+    "commits": 158,
     "days": 7
   },
   "thisMonth": {
-    "hours": "58.1",
-    "cost": 8712,
-    "commits": 176
+    "hours": "58.4",
+    "cost": 8762,
+    "commits": 177
   },
   "quality": {
     "testCoverage": {
@@ -170,7 +170,7 @@
       "critical": 0,
       "total": 0
     },
-    "lastAudit": "2025-10-12T05:52:13.557Z",
+    "lastAudit": "2025-10-12T05:54:34.168Z",
     "dependencies": {
       "total": {
         "prod": 192,
@@ -269,7 +269,7 @@
   },
   "productivity": {
     "velocityTrend": "increasing",
-    "weeklyCommits": 157,
+    "weeklyCommits": 158,
     "contributors": {
       "total": 0,
       "active": 0
@@ -347,6 +347,12 @@
   },
   "recentActivity": [
     {
+      "hash": "c8eb4f27d836fe64f1e2685c4c0d08f95e99e798",
+      "message": "chore: configure firebase project aliases for staging and production",
+      "author": "SirsiMaster",
+      "date": "2025-10-12 01:54:15 -0400"
+    },
+    {
       "hash": "7ca0d625d6928eabbdd6730c3bc46f16d04a0b83",
       "message": "chore: update changelog and metrics cache after v0.52.0 deployment",
       "author": "SirsiMaster",
@@ -399,16 +405,10 @@
       "message": "feat(staging): deploy production codebase to staging environment",
       "author": "SirsiMaster",
       "date": "2025-10-12 00:31:22 -0400"
-    },
-    {
-      "hash": "6c248e63fc83eea24c73d32226eb5145895eccfa",
-      "message": "fix(staging): properly mirror production deployment configuration",
-      "author": "SirsiMaster",
-      "date": "2025-10-12 00:10:43 -0400"
     }
   ],
   "automation": {
-    "lastRun": "2025-10-12T05:52:35.189Z",
+    "lastRun": "2025-10-12T05:54:55.545Z",
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",
