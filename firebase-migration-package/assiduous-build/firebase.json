@@ -5,19 +5,19 @@
   "hosting": [
     {
       "target": "prod",
-      "public": "assiduous-build",
-      "ignore": ["firebase.json", "**/.*", "**/node_modules/**", "**/firebase-migration-package/**"],
+      "public": ".",
+      "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
       "redirects": [
         { "source": "/", "destination": "/index.html", "type": 302 }
       ],
       "rewrites": [
         { "source": "/api/**", "function": "app" }
       ]
-    },
+    }
     {
       "target": "assiduousflip",
       "public": ".",
-      "ignore": ["firebase.json", "**/.*", "**/node_modules/**", "**/firebase-migration-package/**"],
+      "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
       "redirects": [
         { "source": "/", "destination": "/index.html", "type": 302 }
       ],
