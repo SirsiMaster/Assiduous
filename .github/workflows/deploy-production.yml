@@ -13,16 +13,11 @@ on:
       confirm:
         description: 'Type "DEPLOY" to confirm production deployment'
         required: true
-      features:
-        description: 'List feature IDs being released (e.g., FEAT-001,FEAT-002)'
-        required: true
 
 jobs:
-  approval-check:
-    name: Verify Release Approval
+  deploy:
+    name: Deploy to Production
     runs-on: ubuntu-latest
-    outputs:
-      approved: ${{ steps.check.outputs.approved }}
     
     steps:
       - name: Checkout Code

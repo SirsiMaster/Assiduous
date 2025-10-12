@@ -143,11 +143,15 @@ class IDGenerator {
 // Export singleton instance
 const idGenerator = new IDGenerator();
 
-// Auto-initialize if Firebase is available
-if (typeof firebase !== 'undefined' && firebase.firestore) {
-    try {
-        idGenerator.initialize(firebase.firestore());
-    } catch (error) {
-        console.warn('IDGenerator auto-initialization failed:', error);
-    }
+// Wait for Firebase to be ready before auto-initializing
+if (typeof window !== 'undefined') {
+    window.addEventListener('firebase-ready', () => {
+        if (typeof firebase !== 'undefined' && firebase.firestore) {
+            try {
+                idGenerator.initialize(firebase.firestore());
+            } catch (error) {
+                console.warn('IDGenerator initialization failed:', error);
+            }
+        }
+    });
 }

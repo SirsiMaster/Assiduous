@@ -344,14 +344,18 @@ class EnhancedAuth {
 // Export singleton instance
 const enhancedAuth = new EnhancedAuth();
 
-// Auto-initialize if dependencies are available
-if (typeof firebase !== 'undefined' && 
-    firebase.auth && 
-    firebase.firestore && 
-    typeof idGenerator !== 'undefined') {
-    try {
-        enhancedAuth.initialize(firebase.auth(), firebase.firestore(), idGenerator);
-    } catch (error) {
-        console.warn('EnhancedAuth auto-initialization failed:', error);
-    }
+// Wait for Firebase to be ready before auto-initializing
+if (typeof window !== 'undefined') {
+    window.addEventListener('firebase-ready', () => {
+        if (typeof firebase !== 'undefined' && 
+            firebase.auth && 
+            firebase.firestore && 
+            typeof idGenerator !== 'undefined') {
+            try {
+                enhancedAuth.initialize(firebase.auth(), firebase.firestore(), idGenerator);
+            } catch (error) {
+                console.warn('EnhancedAuth initialization failed:', error);
+            }
+        }
+    });
 }
