@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-10-12T05:55:44.187Z",
+  "lastUpdated": "2025-10-12T06:07:00.504Z",
   "summary": {
     "health": "Good",
     "score": 46,
@@ -109,12 +109,12 @@
     "totalCost": 24450,
     "laborCost": 24450,
     "toolsCost": 450,
-    "totalCommits": 493,
+    "totalCommits": 494,
     "totalFiles": 38881,
     "activeDays": 63,
     "projectAgeDays": 63,
-    "linesAdded": 9389703,
-    "linesDeleted": 917271,
+    "linesAdded": 9389704,
+    "linesDeleted": 917272,
     "netLines": 8472432,
     "velocity": "7.8",
     "completionPercentage": 46,
@@ -122,21 +122,21 @@
   },
   "today": {
     "date": "2025-10-12",
-    "hours": "12.9",
-    "cost": 1931,
-    "commits": 39,
+    "hours": "13.2",
+    "cost": 1980,
+    "commits": 40,
     "deployments": 0
   },
   "thisWeek": {
-    "hours": "52.5",
-    "cost": 7871,
-    "commits": 159,
+    "hours": "52.8",
+    "cost": 7920,
+    "commits": 160,
     "days": 7
   },
   "thisMonth": {
-    "hours": "58.7",
-    "cost": 8811,
-    "commits": 178
+    "hours": "59.1",
+    "cost": 8861,
+    "commits": 179
   },
   "quality": {
     "testCoverage": {
@@ -170,7 +170,7 @@
       "critical": 0,
       "total": 0
     },
-    "lastAudit": "2025-10-12T05:55:23.081Z",
+    "lastAudit": "2025-10-12T06:06:38.633Z",
     "dependencies": {
       "total": {
         "prod": 192,
@@ -269,7 +269,7 @@
   },
   "productivity": {
     "velocityTrend": "increasing",
-    "weeklyCommits": 159,
+    "weeklyCommits": 161,
     "contributors": {
       "total": 0,
       "active": 0
@@ -347,6 +347,12 @@
   },
   "recentActivity": [
     {
+      "hash": "32e6be2c8dc1f2c451285e7e2445a6aa7ae2ec82",
+      "message": "fix(auth): redirect to landing page modal instead of non-existent login.html",
+      "author": "SirsiMaster",
+      "date": "2025-10-12 02:06:21 -0400"
+    },
+    {
       "hash": "2995218b0195e4cf62c778e348a5738d998fff94",
       "message": "chore: update metrics cache",
       "author": "SirsiMaster",
@@ -399,16 +405,10 @@
       "message": "docs: Add comprehensive staging environment setup documentation",
       "author": "SirsiMaster",
       "date": "2025-10-12 00:35:42 -0400"
-    },
-    {
-      "hash": "a0c08567d98446c8fd73ab90406fa71e4ff9dec3",
-      "message": "feat(staging): Add Firestore copy script and complete staging setup",
-      "author": "SirsiMaster",
-      "date": "2025-10-12 00:34:26 -0400"
     }
   ],
   "automation": {
-    "lastRun": "2025-10-12T05:55:44.187Z",
+    "lastRun": "2025-10-12T06:07:00.504Z",
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",
