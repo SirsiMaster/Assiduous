@@ -18,6 +18,20 @@ service cloud.firestore {
       return isAuthenticated() && getUserRole() == 'admin';
     }
     
+    // Users collection: Allow authenticated users to read/write their own profile
+    match /users/{userId} {
+      allow read: if isAuthenticated() && (request.auth.uid == userId || isAdmin());
+      allow create: if isAuthenticated() && request.auth.uid == userId;
+      allow update: if isAuthenticated() && (request.auth.uid == userId || isAdmin());
+      allow delete: if isAdmin();
+    }
+    
+    // Agent stats: Allow agents to read their own stats, admins can read all
+    match /agent_stats/{userId} {
+      allow read: if isAuthenticated() && (request.auth.uid == userId || isAdmin());
+      allow write: if isAdmin();
+    }
+    
     // Verification docs: Enhanced access for Assiduous roles
     match /verifications/{verificationId} {
       // Buyers can read their own, agents can read assigned, admins can read all
