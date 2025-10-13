@@ -84,9 +84,13 @@ const recentCommits = gitLog.split('\n').filter(line => line).map(line => {
     };
 });
 
-// Get project start date
+// Get project start date and calculate days since start
 const firstCommitDate = git('log --reverse --format=%ad --date=iso | head -1');
 const projectStartDate = firstCommitDate ? new Date(firstCommitDate).toISOString().split('T')[0] : '2025-08-10';
+
+// Calculate days since project started (calendar days, not just commit days)
+const daysSinceStart = firstCommitDate ? 
+    Math.floor((Date.now() - new Date(firstCommitDate).getTime()) / (1000 * 60 * 60 * 24)) : 65;
 
 // Build metrics object (100% dynamic, NO hardcoded values)
 const metrics = {
@@ -96,14 +100,15 @@ const metrics = {
     project: {
         totalCommits: totalCommits,
         totalFiles: totalFiles,
-        activeDays: activeDays,
+        activeDays: activeDays,  // Days with actual commits
+        totalDays: daysSinceStart,  // Days since project started
         totalHours: totalHours.toString(),
         avgHoursPerDay: avgHoursPerDay.toString(),
         totalCost: totalCost,
         laborCost: totalCost,
         toolsCost: 450,
         velocity: velocity.toString(),
-        projectAgeDays: activeDays,
+        projectAgeDays: daysSinceStart,  // Same as totalDays
         actualStartDate: projectStartDate,
         completionPercentage: 46 // This should come from feature tracking, not hardcoded
     },
@@ -147,7 +152,8 @@ console.log('✅ Real-time metrics generated!\n');
 console.log('📊 Summary:');
 console.log(`   Total Commits: ${totalCommits}`);
 console.log(`   Total Files: ${totalFiles}`);
-console.log(`   Active Days: ${activeDays} (NOT ${activeDays * 3} - using REAL count)`);
+console.log(`   Days Since Start: ${daysSinceStart} (calendar days from ${projectStartDate})`);
+console.log(`   Active Days: ${activeDays} (days with actual commits)`);
 console.log(`   Total Hours: ${totalHours}`);
 console.log(`   Total Cost: $${totalCost.toLocaleString()}`);
 console.log(`   Last Commit: ${recentCommits[0]?.timeAgo || 'N/A'}`);
