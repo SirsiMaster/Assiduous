@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-10-13T21:12:47.077Z",
+  "lastUpdated": "2025-10-13T21:15:15.385Z",
   "summary": {
     "health": "Good",
     "score": 46,
@@ -104,40 +104,40 @@
     }
   },
   "project": {
-    "totalHours": "177",
+    "totalHours": "178",
     "avgHoursPerDay": "7.7",
-    "totalCost": 26550,
-    "laborCost": 26550,
+    "totalCost": 26700,
+    "laborCost": 26700,
     "toolsCost": 450,
-    "totalCommits": 536,
-    "totalFiles": 542,
+    "totalCommits": 538,
+    "totalFiles": 544,
     "activeDays": 23,
     "totalDays": 65,
     "projectAgeDays": 65,
-    "linesAdded": 9394587,
-    "linesDeleted": 8970581,
-    "netLines": 424006,
-    "velocity": "23.3",
+    "linesAdded": 9395475,
+    "linesDeleted": 8970768,
+    "netLines": 424707,
+    "velocity": "23.4",
     "completionPercentage": 46,
     "actualStartDate": "2025-08-10"
   },
   "today": {
     "date": "2025-10-13",
-    "hours": "5.6",
-    "cost": 842,
-    "commits": 17,
+    "hours": "6.3",
+    "cost": 941,
+    "commits": 19,
     "deployments": 0
   },
   "thisWeek": {
-    "hours": "46.5",
-    "cost": 6980,
-    "commits": 141,
+    "hours": "47.2",
+    "cost": 7079,
+    "commits": 143,
     "days": 7
   },
   "thisMonth": {
-    "hours": "72.9",
-    "cost": 10940,
-    "commits": 221
+    "hours": "73.6",
+    "cost": 11039,
+    "commits": 223
   },
   "quality": {
     "testCoverage": {
@@ -171,7 +171,7 @@
       "critical": 0,
       "total": 0
     },
-    "lastAudit": "2025-10-13T21:12:16.232Z",
+    "lastAudit": "2025-10-13T21:14:43.834Z",
     "dependencies": {
       "total": {
         "prod": 192,
@@ -250,7 +250,7 @@
     }
   },
   "documentation": {
-    "markdownFiles": 2774,
+    "markdownFiles": 2775,
     "jsFilesTotal": 25621,
     "jsFilesDocumented": 25621,
     "coverage": 442,
@@ -266,11 +266,11 @@
     "changelog": true,
     "contributing": false,
     "license": false,
-    "lastUpdate": "2025-10-13 17:00:29 -0400"
+    "lastUpdate": "2025-10-13 17:14:20 -0400"
   },
   "productivity": {
     "velocityTrend": "increasing",
-    "weeklyCommits": 141,
+    "weeklyCommits": 143,
     "contributors": {
       "total": 0,
       "active": 0
@@ -348,6 +348,18 @@
   },
   "recentActivity": [
     {
+      "hash": "2c04cccfafcf54aeee82d43bb091c57310e1ada6",
+      "message": "docs: add comprehensive metrics pipeline documentation",
+      "author": "SirsiMaster",
+      "date": "2025-10-13 17:14:20 -0400"
+    },
+    {
+      "hash": "a4e173d6e5f934da42df896f35a6499c87fa1a46",
+      "message": "fix: unify metrics pipeline to use enhanced comprehensive metrics",
+      "author": "SirsiMaster",
+      "date": "2025-10-13 17:13:06 -0400"
+    },
+    {
       "hash": "4369f94f87be5549a8fcdabc857bd6bcdfa39c6e",
       "message": "fix: calculate totalDays as calendar days since project start",
       "author": "SirsiMaster",
@@ -394,22 +406,10 @@
       "message": "feat(scripts): add Firebase account creation and validation tools",
       "author": "SirsiMaster",
       "date": "2025-10-13 16:37:05 -0400"
-    },
-    {
-      "hash": "0af67d8f987a34469a3903f817a0af2b97b9ca02",
-      "message": "refactor(firebase): consolidate to single firebase-config.js",
-      "author": "SirsiMaster",
-      "date": "2025-10-13 16:36:56 -0400"
-    },
-    {
-      "hash": "876c3ab986b9fb2bdd5443265646bfad76ff08ee",
-      "message": "chore: update metrics cache after latest commits",
-      "author": "SirsiMaster",
-      "date": "2025-10-13 16:36:46 -0400"
     }
   ],
   "automation": {
-    "lastRun": "2025-10-13T21:12:47.077Z",
+    "lastRun": "2025-10-13T21:15:15.385Z",
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",
