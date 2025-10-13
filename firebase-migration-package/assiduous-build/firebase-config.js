@@ -17,7 +17,7 @@ const firebaseConfigs = {
         appId: "1:853661742177:web:cf93349a7f50a2d9f2e620"
     },
     production: {
-        apiKey: "AIzaSyCL8Y7cQ-kZfhCXaM1KBTnAI6_LXq2J8fE",
+        apiKey: "AIzaSyCnQajchoBwP_VMEvc9mKH-vO0xlZjGCRE",
         authDomain: "assiduous-prod.firebaseapp.com",
         projectId: "assiduous-prod",
         storageBucket: "assiduous-prod.firebasestorage.app",
