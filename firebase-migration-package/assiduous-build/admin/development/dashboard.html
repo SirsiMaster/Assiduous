@@ -1099,9 +1099,15 @@
                     console.log('Loaded accurate metrics from cache:', cachedMetrics);
                     updateDashboardMetrics(cachedMetrics);
                     
-                    // Load recent activity from development history
-                    const activity = await loadRecentActivity();
-                    displayActivity(activity);
+                    // Use recentActivity from metrics file if available
+                    const activity = cachedMetrics.recentActivity || [];
+                    if (activity.length > 0) {
+                        displayActivity(activity.slice(0, 8)); // Show top 8
+                    } else {
+                        // Fallback to loading from other sources
+                        const fallbackActivity = await loadRecentActivity();
+                        displayActivity(fallbackActivity);
+                    }
                     return;
                 }
             } catch (cacheError) {
@@ -1135,18 +1141,18 @@
                 weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' 
             });
             
-            // Update PROJECT TOTALS (Historical)
-            document.getElementById('totalHours').textContent = metrics.project?.totalHours || '50.25';
-            document.getElementById('avgHoursPerDay').textContent = `${metrics.project?.avgHoursPerDay || '4.57'} hrs/day avg`;
+            // Update PROJECT TOTALS (NO FALLBACKS - Real data only)
+            document.getElementById('totalHours').textContent = metrics.project?.totalHours || '0';
+            document.getElementById('avgHoursPerDay').textContent = `${metrics.project?.avgHoursPerDay || '0'} hrs/day avg`;
             
-            document.getElementById('totalCost').textContent = `$${parseInt(metrics.project?.totalCost || '7988').toLocaleString()}`;
-            document.getElementById('costBreakdown').textContent = `$${parseInt(metrics.project?.laborCost || '7538')} labor + $${parseInt(metrics.project?.toolsCost || '450')} tools`;
+            document.getElementById('totalCost').textContent = `$${parseInt(metrics.project?.totalCost || 0).toLocaleString()}`;
+            document.getElementById('costBreakdown').textContent = `$${parseInt(metrics.project?.laborCost || 0)} labor + $${parseInt(metrics.project?.toolsCost || 0)} tools`;
             
-            document.getElementById('totalCommits').textContent = metrics.project?.totalCommits || '196';
-            document.getElementById('velocityRate').textContent = `${metrics.project?.velocity || '17.8'}/day avg`;
+            document.getElementById('totalCommits').textContent = metrics.project?.totalCommits || '0';
+            document.getElementById('velocityRate').textContent = `${metrics.project?.velocity || '0'}/day avg`;
             
-            document.getElementById('totalFiles').textContent = (metrics.project?.totalFiles || '38957').toLocaleString();
-            document.getElementById('projectDays').textContent = `${metrics.project?.totalDays || '11'} active days`;
+            document.getElementById('totalFiles').textContent = (metrics.project?.totalFiles || 0).toLocaleString();
+            document.getElementById('projectDays').textContent = `${metrics.project?.totalDays || '0'} days (${metrics.project?.activeDays || '0'} active)`;
             
             // Update TODAY'S ACTIVITY
             const todayHours = parseFloat(metrics.today?.hours || 0);
@@ -1161,7 +1167,7 @@
             const todayCommits = parseInt(metrics.today?.commits || 0);
             document.getElementById('todayCommitsCount').textContent = todayCommits;
             document.getElementById('todayCommits').textContent = todayCommits; // For chart header
-            const avgCommits = parseFloat(metrics.project?.velocity || 17.8);
+            const avgCommits = parseFloat(metrics.project?.velocity || 0);
             const percentOfAvg = avgCommits > 0 ? Math.round((todayCommits / avgCommits) * 100) : 0;
             document.getElementById('todayCommitsChange').textContent = todayCommits > 0 ? 
                 `${percentOfAvg}% of average` : 'No commits yet';
@@ -1172,10 +1178,10 @@
             
             // Update Project Metrics card
             if (document.getElementById('projectCost')) {
-                document.getElementById('projectCost').textContent = `$${parseInt(metrics.project?.totalCost || '7988').toLocaleString()}`;
+                document.getElementById('projectCost').textContent = `$${parseInt(metrics.project?.totalCost || 0).toLocaleString()}`;
             }
             if (document.getElementById('activeSessions')) {
-                document.getElementById('activeSessions').textContent = metrics.project?.totalDays || '11';
+                document.getElementById('activeSessions').textContent = metrics.project?.activeDays || '0';
             }
             if (document.getElementById('automationLevel')) {
                 document.getElementById('automationLevel').textContent = '100%';
@@ -1184,28 +1190,93 @@
                 document.getElementById('deploymentStatus').textContent = '✅ Live';
             }
             
+            // Update Development Progress from features
+            updateFeatureProgress(metrics.features);
+            
             // Update the page with timestamp
             console.log(`Dashboard updated at ${new Date().toLocaleString()} - Accurate metrics loaded`);
+        }
+        
+        function updateFeatureProgress(features) {
+            if (!features) return;
+            
+            // Calculate overall completion
+            const featureList = Object.values(features);
+            const overallCompletion = Math.round(
+                featureList.reduce((sum, f) => sum + f.percentage, 0) / featureList.length
+            );
+            
+            // Update overall progress
+            const overallPercentageEl = document.querySelector('.progress-item:last-child .progress-percentage');
+            const overallFillEl = document.querySelector('.progress-item:last-child .progress-fill');
+            if (overallPercentageEl && overallFillEl) {
+                overallPercentageEl.textContent = `${overallCompletion}%`;
+                overallFillEl.style.width = `${overallCompletion}%`;
+            }
+            
+            // Update phase progress based on features
+            // Phase 1: Foundation (auth + admin)
+            const phase1 = Math.round((features.authentication?.percentage + features.adminPortal?.percentage) / 2);
+            const phase1PercentageEl = document.querySelectorAll('.progress-item')[0]?.querySelector('.progress-percentage');
+            const phase1FillEl = document.querySelectorAll('.progress-item')[0]?.querySelector('.progress-fill');
+            if (phase1PercentageEl && phase1FillEl) {
+                phase1PercentageEl.textContent = `${phase1}%`;
+                phase1FillEl.style.width = `${phase1}%`;
+            }
+            
+            // Phase 2: Backend Integration (agent + client + microflipping)
+            const phase2 = Math.round((features.agentPortal?.percentage + features.clientPortal?.percentage + features.microFlipping?.percentage) / 3);
+            const phase2PercentageEl = document.querySelectorAll('.progress-item')[1]?.querySelector('.progress-percentage');
+            const phase2FillEl = document.querySelectorAll('.progress-item')[1]?.querySelector('.progress-fill');
+            if (phase2PercentageEl && phase2FillEl) {
+                phase2PercentageEl.textContent = `${phase2}%`;
+                phase2FillEl.style.width = `${phase2}%`;
+            }
+            
+            // Phase 3: Launch Features (AI + payments)
+            const phase3 = Math.round((features.aiIntegration?.percentage + features.paymentProcessing?.percentage) / 2);
+            const phase3PercentageEl = document.querySelectorAll('.progress-item')[2]?.querySelector('.progress-percentage');
+            const phase3FillEl = document.querySelectorAll('.progress-item')[2]?.querySelector('.progress-fill');
+            if (phase3PercentageEl && phase3FillEl) {
+                phase3PercentageEl.textContent = `${phase3}%`;
+                phase3FillEl.style.width = `${phase3}%`;
+            }
         }
 
         function displayActivity(activities) {
             const container = document.getElementById('commits');
-            container.innerHTML = activities.map(activity => {
-                const sha = activity.id ? activity.id.substring(0, 7) : 'N/A';
+            
+            // Process activities to add timeAgo if missing
+            const processedActivities = activities.map(activity => {
+                const sha = activity.hash ? activity.hash.substring(0, 7) : (activity.id || 'N/A');
                 const authorInitial = activity.author ? activity.author.charAt(0).toUpperCase() : 'A';
                 
-                return `
-                    <div class="activity-item" style="padding: var(--space-md); border-bottom: 1px solid var(--gray-100); cursor: pointer;" onmouseover="this.style.background='var(--gray-50)'" onmouseout="this.style.background=''">
-                        <div class="activity-avatar" style="background: var(--gradient);">${authorInitial}</div>
-                        <div class="activity-content">
-                            <div class="activity-user">${activity.author || 'Developer'}</div>
-                            <div class="activity-action">${activity.message || 'Development activity'}</div>
-                            <span style="display: inline-block; margin-top: var(--space-xs); padding: 2px 6px; background: var(--gray-50); border-radius: var(--radius-sm); font-family: 'SF Mono', Monaco, monospace; font-size: 11px; color: var(--text-secondary);">${sha}</span>
-                        </div>
-                        <div class="activity-time">${activity.timeAgo || 'Recently'}</div>
+                // Calculate timeAgo if not present
+                let timeAgo = activity.timeAgo || 'Recently';
+                if (!activity.timeAgo && activity.date) {
+                    timeAgo = getTimeAgo(new Date(activity.date));
+                }
+                
+                return {
+                    sha,
+                    authorInitial,
+                    author: activity.author || 'Developer',
+                    message: activity.message || 'Development activity',
+                    timeAgo
+                };
+            });
+            
+            container.innerHTML = processedActivities.map(activity => `
+                <div class="activity-item" style="padding: var(--space-md); border-bottom: 1px solid var(--gray-100); cursor: pointer;" onmouseover="this.style.background='var(--gray-50)'" onmouseout="this.style.background=''">
+                    <div class="activity-avatar" style="background: var(--gradient);">${activity.authorInitial}</div>
+                    <div class="activity-content">
+                        <div class="activity-user">${activity.author}</div>
+                        <div class="activity-action">${activity.message}</div>
+                        <span style="display: inline-block; margin-top: var(--space-xs); padding: 2px 6px; background: var(--gray-50); border-radius: var(--radius-sm); font-family: 'SF Mono', Monaco, monospace; font-size: 11px; color: var(--text-secondary);">${activity.sha}</span>
                     </div>
-                `;
-            }).join('');
+                    <div class="activity-time">${activity.timeAgo}</div>
+                </div>
+            `).join('');
         }
 
         function createChart() {
