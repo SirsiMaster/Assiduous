@@ -11,18 +11,57 @@
 
 ## MANDATORY RULES (Enforced Harshly)
 
-### RULE 0: Check SirsiMaster Component Library First
+### RULE 0: FULL IMPLEMENTATION MANDATE - NO INSTRUCTIONS, ONLY WORKING CODE
+**When the user requests ANY feature:**
+- NEVER provide instructions or manual steps
+- NEVER say "you can do X" or "here's how to set up Y"
+- ALWAYS implement the feature fully and automatically
+- ALWAYS make it work end-to-end without user intervention
+
+### RULE 0.1: Check SirsiMaster Component Library First
 **Before creating ANY component:**
 - Check `/Users/thekryptodragon/Development/sirsimaster-component-library`
 - Use existing components, don't duplicate
 - Contribute generic components to library, not this project
 
-### RULE 5: NEVER Test Locally - Firebase Staging Only
-**Pipeline**: LOCAL (code only) → GIT → STAGING (Firebase) → PROD (Firebase)
+### RULE 1: ALWAYS CHECK EXISTING DOCUMENTATION AND FILES FIRST
+**Before starting ANY task, you MUST:**
+- Check if relevant files already exist - DO NOT CREATE NEW FILES without verification
+- Check if documentation already addresses the issue - DO NOT CREATE NEW DOCS without proof they don't exist
+- Read and understand ALL existing project documentation
+- Verify what functionality already exists and is working
+- Review similar implementations that already exist in the project
+- NEVER modify or break existing working files without explicit instruction
+
+### RULE 2: MANDATORY COMPLETION VERIFICATION
+**Before reporting ANY task as complete, you MUST:**
+- Run completion verification scripts if they exist
+- Test all functionality you claim to have implemented
+- Verify that claimed changes actually exist in the files
+- Confirm that all components/pages work as specified
+- Check that nothing existing was broken by your changes
+- NEVER report completion without verification
+
+### RULE 3: VALIDATE GROUND TRUTH
+**After completing ANY development work, you MUST:**
+- Test all implemented functionality against requirements
+- Ensure documentation reflects current reality
+- Report the true development status, not assumptions
+- Validate that the project state matches what you report
+
+### RULE 5: MANDATORY DEVELOPMENT PIPELINE (NEVER SKIP)
+**Pipeline**: LOCAL (code only) → GIT (GitHub) → STAGING (Firebase) → PROD (Firebase)
+**Each stage is a mandatory checkpoint. You CANNOT skip stages.**
+
 - ❌ NEVER use `python -m http.server` or local static servers
 - ❌ NEVER claim features work without Firebase staging testing
+- ❌ NEVER deploy to production without staging validation
+- ❌ NEVER deploy to Firebase without committing to GitHub first
+- ❌ NEVER skip staging deployment and testing
+- ✅ ALWAYS commit to GitHub first (source of truth)
 - ✅ ALWAYS deploy to staging Firebase first
 - ✅ ALWAYS test with full Firebase backend (Auth, Firestore, Functions)
+- ✅ ALWAYS run Rule 4 QA/QC in staging browser
 - ✅ ONLY deploy to prod after 100% staging validation
 
 ### RULE 4: Harsh QA/QC Before Any Completion Claims
@@ -166,4 +205,43 @@
 - Report bugs immediately, honestly
 - Never inflate completion percentages
 
-Last Updated: October 12, 2025 03:52 UTC
+## ADDITIONAL CRITICAL RULES
+
+### TERMINAL INTERACTION RULES
+**AVOID terminal interactions that cause hangs:**
+- NO complex multi-line commit messages with special characters
+- NO commands that might open pagers without --no-pager flag
+- NO interactive commands that require user input
+- Use simple, clean commands that complete and exit
+
+### FILE AND DOCUMENT CREATION RULES
+1. **ALWAYS check for existing files first:**
+   - Use `find`, `ls`, `grep` to search for similar files
+   - Read existing documentation before creating new
+   - Check if functionality already exists
+
+2. **NEVER create duplicate functionality:**
+   - Search codebase for similar features
+   - Check docs/ folder for existing documentation
+   - Verify no existing solution before creating new
+
+3. **NEVER assign work to the user:**
+   - Implement features yourself
+   - Complete tasks fully
+   - Don't create instruction lists for the user
+
+### VERIFICATION BEFORE CLAIMS
+**NEVER claim something works without:**
+- Actual deployment to staging
+- Browser testing with DevTools open
+- End-to-end workflow testing
+- Checking for console errors
+- Verifying data persistence
+
+### HONEST REPORTING
+- Report actual status, not hopeful projections
+- Admit when something isn't working
+- Test before claiming completion
+- Be specific about what works and what doesn't
+
+Last Updated: October 13, 2025 23:00 UTC
