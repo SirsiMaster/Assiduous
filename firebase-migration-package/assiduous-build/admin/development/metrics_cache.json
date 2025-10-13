@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-10-12T07:29:54.991Z",
+  "lastUpdated": "2025-10-13T18:54:35.468Z",
   "summary": {
     "health": "Good",
     "score": 46,
@@ -104,39 +104,39 @@
     }
   },
   "project": {
-    "totalHours": "170",
+    "totalHours": "172",
     "avgHoursPerDay": "2.7",
-    "totalCost": 25500,
-    "laborCost": 25500,
+    "totalCost": 25800,
+    "laborCost": 25800,
     "toolsCost": 450,
-    "totalCommits": 516,
-    "totalFiles": 38880,
-    "activeDays": 63,
-    "projectAgeDays": 63,
-    "linesAdded": 9390563,
-    "linesDeleted": 919048,
-    "netLines": 8471515,
+    "totalCommits": 522,
+    "totalFiles": 38887,
+    "activeDays": 64,
+    "projectAgeDays": 64,
+    "linesAdded": 9392142,
+    "linesDeleted": 919199,
+    "netLines": 8472943,
     "velocity": "8.2",
     "completionPercentage": 46,
     "actualStartDate": "2025-08-10"
   },
   "today": {
-    "date": "2025-10-12",
-    "hours": "20.5",
-    "cost": 3069,
-    "commits": 62,
+    "date": "2025-10-13",
+    "hours": "2.0",
+    "cost": 297,
+    "commits": 6,
     "deployments": 0
   },
   "thisWeek": {
-    "hours": "60.1",
-    "cost": 9009,
-    "commits": 182,
+    "hours": "41.9",
+    "cost": 6287,
+    "commits": 127,
     "days": 7
   },
   "thisMonth": {
-    "hours": "66.3",
-    "cost": 9950,
-    "commits": 201
+    "hours": "68.3",
+    "cost": 10247,
+    "commits": 207
   },
   "quality": {
     "testCoverage": {
@@ -170,7 +170,7 @@
       "critical": 0,
       "total": 0
     },
-    "lastAudit": "2025-10-12T07:29:33.248Z",
+    "lastAudit": "2025-10-13T18:54:21.459Z",
     "dependencies": {
       "total": {
         "prod": 192,
@@ -216,14 +216,14 @@
     }
   },
   "deployment": {
-    "lastDeployment": "2025-10-12 03:29:12 -0400",
-    "totalDeployments": 88,
+    "lastDeployment": "2025-10-13 14:45:24 -0400",
+    "totalDeployments": 91,
     "deploymentFrequency": "Weekly",
     "environments": {
       "production": {
         "url": "https://assiduous-prod.web.app",
         "status": "Active",
-        "lastDeploy": "2025-10-12 03:29:12 -0400"
+        "lastDeploy": "2025-10-13 14:45:24 -0400"
       },
       "staging": {
         "url": "https://assiduous-staging.web.app",
@@ -249,7 +249,7 @@
     }
   },
   "documentation": {
-    "markdownFiles": 1585,
+    "markdownFiles": 1589,
     "jsFilesTotal": 11962,
     "jsFilesDocumented": 11962,
     "coverage": 557,
@@ -265,16 +265,16 @@
     "changelog": true,
     "contributing": false,
     "license": false,
-    "lastUpdate": "2025-10-12 01:51:55 -0400"
+    "lastUpdate": "2025-10-13 14:54:03 -0400"
   },
   "productivity": {
     "velocityTrend": "increasing",
-    "weeklyCommits": 182,
+    "weeklyCommits": 127,
     "contributors": {
       "total": 0,
       "active": 0
     },
-    "averageCommitSize": 88,
+    "averageCommitSize": 87,
     "pullRequests": {
       "open": 0,
       "merged": 0,
@@ -302,7 +302,7 @@
       "projectStart": "2025-08-10",
       "originalLaunch": "2025-11-01",
       "plannedLaunch": "2025-12-01",
-      "daysRemaining": 50,
+      "daysRemaining": 49,
       "onTrack": true,
       "adjustmentReason": "Timeline adjusted for realistic completion based on current velocity"
     },
@@ -347,6 +347,42 @@
   },
   "recentActivity": [
     {
+      "hash": "c1ff5610376ca89c67847006ffc76dec62114637",
+      "message": "docs(security): add comprehensive security vulnerability fix guide",
+      "author": "SirsiMaster",
+      "date": "2025-10-13 14:54:03 -0400"
+    },
+    {
+      "hash": "9431235805423746af3149609e8fd69db45e7a16",
+      "message": "docs(session): add comprehensive session summary for Oct 13",
+      "author": "SirsiMaster",
+      "date": "2025-10-13 14:45:24 -0400"
+    },
+    {
+      "hash": "30fff4db3699b1d909b857faa2993f9119d8fc56",
+      "message": "refactor(firebase): simplify hosting to single site configuration",
+      "author": "SirsiMaster",
+      "date": "2025-10-13 14:43:24 -0400"
+    },
+    {
+      "hash": "fa0627c1249a7045904981951c3d58c08b05a7d1",
+      "message": "docs(domain): add quick reference guide for domain setup",
+      "author": "SirsiMaster",
+      "date": "2025-10-12 16:37:09 -0400"
+    },
+    {
+      "hash": "24f1b3138fd7c77be00e067d63a39bd92d0612d1",
+      "message": "docs(domain): update DNS config to single Firebase IP and add monitoring",
+      "author": "SirsiMaster",
+      "date": "2025-10-12 16:35:37 -0400"
+    },
+    {
+      "hash": "5df73cd5e4416006029bed966b470d97b202e814",
+      "message": "fix(hosting): remove root redirect causing 302 status",
+      "author": "SirsiMaster",
+      "date": "2025-10-12 16:26:25 -0400"
+    },
+    {
       "hash": "f8dba740d41554279dead01572d0d2a63b26959c",
       "message": "fix(ci): deploy production from correct directory",
       "author": "SirsiMaster",
@@ -369,46 +405,10 @@
       "message": "fix(ci): deploy from correct directory with firebase.json",
       "author": "SirsiMaster",
       "date": "2025-10-12 03:15:51 -0400"
-    },
-    {
-      "hash": "a53784ba10ba1dd9e41a2877624be36491055a70",
-      "message": "fix(csp): allow all https and wss connections for Firebase",
-      "author": "SirsiMaster",
-      "date": "2025-10-12 03:11:33 -0400"
-    },
-    {
-      "hash": "dcb2b8ee789ab91ddd567dfe6fff99296172aabd",
-      "message": "fix(firebase): resolve CSP violations and initialization race conditions",
-      "author": "SirsiMaster",
-      "date": "2025-10-12 03:08:46 -0400"
-    },
-    {
-      "hash": "b0b5105b43a4ad37b4279f65f81586397f23df6f",
-      "message": "fix(ci): remove automatic git pushes from workflows",
-      "author": "SirsiMaster",
-      "date": "2025-10-12 02:58:56 -0400"
-    },
-    {
-      "hash": "4c2a113c0e4841e0906e92afc4a6c568efe36c43",
-      "message": "fix(ci): remove GitHub environment approval from production",
-      "author": "SirsiMaster",
-      "date": "2025-10-12 02:54:08 -0400"
-    },
-    {
-      "hash": "3c4073868ad392b7f927806551027e26e5aa59eb",
-      "message": "fix(ci): remove approval requirement from staging deployment",
-      "author": "SirsiMaster",
-      "date": "2025-10-12 02:48:31 -0400"
-    },
-    {
-      "hash": "01f7985a5b688b4a6a3da600dc4e65c447e12c47",
-      "message": "fix(auth): make auth-guard.js dynamic and environment-aware",
-      "author": "SirsiMaster",
-      "date": "2025-10-12 02:42:03 -0400"
     }
   ],
   "automation": {
-    "lastRun": "2025-10-12T07:29:54.991Z",
+    "lastRun": "2025-10-13T18:54:35.468Z",
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",
