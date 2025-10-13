@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-10-13T21:15:15.385Z",
+  "lastUpdated": "2025-10-13T21:21:59.512Z",
   "summary": {
     "health": "Good",
     "score": 46,
@@ -109,35 +109,35 @@
     "totalCost": 26700,
     "laborCost": 26700,
     "toolsCost": 450,
-    "totalCommits": 538,
+    "totalCommits": 540,
     "totalFiles": 544,
     "activeDays": 23,
     "totalDays": 65,
     "projectAgeDays": 65,
-    "linesAdded": 9395475,
-    "linesDeleted": 8970768,
-    "netLines": 424707,
-    "velocity": "23.4",
+    "linesAdded": 9395646,
+    "linesDeleted": 8970868,
+    "netLines": 424778,
+    "velocity": "23.5",
     "completionPercentage": 46,
     "actualStartDate": "2025-08-10"
   },
   "today": {
     "date": "2025-10-13",
-    "hours": "6.3",
-    "cost": 941,
-    "commits": 19,
+    "hours": "6.9",
+    "cost": 1040,
+    "commits": 21,
     "deployments": 0
   },
   "thisWeek": {
-    "hours": "47.2",
-    "cost": 7079,
-    "commits": 143,
+    "hours": "47.9",
+    "cost": 7178,
+    "commits": 145,
     "days": 7
   },
   "thisMonth": {
-    "hours": "73.6",
-    "cost": 11039,
-    "commits": 223
+    "hours": "74.3",
+    "cost": 11138,
+    "commits": 225
   },
   "quality": {
     "testCoverage": {
@@ -171,7 +171,7 @@
       "critical": 0,
       "total": 0
     },
-    "lastAudit": "2025-10-13T21:14:43.834Z",
+    "lastAudit": "2025-10-13T21:21:27.020Z",
     "dependencies": {
       "total": {
         "prod": 192,
@@ -270,12 +270,12 @@
   },
   "productivity": {
     "velocityTrend": "increasing",
-    "weeklyCommits": 143,
+    "weeklyCommits": 145,
     "contributors": {
       "total": 0,
       "active": 0
     },
-    "averageCommitSize": 159,
+    "averageCommitSize": 158,
     "pullRequests": {
       "open": 0,
       "merged": 0,
@@ -348,6 +348,18 @@
   },
   "recentActivity": [
     {
+      "hash": "103255323ea7b384260d6ead5a9b459c96f69768",
+      "message": "docs: complete metrics pipeline unification summary",
+      "author": "SirsiMaster",
+      "date": "2025-10-13 17:21:04 -0400"
+    },
+    {
+      "hash": "4a649a74a07604e399e649145378df645da964e8",
+      "message": "fix: dashboard now displays dynamic recent activity and progress",
+      "author": "SirsiMaster",
+      "date": "2025-10-13 17:20:07 -0400"
+    },
+    {
       "hash": "2c04cccfafcf54aeee82d43bb091c57310e1ada6",
       "message": "docs: add comprehensive metrics pipeline documentation",
       "author": "SirsiMaster",
@@ -394,22 +406,10 @@
       "message": "chore: remove obsolete setup-test-account.html",
       "author": "SirsiMaster",
       "date": "2025-10-13 16:37:21 -0400"
-    },
-    {
-      "hash": "168a86af34edbe7d3e1a888fa2be45ba6a3909b6",
-      "message": "chore(firebase): update firestore rules and dependencies",
-      "author": "SirsiMaster",
-      "date": "2025-10-13 16:37:14 -0400"
-    },
-    {
-      "hash": "3dd81a31d874f0e555fcf734f507a0fa6b23f4e3",
-      "message": "feat(scripts): add Firebase account creation and validation tools",
-      "author": "SirsiMaster",
-      "date": "2025-10-13 16:37:05 -0400"
     }
   ],
   "automation": {
-    "lastRun": "2025-10-13T21:15:15.385Z",
+    "lastRun": "2025-10-13T21:21:59.512Z",
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",
