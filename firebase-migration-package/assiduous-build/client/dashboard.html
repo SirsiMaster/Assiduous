@@ -18,6 +18,13 @@
     <link rel="stylesheet" href="../components/admin-layout.css">
     <link rel="stylesheet" href="../assets/css/button-override.css">
     
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="../firebase-config.js"></script>
+    <script src="../components/auth-guard-simple.js"></script>
+    
     <style>
         /* Minimal dashboard-specific styles only */
         .dashboard-content {
@@ -562,7 +569,6 @@
         async function loadFeaturedProperties(db) {
             const featuredSnapshot = await db.collection('properties')
                 .where('status', '==', 'available')
-                .orderBy('flipEstimate.roi', 'desc')
                 .limit(6)
                 .get();
             
@@ -604,10 +610,10 @@
             const bathrooms = data.details?.bathrooms || 0;
             const sqft = data.details?.sqft || 0;
             
-            const roi = data.flipEstimate?.roi || 0;
+            const roi = data.flipAnalysis?.roi || 0;
             
             // Get first image or use placeholder
-            const imageUrl = data.images?.[0]?.url || 'https://images.unsplash.com/photo-1560184897-ae75f418493e?w=400';
+            const imageUrl = data.images?.main || 'https://images.unsplash.com/photo-1560184897-ae75f418493e?w=400';
             
             card.innerHTML = `
                 <img src="${imageUrl}" alt="Property" class="property-image" onerror="this.src='https://images.unsplash.com/photo-1560184897-ae75f418493e?w=400'">

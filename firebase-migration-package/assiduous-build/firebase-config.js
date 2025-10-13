@@ -394,11 +394,15 @@ const Utils = {
     }
 };
 
-// Auto-initialize when DOM is ready
+// Auto-initialize when DOM is ready and Firebase SDK is loaded
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initializeFirebase);
+    document.addEventListener('DOMContentLoaded', () => {
+        // Give Firebase SDK a moment to fully load
+        setTimeout(initializeFirebase, 100);
+    });
 } else {
-    initializeFirebase();
+    // Give Firebase SDK a moment to fully load
+    setTimeout(initializeFirebase, 100);
 }
 
 // Export for use in other scripts

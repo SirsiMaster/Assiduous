@@ -145,13 +145,28 @@ const idGenerator = new IDGenerator();
 
 // Wait for Firebase to be ready before auto-initializing
 if (typeof window !== 'undefined') {
-    window.addEventListener('firebase-ready', () => {
+    // Try immediate initialization if Firebase is already loaded
+    const tryInit = () => {
         if (typeof firebase !== 'undefined' && firebase.firestore) {
             try {
                 idGenerator.initialize(firebase.firestore());
+                console.log('[IDGenerator] ✓ Initialized successfully');
+                return true;
             } catch (error) {
-                console.warn('IDGenerator initialization failed:', error);
+                console.warn('[IDGenerator] Initialization failed:', error);
+                return false;
             }
         }
-    });
+        return false;
+    };
+    
+    // Listen for firebase-ready event
+    window.addEventListener('firebase-ready', tryInit);
+    
+    // Also try after a delay in case firebase-ready was already fired
+    setTimeout(() => {
+        if (!idGenerator.db) {
+            tryInit();
+        }
+    }, 500);
 }
