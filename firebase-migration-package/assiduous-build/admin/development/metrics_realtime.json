@@ -1,15 +1,15 @@
 {
-  "lastUpdated": "2025-10-13T21:03:26.975Z",
+  "lastUpdated": "2025-10-13T21:06:44.230Z",
   "dataSource": "git (real-time)",
   "project": {
-    "totalCommits": 535,
+    "totalCommits": 536,
     "totalFiles": 542,
     "activeDays": 23,
     "totalDays": 64,
-    "totalHours": "176.6",
+    "totalHours": "176.9",
     "avgHoursPerDay": "7.7",
-    "totalCost": 26490,
-    "laborCost": 26490,
+    "totalCost": 26535,
+    "laborCost": 26535,
     "toolsCost": 450,
     "velocity": "23.3",
     "projectAgeDays": 64,
@@ -18,23 +18,33 @@
   },
   "today": {
     "date": "2025-10-13",
-    "commits": 16,
-    "hours": "5.3",
-    "cost": 795,
+    "commits": 17,
+    "hours": "5.6",
+    "cost": 840,
     "deployments": 0
   },
   "thisWeek": {
-    "commits": 140,
-    "hours": "46.2",
-    "cost": 6930,
+    "commits": 141,
+    "hours": "46.5",
+    "cost": 6975,
     "days": 7
   },
   "thisMonth": {
-    "commits": 220,
-    "hours": "72.6",
-    "cost": 10890
+    "commits": 221,
+    "hours": "72.9",
+    "cost": 10935
   },
   "recentActivity": [
+    {
+      "id": "4369f94",
+      "hash": "4369f94f87be5549a8fcdabc857bd6bcdfa39c6e",
+      "author": "SirsiMaster",
+      "email": "98624707+cyltoncollymore@users.noreply.github.com",
+      "timestamp": 1760389434,
+      "date": "2025-10-13T21:03:54.000Z",
+      "message": "fix: calculate totalDays as calendar days since project start",
+      "timeAgo": "2 minutes ago"
+    },
     {
       "id": "9fb1316",
       "hash": "9fb1316729bbcd9dee4bc67c6ac9f44ae00c28a4",
@@ -43,7 +53,7 @@
       "timestamp": 1760389229,
       "date": "2025-10-13T21:00:29.000Z",
       "message": "docs: document complete removal of fake/hardcoded dashboard data",
-      "timeAgo": "2 minutes ago"
+      "timeAgo": "6 minutes ago"
     },
     {
       "id": "7679362",
@@ -53,7 +63,7 @@
       "timestamp": 1760389164,
       "date": "2025-10-13T20:59:24.000Z",
       "message": "feat: implement 100% dynamic real-time metrics - NO hardcoded data",
-      "timeAgo": "4 minutes ago"
+      "timeAgo": "7 minutes ago"
     },
     {
       "id": "d670e75",
@@ -63,7 +73,7 @@
       "timestamp": 1760387959,
       "date": "2025-10-13T20:39:19.000Z",
       "message": "chore: final metrics auto-update for session",
-      "timeAgo": "24 minutes ago"
+      "timeAgo": "27 minutes ago"
     },
     {
       "id": "2b95acd",
@@ -73,7 +83,7 @@
       "timestamp": 1760387942,
       "date": "2025-10-13T20:39:02.000Z",
       "message": "docs: add session summary for metrics verification work",
-      "timeAgo": "24 minutes ago"
+      "timeAgo": "27 minutes ago"
     },
     {
       "id": "434ea31",
@@ -83,7 +93,7 @@
       "timestamp": 1760387841,
       "date": "2025-10-13T20:37:21.000Z",
       "message": "chore: remove obsolete setup-test-account.html",
-      "timeAgo": "26 minutes ago"
+      "timeAgo": "29 minutes ago"
     },
     {
       "id": "168a86a",
@@ -93,7 +103,7 @@
       "timestamp": 1760387834,
       "date": "2025-10-13T20:37:14.000Z",
       "message": "chore(firebase): update firestore rules and dependencies",
-      "timeAgo": "26 minutes ago"
+      "timeAgo": "29 minutes ago"
     },
     {
       "id": "3dd81a3",
@@ -103,7 +113,7 @@
       "timestamp": 1760387825,
       "date": "2025-10-13T20:37:05.000Z",
       "message": "feat(scripts): add Firebase account creation and validation tools",
-      "timeAgo": "26 minutes ago"
+      "timeAgo": "29 minutes ago"
     },
     {
       "id": "0af67d8",
@@ -113,7 +123,7 @@
       "timestamp": 1760387816,
       "date": "2025-10-13T20:36:56.000Z",
       "message": "refactor(firebase): consolidate to single firebase-config.js",
-      "timeAgo": "26 minutes ago"
+      "timeAgo": "29 minutes ago"
     },
     {
       "id": "876c3ab",
@@ -123,22 +133,12 @@
       "timestamp": 1760387806,
       "date": "2025-10-13T20:36:46.000Z",
       "message": "chore: update metrics cache after latest commits",
-      "timeAgo": "26 minutes ago"
-    },
-    {
-      "id": "010b0d7",
-      "hash": "010b0d7d50fbfcbbcf49630d4b0edc7bc86f3b9c",
-      "author": "SirsiMaster",
-      "email": "98624707+cyltoncollymore@users.noreply.github.com",
-      "timestamp": 1760387646,
-      "date": "2025-10-13T20:34:06.000Z",
-      "message": "docs: add comprehensive file count analysis and verification",
       "timeAgo": "29 minutes ago"
     }
   ],
   "automation": {
     "gitHookInstalled": true,
-    "lastRun": "2025-10-13T21:03:26.975Z",
+    "lastRun": "2025-10-13T21:06:44.230Z",
     "dataFreshness": "real-time",
     "updateMethod": "dynamic-git-queries"
   }

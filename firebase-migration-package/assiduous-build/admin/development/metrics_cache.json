@@ -1,145 +1,425 @@
 {
-  "lastUpdated": "2025-10-13T21:03:26.975Z",
-  "dataSource": "git (real-time)",
+  "lastUpdated": "2025-10-13T21:12:47.077Z",
+  "summary": {
+    "health": "Good",
+    "score": 46,
+    "trend": "increasing",
+    "alerts": [
+      "⚠️ Test coverage is very low",
+      "✅ Timeline adjusted - now on track for December 1st launch"
+    ]
+  },
+  "features": {
+    "authentication": {
+      "status": "complete",
+      "percentage": 100,
+      "description": "Firebase Auth with role-based access",
+      "completedTasks": [
+        "Firebase setup",
+        "Role system",
+        "Login/logout",
+        "Protected routes"
+      ],
+      "remainingTasks": []
+    },
+    "adminPortal": {
+      "status": "complete",
+      "percentage": 90,
+      "description": "Properties, agents, clients management",
+      "completedTasks": [
+        "Dashboard",
+        "Properties CRUD",
+        "Agents management",
+        "Clients list"
+      ],
+      "remainingTasks": [
+        "Analytics charts",
+        "Bulk operations"
+      ]
+    },
+    "agentPortal": {
+      "status": "in-progress",
+      "percentage": 60,
+      "description": "Dashboard done, needs properties/leads",
+      "completedTasks": [
+        "Dashboard",
+        "Authentication"
+      ],
+      "remainingTasks": [
+        "Properties list",
+        "Lead management",
+        "Commission tracking"
+      ]
+    },
+    "clientPortal": {
+      "status": "in-progress",
+      "percentage": 70,
+      "description": "Dashboard and deal analyzer complete",
+      "completedTasks": [
+        "Dashboard",
+        "Deal analyzer",
+        "Authentication"
+      ],
+      "remainingTasks": [
+        "Property search",
+        "Portfolio management",
+        "Document upload"
+      ]
+    },
+    "microFlipping": {
+      "status": "not-started",
+      "percentage": 0,
+      "description": "Automated deal flow and analysis",
+      "completedTasks": [],
+      "remainingTasks": [
+        "Deal pipeline",
+        "ROI calculator",
+        "Automated valuations",
+        "Contractor network"
+      ]
+    },
+    "aiIntegration": {
+      "status": "not-started",
+      "percentage": 0,
+      "description": "AI property recommendations",
+      "completedTasks": [],
+      "remainingTasks": [
+        "ML model",
+        "Recommendation engine",
+        "Market predictions",
+        "Chat assistant"
+      ]
+    },
+    "paymentProcessing": {
+      "status": "not-started",
+      "percentage": 0,
+      "description": "Stripe integration for transactions",
+      "completedTasks": [],
+      "remainingTasks": [
+        "Stripe setup",
+        "Payment flows",
+        "Subscription billing",
+        "Commission splits"
+      ]
+    }
+  },
   "project": {
-    "totalCommits": 535,
+    "totalHours": "177",
+    "avgHoursPerDay": "7.7",
+    "totalCost": 26550,
+    "laborCost": 26550,
+    "toolsCost": 450,
+    "totalCommits": 536,
     "totalFiles": 542,
     "activeDays": 23,
-    "totalDays": 64,
-    "totalHours": "176.6",
-    "avgHoursPerDay": "7.7",
-    "totalCost": 26490,
-    "laborCost": 26490,
-    "toolsCost": 450,
+    "totalDays": 65,
+    "projectAgeDays": 65,
+    "linesAdded": 9394587,
+    "linesDeleted": 8970581,
+    "netLines": 424006,
     "velocity": "23.3",
-    "projectAgeDays": 64,
-    "actualStartDate": "2025-08-10",
-    "completionPercentage": 46
+    "completionPercentage": 46,
+    "actualStartDate": "2025-08-10"
   },
   "today": {
     "date": "2025-10-13",
-    "commits": 16,
-    "hours": "5.3",
-    "cost": 795,
+    "hours": "5.6",
+    "cost": 842,
+    "commits": 17,
     "deployments": 0
   },
   "thisWeek": {
-    "commits": 140,
-    "hours": "46.2",
-    "cost": 6930,
+    "hours": "46.5",
+    "cost": 6980,
+    "commits": 141,
     "days": 7
   },
   "thisMonth": {
-    "commits": 220,
-    "hours": "72.6",
-    "cost": 10890
+    "hours": "72.9",
+    "cost": 10940,
+    "commits": 221
+  },
+  "quality": {
+    "testCoverage": {
+      "enabled": false,
+      "percentage": 0,
+      "statements": 0,
+      "branches": 0,
+      "functions": 0,
+      "lines": 0,
+      "testFiles": 174,
+      "testSuites": 0,
+      "passingTests": 0,
+      "failingTests": 0
+    },
+    "codeQuality": {
+      "eslintErrors": 0,
+      "eslintWarnings": 0,
+      "codeComplexity": "N/A",
+      "duplicateCode": 0,
+      "technicalDebt": 14176,
+      "codeSmells": 0
+    },
+    "score": 100
+  },
+  "security": {
+    "vulnerabilities": {
+      "info": 0,
+      "low": 0,
+      "moderate": 0,
+      "high": 0,
+      "critical": 0,
+      "total": 0
+    },
+    "lastAudit": "2025-10-13T21:12:16.232Z",
+    "dependencies": {
+      "total": {
+        "prod": 192,
+        "dev": 585,
+        "optional": 111,
+        "peer": 0,
+        "peerOptional": 0,
+        "total": 862
+      },
+      "outdated": 0,
+      "vulnerable": 0
+    },
+    "secrets": {
+      "exposed": true,
+      "patterns": [
+        "password.*=.*[\"'][^\"']+[\"']"
+      ]
+    }
+  },
+  "performance": {
+    "bundleSize": {
+      "js": "TBD",
+      "css": "TBD",
+      "images": "TBD",
+      "total": "TBD"
+    },
+    "lighthouse": {
+      "performance": 0,
+      "accessibility": 0,
+      "bestPractices": 0,
+      "seo": 0,
+      "pwa": 0,
+      "lastRun": "Never"
+    },
+    "loadTime": {
+      "average": "TBD",
+      "p95": "TBD",
+      "p99": "TBD"
+    },
+    "apiResponse": {
+      "average": "TBD",
+      "slowestEndpoint": "TBD"
+    }
+  },
+  "deployment": {
+    "lastDeployment": "2025-10-13 16:39:02 -0400",
+    "totalDeployments": 92,
+    "deploymentFrequency": "Weekly",
+    "environments": {
+      "production": {
+        "url": "https://assiduous-prod.web.app",
+        "status": "Active",
+        "lastDeploy": "2025-10-13 16:39:02 -0400"
+      },
+      "staging": {
+        "url": "https://assiduous-staging.web.app",
+        "status": "Not configured",
+        "lastDeploy": "Never"
+      },
+      "development": {
+        "url": "http://localhost:3000",
+        "status": "Local only",
+        "lastDeploy": "N/A"
+      }
+    },
+    "cicd": {
+      "provider": "GitHub Actions",
+      "status": "Configured",
+      "lastRun": "Unknown",
+      "successRate": "TBD"
+    },
+    "uptime": {
+      "last24h": 99.9,
+      "last7d": 99.9,
+      "last30d": 99.9
+    }
+  },
+  "documentation": {
+    "markdownFiles": 2774,
+    "jsFilesTotal": 25621,
+    "jsFilesDocumented": 25621,
+    "coverage": 442,
+    "apiEndpoints": {
+      "total": 0,
+      "documented": 0
+    },
+    "components": {
+      "total": 483,
+      "documented": 0
+    },
+    "readme": true,
+    "changelog": true,
+    "contributing": false,
+    "license": false,
+    "lastUpdate": "2025-10-13 17:00:29 -0400"
+  },
+  "productivity": {
+    "velocityTrend": "increasing",
+    "weeklyCommits": 141,
+    "contributors": {
+      "total": 0,
+      "active": 0
+    },
+    "averageCommitSize": 159,
+    "pullRequests": {
+      "open": 0,
+      "merged": 0,
+      "avgMergeTime": "N/A"
+    },
+    "codeReviews": {
+      "pending": 0,
+      "completed": 0
+    }
+  },
+  "business": {
+    "investment": {
+      "development": 21600,
+      "infrastructure": 0,
+      "marketing": 0,
+      "total": 21600
+    },
+    "roi": {
+      "projected": 0,
+      "actual": 0,
+      "breakEvenDate": "TBD"
+    },
+    "marketReadiness": 46,
+    "timeline": {
+      "projectStart": "2025-08-10",
+      "originalLaunch": "2025-11-01",
+      "plannedLaunch": "2025-12-01",
+      "daysRemaining": 49,
+      "onTrack": true,
+      "adjustmentReason": "Timeline adjusted for realistic completion based on current velocity"
+    },
+    "customers": {
+      "total": 0,
+      "active": 0,
+      "churn": 0
+    },
+    "revenue": {
+      "mrr": 0,
+      "arr": 0,
+      "ltv": 0
+    }
+  },
+  "infrastructure": {
+    "firebase": {
+      "project": "assiduous-prod",
+      "plan": "Spark (Free)",
+      "usage": {
+        "reads": 0,
+        "writes": 0,
+        "storage": "0 MB",
+        "bandwidth": "0 GB",
+        "functions": 0
+      },
+      "monthlyCost": 0,
+      "projectedCost": 0
+    },
+    "domains": {
+      "primary": "assiduousflip.com",
+      "cost": 12,
+      "renewal": "2026-08-10"
+    },
+    "thirdParty": {
+      "github": 0,
+      "monitoring": 0,
+      "analytics": 0,
+      "total": 0
+    },
+    "totalMonthlyCost": 1,
+    "projectedAnnualCost": 12
   },
   "recentActivity": [
     {
-      "id": "9fb1316",
+      "hash": "4369f94f87be5549a8fcdabc857bd6bcdfa39c6e",
+      "message": "fix: calculate totalDays as calendar days since project start",
+      "author": "SirsiMaster",
+      "date": "2025-10-13 17:03:54 -0400"
+    },
+    {
       "hash": "9fb1316729bbcd9dee4bc67c6ac9f44ae00c28a4",
-      "author": "SirsiMaster",
-      "email": "98624707+cyltoncollymore@users.noreply.github.com",
-      "timestamp": 1760389229,
-      "date": "2025-10-13T21:00:29.000Z",
       "message": "docs: document complete removal of fake/hardcoded dashboard data",
-      "timeAgo": "2 minutes ago"
+      "author": "SirsiMaster",
+      "date": "2025-10-13 17:00:29 -0400"
     },
     {
-      "id": "7679362",
       "hash": "7679362ac83ce3333b0d919dffae5720e23068fe",
-      "author": "SirsiMaster",
-      "email": "98624707+cyltoncollymore@users.noreply.github.com",
-      "timestamp": 1760389164,
-      "date": "2025-10-13T20:59:24.000Z",
       "message": "feat: implement 100% dynamic real-time metrics - NO hardcoded data",
-      "timeAgo": "4 minutes ago"
+      "author": "SirsiMaster",
+      "date": "2025-10-13 16:59:24 -0400"
     },
     {
-      "id": "d670e75",
       "hash": "d670e754312e791a4bdf325376a924006f968d23",
-      "author": "SirsiMaster",
-      "email": "98624707+cyltoncollymore@users.noreply.github.com",
-      "timestamp": 1760387959,
-      "date": "2025-10-13T20:39:19.000Z",
       "message": "chore: final metrics auto-update for session",
-      "timeAgo": "24 minutes ago"
+      "author": "SirsiMaster",
+      "date": "2025-10-13 16:39:19 -0400"
     },
     {
-      "id": "2b95acd",
       "hash": "2b95acd10d458e6ae7a96dccffcb4ee81c4437ec",
-      "author": "SirsiMaster",
-      "email": "98624707+cyltoncollymore@users.noreply.github.com",
-      "timestamp": 1760387942,
-      "date": "2025-10-13T20:39:02.000Z",
       "message": "docs: add session summary for metrics verification work",
-      "timeAgo": "24 minutes ago"
+      "author": "SirsiMaster",
+      "date": "2025-10-13 16:39:02 -0400"
     },
     {
-      "id": "434ea31",
       "hash": "434ea31b1db8e21304407ae6b613a7e7157912a3",
-      "author": "SirsiMaster",
-      "email": "98624707+cyltoncollymore@users.noreply.github.com",
-      "timestamp": 1760387841,
-      "date": "2025-10-13T20:37:21.000Z",
       "message": "chore: remove obsolete setup-test-account.html",
-      "timeAgo": "26 minutes ago"
+      "author": "SirsiMaster",
+      "date": "2025-10-13 16:37:21 -0400"
     },
     {
-      "id": "168a86a",
       "hash": "168a86af34edbe7d3e1a888fa2be45ba6a3909b6",
-      "author": "SirsiMaster",
-      "email": "98624707+cyltoncollymore@users.noreply.github.com",
-      "timestamp": 1760387834,
-      "date": "2025-10-13T20:37:14.000Z",
       "message": "chore(firebase): update firestore rules and dependencies",
-      "timeAgo": "26 minutes ago"
+      "author": "SirsiMaster",
+      "date": "2025-10-13 16:37:14 -0400"
     },
     {
-      "id": "3dd81a3",
       "hash": "3dd81a31d874f0e555fcf734f507a0fa6b23f4e3",
-      "author": "SirsiMaster",
-      "email": "98624707+cyltoncollymore@users.noreply.github.com",
-      "timestamp": 1760387825,
-      "date": "2025-10-13T20:37:05.000Z",
       "message": "feat(scripts): add Firebase account creation and validation tools",
-      "timeAgo": "26 minutes ago"
+      "author": "SirsiMaster",
+      "date": "2025-10-13 16:37:05 -0400"
     },
     {
-      "id": "0af67d8",
       "hash": "0af67d8f987a34469a3903f817a0af2b97b9ca02",
-      "author": "SirsiMaster",
-      "email": "98624707+cyltoncollymore@users.noreply.github.com",
-      "timestamp": 1760387816,
-      "date": "2025-10-13T20:36:56.000Z",
       "message": "refactor(firebase): consolidate to single firebase-config.js",
-      "timeAgo": "26 minutes ago"
+      "author": "SirsiMaster",
+      "date": "2025-10-13 16:36:56 -0400"
     },
     {
-      "id": "876c3ab",
       "hash": "876c3ab986b9fb2bdd5443265646bfad76ff08ee",
-      "author": "SirsiMaster",
-      "email": "98624707+cyltoncollymore@users.noreply.github.com",
-      "timestamp": 1760387806,
-      "date": "2025-10-13T20:36:46.000Z",
       "message": "chore: update metrics cache after latest commits",
-      "timeAgo": "26 minutes ago"
-    },
-    {
-      "id": "010b0d7",
-      "hash": "010b0d7d50fbfcbbcf49630d4b0edc7bc86f3b9c",
       "author": "SirsiMaster",
-      "email": "98624707+cyltoncollymore@users.noreply.github.com",
-      "timestamp": 1760387646,
-      "date": "2025-10-13T20:34:06.000Z",
-      "message": "docs: add comprehensive file count analysis and verification",
-      "timeAgo": "29 minutes ago"
+      "date": "2025-10-13 16:36:46 -0400"
     }
   ],
   "automation": {
+    "lastRun": "2025-10-13T21:12:47.077Z",
     "gitHookInstalled": true,
-    "lastRun": "2025-10-13T21:03:26.975Z",
-    "dataFreshness": "real-time",
-    "updateMethod": "dynamic-git-queries"
-  }
+    "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
+    "updateFrequency": "On every commit (via git hook)",
+    "version": "2.0 - Enhanced"
+  },
+  "nextSteps": [
+    "Complete Agent Portal property management",
+    "Add test coverage (currently 0%)",
+    "Fix ESLint errors if any",
+    "Begin micro-flipping features",
+    "Set up staging environment"
+  ]
 }

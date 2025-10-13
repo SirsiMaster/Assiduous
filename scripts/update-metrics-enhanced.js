@@ -442,7 +442,12 @@ function calculateAllMetrics() {
     const firstCommitDate = runCommand('git log --reverse --format=%ad --date=iso | head -1');
     const startDate = firstCommitDate ? new Date(firstCommitDate) : new Date('2025-08-10');
     const now = new Date();
-    const projectAgeDays = Math.ceil((now - startDate) / (1000 * 60 * 60 * 24));
+    const projectAgeDays = Math.ceil((now - startDate) / (1000 * 60 * 60 * 24)); // Total calendar days
+    
+    // Calculate unique commit days (days with actual commits)
+    const uniqueCommitDaysRaw = runCommand('git log --format=%ad --date=short | sort -u | wc -l');
+    const uniqueCommitDays = parseInt(uniqueCommitDaysRaw || '0');
+    
     const todayCommits = parseInt(runCommand('git rev-list --count --since="24 hours ago" HEAD') || '0');
     const weekCommits = parseInt(runCommand('git rev-list --count --since="7 days ago" HEAD') || '0');
     const monthCommits = parseInt(runCommand('git rev-list --count --since="30 days ago" HEAD') || '0');
@@ -506,18 +511,19 @@ function calculateAllMetrics() {
         features: featureMetrics,
         project: {
             totalHours: estimatedHours.toString(),
-            avgHoursPerDay: (estimatedHours / projectAgeDays).toFixed(1),
+            avgHoursPerDay: (estimatedHours / uniqueCommitDays).toFixed(1),
             totalCost: estimatedCost,
             laborCost: estimatedCost,
             toolsCost: 450,
             totalCommits: totalCommits,
             totalFiles: fileCount,
-            activeDays: projectAgeDays,
-            projectAgeDays: projectAgeDays,
+            activeDays: uniqueCommitDays,           // Days with actual commits
+            totalDays: projectAgeDays,              // Calendar days since project start
+            projectAgeDays: projectAgeDays,         // Kept for backward compatibility
             linesAdded: linesAdded,
             linesDeleted: linesDeleted,
             netLines: linesAdded - linesDeleted,
-            velocity: (totalCommits / projectAgeDays).toFixed(1),
+            velocity: (totalCommits / uniqueCommitDays).toFixed(1),
             completionPercentage: overallCompletion,
             actualStartDate: startDate.toISOString().split('T')[0]
         },
