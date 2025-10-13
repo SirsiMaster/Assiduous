@@ -584,28 +584,75 @@
         async function loadAgentDashboard(user) {
             try {
                 const db = firebase.firestore();
+                console.log('[Agent Dashboard] Loading data for agent:', user.email);
                 
-                // Get agent statistics from Firestore
-                const statsDoc = await db.collection('agent_stats').doc(user.uid).get();
-                const stats = statsDoc.exists ? statsDoc.data() : {
-                    activeListings: 0,
-                    commissionYTD: 0,
-                    activeClients: 0,
-                    newLeads: 0
-                };
+                // Get actual statistics from collections
+                // 1. Count properties assigned to this agent
+                const propertiesSnapshot = await db.collection('properties')
+                    .where('agent.email', '==', user.email)
+                    .where('status', '==', 'available')
+                    .get();
+                const activeListings = propertiesSnapshot.size;
                 
-                // Update dashboard stats
-                document.getElementById('activeListingsCount').textContent = stats.activeListings || 24;
-                document.getElementById('commissionYTD').textContent = formatCurrency(stats.commissionYTD || 45200);
-                document.getElementById('activeClientsCount').textContent = stats.activeClients || 18;
-                document.getElementById('newLeadsCount').textContent = stats.newLeads || 7;
+                // 2. Count leads assigned to this agent
+                const leadsSnapshot = await db.collection('leads')
+                    .where('assignedAgent', '==', user.email)
+                    .where('status', '==', 'new')
+                    .get();
+                const newLeads = leadsSnapshot.size;
+                
+                // 3. Calculate commission from transactions
+                const transactionsSnapshot = await db.collection('transactions')
+                    .where('agentId', '==', user.uid)
+                    .where('status', '==', 'closed')
+                    .get();
+                
+                let totalCommission = 0;
+                transactionsSnapshot.forEach(doc => {
+                    const data = doc.data();
+                    if (data.financial && data.financial.commission) {
+                        totalCommission += data.financial.commission;
+                    }
+                });
+                
+                // 4. Count active clients (users who have inquired about properties)
+                const clientsSnapshot = await db.collection('leads')
+                    .where('assignedAgent', '==', user.email)
+                    .get();
+                
+                // Get unique client emails
+                const uniqueClients = new Set();
+                clientsSnapshot.forEach(doc => {
+                    const data = doc.data();
+                    if (data.user && data.user.email) {
+                        uniqueClients.add(data.user.email);
+                    }
+                });
+                const activeClients = uniqueClients.size;
+                
+                // Update dashboard stats with real data
+                document.getElementById('activeListingsCount').textContent = activeListings;
+                document.getElementById('commissionYTD').textContent = formatCurrency(totalCommission);
+                document.getElementById('activeClientsCount').textContent = activeClients;
+                document.getElementById('newLeadsCount').textContent = newLeads;
+                
+                console.log('[Agent Dashboard] Stats loaded:', {
+                    activeListings,
+                    totalCommission,
+                    activeClients,
+                    newLeads
+                });
+                
+                // Load recent properties for the table
+                await loadRecentListings(user.email);
                 
                 // Set up real-time listeners for live updates
-                setupRealtimeListeners(user.uid);
+                setupRealtimeListeners(user);
                 
             } catch (error) {
-                console.error('Error loading dashboard:', error);
-                // Use demo data as fallback
+                console.error('[Agent Dashboard] Error loading data:', error);
+                // Show error message to user
+                showError('Failed to load dashboard data. Please refresh the page.');
             }
         }
         
@@ -616,34 +663,96 @@
             return `$${amount.toLocaleString()}`;
         }
         
-        function setupRealtimeListeners(agentId) {
+        function setupRealtimeListeners(user) {
             const db = firebase.firestore();
             
-            // Listen for agent stats updates
-            db.collection('agent_stats').doc(agentId)
-                .onSnapshot((doc) => {
-                    if (doc.exists) {
-                        const stats = doc.data();
-                        document.getElementById('activeListingsCount').textContent = stats.activeListings || 24;
-                        document.getElementById('commissionYTD').textContent = formatCurrency(stats.commissionYTD || 45200);
-                        document.getElementById('activeClientsCount').textContent = stats.activeClients || 18;
-                        document.getElementById('newLeadsCount').textContent = stats.newLeads || 7;
-                    }
+            // Listen for new leads assigned to this agent
+            db.collection('leads')
+                .where('assignedAgent', '==', user.email)
+                .onSnapshot((snapshot) => {
+                    const newLeads = snapshot.docs.filter(doc => doc.data().status === 'new').length;
+                    document.getElementById('newLeadsCount').textContent = newLeads;
                 });
             
-            // Listen for listing updates
-            db.collection('listings')
-                .where('agentId', '==', agentId)
-                .limit(4)
+            // Listen for property updates
+            db.collection('properties')
+                .where('agent.email', '==', user.email)
                 .onSnapshot((snapshot) => {
-                    const listings = [];
-                    snapshot.forEach((doc) => {
-                        listings.push({ id: doc.id, ...doc.data() });
-                    });
-                    if (listings.length > 0) {
-                        updateListingsTable(listings);
-                    }
+                    const activeListings = snapshot.docs.filter(doc => doc.data().status === 'available').length;
+                    document.getElementById('activeListingsCount').textContent = activeListings;
                 });
+        }
+        
+        async function loadRecentListings(agentEmail) {
+            const db = firebase.firestore();
+            
+            // Get recent properties for this agent
+            const snapshot = await db.collection('properties')
+                .where('agent.email', '==', agentEmail)
+                .limit(5)
+                .get();
+            
+            const tbody = document.querySelector('.data-table tbody');
+            if (!tbody) return;
+            
+            // Clear existing rows
+            tbody.innerHTML = '';
+            
+            if (snapshot.empty) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="5" style="text-align: center; padding: var(--space-xl); color: var(--text-secondary);">
+                            No listings found. Properties will appear here when assigned to you.
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            // Add real property data
+            snapshot.forEach(doc => {
+                const data = doc.data();
+                const row = document.createElement('tr');
+                
+                const statusClass = data.status === 'available' ? 'success' : 
+                                   data.status === 'pending' ? 'warning' : 'inactive';
+                
+                row.innerHTML = `
+                    <td>
+                        <div style="font-weight: 600;">${data.address?.street || 'N/A'}</div>
+                        <div style="font-size: 12px; color: var(--text-secondary);">
+                            ${data.address?.city || 'Philadelphia'}, ${data.address?.state || 'PA'} ${data.address?.zip || ''}
+                        </div>
+                    </td>
+                    <td>${data.details?.type || 'N/A'}</td>
+                    <td>$${(data.price?.list || 0).toLocaleString()}</td>
+                    <td><span class="sirsi-badge sirsi-sm-sm-badge--${statusClass}">${data.status || 'Unknown'}</span></td>
+                    <td>${data.metrics?.views || 0}</td>
+                `;
+                
+                tbody.appendChild(row);
+            });
+        }
+        
+        function showError(message) {
+            const errorDiv = document.createElement('div');
+            errorDiv.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: var(--danger);
+                color: white;
+                padding: var(--space-md) var(--space-lg);
+                border-radius: var(--radius-md);
+                box-shadow: var(--shadow-lg);
+                z-index: 9999;
+            `;
+            errorDiv.textContent = message;
+            document.body.appendChild(errorDiv);
+            
+            setTimeout(() => {
+                errorDiv.remove();
+            }, 5000);
         }
         
         function updateListingsTable(listings) {
