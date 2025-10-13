@@ -4,7 +4,17 @@ This file provides guidance to WARP (warp.dev) when working with code in this re
 
 ## ⚠️  CRITICAL DEVELOPMENT GOVERNANCE RULES (MUST FOLLOW)
 
-### **RULE 0: CHECK SIRSIMASTER COMPONENT LIBRARY FIRST**
+### **RULE 0: FULL IMPLEMENTATION MANDATE - NO INSTRUCTIONS, ONLY WORKING CODE**
+**When the user requests ANY feature, automation, or functionality:**
+- **NEVER** provide instructions or manual steps
+- **NEVER** say "you can do X" or "here's how to set up Y"
+- **ALWAYS** implement the feature fully and automatically
+- **ALWAYS** make it work end-to-end without user intervention
+- **Example**: If user asks for "auto-deployment", implement the git hook/automation fully, don't give setup instructions
+- **The user expects**: Working, tested, production-ready implementation
+- **Not acceptable**: Documentation, tutorials, or "follow these steps"
+
+### **RULE 0.1: CHECK SIRSIMASTER COMPONENT LIBRARY FIRST**
 **Before creating ANY UI component, utility, or shared functionality:**
 - **ALWAYS** check the SirsiMaster Component Library at `/Users/thekryptodragon/Development/sirsimaster-component-library`
 - **USE** existing library components instead of creating new ones
