@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-10-14T01:17:22.907Z",
+  "lastUpdated": "2025-10-14T01:20:40.029Z",
   "summary": {
     "health": "Good",
     "score": 46,
@@ -109,35 +109,35 @@
     "totalCost": 27300,
     "laborCost": 27300,
     "toolsCost": 450,
-    "totalCommits": 550,
-    "totalFiles": 568,
+    "totalCommits": 551,
+    "totalFiles": 569,
     "activeDays": 23,
     "totalDays": 65,
     "projectAgeDays": 65,
-    "linesAdded": 9403199,
-    "linesDeleted": 8971564,
-    "netLines": 431635,
-    "velocity": "23.9",
+    "linesAdded": 9404260,
+    "linesDeleted": 8971627,
+    "netLines": 432633,
+    "velocity": "24.0",
     "completionPercentage": 46,
     "actualStartDate": "2025-08-10"
   },
   "today": {
     "date": "2025-10-14",
-    "hours": "10.2",
-    "cost": 1535,
-    "commits": 31,
+    "hours": "10.6",
+    "cost": 1584,
+    "commits": 32,
     "deployments": 0
   },
   "thisWeek": {
-    "hours": "51.2",
-    "cost": 7673,
-    "commits": 155,
+    "hours": "51.5",
+    "cost": 7722,
+    "commits": 156,
     "days": 7
   },
   "thisMonth": {
-    "hours": "77.5",
-    "cost": 11633,
-    "commits": 235
+    "hours": "77.9",
+    "cost": 11682,
+    "commits": 236
   },
   "quality": {
     "testCoverage": {
@@ -171,7 +171,7 @@
       "critical": 0,
       "total": 0
     },
-    "lastAudit": "2025-10-14T01:16:48.958Z",
+    "lastAudit": "2025-10-14T01:20:08.689Z",
     "dependencies": {
       "total": {
         "prod": 192,
@@ -270,7 +270,7 @@
   },
   "productivity": {
     "velocityTrend": "increasing",
-    "weeklyCommits": 155,
+    "weeklyCommits": 156,
     "contributors": {
       "total": 0,
       "active": 0
@@ -348,6 +348,12 @@
   },
   "recentActivity": [
     {
+      "hash": "4cfc6bc814ef436563f552aef7f0a20b3a22d146",
+      "message": "feat(client): complete property detail page with all features",
+      "author": "SirsiMaster",
+      "date": "2025-10-13 21:19:44 -0400"
+    },
+    {
       "hash": "94b192c4becdeac301781735088e157daf261e88",
       "message": "feat(client): implement micro-flip calculator and property data scripts",
       "author": "SirsiMaster",
@@ -400,16 +406,10 @@
       "message": "docs: add quick reference card for metrics",
       "author": "SirsiMaster",
       "date": "2025-10-13 17:28:20 -0400"
-    },
-    {
-      "hash": "881f577db2a26921c0badb3afd88c7c8e9af9337",
-      "message": "feat: add automated deployment script and self-service guide",
-      "author": "SirsiMaster",
-      "date": "2025-10-13 17:27:02 -0400"
     }
   ],
   "automation": {
-    "lastRun": "2025-10-14T01:17:22.907Z",
+    "lastRun": "2025-10-14T01:20:40.029Z",
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",
