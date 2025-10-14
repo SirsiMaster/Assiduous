@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firestore Permissions Test</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        h1 { color: #333; }
+        .test-result {
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            background: white;
+            border-left: 4px solid #ddd;
+        }
+        .success { border-left-color: #4CAF50; background: #f0fff4; }
+        .error { border-left-color: #f44336; background: #fff5f5; }
+        .pending { border-left-color: #FF9800; background: #fff8e1; }
+        button {
+            background: #4A90E2;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px 5px;
+        }
+        button:hover { background: #357ABD; }
+        .collection-name {
+            font-weight: bold;
+            color: #2196F3;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔐 Firestore Permissions Test</h1>
+    
+    <div id="results">
+        <div class="test-result pending">⏳ Initializing Firebase...</div>
+    </div>
+    
+    <div style="margin-top: 30px;">
+        <button onclick="runTests()">🔄 Run Tests Again</button>
+        <button onclick="window.open('https://assiduous-prod.web.app/admin/dashboard.html', '_blank')">
+            📊 Open Admin Dashboard
+        </button>
+        <button onclick="window.open('https://assiduous-prod.web.app/admin/agents.html', '_blank')">
+            👥 Open Agent Dashboard
+        </button>
+    </div>
+    
+    <!-- Firebase SDK v8 -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    
+    <script>
+        // Initialize Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyCY6OjxgMHPF0omVVqO1eCTTJRux2x23gE",
+            authDomain: "assiduous-prod.firebaseapp.com",
+            projectId: "assiduous-prod",
+            storageBucket: "assiduous-prod.appspot.com",
+            messagingSenderId: "1039432328034",
+            appId: "1:1039432328034:web:f6e8c8b8c8c8c8c8c8c8c8"
+        };
+        
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        
+        const db = firebase.firestore();
+        
+        function addResult(message, type = 'pending') {
+            const resultsDiv = document.getElementById('results');
+            const resultDiv = document.createElement('div');
+            resultDiv.className = `test-result ${type}`;
+            resultDiv.innerHTML = message;
+            resultsDiv.appendChild(resultDiv);
+        }
+        
+        async function testCollection(collectionName, queryConstraints = []) {
+            try {
+                let query = db.collection(collectionName);
+                
+                // Apply any query constraints
+                if (queryConstraints.length > 0) {
+                    queryConstraints.forEach(constraint => {
+                        if (constraint.type === 'where') {
+                            query = query.where(constraint.field, constraint.op, constraint.value);
+                        } else if (constraint.type === 'limit') {
+                            query = query.limit(constraint.value);
+                        }
+                    });
+                }
+                
+                const snapshot = await query.limit(5).get();
+                
+                if (snapshot.empty) {
+                    addResult(
+                        `⚠️ Collection <span class="collection-name">${collectionName}</span>: Accessible but no data found`,
+                        'pending'
+                    );
+                } else {
+                    addResult(
+                        `✅ Collection <span class="collection-name">${collectionName}</span>: Successfully accessed ${snapshot.size} documents`,
+                        'success'
+                    );
+                }
+                
+                return { success: true, count: snapshot.size };
+                
+            } catch (error) {
+                if (error.code === 'permission-denied') {
+                    addResult(
+                        `❌ Collection <span class="collection-name">${collectionName}</span>: Permission denied - ${error.message}`,
+                        'error'
+                    );
+                } else {
+                    addResult(
+                        `❌ Collection <span class="collection-name">${collectionName}</span>: ${error.message}`,
+                        'error'
+                    );
+                }
+                return { success: false, error: error.message };
+            }
+        }
+        
+        async function runTests() {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '';
+            
+            addResult('🚀 Starting Firestore permissions tests...', 'pending');
+            
+            try {
+                // Test Firebase connection
+                addResult('✅ Firebase initialized successfully', 'success');
+                
+                // Test each collection
+                const collections = [
+                    { 
+                        name: 'users', 
+                        constraints: [] 
+                    },
+                    { 
+                        name: 'users', 
+                        constraints: [{ type: 'where', field: 'role', op: '==', value: 'agent' }],
+                        description: 'users (agents only)'
+                    },
+                    { 
+                        name: 'users', 
+                        constraints: [{ type: 'where', field: 'role', op: '==', value: 'client' }],
+                        description: 'users (clients only)'
+                    },
+                    { 
+                        name: 'properties', 
+                        constraints: [] 
+                    },
+                    { 
+                        name: 'leads', 
+                        constraints: [] 
+                    },
+                    { 
+                        name: 'transactions', 
+                        constraints: [] 
+                    },
+                    { 
+                        name: 'agent_stats', 
+                        constraints: [] 
+                    }
+                ];
+                
+                let successCount = 0;
+                let totalCount = 0;
+                
+                for (const collection of collections) {
+                    const result = await testCollection(
+                        collection.name, 
+                        collection.constraints
+                    );
+                    
+                    if (result.success) {
+                        successCount++;
+                        totalCount += result.count;
+                    }
+                }
+                
+                // Summary
+                addResult(
+                    `<h3>📊 Test Summary</h3>
+                    <ul>
+                        <li>Collections tested: ${collections.length}</li>
+                        <li>Successful accesses: ${successCount}/${collections.length}</li>
+                        <li>Total documents found: ${totalCount}</li>
+                    </ul>
+                    ${successCount === collections.length 
+                        ? '✅ All collections are accessible! Dashboards should work now.' 
+                        : '⚠️ Some collections have permission issues. Check the errors above.'}`,
+                    successCount === collections.length ? 'success' : 'pending'
+                );
+                
+            } catch (error) {
+                addResult(`❌ Fatal error: ${error.message}`, 'error');
+            }
+        }
+        
+        // Run tests on page load
+        window.addEventListener('DOMContentLoaded', runTests);
+    </script>
+</body>
+</html>

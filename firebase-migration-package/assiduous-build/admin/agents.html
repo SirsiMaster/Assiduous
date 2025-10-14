@@ -736,6 +736,118 @@
             });
         });
     </script>
+    
+    <!-- Firebase SDK v8 -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    
+    <!-- Firebase Configuration and Data Loading -->
+    <script>
+        // Initialize Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyCY6OjxgMHPF0omVVqO1eCTTJRux2x23gE",
+            authDomain: "assiduous-prod.firebaseapp.com",
+            projectId: "assiduous-prod",
+            storageBucket: "assiduous-prod.appspot.com",
+            messagingSenderId: "1039432328034",
+            appId: "1:1039432328034:web:f6e8c8b8c8c8c8c8c8c8c8"
+        };
+        
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        
+        const db = firebase.firestore();
+        
+        // Load agents data from Firestore
+        async function loadAgentsData() {
+            try {
+                console.log('Loading agents from Firestore...');
+                
+                // Get agents collection
+                const agentsSnapshot = await db.collection('users')
+                    .where('role', '==', 'agent')
+                    .limit(50)
+                    .get();
+                
+                const agents = [];
+                agentsSnapshot.forEach(doc => {
+                    agents.push({ id: doc.id, ...doc.data() });
+                });
+                
+                console.log(`Loaded ${agents.length} agents from Firestore`);
+                
+                // Update stats
+                const totalAgents = agents.length;
+                const activeAgents = agents.filter(a => a.status === 'active').length;
+                const totalSales = agents.reduce((sum, a) => sum + (a.totalSales || 0), 0);
+                const avgRating = agents.reduce((sum, a) => sum + (a.rating || 0), 0) / agents.length || 0;
+                
+                // Update stat cards
+                document.querySelectorAll('.stat-value').forEach((el, index) => {
+                    switch(index) {
+                        case 0: el.textContent = totalAgents; break;
+                        case 1: el.textContent = activeAgents; break;
+                        case 2: el.textContent = `$${(totalSales / 1000000).toFixed(1)}M`; break;
+                        case 3: el.textContent = avgRating.toFixed(1); break;
+                    }
+                });
+                
+                // Update table
+                const tbody = document.querySelector('.agents-table tbody');
+                if (tbody && agents.length > 0) {
+                    tbody.innerHTML = agents.map(agent => `
+                        <tr>
+                            <td>
+                                <div class="agent-info">
+                                    <div class="agent-avatar">${getInitials(agent.name || agent.email)}</div>
+                                    <div>
+                                        <div style="font-weight: 500;">${agent.name || 'Unknown'}</div>
+                                        <div style="font-size: 12px; color: var(--text-secondary);">${agent.email}</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>${agent.licenseNumber || 'N/A'}</td>
+                            <td>${agent.specialization || 'General'}</td>
+                            <td>${agent.activeListings || 0}</td>
+                            <td>$${((agent.totalSales || 0) / 1000000).toFixed(1)}M</td>
+                            <td>
+                                <div class="performance-bar">
+                                    <div class="performance-fill" style="width: ${agent.performanceScore || 50}%"></div>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="sirsi-badge sirsi-sm-sm-badge--${agent.status === 'active' ? 'success' : 'warning'}">
+                                    ${agent.status || 'Active'}
+                                </span>
+                            </td>
+                        </tr>
+                    `).join('');
+                }
+                
+                // Show success message
+                console.log('✅ Agent dashboard connected to real Firestore data');
+                
+            } catch (error) {
+                console.error('Error loading agents data:', error);
+                // Keep existing demo data if load fails
+            }
+        }
+        
+        function getInitials(name) {
+            if (!name) return '??';
+            const parts = name.split(' ');
+            if (parts.length >= 2) {
+                return parts[0][0] + parts[parts.length - 1][0];
+            }
+            return name.substring(0, 2).toUpperCase();
+        }
+        
+        // Load data when page is ready
+        document.addEventListener('DOMContentLoaded', loadAgentsData);
+    </script>
+    
     <!-- Sidebar pre-rendered, no JS needed -->
     <script src="../components/universal-header.js"></script>
 </body>

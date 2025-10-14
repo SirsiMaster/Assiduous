@@ -66,15 +66,15 @@ async function createTestUsers() {
   
   const testUsers = [
     {
-      email: 'test_admin@assiduousflip.com',
-      password: 'TestAdmin123!',
+      email: 'test_admin@assiduousrealty.com',
+      password: 'admin123',
       displayName: 'Test Admin',
       role: 'admin',
       firstName: 'Test',
       lastName: 'Admin'
     },
     {
-      email: 'test_agent@assiduousflip.com',
+      email: 'test_agent@assiduousrealty.com',
       password: 'TestAgent123!',
       displayName: 'Test Agent',
       role: 'agent',
@@ -88,7 +88,7 @@ async function createTestUsers() {
       }
     },
     {
-      email: 'test_client@assiduousflip.com',
+      email: 'test_client@assiduousrealty.com',
       password: 'TestClient123!',
       displayName: 'Test Client',
       role: 'client',
@@ -239,7 +239,7 @@ async function createTestProperties(count = 20) {
         id: 'test_agent_' + (i % 3),
         name: 'Test Agent ' + (i % 3),
         phone: '(215) 555-0' + (100 + (i % 3)),
-        email: `test_agent${i % 3}@assiduousflip.com`
+        email: `test_agent${i % 3}@assiduousrealty.com`
       },
       
       metrics: {
@@ -375,9 +375,9 @@ async function removeTestData() {
   // Remove test users from Auth
   console.log('\nRemoving test auth users...');
   const testEmails = [
-    'test_admin@assiduousflip.com',
-    'test_agent@assiduousflip.com',
-    'test_client@assiduousflip.com'
+    'test_admin@assiduousrealty.com',
+    'test_agent@assiduousrealty.com',
+    'test_client@assiduousrealty.com'
   ];
   
   for (const email of testEmails) {

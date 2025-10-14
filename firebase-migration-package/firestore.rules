@@ -18,15 +18,40 @@ service cloud.firestore {
       return isAuthenticated() && getUserRole() == 'admin';
     }
     
-    // Users collection: Allow authenticated users to read/write their own profile
+    // PRODUCTION RULES: Authentication required for all access
+    
+    // Users collection: Authenticated users can read users list, write own profile
     match /users/{userId} {
-      allow read: if isAuthenticated() && (request.auth.uid == userId || isAdmin());
+      allow read: if isAuthenticated(); // Any logged-in user can read user profiles
       allow create: if isAuthenticated() && request.auth.uid == userId;
       allow update: if isAuthenticated() && (request.auth.uid == userId || isAdmin());
       allow delete: if isAdmin();
     }
     
-    // Agent stats: Allow agents to read their own stats, admins can read all
+    // Properties collection: Authenticated users can read, agents/admins can write
+    match /properties/{propertyId} {
+      allow read: if isAuthenticated(); // Any logged-in user can browse properties
+      allow write: if isAuthenticated() && (isAgent() || isAdmin());
+    }
+    
+    // Leads collection: Agents and admins only
+    match /leads/{leadId} {
+      allow read: if isAuthenticated() && (isAgent() || isAdmin());
+      allow write: if isAuthenticated() && (isAgent() || isAdmin());
+    }
+    
+    // Transactions collection: Authenticated users can read own, agents/admins can read all
+    match /transactions/{transactionId} {
+      allow read: if isAuthenticated() && (
+        request.auth.uid == resource.data.userId || 
+        request.auth.uid == resource.data.agentId ||
+        isAgent() || 
+        isAdmin()
+      );
+      allow write: if isAuthenticated() && (isAgent() || isAdmin());
+    }
+    
+    // Agent stats: Agents can read their own stats, admins can read all
     match /agent_stats/{userId} {
       allow read: if isAuthenticated() && (request.auth.uid == userId || isAdmin());
       allow write: if isAdmin();

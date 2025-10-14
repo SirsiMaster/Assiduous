@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent Dashboard Test</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        h1 { color: #333; }
+        .status { 
+            padding: 15px; 
+            border-radius: 8px; 
+            margin: 10px 0;
+            background: white;
+            border-left: 4px solid #ddd;
+        }
+        .success { border-left-color: #4CAF50; background: #f0fff4; }
+        .error { border-left-color: #f44336; background: #fff5f5; }
+        .info { border-left-color: #2196F3; background: #f0f8ff; }
+        .agent-card {
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .agent-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+        .agent-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        .agent-info {
+            flex: 1;
+        }
+        .agent-name {
+            font-weight: bold;
+            font-size: 18px;
+        }
+        .agent-email {
+            color: #666;
+            font-size: 14px;
+        }
+        .agent-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .stat {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 6px;
+        }
+        .stat-label {
+            font-size: 12px;
+            color: #666;
+            text-transform: uppercase;
+        }
+        .stat-value {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+        }
+        button {
+            background: #4A90E2;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background: #357ABD;
+        }
+        #loader {
+            text-align: center;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🏢 Agent Dashboard Connection Test</h1>
+    
+    <div id="status-container">
+        <div class="status info">⏳ Initializing Firebase connection...</div>
+    </div>
+    
+    <div id="loader" style="display:none;">
+        <p>Loading agents from Firestore...</p>
+    </div>
+    
+    <div id="agents-container"></div>
+    
+    <div style="margin-top: 30px;">
+        <button onclick="loadAgents()">🔄 Reload Agents</button>
+        <button onclick="window.open('https://assiduous-prod.web.app/admin/agents.html', '_blank')">
+            🌐 Open Live Dashboard
+        </button>
+        <button onclick="window.open('https://console.firebase.google.com/project/assiduous-prod/firestore/data/~2Fusers', '_blank')">
+            🔥 View in Firebase Console
+        </button>
+    </div>
+    
+    <!-- Firebase SDK v8 -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    
+    <script>
+        // Initialize Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyCY6OjxgMHPF0omVVqO1eCTTJRux2x23gE",
+            authDomain: "assiduous-prod.firebaseapp.com",
+            projectId: "assiduous-prod",
+            storageBucket: "assiduous-prod.appspot.com",
+            messagingSenderId: "1039432328034",
+            appId: "1:1039432328034:web:f6e8c8b8c8c8c8c8c8c8c8"
+        };
+        
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        
+        const db = firebase.firestore();
+        
+        function addStatus(message, type = 'info') {
+            const statusContainer = document.getElementById('status-container');
+            const statusDiv = document.createElement('div');
+            statusDiv.className = `status ${type}`;
+            statusDiv.innerHTML = message;
+            statusContainer.appendChild(statusDiv);
+        }
+        
+        function getInitials(name) {
+            if (!name) return '??';
+            const parts = name.split(' ');
+            if (parts.length >= 2) {
+                return parts[0][0] + parts[parts.length - 1][0];
+            }
+            return name.substring(0, 2).toUpperCase();
+        }
+        
+        async function loadAgents() {
+            const loader = document.getElementById('loader');
+            const container = document.getElementById('agents-container');
+            
+            loader.style.display = 'block';
+            container.innerHTML = '';
+            
+            try {
+                addStatus('✅ Firebase initialized successfully', 'success');
+                
+                // Query for agents
+                const agentsSnapshot = await db.collection('users')
+                    .where('role', '==', 'agent')
+                    .limit(10)
+                    .get();
+                
+                addStatus(`✅ Found ${agentsSnapshot.size} agents in Firestore`, 'success');
+                
+                if (agentsSnapshot.size === 0) {
+                    container.innerHTML = '<div class="status info">No agents found. Creating sample agent data...</div>';
+                    await createSampleAgents();
+                    return;
+                }
+                
+                // Display agents
+                container.innerHTML = '<h2>Agents Loaded from Firestore:</h2>';
+                
+                agentsSnapshot.forEach((doc) => {
+                    const agent = doc.data();
+                    const agentCard = document.createElement('div');
+                    agentCard.className = 'agent-card';
+                    
+                    agentCard.innerHTML = `
+                        <div class="agent-header">
+                            <div class="agent-avatar">${getInitials(agent.name || agent.email)}</div>
+                            <div class="agent-info">
+                                <div class="agent-name">${agent.name || 'Unknown Agent'}</div>
+                                <div class="agent-email">${agent.email}</div>
+                            </div>
+                        </div>
+                        <div class="agent-stats">
+                            <div class="stat">
+                                <div class="stat-label">Role</div>
+                                <div class="stat-value">${agent.role}</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-label">Status</div>
+                                <div class="stat-value">${agent.status || 'Active'}</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-label">License</div>
+                                <div class="stat-value">${agent.licenseNumber || 'N/A'}</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-label">Total Sales</div>
+                                <div class="stat-value">$${((agent.totalSales || 0) / 1000000).toFixed(1)}M</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-label">Test Data</div>
+                                <div class="stat-value">${agent.isTestData ? 'Yes' : 'No'}</div>
+                            </div>
+                        </div>
+                    `;
+                    
+                    container.appendChild(agentCard);
+                });
+                
+                addStatus(`🎯 Task 9 Complete: Agent dashboard connected to real data!`, 'success');
+                
+            } catch (error) {
+                addStatus(`❌ Error: ${error.message}`, 'error');
+                console.error('Error loading agents:', error);
+            } finally {
+                loader.style.display = 'none';
+            }
+        }
+        
+        async function createSampleAgents() {
+            try {
+                addStatus('Creating sample agent users...', 'info');
+                
+                const sampleAgents = [
+                    {
+                        email: 'sarah.agent@assiduousrealty.com',
+                        name: 'Sarah Johnson',
+                        role: 'agent',
+                        status: 'active',
+                        licenseNumber: 'RE-2025-1001',
+                        specialization: 'Luxury Homes',
+                        totalSales: 5200000,
+                        activeListings: 12,
+                        performanceScore: 92,
+                        rating: 4.9,
+                        isTestData: true
+                    },
+                    {
+                        email: 'mike.agent@assiduousrealty.com',
+                        name: 'Mike Thompson',
+                        role: 'agent',
+                        status: 'active',
+                        licenseNumber: 'RE-2025-1002',
+                        specialization: 'Commercial',
+                        totalSales: 8500000,
+                        activeListings: 8,
+                        performanceScore: 88,
+                        rating: 4.7,
+                        isTestData: true
+                    }
+                ];
+                
+                for (const agent of sampleAgents) {
+                    await db.collection('users').add(agent);
+                }
+                
+                addStatus(`✅ Created ${sampleAgents.length} sample agents`, 'success');
+                setTimeout(() => loadAgents(), 1000);
+                
+            } catch (error) {
+                addStatus(`❌ Error creating sample agents: ${error.message}`, 'error');
+            }
+        }
+        
+        // Load agents when page loads
+        window.addEventListener('DOMContentLoaded', loadAgents);
+    </script>
+</body>
+</html>

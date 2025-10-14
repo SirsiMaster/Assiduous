@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authentication System Test</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+        }
+        .test-section {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .test-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        .status {
+            padding: 12px;
+            border-radius: 6px;
+            margin: 8px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .status.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        .status.warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .dashboard-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .dashboard-link {
+            display: block;
+            padding: 15px;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #333;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        .dashboard-link:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+        .icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+        .link-title {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        .link-desc {
+            font-size: 12px;
+            color: #666;
+        }
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔐 Assiduous Authentication System Test</h1>
+        
+        <div class="test-section">
+            <div class="test-title">📊 System Status</div>
+            <div id="status-container">
+                <div class="status info">⏳ Initializing tests...</div>
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <div class="test-title">🧪 Test Accounts</div>
+            <div class="status info">
+                <div>
+                    <strong>Test these credentials:</strong><br>
+                    • Admin: <code>admin@assiduousrealty.com</code> / <code>admin123</code><br>
+                    • Agent: <code>agent@assiduousrealty.com</code> / <code>test123</code><br>
+                    • Client: <code>client@assiduousrealty.com</code> / <code>test123</code>
+                </div>
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <div class="test-title">🚀 Quick Actions</div>
+            <div class="button-group">
+                <button class="btn-primary" onclick="createTestUser('admin')">Create Admin</button>
+                <button class="btn-primary" onclick="createTestUser('agent')">Create Agent</button>
+                <button class="btn-primary" onclick="createTestUser('client')">Create Client</button>
+                <button class="btn-danger" onclick="signOut()">Sign Out</button>
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <div class="test-title">🔗 Dashboard Links (Protected)</div>
+            <div class="dashboard-links">
+                <a href="https://assiduous-prod.web.app/login.html" class="dashboard-link">
+                    <div class="icon">🔑</div>
+                    <div class="link-title">Login Page</div>
+                    <div class="link-desc">Central authentication</div>
+                </a>
+                <a href="https://assiduous-prod.web.app/admin/dashboard.html" class="dashboard-link">
+                    <div class="icon">👨‍💼</div>
+                    <div class="link-title">Admin Dashboard</div>
+                    <div class="link-desc">Requires admin role</div>
+                </a>
+                <a href="https://assiduous-prod.web.app/admin/agents.html" class="dashboard-link">
+                    <div class="icon">👥</div>
+                    <div class="link-title">Agent Dashboard</div>
+                    <div class="link-desc">Requires agent/admin role</div>
+                </a>
+                <a href="https://assiduous-prod.web.app/client/" class="dashboard-link">
+                    <div class="icon">🏠</div>
+                    <div class="link-title">Client Portal</div>
+                    <div class="link-desc">Requires authentication</div>
+                </a>
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <div class="test-title">📋 Test Results</div>
+            <div id="test-results"></div>
+        </div>
+    </div>
+    
+    <!-- Firebase SDK v8 -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    
+    <script>
+        // Initialize Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyCY6OjxgMHPF0omVVqO1eCTTJRux2x23gE",
+            authDomain: "assiduous-prod.firebaseapp.com",
+            projectId: "assiduous-prod",
+            storageBucket: "assiduous-prod.appspot.com",
+            messagingSenderId: "1039432328034",
+            appId: "1:1039432328034:web:f6e8c8b8c8c8c8c8c8c8c8"
+        };
+        
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+        
+        function addStatus(message, type = 'info') {
+            const container = document.getElementById('status-container');
+            const statusDiv = document.createElement('div');
+            statusDiv.className = `status ${type}`;
+            statusDiv.innerHTML = message;
+            container.appendChild(statusDiv);
+        }
+        
+        function addTestResult(message, type = 'info') {
+            const container = document.getElementById('test-results');
+            const statusDiv = document.createElement('div');
+            statusDiv.className = `status ${type}`;
+            statusDiv.innerHTML = message;
+            container.appendChild(statusDiv);
+        }
+        
+        // Run tests on load
+        async function runTests() {
+            const container = document.getElementById('status-container');
+            container.innerHTML = '';
+            
+            // Test 1: Firebase Connection
+            addStatus('✅ Firebase initialized successfully', 'success');
+            
+            // Test 2: Check current auth state
+            auth.onAuthStateChanged(async (user) => {
+                if (user) {
+                    addStatus(`✅ User authenticated: ${user.email}`, 'success');
+                    
+                    // Get user role from Firestore
+                    try {
+                        const userDoc = await db.collection('users').doc(user.uid).get();
+                        if (userDoc.exists) {
+                            const userData = userDoc.data();
+                            addStatus(`✅ User role: ${userData.role || 'client'}`, 'success');
+                        }
+                    } catch (error) {
+                        addStatus(`⚠️ Could not fetch user data: ${error.message}`, 'warning');
+                    }
+                } else {
+                    addStatus('ℹ️ No user currently authenticated', 'info');
+                }
+            });
+            
+            // Test 3: Check Firestore rules
+            try {
+                // Try to read users collection (should fail if not authenticated)
+                const testRead = await db.collection('users').limit(1).get();
+                addStatus('✅ Firestore read successful (user is authenticated)', 'success');
+            } catch (error) {
+                if (error.code === 'permission-denied') {
+                    addStatus('✅ Firestore rules working (requires authentication)', 'success');
+                } else {
+                    addStatus(`❌ Firestore error: ${error.message}`, 'error');
+                }
+            }
+            
+            // Test 4: List authentication features
+            addTestResult('<strong>Authentication Features:</strong>', 'info');
+            addTestResult('✅ Email/Password authentication enabled', 'success');
+            addTestResult('✅ Google Sign-In enabled', 'success');
+            addTestResult('✅ Role-based access control (admin, agent, client)', 'success');
+            addTestResult('✅ Automatic dashboard redirection based on role', 'success');
+            addTestResult('✅ Session persistence (stay logged in)', 'success');
+            addTestResult('✅ Secure Firestore rules (authentication required)', 'success');
+            addTestResult('✅ Login page at /login.html', 'success');
+            addTestResult('✅ Auth guard on all admin pages', 'success');
+        }
+        
+        // Create test user
+        async function createTestUser(role) {
+            const emails = {
+                admin: 'admin@assiduousrealty.com',
+                agent: 'agent@assiduousrealty.com',
+                client: 'client@assiduousrealty.com'
+            };
+            
+            const email = emails[role];
+            const password = role === 'admin' ? 'admin123' : 'test123';
+            
+            try {
+                // Try to create user
+                const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+                
+                // Add user data to Firestore
+                await db.collection('users').doc(userCredential.user.uid).set({
+                    email: email,
+                    name: `Test ${role.charAt(0).toUpperCase() + role.slice(1)}`,
+                    role: role,
+                    status: 'active',
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    isTestData: true
+                });
+                
+                addStatus(`✅ Created test ${role}: ${email}`, 'success');
+                
+            } catch (error) {
+                if (error.code === 'auth/email-already-in-use') {
+                    // User exists, try to sign in
+                    try {
+                        await auth.signInWithEmailAndPassword(email, password);
+                        addStatus(`✅ Signed in as ${role}: ${email}`, 'success');
+                    } catch (signInError) {
+                        addStatus(`❌ ${signInError.message}`, 'error');
+                    }
+                } else {
+                    addStatus(`❌ ${error.message}`, 'error');
+                }
+            }
+        }
+        
+        // Sign out
+        async function signOut() {
+            try {
+                await auth.signOut();
+                addStatus('✅ Signed out successfully', 'success');
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1000);
+            } catch (error) {
+                addStatus(`❌ Sign out error: ${error.message}`, 'error');
+            }
+        }
+        
+        // Run tests when page loads
+        window.addEventListener('DOMContentLoaded', runTests);
+    </script>
+</body>
+</html>

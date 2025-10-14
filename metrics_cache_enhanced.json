@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-10-13T23:09:18.652Z",
+  "lastUpdated": "2025-10-13T23:12:56.306Z",
   "summary": {
     "health": "Good",
     "score": 46,
@@ -104,40 +104,40 @@
     }
   },
   "project": {
-    "totalHours": "180",
-    "avgHoursPerDay": "7.8",
-    "totalCost": 27000,
-    "laborCost": 27000,
+    "totalHours": "181",
+    "avgHoursPerDay": "7.9",
+    "totalCost": 27150,
+    "laborCost": 27150,
     "toolsCost": 450,
-    "totalCommits": 546,
+    "totalCommits": 547,
     "totalFiles": 556,
     "activeDays": 23,
     "totalDays": 65,
     "projectAgeDays": 65,
-    "linesAdded": 9399217,
-    "linesDeleted": 8971161,
-    "netLines": 428056,
-    "velocity": "23.7",
+    "linesAdded": 9399438,
+    "linesDeleted": 8971269,
+    "netLines": 428169,
+    "velocity": "23.8",
     "completionPercentage": 46,
     "actualStartDate": "2025-08-10"
   },
   "today": {
     "date": "2025-10-13",
-    "hours": "8.9",
-    "cost": 1337,
-    "commits": 27,
+    "hours": "9.2",
+    "cost": 1386,
+    "commits": 28,
     "deployments": 0
   },
   "thisWeek": {
-    "hours": "49.8",
-    "cost": 7475,
-    "commits": 151,
+    "hours": "50.2",
+    "cost": 7524,
+    "commits": 152,
     "days": 7
   },
   "thisMonth": {
-    "hours": "76.2",
-    "cost": 11435,
-    "commits": 231
+    "hours": "76.6",
+    "cost": 11484,
+    "commits": 232
   },
   "quality": {
     "testCoverage": {
@@ -171,7 +171,7 @@
       "critical": 0,
       "total": 0
     },
-    "lastAudit": "2025-10-13T23:08:53.364Z",
+    "lastAudit": "2025-10-13T23:12:33.278Z",
     "dependencies": {
       "total": {
         "prod": 192,
@@ -270,7 +270,7 @@
   },
   "productivity": {
     "velocityTrend": "increasing",
-    "weeklyCommits": 151,
+    "weeklyCommits": 152,
     "contributors": {
       "total": 0,
       "active": 0
@@ -348,6 +348,12 @@
   },
   "recentActivity": [
     {
+      "hash": "d978c862f1d08254972d61568a43003aff38f574",
+      "message": "feat(agent): connect agent dashboard to real Firestore data",
+      "author": "SirsiMaster",
+      "date": "2025-10-13 19:12:02 -0400"
+    },
+    {
       "hash": "dc262ae52ba8248b351bc8a32b941223e019c48c",
       "message": "docs: update claude.md with all WARP rules and critical guidelines",
       "author": "SirsiMaster",
@@ -400,16 +406,10 @@
       "message": "docs: add comprehensive metrics pipeline documentation",
       "author": "SirsiMaster",
       "date": "2025-10-13 17:14:20 -0400"
-    },
-    {
-      "hash": "a4e173d6e5f934da42df896f35a6499c87fa1a46",
-      "message": "fix: unify metrics pipeline to use enhanced comprehensive metrics",
-      "author": "SirsiMaster",
-      "date": "2025-10-13 17:13:06 -0400"
     }
   ],
   "automation": {
-    "lastRun": "2025-10-13T23:09:18.652Z",
+    "lastRun": "2025-10-13T23:12:56.306Z",
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",
