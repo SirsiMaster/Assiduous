@@ -2,6 +2,7 @@
  * Assiduous Real Estate Platform - Cloud Functions
  * Complete Backend API - Stream 1 Implementation
  * Day 1: Backend Foundation
+ * Updated: Stripe Payment Integration
  */
 
 import {setGlobalOptions} from "firebase-functions";
@@ -10,6 +11,9 @@ import {onDocumentCreated} from "firebase-functions/v2/firestore";
 import {beforeUserCreated} from "firebase-functions/v2/identity";
 import * as logger from "firebase-functions/logger";
 import * as admin from "firebase-admin";
+
+// Import Stripe functions
+const stripeModule = require("./stripe");
 
 // Initialize Firebase Admin
 admin.initializeApp();
@@ -74,6 +78,12 @@ export const api = onRequest(async (req, res) => {
     // Analytics endpoints
     if (path.startsWith("/analytics")) {
       await handleAnalyticsRoutes(req, res, path, method);
+      return;
+    }
+
+    // Payment endpoints (Stripe)
+    if (path.startsWith("/payments")) {
+      await handlePaymentRoutes(req, res, path, method);
       return;
     }
 
@@ -412,6 +422,133 @@ async function handleAnalyticsRoutes(
 }
 
 // ============================================================================
+// PAYMENT ROUTES (STRIPE)
+// ============================================================================
+
+async function handlePaymentRoutes(
+  req: any,
+  res: any,
+  path: string,
+  method: string
+) {
+  // POST /payments/create-intent - Create payment intent
+  if (path === "/payments/create-intent" && method === "POST") {
+    const authHeader = req.headers.authorization;
+    if (!authHeader) {
+      res.status(401).json({error: "Unauthorized"});
+      return;
+    }
+
+    try {
+      const token = authHeader.split("Bearer ")[1];
+      const decodedToken = await admin.auth().verifyIdToken(token);
+      const userId = decodedToken.uid;
+
+      const {amount, currency = "usd", description} = req.body;
+
+      if (!amount || amount <= 0) {
+        res.status(400).json({error: "Invalid amount"});
+        return;
+      }
+
+      // Create payment intent using Stripe module
+      const paymentIntent = await stripeModule.createPaymentIntent(
+        amount,
+        currency,
+        {
+          userId,
+          description: description || "Property transaction",
+        }
+      );
+
+      res.json({
+        clientSecret: paymentIntent.client_secret,
+        paymentIntentId: paymentIntent.id,
+      });
+      return;
+    } catch (error: any) {
+      logger.error("Payment intent creation error", error);
+      res.status(500).json({error: error.message || "Payment failed"});
+      return;
+    }
+  }
+
+  // POST /payments/verify - Verify payment
+  if (path === "/payments/verify" && method === "POST") {
+    const authHeader = req.headers.authorization;
+    if (!authHeader) {
+      res.status(401).json({error: "Unauthorized"});
+      return;
+    }
+
+    try {
+      const {paymentIntentId} = req.body;
+
+      if (!paymentIntentId) {
+        res.status(400).json({error: "Payment intent ID required"});
+        return;
+      }
+
+      const paymentIntent = await stripeModule.retrievePaymentIntent(
+        paymentIntentId
+      );
+
+      res.json({
+        status: paymentIntent.status,
+        amount: paymentIntent.amount,
+        currency: paymentIntent.currency,
+        verified: paymentIntent.status === "succeeded",
+      });
+      return;
+    } catch (error: any) {
+      logger.error("Payment verification error", error);
+      res.status(500).json({error: error.message || "Verification failed"});
+      return;
+    }
+  }
+
+  // POST /payments/refund - Process refund
+  if (path === "/payments/refund" && method === "POST") {
+    const authHeader = req.headers.authorization;
+    if (!authHeader) {
+      res.status(401).json({error: "Unauthorized"});
+      return;
+    }
+
+    try {
+      const token = authHeader.split("Bearer ")[1];
+      await admin.auth().verifyIdToken(token);
+
+      const {paymentIntentId, amount, reason} = req.body;
+
+      if (!paymentIntentId) {
+        res.status(400).json({error: "Payment intent ID required"});
+        return;
+      }
+
+      const refund = await stripeModule.createRefund(
+        paymentIntentId,
+        amount,
+        reason
+      );
+
+      res.json({
+        refundId: refund.id,
+        amount: refund.amount,
+        status: refund.status,
+      });
+      return;
+    } catch (error: any) {
+      logger.error("Refund error", error);
+      res.status(500).json({error: error.message || "Refund failed"});
+      return;
+    }
+  }
+
+  res.status(404).json({error: "Route not found"});
+}
+
+// ============================================================================
 // FIRESTORE TRIGGERS
 // ============================================================================
 
@@ -440,3 +577,13 @@ export const onNewUserCreated = beforeUserCreated(async (event) => {
   }
   return;
 });
+
+// ============================================================================
+// STRIPE WEBHOOK HANDLER
+// ============================================================================
+
+/**
+ * Stripe webhook handler
+ * Handles payment events from Stripe
+ */
+export const stripeWebhook = stripeModule.handleStripeWebhook;
