@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Property Details - Assiduous</title>
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
+    
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f5f5;
+        }
+        
+        .header {
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #1e3a5f;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .nav-link {
+            color: #666;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .nav-link:hover {
+            color: #1e3a5f;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+        
+        .property-header {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        
+        .property-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1e3a5f;
+            margin-bottom: 10px;
+        }
+        
+        .property-address {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        .property-badges {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .badge {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .badge-price {
+            background: #1e3a5f;
+            color: white;
+        }
+        
+        .badge-roi {
+            background: #10b981;
+            color: white;
+        }
+        
+        .badge-score {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+        
+        .main-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 25px;
+        }
+        
+        .image-gallery {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        
+        .main-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+        }
+        
+        .image-thumbnails {
+            display: flex;
+            gap: 10px;
+            padding: 15px;
+            overflow-x: auto;
+        }
+        
+        .thumbnail {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+        
+        .thumbnail:hover, .thumbnail.active {
+            opacity: 1;
+        }
+        
+        .property-details {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .details-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .detail-icon {
+            width: 24px;
+            height: 24px;
+            color: #666;
+        }
+        
+        .detail-label {
+            font-size: 13px;
+            color: #999;
+        }
+        
+        .detail-value {
+            font-size: 15px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .description {
+            line-height: 1.6;
+            color: #666;
+            margin-bottom: 25px;
+        }
+        
+        .features-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+        
+        .feature-tag {
+            padding: 6px 12px;
+            background: #f0f7ff;
+            color: #1e3a5f;
+            border-radius: 6px;
+            font-size: 13px;
+        }
+        
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        
+        .action-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+            margin-bottom: 12px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: #1e3a5f;
+            border: 2px solid #1e3a5f;
+        }
+        
+        .btn-save {
+            background: white;
+            color: #ef4444;
+            border: 2px solid #ef4444;
+        }
+        
+        .btn-save.saved {
+            background: #ef4444;
+            color: white;
+        }
+        
+        .agent-card {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .agent-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .agent-info {
+            flex: 1;
+        }
+        
+        .agent-name {
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .agent-rating {
+            font-size: 13px;
+            color: #666;
+        }
+        
+        .micro-flip-analysis {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            border-radius: 12px;
+            padding: 25px;
+        }
+        
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .analysis-item {
+            padding: 12px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 8px;
+        }
+        
+        .analysis-label {
+            font-size: 12px;
+            opacity: 0.9;
+            margin-bottom: 5px;
+        }
+        
+        .analysis-value {
+            font-size: 20px;
+            font-weight: bold;
+        }
+        
+        .repair-list {
+            background: rgba(255,255,255,0.1);
+            border-radius: 8px;
+            padding: 15px;
+        }
+        
+        .repair-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .repair-item:last-child {
+            border: none;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+        }
+        
+        .modal-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: #333;
+        }
+        
+        .form-input, .form-textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">🏠 Assiduous</div>
+            <nav class="nav-links">
+                <a href="/" class="nav-link">Home</a>
+                <a href="/client/properties.html" class="nav-link">Properties</a>
+                <a href="/client/saved.html" class="nav-link">Saved</a>
+                <a href="/client/micro-flip-calculator.html" class="nav-link">ROI Calculator</a>
+                <a href="/client/dashboard.html" class="nav-link">Dashboard</a>
+            </nav>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="property-header">
+            <h1 class="property-title" id="propertyTitle">Loading...</h1>
+            <p class="property-address" id="propertyAddress">Loading address...</p>
+            <div class="property-badges">
+                <span class="badge badge-price" id="propertyPrice">$0</span>
+                <span class="badge badge-roi" id="propertyROI">0% ROI</span>
+                <span class="badge badge-score" id="investmentScore">Score: 0/100</span>
+            </div>
+        </div>
+        
+        <div class="main-content">
+            <div class="left-column">
+                <div class="image-gallery">
+                    <img id="mainImage" class="main-image" src="https://via.placeholder.com/800x400" alt="Property">
+                    <div class="image-thumbnails" id="thumbnails"></div>
+                </div>
+                
+                <div class="property-details">
+                    <h2 class="section-title">Property Details</h2>
+                    <div class="details-grid" id="detailsGrid">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                    
+                    <h2 class="section-title">Description</h2>
+                    <p class="description" id="description">Loading description...</p>
+                    
+                    <h2 class="section-title">Features & Amenities</h2>
+                    <div class="features-list" id="featuresList">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                    
+                    <div class="micro-flip-analysis">
+                        <h2 class="section-title" style="color: white; border-color: rgba(255,255,255,0.3);">
+                            Micro-Flip Investment Analysis
+                        </h2>
+                        <div class="analysis-grid">
+                            <div class="analysis-item">
+                                <div class="analysis-label">After Repair Value</div>
+                                <div class="analysis-value" id="arvValue">$0</div>
+                            </div>
+                            <div class="analysis-item">
+                                <div class="analysis-label">Est. Repair Cost</div>
+                                <div class="analysis-value" id="repairCost">$0</div>
+                            </div>
+                            <div class="analysis-item">
+                                <div class="analysis-label">Potential Profit</div>
+                                <div class="analysis-value" id="potentialProfit">$0</div>
+                            </div>
+                            <div class="analysis-item">
+                                <div class="analysis-label">Market Demand</div>
+                                <div class="analysis-value" id="marketDemand">-</div>
+                            </div>
+                        </div>
+                        
+                        <h3 style="color: white; margin: 20px 0 10px;">Recommended Repairs</h3>
+                        <div class="repair-list" id="repairList">
+                            <!-- Populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="sidebar">
+                <div class="action-card">
+                    <button class="btn btn-save" id="saveBtn" onclick="toggleSave()">
+                        <span id="saveText">❤️ Save Property</span>
+                    </button>
+                    <button class="btn btn-primary" onclick="showContactModal()">
+                        Contact Agent
+                    </button>
+                    <button class="btn btn-secondary" onclick="showViewingModal()">
+                        Schedule Viewing
+                    </button>
+                    <button class="btn btn-secondary" onclick="window.location.href='/client/micro-flip-calculator.html'">
+                        Calculate ROI
+                    </button>
+                </div>
+                
+                <div class="action-card">
+                    <h3 class="section-title">Listing Agent</h3>
+                    <div class="agent-card">
+                        <div class="agent-avatar" id="agentAvatar">JD</div>
+                        <div class="agent-info">
+                            <div class="agent-name" id="agentName">Loading...</div>
+                            <div class="agent-rating" id="agentRating">⭐⭐⭐⭐⭐ 5.0</div>
+                        </div>
+                    </div>
+                    <button class="btn btn-secondary" onclick="showContactModal()">
+                        Message Agent
+                    </button>
+                </div>
+                
+                <div class="action-card">
+                    <h3 class="section-title">Property Stats</h3>
+                    <div class="details-grid">
+                        <div>
+                            <div class="detail-label">Views</div>
+                            <div class="detail-value" id="viewCount">0</div>
+                        </div>
+                        <div>
+                            <div class="detail-label">Saved</div>
+                            <div class="detail-value" id="saveCount">0</div>
+                        </div>
+                        <div>
+                            <div class="detail-label">Days on Market</div>
+                            <div class="detail-value" id="daysOnMarket">0</div>
+                        </div>
+                        <div>
+                            <div class="detail-label">Price/Sqft</div>
+                            <div class="detail-value" id="pricePerSqft">$0</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Contact Modal -->
+    <div class="modal" id="contactModal">
+        <div class="modal-content">
+            <h2 class="modal-title">Contact Agent</h2>
+            <form id="contactForm">
+                <div class="form-group">
+                    <label class="form-label">Your Name</label>
+                    <input type="text" class="form-input" id="contactName" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-input" id="contactEmail" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Phone</label>
+                    <input type="tel" class="form-input" id="contactPhone">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Message</label>
+                    <textarea class="form-textarea" id="contactMessage" required>I'm interested in this property. Please contact me with more information.</textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Send Message</button>
+                <button type="button" class="btn btn-secondary" onclick="closeModal('contactModal')">Cancel</button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Viewing Modal -->
+    <div class="modal" id="viewingModal">
+        <div class="modal-content">
+            <h2 class="modal-title">Schedule Viewing</h2>
+            <form id="viewingForm">
+                <div class="form-group">
+                    <label class="form-label">Preferred Date</label>
+                    <input type="date" class="form-input" id="viewingDate" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Preferred Time</label>
+                    <select class="form-input" id="viewingTime" required>
+                        <option value="">Select time</option>
+                        <option value="9:00 AM">9:00 AM</option>
+                        <option value="10:00 AM">10:00 AM</option>
+                        <option value="11:00 AM">11:00 AM</option>
+                        <option value="12:00 PM">12:00 PM</option>
+                        <option value="1:00 PM">1:00 PM</option>
+                        <option value="2:00 PM">2:00 PM</option>
+                        <option value="3:00 PM">3:00 PM</option>
+                        <option value="4:00 PM">4:00 PM</option>
+                        <option value="5:00 PM">5:00 PM</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Your Name</label>
+                    <input type="text" class="form-input" id="viewingName" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Phone</label>
+                    <input type="tel" class="form-input" id="viewingPhone" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Additional Notes</label>
+                    <textarea class="form-textarea" id="viewingNotes"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Schedule Viewing</button>
+                <button type="button" class="btn btn-secondary" onclick="closeModal('viewingModal')">Cancel</button>
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCzPcEJ0TPKnJtcVT2qymgJrII1p0vAJxs",
+            authDomain: "assiduous-prod.firebaseapp.com",
+            projectId: "assiduous-prod",
+            storageBucket: "assiduous-prod.appspot.com",
+            messagingSenderId: "594472642287",
+            appId: "1:594472642287:web:adf723a456b123c4567890"
+        };
+        
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const auth = firebase.auth();
+        
+        // Get property ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const propertyId = urlParams.get('id');
+        let currentProperty = null;
+        let savedProperties = JSON.parse(localStorage.getItem('savedProperties') || '[]');
+        
+        // Load property details
+        async function loadProperty() {
+            if (!propertyId) {
+                // Load mock data for demo
+                loadMockProperty();
+                return;
+            }
+            
+            try {
+                const doc = await db.collection('properties').doc(propertyId).get();
+                if (doc.exists) {
+                    currentProperty = { id: doc.id, ...doc.data() };
+                    displayProperty(currentProperty);
+                    
+                    // Increment view count
+                    await db.collection('properties').doc(propertyId).update({
+                        views: firebase.firestore.FieldValue.increment(1)
+                    });
+                } else {
+                    loadMockProperty();
+                }
+            } catch (error) {
+                console.error('Error loading property:', error);
+                loadMockProperty();
+            }
+        }
+        
+        // Load mock property for demo
+        function loadMockProperty() {
+            currentProperty = {
+                id: 'demo-property',
+                title: '3BR Townhouse in Fishtown - Perfect Flip',
+                address: '2547 Frankford Avenue',
+                city: 'Philadelphia',
+                state: 'PA',
+                zipCode: '19125',
+                neighborhood: 'Fishtown',
+                price: 285000,
+                bedrooms: 3,
+                bathrooms: 2,
+                sqft: 1450,
+                type: 'townhouse',
+                yearBuilt: 1925,
+                description: 'Investor\'s dream in hot Fishtown market! This 3 bedroom townhouse offers tremendous upside potential with cosmetic updates. Original hardwood floors, high ceilings, and great bones. Walking distance to trendy restaurants and nightlife. Perfect for micro-flipping with estimated 25% ROI.',
+                features: ['Hardwood Floors', 'High Ceilings', 'Original Details', 'Private Backyard', 'Near Transit'],
+                images: [
+                    'https://source.unsplash.com/800x600/?townhouse,exterior',
+                    'https://source.unsplash.com/800x600/?livingroom',
+                    'https://source.unsplash.com/800x600/?kitchen',
+                    'https://source.unsplash.com/800x600/?bedroom',
+                    'https://source.unsplash.com/800x600/?bathroom'
+                ],
+                microFlipping: {
+                    afterRepairValue: 385000,
+                    estimatedRepairCost: 35000,
+                    potentialProfit: 65000,
+                    roi: 25,
+                    investmentScore: 87,
+                    repairItems: [
+                        { item: 'Kitchen Update', cost: 12000 },
+                        { item: 'Bathroom Renovation', cost: 8000 },
+                        { item: 'Paint & Flooring', cost: 7000 },
+                        { item: 'Landscaping', cost: 3000 },
+                        { item: 'Fixtures & Hardware', cost: 5000 }
+                    ],
+                    marketDemand: 'High'
+                },
+                views: 234,
+                saves: 18,
+                listingDate: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString(),
+                agentId: 'agent_1',
+                agentName: 'John Davis',
+                parking: 'Street',
+                heating: 'Gas',
+                cooling: 'Central Air',
+                basement: 'Full',
+                taxAmount: 4275
+            };
+            
+            displayProperty(currentProperty);
+        }
+        
+        // Display property details
+        function displayProperty(property) {
+            document.getElementById('propertyTitle').textContent = property.title;
+            document.getElementById('propertyAddress').textContent = 
+                `${property.address}, ${property.city}, ${property.state} ${property.zipCode}`;
+            document.getElementById('propertyPrice').textContent = `$${property.price.toLocaleString()}`;
+            
+            if (property.microFlipping) {
+                document.getElementById('propertyROI').textContent = `${property.microFlipping.roi}% ROI`;
+                document.getElementById('investmentScore').textContent = 
+                    `Score: ${property.microFlipping.investmentScore}/100`;
+                
+                // Micro-flip analysis
+                document.getElementById('arvValue').textContent = 
+                    `$${property.microFlipping.afterRepairValue.toLocaleString()}`;
+                document.getElementById('repairCost').textContent = 
+                    `$${property.microFlipping.estimatedRepairCost.toLocaleString()}`;
+                document.getElementById('potentialProfit').textContent = 
+                    `$${property.microFlipping.potentialProfit.toLocaleString()}`;
+                document.getElementById('marketDemand').textContent = property.microFlipping.marketDemand;
+                
+                // Repair items
+                const repairList = document.getElementById('repairList');
+                repairList.innerHTML = property.microFlipping.repairItems.map(item => `
+                    <div class="repair-item">
+                        <span>${item.item}</span>
+                        <span>$${item.cost.toLocaleString()}</span>
+                    </div>
+                `).join('');
+            }
+            
+            // Images
+            if (property.images && property.images.length > 0) {
+                document.getElementById('mainImage').src = property.images[0];
+                const thumbnails = document.getElementById('thumbnails');
+                thumbnails.innerHTML = property.images.map((img, index) => `
+                    <img class="thumbnail ${index === 0 ? 'active' : ''}" 
+                         src="${img}" 
+                         onclick="changeMainImage('${img}', this)">
+                `).join('');
+            }
+            
+            // Details grid
+            const detailsGrid = document.getElementById('detailsGrid');
+            detailsGrid.innerHTML = `
+                <div class="detail-item">
+                    <div>
+                        <div class="detail-label">Bedrooms</div>
+                        <div class="detail-value">${property.bedrooms}</div>
+                    </div>
+                </div>
+                <div class="detail-item">
+                    <div>
+                        <div class="detail-label">Bathrooms</div>
+                        <div class="detail-value">${property.bathrooms}</div>
+                    </div>
+                </div>
+                <div class="detail-item">
+                    <div>
+                        <div class="detail-label">Square Feet</div>
+                        <div class="detail-value">${property.sqft.toLocaleString()}</div>
+                    </div>
+                </div>
+                <div class="detail-item">
+                    <div>
+                        <div class="detail-label">Year Built</div>
+                        <div class="detail-value">${property.yearBuilt}</div>
+                    </div>
+                </div>
+                <div class="detail-item">
+                    <div>
+                        <div class="detail-label">Property Type</div>
+                        <div class="detail-value">${property.type.replace('_', ' ')}</div>
+                    </div>
+                </div>
+                <div class="detail-item">
+                    <div>
+                        <div class="detail-label">Neighborhood</div>
+                        <div class="detail-value">${property.neighborhood}</div>
+                    </div>
+                </div>
+                <div class="detail-item">
+                    <div>
+                        <div class="detail-label">Parking</div>
+                        <div class="detail-value">${property.parking || 'Street'}</div>
+                    </div>
+                </div>
+                <div class="detail-item">
+                    <div>
+                        <div class="detail-label">Annual Tax</div>
+                        <div class="detail-value">$${(property.taxAmount || 0).toLocaleString()}</div>
+                    </div>
+                </div>
+            `;
+            
+            // Description
+            document.getElementById('description').textContent = property.description;
+            
+            // Features
+            const featuresList = document.getElementById('featuresList');
+            featuresList.innerHTML = property.features.map(feature => 
+                `<span class="feature-tag">${feature}</span>`
+            ).join('');
+            
+            // Stats
+            document.getElementById('viewCount').textContent = property.views || 0;
+            document.getElementById('saveCount').textContent = property.saves || 0;
+            
+            const listingDate = new Date(property.listingDate);
+            const daysOnMarket = Math.floor((Date.now() - listingDate) / (1000 * 60 * 60 * 24));
+            document.getElementById('daysOnMarket').textContent = daysOnMarket;
+            
+            const pricePerSqft = Math.round(property.price / property.sqft);
+            document.getElementById('pricePerSqft').textContent = `$${pricePerSqft}`;
+            
+            // Agent info
+            document.getElementById('agentName').textContent = property.agentName || 'Sarah Johnson';
+            document.getElementById('agentAvatar').textContent = 
+                (property.agentName || 'Sarah Johnson').split(' ').map(n => n[0]).join('');
+            
+            // Check if saved
+            updateSaveButton();
+        }
+        
+        // Change main image
+        function changeMainImage(src, thumbnail) {
+            document.getElementById('mainImage').src = src;
+            document.querySelectorAll('.thumbnail').forEach(t => t.classList.remove('active'));
+            thumbnail.classList.add('active');
+        }
+        
+        // Toggle save property
+        function toggleSave() {
+            if (!currentProperty) return;
+            
+            const index = savedProperties.findIndex(p => p.id === currentProperty.id);
+            
+            if (index > -1) {
+                savedProperties.splice(index, 1);
+            } else {
+                savedProperties.push({
+                    id: currentProperty.id,
+                    title: currentProperty.title,
+                    price: currentProperty.price,
+                    address: currentProperty.address,
+                    image: currentProperty.images ? currentProperty.images[0] : '',
+                    savedAt: new Date().toISOString()
+                });
+            }
+            
+            localStorage.setItem('savedProperties', JSON.stringify(savedProperties));
+            updateSaveButton();
+            
+            // Update Firebase if user is logged in
+            if (auth.currentUser && propertyId !== 'demo-property') {
+                db.collection('properties').doc(propertyId).update({
+                    saves: firebase.firestore.FieldValue.increment(index > -1 ? -1 : 1)
+                });
+            }
+        }
+        
+        // Update save button state
+        function updateSaveButton() {
+            const saveBtn = document.getElementById('saveBtn');
+            const saveText = document.getElementById('saveText');
+            const isSaved = savedProperties.some(p => p.id === currentProperty.id);
+            
+            if (isSaved) {
+                saveBtn.classList.add('saved');
+                saveText.textContent = '❤️ Saved';
+            } else {
+                saveBtn.classList.remove('saved');
+                saveText.textContent = '❤️ Save Property';
+            }
+        }
+        
+        // Modal functions
+        function showContactModal() {
+            document.getElementById('contactModal').classList.add('active');
+        }
+        
+        function showViewingModal() {
+            document.getElementById('viewingModal').classList.add('active');
+        }
+        
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+        
+        // Handle contact form submission
+        document.getElementById('contactForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const inquiry = {
+                propertyId: currentProperty.id,
+                propertyTitle: currentProperty.title,
+                name: document.getElementById('contactName').value,
+                email: document.getElementById('contactEmail').value,
+                phone: document.getElementById('contactPhone').value,
+                message: document.getElementById('contactMessage').value,
+                type: 'contact',
+                status: 'new',
+                createdAt: new Date().toISOString()
+            };
+            
+            try {
+                await db.collection('inquiries').add(inquiry);
+                alert('Message sent successfully! An agent will contact you soon.');
+                closeModal('contactModal');
+                document.getElementById('contactForm').reset();
+            } catch (error) {
+                console.error('Error sending message:', error);
+                alert('Message saved locally. You can view it in your dashboard.');
+                
+                // Save locally as fallback
+                const localInquiries = JSON.parse(localStorage.getItem('inquiries') || '[]');
+                localInquiries.push(inquiry);
+                localStorage.setItem('inquiries', JSON.stringify(localInquiries));
+                closeModal('contactModal');
+            }
+        });
+        
+        // Handle viewing form submission  
+        document.getElementById('viewingForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const viewing = {
+                propertyId: currentProperty.id,
+                propertyTitle: currentProperty.title,
+                date: document.getElementById('viewingDate').value,
+                time: document.getElementById('viewingTime').value,
+                name: document.getElementById('viewingName').value,
+                phone: document.getElementById('viewingPhone').value,
+                notes: document.getElementById('viewingNotes').value,
+                type: 'viewing',
+                status: 'pending',
+                createdAt: new Date().toISOString()
+            };
+            
+            try {
+                await db.collection('viewings').add(viewing);
+                alert('Viewing scheduled successfully! You will receive a confirmation call.');
+                closeModal('viewingModal');
+                document.getElementById('viewingForm').reset();
+            } catch (error) {
+                console.error('Error scheduling viewing:', error);
+                
+                // Save locally as fallback
+                const localViewings = JSON.parse(localStorage.getItem('viewings') || '[]');
+                localViewings.push(viewing);
+                localStorage.setItem('viewings', JSON.stringify(localViewings));
+                alert('Viewing request saved! Check your dashboard for updates.');
+                closeModal('viewingModal');
+            }
+        });
+        
+        // Close modal on outside click
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.classList.remove('active');
+            }
+        };
+        
+        // Load property on page load
+        window.addEventListener('load', loadProperty);
+    </script>
+</body>
+</html>
