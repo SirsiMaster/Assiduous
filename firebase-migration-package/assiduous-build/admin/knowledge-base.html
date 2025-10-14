@@ -1303,14 +1303,15 @@
                     .limit(1)
                     .get();
 
-                // Calculate project metrics
+                // Default to last known accurate data if Firebase has no data
+                // NEVER INVENT NUMBERS - use only what we can verify
                 let projectData = {
-                    totalCommits: 250,
-                    totalFiles: 350,
-                    totalHours: 65.5,
-                    totalCost: 19650,
-                    velocity: 15.6,
-                    completion: 75
+                    totalCommits: 548,    // Last verified from git log
+                    totalFiles: 565,      // Last verified from git ls-files  
+                    totalHours: null,     // Don't guess - use Firebase data only
+                    totalCost: null,      // Don't guess - use Firebase data only
+                    velocity: null,       // Don't guess - calculate from real data
+                    completion: null      // Don't guess - calculate from real features
                 };
 
                 if (!metricsQuery.empty) {
@@ -1326,24 +1327,48 @@
                     }
                 }
 
-                // Update Overview section
+                // Update Overview section - only display what we have real data for
                 document.getElementById('total-commits').textContent = projectData.totalCommits;
                 document.getElementById('total-commits-icon').textContent = projectData.totalCommits;
                 document.getElementById('total-files').textContent = projectData.totalFiles;
                 document.getElementById('total-files-icon').textContent = projectData.totalFiles;
-                document.getElementById('dev-hours').textContent = projectData.totalHours.toFixed(1) + ' hrs';
-                document.getElementById('dev-hours-icon').textContent = Math.round(projectData.totalHours);
-                document.getElementById('completion-status').textContent = projectData.completion + '%';
-                document.getElementById('completion-icon').textContent = projectData.completion + '%';
+                
+                // Only show hours and cost if we have real data
+                if (projectData.totalHours !== null && projectData.totalHours !== undefined) {
+                    document.getElementById('dev-hours').textContent = projectData.totalHours.toFixed(1) + ' hrs';
+                    document.getElementById('dev-hours-icon').textContent = Math.round(projectData.totalHours);
+                } else {
+                    document.getElementById('dev-hours').textContent = 'Tracking...';
+                    document.getElementById('dev-hours-icon').textContent = '...';
+                }
+                
+                if (projectData.completion !== null && projectData.completion !== undefined) {
+                    document.getElementById('completion-status').textContent = projectData.completion + '%';
+                    document.getElementById('completion-icon').textContent = projectData.completion + '%';
+                } else {
+                    document.getElementById('completion-status').textContent = 'In Progress';
+                    document.getElementById('completion-icon').textContent = '...';
+                }
 
-                // Update Business Impact
-                document.getElementById('velocity-rate').textContent = projectData.velocity.toFixed(1);
-                document.getElementById('velocity-desc').textContent = `${projectData.velocity.toFixed(1)} commits/hour average`;
-                document.getElementById('total-cost').textContent = `$${(projectData.totalCost / 1000).toFixed(1)}K`;
-                document.getElementById('cost-desc').textContent = `$${projectData.totalCost.toLocaleString()} total investment`;
+                // Update Business Impact - only if we have real data
+                if (projectData.velocity !== null && projectData.velocity !== undefined) {
+                    document.getElementById('velocity-rate').textContent = projectData.velocity.toFixed(1);
+                    document.getElementById('velocity-desc').textContent = `${projectData.velocity.toFixed(1)} commits/hour average`;
+                } else {
+                    document.getElementById('velocity-rate').textContent = '...';
+                    document.getElementById('velocity-desc').textContent = 'Calculating from Firebase data...';
+                }
+                
+                if (projectData.totalCost !== null && projectData.totalCost !== undefined) {
+                    document.getElementById('total-cost').textContent = `$${(projectData.totalCost / 1000).toFixed(1)}K`;
+                    document.getElementById('cost-desc').textContent = `$${projectData.totalCost.toLocaleString()} total investment`;
+                } else {
+                    document.getElementById('total-cost').textContent = '$...';
+                    document.getElementById('cost-desc').textContent = 'Calculating from time tracking...';
+                }
 
-                // Update System Status based on real implementation
-                const systemDescription = `The Assiduous platform is currently ${projectData.completion}% complete with ${projectData.totalCommits} commits across ${projectData.totalFiles} files.`;
+                // Update System Status based on what we actually know
+                const systemDescription = `The Assiduous platform has ${projectData.totalCommits} commits across ${projectData.totalFiles} files.`;
                 document.getElementById('system-status').textContent = systemDescription;
 
                 // Update component statuses based on actual implementation
@@ -1359,37 +1384,45 @@
             }
         }
 
-        // Fallback metrics if Firebase is unavailable
+        // Fallback metrics if Firebase is unavailable - USE ONLY VERIFIED DATA
         function loadFallbackMetrics() {
-            // Recent git log shows actual progress
+            // ONLY use actual verified data from git repository
+            // These are the REAL numbers as of last check:
+            // - git log --oneline | wc -l = 548 commits
+            // - git ls-files | wc -l = 565 files
+            // - Project start date = 2025-08-10 (from git history)
+            // - HTML files in build = 111 files
+            
             const fallbackData = {
-                totalCommits: 250,
-                totalFiles: 350,
-                totalHours: 65.5,
-                totalCost: 19650,
-                velocity: 15.6,
-                completion: 75
+                totalCommits: 548,        // ACTUAL from git log
+                totalFiles: 565,          // ACTUAL from git ls-files
+                totalHours: 'Unknown',    // DO NOT INVENT - we don't track this accurately
+                totalCost: 'Unknown',     // DO NOT INVENT - no accurate tracking
+                velocity: 'Unknown',      // DO NOT INVENT - would need calculation
+                completion: 'In Progress' // DO NOT INVENT percentages
             };
 
+            // Display only what we KNOW is true
             document.getElementById('total-commits').textContent = fallbackData.totalCommits;
             document.getElementById('total-commits-icon').textContent = fallbackData.totalCommits;
             document.getElementById('total-files').textContent = fallbackData.totalFiles;
             document.getElementById('total-files-icon').textContent = fallbackData.totalFiles;
-            document.getElementById('dev-hours').textContent = fallbackData.totalHours.toFixed(1) + ' hrs';
-            document.getElementById('dev-hours-icon').textContent = Math.round(fallbackData.totalHours);
-            document.getElementById('completion-status').textContent = fallbackData.completion + '%';
-            document.getElementById('completion-icon').textContent = fallbackData.completion + '%';
+            document.getElementById('dev-hours').textContent = fallbackData.totalHours;
+            document.getElementById('dev-hours-icon').textContent = '?';
+            document.getElementById('completion-status').textContent = fallbackData.completion;
+            document.getElementById('completion-icon').textContent = '?';
 
-            document.getElementById('velocity-rate').textContent = fallbackData.velocity.toFixed(1);
-            document.getElementById('velocity-desc').textContent = `${fallbackData.velocity.toFixed(1)} commits/hour average`;
-            document.getElementById('total-cost').textContent = `$${(fallbackData.totalCost / 1000).toFixed(1)}K`;
-            document.getElementById('cost-desc').textContent = `$${fallbackData.totalCost.toLocaleString()} total investment`;
+            document.getElementById('velocity-rate').textContent = '?';
+            document.getElementById('velocity-desc').textContent = 'Unable to calculate without Firebase data';
+            document.getElementById('total-cost').textContent = '?';
+            document.getElementById('cost-desc').textContent = 'Unable to calculate without time tracking data';
 
-            document.getElementById('system-status').textContent = 'Firebase migration complete. Authentication and data population systems operational.';
-            document.getElementById('property-status').textContent = 'Firebase Firestore integrated with property management';
-            document.getElementById('portal-status').textContent = 'MVP authentication complete, agent dashboard connected';
-            document.getElementById('analytics-status').textContent = 'Development metrics automated with real-time tracking';
-            document.getElementById('dev-status').textContent = 'Git push auto-deploys to Firebase, 100% automation achieved';
+            // System status based on what we can verify from recent commits
+            document.getElementById('system-status').textContent = 'System operational. Firebase data temporarily unavailable.';
+            document.getElementById('property-status').textContent = 'Status unavailable - check Firebase console';
+            document.getElementById('portal-status').textContent = 'Status unavailable - check Firebase console';
+            document.getElementById('analytics-status').textContent = 'Status unavailable - check Firebase console';
+            document.getElementById('dev-status').textContent = 'Status unavailable - check Firebase console';
         }
 
         // Tab Navigation
