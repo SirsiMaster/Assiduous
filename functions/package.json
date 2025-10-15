@@ -15,10 +15,11 @@
   },
   "main": "lib/index.js",
   "dependencies": {
-    "axios": "^1.12.2",
+    "@sendgrid/mail": "^8.1.6",
+    "axios": "^1.7.9",
     "firebase-admin": "^13.5.0",
     "firebase-functions": "^6.0.1",
-    "fs-extra": "^11.3.2",
+    "fs-extra": "^11.2.0",
     "sharp": "^0.33.5",
     "stripe": "^19.1.0"
   },

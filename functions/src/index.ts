@@ -29,6 +29,9 @@ try {
 // Import Property Ingestion functions
 import * as propertyIngestion from "./propertyIngestion";
 
+// Import Email Service
+import * as emailService from "./emailService";
+
 // Initialize Firebase Admin
 admin.initializeApp();
 const db = admin.firestore();
@@ -567,7 +570,7 @@ async function handlePaymentRoutes(
 // ============================================================================
 
 /**
- * Trigger: New lead created
+ * Trigger: New lead created - Send notification to agent
  */
 export const onLeadCreated = onDocumentCreated(
   "leads/{leadId}",
@@ -576,21 +579,70 @@ export const onLeadCreated = onDocumentCreated(
       return null;
     }
     const lead = event.data.data();
-    logger.info("New lead created", {leadId: event.params.leadId, lead});
-    // TODO: Send email notification
+    const leadId = event.params.leadId;
+    logger.info("New lead created", {leadId, lead});
+    
+    // Get property details if propertyId exists
+    let propertyTitle = "General inquiry";
+    if (lead.propertyId) {
+      const propertyDoc = await db.collection("properties").doc(lead.propertyId).get();
+      if (propertyDoc.exists) {
+        propertyTitle = propertyDoc.data()?.title || propertyTitle;
+      }
+    }
+    
+    // Send email to default agent (or assigned agent)
+    // TODO: Implement agent assignment logic
+    const agentEmail = process.env.DEFAULT_AGENT_EMAIL || "agent@assiduous.com";
+    
+    await emailService.sendLeadNotification(agentEmail, {
+      ...lead.user,
+      propertyId: lead.propertyId,
+      propertyTitle,
+      message: lead.message,
+      type: lead.type,
+    });
+    
     return null;
   }
 );
 
 /**
- * Trigger: New user created
+ * Trigger: New user created - Send welcome email
  */
 export const onNewUserCreated = beforeUserCreated(async (event) => {
   if (event.data) {
     logger.info("New user created", {uid: event.data.uid});
+    
+    // Send welcome email after user profile is created
+    // This will be triggered after Firestore user document is created
   }
   return;
 });
+
+/**
+ * Trigger: User profile created - Send welcome email
+ */
+export const onUserProfileCreated = onDocumentCreated(
+  "users/{userId}",
+  async (event) => {
+    if (!event.data) return null;
+    
+    const userData = event.data.data();
+    const userId = event.params.userId;
+    
+    if (userData.email && userData.displayName) {
+      logger.info("Sending welcome email to new user", {userId, email: userData.email});
+      await emailService.sendWelcomeEmail(
+        userId,
+        userData.email,
+        userData.displayName
+      );
+    }
+    
+    return null;
+  }
+);
 
 // ============================================================================
 // STRIPE WEBHOOK HANDLER
