@@ -453,6 +453,101 @@ Response: 200 OK
 }
 ```
 
+### Property Ingestion API (v2.1.0)
+
+**Purpose**: Bulk import properties from external sources (MLS feeds, scrapers, third-party platforms) with automatic image processing.
+
+#### Create API Key (Admin Only)
+```javascript
+import { getFunctions, httpsCallable } from 'firebase/functions';
+
+const functions = getFunctions();
+const createApiKey = httpsCallable(functions, 'createApiKey');
+
+const result = await createApiKey({
+  organizationId: 'your-org-id',
+  name: 'MLS Feed Integration',
+  permissions: ['ingest', 'delete']
+});
+
+console.log('API Key:', result.data.apiKey);
+```
+
+#### Ingest Properties
+```http
+POST /api/v1/properties/ingest
+Content-Type: application/json
+X-API-Key: your-api-key
+
+{
+  "properties": [
+    {
+      "externalId": "MLS-12345",
+      "title": "Modern 3BR Home",
+      "price": 450000,
+      "address": {
+        "street": "123 Main St",
+        "city": "San Francisco",
+        "state": "CA",
+        "zip": "94102"
+      },
+      "bedrooms": 3,
+      "bathrooms": 2,
+      "squareFeet": 1800,
+      "images": [
+        "https://example.com/image1.jpg",
+        "data:image/jpeg;base64,/9j/4AAQ..."
+      ],
+      "metadata": {
+        "mlsNumber": "12345",
+        "listingAgent": "agent-id"
+      }
+    }
+  ]
+}
+
+Response: 200 OK
+{
+  "success": true,
+  "processed": 1,
+  "successful": 1,
+  "failed": 0,
+  "results": [
+    {
+      "success": true,
+      "propertyId": "firebase-doc-id",
+      "externalId": "MLS-12345",
+      "action": "created",
+      "imagesProcessed": 2
+    }
+  ]
+}
+```
+
+**Image Processing**:
+- Remote URLs: Automatically downloaded and compressed
+- Base64: Decoded and uploaded to Firebase Storage  
+- Compression: Max 2048x2048, 80% quality
+- Thumbnails: Auto-generated (200x200, 400x400)
+- Limits: 50MB max per image, 30s timeout
+
+#### Bulk Delete Properties
+```http
+DELETE /api/v1/properties/bulk
+Content-Type: application/json
+X-API-Key: your-api-key
+
+{
+  "externalIds": ["MLS-12345", "MLS-12346"]
+}
+
+Response: 200 OK
+{
+  "success": true,
+  "deleted": 2
+}
+```
+
 ## Error Handling
 
 The API uses standard HTTP status codes and returns detailed error messages:
@@ -563,3 +658,9 @@ const properties = await client.properties.list({
 - Enhanced transaction management
 - Added webhook support
 - Improved rate limiting
+
+### v2.1.0 (2025-10-15)
+- **Property Ingestion API** - Bulk import from external sources (MLS, feeds)
+- **Remote Image Processing** - Automatic download, compression, upload
+- **API Key Management** - Secure authentication for integrations
+- **Base64 Image Support** - Direct image uploads without URLs
