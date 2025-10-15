@@ -7,49 +7,48 @@
 
 ## 🎯 ABSOLUTE PRIORITIES FOR REVENUE
 
-1. **Stripe Integration** - Collect money from agents ($99/month)
-2. **Real CRUD Operations** - Actual data persistence
-3. **Document Upload** - Firebase Storage for contracts
-4. **Email System** - SendGrid for notifications
-5. **Property Management** - Add/edit/delete properties
-6. **Lead Capture** - Forms that actually save leads
-7. **Search That Works** - Filter real data
-8. **Basic Analytics** - Show real metrics
+1. **Real CRUD Operations** - Actual data persistence (FOUNDATION)
+2. **Property Management** - Add/edit/delete properties (CORE)
+3. **Search That Works** - Filter real data (USER VALUE)
+4. **Lead Capture** - Forms that actually save leads (REVENUE ENGINE)
+5. **Document Upload** - Firebase Storage for contracts (OPERATIONS)
+6. **Email System** - SendGrid for notifications (ENGAGEMENT)
+7. **Basic Analytics** - Show real metrics (VISIBILITY)
+8. **Stripe Integration** - Collect money from agents (MONETIZATION - FINAL PHASE)
 
 ---
 
 ## 📅 HOUR-BY-HOUR BREAKDOWN
 
 ### TUESDAY NIGHT (Hours 1-8) - 10PM-6AM
-**Focus**: Payment Infrastructure + Firebase Foundation
+**Focus**: Firebase Foundation + Data Structure
 
-#### Hours 1-3: Stripe Integration (NOW)
-- [ ] Install Stripe SDK in Cloud Functions
-- [ ] Create subscription products ($99/month agent plan)
-- [ ] Build checkout page
-- [ ] Create customer portal
-- [ ] Webhook handling for subscriptions
-- [ ] Payment success/failure pages
-
-**Deliverable**: Agents can subscribe and pay
-
-#### Hours 4-6: Firebase Data Structure
-- [ ] Define proper Firestore collections schema
-- [ ] Create security rules for all collections
+#### Hours 1-3: Firebase Data Structure (NOW)
+- [x] Define proper Firestore collections schema
+- [x] Create security rules for all collections
 - [ ] Build data validation Cloud Functions
 - [ ] Set up indexes for queries
 - [ ] Create admin SDK functions
 
 **Deliverable**: Proper data foundation
 
-#### Hours 7-8: Property CRUD Backend
-- [ ] Create property creation endpoint
-- [ ] Build property update function
-- [ ] Implement property delete
+#### Hours 4-6: Property CRUD Backend (CURRENT PRIORITY)
+- [x] Create property creation endpoint
+- [x] Build property update function
+- [x] Implement property delete
 - [ ] Add image upload to Storage
 - [ ] Create property approval workflow
 
 **Deliverable**: Can manage real properties
+
+#### Hours 7-8: Image Upload & Storage
+- [ ] Firebase Storage bucket configuration
+- [ ] Multi-image upload component
+- [ ] Image optimization/compression
+- [ ] CDN integration for fast delivery
+- [ ] Image deletion on property removal
+
+**Deliverable**: Full property media management
 
 ---
 
@@ -263,9 +262,19 @@
 ---
 
 ### FRIDAY NIGHT (Hours 73-80) - 10PM-6AM
-**Focus**: Testing & Launch Prep
+**Focus**: Monetization & Launch Prep
 
-#### Hours 73-76: Critical Path Testing
+#### Hours 73-75: Stripe Integration (FINAL PHASE)
+- [ ] Install Stripe SDK in Cloud Functions
+- [ ] Create subscription products ($99/month agent plan)
+- [ ] Build checkout page
+- [ ] Create customer portal
+- [ ] Webhook handling for subscriptions
+- [ ] Payment success/failure pages
+
+**Deliverable**: Agents can subscribe and pay
+
+#### Hours 76-78: Critical Path Testing
 - [ ] Complete agent signup → payment flow
 - [ ] Property creation → publishing flow
 - [ ] Client search → viewing request flow
@@ -275,7 +284,7 @@
 
 **Deliverable**: All workflows verified
 
-#### Hours 77-80: Production Deployment
+#### Hours 79-80: Production Deployment
 - [ ] Environment variables secured
 - [ ] Firebase security rules tightened
 - [ ] Performance optimization
