@@ -12,8 +12,22 @@ import {beforeUserCreated} from "firebase-functions/v2/identity";
 import * as logger from "firebase-functions/logger";
 import * as admin from "firebase-admin";
 
-// Import Stripe functions
-const stripeModule = require("./stripe");
+// Import Stripe functions (conditional to avoid deployment errors)
+let stripeModule: any;
+try {
+  stripeModule = require("./stripe.js");
+} catch (error) {
+  logger.warn("Stripe module not loaded. Stripe features disabled.");
+  stripeModule = {
+    createPaymentIntent: () => Promise.reject(new Error("Stripe not configured")),
+    retrievePaymentIntent: () => Promise.reject(new Error("Stripe not configured")),
+    createRefund: () => Promise.reject(new Error("Stripe not configured")),
+    handleStripeWebhook: () => Promise.reject(new Error("Stripe not configured")),
+  };
+}
+
+// Import Property Ingestion functions
+import * as propertyIngestion from "./propertyIngestion";
 
 // Initialize Firebase Admin
 admin.initializeApp();
@@ -587,3 +601,22 @@ export const onNewUserCreated = beforeUserCreated(async (event) => {
  * Handles payment events from Stripe
  */
 export const stripeWebhook = stripeModule.handleStripeWebhook;
+
+// ============================================================================
+// PROPERTY INGESTION API
+// ============================================================================
+
+/**
+ * Property Ingestion - Bulk import properties with image processing
+ */
+export const ingestProperty = propertyIngestion.ingestProperty;
+
+/**
+ * Bulk Delete Properties - Delete multiple properties by externalId
+ */
+export const bulkDeleteProperties = propertyIngestion.bulkDeleteProperties;
+
+/**
+ * Create API Key - Generate API keys for external integrations (admin only)
+ */
+export const createApiKey = propertyIngestion.createApiKey;
