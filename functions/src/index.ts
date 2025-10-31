@@ -645,7 +645,7 @@ export const onUserProfileCreated = onDocumentCreated(
 );
 
 // ============================================================================
-// STRIPE WEBHOOK HANDLER
+// STRIPE WEBHOOK HANDLER & CALLABLE FUNCTIONS
 // ============================================================================
 
 /**
@@ -653,6 +653,24 @@ export const onUserProfileCreated = onDocumentCreated(
  * Handles payment events from Stripe
  */
 export const stripeWebhook = stripeModule.handleStripeWebhook;
+
+/**
+ * Create Stripe Checkout Session (callable function)
+ * Allows authenticated users to start subscription checkout
+ */
+export const createCheckoutSession = stripeModule.createCheckoutSession;
+
+/**
+ * Create Stripe Customer Portal Session (callable function)
+ * Allows users to manage their subscription
+ */
+export const createPortalSession = stripeModule.createPortalSession;
+
+/**
+ * Get Subscription Status (callable function)
+ * Check user's current subscription status
+ */
+export const getSubscriptionStatus = stripeModule.getSubscriptionStatus;
 
 // ============================================================================
 // PROPERTY INGESTION API
