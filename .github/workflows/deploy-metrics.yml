@@ -7,7 +7,7 @@ on:
       - '**.js'
       - '**.html'
       - '**.json'
-      - 'firebase-migration-package/**'
+      - 'public/**'
 
 jobs:
   deploy:
@@ -43,8 +43,7 @@ jobs:
       
       - name: Deploy to Firebase
         run: |
-          cd public
-          firebase deploy --only hosting --token ${{ secrets.FIREBASE_TOKEN }} --non-interactive
+          firebase deploy --only hosting --token ${{ secrets.FIREBASE_TOKEN }} --non-interactive --project assiduous-prod
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
       

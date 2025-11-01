@@ -35,12 +35,11 @@ jobs:
           echo "✅ Tests passed (placeholder)"
           
       - name: Deploy to Staging
-        working-directory: public
         run: |
           echo "🚀 Deploying to Staging environment..."
           echo "📍 Target URL: https://assiduous-staging.web.app"
           firebase deploy \
-            --only hosting:assiduousflip \
+            --only hosting \
             --project assiduous-staging \
             --token "${{ secrets.FIREBASE_TOKEN }}"
             
