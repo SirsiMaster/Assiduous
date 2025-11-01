@@ -9,13 +9,13 @@ import * as admin from "firebase-admin";
 
 // Initialize SendGrid (API key from environment)
 const SENDGRID_API_KEY = process.env.SENDGRID_API_KEY || "";
+const FROM_EMAIL = process.env.SENDGRID_FROM_EMAIL || "noreply@assiduousflip.com";
+
 if (SENDGRID_API_KEY) {
   sgMail.setApiKey(SENDGRID_API_KEY);
 } else {
   logger.warn("SendGrid API key not configured. Email sending disabled.");
 }
-
-const FROM_EMAIL = "noreply@assiduous.com";
 const FROM_NAME = "Assiduous Real Estate";
 
 interface EmailOptions {

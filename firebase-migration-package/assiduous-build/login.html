@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Assiduous Realty</title>
+    <title>Login - AssiduousFlip</title>
     
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SirsiMaster/ui-components@latest/dist/sirsimaster-ui.css">
     
@@ -93,19 +93,14 @@
             margin-bottom: 12px;
         }
         
-        .btn-primary:hover {
+        .btn-primary:hover:not(:disabled) {
             transform: translateY(-2px);
             box-shadow: 0 7px 14px rgba(0,0,0,0.1);
         }
         
-        .btn-secondary {
-            background: white;
-            color: #333;
-            border: 2px solid #e0e0e0;
-        }
-        
-        .btn-secondary:hover {
-            background: #f5f5f5;
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
         }
         
         .divider {
@@ -149,24 +144,28 @@
             text-decoration: underline;
         }
         
-        .error-message {
-            background: #fee;
-            color: #c00;
-            padding: 10px;
+        .alert {
+            padding: 12px;
             border-radius: 6px;
             margin-bottom: 15px;
             font-size: 14px;
             display: none;
         }
         
-        .success-message {
+        .alert-error {
+            background: #fee;
+            color: #c00;
+            border: 1px solid #fcc;
+        }
+        
+        .alert-success {
             background: #efe;
             color: #060;
-            padding: 10px;
-            border-radius: 6px;
-            margin-bottom: 15px;
-            font-size: 14px;
-            display: none;
+            border: 1px solid #cfc;
+        }
+        
+        .alert.show {
+            display: block;
         }
         
         .loading {
@@ -176,352 +175,179 @@
             margin: 10px 0;
         }
         
-        .role-selector {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
+        .loading.show {
+            display: block;
         }
         
-        .role-option {
-            flex: 1;
-            padding: 10px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
+        .forgot-password {
+            text-align: right;
+            margin-bottom: 15px;
         }
         
-        .role-option:hover {
-            border-color: #667eea;
+        .forgot-password a {
+            color: #667eea;
+            text-decoration: none;
+            font-size: 14px;
         }
         
-        .role-option.selected {
-            border-color: #667eea;
-            background: #f0f4ff;
-        }
-        
-        .role-label {
-            font-weight: 600;
-            color: #333;
-        }
-        
-        .role-desc {
-            font-size: 12px;
-            color: #666;
-            margin-top: 4px;
+        .forgot-password a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
     <div class="login-container">
         <div class="logo">
-            <h1>🏠 Assiduous Realty</h1>
-            <p>AI-Powered Real Estate Platform</p>
+            <h1>🏡 AssiduousFlip</h1>
+            <p>Welcome back! Sign in to continue.</p>
         </div>
         
-        <div id="error-message" class="error-message"></div>
-        <div id="success-message" class="success-message"></div>
+        <div id="loginError" class="alert alert-error"></div>
+        <div id="loginSuccess" class="alert alert-success"></div>
         
-        <!-- Login Form -->
-        <form id="login-form">
+        <form id="loginForm">
             <div class="form-group">
-                <label for="login-email">Email</label>
-                <input type="email" id="login-email" required placeholder="you@example.com">
-            </div>
-            
-            <div class="form-group">
-                <label for="login-password">Password</label>
-                <input type="password" id="login-password" required placeholder="••••••••">
-            </div>
-            
-            <button type="submit" class="btn btn-primary">Sign In</button>
-        </form>
-        
-        <!-- Signup Form (Hidden by default) -->
-        <form id="signup-form" style="display: none;">
-            <div class="role-selector">
-                <div class="role-option selected" data-role="client">
-                    <div class="role-label">Client</div>
-                    <div class="role-desc">Buy or sell property</div>
-                </div>
-                <div class="role-option" data-role="agent">
-                    <div class="role-label">Agent</div>
-                    <div class="role-desc">Real estate professional</div>
-                </div>
+                <label for="email">Email Address</label>
+                <input 
+                    type="email" 
+                    id="email" 
+                    name="email" 
+                    required 
+                    placeholder="Enter your email"
+                    autocomplete="email"
+                >
             </div>
             
             <div class="form-group">
-                <label for="signup-name">Full Name</label>
-                <input type="text" id="signup-name" required placeholder="John Doe">
+                <label for="password">Password</label>
+                <input 
+                    type="password" 
+                    id="password" 
+                    name="password" 
+                    required 
+                    placeholder="Enter your password"
+                    autocomplete="current-password"
+                >
             </div>
             
-            <div class="form-group">
-                <label for="signup-email">Email</label>
-                <input type="email" id="signup-email" required placeholder="you@example.com">
+            <div class="forgot-password">
+                <a href="/auth/reset-password.html">Forgot Password?</a>
             </div>
             
-            <div class="form-group">
-                <label for="signup-password">Password</label>
-                <input type="password" id="signup-password" required placeholder="At least 6 characters">
-            </div>
-            
-            <button type="submit" class="btn btn-primary">Create Account</button>
+            <button type="submit" class="btn btn-primary" id="loginBtn">
+                Sign In
+            </button>
         </form>
         
         <div class="divider">
             <span>or</span>
         </div>
         
-        <button class="btn btn-secondary" onclick="signInWithGoogle()">
-            Continue with Google
-        </button>
-        
         <div class="form-toggle">
-            <span id="toggle-text">Don't have an account?</span>
-            <a href="#" id="toggle-link" onclick="toggleForm(event)">Sign up</a>
-        </div>
-        
-        <div id="loading" class="loading">
-            <p>⏳ Processing...</p>
+            Don't have an account? 
+            <a href="/signup.html">Sign up</a>
         </div>
     </div>
     
-    <!-- Firebase SDK v8 -->
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-    
-    <script>
-        // Initialize Firebase
-        const firebaseConfig = {
-            apiKey: "AIzaSyCY6OjxgMHPF0omVVqO1eCTTJRux2x23gE",
-            authDomain: "assiduous-prod.firebaseapp.com",
-            projectId: "assiduous-prod",
-            storageBucket: "assiduous-prod.appspot.com",
-            messagingSenderId: "1039432328034",
-            appId: "1:1039432328034:web:f6e8c8b8c8c8c8c8c8c8c8"
-        };
+    <!-- Firebase Modular SDK -->
+    <script type="module">
+        import { AuthService } from '/assets/js/firebase-init.js';
         
-        if (!firebase.apps.length) {
-            firebase.initializeApp(firebaseConfig);
-        }
+        // Handle login form submission
+        const loginForm = document.getElementById('loginForm');
+        const loginBtn = document.getElementById('loginBtn');
+        const errorEl = document.getElementById('loginError');
+        const successEl = document.getElementById('loginSuccess');
         
-        const auth = firebase.auth();
-        const db = firebase.firestore();
-        
-        // Get redirect URL from query params
-        const urlParams = new URLSearchParams(window.location.search);
-        const redirectUrl = urlParams.get('redirect') || '/admin/dashboard.html';
-        
-        // Check if already logged in
-        auth.onAuthStateChanged(async (user) => {
-            if (user && !window.isProcessingAuth) {
-                // User is signed in, redirect to appropriate dashboard
-                const userDoc = await db.collection('users').doc(user.uid).get();
-                const userData = userDoc.data();
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Clear previous messages
+            errorEl.classList.remove('show');
+            successEl.classList.remove('show');
+            
+            // Get form data
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            // Show loading state
+            loginBtn.disabled = true;
+            loginBtn.textContent = 'Signing in...';
+            
+            try {
+                // Attempt login
+                const result = await AuthService.signIn(email, password);
                 
-                if (userData && userData.role === 'agent') {
-                    window.location.href = '/admin/agents.html';
-                } else if (userData && userData.role === 'admin') {
-                    window.location.href = '/admin/dashboard.html';
+                if (result.success) {
+                    // Check if agent needs approval
+                    if (result.role === 'agent' && result.status === 'pending') {
+                        successEl.textContent = 'Login successful. Redirecting to pending approval page...';
+                        successEl.classList.add('show');
+                        
+                        setTimeout(() => {
+                            window.location.href = '/agent-pending.html';
+                        }, 1500);
+                    } else {
+                        // Show success message
+                        successEl.textContent = 'Login successful! Redirecting...';
+                        successEl.classList.add('show');
+                        
+                        // Redirect based on role
+                        const redirectUrl = AuthService.getRoleRedirect(result.role, result.status);
+                        
+                        setTimeout(() => {
+                            window.location.href = redirectUrl;
+                        }, 1500);
+                    }
                 } else {
-                    window.location.href = '/client/';
+                    // Show error message
+                    let errorMessage = result.error;
+                    
+                    // Make error messages more user-friendly
+                    if (errorMessage.includes('auth/user-not-found')) {
+                        errorMessage = 'No account found with this email address.';
+                    } else if (errorMessage.includes('auth/wrong-password')) {
+                        errorMessage = 'Incorrect password. Please try again.';
+                    } else if (errorMessage.includes('auth/invalid-email')) {
+                        errorMessage = 'Please enter a valid email address.';
+                    } else if (errorMessage.includes('auth/too-many-requests')) {
+                        errorMessage = 'Too many failed attempts. Please try again later.';
+                    } else if (errorMessage.includes('auth/network-request-failed')) {
+                        errorMessage = 'Network error. Please check your connection.';
+                    }
+                    
+                    errorEl.textContent = errorMessage;
+                    errorEl.classList.add('show');
+                    
+                    // Reset button
+                    loginBtn.disabled = false;
+                    loginBtn.textContent = 'Sign In';
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                errorEl.textContent = 'An unexpected error occurred. Please try again.';
+                errorEl.classList.add('show');
+                
+                // Reset button
+                loginBtn.disabled = false;
+                loginBtn.textContent = 'Sign In';
+            }
+        });
+        
+        // Check if user is already logged in
+        AuthService.onAuthStateChanged(async (user) => {
+            if (user) {
+                // User is already logged in, get their role and redirect
+                const userData = await AuthService.getUserData(user.uid);
+                if (userData.success) {
+                    const redirectUrl = AuthService.getRoleRedirect(
+                        userData.data.role, 
+                        userData.data.status
+                    );
+                    window.location.href = redirectUrl;
                 }
             }
         });
-        
-        // Role selection
-        document.querySelectorAll('.role-option').forEach(option => {
-            option.addEventListener('click', function() {
-                document.querySelectorAll('.role-option').forEach(o => o.classList.remove('selected'));
-                this.classList.add('selected');
-            });
-        });
-        
-        // Toggle between login and signup
-        function toggleForm(e) {
-            e.preventDefault();
-            const loginForm = document.getElementById('login-form');
-            const signupForm = document.getElementById('signup-form');
-            const toggleText = document.getElementById('toggle-text');
-            const toggleLink = document.getElementById('toggle-link');
-            
-            if (loginForm.style.display === 'none') {
-                loginForm.style.display = 'block';
-                signupForm.style.display = 'none';
-                toggleText.textContent = "Don't have an account?";
-                toggleLink.textContent = 'Sign up';
-            } else {
-                loginForm.style.display = 'none';
-                signupForm.style.display = 'block';
-                toggleText.textContent = 'Already have an account?';
-                toggleLink.textContent = 'Sign in';
-            }
-            
-            hideMessages();
-        }
-        
-        // Show error message
-        function showError(message) {
-            const errorDiv = document.getElementById('error-message');
-            errorDiv.textContent = message;
-            errorDiv.style.display = 'block';
-            document.getElementById('success-message').style.display = 'none';
-        }
-        
-        // Show success message
-        function showSuccess(message) {
-            const successDiv = document.getElementById('success-message');
-            successDiv.textContent = message;
-            successDiv.style.display = 'block';
-            document.getElementById('error-message').style.display = 'none';
-        }
-        
-        // Hide messages
-        function hideMessages() {
-            document.getElementById('error-message').style.display = 'none';
-            document.getElementById('success-message').style.display = 'none';
-        }
-        
-        // Show/hide loading
-        function setLoading(isLoading) {
-            document.getElementById('loading').style.display = isLoading ? 'block' : 'none';
-        }
-        
-        // Login form submission
-        document.getElementById('login-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            window.isProcessingAuth = true;
-            
-            const email = document.getElementById('login-email').value;
-            const password = document.getElementById('login-password').value;
-            
-            hideMessages();
-            setLoading(true);
-            
-            try {
-                const userCredential = await auth.signInWithEmailAndPassword(email, password);
-                showSuccess('Login successful! Redirecting...');
-                
-                // Get user role and redirect accordingly
-                const userDoc = await db.collection('users').doc(userCredential.user.uid).get();
-                const userData = userDoc.data();
-                
-                setTimeout(() => {
-                    if (userData && userData.role === 'agent') {
-                        window.location.href = '/admin/agents.html';
-                    } else if (userData && userData.role === 'admin') {
-                        window.location.href = '/admin/dashboard.html';
-                    } else {
-                        window.location.href = '/client/';
-                    }
-                }, 1000);
-                
-            } catch (error) {
-                showError(error.message);
-                window.isProcessingAuth = false;
-            } finally {
-                setLoading(false);
-            }
-        });
-        
-        // Signup form submission
-        document.getElementById('signup-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            window.isProcessingAuth = true;
-            
-            const name = document.getElementById('signup-name').value;
-            const email = document.getElementById('signup-email').value;
-            const password = document.getElementById('signup-password').value;
-            const selectedRole = document.querySelector('.role-option.selected').dataset.role;
-            
-            hideMessages();
-            setLoading(true);
-            
-            try {
-                // Create user account
-                const userCredential = await auth.createUserWithEmailAndPassword(email, password);
-                
-                // Update profile
-                await userCredential.user.updateProfile({
-                    displayName: name
-                });
-                
-                // Save user data to Firestore
-                await db.collection('users').doc(userCredential.user.uid).set({
-                    email: email,
-                    name: name,
-                    role: selectedRole,
-                    status: 'active',
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                    isTestData: false
-                });
-                
-                showSuccess('Account created successfully! Redirecting...');
-                
-                setTimeout(() => {
-                    if (selectedRole === 'agent') {
-                        window.location.href = '/admin/agents.html';
-                    } else {
-                        window.location.href = '/client/';
-                    }
-                }, 1000);
-                
-            } catch (error) {
-                showError(error.message);
-                window.isProcessingAuth = false;
-            } finally {
-                setLoading(false);
-            }
-        });
-        
-        // Google Sign In
-        async function signInWithGoogle() {
-            window.isProcessingAuth = true;
-            hideMessages();
-            setLoading(true);
-            
-            try {
-                const provider = new firebase.auth.GoogleAuthProvider();
-                const result = await auth.signInWithPopup(provider);
-                
-                // Check if user exists in Firestore
-                const userDoc = await db.collection('users').doc(result.user.uid).get();
-                
-                if (!userDoc.exists) {
-                    // New user, create profile
-                    await db.collection('users').doc(result.user.uid).set({
-                        email: result.user.email,
-                        name: result.user.displayName,
-                        role: 'client', // Default role
-                        status: 'active',
-                        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                        isTestData: false
-                    });
-                }
-                
-                showSuccess('Login successful! Redirecting...');
-                
-                const userData = userDoc.exists ? userDoc.data() : { role: 'client' };
-                
-                setTimeout(() => {
-                    if (userData.role === 'agent') {
-                        window.location.href = '/admin/agents.html';
-                    } else if (userData.role === 'admin') {
-                        window.location.href = '/admin/dashboard.html';
-                    } else {
-                        window.location.href = '/client/';
-                    }
-                }, 1000);
-                
-            } catch (error) {
-                showError(error.message);
-                window.isProcessingAuth = false;
-            } finally {
-                setLoading(false);
-            }
-        }
     </script>
 </body>
 </html>

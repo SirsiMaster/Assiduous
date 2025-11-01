@@ -9,6 +9,7 @@ import {setGlobalOptions} from "firebase-functions";
 import {onRequest} from "firebase-functions/v2/https";
 import {onDocumentCreated} from "firebase-functions/v2/firestore";
 import {beforeUserCreated} from "firebase-functions/v2/identity";
+import {defineSecret} from "firebase-functions/params";
 import * as logger from "firebase-functions/logger";
 import * as admin from "firebase-admin";
 
@@ -32,6 +33,19 @@ import * as propertyIngestion from "./propertyIngestion";
 // Import Email Service
 import * as emailService from "./emailService";
 
+// Define secrets for v2 functions
+const sendgridApiKey = defineSecret("SENDGRID_API_KEY");
+const sendgridFromEmail = defineSecret("SENDGRID_FROM_EMAIL");
+// @ts-ignore - Will be used in SMS implementation
+const twilioAccountSid = defineSecret("TWILIO_ACCOUNT_SID");
+// @ts-ignore - Will be used in SMS implementation
+const twilioAuthToken = defineSecret("TWILIO_AUTH_TOKEN");
+// @ts-ignore - Will be used in SMS implementation
+const twilioFromNumber = defineSecret("TWILIO_FROM_NUMBER");
+const stripeSecretKey = defineSecret("STRIPE_SECRET_KEY");
+// @ts-ignore - Will be used in webhook implementation
+const stripeWebhookSecret = defineSecret("STRIPE_WEBHOOK_SECRET");
+
 // Initialize Firebase Admin
 admin.initializeApp();
 const db = admin.firestore();
@@ -47,7 +61,13 @@ setGlobalOptions({maxInstances: 10});
  * Main API endpoint
  * Handles all /api/* routes
  */
-export const api = onRequest(async (req, res) => {
+export const api = onRequest(
+  {
+    secrets: [sendgridApiKey, sendgridFromEmail, stripeSecretKey],
+    region: "us-central1",
+    maxInstances: 10,
+  },
+  async (req, res) => {
   // CORS
   res.set("Access-Control-Allow-Origin", "*");
   res.set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
