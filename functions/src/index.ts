@@ -24,8 +24,8 @@ let stripeModule: any = {
 // Import Property Ingestion functions (temporarily disabled)
 // import * as propertyIngestion from "./propertyIngestion";
 
-// Import Email Service (temporarily disabled)
-// import * as emailService from "./emailService";
+// Import Email Service
+import * as emailService from "./emailService";
 
 // Define secrets for v2 functions
 const sendgridApiKey = defineSecret("SENDGRID_API_KEY");
@@ -607,16 +607,15 @@ export const onLeadCreated = onDocumentCreated(
     
     // Send email to default agent (or assigned agent)
     // TODO: Implement agent assignment logic
-    // const agentEmail = process.env.DEFAULT_AGENT_EMAIL || "agent@assiduous.com";
+    const agentEmail = process.env.DEFAULT_AGENT_EMAIL || "sirsimaster@gmail.com";
     
-    // Email sending temporarily disabled
-    // await emailService.sendLeadNotification(agentEmail, {
-    //   ...lead.user,
-    //   propertyId: lead.propertyId,
-    //   propertyTitle,
-    //   message: lead.message,
-    //   type: lead.type,
-    // });
+    await emailService.sendLeadNotification(agentEmail, {
+      ...lead.user,
+      propertyId: lead.propertyId,
+      propertyTitle,
+      message: lead.message,
+      type: lead.type,
+    });
     
     return null;
   }
@@ -648,12 +647,11 @@ export const onUserProfileCreated = onDocumentCreated(
     
     if (userData.email && userData.displayName) {
       logger.info("Sending welcome email to new user", {userId, email: userData.email});
-      // Email sending temporarily disabled
-      // await emailService.sendWelcomeEmail(
-      //   userId,
-      //   userData.email,
-      //   userData.displayName
-      // );
+      await emailService.sendWelcomeEmail(
+        userId,
+        userData.email,
+        userData.displayName
+      );
     }
     
     return null;
