@@ -34,7 +34,7 @@ jobs:
       
       - name: Display metrics summary
         run: |
-          cat firebase-migration-package/assiduous-build/admin/development/metrics_cache.json | jq '{
+          cat public/admin/development/metrics_cache.json | jq '{
             commits: .project.totalCommits,
             totalDays: .project.totalDays,
             activeDays: .project.activeDays,
@@ -43,7 +43,7 @@ jobs:
       
       - name: Deploy to Firebase
         run: |
-          cd firebase-migration-package/assiduous-build
+          cd public
           firebase deploy --only hosting --token ${{ secrets.FIREBASE_TOKEN }} --non-interactive
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}

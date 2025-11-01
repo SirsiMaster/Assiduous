@@ -35,7 +35,7 @@ jobs:
           echo "✅ Tests passed (placeholder)"
           
       - name: Deploy to Staging
-        working-directory: firebase-migration-package/assiduous-build
+        working-directory: public
         run: |
           echo "🚀 Deploying to Staging environment..."
           echo "📍 Target URL: https://assiduous-staging.web.app"

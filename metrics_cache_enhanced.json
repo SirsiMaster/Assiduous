@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-11-01T19:15:49.026Z",
+  "lastUpdated": "2025-11-01T19:21:55.997Z",
   "summary": {
     "health": "Good",
     "score": 46,
@@ -108,35 +108,35 @@
     "totalCost": 28500,
     "laborCost": 28500,
     "toolsCost": 450,
-    "totalCommits": 575,
-    "totalFiles": 601,
+    "totalCommits": 577,
+    "totalFiles": 603,
     "activeDays": 26,
     "totalDays": 83,
     "projectAgeDays": 83,
-    "linesAdded": 9421361,
-    "linesDeleted": 8973708,
-    "netLines": 447653,
-    "velocity": "22.1",
+    "linesAdded": 9422026,
+    "linesDeleted": 8973785,
+    "netLines": 448241,
+    "velocity": "22.2",
     "completionPercentage": 46,
     "actualStartDate": "2025-08-10"
   },
   "today": {
     "date": "2025-11-01",
-    "hours": "3.0",
-    "cost": 446,
-    "commits": 9,
+    "hours": "3.6",
+    "cost": 545,
+    "commits": 11,
     "deployments": 0
   },
   "thisWeek": {
-    "hours": "3.0",
-    "cost": 446,
-    "commits": 9,
+    "hours": "3.6",
+    "cost": 545,
+    "commits": 11,
     "days": 7
   },
   "thisMonth": {
-    "hours": "83.8",
-    "cost": 12573,
-    "commits": 254
+    "hours": "84.5",
+    "cost": 12672,
+    "commits": 256
   },
   "quality": {
     "testCoverage": {
@@ -170,7 +170,7 @@
       "critical": 0,
       "total": 0
     },
-    "lastAudit": "2025-11-01T19:15:25.348Z",
+    "lastAudit": "2025-11-01T19:21:31.273Z",
     "dependencies": {
       "total": {
         "prod": 253,
@@ -249,7 +249,7 @@
     }
   },
   "documentation": {
-    "markdownFiles": 2826,
+    "markdownFiles": 2827,
     "jsFilesTotal": 26145,
     "jsFilesDocumented": 26145,
     "coverage": 441,
@@ -265,11 +265,11 @@
     "changelog": true,
     "contributing": false,
     "license": false,
-    "lastUpdate": "2025-11-01 14:17:39 -0400"
+    "lastUpdate": "2025-11-01 15:20:47 -0400"
   },
   "productivity": {
     "velocityTrend": "increasing",
-    "weeklyCommits": 9,
+    "weeklyCommits": 11,
     "contributors": {
       "total": 0,
       "active": 0
@@ -347,6 +347,18 @@
   },
   "recentActivity": [
     {
+      "hash": "8e3c2c1de79dacd862f6df98e30fa9dfa02d96ee",
+      "message": "chore: update metrics cache files",
+      "author": "SirsiMaster",
+      "date": "2025-11-01 15:21:00 -0400"
+    },
+    {
+      "hash": "2784928007baa378fd7723a944bf6f13a4b43c5e",
+      "message": "docs: add directory reorganization plan and migration script",
+      "author": "SirsiMaster",
+      "date": "2025-11-01 15:20:47 -0400"
+    },
+    {
       "hash": "b41c8b16a8ca464579dd2da6de30d5b89744a76e",
       "message": "feat(dashboard): integrate modular Firebase SDK with live Firestore data",
       "author": "SirsiMaster",
@@ -393,22 +405,10 @@
       "message": "feat(functions): successfully deploy Stripe payment functions",
       "author": "SirsiMaster",
       "date": "2025-10-31 16:28:22 -0400"
-    },
-    {
-      "hash": "fccebae6feb6d1ed61077bb36740b3cc84f77564",
-      "message": "feat(functions): add Stripe callable functions and update dependencies",
-      "author": "SirsiMaster",
-      "date": "2025-10-31 16:19:50 -0400"
-    },
-    {
-      "hash": "0c3f69df386a22db33155a7ef72637cca81a5082",
-      "message": "chore(security): encrypt and store Twilio 2FA recovery codes",
-      "author": "SirsiMaster",
-      "date": "2025-10-15 14:13:09 -0400"
     }
   ],
   "automation": {
-    "lastRun": "2025-11-01T19:15:49.026Z",
+    "lastRun": "2025-11-01T19:21:55.997Z",
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",

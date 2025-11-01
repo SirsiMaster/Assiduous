@@ -263,9 +263,9 @@ LOCAL (Code Only) → GIT (GitHub) → STAGING (Firebase) → PROD (Firebase)
 7. Git hooks automatically update metrics
 
 **Step 3: Deploy to STAGING (Firebase)**
-1. Copy changed files to `firebase-migration-package/assiduous-build/`
+1. Copy changed files to `public/`
 2. Maintain exact directory structure
-3. Navigate to staging directory: `cd firebase-migration-package/assiduous-build`
+3. Navigate to staging directory: `cd public`
 4. Deploy to staging: `firebase use staging && firebase deploy`
 5. **Wait for deployment to complete**
 6. Open staging in browser: `https://assiduous-staging.web.app`
@@ -295,7 +295,7 @@ LOCAL (Code Only) → GIT (GitHub) → STAGING (Firebase) → PROD (Firebase)
 - ❌ Test locally without Firebase backend
 - ❌ Deploy to production without staging validation
 - ❌ Deploy to Firebase without committing to GitHub first
-- ❌ Make changes directly in `firebase-migration-package/assiduous-build/`
+- ❌ Make changes directly in `public/`
 - ❌ Skip staging deployment and testing
 - ❌ Push broken code to GitHub
 - ❌ Bypass QA/QC assessment
@@ -396,7 +396,7 @@ python -m http.server 8080
 **Access application locally:**
 ```bash
 open http://localhost:8080/assiduousflip/
-open http://localhost:8080/firebase-migration-package/assiduous-build/
+open http://localhost:8080/public/
 ```
 
 **Stop server:**
@@ -448,7 +448,7 @@ If pipeline is bypassed:
 **CRITICAL: GitHub is the single source of truth**
 
 - All code in `environments/dev/` is work-in-progress
-- All code in `firebase-migration-package/assiduous-build/` is committed to GitHub
+- All code in `public/` is committed to GitHub
 - GitHub main branch = what's in production
 - Never deploy to Firebase without pushing to GitHub first
 
@@ -1085,7 +1085,7 @@ python -m http.server 8080
 open http://localhost:8080/assiduousflip/admin/development/dashboard.html
 
 # Deploy latest changes to Firebase
-cd firebase-migration-package/assiduous-build
+cd public
 firebase deploy --only hosting
 ```
 
