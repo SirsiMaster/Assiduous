@@ -564,10 +564,16 @@
         document.addEventListener('DOMContentLoaded', async () => {
             console.log('🔥 Loading admin dashboard data...');
             
+            let authCheckComplete = false;
+            
             // Wait for auth state to initialize
-            AuthService.onAuthStateChanged(async (user) => {
+            const unsubscribe = AuthService.onAuthStateChanged(async (user) => {
+                // Prevent multiple auth state changes from triggering redirects
+                if (authCheckComplete) return;
+                
                 if (!user) {
                     console.log('❌ No user signed in, redirecting to login');
+                    authCheckComplete = true;
                     window.location.href = '/';
                     return;
                 }
@@ -578,9 +584,13 @@
                 const userData = await AuthService.getUserData(user.uid);
                 if (!userData.success || userData.data.role !== 'admin') {
                     console.log('❌ User is not admin, redirecting');
+                    authCheckComplete = true;
                     window.location.href = '/';
                     return;
                 }
+                
+                // Mark auth check as complete
+                authCheckComplete = true;
                 
                 try {
                     // Load Dashboard Stats using DatabaseService
