@@ -88,7 +88,7 @@
 
 #### 2. Admin Portal HTML Pages
 - **Status**: PAGES EXIST (57 HTML files in production build)
-- **Location**: `firebase-migration-package/assiduous-build/admin/`
+- **Location**: `public/admin/`
 - **Pages Available**:
   - ✅ dashboard.html
   - ✅ properties.html
@@ -144,7 +144,7 @@
 #### 1. Client Portal
 - **Claimed**: "100% complete" (per 10_DAY_MVP_PLAN.md)
 - **Reality**: 
-  - ✅ Files exist: `/assiduousflip/client/index.html`, `properties.html`, `property-detail.html`
+  - ✅ Files exist: `/public/client/index.html`, `properties.html`, `property-detail.html`
   - ❌ NOT accessible in production (404 errors)
   - ❌ NOT verified to work
   - ❌ No authentication integration
@@ -153,7 +153,7 @@
 #### 2. Agent Portal
 - **Claimed**: "100% complete, deployed January 6, 2025" (per Phase 3 docs)
 - **Reality**:
-  - ❌ Only a 12-line redirect stub exists: `/environments/dev/assiduousflip/agent/index.html`
+  - ❌ Only a 12-line redirect stub exists: `/environments/dev/public/agent/index.html`
   - ❌ NO dashboard.html, listings.html, clients.html, or leads.html
   - ❌ NOT deployed to production (404)
   - ❌ Phase 3 "completion date" of Jan 6, 2025 is IMPOSSIBLE (project started Aug 2025)
@@ -515,7 +515,7 @@ find environments/dev -name "*.html" | wc -l
 # Output: 59
 
 # Agent portal files
-ls environments/dev/assiduousflip/agent/
+ls environments/dev/public/agent/
 # Output: index.html (redirect only)
 ```
 

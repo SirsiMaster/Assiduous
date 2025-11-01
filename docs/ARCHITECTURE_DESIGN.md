@@ -114,7 +114,7 @@ You have **THREE separate Firebase projects** for proper environment isolation.
 
 3. **GitHub Actions Deployment**
    - GitHub Action detects push to main
-   - Deploys from `firebase-migration-package/assiduous-build/`
+   - Deploys from `public/`
    - Targets: `hosting:assiduousflip` (or `hosting:prod`)
    - Deploys to: https://assiduous-prod.web.app
 
@@ -275,7 +275,7 @@ Assiduous uses a **multi-project Firebase architecture** with three isolated Fir
 ├─────────────────────────────────────────────────────────────┤
 │                                                              │
 │  LOCAL DEVELOPMENT                                          │
-│  └─ Directory: firebase-migration-package/assiduous-build/  │
+│  └─ Directory: public/  │
 │  └─ URL: http://localhost:8080                              │
 │  └─ Testing: Frontend only, no backend                      │
 │                                                              │
@@ -397,7 +397,7 @@ The `.firebaserc` file in `firebase-migration-package/` configures all three pro
 
 ### Step 1: Local Development
 
-1. **Make changes** in `firebase-migration-package/assiduous-build/`
+1. **Make changes** in `public/`
 
 2. **Start local server:**
    ```bash
@@ -549,7 +549,7 @@ firebase deploy --project production --only hosting
 The `firebase-config.js` file automatically detects the environment based on hostname:
 
 ```javascript
-// firebase-migration-package/assiduous-build/assets/js/config/firebase-config.js
+// public/assets/js/config/firebase-config.js
 
 function detectEnvironment() {
   const hostname = window.location.hostname;

@@ -75,7 +75,7 @@ This document contains **27 detailed user stories** across **8 epics** with full
 **Implementation:** ✅ 100% COMPLETE (Day 3 - October 12, 2025)
 
 **Implementation Details:**
-- Location: `firebase-migration-package/assiduous-build/index.html` (lines 1753-1891)
+- Location: `public/index.html` (lines 1753-1891)
 - Firebase Auth integration: `createUserWithEmailAndPassword()`
 - Firestore profile creation: `users/{uid}` collection
 - Role selection: admin, agent, client, investor

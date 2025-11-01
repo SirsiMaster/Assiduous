@@ -724,7 +724,7 @@ open http://localhost:8081
 ```
 - Shows what will be promoted
 - Asks for confirmation
-- Copies staging to firebase-migration-package/assiduous-build/
+- Copies staging to public/
 
 **Then verify locally before deploying**
 

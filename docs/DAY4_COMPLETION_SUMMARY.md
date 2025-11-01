@@ -14,7 +14,7 @@ Day 4 objective was to **connect frontend dashboards to real Firestore data** an
 ## ✅ Deliverables Completed
 
 ### 1. **Admin Dashboard Firestore Integration** ✅
-**File**: `firebase-migration-package/assiduous-build/admin/dashboard.html`  
+**File**: `public/admin/dashboard.html`  
 **Commit**: `1376415a`
 
 #### Features Implemented:
@@ -40,7 +40,7 @@ Day 4 objective was to **connect frontend dashboards to real Firestore data** an
 ---
 
 ### 2. **Client Dashboard Firestore Integration** ✅
-**File**: `firebase-migration-package/assiduous-build/client/dashboard.html`  
+**File**: `public/client/dashboard.html`  
 **Commit**: `f36297e2`
 
 #### Features Implemented:
@@ -368,8 +368,8 @@ node scripts/verify-firestore-data.js
 ## 📝 Files Modified/Created Summary
 
 ### Modified Files:
-1. `firebase-migration-package/assiduous-build/admin/dashboard.html` (+200 lines)
-2. `firebase-migration-package/assiduous-build/client/dashboard.html` (+186 lines)
+1. `public/admin/dashboard.html` (+200 lines)
+2. `public/client/dashboard.html` (+186 lines)
 3. `docs/DATA_MODEL.md` (+60 lines)
 4. `docs/API_SPECIFICATION.md` (+120 lines)
 5. `docs/USER_STORIES.md` (+30 lines)

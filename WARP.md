@@ -395,7 +395,7 @@ python -m http.server 8080
 
 **Access application locally:**
 ```bash
-open http://localhost:8080/assiduousflip/
+open http://localhost:8080/public/
 open http://localhost:8080/public/
 ```
 
@@ -486,7 +486,7 @@ python -m http.server 8080           # Basic Python server
 python serve.py                      # If serve.py exists
 
 # Access application
-open http://localhost:8080/assiduousflip/
+open http://localhost:8080/public/
 ```
 
 ### Git Hooks Setup
@@ -612,11 +612,11 @@ import Header from '../sirsimaster-component-library/src/components/layout/Heade
 
 ### Legacy Components (To Be Migrated)
 These local components should be migrated to the library:
-- `assiduousflip/components/admin-header.html` - Migrate to library `Header`
-- `assiduousflip/components/admin-header.js` - Migrate to library `Header`
-- `assiduousflip/components/admin-layout.css` - Migrate to library theme system
-- `assiduousflip/components/sidebar.html` - Migrate to library `Sidebar`
-- `assiduousflip/components/sidebar.js` - Migrate to library `Sidebar`
+- `public/components/admin-header.html` - Migrate to library `Header`
+- `public/components/admin-header.js` - Migrate to library `Header`
+- `public/components/admin-layout.css` - Migrate to library theme system
+- `public/components/sidebar.html` - Migrate to library `Sidebar`
+- `public/components/sidebar.js` - Migrate to library `Sidebar`
 
 ### Migration Plan
 1. Use library components for all new features
@@ -640,7 +640,7 @@ These local components should be migrated to the library:
 
 ```
 assiduous/
-├── assiduousflip/
+├── public/
 │   ├── components/         # Standardized UI components (NEW)
 │   │   ├── admin-header.html    # Universal header template
 │   │   ├── admin-header.js      # Header component loader
@@ -892,17 +892,17 @@ Backend services should expose REST endpoints that the frontend JavaScript can c
 # Start server first: python -m http.server 8080
 
 # Main Pages
-http://localhost:8080/assiduousflip/
-http://localhost:8080/assiduousflip/admin/dashboard.html
-http://localhost:8080/assiduousflip/client/
+http://localhost:8080/public/
+http://localhost:8080/public/admin/dashboard.html
+http://localhost:8080/public/client/
 ```
 
 ### URL Construction Rules for AI
 **IMPORTANT**: When providing URLs, ALWAYS use this format:
 - **Production**: `https://assiduous-prod.web.app/[path-to-file]`
-- **Local Dev**: `http://localhost:8080/assiduousflip/[path-to-file]`
+- **Local Dev**: `http://localhost:8080/public/[path-to-file]`
 - File paths are case-sensitive
-- Most HTML files are in `/assiduousflip/` subdirectory
+- Most HTML files are in `/public/` subdirectory
 
 ## Quick Reference
 
@@ -910,7 +910,7 @@ http://localhost:8080/assiduousflip/client/
 | Task | Command |
 |------|---------|
 | Start dev server | `python -m http.server 8080` |
-| Access app | `open http://localhost:8080/assiduousflip/` |
+| Access app | `open http://localhost:8080/public/` |
 | Install deps | `npm install` |
 | Run tests | `npm test` |
 | Firebase deploy | `firebase deploy` |
@@ -964,13 +964,13 @@ cd firebase-migration-package
 firebase deploy
 
 # 4. Verify deployment
-curl https://assiduous-prod.web.app/assiduousflip/
+curl https://assiduous-prod.web.app/public/
 ```
 
 #### Analytics & Monitoring
 ```bash
 # View Firebase analytics in dev dashboard
-open https://assiduous-prod.web.app/assiduousflip/admin/development/dashboard.html
+open https://assiduous-prod.web.app/public/admin/development/dashboard.html
 
 # Check Firebase Console metrics
 open https://console.firebase.google.com/project/assiduous-prod/usage
@@ -1000,7 +1000,7 @@ git push origin main  # GitHub Actions → Firebase deployment
 #                    # GitHub webhook → Process commit data → Firebase metrics
 
 # 4. View Metrics (Real-time from Firebase)
-open http://localhost:8080/assiduousflip/admin/development/dashboard.html
+open http://localhost:8080/public/admin/development/dashboard.html
 ```
 
 ### Firebase Collections Structure
@@ -1075,14 +1075,14 @@ const activity = await metricsService.getRecentActivity(10);
 ### Quick Setup Commands
 ```bash
 # Populate historical session data
-node assiduousflip/admin/development/populate_session_data.js
+node public/admin/development/populate_session_data.js
 
 # Test Firebase connection
 node -e "const service = new developmentmetricsservice(); service.initialize();"
 
 # View live dashboard with Firebase metrics
 python -m http.server 8080
-open http://localhost:8080/assiduousflip/admin/development/dashboard.html
+open http://localhost:8080/public/admin/development/dashboard.html
 
 # Deploy latest changes to Firebase
 cd public
@@ -1098,7 +1098,7 @@ firebase deploy --only hosting
 # - Project total calculations
 
 # View cost breakdown:
-open https://assiduous-prod.web.app/assiduousflip/admin/development/costs.html
+open https://assiduous-prod.web.app/public/admin/development/costs.html
 
 # Check Firebase usage costs:
 open https://console.firebase.google.com/project/assiduous-prod/usage

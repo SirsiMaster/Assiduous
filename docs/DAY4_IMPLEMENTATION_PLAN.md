@@ -121,7 +121,7 @@ seedProperties().then(() => process.exit(0));
 ---
 
 ### Task 2: Admin Dashboard Firestore Integration (3-4 hours)
-**File**: `firebase-migration-package/assiduous-build/admin/dashboard.html`
+**File**: `public/admin/dashboard.html`
 
 #### Subtasks:
 - [ ] Add Firebase SDK and firebase-config.js imports (if not present)
@@ -187,7 +187,7 @@ document.addEventListener('DOMContentLoaded', () => {
 ---
 
 ### Task 3: Client Dashboard Firestore Integration (3-4 hours)
-**File**: `firebase-migration-package/assiduous-build/client/dashboard.html`
+**File**: `public/client/dashboard.html`
 
 #### Subtasks:
 - [ ] Add auth-guard protection: `data-auth-protect="client,investor"`
@@ -274,7 +274,7 @@ document.getElementById('logout-btn')?.addEventListener('click', async () => {
 ---
 
 ### Task 5: Property Browse Page Integration (2-3 hours)
-**File**: `firebase-migration-package/assiduous-build/client/properties-browse.html`
+**File**: `public/client/properties-browse.html`
 
 #### Subtasks:
 - [ ] Replace mock properties with Firestore query

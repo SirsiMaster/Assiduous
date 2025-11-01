@@ -86,7 +86,7 @@ Git Commit → Post-Commit Hook → Enhanced Metrics Script → JSON Output → 
 ### 3. Metrics Output Files
 
 #### Primary: `metrics_cache.json`
-**Location**: `firebase-migration-package/assiduous-build/admin/development/metrics_cache.json`
+**Location**: `public/admin/development/metrics_cache.json`
 
 **Purpose**: Primary metrics file used by dashboard
 
@@ -125,7 +125,7 @@ Git Commit → Post-Commit Hook → Enhanced Metrics Script → JSON Output → 
 **Purpose**: Backup copy for disaster recovery
 
 ### 4. Dashboard Display
-**Location**: `firebase-migration-package/assiduous-build/admin/development/dashboard.html`
+**Location**: `public/admin/development/dashboard.html`
 
 **Purpose**: Real-time visualization of all metrics
 
@@ -212,10 +212,10 @@ node scripts/update-metrics-enhanced.js
 ### Verification
 ```bash
 # Check last update time
-cat firebase-migration-package/assiduous-build/admin/development/metrics_cache.json | jq '.lastUpdated'
+cat public/admin/development/metrics_cache.json | jq '.lastUpdated'
 
 # View key metrics
-cat firebase-migration-package/assiduous-build/admin/development/metrics_cache.json | jq '.project | {totalCommits, totalDays, activeDays, totalHours, totalCost}'
+cat public/admin/development/metrics_cache.json | jq '.project | {totalCommits, totalDays, activeDays, totalHours, totalCost}'
 
 # Check git hook log
 cat /tmp/assiduous-metrics.log
@@ -268,8 +268,8 @@ cat /tmp/assiduous-metrics.log
 
 **Verify File Updated**:
 ```bash
-ls -lah firebase-migration-package/assiduous-build/admin/development/metrics_cache.json
-cat firebase-migration-package/assiduous-build/admin/development/metrics_cache.json | jq '.lastUpdated'
+ls -lah public/admin/development/metrics_cache.json
+cat public/admin/development/metrics_cache.json | jq '.lastUpdated'
 ```
 
 ### Wrong Metrics Values

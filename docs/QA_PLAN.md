@@ -196,7 +196,7 @@ LOCAL DEV → FIREBASE DEV → FIREBASE STAGING → GITHUB → FIREBASE PRODUCTI
 
 | Environment | Firebase Project | Directory | Purpose | Deployment URL |
 |-------------|-----------------|-----------|---------|----------------|
-| **LOCAL** | N/A | `firebase-migration-package/assiduous-build/` | Local development & testing | http://localhost:8080 |
+| **LOCAL** | N/A | `public/` | Local development & testing | http://localhost:8080 |
 | **DEV** | assiduous-dev | Same codebase | Active feature development with isolated backend | https://assiduous-dev.web.app |
 | **STAGING** | assiduous-staging | Same codebase | Pre-production validation with production-like config | https://assiduous-staging.web.app |
 | **PROD** | assiduous-prod | Same codebase | Live production site with real user data | https://assiduous-prod.web.app |
@@ -212,7 +212,7 @@ LOCAL DEV → FIREBASE DEV → FIREBASE STAGING → GITHUB → FIREBASE PRODUCTI
 #### **C. Development Workflow (MANDATORY STEPS)**
 
 **Step 1: LOCAL Development**
-1. Make ALL changes in `firebase-migration-package/assiduous-build/` directory
+1. Make ALL changes in `public/` directory
 2. Start local server: `python -m http.server 8080` (from assiduous-build/)
 3. Test changes at http://localhost:8080
 4. Run RULE 4 QA/QC assessment (full browser testing)
@@ -427,7 +427,7 @@ If pipeline is bypassed:
 
 **CRITICAL: GitHub is the single source of truth**
 
-- All code in `firebase-migration-package/assiduous-build/` is the canonical codebase
+- All code in `public/` is the canonical codebase
 - GitHub main branch = what's deployed to production
 - **ALWAYS commit to GitHub BEFORE deploying to production**
 - Production deployments must match GitHub main branch exactly
@@ -471,7 +471,7 @@ python -m http.server 8080           # Basic Python server
 python serve.py                      # If serve.py exists
 
 # Access application
-open http://localhost:8080/assiduousflip/
+open http://localhost:8080/public/
 ```
 
 ### Git Hooks Setup

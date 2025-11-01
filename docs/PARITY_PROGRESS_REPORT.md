@@ -92,7 +92,7 @@ gcloud functions list --project=assiduous-staging
 
 **Storage Rules Created**:
 ```
-Location: firebase-migration-package/assiduous-build/storage.rules
+Location: public/storage.rules
 Type: Open rules for staging (testing purposes)
 ```
 
@@ -357,7 +357,7 @@ gcloud firestore import gs://assiduous-staging-backups/full-export --project=ass
 - **Parity Audit**: `docs/INFRASTRUCTURE_PARITY_AUDIT.md`
 - **Staging Setup**: `docs/STAGING_ENVIRONMENT_SETUP.md`
 - **Functions Source**: `firebase-migration-package/functions/`
-- **Storage Rules**: `firebase-migration-package/assiduous-build/storage.rules`
+- **Storage Rules**: `public/storage.rules`
 
 ### Verification Scripts
 - **Firestore Check**: `scripts/verify_firestore_staging.js`

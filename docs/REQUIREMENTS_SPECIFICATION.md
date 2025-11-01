@@ -619,7 +619,7 @@ Assiduous has implemented a revolutionary Universal Component System that provid
 
 #### Component Files Structure
 ```
-assiduousflip/components/
+public/components/
 ├── universal-header.html      # Multi-type header template
 ├── universal-header.js        # Universal component loader
 ├── universal-layout.css       # Cross-platform styling
@@ -693,7 +693,7 @@ Components are configured via HTML data attributes:
 
 #### Admin Interface (15 pages)
 ```
-assiduousflip/admin/
+public/admin/
 ├── dashboard.html              ✅ Standardized
 ├── analytics.html              ✅ Standardized  
 ├── agents.html                 ✅ Standardized
@@ -714,13 +714,13 @@ assiduousflip/admin/
 
 #### Client Portal (1+ pages)
 ```
-assiduousflip/client/
+public/client/
 └── index.html                  ✅ Standardized
 ```
 
 #### Public Pages (1+ pages)
 ```
-assiduousflip/
+public/
 └── index.html                  ✅ Standardized
 ```
 

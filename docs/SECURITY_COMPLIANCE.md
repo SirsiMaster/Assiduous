@@ -41,8 +41,8 @@ This audit identified **multiple critical security vulnerabilities** in the Assi
 ```
 ./admin/development/dashboard.html
 ./admin/development/import_complete_history_to_firebase.js
-./firebase-migration-package/assiduous-build/admin/development/dashboard.html
-./firebase-migration-package/assiduous-build/admin/development/import_complete_history_to_firebase.js
+./public/admin/development/dashboard.html
+./public/admin/development/import_complete_history_to_firebase.js
 ./scripts/archive/update-firebase-config.js
 ```
 
@@ -558,8 +558,8 @@ Automated one-command deployment script that will:
 - ✅ `admin/development/dashboard.html`
 - ✅ `admin/development/import_complete_history_to_firebase.js`
 - ✅ `assets/js/services/DocumentUploadService.js`
-- ✅ `firebase-migration-package/assiduous-build/admin/development/dashboard.html`
-- ✅ `firebase-migration-package/assiduous-build/admin/development/import_complete_history_to_firebase.js`
+- ✅ `public/admin/development/dashboard.html`
+- ✅ `public/admin/development/import_complete_history_to_firebase.js`
 - ✅ `scripts/archive/update-firebase-config.js`
 - ✅ `scripts/archive/populate-firestore-data.js`
 
@@ -1475,7 +1475,7 @@ jobs:
           if [ -f ".secrets-decrypted/firebase-config.json" ]; then
             echo "Injecting Firebase configuration..."
             # Create a config loader that reads from environment
-            cat > firebase-migration-package/assiduous-build/firebase-config.js << 'CONFIGEOF'
+            cat > public/firebase-config.js << 'CONFIGEOF'
 // Firebase configuration loaded from secure KMS-decrypted secrets
 // DO NOT commit Firebase config directly to code
 const firebaseConfig = JSON.parse(process.env.FIREBASE_CONFIG || '{}');

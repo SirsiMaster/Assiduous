@@ -137,7 +137,7 @@ DEV → TEST → STAGING → GITHUB → FIREBASE PRODUCTION
 | **DEV** | 8081 | `environments/dev/` | Active development, frequent changes | http://localhost:8081 |
 | **TEST** | 8082 | `environments/test/` | Testing and validation | http://localhost:8082 |
 | **STAGING** | 8083 | `environments/staging/` | Final verification before production | http://localhost:8083 |
-| **PROD** | N/A | `firebase-migration-package/assiduous-build/` | Live production site | https://assiduous-prod.web.app |
+| **PROD** | N/A | `public/` | Live production site | https://assiduous-prod.web.app |
 
 #### **C. Development Workflow (MANDATORY STEPS)**
 
@@ -169,7 +169,7 @@ DEV → TEST → STAGING → GITHUB → FIREBASE PRODUCTION
 1. Run: `./scripts/promote.sh staging-to-prod`
 2. Review changes
 3. Type `yes` to confirm
-4. Changes copied to `firebase-migration-package/assiduous-build/`
+4. Changes copied to `public/`
 5. Commit to GitHub: `git add . && git commit -m "..." && git push`
 
 **Step 5: Deploy PROD → Firebase**
@@ -257,7 +257,7 @@ DEV → TEST → STAGING → GITHUB → FIREBASE PRODUCTION
 **CRITICAL: GitHub is the single source of truth**
 
 - All code in `environments/dev/` is work-in-progress
-- All code in `firebase-migration-package/assiduous-build/` is committed to GitHub
+- All code in `public/` is committed to GitHub
 - GitHub main branch = what's in production
 - Never deploy to Firebase without pushing to GitHub first
 

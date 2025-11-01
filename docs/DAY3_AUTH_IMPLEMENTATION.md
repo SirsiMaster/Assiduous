@@ -31,7 +31,7 @@
 ---
 
 ### Priority 2: Implemented firebase-config.js ✅
-**Location**: `firebase-migration-package/assiduous-build/firebase-config.js`
+**Location**: `public/firebase-config.js`
 
 **Key Changes**:
 - Exports `window.firebaseApp`, `window.firebaseAuth`, `window.firebaseDb`, `window.firebaseStorage`
@@ -52,7 +52,7 @@ window.FirebaseServices // Helper services (auth, db, stats, utils)
 ---
 
 ### Priority 3: Signup Flow with Role Selection ✅
-**Location**: `firebase-migration-package/assiduous-build/index.html` (lines 1753-1891)
+**Location**: `public/index.html` (lines 1753-1891)
 
 **Features Implemented**:
 1. **Role Selection**: Admin, Agent, Client (Property Investor), Investor (Accredited)
@@ -114,7 +114,7 @@ users/{userId} = {
 ---
 
 ### Priority 4: Login Flow with Role-Based Redirects ✅
-**Location**: `firebase-migration-package/assiduous-build/index.html` (lines 1907-2023)
+**Location**: `public/index.html` (lines 1907-2023)
 
 **Features Implemented**:
 1. **Email/Password Authentication** via Firebase Auth
@@ -165,7 +165,7 @@ Redirect Based on Role + Agent Approval Status
 ---
 
 ### Priority 5: Auth Guard for Protected Pages ✅
-**Location**: `firebase-migration-package/assiduous-build/components/auth-guard-simple.js`
+**Location**: `public/components/auth-guard-simple.js`
 
 **Features**:
 - Lightweight, zero-dependency auth guard
@@ -417,9 +417,9 @@ authGuard.protect(['admin', 'agent'], {
 ## 🔗 Related Files
 
 ### Modified Files:
-- `firebase-migration-package/assiduous-build/index.html` - Added Firebase SDK + auth flows
-- `firebase-migration-package/assiduous-build/firebase-config.js` - Fixed initialization
-- `firebase-migration-package/assiduous-build/components/auth-guard-simple.js` - NEW
+- `public/index.html` - Added Firebase SDK + auth flows
+- `public/firebase-config.js` - Fixed initialization
+- `public/components/auth-guard-simple.js` - NEW
 
 ### Backend Files (Ready to Deploy):
 - `functions/src/index.ts` - Cloud Functions API

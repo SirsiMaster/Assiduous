@@ -73,14 +73,14 @@
 ## 📊 Project Metrics (v2.0 Enhanced Tracking)
 
 ### Core Metrics
-- **Version:** 0.46.0
+- **Version:** 0.53.0
 - **Start Date:** August 10, 2025
-- **Duration:** 62 days
-- **Commits:** 438
-- **Overall Completion:** 46% of MVP scope
-- **Estimated Hours:** 145
-- **Estimated Cost:** $21,750
-- **Target Launch:** December 1, 2025 (52 days)
+- **Duration:** 83 days (as of November 1, 2025)
+- **Commits:** 500+
+- **Overall Completion:** 48% of MVP scope
+- **Estimated Hours:** 165+
+- **Estimated Cost:** $24,750+
+- **Target Launch:** December 1, 2025 (30 days)
 
 ### Comprehensive Health Tracking
 - **Project Health:** Good
@@ -100,7 +100,7 @@
 - ⭕ Payment Processing: 0%
 
 ### Automated Metrics
-- **Real-time Dashboard:** https://assiduous-prod.web.app/admin/development
+- **Real-time Dashboard:** https://assiduous-prod.web.app/admin/development/dashboard.html
 - **Auto-updates:** Every commit via git hooks
 - **Tracking Categories:** 10+ comprehensive metrics
 - **Alert System:** Critical issues flagged automatically
@@ -113,6 +113,58 @@
 2. **Check Current Status:** Review [PROJECT_MANAGEMENT.md](docs/PROJECT_MANAGEMENT.md)
 3. **Technical Setup:** Follow [DEPLOYMENT_GUIDE.md](docs/DEPLOYMENT_GUIDE.md)
 4. **Start Contributing:** See [TRAINING_DOCUMENTATION.md](docs/TRAINING_DOCUMENTATION.md)
+
+---
+
+## 📁 Project Directory Structure
+
+```
+assiduous/
+├── public/                    # Main deployment directory (Firebase Hosting root)
+│   ├── admin/                 # Admin portal pages
+│   │   ├── development/       # Development dashboard and tools
+│   │   ├── analytics.html     # Real estate analytics
+│   │   ├── dashboard.html     # Admin dashboard
+│   │   └── ...                # Other admin pages
+│   ├── agent/                 # Agent portal
+│   ├── client/                # Client portal
+│   ├── assets/                # Static assets (CSS, JS, images)
+│   │   ├── css/               # Stylesheets
+│   │   ├── js/                # JavaScript modules
+│   │   └── images/            # Images and media
+│   ├── components/            # Reusable UI components
+│   ├── docs/                  # Documentation (HTML versions)
+│   ├── index.html             # Main landing page
+│   ├── login.html             # Login page
+│   └── firebase-config.js     # Firebase configuration
+├── functions/                # Firebase Cloud Functions
+├── firestore/                # Firestore security rules and indexes
+├── docs/                     # Markdown documentation (source of truth)
+│   ├── REQUIREMENTS_SPECIFICATION.md
+│   ├── ARCHITECTURE_DESIGN.md
+│   ├── DEPLOYMENT_GUIDE.md
+│   └── ...                    # Other canonical docs
+├── scripts/                  # Automation and utility scripts
+│   ├── hooks/                 # Git hooks
+│   ├── deployment/            # Deployment utilities
+│   └── testing/               # Test utilities
+├── config/                   # Configuration files
+│   ├── environments/          # Environment-specific configs
+│   └── firebase/              # Firebase project configs
+├── tests/                    # Test suites
+├── .github/                  # GitHub Actions workflows
+├── firebase.json             # Firebase project configuration
+├── package.json              # Node.js dependencies
+└── README.md                 # This file
+```
+
+### Key Directory Notes
+
+- **public/** is the Firebase Hosting root directory (replaces old `assiduousflip/`)
+- **docs/** contains the canonical markdown documentation (source of truth)
+- **functions/** contains all Firebase Cloud Functions (Node.js backend)
+- **firestore/** contains database security rules and indexes
+- **config/** centralizes all environment and Firebase configurations
 
 ---
 

@@ -246,7 +246,7 @@ git commit -m "feat: add new feature"
 git push origin main
 
 # GitHub Actions will automatically:
-# 1. Detect changes to firebase-migration-package/
+# 1. Detect changes to public/
 # 2. Deploy to assiduous-dev
 # 3. Run smoke tests
 # 4. Post summary to GitHub Actions
@@ -305,7 +305,7 @@ git push origin v1.0.0
 
 | Workflow | Triggers | Approval Required |
 |----------|----------|-------------------|
-| **deploy-dev.yml** | Push to `main` with changes in `firebase-migration-package/` | ❌ No |
+|| **deploy-dev.yml** | Push to `main` with changes in `public/` | ❌ No |
 | **deploy-staging.yml** | Manual trigger OR tag `v*-rc*` | ✅ Yes (staging environment reviewers) |
 | **deploy-production.yml** | Tag `v*` (e.g., `v1.0.0`) | ✅ Yes (production environment reviewers) |
 
@@ -1001,7 +1001,7 @@ git push origin v1.0.0
 ### 1. Test DEV Auto-Deployment (Already Working!)
 ```bash
 # Make a small change
-echo "<!-- Test change $(date) -->" >> firebase-migration-package/assiduous-build/index.html
+echo "<!-- Test change $(date) -->" >> public/index.html
 
 # Commit and push
 git add .

@@ -6,7 +6,7 @@ This guide ensures your metrics and dashboard stay updated **automatically** wit
 
 ### After Every Git Commit:
 1. ✅ **Metrics auto-update** via `.git/hooks/post-commit`
-2. ✅ **Local metrics file updated** at `firebase-migration-package/assiduous-build/admin/development/metrics_cache.json`
+2. ✅ **Local metrics file updated** at `public/admin/development/metrics_cache.json`
 3. ⚠️ **Firebase deployment** requires manual trigger (see below)
 
 ### What You See:
@@ -271,8 +271,8 @@ chmod +x .git/hooks/post-push
 - **Metrics Script**: `scripts/update-metrics-enhanced.js` (generates metrics)
 - **Deploy Script**: `scripts/deploy-metrics-to-firebase.sh` (deploys to Firebase)
 - **Git Hook**: `.git/hooks/post-commit` (auto-updates after commits)
-- **Metrics Output**: `firebase-migration-package/assiduous-build/admin/development/metrics_cache.json`
-- **Dashboard**: `firebase-migration-package/assiduous-build/admin/development/dashboard.html`
+- **Metrics Output**: `public/admin/development/metrics_cache.json`
+- **Dashboard**: `public/admin/development/dashboard.html`
 
 ### Don't Edit:
 - ❌ `metrics_cache.json` (auto-generated)
