@@ -617,10 +617,8 @@
                 console.log('✅ Admin dashboard loaded successfully');
             } catch (error) {
                 console.error('❌ Auth failed:', error.message);
-                // Only redirect after confirming auth failure
-                setTimeout(() => {
-                    window.location.href = '/';
-                }, 500);
+                // Redirect immediately on auth failure
+                window.location.href = '/';
             }
         });
         

@@ -1967,12 +1967,10 @@
                             successDiv.style.display = 'block';
                         }
                         
-                        // Redirect based on role and status
-                        setTimeout(() => {
-                            const redirectUrl = window.AuthService.getRoleRedirect(role, status);
-                            console.log('[Login] Redirecting to:', redirectUrl);
-                            window.location.href = redirectUrl;
-                        }, 500);
+                        // Redirect immediately based on role and status
+                        const redirectUrl = window.AuthService.getRoleRedirect(role, status);
+                        console.log('[Login] Redirecting to:', redirectUrl);
+                        window.location.href = redirectUrl;
                         
                     } catch (error) {
                         console.error('[Login] Error:', error);
