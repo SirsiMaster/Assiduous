@@ -1768,8 +1768,16 @@
                 roleSelect.addEventListener('change', (e) => {
                     if (e.target.value === 'agent') {
                         agentFields.style.display = 'grid';
+                        // Make agent fields required
+                        document.getElementById('signupLicenseNumber').required = true;
+                        document.getElementById('signupLicenseState').required = true;
+                        document.getElementById('signupBrokerageName').required = true;
                     } else {
                         agentFields.style.display = 'none';
+                        // Remove required from agent fields
+                        document.getElementById('signupLicenseNumber').required = false;
+                        document.getElementById('signupLicenseState').required = false;
+                        document.getElementById('signupBrokerageName').required = false;
                     }
                 });
             }
@@ -1822,20 +1830,14 @@
                     
                     try {
                         // Wait for Firebase to be ready
-                        if (!window.firebaseAuth || !window.firebaseDb) {
+                        if (!window.AuthService) {
                             throw new Error('Firebase not initialized. Please refresh the page.');
                         }
                         
-                        // Wait for enhancedAuth to be ready
-                        if (typeof enhancedAuth === 'undefined') {
-                            throw new Error('Enhanced authentication service not loaded. Please refresh the page.');
-                        }
-                        
-                        // Prepare user data for enhanced auth
+                        // Prepare user data
                         const userData = {
                             email: email,
                             password: password,
-                            username: username || null, // Optional username
                             firstName: firstName,
                             lastName: lastName,
                             role: role
@@ -1848,14 +1850,14 @@
                             userData.brokerageName = document.getElementById('signupBrokerageName')?.value || '';
                         }
                         
-                        // Register user with enhanced auth (includes accountId generation)
-                        const result = await enhancedAuth.register(userData);
+                        // Register user with AuthService
+                        const result = await window.AuthService.signUp(email, password, userData);
                         
-                        console.log('[Signup] User created successfully:', result.uid);
-                        console.log('[Signup] Account ID:', result.accountId);
-                        if (result.username) {
-                            console.log('[Signup] Username:', result.username);
+                        if (!result.success) {
+                            throw new Error(result.error || 'Failed to create account');
                         }
+                        
+                        console.log('[Signup] User created successfully:', result.user.uid);
                         
                         // Show success message
                         success.style.display = 'block';
@@ -1941,48 +1943,23 @@
                     
                     try {
                         // Wait for Firebase to be ready
-                        if (!window.firebaseAuth || !window.firebaseDb) {
+                        if (!window.AuthService) {
                             throw new Error('Firebase not initialized. Please refresh the page.');
                         }
                         
-                        // Wait for enhancedAuth to be ready
-                        if (typeof enhancedAuth === 'undefined') {
-                            throw new Error('Enhanced authentication service not loaded. Please refresh the page.');
+                        // Sign in using AuthService
+                        const result = await window.AuthService.signIn(identifier, password);
+                        
+                        if (!result.success) {
+                            throw new Error(result.error || 'Login failed');
                         }
                         
-                        // Sign in using enhanced auth (supports email/username/accountId)
-                        const userCredential = await enhancedAuth.login(identifier, password);
-                        const user = userCredential.user;
+                        const user = result.user;
+                        const role = result.role || 'client';
+                        const status = result.status || 'active';
                         
                         console.log('[Login] User signed in:', user.uid);
-                        
-                        // Get user data from Firestore to determine role
-                        const userDoc = await window.firebaseDb.collection('users').doc(user.uid).get();
-                        
-                        if (!userDoc.exists) {
-                            throw new Error('User profile not found. Please contact support.');
-                        }
-                        
-                        const userData = userDoc.data();
-                        const role = userData.role || 'client';
-                        
                         console.log('[Login] User role:', role);
-                        
-                        // Store user session
-                        const sessionData = {
-                            uid: user.uid,
-                            email: user.email,
-                            displayName: userData.displayName || user.displayName,
-                            role: role,
-                            loginTime: new Date().toISOString()
-                        };
-                        
-                        sessionStorage.setItem('assiduousUser', JSON.stringify(sessionData));
-                        
-                        if (rememberMe) {
-                            localStorage.setItem('assiduousUser', JSON.stringify(sessionData));
-                            localStorage.setItem('assiduousRememberMe', 'true');
-                        }
                         
                         // Show success
                         if (successDiv) {
@@ -1990,16 +1967,9 @@
                             successDiv.style.display = 'block';
                         }
                         
-                        // Redirect based on role
+                        // Redirect based on role and status
                         setTimeout(() => {
-                            const redirects = {
-                                admin: '/admin/dashboard.html',
-                                agent: userData.agentInfo?.status === 'approved' ? '/agent/dashboard.html' : '/agent-pending.html',
-                                client: '/client/dashboard.html',
-                                investor: '/client/dashboard.html'
-                            };
-                            
-                            const redirectUrl = redirects[role] || '/client/dashboard.html';
+                            const redirectUrl = window.AuthService.getRoleRedirect(role, status);
                             console.log('[Login] Redirecting to:', redirectUrl);
                             window.location.href = redirectUrl;
                         }, 500);
@@ -2175,228 +2145,17 @@
         }
     </script>
     
-    <!-- Firebase SDK - MUST load before firebase-config.js -->
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics-compat.js"></script>
-    
-    <!-- Firebase Configuration - Depends on SDK above -->
-    <script src="/firebase-config.js"></script>
-    
-    <!-- ID Generator Service - Required by Enhanced Auth -->
-    <script src="/assets/js/services/id-generator.js"></script>
-    
-    <!-- Enhanced Authentication Service - Supports username & accountId -->
-    <script src="/assets/js/services/enhanced-auth.js"></script>
-    
-    <!-- Authentication Components - Depend on firebase-config.js -->
-    <script src="/components/sirsi-auth.js"></script>
-    <script src="/components/auth-guard.js"></script>
-    
+    <!-- Firebase Modular SDK - v10.7.0 -->
     <script type="module">
-        // Initialize SirsiAuth
-        const sirsiAuth = new SirsiAuth({
-            firebaseConfig: window.firebaseConfig,
-            redirects: {
-                admin: '/admin/dashboard.html',
-                agent: '/agent/dashboard.html',
-                client: '/client/dashboard.html',
-                investor: '/investor/dashboard.html',
-                pending: '/agent-pending.html'
-            }
-        });
+        import { AuthService, DatabaseService } from '/assets/js/firebase-init.js';
         
-        // Initialize auth system
-        await sirsiAuth.initialize();
+        // Make services available globally for modal handlers
+        window.AuthService = AuthService;
+        window.DatabaseService = DatabaseService;
         
-        // Initialize AuthGuard
-        const authGuard = new AuthGuard();
-        await authGuard.initialize(sirsiAuth);
-        
-        // Make auth globally available
-        window.sirsiAuth = sirsiAuth;
-        window.authGuard = authGuard;
-        
-        // Handle role field change to show/hide agent fields
-        document.getElementById('signupRole').addEventListener('change', (e) => {
-            const agentFields = document.getElementById('agentFields');
-            if (e.target.value === 'agent') {
-                agentFields.style.display = 'grid';
-                // Make agent fields required
-                document.getElementById('signupLicenseNumber').required = true;
-                document.getElementById('signupLicenseState').required = true;
-                document.getElementById('signupBrokerageName').required = true;
-            } else {
-                agentFields.style.display = 'none';
-                // Remove required from agent fields
-                document.getElementById('signupLicenseNumber').required = false;
-                document.getElementById('signupLicenseState').required = false;
-                document.getElementById('signupBrokerageName').required = false;
-            }
-        });
-        
-        // Handle signup form with SirsiAuth
-        document.getElementById('signupForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const errorEl = document.getElementById('signupError');
-            const successEl = document.getElementById('signupSuccess');
-            const submitBtn = e.target.querySelector('button[type="submit"]');
-            const originalText = submitBtn.textContent;
-            
-            // Clear previous messages
-            errorEl.style.display = 'none';
-            successEl.style.display = 'none';
-            
-            // Get form data
-            const userData = {
-                firstName: document.getElementById('signupFirstName').value,
-                lastName: document.getElementById('signupLastName').value,
-                email: document.getElementById('signupEmail').value,
-                password: document.getElementById('signupPassword').value,
-                role: document.getElementById('signupRole').value,
-                phone: '' // Optional field not in form
-            };
-            
-            // Add agent-specific data if agent role
-            if (userData.role === 'agent') {
-                userData.licenseNumber = document.getElementById('signupLicenseNumber').value;
-                userData.licenseState = document.getElementById('signupLicenseState').value;
-                userData.brokerageName = document.getElementById('signupBrokerageName').value;
-                userData.licenseExpiry = new Date(Date.now() + 365*24*60*60*1000).toISOString(); // Default 1 year
-            }
-            
-            // Show loading state
-            submitBtn.textContent = 'Creating account...';
-            submitBtn.disabled = true;
-            
-            try {
-                const result = await sirsiAuth.signUp(userData);
-                
-                if (result.success) {
-                    successEl.textContent = result.message || 'Account created successfully!';
-                    successEl.style.display = 'block';
-                    
-                    // Clear form
-                    e.target.reset();
-                    
-                    // Redirect or close modal after delay
-                    setTimeout(() => {
-                        if (result.requiresApproval) {
-                            window.location.href = '/agent-pending.html';
-                        } else {
-                            // Auto sign in for non-agents
-                            showLogin();
-                            document.getElementById('loginEmail').value = userData.email;
-                        }
-                    }, 2000);
-                } else {
-                    errorEl.textContent = result.error || 'Failed to create account';
-                    errorEl.style.display = 'block';
-                }
-            } catch (error) {
-                console.error('Signup error:', error);
-                errorEl.textContent = 'An unexpected error occurred. Please try again.';
-                errorEl.style.display = 'block';
-            } finally {
-                // Reset button
-                submitBtn.textContent = originalText;
-                submitBtn.disabled = false;
-            }
-        });
-        
-        // Handle login form with SirsiAuth
-        document.getElementById('loginForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const errorEl = document.getElementById('loginError');
-            const successEl = document.getElementById('loginSuccess');
-            const submitBtn = document.getElementById('loginSubmit');
-            const originalText = submitBtn.textContent;
-            
-            // Clear previous messages
-            errorEl.style.display = 'none';
-            successEl.style.display = 'none';
-            
-            const email = document.getElementById('loginEmail').value;
-            const password = document.getElementById('loginPassword').value;
-            const rememberMe = document.getElementById('rememberMe').checked;
-            
-            // Show loading state
-            submitBtn.textContent = 'Signing in...';
-            submitBtn.disabled = true;
-            
-            try {
-                const result = await sirsiAuth.signIn(email, password, rememberMe);
-                
-                if (result.success) {
-                    successEl.textContent = 'Login successful! Redirecting...';
-                    successEl.style.display = 'block';
-                    
-                    // Store user info for quick access
-                    localStorage.setItem('user_role', result.user.role);
-                    localStorage.setItem('user_email', result.user.email);
-                    localStorage.setItem('user_data', JSON.stringify({
-                        uid: result.user.uid,
-                        email: result.user.email,
-                        role: result.user.role,
-                        name: `${result.user.firstName} ${result.user.lastName}`,
-                        firstName: result.user.firstName,
-                        lastName: result.user.lastName
-                    }));
-                    
-                    // Redirect to appropriate dashboard
-                    setTimeout(() => {
-                        window.location.href = result.redirect;
-                    }, 1000);
-                } else if (result.needsApproval) {
-                    errorEl.textContent = result.message;
-                    errorEl.style.display = 'block';
-                    
-                    if (result.status === 'pending_approval') {
-                        setTimeout(() => {
-                            window.location.href = '/agent-pending.html';
-                        }, 2000);
-                    }
-                } else {
-                    errorEl.textContent = result.error || 'Login failed';
-                    errorEl.style.display = 'block';
-                }
-            } catch (error) {
-                console.error('Login error:', error);
-                errorEl.textContent = 'An unexpected error occurred. Please try again.';
-                errorEl.style.display = 'block';
-            } finally {
-                // Reset button
-                submitBtn.textContent = originalText;
-                submitBtn.disabled = false;
-            }
-        });
-        
-        // Handle forgot password
-        document.getElementById('forgotPasswordLink').addEventListener('click', async (e) => {
-            e.preventDefault();
-            
-            const email = document.getElementById('loginEmail').value || prompt('Enter your email address:');
-            if (email) {
-                const result = await sirsiAuth.resetPassword(email);
-                
-                const errorEl = document.getElementById('loginError');
-                const successEl = document.getElementById('loginSuccess');
-                
-                if (result.success) {
-                    successEl.textContent = 'Password reset email sent! Please check your inbox.';
-                    successEl.style.display = 'block';
-                    errorEl.style.display = 'none';
-                } else {
-                    errorEl.textContent = result.error || 'Failed to send reset email';
-                    errorEl.style.display = 'block';
-                    successEl.style.display = 'none';
-                }
-            }
-        });
+        // Signal that Firebase is ready
+        window.dispatchEvent(new Event('firebase-ready'));
+        console.log('🔥 Firebase services loaded and ready');
     </script>
     <script>
         // HARDENED CAROUSEL FIX: Reduce DOM to a single background layer and rotate URLs
