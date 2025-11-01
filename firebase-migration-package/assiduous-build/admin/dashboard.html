@@ -18,12 +18,12 @@
     <link rel="stylesheet" href="../components/admin-layout.css">
     <link rel="stylesheet" href="../assets/css/button-override.css">
     
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-    <script src="../firebase-config.js"></script>
-    <script src="../components/auth-guard-simple.js"></script>
+    <!-- Firebase Modular SDK -->
+    <script type="module">
+        import { AuthService, DatabaseService } from '../assets/js/firebase-init.js';
+        window.AuthService = AuthService;
+        window.DatabaseService = DatabaseService;
+    </script>
     
     <style>
         /* Minimal dashboard-specific styles only */

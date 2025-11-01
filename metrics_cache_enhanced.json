@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-11-01T17:59:02.466Z",
+  "lastUpdated": "2025-11-01T18:11:01.578Z",
   "summary": {
     "health": "Good",
     "score": 46,
@@ -108,35 +108,35 @@
     "totalCost": 28200,
     "laborCost": 28200,
     "toolsCost": 450,
-    "totalCommits": 570,
+    "totalCommits": 571,
     "totalFiles": 599,
     "activeDays": 26,
     "totalDays": 83,
     "projectAgeDays": 83,
-    "linesAdded": 9420646,
-    "linesDeleted": 8973084,
-    "netLines": 447562,
-    "velocity": "21.9",
+    "linesAdded": 9420837,
+    "linesDeleted": 8973432,
+    "netLines": 447405,
+    "velocity": "22.0",
     "completionPercentage": 46,
     "actualStartDate": "2025-08-10"
   },
   "today": {
     "date": "2025-11-01",
-    "hours": "1.3",
-    "cost": 198,
-    "commits": 4,
+    "hours": "1.7",
+    "cost": 248,
+    "commits": 5,
     "deployments": 0
   },
   "thisWeek": {
-    "hours": "1.3",
-    "cost": 198,
-    "commits": 4,
+    "hours": "1.7",
+    "cost": 248,
+    "commits": 5,
     "days": 7
   },
   "thisMonth": {
-    "hours": "82.2",
-    "cost": 12326,
-    "commits": 249
+    "hours": "82.5",
+    "cost": 12375,
+    "commits": 250
   },
   "quality": {
     "testCoverage": {
@@ -170,7 +170,7 @@
       "critical": 0,
       "total": 0
     },
-    "lastAudit": "2025-11-01T17:58:40.181Z",
+    "lastAudit": "2025-11-01T18:10:38.073Z",
     "dependencies": {
       "total": {
         "prod": 253,
@@ -269,12 +269,12 @@
   },
   "productivity": {
     "velocityTrend": "increasing",
-    "weeklyCommits": 4,
+    "weeklyCommits": 5,
     "contributors": {
       "total": 0,
       "active": 0
     },
-    "averageCommitSize": 150,
+    "averageCommitSize": 149,
     "pullRequests": {
       "open": 0,
       "merged": 0,
@@ -347,6 +347,12 @@
   },
   "recentActivity": [
     {
+      "hash": "1a7b204c32c0125d42598acc1fa7db5e5abeb440",
+      "message": "fix: Update functions to use v2 secrets with defineSecret",
+      "author": "SirsiMaster",
+      "date": "2025-11-01 14:10:13 -0400"
+    },
+    {
       "hash": "0e3e4cdddb08d47f78c4539b428359eff82ec5bd",
       "message": "feat: Add Firebase modular SDK and authentication fixes",
       "author": "SirsiMaster",
@@ -399,16 +405,10 @@
       "message": "feat(api): add property ingestion endpoints with image processing",
       "author": "SirsiMaster",
       "date": "2025-10-15 13:23:34 -0400"
-    },
-    {
-      "hash": "256fb5875b24731a3dd3e83b9701fbc03e479cf9",
-      "message": "docs(images): add comprehensive integration guide",
-      "author": "SirsiMaster",
-      "date": "2025-10-15 13:18:28 -0400"
     }
   ],
   "automation": {
-    "lastRun": "2025-11-01T17:59:02.466Z",
+    "lastRun": "2025-11-01T18:11:01.578Z",
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",

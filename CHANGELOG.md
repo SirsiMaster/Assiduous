@@ -7,6 +7,80 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.53.0] - 2025-11-01
+
+### Added - FIREBASE MODULAR SDK & V2 FUNCTIONS WITH SECRETS
+**Development Session**: November 1, 2025, 5:45-6:15 PM  
+**Sprint**: Critical Infrastructure Fixes  
+**Status**: ✅ COMMITTED TO MAIN
+
+#### Firebase Modular SDK Implementation
+1. **Modular Firebase Configuration**
+   - Created `/assets/js/firebase-init.js` (520 lines)
+   - Replaced compat SDK with modular SDK v10.7.0
+   - Eliminated "firebase is not defined" errors
+   - ES6 module imports from gstatic.com CDN
+   - Automatic persistence enabled (IndexedDB)
+
+2. **Services Implemented**
+   - **AuthService**: signUp, signIn, signOut, getUserData, resetPassword
+   - **DatabaseService**: CRUD for properties, leads, real-time listeners
+   - **APIService**: Centralized API calls with auth token injection
+   - **StorageService**: File upload/delete with Firebase Storage
+
+3. **Authentication Pages Updated**
+   - `/login.html` - Updated to use modular SDK
+   - Role-based redirects: admin, agent, client, investor
+   - Friendly error messages for auth failures
+   - Auto-redirect if already logged in
+
+#### Cloud Functions v2 with Secrets
+1. **Functions Updated to v2**
+   - All functions migrated to v2 (nodejs22 runtime)
+   - Region: us-central1
+   - Using `defineSecret` from firebase-functions/params
+   - Secrets attached to functions that need them
+
+2. **Secrets Configuration**
+   - SENDGRID_API_KEY, SENDGRID_FROM_EMAIL
+   - TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_FROM_NUMBER
+   - STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET
+   - Created `/functions/check-secrets.sh` script
+
+3. **Email Service Ready**
+   - SendGrid integration in `/functions/src/emailService.ts`
+   - Welcome emails, lead notifications, viewing confirmations
+   - Property alerts, transaction updates
+   - Email logs stored in Firestore
+
+#### Repository Cleanup
+1. **Baseline Snapshot**
+   - Created `/docs/ops/baseline-20251101.md`
+   - Full inventory of local, GitHub, Firebase states
+   - Risk assessment and rollback plan
+
+2. **Branch Consolidation**
+   - Merged all work into main branch
+   - Removed salvage branches
+   - Clean git status
+
+### Fixed
+- Firebase initialization errors ("firebase is not defined")
+- Script loading order issues
+- TypeScript unused variable warnings for secrets
+- Authentication flow not working
+
+### Changed
+- All Firebase imports now use modular SDK
+- Functions use v2 with proper secret management
+- Email service uses environment variables from secrets
+
+### Security
+- Secrets managed through Firebase Secret Manager
+- No hardcoded API keys in code
+- Proper RBAC implementation planned
+- CSP headers need updating for module scripts
+
 ## [0.52.0] - 2025-10-12
 
 ### Added - ENHANCED AUTHENTICATION & PIPELINE ENFORCEMENT
