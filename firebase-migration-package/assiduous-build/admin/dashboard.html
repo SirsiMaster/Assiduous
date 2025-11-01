@@ -557,19 +557,26 @@
     <script src="../components/universal-header.js"></script>
     
     <!-- Dashboard Firestore Integration -->
-    <script>
-        // Wait for Firebase to be ready
-        document.addEventListener('firebase-ready', async () => {
-            console.log('🔥 Firebase ready, loading admin dashboard data...');
+    <script type="module">
+        import { AuthService, DatabaseService } from '../assets/js/firebase-init.js';
+        
+        // Load dashboard data when DOM is ready
+        document.addEventListener('DOMContentLoaded', async () => {
+            console.log('🔥 Loading admin dashboard data...');
             
             try {
-                const db = firebase.firestore();
+                // Check authentication
+                const user = AuthService.getCurrentUser();
+                if (!user) {
+                    window.location.href = '/login.html';
+                    return;
+                }
                 
-                // Load Dashboard Stats from Firestore
-                await loadDashboardStats(db);
+                // Load Dashboard Stats using DatabaseService
+                await loadDashboardStats();
                 
                 // Load Recent Properties
-                await loadRecentProperties(db);
+                await loadRecentProperties();
                 
                 console.log('✅ Admin dashboard data loaded successfully');
             } catch (error) {
@@ -579,32 +586,31 @@
         });
         
         // Load Dashboard Statistics
-        async function loadDashboardStats(db) {
+        async function loadDashboardStats() {
             // Get total properties count
-            const propertiesSnapshot = await db.collection('properties').get();
-            const totalProperties = propertiesSnapshot.size;
+            const properties = await DatabaseService.getDocuments('properties');
+            const totalProperties = properties.length;
             document.getElementById('total-properties').textContent = totalProperties.toLocaleString();
             document.getElementById('properties-change').textContent = 'Sample data for demo';
             document.getElementById('properties-change').className = 'stat-change';
             
             // Get available properties count
-            const availableSnapshot = await db.collection('properties')
-                .where('status', '==', 'available')
-                .get();
-            const availableProperties = availableSnapshot.size;
-            document.getElementById('pending-transactions').textContent = availableProperties.toLocaleString();
-            document.getElementById('transactions-change').textContent = `${availableProperties} available now`;
+            const availableProperties = await DatabaseService.getDocuments('properties', [
+                { field: 'status', operator: '==', value: 'available' }
+            ]);
+            const availableCount = availableProperties.length;
+            document.getElementById('pending-transactions').textContent = availableCount.toLocaleString();
+            document.getElementById('transactions-change').textContent = `${availableCount} available now`;
             document.getElementById('transactions-change').className = 'stat-change';
             
             // Calculate estimated monthly revenue (based on property prices)
             let totalValue = 0;
-            propertiesSnapshot.forEach(doc => {
-                const data = doc.data();
-                if (data.price && data.price.list) {
-                    totalValue += data.price.list;
+            properties.forEach(property => {
+                if (property.price && property.price.list) {
+                    totalValue += property.price.list;
                 }
             });
-            const avgValue = totalValue / totalProperties;
+            const avgValue = totalProperties > 0 ? totalValue / totalProperties : 0;
             const monthlyRevenue = avgValue * 2; // Assume 2 properties per month
             const revenueFormatted = '$' + (monthlyRevenue / 1000).toFixed(0) + 'K';
             document.getElementById('monthly-revenue').textContent = revenueFormatted;
@@ -612,34 +618,31 @@
             document.getElementById('revenue-change').className = 'stat-change';
             
             // Get active agents count (approved agents)
-            const agentsSnapshot = await db.collection('users')
-                .where('role', '==', 'agent')
-                .get();
+            const agents = await DatabaseService.getDocuments('users', [
+                { field: 'role', operator: '==', value: 'agent' }
+            ]);
             
             let approvedAgents = 0;
-            agentsSnapshot.forEach(doc => {
-                const data = doc.data();
-                if (data.agentInfo && data.agentInfo.status === 'approved') {
+            agents.forEach(agent => {
+                if (agent.agentInfo && agent.agentInfo.status === 'approved') {
                     approvedAgents++;
                 }
             });
             
             document.getElementById('active-agents').textContent = approvedAgents.toLocaleString();
-            document.getElementById('agents-change').textContent = `${agentsSnapshot.size} total agents`;
+            document.getElementById('agents-change').textContent = `${agents.length} total agents`;
             document.getElementById('agents-change').className = 'stat-change';
         }
         
         // Load Recent Properties Table
-        async function loadRecentProperties(db) {
-            const recentPropertiesSnapshot = await db.collection('properties')
-                .orderBy('createdAt', 'desc')
-                .limit(5)
-                .get();
+        async function loadRecentProperties() {
+            // Get recent properties ordered by createdAt
+            const recentProperties = await DatabaseService.getDocuments('properties', [], 5, 'createdAt', 'desc');
             
             const tableBody = document.getElementById('recent-properties-table');
             tableBody.innerHTML = '';
             
-            if (recentPropertiesSnapshot.empty) {
+            if (!recentProperties || recentProperties.length === 0) {
                 tableBody.innerHTML = `
                     <tr>
                         <td colspan="5" style="text-align: center; padding: var(--space-xl);">
@@ -650,9 +653,8 @@
                 return;
             }
             
-            recentPropertiesSnapshot.forEach(doc => {
-                const data = doc.data();
-                const row = createPropertyRow(doc.id, data);
+            recentProperties.forEach(property => {
+                const row = createPropertyRow(property.id, property);
                 tableBody.appendChild(row);
             });
         }
@@ -681,14 +683,24 @@
             let listedDate = 'Recently';
             if (data.createdAt) {
                 try {
-                    const date = data.createdAt.toDate();
+                    // Handle both Firestore timestamp and regular date
+                    let date;
+                    if (data.createdAt.toDate) {
+                        date = data.createdAt.toDate();
+                    } else if (data.createdAt.seconds) {
+                        date = new Date(data.createdAt.seconds * 1000);
+                    } else {
+                        date = new Date(data.createdAt);
+                    }
+                    
                     const daysAgo = Math.floor((Date.now() - date.getTime()) / (1000 * 60 * 60 * 24));
                     if (daysAgo === 0) listedDate = 'Today';
                     else if (daysAgo === 1) listedDate = '1 day ago';
-                    else if (daysAgo < 7) listedDate = `${daysAgo} days ago';
+                    else if (daysAgo < 7) listedDate = `${daysAgo} days ago`;
                     else if (daysAgo < 30) listedDate = `${Math.floor(daysAgo / 7)} weeks ago`;
                     else listedDate = `${Math.floor(daysAgo / 30)} months ago`;
                 } catch (e) {
+                    console.warn('Date parsing failed:', e);
                     // If date parsing fails, use default
                 }
             }

@@ -234,6 +234,46 @@ export const AuthService = {
  * Database Service
  */
 export const DatabaseService = {
+  // Generic method to get documents from any collection
+  async getDocuments(collectionName, filters = [], limitCount = null, orderByField = null, orderDirection = 'asc') {
+    try {
+      let q = collection(db, collectionName);
+      
+      // Apply filters
+      const queryConstraints = [];
+      filters.forEach(filter => {
+        if (filter.field && filter.operator && filter.value !== undefined) {
+          queryConstraints.push(where(filter.field, filter.operator, filter.value));
+        }
+      });
+      
+      // Apply ordering
+      if (orderByField) {
+        queryConstraints.push(orderBy(orderByField, orderDirection));
+      }
+      
+      // Apply limit
+      if (limitCount) {
+        queryConstraints.push(limit(limitCount));
+      }
+      
+      // Create and execute query
+      if (queryConstraints.length > 0) {
+        q = query(q, ...queryConstraints);
+      }
+      
+      const snapshot = await getDocs(q);
+      const documents = [];
+      snapshot.forEach(doc => {
+        documents.push({ id: doc.id, ...doc.data() });
+      });
+      
+      return documents;
+    } catch (error) {
+      console.error(`Error getting documents from ${collectionName}:`, error);
+      return [];
+    }
+  },
   // Properties
   async getProperties(filters = {}) {
     try {
