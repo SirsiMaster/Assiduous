@@ -1,6 +1,9 @@
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
-const stripe = require('stripe')(functions.config().stripe?.secret || process.env.STRIPE_SECRET_KEY);
+
+// Stripe will be initialized with the secret from environment
+// The secret is injected by Firebase when using defineSecret
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY || 'sk_test_placeholder');
 
 const db = admin.firestore();
 
@@ -53,8 +56,8 @@ exports.createCheckoutSession = functions.https.onCall(async (data, context) => 
           quantity: 1,
         },
       ],
-      success_url: successUrl || `${functions.config().app?.url}/payment/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: cancelUrl || `${functions.config().app?.url}/payment/cancel`,
+      success_url: successUrl || `https://www.assiduousflip.com/payment/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: cancelUrl || `https://www.assiduousflip.com/payment/cancel`,
       metadata: {
         firebaseUID: userId,
       },
@@ -99,7 +102,7 @@ exports.createPortalSession = functions.https.onCall(async (data, context) => {
     // Create portal session
     const session = await stripe.billingPortal.sessions.create({
       customer: userData.stripeCustomerId,
-      return_url: returnUrl || `${functions.config().app?.url}/agent/settings`,
+      return_url: returnUrl || `https://www.assiduousflip.com/agent/settings`,
     });
 
     return {
@@ -117,7 +120,8 @@ exports.createPortalSession = functions.https.onCall(async (data, context) => {
  */
 exports.stripeWebhook = functions.https.onRequest(async (req, res) => {
   const sig = req.headers['stripe-signature'];
-  const webhookSecret = functions.config().stripe?.webhook_secret || process.env.STRIPE_WEBHOOK_SECRET;
+  // Webhook secret will come from Firebase secrets
+  const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET; // This will be provided by defineSecret
 
   let event;
 

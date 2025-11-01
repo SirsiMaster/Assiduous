@@ -13,25 +13,19 @@ import {defineSecret} from "firebase-functions/params";
 import * as logger from "firebase-functions/logger";
 import * as admin from "firebase-admin";
 
-// Import Stripe functions (conditional to avoid deployment errors)
-let stripeModule: any;
-try {
-  stripeModule = require("./stripe.js");
-} catch (error) {
-  logger.warn("Stripe module not loaded. Stripe features disabled.");
-  stripeModule = {
-    createPaymentIntent: () => Promise.reject(new Error("Stripe not configured")),
-    retrievePaymentIntent: () => Promise.reject(new Error("Stripe not configured")),
-    createRefund: () => Promise.reject(new Error("Stripe not configured")),
-    handleStripeWebhook: () => Promise.reject(new Error("Stripe not configured")),
-  };
-}
+// Import Stripe functions (temporarily disabled for deployment)
+let stripeModule: any = {
+  createPaymentIntent: () => Promise.reject(new Error("Stripe not configured")),
+  retrievePaymentIntent: () => Promise.reject(new Error("Stripe not configured")),
+  createRefund: () => Promise.reject(new Error("Stripe not configured")),
+  handleStripeWebhook: () => Promise.reject(new Error("Stripe not configured")),
+};
 
-// Import Property Ingestion functions
-import * as propertyIngestion from "./propertyIngestion";
+// Import Property Ingestion functions (temporarily disabled)
+// import * as propertyIngestion from "./propertyIngestion";
 
-// Import Email Service
-import * as emailService from "./emailService";
+// Import Email Service (temporarily disabled)
+// import * as emailService from "./emailService";
 
 // Define secrets for v2 functions
 const sendgridApiKey = defineSecret("SENDGRID_API_KEY");
@@ -613,15 +607,16 @@ export const onLeadCreated = onDocumentCreated(
     
     // Send email to default agent (or assigned agent)
     // TODO: Implement agent assignment logic
-    const agentEmail = process.env.DEFAULT_AGENT_EMAIL || "agent@assiduous.com";
+    // const agentEmail = process.env.DEFAULT_AGENT_EMAIL || "agent@assiduous.com";
     
-    await emailService.sendLeadNotification(agentEmail, {
-      ...lead.user,
-      propertyId: lead.propertyId,
-      propertyTitle,
-      message: lead.message,
-      type: lead.type,
-    });
+    // Email sending temporarily disabled
+    // await emailService.sendLeadNotification(agentEmail, {
+    //   ...lead.user,
+    //   propertyId: lead.propertyId,
+    //   propertyTitle,
+    //   message: lead.message,
+    //   type: lead.type,
+    // });
     
     return null;
   }
@@ -653,11 +648,12 @@ export const onUserProfileCreated = onDocumentCreated(
     
     if (userData.email && userData.displayName) {
       logger.info("Sending welcome email to new user", {userId, email: userData.email});
-      await emailService.sendWelcomeEmail(
-        userId,
-        userData.email,
-        userData.displayName
-      );
+      // Email sending temporarily disabled
+      // await emailService.sendWelcomeEmail(
+      //   userId,
+      //   userData.email,
+      //   userData.displayName
+      // );
     }
     
     return null;
@@ -699,14 +695,7 @@ export const getSubscriptionStatus = stripeModule.getSubscriptionStatus;
 /**
  * Property Ingestion - Bulk import properties with image processing
  */
-export const ingestProperty = propertyIngestion.ingestProperty;
-
-/**
- * Bulk Delete Properties - Delete multiple properties by externalId
- */
-export const bulkDeleteProperties = propertyIngestion.bulkDeleteProperties;
-
-/**
- * Create API Key - Generate API keys for external integrations (admin only)
- */
-export const createApiKey = propertyIngestion.createApiKey;
+// Property ingestion temporarily disabled
+// export const ingestProperty = propertyIngestion.ingestProperty;
+// export const bulkDeleteProperties = propertyIngestion.bulkDeleteProperties;
+// export const createApiKey = propertyIngestion.createApiKey;
