@@ -5,7 +5,6 @@
  * Updated: Stripe Payment Integration
  */
 
-import {setGlobalOptions} from "firebase-functions";
 import {onRequest} from "firebase-functions/v2/https";
 import {onDocumentCreated} from "firebase-functions/v2/firestore";
 import {beforeUserCreated} from "firebase-functions/v2/identity";
@@ -36,18 +35,23 @@ import * as emailService from "./emailService";
 admin.initializeApp();
 const db = admin.firestore();
 
-// Set global options
-setGlobalOptions({maxInstances: 10});
-
 // ============================================================================
 // API ENDPOINTS - Express-style routing with v2 API
 // ============================================================================
 
 /**
- * Main API endpoint
+ * Main API endpoint  
  * Handles all /api/* routes
  */
-export const api = onRequest(async (req, res) => {
+export const api = onRequest(
+  {
+    timeoutSeconds: 540,
+    memory: "1GiB",
+    minInstances: 0,
+    maxInstances: 100,
+    concurrency: 80,
+  },
+  async (req, res) => {
   // CORS
   res.set("Access-Control-Allow-Origin", "*");
   res.set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
