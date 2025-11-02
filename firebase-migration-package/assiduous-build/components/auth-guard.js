@@ -355,7 +355,7 @@ class AuthGuard {
             const user = this.auth.getCurrentUser();
             if (user) {
                 try {
-                    await firebase.auth().currentUser.sendEmailVerification();
+                    await window.auth.currentUser.sendEmailVerification();
                     alert('Verification email sent! Please check your inbox.');
                 } catch (error) {
                     alert('Failed to send verification email. Please try again.');

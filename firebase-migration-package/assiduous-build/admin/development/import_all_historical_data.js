@@ -186,7 +186,7 @@ async function importAllHistoricalData() {
             firebase.initializeApp(window.firebaseConfig);
         }
         
-        const db = firebase.firestore();
+        const db = window.db;
         console.log('🚀 Starting historical data import to Firebase...');
         
         // 1. Import all development sessions

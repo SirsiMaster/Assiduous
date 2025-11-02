@@ -255,7 +255,7 @@ async function populateSessionData() {
             return false;
         }
 
-        const db = firebase.firestore();
+        const db = window.db;
         console.log('Populating Firebase with September 7, 2025 session data...');
 
         // 1. Create development session

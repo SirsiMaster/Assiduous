@@ -437,8 +437,8 @@
     
     <script>
         // Initialize Firebase
-        const db = firebase.firestore();
-        const auth = firebase.auth();
+        const db = window.db;
+        const auth = window.auth;
         
         // Load applications
         async function loadApplications(filter = 'pending') {

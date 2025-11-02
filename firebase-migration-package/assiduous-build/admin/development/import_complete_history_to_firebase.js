@@ -33,7 +33,7 @@ async function importCompleteHistory() {
         firebase.initializeApp(firebaseConfig);
     }
     
-    const db = firebase.firestore();
+    const db = window.db;
     const batch = db.batch();
     let operationCount = 0;
     const BATCH_LIMIT = 400; // Firestore batch limit is 500
@@ -309,7 +309,7 @@ async function getCurrentMetrics() {
         return null;
     }
     
-    const db = firebase.firestore();
+    const db = window.db;
     
     try {
         const summaryDoc = await db.collection('project_analytics').doc('summary').get();

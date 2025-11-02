@@ -149,7 +149,7 @@ if (typeof window !== 'undefined') {
   const tryInit = () => {
     if (typeof firebase !== 'undefined' && firebase.firestore) {
       try {
-        idGenerator.initialize(firebase.firestore());
+        idGenerator.initialize(window.db);
         console.log('[IDGenerator] ✓ Initialized successfully');
         return true;
       } catch (error) {

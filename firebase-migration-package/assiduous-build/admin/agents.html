@@ -758,7 +758,7 @@
             firebase.initializeApp(firebaseConfig);
         }
         
-        const db = firebase.firestore();
+        const db = window.db;
         
         // Load agents data from Firestore
         async function loadAgentsData() {

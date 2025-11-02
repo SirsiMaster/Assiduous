@@ -504,8 +504,8 @@
             console.log('🔥 Firebase ready, loading client dashboard data...');
             
             try {
-                const db = firebase.firestore();
-                const user = firebase.auth().currentUser;
+                const db = window.db;
+                const user = window.auth.currentUser;
                 
                 if (!user) {
                     console.error('No user logged in');

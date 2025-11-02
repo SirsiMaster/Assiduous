@@ -370,7 +370,7 @@ That's it. No more documentation.
 <h3>Use These Firebase Shortcuts:</h3>
 <code></code>`javascript
 // Quick Firestore operations
-const db = firebase.firestore();
+const db = window.db;
 <br>
 // Get all properties
 db.collection('properties').get()
@@ -459,7 +459,7 @@ That's 100%. Everything else is Phase 2.
 console.log(firebase.apps.length &gt; 0 ? 'Firebase connected' : 'Firebase not connected');
 <br>
 // Check if user is logged in
-firebase.auth().onAuthStateChanged(user =&gt; {
+window.auth.onAuthStateChanged(user =&gt; {
   console.log(user ? <code>Logged in as ${user.email}</code> : 'Not logged in');
 });
 <br>

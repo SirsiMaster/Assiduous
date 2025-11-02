@@ -588,8 +588,8 @@
         };
         
         firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
-        const auth = firebase.auth();
+        const db = window.db;
+        const auth = window.auth;
         
         let allViewings = [];
         let currentFilter = 'upcoming';

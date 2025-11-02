@@ -85,7 +85,7 @@
 
   function getUserDataFromConfig(config) {
     // TODO: In production, get this from Firebase Auth
-    // const user = firebase.auth().currentUser;
+    // const user = window.auth.currentUser;
     
     // Determine role from URL path or config
     var path = window.location.pathname;

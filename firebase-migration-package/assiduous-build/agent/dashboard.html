@@ -583,7 +583,7 @@
         // Initialize dashboard with user data
         async function loadAgentDashboard(user) {
             try {
-                const db = firebase.firestore();
+                const db = window.db;
                 console.log('[Agent Dashboard] Loading data for agent:', user.email);
                 
                 // Get actual statistics from collections
@@ -664,7 +664,7 @@
         }
         
         function setupRealtimeListeners(user) {
-            const db = firebase.firestore();
+            const db = window.db;
             
             // Listen for new leads assigned to this agent
             db.collection('leads')
@@ -684,7 +684,7 @@
         }
         
         async function loadRecentListings(agentEmail) {
-            const db = firebase.firestore();
+            const db = window.db;
             
             // Get recent properties for this agent
             const snapshot = await db.collection('properties')

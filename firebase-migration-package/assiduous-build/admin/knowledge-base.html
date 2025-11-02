@@ -1288,7 +1288,7 @@
         let db = null;
         try {
             firebase.initializeApp(firebaseConfig);
-            db = firebase.firestore();
+            db = window.db;
             console.log('Firebase initialized for Knowledge Base');
         } catch (error) {
             console.error('Firebase initialization failed:', error);

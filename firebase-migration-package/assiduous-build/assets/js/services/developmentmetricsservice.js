@@ -17,7 +17,7 @@ class developmentmetricsservice {
   async initialize(firebaseApp) {
     try {
       if (typeof firebase !== 'undefined' && firebase.firestore) {
-        this.db = firebase.firestore();
+        this.db = window.db;
         this.isInitialized = true;
         console.log('developmentmetricsservice initialized with Firebase');
         return true;

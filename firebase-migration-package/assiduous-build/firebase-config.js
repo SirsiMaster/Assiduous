@@ -55,8 +55,8 @@ function initializeFirebase() {
         console.log('[Firebase] ✓ App initialized');
         
         // Initialize services
-        auth = firebase.auth();
-        db = firebase.firestore();
+        auth = window.auth;
+        db = window.db;
         storage = firebase.storage();
         
         // Export to window immediately
