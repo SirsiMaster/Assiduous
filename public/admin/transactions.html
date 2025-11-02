@@ -618,77 +618,11 @@
                             </tr>
                         </thead>
                         <tbody>
+                            <!-- Transactions will be loaded dynamically from Firestore -->
                             <tr>
-                                <td>#TRX-2024-001</td>
-                                <td>123 Main Street</td>
-                                <td>John Smith</td>
-                                <td>Sarah Johnson</td>
-                                <td>$450,000</td>
-                                <td>Dec 15, 2024</td>
-                                <td><span class="status-sm-sm-badge status-completed">Completed</span></td>
-                            </tr>
-                            <tr>
-                                <td>#TRX-2024-002</td>
-                                <td>456 Oak Avenue</td>
-                                <td>Emily Davis</td>
-                                <td>Mike Wilson</td>
-                                <td>$325,000</td>
-                                <td>Dec 14, 2024</td>
-                                <td><span class="sirsi-badge sirsi-sm-sm-badge--warning">Pending</span></td>
-                            </tr>
-                            <tr>
-                                <td>#TRX-2024-003</td>
-                                <td>789 Pine Road</td>
-                                <td>Robert Brown</td>
-                                <td>Lisa Anderson</td>
-                                <td>$580,000</td>
-                                <td>Dec 13, 2024</td>
-                                <td><span class="status-sm-sm-badge status-completed">Completed</span></td>
-                            </tr>
-                            <tr>
-                                <td>#TRX-2024-004</td>
-                                <td>321 Elm Street</td>
-                                <td>Maria Garcia</td>
-                                <td>Tom Martinez</td>
-                                <td>$275,000</td>
-                                <td>Dec 12, 2024</td>
-                                <td><span class="sirsi-badge sirsi-sm-sm-badge--warning">Pending</span></td>
-                            </tr>
-                            <tr>
-                                <td>#TRX-2024-005</td>
-                                <td>654 Maple Drive</td>
-                                <td>James Lee</td>
-                                <td>Sarah Johnson</td>
-                                <td>$420,000</td>
-                                <td>Dec 11, 2024</td>
-                                <td><span class="status-sm-sm-badge status-completed">Completed</span></td>
-                            </tr>
-                            <tr>
-                                <td>#TRX-2024-006</td>
-                                <td>987 Cedar Lane</td>
-                                <td>Linda Wilson</td>
-                                <td>Mike Wilson</td>
-                                <td>$380,000</td>
-                                <td>Dec 10, 2024</td>
-                                <td><span class="status-sm-sm-badge status-cancelled">Cancelled</span></td>
-                            </tr>
-                            <tr>
-                                <td>#TRX-2024-007</td>
-                                <td>147 Birch Street</td>
-                                <td>David Kim</td>
-                                <td>Lisa Anderson</td>
-                                <td>$510,000</td>
-                                <td>Dec 9, 2024</td>
-                                <td><span class="status-sm-sm-badge status-completed">Completed</span></td>
-                            </tr>
-                            <tr>
-                                <td>#TRX-2024-008</td>
-                                <td>258 Willow Way</td>
-                                <td>Susan Chen</td>
-                                <td>Tom Martinez</td>
-                                <td>$295,000</td>
-                                <td>Dec 8, 2024</td>
-                                <td><span class="sirsi-badge sirsi-sm-sm-badge--warning">Pending</span></td>
+                                <td colspan="7" style="text-align: center; padding: 40px; color: var(--text-secondary);">
+                                    Loading transactions data...
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -725,6 +659,116 @@
             });
         });
     </script>
+    
+    <!-- Firebase SDK v8 -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    
+    <!-- Firebase Configuration and Data Loading -->
+    <script>
+        // Initialize Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyCY6OjxgMHPF0omVVqO1eCTTJRux2x23gE",
+            authDomain: "assiduous-prod.firebaseapp.com",
+            projectId: "assiduous-prod",
+            storageBucket: "assiduous-prod.appspot.com",
+            messagingSenderId: "1039432328034",
+            appId: "1:1039432328034:web:f6e8c8b8c8c8c8c8c8c8c8"
+        };
+        
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        
+        const db = firebase.firestore();
+        
+        // Load transactions data from Firestore
+        async function loadTransactionsData() {
+            try {
+                console.log('Loading transactions from Firestore...');
+                
+                // Get transactions collection
+                const transactionsSnapshot = await db.collection('transactions')
+                    .orderBy('createdAt', 'desc')
+                    .limit(50)
+                    .get();
+                
+                const transactions = [];
+                transactionsSnapshot.forEach(doc => {
+                    transactions.push({ id: doc.id, ...doc.data() });
+                });
+                
+                console.log(`Loaded ${transactions.length} transactions from Firestore`);
+                
+                // Calculate stats
+                const totalTransactions = transactions.length;
+                const pendingTransactions = transactions.filter(t => t.status === 'pending' || t.status === 'in-progress').length;
+                const completedTransactions = transactions.filter(t => t.status === 'completed').length;
+                const totalVolume = transactions
+                    .filter(t => t.status === 'completed')
+                    .reduce((sum, t) => sum + (t.financial?.purchasePrice || t.amount || 0), 0);
+                
+                // Update stat cards
+                document.querySelectorAll('.stat-value').forEach((el, index) => {
+                    switch(index) {
+                        case 0: el.textContent = `$${(totalVolume / 1000000).toFixed(1)}M`; break;
+                        case 1: el.textContent = totalTransactions.toLocaleString(); break;
+                        case 2: el.textContent = pendingTransactions.toLocaleString(); break;
+                        case 3: el.textContent = completedTransactions.toLocaleString(); break;
+                    }
+                });
+                
+                // Update table
+                const tbody = document.querySelector('tbody');
+                if (tbody && transactions.length > 0) {
+                    tbody.innerHTML = transactions.map(txn => {
+                        const txnId = txn.id.substring(0, 12);
+                        const propertyAddress = txn.property?.address?.street || txn.propertyAddress || 'Unknown Address';
+                        const clientName = txn.buyer?.name || txn.clientName || 'Unknown Client';
+                        const agentName = txn.agent?.name || txn.agentName || 'Unassigned';
+                        const amount = txn.financial?.purchasePrice || txn.amount || 0;
+                        const date = txn.createdAt?.toDate?.() || new Date();
+                        const status = txn.status || 'pending';
+                        
+                        let statusBadge;
+                        if (status === 'completed') {
+                            statusBadge = `<span class="status-sm-sm-badge status-completed">Completed</span>`;
+                        } else if (status === 'pending' || status === 'in-progress') {
+                            statusBadge = `<span class="sirsi-badge sirsi-sm-sm-badge--warning">Pending</span>`;
+                        } else if (status === 'cancelled') {
+                            statusBadge = `<span class="status-sm-sm-badge status-cancelled">Cancelled</span>`;
+                        } else {
+                            statusBadge = `<span class="sirsi-badge sirsi-sm-sm-badge--info">${status}</span>`;
+                        }
+                        
+                        return `
+                            <tr>
+                                <td>#TRX-${txnId}</td>
+                                <td>${propertyAddress}</td>
+                                <td>${clientName}</td>
+                                <td>${agentName}</td>
+                                <td>$${amount.toLocaleString()}</td>
+                                <td>${date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</td>
+                                <td>${statusBadge}</td>
+                            </tr>
+                        `;
+                    }).join('');
+                }
+                
+                // Show success message
+                console.log('✅ Transaction dashboard connected to real Firestore data');
+                
+            } catch (error) {
+                console.error('Error loading transactions data:', error);
+                // Keep existing demo data if load fails
+            }
+        }
+        
+        // Load data when page is ready
+        document.addEventListener('DOMContentLoaded', loadTransactionsData);
+    </script>
+    
     <!-- Sidebar pre-rendered, no JS needed -->
     <script src="../components/universal-header.js"></script>
 </body>

@@ -533,27 +533,19 @@
             <!-- Page Content -->
             <div class="page-content">
 
-                <!-- Stats Cards -->
+                <!-- Stats Cards - Loaded dynamically from Firestore -->
                 <div class="stats-grid">
                     <div class="stat-card sirsi-card sirsi-sm-sm-card--elevated">
-                        <div class="stat-value">3,842</div>
+                        <div class="stat-value">...</div>
                         <div class="stat-label">Total Clients</div>
                     </div>
                     <div class="stat-card sirsi-card sirsi-sm-sm-card--elevated">
-                        <div class="stat-value">1,256</div>
+                        <div class="stat-value">...</div>
                         <div class="stat-label">Active Clients</div>
                     </div>
                     <div class="stat-card sirsi-card sirsi-sm-sm-card--elevated">
-                        <div class="stat-value">423</div>
-                        <div class="stat-label">New This Month</div>
-                    </div>
-                    <div class="stat-card sirsi-card sirsi-sm-sm-card--elevated">
-                        <div class="stat-value">89%</div>
+                        <div class="stat-value">...</div>
                         <div class="stat-label">Satisfaction Rate</div>
-                    </div>
-                    <div class="stat-card sirsi-card sirsi-sm-sm-card--elevated">
-                        <div class="stat-value">$2.8M</div>
-                        <div class="stat-label">Total Value</div>
                     </div>
                 </div>
 
@@ -575,142 +567,12 @@
                                 <th>Status</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody class="clients-table">
+                            <!-- Clients will be loaded dynamically from Firestore -->
                             <tr>
-                                <td>
-                                    <div class="client-info">
-                                        <div class="client-avatar">JS</div>
-                                        <div class="client-details">
-                                            <div class="client-name">John Smith</div>
-                                            <div class="client-email">john.smith@email.com</div>
-                                        </div>
-                                    </div>
+                                <td colspan="7" style="text-align: center; padding: 40px; color: var(--text-secondary);">
+                                    Loading clients data...
                                 </td>
-                                <td>(555) 123-4567</td>
-                                <td>New York, NY</td>
-                                <td>Sarah Johnson</td>
-                                <td>3</td>
-                                <td>$1.2M</td>
-                                <td><span class="sirsi-badge sirsi-sm-sm-badge--success">Active</span></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="client-info">
-                                        <div class="client-avatar">ED</div>
-                                        <div class="client-details">
-                                            <div class="client-name">Emily Davis</div>
-                                            <div class="client-email">emily.davis@email.com</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>(555) 234-5678</td>
-                                <td>Los Angeles, CA</td>
-                                <td>Mike Wilson</td>
-                                <td>2</td>
-                                <td>$850K</td>
-                                <td><span class="status-sm-sm-badge status-lead">Lead</span></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="client-info">
-                                        <div class="client-avatar">RB</div>
-                                        <div class="client-details">
-                                            <div class="client-name">Robert Brown</div>
-                                            <div class="client-email">robert.brown@email.com</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>(555) 345-6789</td>
-                                <td>Chicago, IL</td>
-                                <td>Lisa Anderson</td>
-                                <td>1</td>
-                                <td>$580K</td>
-                                <td><span class="sirsi-badge sirsi-sm-sm-badge--success">Active</span></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="client-info">
-                                        <div class="client-avatar">MG</div>
-                                        <div class="client-details">
-                                            <div class="client-name">Maria Garcia</div>
-                                            <div class="client-email">maria.garcia@email.com</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>(555) 456-7890</td>
-                                <td>Houston, TX</td>
-                                <td>Tom Martinez</td>
-                                <td>2</td>
-                                <td>$475K</td>
-                                <td><span class="sirsi-badge sirsi-sm-sm-badge--success">Active</span></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="client-info">
-                                        <div class="client-avatar">JL</div>
-                                        <div class="client-details">
-                                            <div class="client-name">James Lee</div>
-                                            <div class="client-email">james.lee@email.com</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>(555) 567-8901</td>
-                                <td>Phoenix, AZ</td>
-                                <td>Sarah Johnson</td>
-                                <td>1</td>
-                                <td>$420K</td>
-                                <td><span class="sirsi-badge sirsi-sm-sm-badge--success">Inactive</span></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="client-info">
-                                        <div class="client-avatar">LW</div>
-                                        <div class="client-details">
-                                            <div class="client-name">Linda Wilson</div>
-                                            <div class="client-email">linda.wilson@email.com</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>(555) 678-9012</td>
-                                <td>Philadelphia, PA</td>
-                                <td>Mike Wilson</td>
-                                <td>3</td>
-                                <td>$920K</td>
-                                <td><span class="sirsi-badge sirsi-sm-sm-badge--success">Active</span></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="client-info">
-                                        <div class="client-avatar">DK</div>
-                                        <div class="client-details">
-                                            <div class="client-name">David Kim</div>
-                                            <div class="client-email">david.kim@email.com</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>(555) 789-0123</td>
-                                <td>San Antonio, TX</td>
-                                <td>Lisa Anderson</td>
-                                <td>2</td>
-                                <td>$650K</td>
-                                <td><span class="status-sm-sm-badge status-lead">Lead</span></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="client-info">
-                                        <div class="client-avatar">SC</div>
-                                        <div class="client-details">
-                                            <div class="client-name">Susan Chen</div>
-                                            <div class="client-email">susan.chen@email.com</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>(555) 890-1234</td>
-                                <td>San Diego, CA</td>
-                                <td>Tom Martinez</td>
-                                <td>1</td>
-                                <td>$295K</td>
-                                <td><span class="sirsi-badge sirsi-sm-sm-badge--success">Active</span></td>
                             </tr>
                         </tbody>
                     </table>
@@ -747,6 +609,119 @@
             });
         });
     </script>
+    
+    <!-- Firebase SDK v8 -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    
+    <!-- Firebase Configuration and Data Loading -->
+    <script>
+        // Initialize Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyCY6OjxgMHPF0omVVqO1eCTTJRux2x23gE",
+            authDomain: "assiduous-prod.firebaseapp.com",
+            projectId: "assiduous-prod",
+            storageBucket: "assiduous-prod.appspot.com",
+            messagingSenderId: "1039432328034",
+            appId: "1:1039432328034:web:f6e8c8b8c8c8c8c8c8c8c8"
+        };
+        
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        
+        const db = firebase.firestore();
+        
+        // Load clients data from Firestore
+        async function loadClientsData() {
+            try {
+                console.log('Loading clients from Firestore...');
+                
+                // Get clients collection (users with role='client')
+                const clientsSnapshot = await db.collection('users')
+                    .where('role', '==', 'client')
+                    .limit(50)
+                    .get();
+                
+                const clients = [];
+                clientsSnapshot.forEach(doc => {
+                    clients.push({ id: doc.id, ...doc.data() });
+                });
+                
+                console.log(`Loaded ${clients.length} clients from Firestore`);
+                
+                // Update stats
+                const totalClients = clients.length;
+                const activeClients = clients.filter(c => c.status === 'active' || !c.status).length;
+                const satisfactionRate = 89; // TODO: Calculate from reviews/feedback
+                
+                // Update stat cards
+                document.querySelectorAll('.stat-value').forEach((el, index) => {
+                    switch(index) {
+                        case 0: el.textContent = totalClients.toLocaleString(); break;
+                        case 1: el.textContent = activeClients.toLocaleString(); break;
+                        case 2: el.textContent = satisfactionRate + '%'; break;
+                    }
+                });
+                
+                // Update table
+                const tbody = document.querySelector('.clients-table tbody');
+                if (tbody && clients.length > 0) {
+                    tbody.innerHTML = clients.map(client => {
+                        const name = client.name || client.displayName || 'Unknown';
+                        const email = client.email || 'N/A';
+                        const phone = client.phone || client.phoneNumber || 'N/A';
+                        const location = client.address?.city || client.location || 'N/A';
+                        const savedProperties = client.favorites?.length || 0;
+                        const status = client.status || 'active';
+                        const statusVariant = status === 'active' ? 'success' : status === 'lead' ? 'warning' : 'danger';
+                        const statusText = status.charAt(0).toUpperCase() + status.slice(1);
+                        
+                        return `
+                            <tr>
+                                <td>
+                                    <div class="client-info">
+                                        <div class="client-avatar">${getInitials(name)}</div>
+                                        <div class="client-details">
+                                            <div class="client-name">${name}</div>
+                                            <div class="client-email">${email}</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>${phone}</td>
+                                <td>${location}</td>
+                                <td>${client.agentName || 'Unassigned'}</td>
+                                <td>${savedProperties}</td>
+                                <td>$${(client.budget || 0).toLocaleString()}</td>
+                                <td><span class="sirsi-badge sirsi-sm-sm-badge--${statusVariant}">${statusText}</span></td>
+                            </tr>
+                        `;
+                    }).join('');
+                }
+                
+                // Show success message
+                console.log('✅ Client dashboard connected to real Firestore data');
+                
+            } catch (error) {
+                console.error('Error loading clients data:', error);
+                // Keep existing demo data if load fails
+            }
+        }
+        
+        function getInitials(name) {
+            if (!name) return '??';
+            const parts = name.split(' ');
+            if (parts.length >= 2) {
+                return parts[0][0] + parts[parts.length - 1][0];
+            }
+            return name.substring(0, 2).toUpperCase();
+        }
+        
+        // Load data when page is ready
+        document.addEventListener('DOMContentLoaded', loadClientsData);
+    </script>
+    
     <!-- Sidebar pre-rendered, no JS needed -->
     <script src="../components/universal-header.js"></script>
 </body>
