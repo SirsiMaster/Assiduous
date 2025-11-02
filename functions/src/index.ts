@@ -558,50 +558,275 @@ async function handleLeadRoutes(
   path: string,
   method: string
 ) {
-  // POST /leads - Submit lead (public)
-  if (path === "/leads" && method === "POST") {
-    const {propertyId, name, email, phone, message, type = "inquiry"} = req.body;
+  try {
+    // POST /leads - Submit lead (public, no auth required)
+    if (path === "/leads" && method === "POST") {
+      const {propertyId, name, email, phone, message, clientId} = req.body;
 
-    if (!propertyId || !name || !email) {
-      res.status(400).json({error: "Required fields missing"});
+      if (!propertyId || !name || !email) {
+        res.status(400).json({error: "Required fields: propertyId, name, email"});
+        return;
+      }
+
+      // Validate email format
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        res.status(400).json({error: "Invalid email format"});
+        return;
+      }
+
+      const leadData = {
+        propertyId,
+        name: name.trim(),
+        email: email.trim().toLowerCase(),
+        phone: phone ? phone.trim() : "",
+        message: message ? message.trim() : "",
+        clientId: clientId || null,
+        status: "new",
+        assignedAgentId: null,
+        createdAt: admin.firestore.FieldValue.serverTimestamp(),
+        updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+      };
+
+      const docRef = await db.collection("leads").add(leadData);
+      
+      logger.info("Lead created", {leadId: docRef.id, propertyId, email});
+      
+      res.status(201).json({
+        id: docRef.id,
+        success: true,
+        message: "Lead submitted successfully",
+      });
       return;
     }
 
-    const leadData = {
-      propertyId,
-      user: {name, email, phone: phone || ""},
-      message: message || "",
-      type,
-      status: "new",
-      createdAt: admin.firestore.FieldValue.serverTimestamp(),
-    };
+    // GET /leads - Get leads (authenticated, filtered by role)
+    if (path === "/leads" && method === "GET") {
+      const authHeader = req.headers.authorization;
+      if (!authHeader) {
+        res.status(401).json({error: "Authentication required"});
+        return;
+      }
 
-    const docRef = await db.collection("leads").add(leadData);
-    res.status(201).json({leadId: docRef.id, success: true});
-    return;
-  }
+      const user = await verifyAuth(authHeader);
+      const mine = req.query.mine === "true";
+      const status = req.query.status;
+      const limit = parseInt(req.query.limit || "100");
 
-  // GET /leads - Get leads (authenticated)
-  if (path === "/leads" && method === "GET") {
-    const authHeader = req.headers.authorization;
-    if (!authHeader) {
-      res.status(401).json({error: "Unauthorized"});
+      let query: any = db.collection("leads");
+
+      // Agents can only see their assigned leads when mine=true
+      if (isAgent(user) && mine) {
+        query = query.where("assignedAgentId", "==", user.uid);
+      }
+      // Admins see all leads unless filtered
+      else if (!isAdmin(user)) {
+        res.status(403).json({error: "Forbidden: Admin or Agent role required"});
+        return;
+      }
+
+      // Apply status filter if provided
+      if (status) {
+        query = query.where("status", "==", status);
+      }
+
+      query = query.orderBy("createdAt", "desc").limit(limit);
+
+      const snapshot = await query.get();
+      const data = snapshot.docs.map((doc: any) => ({id: doc.id, ...doc.data()}));
+
+      res.json({data, total: data.length});
       return;
     }
 
-    const limit = parseInt(req.query.limit || "50");
-    const snapshot = await db
-      .collection("leads")
-      .orderBy("createdAt", "desc")
-      .limit(limit)
-      .get();
+    // PUT /leads/:id - Update lead (authenticated, agent/admin)
+    if (path.match(/\/leads\/[a-zA-Z0-9]+$/) && method === "PUT") {
+      const authHeader = req.headers.authorization;
+      if (!authHeader) {
+        res.status(401).json({error: "Authentication required"});
+        return;
+      }
 
-    const leads = snapshot.docs.map((doc) => ({id: doc.id, ...doc.data()}));
-    res.json({leads});
-    return;
+      const user = await verifyAuth(authHeader);
+      if (!isAdmin(user) && !isAgent(user)) {
+        res.status(403).json({error: "Forbidden: Admin or Agent role required"});
+        return;
+      }
+
+      const leadId = path.split("/").pop();
+      const leadRef = db.collection("leads").doc(leadId!);
+      const leadDoc = await leadRef.get();
+
+      if (!leadDoc.exists) {
+        res.status(404).json({error: "Lead not found"});
+        return;
+      }
+
+      const existingData = leadDoc.data();
+      
+      // Agents can only update their own assigned leads
+      if (isAgent(user) && existingData?.assignedAgentId !== user.uid) {
+        res.status(403).json({error: "Forbidden: Can only update assigned leads"});
+        return;
+      }
+
+      const updateData: any = {
+        ...req.body,
+        updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+      };
+
+      await leadRef.update(updateData);
+      logger.info("Lead updated", {leadId, userId: user.uid});
+      
+      res.json({success: true, message: "Lead updated successfully"});
+      return;
+    }
+
+    // POST /leads/:id/assign:auto - Auto-assign lead to next agent (admin only)
+    if (path.match(/\/leads\/[a-zA-Z0-9]+\/assign:auto$/) && method === "POST") {
+      const authHeader = req.headers.authorization;
+      if (!authHeader) {
+        res.status(401).json({error: "Authentication required"});
+        return;
+      }
+
+      const user = await verifyAuth(authHeader);
+      if (!isAdmin(user)) {
+        res.status(403).json({error: "Forbidden: Admin role required"});
+        return;
+      }
+
+      const leadId = path.split("/")[2];
+      const leadRef = db.collection("leads").doc(leadId);
+      const leadDoc = await leadRef.get();
+
+      if (!leadDoc.exists) {
+        res.status(404).json({error: "Lead not found"});
+        return;
+      }
+
+      // Get next agent via round-robin
+      const agentsSnap = await db
+        .collection("users")
+        .where("role", "==", "agent")
+        .where("active", "==", true)
+        .get();
+
+      if (agentsSnap.empty) {
+        res.status(400).json({error: "No active agents available"});
+        return;
+      }
+
+      const agents = agentsSnap.docs.map((d) => ({uid: d.id, ...d.data()}));
+      
+      // Get round-robin counter
+      const rrRef = db.collection("counters").doc("leadRouting");
+      const rrDoc = await rrRef.get();
+      
+      let nextAgentUid = agents[0].uid;
+      if (rrDoc.exists) {
+        const lastUid = rrDoc.data()?.lastAssignedAgentUid;
+        const lastIndex = agents.findIndex((a: any) => a.uid === lastUid);
+        nextAgentUid = agents[(lastIndex + 1) % agents.length].uid;
+      }
+
+      // Update counter
+      await rrRef.set({lastAssignedAgentUid: nextAgentUid}, {merge: true});
+
+      // Assign lead
+      await leadRef.update({
+        assignedAgentId: nextAgentUid,
+        status: "assigned",
+        assignedAt: admin.firestore.FieldValue.serverTimestamp(),
+        updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+      });
+
+      // Create relationship if clientId exists
+      const leadData = leadDoc.data();
+      if (leadData?.clientId) {
+        await db.collection("relationships").add({
+          clientId: leadData.clientId,
+          agentId: nextAgentUid,
+          leadId,
+          createdAt: admin.firestore.FieldValue.serverTimestamp(),
+        });
+      }
+
+      logger.info("Lead auto-assigned", {leadId, agentId: nextAgentUid});
+      
+      res.json({success: true, agentId: nextAgentUid});
+      return;
+    }
+
+    // POST /leads/:id/assign:manual - Manually assign lead (admin only)
+    if (path.match(/\/leads\/[a-zA-Z0-9]+\/assign:manual$/) && method === "POST") {
+      const authHeader = req.headers.authorization;
+      if (!authHeader) {
+        res.status(401).json({error: "Authentication required"});
+        return;
+      }
+
+      const user = await verifyAuth(authHeader);
+      if (!isAdmin(user)) {
+        res.status(403).json({error: "Forbidden: Admin role required"});
+        return;
+      }
+
+      const {agentId} = req.body;
+      if (!agentId) {
+        res.status(400).json({error: "agentId required"});
+        return;
+      }
+
+      const leadId = path.split("/")[2];
+      const leadRef = db.collection("leads").doc(leadId);
+      const leadDoc = await leadRef.get();
+
+      if (!leadDoc.exists) {
+        res.status(404).json({error: "Lead not found"});
+        return;
+      }
+
+      // Verify agent exists and is active
+      const agentDoc = await db.collection("users").doc(agentId).get();
+      if (!agentDoc.exists || agentDoc.data()?.role !== "agent") {
+        res.status(400).json({error: "Invalid agent ID"});
+        return;
+      }
+
+      await leadRef.update({
+        assignedAgentId: agentId,
+        status: "assigned",
+        assignedAt: admin.firestore.FieldValue.serverTimestamp(),
+        updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+      });
+
+      // Create relationship if clientId exists
+      const leadData = leadDoc.data();
+      if (leadData?.clientId) {
+        await db.collection("relationships").add({
+          clientId: leadData.clientId,
+          agentId,
+          leadId,
+          createdAt: admin.firestore.FieldValue.serverTimestamp(),
+        });
+      }
+
+      logger.info("Lead manually assigned", {leadId, agentId});
+      
+      res.json({success: true, message: "Lead assigned successfully"});
+      return;
+    }
+
+    res.status(404).json({error: "Route not found"});
+  } catch (error: any) {
+    logger.error("Lead route error", error);
+    if (error.message.includes("Invalid authorization")) {
+      res.status(401).json({error: "Invalid or expired token"});
+    } else {
+      res.status(500).json({error: "Internal server error", details: error.message});
+    }
   }
-
-  res.status(404).json({error: "Route not found"});
 }
 
 // ============================================================================
