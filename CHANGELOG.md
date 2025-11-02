@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.61.0] - 2025-11-02
+
+### Added
+- feat(client): add favorites and lead submission services with backend support
+
+
 ## [0.60.0] - 2025-11-02
 
 ### Added
@@ -2497,7 +2503,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.60.0...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.61.0...HEAD
+
+
+## [0.61.0] - 2025-11-02
+
+### Added
+- feat(client): add favorites and lead submission services with backend support
 
 
 ## [0.60.0] - 2025-11-02
@@ -3371,3 +3383,4 @@ To generate changelog entries:
 [0.58.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.57.0...v0.58.0
 [0.59.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.58.0...v0.59.0
 [0.60.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.59.0...v0.60.0
+[0.61.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.60.0...v0.61.0
