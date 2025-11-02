@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Agents Management - Assiduous Realty Admin</title>
+    
+    <!-- Assiduous Design System -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SirsiMaster/ui-components@latest/dist/sirsimaster-ui.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <link rel="stylesheet" href="../assiduous.css">
+    <link rel="stylesheet" href="../components/admin-layout.css">
+    
+    <style>
+        /* Admin Layout - Consistent across all admin pages */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: "Geist Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+            background: var(--white);
+        }
+
+        .admin-wrapper {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 240px;
+            background: var(--navy);
+            color: var(--white);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-header {
+            padding: var(--space-lg);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .sidebar-logo {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            color: var(--white);
+            text-decoration: none;
+        }
+
+        .sidebar-logo svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .sidebar-logo-text {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: var(--space-md) 0;
+        }
+
+        .nav-section {
+            margin-bottom: var(--space-lg);
+        }
+
+        .nav-section-title {
+            padding: 0 var(--space-lg);
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            opacity: 0.6;
+            margin-bottom: var(--space-sm);
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: var(--space-sm) var(--space-lg);
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.15s;
+        }
+
+        .nav-item:hover {
+            background: rgba(255,255,255,0.05);
+            color: var(--white);
+        }
+
+        .nav-item.active {
+            background: var(--sky);
+            color: var(--white);
+        }
+
+        .nav-icon {
+            width: 18px;
+            height: 18px;
+            opacity: 0.8;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Top Bar */
+        .topbar {
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            padding: var(--space-md) var(--space-xl);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .topbar-left {
+            display: flex;
+            align-items: center;
+            gap: var(--space-lg);
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            background: var(--gray-50);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: var(--space-sm) var(--space-md);
+            min-width: 300px;
+        }
+
+        .search-input {
+            flex: 1;
+            border: none;
+            background: none;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .topbar-actions {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+        }
+
+        .btn-primary {
+            padding: var(--space-sm) var(--space-md);
+            background: var(--sky);
+            color: var(--white);
+            border: none;
+            border-radius: var(--radius);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s;
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+        }
+
+        .btn-primary:hover {
+            background: #4A8BC2;
+            transform: translateY(-1px);
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-weight: 600;
+            font-size: 12px;
+        }
+
+        /* Page Content */
+        .page-content {
+            flex: 1;
+            padding: var(--space-xl);
+            overflow-y: auto;
+            background: var(--gray-50);
+        }
+
+        .page-header {
+            margin-bottom: var(--space-xl);
+        }
+
+        .page-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: var(--space-xs);
+        }
+
+        .page-subtitle {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--space-md);
+            margin-bottom: var(--space-xl);
+        }
+
+        .stat-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: var(--space-lg);
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: var(--space-xs);
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+        }
+
+        /* Table */
+        .data-table {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+        }
+
+        .table-header {
+            padding: var(--space-md) var(--space-lg);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .table-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            padding: var(--space-sm) var(--space-lg);
+            text-align: left;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            background: var(--gray-50);
+            border-bottom: 1px solid var(--border);
+        }
+
+        td {
+            padding: var(--space-md) var(--space-lg);
+            font-size: 14px;
+            color: var(--text-primary);
+            border-bottom: 1px solid var(--gray-100);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background: var(--gray-50);
+        }
+
+        .agent-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-weight: 600;
+            font-size: 12px;
+        }
+
+        .agent-info {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .status-active {
+            background: rgba(5, 150, 105, 0.1);
+            color: var(--success);
+        }
+
+        .status-inactive {
+            background: rgba(107, 114, 128, 0.1);
+            color: var(--text-secondary);
+        }
+
+        .performance-bar {
+            width: 100px;
+            height: 8px;
+            background: var(--gray-100);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .performance-fill {
+            height: 100%;
+            background: var(--sky);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+        }
+    </style>
+    <!-- Removed old Sirsi UI -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SirsiMaster/ui-components@latest/dist/sirsimaster-ui.css">
+    <link rel="stylesheet" href="/assets/css/button-override.css">
+    
+    <script>
+        // Ensure button styles are loaded
+        (function() {
+            const checkButtons = function() {
+                const testBtn = document.querySelector('button');
+                if (testBtn) {
+                    const styles = window.getComputedStyle(testBtn);
+                    if (styles.borderStyle === 'outset' || styles.backgroundColor.includes('192')) {
+                        // Force reload override styles
+                        const link = document.querySelector('link[href*="button-override"]');
+                        if (link) {
+                            link.href = link.href.split('?')[0] + '?v=' + Date.now();
+                        }
+                    }
+                }
+            };
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', checkButtons);
+            } else {
+                checkButtons();
+            }
+        })();
+    </script>
+</head>
+<body>
+    <div class="admin-wrapper">
+        
+        <!-- Sidebar Component -->
+        <aside class="sidebar" id="sidebar-root" data-active="agents">
+<div class="sidebar-header">
+  <a href="dashboard.html" class="sidebar-logo">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+      <polyline points="9 22 9 12 15 12 15 22"></polyline>
+    </svg>
+    <span class="sidebar-logo-text">Admin Portal</span>
+  </a>
+</div>
+
+<nav class="sidebar-nav">
+  <div class="nav-section">
+    <div class="nav-section-title">Main</div>
+    <a href="dashboard.html" class="nav-item" data-key="dashboard">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="3" y="3" width="7" height="7"></rect>
+        <rect x="14" y="3" width="7" height="7"></rect>
+        <rect x="14" y="14" width="7" height="7"></rect>
+        <rect x="3" y="14" width="7" height="7"></rect>
+      </svg>
+      Dashboard
+    </a>
+    <a href="analytics.html" class="nav-item" data-key="analytics">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="12" y1="20" x2="12" y2="10"></line>
+        <line x1="18" y1="20" x2="18" y2="4"></line>
+        <line x1="6" y1="20" x2="6" y2="16"></line>
+      </svg>
+      Realty Analytics
+    </a>
+    <a href="market.html" class="nav-item" data-key="market">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+      </svg>
+      Market Analysis
+    </a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">Management</div>
+    <a href="properties.html" class="nav-item" data-key="properties">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+      </svg>
+      Properties
+    </a>
+    <a href="agents.html" class="nav-item" data-key="agents" class="nav-item active">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+        <circle cx="9" cy="7" r="4"></circle>
+      </svg>
+      Agents
+    </a>
+    <a href="clients.html" class="nav-item" data-key="clients">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+        <circle cx="12" cy="7" r="4"></circle>
+      </svg>
+      Clients
+    </a>
+    <a href="transactions.html" class="nav-item" data-key="transactions">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="12" y1="1" x2="12" y2="23"></line>
+        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+      </svg>
+      Transactions
+    </a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">Development</div>
+    <a href="development/dashboard.html" class="nav-item" data-key="dev-dashboard">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="16 18 22 12 16 6"></polyline>
+        <polyline points="8 6 2 12 8 18"></polyline>
+      </svg>
+      Dev Dashboard
+    </a>
+    <a href="development/costs.html" class="nav-item" data-key="dev-costs">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="12" y1="1" x2="12" y2="23"></line>
+        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+      </svg>
+      Dev Costs
+    </a>
+    <a href="development/analytics.html" class="nav-item" data-key="dev-analytics">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M22 2L11 13"></path>
+        <path d="M22 2L15 22L11 13L2 9L22 2Z"></path>
+      </svg>
+      Dev Analytics
+    </a>
+    <a href="development/reports.html" class="nav-item" data-key="dev-reports">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+        <polyline points="14 2 14 8 20 8"></polyline>
+        <line x1="16" y1="13" x2="8" y2="13"></line>
+        <line x1="16" y1="17" x2="8" y2="17"></line>
+      </svg>
+      Dev Reports
+    </a>
+    <a href="development/docs.html" class="nav-item" data-key="dev-docs">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+      </svg>
+      Dev Docs
+    </a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">System</div>
+    <a href="knowledge-base.html" class="nav-item" data-key="knowledge">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+      </svg>
+      Knowledge Base
+    </a>
+    <a href="contracts/index.html" class="nav-item" data-key="contracts">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+        <polyline points="14 2 14 8 20 8"></polyline>
+      </svg>
+      Contracts
+    </a>
+    <a href="settings.html" class="nav-item" data-key="settings">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="3"></circle>
+        <path d="M12 1v6m0 6v6m4.22-13.22l4.24 4.24M1.54 1.54l4.24 4.24M18.46 18.46l4.24 4.24M1.54 18.46l4.24-4.24"></path>
+      </svg>
+      Settings
+    </a>
+  </div>
+</nav>
+</aside>
+        <main class="main-content">
+            <!-- Standardized Admin Header -->
+            <header id="universal-header-root" 
+                    data-title="Agents Management" 
+                    data-subtitle="Manage agent profiles and performance metrics"
+                    data-search-placeholder="Search agents..."
+                    data-actions='[{"label":"Add Agent","icon":"<line x1=\"12\" y1=\"5\" x2=\"12\" y2=\"19\"></line><line x1=\"5\" y1=\"12\" x2=\"19\" y2=\"12\"></line>","primary":true,"onclick":"HeaderActions.handleAction(\"addAgent\")"}]'></header>
+
+            <!-- Page Content -->
+            <div class="page-content">
+
+                <!-- Stats Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card sirsi-card sirsi-sm-sm-card--elevated">
+                        <div class="stat-value">156</div>
+                        <div class="stat-label">Total Agents</div>
+                    </div>
+                    <div class="stat-card sirsi-card sirsi-sm-sm-card--elevated">
+                        <div class="stat-value">142</div>
+                        <div class="stat-label">Active</div>
+                    </div>
+                    <div class="stat-card sirsi-card sirsi-sm-sm-card--elevated">
+                        <div class="stat-value">$12.4M</div>
+                        <div class="stat-label">Total Sales</div>
+                    </div>
+                    <div class="stat-card sirsi-card sirsi-sm-sm-card--elevated">
+                        <div class="stat-value">4.8</div>
+                        <div class="stat-label">Avg Rating</div>
+                    </div>
+                    <div class="stat-card sirsi-card sirsi-sm-sm-card--elevated">
+                        <div class="stat-value">89%</div>
+                        <div class="stat-label">Satisfaction</div>
+                    </div>
+                </div>
+
+                <!-- Agents Table -->
+                <div class="data-table sirsi-sm-sm-card">
+                    <div class="table-header">
+                        <h3 class="table-title">Agent Directory</h3>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Agent</th>
+                                <th>License #</th>
+                                <th>Specialization</th>
+                                <th>Active Listings</th>
+                                <th>Sales (YTD)</th>
+                                <th>Performance</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="agent-info">
+                                        <div class="agent-avatar">SJ</div>
+                                        <div>
+                                            <div style="font-weight: 500;">Sarah Johnson</div>
+                                            <div style="font-size: 12px; color: var(--text-secondary);">sarah.j@assiduousrealty.com</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>RE-2019-4521</td>
+                                <td>Residential</td>
+                                <td>12</td>
+                                <td>$2.4M</td>
+                                <td>
+                                    <div class="performance-bar">
+                                        <div class="performance-fill" style="width: 92%"></div>
+                                    </div>
+                                </td>
+                                <td><span class="sirsi-badge sirsi-sm-sm-badge--success">Active</span></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="agent-info">
+                                        <div class="agent-avatar">MW</div>
+                                        <div>
+                                            <div style="font-weight: 500;">Mike Wilson</div>
+                                            <div style="font-size: 12px; color: var(--text-secondary);">mike.w@assiduousrealty.com</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>RE-2018-3892</td>
+                                <td>Commercial</td>
+                                <td>8</td>
+                                <td>$3.1M</td>
+                                <td>
+                                    <div class="performance-bar">
+                                        <div class="performance-fill" style="width: 88%"></div>
+                                    </div>
+                                </td>
+                                <td><span class="sirsi-badge sirsi-sm-sm-badge--success">Active</span></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="agent-info">
+                                        <div class="agent-avatar">LA</div>
+                                        <div>
+                                            <div style="font-weight: 500;">Lisa Anderson</div>
+                                            <div style="font-size: 12px; color: var(--text-secondary);">lisa.a@assiduousrealty.com</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>RE-2020-5673</td>
+                                <td>Luxury</td>
+                                <td>6</td>
+                                <td>$4.8M</td>
+                                <td>
+                                    <div class="performance-bar">
+                                        <div class="performance-fill" style="width: 95%"></div>
+                                    </div>
+                                </td>
+                                <td><span class="sirsi-badge sirsi-sm-sm-badge--success">Active</span></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="agent-info">
+                                        <div class="agent-avatar">TM</div>
+                                        <div>
+                                            <div style="font-weight: 500;">Tom Martinez</div>
+                                            <div style="font-size: 12px; color: var(--text-secondary);">tom.m@assiduousrealty.com</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>RE-2017-2341</td>
+                                <td>Residential</td>
+                                <td>15</td>
+                                <td>$1.9M</td>
+                                <td>
+                                    <div class="performance-bar">
+                                        <div class="performance-fill" style="width: 78%"></div>
+                                    </div>
+                                </td>
+                                <td><span class="sirsi-badge sirsi-sm-sm-badge--success">Active</span></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="agent-info">
+                                        <div class="agent-avatar">AT</div>
+                                        <div>
+                                            <div style="font-weight: 500;">Alex Thompson</div>
+                                            <div style="font-size: 12px; color: var(--text-secondary);">alex.t@assiduousrealty.com</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>RE-2021-6789</td>
+                                <td>First-time Buyers</td>
+                                <td>10</td>
+                                <td>$1.2M</td>
+                                <td>
+                                    <div class="performance-bar">
+                                        <div class="performance-fill" style="width: 72%"></div>
+                                    </div>
+                                </td>
+                                <td><span class="sirsi-badge sirsi-sm-sm-badge--success">Active</span></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="agent-info">
+                                        <div class="agent-avatar">JD</div>
+                                        <div>
+                                            <div style="font-weight: 500;">Jennifer Davis</div>
+                                            <div style="font-size: 12px; color: var(--text-secondary);">jennifer.d@assiduousrealty.com</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>RE-2019-4892</td>
+                                <td>Investment</td>
+                                <td>4</td>
+                                <td>$890K</td>
+                                <td>
+                                    <div class="performance-bar">
+                                        <div class="performance-fill" style="width: 65%"></div>
+                                    </div>
+                                </td>
+                                <td><span class="sirsi-badge sirsi-sm-sm-badge--success">Inactive</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Header Actions for Agents
+        const HeaderActions = {
+            handleAction: function(action) {
+                switch(action) {
+                    case 'addAgent':
+                        // In production, this would open a modal or navigate to add agent form
+                        console.log('Opening add agent form...');
+                        alert('Add agent functionality will be implemented in the next phase.');
+                        break;
+                    default:
+                        console.log('Unknown action:', action);
+                }
+            }
+        };
+
+        // Highlight active page in sidebar
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentPath = window.location.pathname;
+            document.querySelectorAll('.nav-item').forEach(item => {
+                if (item.getAttribute('href') === currentPath) {
+                    item.classList.add('active');
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+        });
+    </script>
+    
+    <!-- Firebase SDK v8 -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    
+    <!-- Firebase Configuration and Data Loading -->
+    <script>
+        // Initialize Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyCY6OjxgMHPF0omVVqO1eCTTJRux2x23gE",
+            authDomain: "assiduous-prod.firebaseapp.com",
+            projectId: "assiduous-prod",
+            storageBucket: "assiduous-prod.appspot.com",
+            messagingSenderId: "1039432328034",
+            appId: "1:1039432328034:web:f6e8c8b8c8c8c8c8c8c8c8"
+        };
+        
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        
+        const db = firebase.firestore();
+        
+        // Load agents data from Firestore
+        async function loadAgentsData() {
+            try {
+                console.log('Loading agents from Firestore...');
+                
+                // Get agents collection
+                const agentsSnapshot = await db.collection('users')
+                    .where('role', '==', 'agent')
+                    .limit(50)
+                    .get();
+                
+                const agents = [];
+                agentsSnapshot.forEach(doc => {
+                    agents.push({ id: doc.id, ...doc.data() });
+                });
+                
+                console.log(`Loaded ${agents.length} agents from Firestore`);
+                
+                // Update stats
+                const totalAgents = agents.length;
+                const activeAgents = agents.filter(a => a.status === 'active').length;
+                const totalSales = agents.reduce((sum, a) => sum + (a.totalSales || 0), 0);
+                const avgRating = agents.reduce((sum, a) => sum + (a.rating || 0), 0) / agents.length || 0;
+                
+                // Update stat cards
+                document.querySelectorAll('.stat-value').forEach((el, index) => {
+                    switch(index) {
+                        case 0: el.textContent = totalAgents; break;
+                        case 1: el.textContent = activeAgents; break;
+                        case 2: el.textContent = `$${(totalSales / 1000000).toFixed(1)}M`; break;
+                        case 3: el.textContent = avgRating.toFixed(1); break;
+                    }
+                });
+                
+                // Update table
+                const tbody = document.querySelector('.agents-table tbody');
+                if (tbody && agents.length > 0) {
+                    tbody.innerHTML = agents.map(agent => `
+                        <tr>
+                            <td>
+                                <div class="agent-info">
+                                    <div class="agent-avatar">${getInitials(agent.name || agent.email)}</div>
+                                    <div>
+                                        <div style="font-weight: 500;">${agent.name || 'Unknown'}</div>
+                                        <div style="font-size: 12px; color: var(--text-secondary);">${agent.email}</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>${agent.licenseNumber || 'N/A'}</td>
+                            <td>${agent.specialization || 'General'}</td>
+                            <td>${agent.activeListings || 0}</td>
+                            <td>$${((agent.totalSales || 0) / 1000000).toFixed(1)}M</td>
+                            <td>
+                                <div class="performance-bar">
+                                    <div class="performance-fill" style="width: ${agent.performanceScore || 50}%"></div>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="sirsi-badge sirsi-sm-sm-badge--${agent.status === 'active' ? 'success' : 'warning'}">
+                                    ${agent.status || 'Active'}
+                                </span>
+                            </td>
+                        </tr>
+                    `).join('');
+                }
+                
+                // Show success message
+                console.log('✅ Agent dashboard connected to real Firestore data');
+                
+            } catch (error) {
+                console.error('Error loading agents data:', error);
+                // Keep existing demo data if load fails
+            }
+        }
+        
+        function getInitials(name) {
+            if (!name) return '??';
+            const parts = name.split(' ');
+            if (parts.length >= 2) {
+                return parts[0][0] + parts[parts.length - 1][0];
+            }
+            return name.substring(0, 2).toUpperCase();
+        }
+        
+        // Load data when page is ready
+        document.addEventListener('DOMContentLoaded', loadAgentsData);
+    </script>
+    
+    <!-- Sidebar pre-rendered, no JS needed -->
+    <script src="../components/universal-header.js"></script>
+</body>
+</html>

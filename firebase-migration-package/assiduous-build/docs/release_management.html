@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RELEASE MANAGEMENT - Assiduous Documentation</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3, h4, h5, h6 {
+            margin-top: 24px;
+            margin-bottom: 16px;
+            font-weight: 600;
+            line-height: 1.25;
+        }
+        h1 { font-size: 2em; border-bottom: 1px solid #e1e4e8; padding-bottom: 0.3em; }
+        h2 { font-size: 1.5em; border-bottom: 1px solid #e1e4e8; padding-bottom: 0.3em; }
+        h3 { font-size: 1.25em; }
+        code {
+            background: #f6f8fa;
+            padding: 0.2em 0.4em;
+            border-radius: 3px;
+            font-size: 85%;
+        }
+        pre {
+            background: #f6f8fa;
+            padding: 16px;
+            overflow: auto;
+            border-radius: 6px;
+            line-height: 1.45;
+        }
+        pre code {
+            background: transparent;
+            padding: 0;
+        }
+        ul, ol {
+            padding-left: 2em;
+            margin-bottom: 16px;
+        }
+        li {
+            margin-bottom: 4px;
+        }
+        a {
+            color: #0366d6;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        blockquote {
+            padding: 0 1em;
+            color: #6a737d;
+            border-left: 0.25em solid #dfe2e5;
+            margin: 0 0 16px 0;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 16px;
+        }
+        table th, table td {
+            padding: 6px 13px;
+            border: 1px solid #dfe2e5;
+        }
+        table tr:nth-child(2n) {
+            background-color: #f6f8fa;
+        }
+        .nav-link {
+            display: inline-block;
+            padding: 8px 16px;
+            background: #0366d6;
+            color: white;
+            border-radius: 6px;
+            margin: 10px 5px;
+            text-decoration: none;
+        }
+        .nav-link:hover {
+            background: #0256c7;
+            text-decoration: none;
+        }
+        .timestamp {
+            color: #6a737d;
+            font-size: 0.85em;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e1e4e8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <a href="/docs/index.html" class="nav-link">📚 Documentation Hub</a>
+            <a href="/docs/readme.html" class="nav-link">📖 README</a>
+            <a href="/docs/changelog.html" class="nav-link">📝 Changelog</a>
+            <a href="/docs/warp.html" class="nav-link">⚙️ WARP Rules</a>
+        </nav>
+        <h1>RELEASE MANAGEMENT</h1>
+        <div class="content">
+<h1>Release Management Guide</h1>
+<br>
+<h2>Release in 3 Minutes</h2>
+<br>
+<code></code>`bash
+<h1>1. Ensure staging is tested (https://assiduous-staging.web.app)</h1>
+<h1>2. Create and push tag</h1>
+git tag -a v1.2.0 -m "Release: Feature Name"
+git push origin v1.2.0
+<h1>3. Automatic production deployment triggered</h1>
+<h1>4. Monitor: https://assiduousflip.com (or assiduous-prod.web.app)</h1>
+<code></code>`
+<br>
+<h2>Release Types</h2>
+<br>
+<h3>Standard Release (Weekly)</h3>
+<li><strong>When</strong>: Every Friday at 2 PM EST</li>
+<li><strong>What</strong>: All tested features from staging</li>
+<li><strong>Who</strong>: Lead developer creates tag</li>
+<li><strong>Version</strong>: Minor bump (v1.X.0)</li>
+<br>
+<h3>Hotfix Release (As Needed)</h3>
+<li><strong>When</strong>: Critical bug in production</li>
+<li><strong>What</strong>: Minimal fix only</li>
+<li><strong>Who</strong>: Any developer with approval</li>
+<li><strong>Version</strong>: Patch bump (v1.2.X)</li>
+<br>
+<h3>Major Release (Monthly)</h3>
+<li><strong>When</strong>: First Friday of month</li>
+<li><strong>What</strong>: Breaking changes, major features</li>
+<li><strong>Who</strong>: Team lead with stakeholder approval</li>
+<li><strong>Version</strong>: Major bump (vX.0.0)</li>
+<br>
+<h2>Pre-Release Checklist (5 minutes)</h2>
+<br>
+<code></code>`markdown
+<h2>Release v1.2.0 Checklist</h2>
+<li>[ ] All PR reviews complete</li>
+<li>[ ] Staging tested for 24+ hours</li>
+<li>[ ] No critical bugs in staging</li>
+<li>[ ] Documentation updated</li>
+<li>[ ] CHANGELOG.md updated</li>
+<li>[ ] Stakeholders notified</li>
+<li>[ ] Rollback plan ready</li>
+<code></code>`
+<br>
+<h2>Release Process</h2>
+<br>
+<h3>1. Prepare Release (2 minutes)</h3>
+<br>
+<code></code>`bash
+<h1>Update CHANGELOG</h1>
+echo "## [1.2.0] - $(date +%Y-%m-%d)
+<br>
+<h3>Added</h3>
+<li>Payment integration</li>
+<li>Email notifications</li>
+<br>
+<h3>Fixed</h3>
+<li>Cart calculation bug</li>
+<li>Mobile responsive issues</li>
+<br>
+<h3>Changed</h3>
+<li>Improved checkout flow" &gt;&gt; CHANGELOG.md</li>
+<br>
+git add CHANGELOG.md
+git commit -m "chore: update CHANGELOG for v1.2.0"
+git push origin main
+<code></code>`
+<br>
+<h3>2. Create Release (1 minute)</h3>
+<br>
+<code></code>`bash
+<h1>Create annotated tag</h1>
+git tag -a v1.2.0 -m "Release v1.2.0
+<br>
+Features:
+<li>Payment integration with Stripe</li>
+<li>Automated email notifications</li>
+<li>Improved checkout UX</li>
+<br>
+Bug Fixes:
+<li>Fixed cart calculation errors</li>
+<li>Resolved mobile display issues</li>
+<br>
+Testing:
+<li>Tested on staging for 48 hours</li>
+<li>All automated tests passing</li>
+<li>Manual QA completed"</li>
+<br>
+<h1>Push tag to trigger deployment</h1>
+git push origin v1.2.0
+<code></code>`
+<br>
+<h3>3. Monitor Deployment (5 minutes)</h3>
+<br>
+<code></code>`bash
+<h1>Watch GitHub Actions</h1>
+gh run watch
+<br>
+<h1>Monitor production</h1>
+curl -I https://assiduous-prod.web.app
+<br>
+<h1>Check for errors</h1>
+firebase functions:log --project assiduous-prod
+<code></code>`
+<br>
+<h2>Version Numbering</h2>
+<br>
+<h3>Semantic Versioning: MAJOR.MINOR.PATCH</h3>
+<br>
+| Version | When to Use | Example |
+|---------|-------------|---------|
+| MAJOR (2.0.0) | Breaking API changes | Database migration |
+| MINOR (1.2.0) | New features | Add payment system |
+| PATCH (1.1.1) | Bug fixes | Fix login error |
+<br>
+<h3>Version Examples</h3>
+<code></code>`bash
+v1.0.0  # Initial release
+v1.1.0  # Add user profiles
+v1.1.1  # Fix profile photo upload
+v1.2.0  # Add payment integration
+v2.0.0  # New architecture
+<code></code>`
+<br>
+<h2>Release Notes Template</h2>
+<br>
+<code></code>`markdown
+<h1>Release v1.2.0 - Payment Integration</h1>
+<br>
+<strong>Release Date</strong>: October 11, 2025
+<strong>Environment</strong>: Production
+<strong>Risk Level</strong>: Medium
+<br>
+<h2>What's New</h2>
+<li>💳 Stripe payment integration</li>
+<li>📧 Automated email notifications</li>
+<li>🎨 Improved checkout UI</li>
+<br>
+<h2>Bug Fixes</h2>
+<li>Fixed cart calculation errors (#123)</li>
+<li>Resolved mobile responsive issues (#124)</li>
+<br>
+<h2>Breaking Changes</h2>
+None
+<br>
+<h2>Migration Guide</h2>
+No action required
+<br>
+<h2>Known Issues</h2>
+<li>Email may be delayed 1-2 minutes on first send</li>
+<br>
+<h2>Rollback Plan</h2>
+<code></code>`bash
+firebase hosting:rollback --project assiduous-prod
+<code></code>`
+<code></code>`
+<br>
+<h2>Rollback Procedures</h2>
+<br>
+<h3>Immediate Rollback (30 seconds)</h3>
+<code></code>`bash
+<h1>Firebase instant rollback</h1>
+firebase hosting:rollback --project assiduous-prod
+<code></code>`
+<br>
+<h3>Version Rollback (2 minutes)</h3>
+<code></code>`bash
+<h1>Checkout previous version</h1>
+git checkout tags/v1.1.9
+<br>
+<h1>Deploy specific version</h1>
+cd firebase-migration-package
+firebase deploy --only hosting:production --project assiduous-prod
+<code></code>`
+<br>
+<h3>Data Rollback</h3>
+<code></code>`bash
+<h1>Restore Firestore backup (if needed)</h1>
+gcloud firestore import gs://assiduous-backups/2025-10-11
+<br>
+<h1>Restore specific collections</h1>
+firebase firestore:delete --project assiduous-prod --recursive users
+firebase firestore:import backup.json --project assiduous-prod
+<code></code>`
+<br>
+<h2>Post-Release Tasks</h2>
+<br>
+<h3>Immediate (First 15 minutes)</h3>
+<li>[ ] Verify site loads (HTTP 200)</li>
+<li>[ ] Test critical user paths</li>
+<li>[ ] Check error logs</li>
+<li>[ ] Monitor performance</li>
+<br>
+<h3>First Hour</h3>
+<li>[ ] Review user feedback</li>
+<li>[ ] Check analytics for anomalies</li>
+<li>[ ] Verify all features working</li>
+<li>[ ] Update status page</li>
+<br>
+<h3>First Day</h3>
+<li>[ ] Analyze metrics vs previous version</li>
+<li>[ ] Document any issues found</li>
+<li>[ ] Plan fixes for next release</li>
+<li>[ ] Thank the team!</li>
+<br>
+<h2>Emergency Contacts</h2>
+<br>
+| Role | Name | Contact | When to Contact |
+|------|------|---------|----------------|
+| Lead Dev | You | Primary | Any technical issues |
+| Product Owner | TBD | Backup | Major failures |
+| DevOps | Firebase Support | Last Resort | Infrastructure issues |
+<br>
+<h2>Automation Scripts</h2>
+<br>
+<h3>Auto-Release Script</h3>
+<code></code>`bash
+#!/bin/bash
+<h1>save as: scripts/release.sh</h1>
+<br>
+VERSION=$1
+MESSAGE=$2
+<br>
+if [ -z "$VERSION" ]; then
+  echo "Usage: ./release.sh v1.2.0 'Feature description'"
+  exit 1
+fi
+<br>
+echo "🚀 Creating release $VERSION..."
+<br>
+<h1>Update CHANGELOG</h1>
+echo "## [$VERSION] - $(date +%Y-%m-%d)" &gt;&gt; CHANGELOG.md
+echo "$MESSAGE" &gt;&gt; CHANGELOG.md
+git add CHANGELOG.md
+git commit -m "chore: prepare release $VERSION"
+<br>
+<h1>Create tag</h1>
+git tag -a $VERSION -m "Release $VERSION: $MESSAGE"
+<br>
+<h1>Push everything</h1>
+git push origin main
+git push origin $VERSION
+<br>
+echo "✅ Release $VERSION created and deployed!"
+<code></code>`
+<br>
+<h2>Release Calendar</h2>
+<br>
+| Week | Monday | Tuesday | Wednesday | Thursday | Friday |
+|------|--------|---------|-----------|----------|--------|
+| 1 | Feature Dev | Feature Dev | Testing | Testing | <strong>RELEASE</strong> |
+| 2 | Feature Dev | Feature Dev | Testing | Testing | <strong>RELEASE</strong> |
+| 3 | Feature Dev | Feature Dev | Testing | Testing | <strong>RELEASE</strong> |
+| 4 | Feature Dev | Feature Dev | Testing | Testing | <strong>MAJOR RELEASE</strong> |
+<br>
+<h2>Success Metrics</h2>
+<br>
+Track these after each release:
+<li>Deployment time: &lt; 5 minutes</li>
+<li>Rollback time: &lt; 1 minute</li>
+<li>Error rate: &lt; 0.1%</li>
+<li>User complaints: 0</li>
+<li>Uptime: 99.9%</li>
+        </div>
+        <div class="timestamp">
+            Last updated: 2025-10-11 11:14:18
+        </div>
+    </div>
+</body>
+</html>

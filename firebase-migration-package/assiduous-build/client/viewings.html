@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scheduled Viewings - Assiduous</title>
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+        }
+        
+        .header {
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #1e3a5f;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .nav-link {
+            color: #666;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            color: #1e3a5f;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+        
+        .page-header {
+            margin-bottom: 30px;
+        }
+        
+        .page-title {
+            font-size: 36px;
+            font-weight: 700;
+            color: #1e3a5f;
+            margin-bottom: 10px;
+        }
+        
+        .page-subtitle {
+            font-size: 18px;
+            color: #666;
+        }
+        
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 30px;
+        }
+        
+        .viewings-section {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            background: #f8f9fa;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .tab:hover {
+            background: #e9ecef;
+        }
+        
+        .tab.active {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+        
+        .viewing-card {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 4px solid #667eea;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .viewing-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .viewing-card.cancelled {
+            opacity: 0.6;
+            border-left-color: #dc3545;
+        }
+        
+        .viewing-card.completed {
+            border-left-color: #28a745;
+        }
+        
+        .viewing-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+        
+        .viewing-date {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .viewing-time {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .viewing-status {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .status-confirmed {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status-cancelled {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .property-info {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .property-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1e3a5f;
+            margin-bottom: 5px;
+        }
+        
+        .property-address {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .viewing-notes {
+            font-size: 14px;
+            color: #666;
+            background: white;
+            padding: 10px;
+            border-radius: 6px;
+            margin-top: 10px;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .btn:hover {
+            transform: translateY(-1px);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: #666;
+            border: 2px solid #e0e0e0;
+        }
+        
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+        
+        .calendar-widget {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .month-year {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .calendar-nav {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .nav-btn {
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: #f0f0f0;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        
+        .nav-btn:hover {
+            background: #e0e0e0;
+        }
+        
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+        }
+        
+        .day-header {
+            text-align: center;
+            font-size: 12px;
+            font-weight: 600;
+            color: #999;
+            padding: 10px 0;
+        }
+        
+        .calendar-day {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.2s;
+        }
+        
+        .calendar-day:hover {
+            background: #f0f0f0;
+        }
+        
+        .calendar-day.other-month {
+            color: #ccc;
+        }
+        
+        .calendar-day.today {
+            background: #f0f7ff;
+            color: #667eea;
+            font-weight: 600;
+        }
+        
+        .calendar-day.has-viewing {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+        
+        .viewing-dot {
+            position: absolute;
+            bottom: 4px;
+            width: 6px;
+            height: 6px;
+            background: #ff6b6b;
+            border-radius: 50%;
+        }
+        
+        .quick-stats {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1e3a5f;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: #999;
+            margin-top: 5px;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+        }
+        
+        .empty-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+        
+        .empty-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .empty-text {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 25px;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        @media (max-width: 768px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">🏠 Assiduous</div>
+            <nav class="nav-links">
+                <a href="/" class="nav-link">Home</a>
+                <a href="/client/properties.html" class="nav-link">Properties</a>
+                <a href="/client/saved.html" class="nav-link">Saved</a>
+                <a href="/client/viewings.html" class="nav-link active">Viewings</a>
+                <a href="/client/micro-flip-calculator.html" class="nav-link">ROI Calculator</a>
+                <a href="/client/dashboard.html" class="nav-link">Dashboard</a>
+            </nav>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="page-header">
+            <h1 class="page-title">Scheduled Viewings</h1>
+            <p class="page-subtitle">Manage your property viewing appointments</p>
+        </div>
+        
+        <div class="content-grid">
+            <div class="viewings-section">
+                <div class="section-header">
+                    <h2 class="section-title">Your Viewings</h2>
+                    <button class="btn btn-primary" onclick="window.location.href='/client/properties.html'">
+                        + Schedule New
+                    </button>
+                </div>
+                
+                <div class="tabs">
+                    <button class="tab active" onclick="filterViewings('upcoming')">Upcoming</button>
+                    <button class="tab" onclick="filterViewings('past')">Past</button>
+                    <button class="tab" onclick="filterViewings('cancelled')">Cancelled</button>
+                    <button class="tab" onclick="filterViewings('all')">All</button>
+                </div>
+                
+                <div id="viewingsList">
+                    <!-- Viewings will be loaded here -->
+                </div>
+                
+                <div id="emptyState" class="empty-state" style="display: none;">
+                    <div class="empty-icon">📅</div>
+                    <h2 class="empty-title">No Scheduled Viewings</h2>
+                    <p class="empty-text">Browse properties and schedule viewings to see them here</p>
+                    <button class="btn btn-primary" onclick="window.location.href='/client/properties.html'">
+                        Browse Properties
+                    </button>
+                </div>
+            </div>
+            
+            <div class="sidebar">
+                <div class="calendar-widget">
+                    <div class="calendar-header">
+                        <div class="month-year" id="currentMonth">December 2025</div>
+                        <div class="calendar-nav">
+                            <button class="nav-btn" onclick="previousMonth()">‹</button>
+                            <button class="nav-btn" onclick="nextMonth()">›</button>
+                        </div>
+                    </div>
+                    <div class="calendar-grid" id="calendar">
+                        <!-- Calendar will be generated here -->
+                    </div>
+                </div>
+                
+                <div class="quick-stats">
+                    <h3 class="section-title">Quick Stats</h3>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-value" id="totalViewings">0</div>
+                            <div class="stat-label">Total Viewings</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="upcomingCount">0</div>
+                            <div class="stat-label">Upcoming</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="thisWeek">0</div>
+                            <div class="stat-label">This Week</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="confirmedCount">0</div>
+                            <div class="stat-label">Confirmed</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Reschedule Modal -->
+    <div class="modal" id="rescheduleModal">
+        <div class="modal-content">
+            <h2 style="margin-bottom: 20px;">Reschedule Viewing</h2>
+            <form id="rescheduleForm">
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 500;">New Date</label>
+                    <input type="date" id="newDate" required style="width: 100%; padding: 10px; border: 2px solid #e0e0e0; border-radius: 8px;">
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 500;">New Time</label>
+                    <select id="newTime" required style="width: 100%; padding: 10px; border: 2px solid #e0e0e0; border-radius: 8px;">
+                        <option value="">Select time</option>
+                        <option value="9:00 AM">9:00 AM</option>
+                        <option value="10:00 AM">10:00 AM</option>
+                        <option value="11:00 AM">11:00 AM</option>
+                        <option value="12:00 PM">12:00 PM</option>
+                        <option value="1:00 PM">1:00 PM</option>
+                        <option value="2:00 PM">2:00 PM</option>
+                        <option value="3:00 PM">3:00 PM</option>
+                        <option value="4:00 PM">4:00 PM</option>
+                        <option value="5:00 PM">5:00 PM</option>
+                    </select>
+                </div>
+                <div style="display: flex; gap: 10px;">
+                    <button type="submit" class="btn btn-primary" style="flex: 1;">Confirm</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()" style="flex: 1;">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCzPcEJ0TPKnJtcVT2qymgJrII1p0vAJxs",
+            authDomain: "assiduous-prod.firebaseapp.com",
+            projectId: "assiduous-prod",
+            storageBucket: "assiduous-prod.appspot.com",
+            messagingSenderId: "594472642287",
+            appId: "1:594472642287:web:adf723a456b123c4567890"
+        };
+        
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const auth = firebase.auth();
+        
+        let allViewings = [];
+        let currentFilter = 'upcoming';
+        let currentMonthDate = new Date();
+        let selectedViewingId = null;
+        
+        // Load viewings
+        async function loadViewings() {
+            try {
+                // Try to load from Firebase
+                if (auth.currentUser) {
+                    const snapshot = await db.collection('viewings')
+                        .where('userId', '==', auth.currentUser.uid)
+                        .orderBy('date', 'desc')
+                        .get();
+                    
+                    allViewings = [];
+                    snapshot.forEach(doc => {
+                        allViewings.push({ id: doc.id, ...doc.data() });
+                    });
+                }
+            } catch (error) {
+                console.log('Loading from localStorage:', error);
+            }
+            
+            // Also check localStorage
+            const localViewings = JSON.parse(localStorage.getItem('viewings') || '[]');
+            
+            // Merge and deduplicate
+            const mergedViewings = [...allViewings, ...localViewings];
+            allViewings = Array.from(new Map(mergedViewings.map(v => [v.id || v.createdAt, v])).values());
+            
+            // Add demo viewings if none exist
+            if (allViewings.length === 0) {
+                allViewings = getDemoViewings();
+            }
+            
+            filterViewings(currentFilter);
+            updateStats();
+            generateCalendar();
+        }
+        
+        // Get demo viewings
+        function getDemoViewings() {
+            const today = new Date();
+            const tomorrow = new Date(today);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            const nextWeek = new Date(today);
+            nextWeek.setDate(nextWeek.getDate() + 7);
+            
+            return [
+                {
+                    id: 'demo-1',
+                    propertyTitle: '3BR Townhouse in Fishtown',
+                    propertyAddress: '2547 Frankford Avenue, Philadelphia, PA',
+                    date: tomorrow.toISOString().split('T')[0],
+                    time: '2:00 PM',
+                    status: 'confirmed',
+                    notes: 'Looking forward to seeing the property',
+                    createdAt: new Date().toISOString()
+                },
+                {
+                    id: 'demo-2',
+                    propertyTitle: '2BR Condo in Center City',
+                    propertyAddress: '1500 Market Street, Philadelphia, PA',
+                    date: nextWeek.toISOString().split('T')[0],
+                    time: '10:00 AM',
+                    status: 'pending',
+                    notes: 'Interested in investment potential',
+                    createdAt: new Date().toISOString()
+                }
+            ];
+        }
+        
+        // Filter viewings
+        function filterViewings(filter) {
+            currentFilter = filter;
+            const today = new Date().toISOString().split('T')[0];
+            let filtered = [];
+            
+            switch(filter) {
+                case 'upcoming':
+                    filtered = allViewings.filter(v => 
+                        v.date >= today && v.status !== 'cancelled'
+                    );
+                    break;
+                case 'past':
+                    filtered = allViewings.filter(v => 
+                        v.date < today && v.status !== 'cancelled'
+                    );
+                    break;
+                case 'cancelled':
+                    filtered = allViewings.filter(v => v.status === 'cancelled');
+                    break;
+                default:
+                    filtered = allViewings;
+            }
+            
+            // Update tabs
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+                if (tab.textContent.toLowerCase().includes(filter)) {
+                    tab.classList.add('active');
+                }
+            });
+            
+            displayViewings(filtered);
+        }
+        
+        // Display viewings
+        function displayViewings(viewings) {
+            const container = document.getElementById('viewingsList');
+            const emptyState = document.getElementById('emptyState');
+            
+            if (viewings.length === 0) {
+                container.innerHTML = '';
+                emptyState.style.display = 'block';
+                return;
+            }
+            
+            emptyState.style.display = 'none';
+            container.innerHTML = viewings.map(viewing => {
+                const date = new Date(viewing.date + 'T00:00:00');
+                const isUpcoming = viewing.date >= new Date().toISOString().split('T')[0];
+                const statusClass = viewing.status === 'cancelled' ? 'cancelled' : 
+                                   viewing.status === 'confirmed' ? 'completed' : '';
+                
+                return `
+                    <div class="viewing-card ${statusClass}">
+                        <div class="viewing-header">
+                            <div>
+                                <div class="viewing-date">${date.toLocaleDateString('en-US', { 
+                                    weekday: 'long', 
+                                    year: 'numeric', 
+                                    month: 'long', 
+                                    day: 'numeric' 
+                                })}</div>
+                                <div class="viewing-time">${viewing.time}</div>
+                            </div>
+                            <div class="viewing-status status-${viewing.status || 'pending'}">
+                                ${viewing.status || 'Pending'}
+                            </div>
+                        </div>
+                        
+                        <div class="property-info">
+                            <div class="property-title">${viewing.propertyTitle}</div>
+                            <div class="property-address">${viewing.propertyAddress || viewing.address || 'Philadelphia, PA'}</div>
+                        </div>
+                        
+                        ${viewing.notes ? `
+                            <div class="viewing-notes">
+                                📝 ${viewing.notes}
+                            </div>
+                        ` : ''}
+                        
+                        ${isUpcoming && viewing.status !== 'cancelled' ? `
+                            <div class="action-buttons">
+                                <button class="btn btn-secondary" onclick="rescheduleViewing('${viewing.id}')">
+                                    Reschedule
+                                </button>
+                                <button class="btn btn-danger" onclick="cancelViewing('${viewing.id}')">
+                                    Cancel
+                                </button>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        // Update statistics
+        function updateStats() {
+            const today = new Date().toISOString().split('T')[0];
+            const weekFromNow = new Date();
+            weekFromNow.setDate(weekFromNow.getDate() + 7);
+            const weekDate = weekFromNow.toISOString().split('T')[0];
+            
+            const upcoming = allViewings.filter(v => v.date >= today && v.status !== 'cancelled');
+            const thisWeek = upcoming.filter(v => v.date <= weekDate);
+            const confirmed = allViewings.filter(v => v.status === 'confirmed');
+            
+            document.getElementById('totalViewings').textContent = allViewings.length;
+            document.getElementById('upcomingCount').textContent = upcoming.length;
+            document.getElementById('thisWeek').textContent = thisWeek.length;
+            document.getElementById('confirmedCount').textContent = confirmed.length;
+        }
+        
+        // Generate calendar
+        function generateCalendar() {
+            const year = currentMonthDate.getFullYear();
+            const month = currentMonthDate.getMonth();
+            
+            // Update month/year display
+            document.getElementById('currentMonth').textContent = 
+                currentMonthDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+            
+            const firstDay = new Date(year, month, 1);
+            const lastDay = new Date(year, month + 1, 0);
+            const prevLastDay = new Date(year, month, 0);
+            
+            const firstDayIndex = firstDay.getDay();
+            const lastDayDate = lastDay.getDate();
+            const prevLastDayDate = prevLastDay.getDate();
+            
+            const calendar = document.getElementById('calendar');
+            calendar.innerHTML = '';
+            
+            // Day headers
+            const dayHeaders = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            dayHeaders.forEach(day => {
+                const header = document.createElement('div');
+                header.className = 'day-header';
+                header.textContent = day;
+                calendar.appendChild(header);
+            });
+            
+            // Previous month days
+            for (let i = firstDayIndex; i > 0; i--) {
+                const day = document.createElement('div');
+                day.className = 'calendar-day other-month';
+                day.textContent = prevLastDayDate - i + 1;
+                calendar.appendChild(day);
+            }
+            
+            // Current month days
+            const today = new Date();
+            for (let i = 1; i <= lastDayDate; i++) {
+                const day = document.createElement('div');
+                day.className = 'calendar-day';
+                day.textContent = i;
+                
+                const currentDate = new Date(year, month, i);
+                const dateString = currentDate.toISOString().split('T')[0];
+                
+                // Check if today
+                if (currentDate.toDateString() === today.toDateString()) {
+                    day.classList.add('today');
+                }
+                
+                // Check for viewings
+                const hasViewing = allViewings.some(v => 
+                    v.date === dateString && v.status !== 'cancelled'
+                );
+                if (hasViewing) {
+                    day.classList.add('has-viewing');
+                    const dot = document.createElement('div');
+                    dot.className = 'viewing-dot';
+                    day.appendChild(dot);
+                }
+                
+                calendar.appendChild(day);
+            }
+            
+            // Next month days
+            const remainingDays = 42 - (firstDayIndex + lastDayDate);
+            for (let i = 1; i <= remainingDays; i++) {
+                const day = document.createElement('div');
+                day.className = 'calendar-day other-month';
+                day.textContent = i;
+                calendar.appendChild(day);
+            }
+        }
+        
+        // Calendar navigation
+        function previousMonth() {
+            currentMonthDate.setMonth(currentMonthDate.getMonth() - 1);
+            generateCalendar();
+        }
+        
+        function nextMonth() {
+            currentMonthDate.setMonth(currentMonthDate.getMonth() + 1);
+            generateCalendar();
+        }
+        
+        // Cancel viewing
+        async function cancelViewing(viewingId) {
+            if (!confirm('Are you sure you want to cancel this viewing?')) return;
+            
+            const viewing = allViewings.find(v => v.id === viewingId);
+            if (viewing) {
+                viewing.status = 'cancelled';
+                
+                // Update Firebase if logged in
+                if (auth.currentUser && !viewingId.startsWith('demo')) {
+                    try {
+                        await db.collection('viewings').doc(viewingId).update({
+                            status: 'cancelled',
+                            cancelledAt: new Date().toISOString()
+                        });
+                    } catch (error) {
+                        console.error('Error cancelling in Firebase:', error);
+                    }
+                }
+                
+                // Update localStorage
+                localStorage.setItem('viewings', JSON.stringify(allViewings));
+                
+                filterViewings(currentFilter);
+                updateStats();
+                generateCalendar();
+            }
+        }
+        
+        // Reschedule viewing
+        function rescheduleViewing(viewingId) {
+            selectedViewingId = viewingId;
+            document.getElementById('rescheduleModal').classList.add('active');
+        }
+        
+        // Handle reschedule form
+        document.getElementById('rescheduleForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const newDate = document.getElementById('newDate').value;
+            const newTime = document.getElementById('newTime').value;
+            
+            const viewing = allViewings.find(v => v.id === selectedViewingId);
+            if (viewing) {
+                viewing.date = newDate;
+                viewing.time = newTime;
+                viewing.status = 'pending';
+                
+                // Update Firebase if logged in
+                if (auth.currentUser && !selectedViewingId.startsWith('demo')) {
+                    try {
+                        await db.collection('viewings').doc(selectedViewingId).update({
+                            date: newDate,
+                            time: newTime,
+                            status: 'pending',
+                            rescheduledAt: new Date().toISOString()
+                        });
+                    } catch (error) {
+                        console.error('Error rescheduling in Firebase:', error);
+                    }
+                }
+                
+                // Update localStorage
+                localStorage.setItem('viewings', JSON.stringify(allViewings));
+                
+                closeModal();
+                filterViewings(currentFilter);
+                updateStats();
+                generateCalendar();
+                
+                alert('Viewing rescheduled successfully! You will receive a confirmation.');
+            }
+        });
+        
+        // Close modal
+        function closeModal() {
+            document.getElementById('rescheduleModal').classList.remove('active');
+            selectedViewingId = null;
+            document.getElementById('rescheduleForm').reset();
+        }
+        
+        // Close modal on outside click
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.classList.remove('active');
+            }
+        };
+        
+        // Check auth state
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                console.log('User logged in:', user.email);
+            }
+            loadViewings();
+        });
+        
+        // Load on page load
+        window.addEventListener('load', () => {
+            if (!auth.currentUser) {
+                loadViewings();
+            }
+        });
+    </script>
+</body>
+</html>

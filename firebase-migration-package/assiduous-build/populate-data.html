@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Population Tool - AssiduousFlip</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            text-align: center;
+            color: white;
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 30px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        h2 {
+            color: #2d3748;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 10px;
+        }
+        
+        .section {
+            margin-bottom: 25px;
+        }
+        
+        .section h3 {
+            color: #4a5568;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        
+        button {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            flex: 1;
+            min-width: 150px;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        button.danger {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+        }
+        
+        button.success {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+        
+        .output {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            max-height: 400px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+        
+        .status {
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+        
+        .status.success {
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #6ee7b7;
+        }
+        
+        .status.error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fca5a5;
+        }
+        
+        .status.info {
+            background: #dbeafe;
+            color: #1e40af;
+            border: 1px solid #93c5fd;
+        }
+        
+        .status.warning {
+            background: #fef3c7;
+            color: #92400e;
+            border: 1px solid #fcd34d;
+        }
+        
+        .credentials {
+            background: #f0f9ff;
+            border: 2px solid #0ea5e9;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+        }
+        
+        .credentials h4 {
+            color: #0369a1;
+            margin-bottom: 10px;
+        }
+        
+        .credentials .cred-item {
+            font-family: monospace;
+            margin: 5px 0;
+            color: #0c4a6e;
+        }
+        
+        .progress {
+            background: #e2e8f0;
+            height: 30px;
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        
+        .progress-bar {
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 AssiduousFlip Data Population Tool</h1>
+        <p class="subtitle">Populate your Firebase database with sample data for testing</p>
+        
+        <div class="card">
+            <div id="status-message"></div>
+            
+            <div class="section">
+                <h3>📊 Current Database Status</h3>
+                <div id="db-status" class="status info">Checking database connection...</div>
+            </div>
+            
+            <div class="section">
+                <h3>🏠 Properties (Philadelphia Market)</h3>
+                <div class="button-group">
+                    <button onclick="createProperties(10)">Create 10 Properties</button>
+                    <button onclick="createProperties(25)">Create 25 Properties</button>
+                    <button onclick="createProperties(50)" class="success">Create 50 Properties</button>
+                </div>
+                <div id="properties-status"></div>
+            </div>
+            
+            <div class="section">
+                <h3>👥 Users & Accounts</h3>
+                <div class="button-group">
+                    <button onclick="createTestUsers()">Create Test Users</button>
+                </div>
+                <div id="users-status"></div>
+            </div>
+            
+            <div class="section">
+                <h3>📧 Leads & Inquiries</h3>
+                <div class="button-group">
+                    <button onclick="createLeads(10)">Create 10 Leads</button>
+                    <button onclick="createLeads(20)">Create 20 Leads</button>
+                </div>
+                <div id="leads-status"></div>
+            </div>
+            
+            <div class="section">
+                <h3>💼 Transactions</h3>
+                <div class="button-group">
+                    <button onclick="createTransactions(10)">Create 10 Transactions</button>
+                    <button onclick="createTransactions(15)">Create 15 Transactions</button>
+                </div>
+                <div id="transactions-status"></div>
+            </div>
+            
+            <div class="section">
+                <h3>⚠️ Danger Zone</h3>
+                <div class="button-group">
+                    <button onclick="clearCollection('properties')" class="danger">Clear All Properties</button>
+                    <button onclick="clearCollection('leads')" class="danger">Clear All Leads</button>
+                    <button onclick="clearCollection('transactions')" class="danger">Clear All Transactions</button>
+                </div>
+            </div>
+            
+            <div class="progress" id="progress-container" style="display: none;">
+                <div class="progress-bar" id="progress-bar" style="width: 0%">0%</div>
+            </div>
+            
+            <h3>📝 Output Log</h3>
+            <div class="output" id="output">Waiting for actions...</div>
+            
+            <div class="credentials" id="credentials" style="display: none;">
+                <h4>🔑 Test Credentials Created:</h4>
+                <div id="cred-list"></div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCnQajchoBwP_VMEvc9mKH-vO0xlZjGCRE",
+            authDomain: "assiduous-prod.firebaseapp.com",
+            projectId: "assiduous-prod",
+            storageBucket: "assiduous-prod.firebasestorage.app",
+            messagingSenderId: "9355377564",
+            appId: "1:9355377564:web:84bd6fa0e7c8a2e7c3f56b"
+        };
+        
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+        
+        // Philadelphia neighborhoods
+        const neighborhoods = [
+            'Center City', 'Fishtown', 'Northern Liberties', 'South Philadelphia', 
+            'Fairmount', 'Manayunk', 'Chestnut Hill', 'Old City', 'Queen Village',
+            'Graduate Hospital', 'Rittenhouse Square', 'Washington Square West',
+            'Bella Vista', 'Passyunk Square', 'East Falls', 'Roxborough',
+            'Mt. Airy', 'Germantown', 'Kensington', 'Port Richmond'
+        ];
+        
+        // Street names
+        const streets = [
+            'Market St', 'Broad St', 'Walnut St', 'Chestnut St', 'Pine St',
+            'South St', 'Spring Garden St', 'Fairmount Ave', 'Girard Ave',
+            'Passyunk Ave', 'Ridge Ave', 'Main St', 'Lancaster Ave',
+            'Baltimore Ave', 'Frankford Ave', 'Germantown Ave'
+        ];
+        
+        // Output logging
+        function log(message) {
+            const output = document.getElementById('output');
+            const timestamp = new Date().toLocaleTimeString();
+            output.textContent += `[${timestamp}] ${message}\n`;
+            output.scrollTop = output.scrollHeight;
+            console.log(message);
+        }
+        
+        // Show status message
+        function showStatus(message, type = 'info') {
+            const statusDiv = document.getElementById('status-message');
+            statusDiv.className = `status ${type}`;
+            statusDiv.textContent = message;
+            statusDiv.style.display = 'block';
+            
+            if (type !== 'error') {
+                setTimeout(() => {
+                    statusDiv.style.display = 'none';
+                }, 5000);
+            }
+        }
+        
+        // Update progress bar
+        function updateProgress(current, total) {
+            const container = document.getElementById('progress-container');
+            const bar = document.getElementById('progress-bar');
+            const percent = Math.round((current / total) * 100);
+            
+            container.style.display = 'block';
+            bar.style.width = `${percent}%`;
+            bar.textContent = `${percent}%`;
+            
+            if (current >= total) {
+                setTimeout(() => {
+                    container.style.display = 'none';
+                }, 1000);
+            }
+        }
+        
+        // Check database status
+        async function checkDatabaseStatus() {
+            try {
+                const collections = ['properties', 'users', 'leads', 'transactions'];
+                let statusText = 'Database Status:\n';
+                
+                for (const collection of collections) {
+                    const snapshot = await db.collection(collection).limit(1).get();
+                    const count = (await db.collection(collection).get()).size;
+                    statusText += `• ${collection}: ${count} documents\n`;
+                }
+                
+                document.getElementById('db-status').textContent = statusText;
+                document.getElementById('db-status').className = 'status success';
+                log('✅ Database connection successful');
+                
+            } catch (error) {
+                document.getElementById('db-status').textContent = `Error: ${error.message}`;
+                document.getElementById('db-status').className = 'status error';
+                log('❌ Database connection failed');
+            }
+        }
+        
+        // Generate random address
+        function generateAddress() {
+            const number = Math.floor(Math.random() * 9000) + 100;
+            const street = streets[Math.floor(Math.random() * streets.length)];
+            const neighborhood = neighborhoods[Math.floor(Math.random() * neighborhoods.length)];
+            const zipCodes = ['19103', '19104', '19106', '19107', '19123', '19125', '19130', '19146', '19147', '19148'];
+            const zip = zipCodes[Math.floor(Math.random() * zipCodes.length)];
+            
+            return {
+                street: `${number} ${street}`,
+                city: 'Philadelphia',
+                state: 'PA',
+                zip: zip,
+                neighborhood: neighborhood,
+                coordinates: {
+                    lat: 39.9526 + (Math.random() - 0.5) * 0.1,
+                    lng: -75.1652 + (Math.random() - 0.5) * 0.1
+                }
+            };
+        }
+        
+        // Create properties
+        async function createProperties(count) {
+            log(`Creating ${count} properties...`);
+            showStatus(`Creating ${count} properties...`, 'info');
+            
+            const propertyTypes = ['Single Family', 'Condo', 'Townhouse', 'Multi-Family', 'Land'];
+            const batch = db.batch();
+            
+            for (let i = 0; i < count; i++) {
+                updateProgress(i, count);
+                
+                const type = propertyTypes[Math.floor(Math.random() * propertyTypes.length)];
+                const basePrice = Math.floor(Math.random() * 300000) + 50000;
+                const address = generateAddress();
+                
+                const bedrooms = type === 'Land' ? 0 : Math.floor(Math.random() * 4) + 1;
+                const bathrooms = type === 'Land' ? 0 : Math.floor(Math.random() * 3) + 1;
+                const sqft = type === 'Land' ? 0 : Math.floor(Math.random() * 2500) + 800;
+                
+                const rehab = Math.floor(Math.random() * 30000) + 10000;
+                const totalInvestment = basePrice + rehab;
+                const arv = totalInvestment * (1.15 + Math.random() * 0.25);
+                const profit = arv - totalInvestment;
+                const roi = (profit / totalInvestment) * 100;
+                
+                const property = {
+                    title: `${bedrooms}BR ${type} in ${address.neighborhood}`,
+                    description: `Great investment opportunity in ${address.neighborhood}. ${sqft} sqft, ${bedrooms} bedrooms, ${bathrooms} bathrooms.`,
+                    
+                    address: address,
+                    
+                    details: {
+                        type: type,
+                        bedrooms: bedrooms,
+                        bathrooms: bathrooms,
+                        sqft: sqft,
+                        yearBuilt: type === 'Land' ? null : Math.floor(Math.random() * 50) + 1950,
+                        parking: Math.random() > 0.5 ? 'Garage' : 'Street'
+                    },
+                    
+                    price: {
+                        list: basePrice,
+                        original: basePrice,
+                        pricePerSqft: sqft ? Math.floor(basePrice / sqft) : null
+                    },
+                    
+                    flipAnalysis: {
+                        purchasePrice: basePrice,
+                        rehabCost: rehab,
+                        totalInvestment: totalInvestment,
+                        arv: Math.floor(arv),
+                        estimatedProfit: Math.floor(profit),
+                        roi: Math.round(roi * 10) / 10
+                    },
+                    
+                    status: Math.random() > 0.2 ? 'available' : 'pending',
+                    featured: Math.random() > 0.8,
+                    
+                    images: {
+                        main: `https://images.unsplash.com/photo-${1564013799919 + i}?w=800&h=600&fit=crop`
+                    },
+                    
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                };
+                
+                const docRef = db.collection('properties').doc();
+                batch.set(docRef, property);
+            }
+            
+            try {
+                await batch.commit();
+                updateProgress(count, count);
+                log(`✅ Created ${count} properties successfully`);
+                showStatus(`Created ${count} properties successfully!`, 'success');
+                await checkDatabaseStatus();
+            } catch (error) {
+                log(`❌ Error creating properties: ${error.message}`);
+                showStatus(`Error: ${error.message}`, 'error');
+            }
+        }
+        
+        // Create test users
+        async function createTestUsers() {
+            log('Creating test users...');
+            showStatus('Creating test users...', 'info');
+            
+            const users = [
+                { email: 'admin@assiduousflip.com', password: 'Admin123!@#', role: 'admin', firstName: 'Admin', lastName: 'User' },
+                { email: 'agent1@assiduousflip.com', password: 'Agent123!@#', role: 'agent', firstName: 'Sarah', lastName: 'Johnson' },
+                { email: 'agent2@assiduousflip.com', password: 'Agent123!@#', role: 'agent', firstName: 'Michael', lastName: 'Chen' },
+                { email: 'client1@example.com', password: 'Client123!@#', role: 'client', firstName: 'John', lastName: 'Doe' },
+                { email: 'client2@example.com', password: 'Client123!@#', role: 'client', firstName: 'Jane', lastName: 'Smith' },
+                { email: 'investor1@example.com', password: 'Investor123!@#', role: 'investor', firstName: 'Robert', lastName: 'Williams' }
+            ];
+            
+            const credentials = [];
+            
+            for (const userData of users) {
+                try {
+                    const userRecord = await auth.createUserWithEmailAndPassword(userData.email, userData.password);
+                    
+                    await db.collection('users').doc(userRecord.user.uid).set({
+                        uid: userRecord.user.uid,
+                        email: userData.email,
+                        firstName: userData.firstName,
+                        lastName: userData.lastName,
+                        role: userData.role,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                        emailVerified: true,
+                        profileComplete: true
+                    });
+                    
+                    log(`✅ Created user: ${userData.email}`);
+                    credentials.push(`${userData.role}: ${userData.email} / ${userData.password}`);
+                    
+                } catch (error) {
+                    if (error.code === 'auth/email-already-in-use') {
+                        log(`⚠️ User already exists: ${userData.email}`);
+                    } else {
+                        log(`❌ Error creating user ${userData.email}: ${error.message}`);
+                    }
+                }
+            }
+            
+            if (credentials.length > 0) {
+                const credDiv = document.getElementById('credentials');
+                const credList = document.getElementById('cred-list');
+                credDiv.style.display = 'block';
+                credList.innerHTML = credentials.map(c => `<div class="cred-item">${c}</div>`).join('');
+            }
+            
+            showStatus('Test users created successfully!', 'success');
+            await checkDatabaseStatus();
+        }
+        
+        // Create leads
+        async function createLeads(count) {
+            log(`Creating ${count} leads...`);
+            showStatus(`Creating ${count} leads...`, 'info');
+            
+            const batch = db.batch();
+            const leadTypes = ['inquiry', 'showing_request', 'offer', 'contact'];
+            
+            for (let i = 0; i < count; i++) {
+                const lead = {
+                    propertyId: `property_${Math.floor(Math.random() * 10) + 1}`,
+                    user: {
+                        name: `Lead ${Date.now()}_${i}`,
+                        email: `lead${Date.now()}_${i}@example.com`,
+                        phone: `(215) 555-${String(Math.floor(Math.random() * 9000) + 1000)}`
+                    },
+                    message: 'I am interested in this property. Please contact me.',
+                    type: leadTypes[Math.floor(Math.random() * leadTypes.length)],
+                    status: 'new',
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                };
+                
+                const docRef = db.collection('leads').doc();
+                batch.set(docRef, lead);
+            }
+            
+            try {
+                await batch.commit();
+                log(`✅ Created ${count} leads successfully`);
+                showStatus(`Created ${count} leads successfully!`, 'success');
+                await checkDatabaseStatus();
+            } catch (error) {
+                log(`❌ Error creating leads: ${error.message}`);
+                showStatus(`Error: ${error.message}`, 'error');
+            }
+        }
+        
+        // Create transactions
+        async function createTransactions(count) {
+            log(`Creating ${count} transactions...`);
+            showStatus(`Creating ${count} transactions...`, 'info');
+            
+            const batch = db.batch();
+            const statuses = ['pending', 'under_contract', 'closed'];
+            
+            for (let i = 0; i < count; i++) {
+                const purchasePrice = Math.floor(Math.random() * 300000) + 100000;
+                const transaction = {
+                    propertyId: `property_${Math.floor(Math.random() * 10) + 1}`,
+                    buyerId: `client_${Math.floor(Math.random() * 5) + 1}`,
+                    agentId: `agent_${Math.floor(Math.random() * 2) + 1}`,
+                    type: 'purchase',
+                    status: statuses[Math.floor(Math.random() * statuses.length)],
+                    financial: {
+                        purchasePrice: purchasePrice,
+                        downPayment: purchasePrice * 0.2,
+                        loanAmount: purchasePrice * 0.8
+                    },
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                };
+                
+                const docRef = db.collection('transactions').doc();
+                batch.set(docRef, transaction);
+            }
+            
+            try {
+                await batch.commit();
+                log(`✅ Created ${count} transactions successfully`);
+                showStatus(`Created ${count} transactions successfully!`, 'success');
+                await checkDatabaseStatus();
+            } catch (error) {
+                log(`❌ Error creating transactions: ${error.message}`);
+                showStatus(`Error: ${error.message}`, 'error');
+            }
+        }
+        
+        // Clear collection
+        async function clearCollection(collectionName) {
+            if (!confirm(`Are you sure you want to delete all documents in the ${collectionName} collection? This cannot be undone!`)) {
+                return;
+            }
+            
+            log(`Clearing ${collectionName} collection...`);
+            showStatus(`Clearing ${collectionName} collection...`, 'warning');
+            
+            const batch = db.batch();
+            const snapshot = await db.collection(collectionName).get();
+            
+            snapshot.docs.forEach((doc) => {
+                batch.delete(doc.ref);
+            });
+            
+            try {
+                await batch.commit();
+                log(`✅ Cleared ${snapshot.size} documents from ${collectionName}`);
+                showStatus(`Cleared ${collectionName} collection successfully!`, 'success');
+                await checkDatabaseStatus();
+            } catch (error) {
+                log(`❌ Error clearing collection: ${error.message}`);
+                showStatus(`Error: ${error.message}`, 'error');
+            }
+        }
+        
+        // Initialize on load
+        window.addEventListener('load', () => {
+            checkDatabaseStatus();
+        });
+    </script>
+</body>
+</html>

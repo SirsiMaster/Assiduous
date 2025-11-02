@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARCHITECTURE DESIGN - Assiduous Documentation</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3, h4, h5, h6 {
+            margin-top: 24px;
+            margin-bottom: 16px;
+            font-weight: 600;
+            line-height: 1.25;
+        }
+        h1 { font-size: 2em; border-bottom: 1px solid #e1e4e8; padding-bottom: 0.3em; }
+        h2 { font-size: 1.5em; border-bottom: 1px solid #e1e4e8; padding-bottom: 0.3em; }
+        h3 { font-size: 1.25em; }
+        code {
+            background: #f6f8fa;
+            padding: 0.2em 0.4em;
+            border-radius: 3px;
+            font-size: 85%;
+        }
+        pre {
+            background: #f6f8fa;
+            padding: 16px;
+            overflow: auto;
+            border-radius: 6px;
+            line-height: 1.45;
+        }
+        pre code {
+            background: transparent;
+            padding: 0;
+        }
+        ul, ol {
+            padding-left: 2em;
+            margin-bottom: 16px;
+        }
+        li {
+            margin-bottom: 4px;
+        }
+        a {
+            color: #0366d6;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        blockquote {
+            padding: 0 1em;
+            color: #6a737d;
+            border-left: 0.25em solid #dfe2e5;
+            margin: 0 0 16px 0;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 16px;
+        }
+        table th, table td {
+            padding: 6px 13px;
+            border: 1px solid #dfe2e5;
+        }
+        table tr:nth-child(2n) {
+            background-color: #f6f8fa;
+        }
+        .nav-link {
+            display: inline-block;
+            padding: 8px 16px;
+            background: #0366d6;
+            color: white;
+            border-radius: 6px;
+            margin: 10px 5px;
+            text-decoration: none;
+        }
+        .nav-link:hover {
+            background: #0256c7;
+            text-decoration: none;
+        }
+        .timestamp {
+            color: #6a737d;
+            font-size: 0.85em;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e1e4e8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <a href="/docs/index.html" class="nav-link">📚 Documentation Hub</a>
+            <a href="/docs/readme.html" class="nav-link">📖 README</a>
+            <a href="/docs/changelog.html" class="nav-link">📝 Changelog</a>
+            <a href="/docs/warp.html" class="nav-link">⚙️ WARP Rules</a>
+        </nav>
+        <h1>ARCHITECTURE DESIGN</h1>
+        <div class="content">
+<h1>ARCHITECTURE DESIGN DOCUMENT</h1>
+<h2>System Architecture and Design Patterns</h2>
+<br>
+<strong>Document Type:</strong> Architecture Design  
+<strong>Version:</strong> 2.0.0  
+<strong>Last Updated:</strong> October 9, 2025  
+<strong>Status:</strong> Authoritative Architecture Document
+<strong>Consolidation Note:</strong> Merged from CI_CD_CORRECTED_ARCHITECTURE.md and technical sections of WARP.md
+<br>
+<hr>
+<br>
+<h1>CI/CD Corrected Architecture</h1>
+<br>
+<h2>✅ VERIFIED MULTI-PROJECT SETUP</h2>
+<br>
+You have <strong>THREE separate Firebase projects</strong> for proper environment isolation.
+<br>
+<h2>Actual Firebase Setup</h2>
+<br>
+<h3>Firebase Projects</h3>
+<br>
+1. <strong>Development Project</strong>
+   - <strong>Project ID</strong>: <code>assiduous-dev</code>
+   - <strong>Project Number</strong>: 186714044941
+   - <strong>Default URL</strong>: https://assiduous-dev.web.app
+   - <strong>Console</strong>: https://console.firebase.google.com/project/assiduous-dev
+   - <strong>Purpose</strong>: Continuous deployment from <code>main</code> branch
+<br>
+2. <strong>Staging Project</strong>
+   - <strong>Project ID</strong>: <code>assiduous-staging</code>
+   - <strong>Project Number</strong>: 853661742177
+   - <strong>Default URL</strong>: https://assiduous-staging.web.app
+   - <strong>Console</strong>: https://console.firebase.google.com/project/assiduous-staging
+   - <strong>Purpose</strong>: Pre-production testing, requires manual approval
+<br>
+3. <strong>Production Project</strong>
+   - <strong>Project ID</strong>: <code>assiduous-prod</code>
+   - <strong>Project Number</strong>: 9355377564
+   - <strong>Default URL</strong>: https://assiduous-prod.web.app
+   - <strong>Console</strong>: https://console.firebase.google.com/project/assiduous-prod
+   - <strong>Purpose</strong>: Live production, requires version tags + manual approval
+<br>
+<h3>Complete Environment Architecture</h3>
+<br>
+<code></code>`
+┌────────────────────────────────────────────────────────────────┐
+│ LOCAL DEVELOPMENT (Per WARP.md RULE 5)                       │
+├────────────────────────────────────────────────────────────────┤
+│ DEV      → localhost:8081  → environments/dev/             │
+│ TEST     → localhost:8082  → environments/test/            │
+│ STAGING  → localhost:8083  → environments/staging/         │
+└────────────────────────────────────────────────────────────────┘
+                                ↓
+              git push origin main (CI/CD Automated)
+                                ↓
+┌────────────────────────────────────────────────────────────────┐
+│ FIREBASE DEV (Auto-deploy)                                    │
+├────────────────────────────────────────────────────────────────┤
+│ Project: assiduous-dev                                         │
+│ URL: https://assiduous-dev.web.app                            │
+│ Trigger: Push to main branch                                  │
+└────────────────────────────────────────────────────────────────┘
+                                ↓
+          Tag rc-* or manual trigger (Requires Approval)
+                                ↓
+┌────────────────────────────────────────────────────────────────┐
+│ FIREBASE STAGING (Manual approval required)                   │
+├────────────────────────────────────────────────────────────────┤
+│ Project: assiduous-staging                                     │
+│ URL: https://assiduous-staging.web.app                        │
+│ Trigger: Release candidate tags (v<em>-rc</em>) or workflow_dispatch │
+└────────────────────────────────────────────────────────────────┘
+                                ↓
+       Version tag v<em>.</em>.* (Requires Security + Manual Approval)
+                                ↓
+┌────────────────────────────────────────────────────────────────┐
+│ FIREBASE PRODUCTION (Strict controls)                         │
+├────────────────────────────────────────────────────────────────┤
+│ Project: assiduous-prod                                        │
+│ URL: https://assiduous-prod.web.app                            │
+│ Trigger: Semantic version tags (v1.0.0, v2.3.1, etc.)         │
+│ Requirements: Security checks + Manual approval                │
+└────────────────────────────────────────────────────────────────┘
+<code></code>`
+<br>
+<h2>Correct CI/CD Pipeline</h2>
+<br>
+<h3>What SHOULD Happen</h3>
+<br>
+1. <strong>Local Development</strong>
+   <code></code>`bash
+   # Work in DEV environment
+   cd environments/dev/
+   # Make changes
+   
+   # Start local servers
+   ./scripts/dev-server.sh start
+   
+   # Test at localhost:8081 (DEV)
+   # Promote to TEST, test at localhost:8082
+   # Promote to STAGING, test at localhost:8083
+   <code></code>`
+<br>
+2. <strong>Promotion to Production</strong>
+   <code></code>`bash
+   # Promote from STAGING to PROD (copies to firebase-migration-package/)
+   ./scripts/promote.sh staging-to-prod
+   
+   # Commit to GitHub (source of truth)
+   git add .
+   git commit -m "feat: production-ready feature"
+   git push origin main
+   <code></code>`
+<br>
+3. <strong>GitHub Actions Deployment</strong>
+   - GitHub Action detects push to main
+   - Deploys from <code>firebase-migration-package/assiduous-build/</code>
+   - Targets: <code>hosting:assiduousflip</code> (or <code>hosting:prod</code>)
+   - Deploys to: https://assiduous-prod.web.app
+<br>
+<h3>What Should NOT Happen</h3>
+<br>
+❌ <strong>NO</strong> separate Firebase projects for DEV/STAGING  
+❌ <strong>NO</strong> Firebase hosting for DEV/STAGING  
+❌ <strong>NO</strong> GitHub Actions deployment to DEV/STAGING  
+❌ <strong>NO</strong> URLs like <code>assiduous-dev.web.app</code> or <code>assiduous-staging.web.app</code>
+<br>
+<h2>Required Changes</h2>
+<br>
+<h3>1. Simplify GitHub Workflows</h3>
+<br>
+Keep <strong>ONE</strong> production deployment workflow:
+<li>Triggered by: Push to <code>main</code> branch OR version tags</li>
+<li>Deploys to: <code>assiduous-prod</code> project</li>
+<li>Target: <code>hosting:assiduousflip</code></li>
+<li>URL: https://assiduous-prod.web.app</li>
+<br>
+<h3>2. Remove Incorrect Workflows</h3>
+<br>
+Delete or disable:
+<li><code>deploy-dev.yml</code> (DEV is local only)</li>
+<li><code>deploy-staging.yml</code> (STAGING is local only)</li>
+<br>
+<h3>3. Update <code>.firebaserc</code></h3>
+<br>
+Should target the correct hosting site:
+<code></code>`json
+{
+  "projects": {
+    "default": "assiduous-prod"
+  },
+  "targets": {
+    "assiduous-prod": {
+      "hosting": {
+        "prod": ["assiduous-prod"],
+        "assiduousflip": ["assiduousflip"]
+      }
+    }
+  }
+}
+<code></code>`
+<br>
+<h3>4. Update <code>firebase.json</code></h3>
+<br>
+Ensure hosting configuration targets the correct site:
+<code></code>`json
+{
+  "hosting": [
+    {
+      "target": "assiduousflip",
+      "public": "assiduous-build",
+      "ignore": ["firebase.json", "<em></em>/.*", "<strong>/node_modules/</strong>"]
+    }
+  ]
+}
+<code></code>`
+<br>
+<h2>Deployment Commands</h2>
+<br>
+<h3>Manual Deployment (Recommended Initially)</h3>
+<br>
+<code></code>`bash
+cd firebase-migration-package/assiduous-build
+<br>
+<h1>Deploy to assiduousflip site</h1>
+firebase deploy --only hosting:assiduousflip --project assiduous-prod
+<br>
+<h1>Or deploy to prod site</h1>
+firebase deploy --only hosting:prod --project assiduous-prod
+<br>
+<h1>Deploy everything (hosting + Firestore rules)</h1>
+firebase deploy --project assiduous-prod
+<code></code>`
+<br>
+<h3>Automated Deployment (GitHub Actions)</h3>
+<br>
+Should use:
+<code></code>`bash
+firebase deploy \
+  --only hosting:assiduousflip \
+  --project assiduous-prod \
+  --token "$FIREBASE_TOKEN" \
+  --non-interactive
+<code></code>`
+<br>
+<h2>Verification</h2>
+<br>
+After deployment, check:
+<li>✅ https://assiduous-prod.web.app/ (should return 200)</li>
+<li>✅ https://assiduous-prod.web.app/admin/dashboard.html (should load)</li>
+<li>✅ Browser console has no errors</li>
+<li>✅ All pages accessible</li>
+<br>
+<h2>Rollback Strategy</h2>
+<br>
+If deployment fails:
+1. Check Firebase Console deployment history
+2. Roll back using Firebase hosting versions
+3. Or redeploy previous Git commit
+<br>
+<h2>Summary</h2>
+<br>
+<strong>The ONLY environment that touches Firebase is PRODUCTION.</strong>  
+<strong>DEV, TEST, and STAGING are all local-only environments.</strong>  
+<strong>You have ONE Firebase project with TWO hosting sites.</strong>  
+<strong>GitHub Actions should ONLY deploy to the production Firebase project.</strong>
+<br>
+<br>
+<hr>
+<h1>Firebase Multi-Environment Architecture</h1>
+<hr>
+<br>
+<h1>Firebase Multi-Environment Setup Guide</h1>
+<br>
+<strong>Last Updated:</strong> October 8, 2025  
+<strong>Author:</strong> Assiduous Development Team  
+<strong>Status:</strong> Production-Ready
+<br>
+<hr>
+<br>
+<h2>Table of Contents</h2>
+<br>
+1. [Overview](#overview)
+2. [Architecture](#architecture)
+3. [Firebase Projects](#firebase-projects)
+4. [Initial Setup](#initial-setup)
+5. [Development Workflow](#development-workflow)
+6. [Deployment Process](#deployment-process)
+7. [Environment Configuration](#environment-configuration)
+8. [Troubleshooting](#troubleshooting)
+9. [Cost Analysis](#cost-analysis)
+10. [Best Practices](#best-practices)
+<br>
+<hr>
+<br>
+<h2>Overview</h2>
+<br>
+Assiduous uses a <strong>multi-project Firebase architecture</strong> with three isolated Firebase projects to ensure safe, reliable deployments with complete backend isolation.
+<br>
+<h3>Why Multi-Project Architecture?</h3>
+<br>
+✅ <strong>Backend Isolation</strong> - Each environment has its own Firestore, Auth, Functions, Storage  
+✅ <strong>Safe Testing</strong> - Test destructive operations without affecting production  
+✅ <strong>Production Parity</strong> - Test with real Firebase services, not emulators  
+✅ <strong>Cost Effective</strong> - DEV on free tier, minimal staging costs  
+✅ <strong>Team Collaboration</strong> - Shared environments for testing  
+<br>
+<hr>
+<br>
+<h2>Architecture</h2>
+<br>
+<code></code>`
+┌─────────────────────────────────────────────────────────────┐
+│                    DEPLOYMENT PIPELINE                       │
+├─────────────────────────────────────────────────────────────┤
+│                                                              │
+│  LOCAL DEVELOPMENT                                          │
+│  └─ Directory: firebase-migration-package/assiduous-build/  │
+│  └─ URL: http://localhost:8080                              │
+│  └─ Testing: Frontend only, no backend                      │
+│                                                              │
+│           ↓ (Deploy with ./deploy.sh dev)                   │
+│                                                              │
+│  FIREBASE DEV (assiduous-dev)                               │
+│  └─ URL: https://assiduous-dev.web.app                      │
+│  └─ Plan: Spark (Free)                                      │
+│  └─ Testing: Full stack with isolated backend               │
+│  └─ Data: Test/synthetic data                               │
+│                                                              │
+│           ↓ (Deploy with ./deploy.sh staging)               │
+│                                                              │
+│  FIREBASE STAGING (assiduous-staging)                       │
+│  └─ URL: https://assiduous-staging.web.app                  │
+│  └─ Plan: Blaze (Pay-as-you-go)                             │
+│  └─ Testing: Production-like validation                     │
+│  └─ Data: Production-like dataset                           │
+│                                                              │
+│           ↓ (Commit to GitHub)                              │
+│                                                              │
+│  GITHUB MAIN BRANCH                                         │
+│  └─ Source of Truth for Production                          │
+│                                                              │
+│           ↓ (Deploy with ./deploy.sh production)            │
+│                                                              │
+│  FIREBASE PRODUCTION (assiduous-prod)                       │
+│  └─ URL: https://assiduous-prod.web.app                      │
+│  └─ Plan: Blaze (Pay-as-you-go)                             │
+│  └─ Testing: Live production                                │
+│  └─ Data: Real user data                                    │
+│                                                              │
+└─────────────────────────────────────────────────────────────┘
+<code></code>`
+<br>
+<hr>
+<br>
+<h2>Firebase Projects</h2>
+<br>
+<h3>1. assiduous-dev (Development)</h3>
+<li><strong>Project ID:</strong> <code>assiduous-dev</code></li>
+<li><strong>Project Number:</strong> <code>186714044941</code></li>
+<li><strong>Hosting URL:</strong> https://assiduous-dev.web.app</li>
+<li><strong>Billing Plan:</strong> Spark (Free)</li>
+<li><strong>Purpose:</strong> Active feature development with real Firebase backend</li>
+<li><strong>Data:</strong> Test/synthetic data, safe to reset</li>
+<li><strong>Who Uses:</strong> Developers testing new features</li>
+<br>
+<h3>2. assiduous-staging (Staging)</h3>
+<li><strong>Project ID:</strong> <code>assiduous-staging</code></li>
+<li><strong>Project Number:</strong> <code>853661742177</code></li>
+<li><strong>Hosting URL:</strong> https://assiduous-staging.web.app</li>
+<li><strong>Billing Plan:</strong> Blaze (Pay-as-you-go, ~$5-10/month)</li>
+<li><strong>Purpose:</strong> Pre-production validation with production-like config</li>
+<li><strong>Data:</strong> Production-like dataset (anonymized if needed)</li>
+<li><strong>Who Uses:</strong> QA, stakeholders, final testing before production</li>
+<br>
+<h3>3. assiduous-prod (Production)</h3>
+<li><strong>Project ID:</strong> <code>assiduous-prod</code></li>
+<li><strong>Project Number:</strong> <code>9355377564</code></li>
+<li><strong>Hosting URL:</strong> https://assiduous-prod.web.app</li>
+<li><strong>Billing Plan:</strong> Blaze (Pay-as-you-go, varies with usage)</li>
+<li><strong>Purpose:</strong> Live production with real users</li>
+<li><strong>Data:</strong> Real user data</li>
+<li><strong>Who Uses:</strong> End users, customers</li>
+<br>
+<hr>
+<br>
+<h2>Initial Setup</h2>
+<br>
+<h3>Prerequisites</h3>
+<br>
+1. <strong>Firebase CLI Installed:</strong>
+   <code></code>`bash
+   npm install -g firebase-tools
+   <code></code>`
+<br>
+2. <strong>Authenticated with Firebase:</strong>
+   <code></code>`bash
+   firebase login
+   <code></code>`
+<br>
+3. <strong>Google Cloud SDK (optional but recommended):</strong>
+   <code></code>`bash
+   brew install google-cloud-sdk  # macOS
+   gcloud auth login
+   <code></code>`
+<br>
+<h3>Verify Projects</h3>
+<br>
+<code></code>`bash
+<h1>List all Firebase projects</h1>
+firebase projects:list
+<br>
+<h1>Should show:</h1>
+<h1>- assiduous-dev</h1>
+<h1>- assiduous-staging</h1>
+<h1>- assiduous-prod</h1>
+<code></code>`
+<br>
+<h3>Project Configuration</h3>
+<br>
+The <code>.firebaserc</code> file in <code>firebase-migration-package/</code> configures all three projects:
+<br>
+<code></code>`json
+{
+  "projects": {
+    "default": "assiduous-prod",
+    "dev": "assiduous-dev",
+    "staging": "assiduous-staging",
+    "production": "assiduous-prod"
+  }
+}
+<code></code>`
+<br>
+<hr>
+<br>
+<h2>Development Workflow</h2>
+<br>
+<h3>Step 1: Local Development</h3>
+<br>
+1. <strong>Make changes</strong> in <code>firebase-migration-package/assiduous-build/</code>
+<br>
+2. <strong>Start local server:</strong>
+   <code></code>`bash
+   cd firebase-migration-package/assiduous-build
+   python -m http.server 8080
+   <code></code>`
+<br>
+3. <strong>Test at:</strong> http://localhost:8080
+<br>
+4. <strong>Run QA/QC:</strong>
+   - Open browser DevTools Console
+   - Check for JavaScript errors
+   - Test all user workflows
+   - Verify mobile responsiveness
+<br>
+<h3>Step 2: Deploy to DEV</h3>
+<br>
+1. <strong>Navigate to deployment directory:</strong>
+   <code></code>`bash
+   cd firebase-migration-package
+   <code></code>`
+<br>
+2. <strong>Deploy to DEV:</strong>
+   <code></code>`bash
+   ./deploy.sh dev
+   <code></code>`
+<br>
+3. <strong>Test at:</strong> https://assiduous-dev.web.app
+<br>
+4. <strong>Validate Firebase backend:</strong>
+   - Test user authentication
+   - Verify Firestore database operations
+   - Check Cloud Functions responses
+   - Test Cloud Storage operations
+<br>
+<h3>Step 3: Deploy to STAGING</h3>
+<br>
+1. <strong>Ensure DEV testing passed</strong>
+<br>
+2. <strong>Deploy to STAGING:</strong>
+   <code></code>`bash
+   ./deploy.sh staging
+   <code></code>`
+<br>
+3. <strong>Test at:</strong> https://assiduous-staging.web.app
+<br>
+4. <strong>Final validation:</strong>
+   - Complete end-to-end user workflows
+   - Performance testing
+   - Production-like data testing
+   - Take screenshots for documentation
+<br>
+<h3>Step 4: Commit to GitHub</h3>
+<br>
+1. <strong>Verify staging success</strong>
+<br>
+2. <strong>Commit changes:</strong>
+   <code></code>`bash
+   cd ../..  # Back to project root
+   git add .
+   git commit -m "feat: add new feature"
+   git push origin main
+   <code></code>`
+<br>
+3. <strong>Tag if major release:</strong>
+   <code></code>`bash
+   git tag -a v1.0.0 -m "Release 1.0.0"
+   git push --tags
+   <code></code>`
+<br>
+<h3>Step 5: Deploy to Production</h3>
+<br>
+1. <strong>Ensure code is in GitHub</strong>
+<br>
+2. <strong>Deploy to production:</strong>
+   <code></code>`bash
+   cd firebase-migration-package
+   ./deploy.sh production
+   <code></code>`
+<br>
+3. <strong>Type confirmation:</strong> <code>DEPLOY TO PRODUCTION</code>
+<br>
+4. <strong>Verify at:</strong> https://assiduous-prod.web.app
+<br>
+5. <strong>Post-deployment:</strong>
+   - Run smoke tests
+   - Monitor Firebase Console logs
+   - Check error rates
+   - Verify analytics
+<br>
+<hr>
+<br>
+<h2>Deployment Process</h2>
+<br>
+<h3>Using the deploy.sh Script</h3>
+<br>
+The <code>deploy.sh</code> script handles all deployments with built-in safety checks.
+<br>
+<strong>Basic Usage:</strong>
+<code></code>`bash
+./deploy.sh &lt;environment&gt;
+<code></code>`
+<br>
+<strong>Examples:</strong>
+<code></code>`bash
+<h1>Deploy to development</h1>
+./deploy.sh dev
+<br>
+<h1>Deploy to staging (requires confirmation)</h1>
+./deploy.sh staging
+<br>
+<h1>Deploy to production (requires typing 'DEPLOY TO PRODUCTION')</h1>
+./deploy.sh production
+<code></code>`
+<br>
+<h3>Deployment Script Features</h3>
+<br>
+✅ <strong>Pre-deployment checks:</strong>
+<li>Firebase CLI installed</li>
+<li>User authenticated</li>
+<li>Build directory exists</li>
+<li>Git status clean (for production)</li>
+<br>
+✅ <strong>Environment-specific validations:</strong>
+<li>DEV: High safety (no confirmation)</li>
+<li>STAGING: Medium safety (requires confirmation)</li>
+<li>PRODUCTION: Low safety (requires explicit confirmation text)</li>
+<br>
+✅ <strong>Post-deployment verification:</strong>
+<li>HTTP 200 response check</li>
+<li>Deployment success confirmation</li>
+<li>URL display for verification</li>
+<br>
+<h3>Manual Deployment (Not Recommended)</h3>
+<br>
+<code></code>`bash
+<h1>Deploy manually to specific project</h1>
+firebase deploy --project dev --only hosting
+firebase deploy --project staging --only hosting
+firebase deploy --project production --only hosting
+<code></code>`
+<br>
+<hr>
+<br>
+<h2>Environment Configuration</h2>
+<br>
+<h3>Automatic Environment Detection</h3>
+<br>
+The <code>firebase-config.js</code> file automatically detects the environment based on hostname:
+<br>
+<code></code>`javascript
+// firebase-migration-package/assiduous-build/assets/js/config/firebase-config.js
+<br>
+function detectEnvironment() {
+  const hostname = window.location.hostname;
+  
+  // Local development
+  if (hostname === 'localhost' || hostname === '127.0.0.1') {
+    return 'development';
+  }
+  
+  // Development environment
+  if (hostname.includes('assiduous-dev.web.app')) {
+    return 'development';
+  }
+  
+  // Staging environment
+  if (hostname.includes('assiduous-staging.web.app')) {
+    return 'staging';
+  }
+  
+  // Production environment (default)
+  return 'production';
+}
+<code></code>`
+<br>
+<h3>Using Environment-Specific Configs</h3>
+<br>
+<code></code>`javascript
+// Get the appropriate Firebase config for current environment
+const firebaseConfig = getFirebaseConfig();
+<br>
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+<br>
+// Check environment
+if (isProduction()) {
+  // Production-specific code
+  console.log('Running in PRODUCTION');
+} else if (isStaging()) {
+  // Staging-specific code
+  console.log('Running in STAGING');
+} else {
+  // Development-specific code
+  console.log('Running in DEVELOPMENT');
+}
+<code></code>`
+<br>
+<h3>Environment-Specific API Keys</h3>
+<br>
+<strong>IMPORTANT:</strong> Each environment uses its own Firebase API keys.
+<br>
+To get API keys for DEV and STAGING:
+<br>
+1. Go to Firebase Console
+2. Select project (assiduous-dev or assiduous-staging)
+3. Go to Project Settings → General
+4. Under "Your apps" → Web app → Config
+5. Copy the config values
+6. Update <code>firebase-config.js</code> with the correct values
+<br>
+<strong>Security Note:</strong> API keys for Firebase web apps are safe to commit to GitHub. They are designed to be public and are protected by Firebase Security Rules.
+<br>
+<hr>
+<br>
+<h2>Troubleshooting</h2>
+<br>
+<h3>Common Issues</h3>
+<br>
+#### 1. "Permission Denied" Error
+<br>
+<strong>Problem:</strong> Cannot deploy to Firebase project
+<br>
+<strong>Solution:</strong>
+<code></code>`bash
+<h1>Re-authenticate</h1>
+firebase login --reauth
+<br>
+<h1>Verify project access</h1>
+firebase projects:list
+<br>
+<h1>Check current project</h1>
+firebase use
+<code></code>`
+<br>
+#### 2. "Build Directory Not Found"
+<br>
+<strong>Problem:</strong> <code>assiduous-build</code> directory missing
+<br>
+<strong>Solution:</strong>
+<code></code>`bash
+<h1>Verify directory exists</h1>
+ls -la firebase-migration-package/assiduous-build
+<br>
+<h1>If missing, ensure you're in correct directory</h1>
+pwd  # Should show: .../assiduous/firebase-migration-package
+<code></code>`
+<br>
+#### 3. "Rate Limit Exceeded" (429 Error)
+<br>
+<strong>Problem:</strong> Too many Firebase API requests
+<br>
+<strong>Solution:</strong>
+<code></code>`bash
+<h1>Wait 60 seconds and retry</h1>
+sleep 60
+./deploy.sh dev
+<code></code>`
+<br>
+#### 4. Environment Detection Not Working
+<br>
+<strong>Problem:</strong> Wrong Firebase config being used
+<br>
+<strong>Solution:</strong>
+1. Open browser DevTools Console
+2. Check which environment is detected
+3. Verify URL matches expected environment
+4. Clear browser cache if needed
+<br>
+#### 5. Deployment Succeeds but Site Shows Old Version
+<br>
+<strong>Problem:</strong> Browser cache or CDN cache
+<br>
+<strong>Solution:</strong>
+<code></code>`bash
+<h1>Hard refresh browser</h1>
+<h1>Chrome/Firefox: Cmd+Shift+R (Mac) or Ctrl+Shift+R (Windows)</h1>
+<br>
+<h1>Or clear Firebase hosting cache</h1>
+firebase hosting:channel:deploy preview --expires 1h
+<code></code>`
+<br>
+<hr>
+<br>
+<h2>Cost Analysis</h2>
+<br>
+<h3>Monthly Cost Breakdown</h3>
+<br>
+| Environment | Plan | Hosting | Firestore | Functions | Storage | Total |
+|-------------|------|---------|-----------|-----------|---------|-------|
+| <strong>DEV</strong> | Spark (Free) | Free (1GB) | Free | Free | Free (5GB) | <strong>$0</strong> |
+| <strong>STAGING</strong> | Blaze (PAYG) | ~$0.50 | ~$2 | ~$1 | ~$1.50 | <strong>~$5</strong> |
+| <strong>PROD</strong> | Blaze (PAYG) | Varies | Varies | Varies | Varies | <strong>Varies</strong> |
+<br>
+<strong>Total Additional Cost for Multi-Environment:</strong> ~$5/month
+<br>
+<h3>Cost Optimization Tips</h3>
+<br>
+1. <strong>Use DEV for most testing</strong> (free tier)
+2. <strong>Limit STAGING usage</strong> to final validation only
+3. <strong>Set up budget alerts</strong> in Firebase Console
+4. <strong>Clean up old data</strong> in DEV/STAGING regularly
+5. <strong>Use Firebase Local Emulator</strong> for unit testing (completely free)
+<br>
+<hr>
+<br>
+<h2>Best Practices</h2>
+<br>
+<h3>✅ DO</h3>
+<br>
+<li><strong>Always test locally first</strong> before deploying to Firebase</li>
+<li><strong>Deploy to DEV first</strong> for backend testing</li>
+<li><strong>Test in STAGING</strong> before production deployment</li>
+<li><strong>Commit to GitHub</strong> before deploying to production</li>
+<li><strong>Use environment-specific configs</strong> (never hardcode environment values)</li>
+<li><strong>Monitor Firebase Console</strong> after production deploys</li>
+<li><strong>Document changes</strong> in commit messages</li>
+<li><strong>Take screenshots</strong> in staging for documentation</li>
+<li><strong>Run smoke tests</strong> after production deploy</li>
+<li><strong>Keep DEV data realistic</strong> but not sensitive</li>
+<br>
+<h3>❌ DON'T</h3>
+<br>
+<li><strong>Don't skip environments</strong> (LOCAL → PROD is forbidden)</li>
+<li><strong>Don't deploy to production with known bugs</strong></li>
+<li><strong>Don't use production API keys</strong> in dev/staging code</li>
+<li><strong>Don't edit production Firestore</strong> directly without backup</li>
+<li><strong>Don't bypass approval gates</strong> for production</li>
+<li><strong>Don't deploy without testing</strong> in at least STAGING</li>
+<li><strong>Don't use real user data</strong> in DEV environment</li>
+<li><strong>Don't ignore Firebase Console errors</strong> after deployment</li>
+<li><strong>Don't make emergency changes</strong> without following hotfix process</li>
+<li><strong>Don't commit Firebase service account keys</strong> to GitHub</li>
+<br>
+<hr>
+<br>
+<h2>Quick Reference</h2>
+<br>
+<h3>Deployment Commands</h3>
+<br>
+<code></code>`bash
+<h1>Development</h1>
+cd firebase-migration-package &amp;&amp; ./deploy.sh dev
+<br>
+<h1>Staging</h1>
+cd firebase-migration-package &amp;&amp; ./deploy.sh staging
+<br>
+<h1>Production</h1>
+cd firebase-migration-package &amp;&amp; ./deploy.sh production
+<code></code>`
+<br>
+<h3>Environment URLs</h3>
+<br>
+<li><strong>Local:</strong> http://localhost:8080</li>
+<li><strong>DEV:</strong> https://assiduous-dev.web.app</li>
+<li><strong>STAGING:</strong> https://assiduous-staging.web.app</li>
+<li><strong>PRODUCTION:</strong> https://assiduous-prod.web.app</li>
+<br>
+<h3>Firebase Console Links</h3>
+<br>
+<li><strong>DEV:</strong> https://console.firebase.google.com/project/assiduous-dev</li>
+<li><strong>STAGING:</strong> https://console.firebase.google.com/project/assiduous-staging</li>
+<li><strong>PRODUCTION:</strong> https://console.firebase.google.com/project/assiduous-prod</li>
+<br>
+<h3>Support</h3>
+<br>
+For issues or questions:
+1. Check this documentation
+2. Review WARP.md Rule 5
+3. Check Firebase Console logs
+4. Contact development team
+<br>
+<hr>
+<br>
+<strong>Document Version:</strong> 1.0.0  
+<strong>Last Reviewed:</strong> October 8, 2025  
+<strong>Next Review:</strong> Monthly or as needed
+        </div>
+        <div class="timestamp">
+            Last updated: 2025-10-11 11:14:17
+        </div>
+    </div>
+</body>
+</html>

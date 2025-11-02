@@ -1,0 +1,23 @@
+{
+  "projects": {
+    "staging": "assiduous-staging",
+    "production": "assiduous-prod"
+  },
+  "targets": {
+    "assiduous-prod": {
+      "hosting": {
+        "prod": [
+          "assiduous-prod"
+        ]
+      }
+    },
+    "assiduous-staging": {
+      "hosting": {
+        "prod": [
+          "assiduous-staging"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}

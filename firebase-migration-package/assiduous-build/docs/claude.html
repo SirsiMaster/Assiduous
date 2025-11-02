@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>claude - Assiduous Documentation</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3, h4, h5, h6 {
+            margin-top: 24px;
+            margin-bottom: 16px;
+            font-weight: 600;
+            line-height: 1.25;
+        }
+        h1 { font-size: 2em; border-bottom: 1px solid #e1e4e8; padding-bottom: 0.3em; }
+        h2 { font-size: 1.5em; border-bottom: 1px solid #e1e4e8; padding-bottom: 0.3em; }
+        h3 { font-size: 1.25em; }
+        code {
+            background: #f6f8fa;
+            padding: 0.2em 0.4em;
+            border-radius: 3px;
+            font-size: 85%;
+        }
+        pre {
+            background: #f6f8fa;
+            padding: 16px;
+            overflow: auto;
+            border-radius: 6px;
+            line-height: 1.45;
+        }
+        pre code {
+            background: transparent;
+            padding: 0;
+        }
+        ul, ol {
+            padding-left: 2em;
+            margin-bottom: 16px;
+        }
+        li {
+            margin-bottom: 4px;
+        }
+        a {
+            color: #0366d6;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        blockquote {
+            padding: 0 1em;
+            color: #6a737d;
+            border-left: 0.25em solid #dfe2e5;
+            margin: 0 0 16px 0;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 16px;
+        }
+        table th, table td {
+            padding: 6px 13px;
+            border: 1px solid #dfe2e5;
+        }
+        table tr:nth-child(2n) {
+            background-color: #f6f8fa;
+        }
+        .nav-link {
+            display: inline-block;
+            padding: 8px 16px;
+            background: #0366d6;
+            color: white;
+            border-radius: 6px;
+            margin: 10px 5px;
+            text-decoration: none;
+        }
+        .nav-link:hover {
+            background: #0256c7;
+            text-decoration: none;
+        }
+        .timestamp {
+            color: #6a737d;
+            font-size: 0.85em;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e1e4e8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <a href="/docs/index.html" class="nav-link">📚 Documentation Hub</a>
+            <a href="/docs/readme.html" class="nav-link">📖 README</a>
+            <a href="/docs/changelog.html" class="nav-link">📝 Changelog</a>
+            <a href="/docs/warp.html" class="nav-link">⚙️ WARP Rules</a>
+        </nav>
+        <h1>claude</h1>
+        <div class="content">
+<h1>Claude AI Context for Assiduous Project</h1>
+<br>
+<h2>Project Overview</h2>
+Assiduous is an AI-powered real estate platform for micro-flipping with multiple user portals (Client, Agent, Admin).
+<br>
+<h2>Current State (October 10, 2025)</h2>
+<li><strong>Project Started</strong>: August 10, 2025</li>
+<li><strong>Overall Completion</strong>: ~40%</li>
+<li><strong>Latest Work</strong>: Unified authentication system and consistent styling across all portals</li>
+<br>
+<h2>Recent Updates (October 9-10, 2025)</h2>
+<h3>Authentication System</h3>
+<li>Implemented unified SirsiAuth component for all portals</li>
+<li>Created AuthGuard middleware for role-based access control</li>
+<li>Set up Firebase Authentication with role claims</li>
+<li>Test accounts created for all user types</li>
+<br>
+<h3>Portal Development</h3>
+<li><strong>Admin Portal</strong>: Fully functional with properties, agents, clients management</li>
+<li><strong>Agent Portal</strong>: Dashboard implemented with universal auth</li>
+<li><strong>Client Portal</strong>: Dashboard and deal analyzer deployed with consistent styling</li>
+<br>
+<h3>Styling Consistency Fix (October 10, 2025)</h3>
+<li>Removed custom purple gradient styling from client portal</li>
+<li>Implemented universal header component across all dashboards</li>
+<li>Applied Assiduous design system CSS variables</li>
+<li>Created comprehensive style guide documentation at <code>/firebase-migration-package/assiduous-build/docs/STYLE_GUIDE.md</code></li>
+<li>Updated client dashboard.html and deal-analyzer.html to use consistent styling</li>
+<li>Successfully deployed to production at https://assiduous-prod.web.app</li>
+<br>
+<h2>Critical Files &amp; Locations</h2>
+<br>
+<h3>Authentication</h3>
+<li><code>/components/sirsi-auth.js</code> - Main authentication component</li>
+<li><code>/components/auth-guard.js</code> - Role-based access control</li>
+<li><code>/components/universal-header.js</code> - Dynamic header component</li>
+<br>
+<h3>CSS Design System</h3>
+<li><code>/css/assiduous.css</code> - Main design system</li>
+<li><code>/css/admin-layout.css</code> - Layout styles</li>
+<li><code>/css/button-override.css</code> - Button styles</li>
+<li><code>/css/sirsimaster-ui.css</code> - UI components</li>
+<br>
+<h3>Portal Pages</h3>
+<li><code>/admin/</code> - Admin portal (dashboard, properties, agents, clients)</li>
+<li><code>/agent/</code> - Agent portal (dashboard)</li>
+<li><code>/client/</code> - Client portal (dashboard, deal-analyzer)</li>
+<br>
+<h3>Documentation</h3>
+<li><code>/firebase-migration-package/assiduous-build/docs/STYLE_GUIDE.md</code> - Styling standards</li>
+<li><code>/CHANGELOG.md</code> - Project history</li>
+<li><code>/README.md</code> - Main documentation</li>
+<br>
+<h2>Development Standards</h2>
+<br>
+<h3>CSS Rules (MANDATORY)</h3>
+1. <strong>NEVER hardcode colors</strong> - Use CSS variables (e.g., <code>var(--sky)</code>, not <code>#3b82f6</code>)
+2. <strong>NEVER hardcode spacing</strong> - Use spacing variables (e.g., <code>var(--space-md)</code>, not <code>16px</code>)
+3. <strong>ALWAYS use design system</strong> - Import all required CSS files
+4. <strong>ALWAYS use universal header</strong> - For consistent navigation
+<br>
+<h3>Required CSS Imports for New Pages</h3>
+<code></code>`html
+&lt;link rel="stylesheet" href="/css/assiduous.css"&gt;
+&lt;link rel="stylesheet" href="/css/admin-layout.css"&gt;
+&lt;link rel="stylesheet" href="/css/button-override.css"&gt;
+&lt;link rel="stylesheet" href="/css/sirsimaster-ui.css"&gt;
+<code></code>`
+<br>
+<h3>Universal Header Implementation</h3>
+<code></code>`html
+&lt;header id="universal-header-root" 
+        data-user-name="" 
+        data-user-role="client|agent|admin"
+        data-user-email=""
+        data-current-page="Page Name"&gt;
+&lt;/header&gt;
+&lt;script src="/components/universal-header.js"&gt;&lt;/script&gt;
+<code></code>`
+<br>
+<h2>Firebase Configuration</h2>
+<li><strong>Production</strong>: assiduous-prod (Firebase Project)</li>
+<li><strong>Hosting</strong>: assiduous-prod.web.app</li>
+<li><strong>Deploy Command</strong>: <code>firebase deploy --only hosting:production</code></li>
+<br>
+<h2>Common Issues &amp; Solutions</h2>
+<br>
+<h3>Problem: Inconsistent Styling</h3>
+<strong>Solution</strong>: Check that all required CSS files are imported and no custom styles are hardcoded
+<br>
+<h3>Problem: Authentication Not Working</h3>
+<strong>Solution</strong>: Ensure SirsiAuth is initialized and AuthGuard is protecting the route
+<br>
+<h3>Problem: Build Failures</h3>
+<strong>Solution</strong>: Deploy static files directly with Firebase, not through npm build
+<br>
+<h2>Test Accounts</h2>
+<li><strong>Admin</strong>: admin@assiduous.ai / Admin123!</li>
+<li><strong>Agent</strong>: agent@assiduous.ai / Agent123!</li>
+<li><strong>Client</strong>: client@assiduous.ai / Client123!</li>
+<br>
+<h2>Next Development Priorities</h2>
+1. Complete agent portal features (properties, leads, transactions)
+2. Implement client property search and portfolio management
+3. Add micro-flipping deal flow automation
+4. Integrate AI property analysis
+5. Set up payment processing
+<br>
+<h2>Important Notes</h2>
+<li>Always check this file before starting work</li>
+<li>Update this file after significant changes</li>
+<li>Verify CSS variable usage in all new code</li>
+<li>Test across all three portals after changes</li>
+<li>Deploy to production only after testing</li>
+<br>
+<h2>Contact</h2>
+<li>Project Lead: SirsiMaster</li>
+<li>Platform: Assiduous Real Estate</li>
+<li>Domain: assiduousflip.com / assiduous-prod.web.app</li>
+<br>
+Last Updated: October 10, 2025 04:58 UTC
+        </div>
+        <div class="timestamp">
+            Last updated: 2025-10-11 11:14:17
+        </div>
+    </div>
+</body>
+</html>

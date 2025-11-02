@@ -1,0 +1,377 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e3]:
+      - link "AssiduousFlip" [ref=e4] [cursor=pointer]:
+        - /url: /
+      - navigation [ref=e5]:
+        - link "Features" [ref=e6] [cursor=pointer]:
+          - /url: "#features"
+        - link "Properties" [ref=e7] [cursor=pointer]:
+          - /url: "#deals"
+        - link "Insights" [ref=e8] [cursor=pointer]:
+          - /url: "#insights"
+        - link "About" [ref=e9] [cursor=pointer]:
+          - /url: "#about"
+        - generic [ref=e10]:
+          - link "Sign In" [ref=e11] [cursor=pointer]:
+            - /url: "#"
+          - link "Get Started Free" [ref=e12] [cursor=pointer]:
+            - /url: "#"
+  - generic [ref=e14]:
+    - generic [ref=e15]:
+      - heading "Welcome Back" [level=3] [ref=e16]
+      - button "Close" [ref=e17] [cursor=pointer]:
+        - img [ref=e18]
+    - paragraph [ref=e20]: Sign in to access your dashboard and tools.
+    - generic [ref=e21]: "Firebase: Error (auth/invalid-credential)."
+    - generic [ref=e22]:
+      - generic [ref=e23]:
+        - textbox "Email, Username, or Account ID" [ref=e24]: agent@assiduousrealty.com
+        - generic [ref=e25]: Enter your email, username, or account ID (ACCT-YYYY-NNNNNN)
+      - textbox "Password" [ref=e26]: "@QXYbuV5oq"
+      - generic [ref=e27]:
+        - checkbox "Remember me" [ref=e28]
+        - generic [ref=e29] [cursor=pointer]: Remember me
+      - button "Sign In →" [ref=e30] [cursor=pointer]
+    - generic [ref=e31]:
+      - paragraph [ref=e32]:
+        - text: Don't have an account?
+        - link "Sign up" [ref=e33] [cursor=pointer]:
+          - /url: "#"
+      - paragraph [ref=e34]:
+        - link "Forgot password?" [ref=e35] [cursor=pointer]:
+          - /url: "#"
+  - generic [ref=e36]:
+    - generic [ref=e40]:
+      - generic [ref=e43]: $2.4B+ in Successful Flips
+      - heading "Flip Properties Like a Pro. Even If You've Never Done It." [level=1] [ref=e44]:
+        - text: Flip Properties Like a Pro.
+        - text: Even If You've Never Done It.
+      - paragraph [ref=e45]: Our intelligent algorithms analyze your finances, location, and goals to find perfect flip opportunities. We handle the complex analysis, legal verification, and deal structuring — you just approve and profit.
+      - generic [ref=e46]:
+        - link "Browse Properties" [ref=e47] [cursor=pointer]:
+          - /url: "#deals"
+          - img [ref=e48]
+          - text: Browse Properties
+        - link "Watch Demo" [ref=e50] [cursor=pointer]:
+          - /url: "#demo"
+          - img [ref=e51]
+          - text: Watch Demo
+    - group "Key performance stats" [ref=e53]:
+      - generic [ref=e54]:
+        - generic [ref=e55]:
+          - generic [ref=e56]: 87%
+          - generic [ref=e57]: First-Time Success Rate
+        - generic [ref=e58]:
+          - generic [ref=e59]: $47K
+          - generic [ref=e60]: Avg. Profit Per Flip
+        - generic [ref=e61]:
+          - generic [ref=e62]: 45 Days
+          - generic [ref=e63]: Avg. Flip Time
+        - generic [ref=e64]:
+          - generic [ref=e65]: Zero
+          - generic [ref=e66]: Experience Required
+  - generic [ref=e68]:
+    - paragraph [ref=e69]: FEATURED IN
+    - generic [ref=e70]:
+      - generic [ref=e71]: Philadelphia Inquirer
+      - generic [ref=e72]: Bloomberg
+      - generic [ref=e73]: Forbes
+      - generic [ref=e74]: THE WALL STREET JOURNAL
+      - generic [ref=e75]: TechCrunch
+    - generic [ref=e76]:
+      - paragraph [ref=e77]: TRUSTED BY LEADING REAL ESTATE PROFESSIONALS
+      - generic [ref=e78]:
+        - generic [ref=e79]:
+          - generic [ref=e80]: 12,847+
+          - generic [ref=e81]: Active Flippers
+        - generic [ref=e82]:
+          - generic [ref=e83]: $2.4B+
+          - generic [ref=e84]: Properties Flipped
+        - generic [ref=e85]:
+          - generic [ref=e86]: 4.9/5
+          - generic [ref=e87]: User Rating
+        - generic [ref=e88]:
+          - generic [ref=e89]: 24/7
+          - generic [ref=e90]: Expert Support
+  - generic [ref=e92]:
+    - generic [ref=e94]:
+      - img "Philadelphia row homes" [ref=e95]
+      - img "Chester County farmhouse" [ref=e96]
+      - img "Delaware suburban home" [ref=e97]
+      - img "Philadelphia row homes" [ref=e98]
+    - generic [ref=e99]:
+      - generic [ref=e100]: How It Works
+      - heading "From Zero Experience To Profitable Flips in 45 Days" [level=2] [ref=e101]:
+        - text: From Zero Experience
+        - text: To Profitable Flips in 45 Days
+      - paragraph [ref=e102]: Our proprietary system analyzes millions of data points to match you with properties that fit your budget, timeline, and profit goals — no experience required.
+    - generic [ref=e105]:
+      - generic [ref=e106]:
+        - generic [ref=e108]: "1"
+        - heading "Profile Analysis" [level=3] [ref=e109]
+        - paragraph [ref=e110]: Tell us your budget, location in the Philly metro area, and goals. Our algorithms instantly match you with properties in Bucks, Montgomery, Chester, and Delaware counties.
+      - generic [ref=e111]:
+        - generic [ref=e113]: "2"
+        - heading "Smart Matching" [level=3] [ref=e114]
+        - paragraph [ref=e115]: We find undervalued properties from $150K-$400K in neighborhoods like Fishtown, Manayunk, and Media with proven flip potential and 20%+ profit margins.
+      - generic [ref=e116]:
+        - generic [ref=e118]: "3"
+        - heading "Execute & Profit" [level=3] [ref=e119]
+        - paragraph [ref=e120]: Our network of licensed PA contractors and real estate pros help you flip properties from Rittenhouse to King of Prussia, averaging $45K profit in 60 days.
+  - generic [ref=e121]:
+    - img [ref=e122]
+    - generic [ref=e124]:
+      - generic [ref=e125]: Live Opportunities
+      - heading "The Only Tools You Need To Start Flipping Today" [level=2] [ref=e126]:
+        - text: The Only Tools You Need
+        - text: To Start Flipping Today
+      - paragraph [ref=e127]: Our proprietary algorithms handle the complex technical, legal, and financial analysis so you can focus on approving deals and collecting profits — even as a complete beginner.
+    - generic [ref=e128]:
+      - generic [ref=e129]:
+        - img [ref=e131]
+        - heading "Personal Deal Finder" [level=3] [ref=e135]
+        - paragraph [ref=e136]: Our matching engine analyzes your finances, location, and risk tolerance to surface only properties with 15%+ profit margins that fit your exact situation.
+        - link "Learn more →" [ref=e137] [cursor=pointer]:
+          - /url: "#"
+      - generic [ref=e138]:
+        - img [ref=e140]:
+          - generic [ref=e143]: $$$
+        - heading "Instant Profit Calculator" [level=3] [ref=e144]
+        - paragraph [ref=e145]: Real-time analysis of purchase price, renovation costs, holding expenses, and ARV to show exact profit potential before you commit a single dollar.
+        - link "Learn more →" [ref=e146] [cursor=pointer]:
+          - /url: "#"
+      - generic [ref=e147]:
+        - img [ref=e149]
+        - heading "Legal & Risk Shield" [level=3] [ref=e153]
+        - paragraph [ref=e154]: Automated title searches, lien checks, permit verification, and legal compliance reviews ensure every deal is clean before you invest.
+        - link "Learn more →" [ref=e155] [cursor=pointer]:
+          - /url: "#"
+      - generic [ref=e156]:
+        - img [ref=e158]
+        - heading "Renovation Intelligence" [level=3] [ref=e161]
+        - paragraph [ref=e162]: Data-driven renovation recommendations showing exactly which improvements yield the highest ROI for your specific property and market.
+        - link "Learn more →" [ref=e163] [cursor=pointer]:
+          - /url: "#"
+      - generic [ref=e164]:
+        - img [ref=e166]
+        - heading "Funding Network" [level=3] [ref=e169]
+        - paragraph [ref=e170]: Pre-vetted hard money lenders, private investors, and financing options matched to your deal with competitive rates and fast approvals.
+        - link "Learn more →" [ref=e171] [cursor=pointer]:
+          - /url: "#"
+      - generic [ref=e172]:
+        - img [ref=e174]
+        - heading "Exit Strategy Optimizer" [level=3] [ref=e177]
+        - paragraph [ref=e178]: Predictive analytics determine the optimal time to sell and suggest pricing strategies to maximize your profit based on market conditions.
+        - link "Learn more →" [ref=e179] [cursor=pointer]:
+          - /url: "#"
+  - generic [ref=e181]:
+    - generic [ref=e182]:
+      - generic [ref=e183]: Platform Preview
+      - heading "See Your Analytics Dashboard" [level=2] [ref=e184]
+      - paragraph [ref=e185]: Real-time market data, property analytics, and profit tracking all in one powerful dashboard
+    - generic [ref=e186]:
+      - generic [ref=e187]:
+        - generic [ref=e188]:
+          - heading "Portfolio Overview" [level=3] [ref=e189]
+          - paragraph [ref=e190]: Philadelphia Metro Area
+        - generic [ref=e191]:
+          - button "7 Days" [ref=e192]
+          - button "30 Days" [ref=e193]
+          - button "90 Days" [ref=e194]
+      - generic [ref=e195]:
+        - generic [ref=e196]:
+          - paragraph [ref=e197]: Total Portfolio Value
+          - paragraph [ref=e198]: $2.4M
+          - paragraph [ref=e199]: ↑ 12.5% this month
+        - generic [ref=e200]:
+          - paragraph [ref=e201]: Active Flips
+          - paragraph [ref=e202]: "7"
+          - paragraph [ref=e203]: 3 closing soon
+        - generic [ref=e204]:
+          - paragraph [ref=e205]: Avg. ROI
+          - paragraph [ref=e206]: 24.3%
+          - paragraph [ref=e207]: ↑ 3.2% vs last quarter
+        - generic [ref=e208]:
+          - paragraph [ref=e209]: Next Opportunity
+          - paragraph [ref=e210]: $47K
+          - paragraph [ref=e211]: Projected profit
+      - generic [ref=e212]:
+        - generic [ref=e213]:
+          - heading "Market Trends - Philadelphia Metro" [level=4] [ref=e214]
+          - generic [ref=e223]:
+            - generic [ref=e224]: Jan
+            - generic [ref=e225]: Feb
+            - generic [ref=e226]: Mar
+            - generic [ref=e227]: Apr
+            - generic [ref=e228]: May
+            - generic [ref=e229]: Jun
+            - generic [ref=e230]: Jul
+        - generic [ref=e231]:
+          - heading "Hot Areas" [level=4] [ref=e232]
+          - generic [ref=e233]:
+            - generic [ref=e234]:
+              - generic [ref=e235]: Fishtown
+              - generic [ref=e236]: +18.2%
+            - generic [ref=e237]:
+              - generic [ref=e238]: Manayunk
+              - generic [ref=e239]: +15.7%
+            - generic [ref=e240]:
+              - generic [ref=e241]: University City
+              - generic [ref=e242]: +14.3%
+            - generic [ref=e243]:
+              - generic [ref=e244]: Cherry Hill
+              - generic [ref=e245]: +11.8%
+            - generic [ref=e246]:
+              - generic [ref=e247]: Media
+              - generic [ref=e248]: +10.2%
+    - generic [ref=e249]:
+      - paragraph [ref=e250]: Get full access to all analytics and real-time data
+      - link "Start Free Trial →" [ref=e251] [cursor=pointer]:
+        - /url: "#"
+  - generic [ref=e252]:
+    - generic [ref=e254]:
+      - generic [ref=e255]: Success Stories
+      - heading "Curated Properties Ready for Action" [level=2] [ref=e256]:
+        - text: Curated Properties
+        - text: Ready for Action
+      - paragraph [ref=e257]: Explore properties with complete valuation data, projected returns, and one-click actions for agents and buyers.
+    - generic [ref=e258]:
+      - generic [ref=e259] [cursor=pointer]:
+        - generic [ref=e260]:
+          - img "South Philly Row Home" [ref=e261]
+          - generic [ref=e262]: Hot Deal
+        - generic [ref=e263]:
+          - heading "1247 S Broad St, South Philly" [level=3] [ref=e264]
+          - generic [ref=e265]:
+            - generic [ref=e266]:
+              - generic [ref=e267]: List Price
+              - generic [ref=e268]: $225K
+            - generic [ref=e269]:
+              - generic [ref=e270]: ARV
+              - generic [ref=e271]: $310K
+            - generic [ref=e272]:
+              - generic [ref=e273]: Profit
+              - generic [ref=e274]: +$48K
+          - button "Analyze Deal →" [ref=e275]
+      - generic [ref=e276] [cursor=pointer]:
+        - generic [ref=e277]:
+          - img "Manayunk Home" [ref=e278]
+          - generic [ref=e279]: New Listing
+        - generic [ref=e280]:
+          - heading "452 Kalos St, Manayunk" [level=3] [ref=e281]
+          - generic [ref=e282]:
+            - generic [ref=e283]:
+              - generic [ref=e284]: List Price
+              - generic [ref=e285]: $315K
+            - generic [ref=e286]:
+              - generic [ref=e287]: ARV
+              - generic [ref=e288]: $420K
+            - generic [ref=e289]:
+              - generic [ref=e290]: Profit
+              - generic [ref=e291]: +$65K
+          - button "Analyze Deal →" [ref=e292]
+      - generic [ref=e293] [cursor=pointer]:
+        - generic [ref=e294]:
+          - img "University City Property" [ref=e295]
+          - generic [ref=e296]: Price Drop
+        - generic [ref=e297]:
+          - heading "3820 Chestnut St, University City" [level=3] [ref=e298]
+          - generic [ref=e299]:
+            - generic [ref=e300]:
+              - generic [ref=e301]: List Price
+              - generic [ref=e302]: $189K
+            - generic [ref=e303]:
+              - generic [ref=e304]: ARV
+              - generic [ref=e305]: $275K
+            - generic [ref=e306]:
+              - generic [ref=e307]: Profit
+              - generic [ref=e308]: +$52K
+          - button "Analyze Deal →" [ref=e309]
+  - generic [ref=e311]:
+    - generic [ref=e312]:
+      - heading "Get Your Instant Flip Profit Estimate" [level=2] [ref=e313]
+      - paragraph [ref=e314]: Enter any Philadelphia metro area address to see potential profit in seconds
+    - link "View All Properties →" [ref=e316] [cursor=pointer]:
+      - /url: /properties.html
+  - generic [ref=e317]:
+    - img [ref=e319]
+    - generic [ref=e321]:
+      - heading "Ready to Make Your First $47K? Start Your Analysis in 60 Seconds" [level=2] [ref=e322]:
+        - text: Ready to Make Your First $47K?
+        - text: Start Your Analysis in 60 Seconds
+      - paragraph [ref=e323]:
+        - text: Join 12,847+ successful flippers who started with zero experience.
+        - text: Our intelligent platform handles the complexity. You make the profit.
+      - generic [ref=e324]:
+        - generic [ref=e325]:
+          - textbox "Enter your email" [ref=e326]
+          - button "Get Started Free →" [ref=e327] [cursor=pointer]
+        - link "Watch Demo" [ref=e328] [cursor=pointer]:
+          - /url: "#"
+      - paragraph [ref=e329]: No credit card required • Analysis ready in minutes • Cancel anytime
+  - contentinfo [ref=e330]:
+    - generic [ref=e331]:
+      - generic [ref=e332]:
+        - heading "AssiduousFlip" [level=3] [ref=e333]
+        - paragraph [ref=e334]: The intelligent platform that eliminates all technical, legal, and knowledge barriers to profitable property flipping. Our algorithms do the heavy lifting — you make the profits.
+      - generic [ref=e335]:
+        - heading "Product" [level=4] [ref=e336]
+        - list [ref=e337]:
+          - listitem [ref=e338]:
+            - link "Deal Analyzer" [ref=e339] [cursor=pointer]:
+              - /url: "#"
+          - listitem [ref=e340]:
+            - link "Market Data" [ref=e341] [cursor=pointer]:
+              - /url: "#"
+          - listitem [ref=e342]:
+            - link "Portfolio Tools" [ref=e343] [cursor=pointer]:
+              - /url: "#"
+          - listitem [ref=e344]:
+            - link "Team Network" [ref=e345] [cursor=pointer]:
+              - /url: "#"
+      - generic [ref=e346]:
+        - heading "Company" [level=4] [ref=e347]
+        - list [ref=e348]:
+          - listitem [ref=e349]:
+            - link "About Us" [ref=e350] [cursor=pointer]:
+              - /url: "#"
+          - listitem [ref=e351]:
+            - link "Careers" [ref=e352] [cursor=pointer]:
+              - /url: "#"
+          - listitem [ref=e353]:
+            - link "Press Kit" [ref=e354] [cursor=pointer]:
+              - /url: "#"
+          - listitem [ref=e355]:
+            - link "Contact & Support" [ref=e356] [cursor=pointer]:
+              - /url: /contact.html
+      - generic [ref=e357]:
+        - heading "Resources" [level=4] [ref=e358]
+        - list [ref=e359]:
+          - listitem [ref=e360]:
+            - link "Blog" [ref=e361] [cursor=pointer]:
+              - /url: "#"
+          - listitem [ref=e362]:
+            - link "Education" [ref=e363] [cursor=pointer]:
+              - /url: "#"
+          - listitem [ref=e364]:
+            - link "API Docs" [ref=e365] [cursor=pointer]:
+              - /url: "#"
+          - listitem [ref=e366]:
+            - link "Support" [ref=e367] [cursor=pointer]:
+              - /url: "#"
+    - generic [ref=e368]:
+      - paragraph [ref=e369]:
+        - text: © 2025 AssiduousFlip Properties. All rights reserved.
+        - generic [ref=e370]: Powered by Sirsi
+      - generic [ref=e371]:
+        - link [ref=e372] [cursor=pointer]:
+          - /url: "#"
+          - img [ref=e373]
+        - link [ref=e375] [cursor=pointer]:
+          - /url: "#"
+          - img [ref=e376]
+```

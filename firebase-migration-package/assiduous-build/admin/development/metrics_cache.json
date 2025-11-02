@@ -1,12 +1,11 @@
 {
-  "lastUpdated": "2025-11-02T05:26:58.431Z",
+  "lastUpdated": "2025-11-01T19:21:55.997Z",
   "summary": {
     "health": "Good",
     "score": 46,
     "trend": "increasing",
     "alerts": [
-      "⚠️ Test coverage is very low",
-      "⏰ Timeline warning - 29 days until launch"
+      "⚠️ Test coverage is very low"
     ]
   },
   "features": {
@@ -104,40 +103,40 @@
     }
   },
   "project": {
-    "totalHours": "198",
+    "totalHours": "190",
     "avgHoursPerDay": "7.3",
-    "totalCost": 29700,
-    "laborCost": 29700,
+    "totalCost": 28500,
+    "laborCost": 28500,
     "toolsCost": 450,
-    "totalCommits": 600,
-    "totalFiles": 619,
-    "activeDays": 27,
-    "totalDays": 84,
-    "projectAgeDays": 84,
-    "linesAdded": 9438185,
-    "linesDeleted": 8990052,
-    "netLines": 448133,
+    "totalCommits": 577,
+    "totalFiles": 603,
+    "activeDays": 26,
+    "totalDays": 83,
+    "projectAgeDays": 83,
+    "linesAdded": 9422026,
+    "linesDeleted": 8973785,
+    "netLines": 448241,
     "velocity": "22.2",
     "completionPercentage": 46,
     "actualStartDate": "2025-08-10"
   },
   "today": {
-    "date": "2025-11-02",
-    "hours": "10.2",
-    "cost": 1535,
-    "commits": 31,
+    "date": "2025-11-01",
+    "hours": "3.6",
+    "cost": 545,
+    "commits": 11,
     "deployments": 0
   },
   "thisWeek": {
-    "hours": "11.2",
-    "cost": 1683,
-    "commits": 34,
+    "hours": "3.6",
+    "cost": 545,
+    "commits": 11,
     "days": 7
   },
   "thisMonth": {
-    "hours": "92.1",
-    "cost": 13811,
-    "commits": 279
+    "hours": "84.5",
+    "cost": 12672,
+    "commits": 256
   },
   "quality": {
     "testCoverage": {
@@ -157,7 +156,7 @@
       "eslintWarnings": 0,
       "codeComplexity": "N/A",
       "duplicateCode": 0,
-      "technicalDebt": 14213,
+      "technicalDebt": 14212,
       "codeSmells": 0
     },
     "score": 100
@@ -171,15 +170,15 @@
       "critical": 0,
       "total": 0
     },
-    "lastAudit": "2025-11-02T05:26:27.214Z",
+    "lastAudit": "2025-11-01T19:21:31.273Z",
     "dependencies": {
       "total": {
         "prod": 253,
-        "dev": 581,
+        "dev": 579,
         "optional": 109,
         "peer": 0,
         "peerOptional": 0,
-        "total": 917
+        "total": 915
       },
       "outdated": 0,
       "vulnerable": 0
@@ -217,14 +216,14 @@
     }
   },
   "deployment": {
-    "lastDeployment": "2025-11-01 18:14:49 -0400",
-    "totalDeployments": 108,
+    "lastDeployment": "2025-11-01 14:58:40 -0400",
+    "totalDeployments": 103,
     "deploymentFrequency": "Weekly",
     "environments": {
       "production": {
         "url": "https://assiduous-prod.web.app",
         "status": "Active",
-        "lastDeploy": "2025-11-01 18:14:49 -0400"
+        "lastDeploy": "2025-11-01 14:58:40 -0400"
       },
       "staging": {
         "url": "https://assiduous-staging.web.app",
@@ -250,9 +249,9 @@
     }
   },
   "documentation": {
-    "markdownFiles": 2847,
-    "jsFilesTotal": 26147,
-    "jsFilesDocumented": 26147,
+    "markdownFiles": 2827,
+    "jsFilesTotal": 26145,
+    "jsFilesDocumented": 26145,
     "coverage": 441,
     "apiEndpoints": {
       "total": 0,
@@ -266,16 +265,16 @@
     "changelog": true,
     "contributing": false,
     "license": false,
-    "lastUpdate": "2025-11-02 01:25:19 -0400"
+    "lastUpdate": "2025-11-01 15:20:47 -0400"
   },
   "productivity": {
     "velocityTrend": "increasing",
-    "weeklyCommits": 34,
+    "weeklyCommits": 11,
     "contributors": {
       "total": 0,
       "active": 0
     },
-    "averageCommitSize": 142,
+    "averageCommitSize": 148,
     "pullRequests": {
       "open": 0,
       "merged": 0,
@@ -303,7 +302,7 @@
       "projectStart": "2025-08-10",
       "originalLaunch": "2025-11-01",
       "plannedLaunch": "2025-12-01",
-      "daysRemaining": 29,
+      "daysRemaining": 30,
       "onTrack": false,
       "adjustmentReason": "Timeline adjusted for realistic completion based on current velocity"
     },
@@ -348,68 +347,68 @@
   },
   "recentActivity": [
     {
-      "hash": "6d3d45780e640538e05ee688ee5097838d9aab45",
-      "message": "docs(step7): add comprehensive completion report",
+      "hash": "8e3c2c1de79dacd862f6df98e30fa9dfa02d96ee",
+      "message": "chore: update metrics cache files",
       "author": "SirsiMaster",
-      "date": "2025-11-02 01:25:19 -0400"
+      "date": "2025-11-01 15:21:00 -0400"
     },
     {
-      "hash": "0d893c66c1bcd7feea3a41ed83986c3840b768e6",
-      "message": "feat(step7): complete Firestore integration for clients and transactions pages",
+      "hash": "2784928007baa378fd7723a944bf6f13a4b43c5e",
+      "message": "docs: add directory reorganization plan and migration script",
       "author": "SirsiMaster",
-      "date": "2025-11-02 01:22:50 -0400"
+      "date": "2025-11-01 15:20:47 -0400"
     },
     {
-      "hash": "0f47833e2fe9b608a377c7b45c030ff5cb82e815",
-      "message": "feat(step7): Integrate Firestore data in analytics.html",
+      "hash": "b41c8b16a8ca464579dd2da6de30d5b89744a76e",
+      "message": "feat(dashboard): integrate modular Firebase SDK with live Firestore data",
       "author": "SirsiMaster",
-      "date": "2025-11-02 01:05:09 -0400"
+      "date": "2025-11-01 15:14:51 -0400"
     },
     {
-      "hash": "ccb7634b7a6d6f2d87e43f59e86aed4739277772",
-      "message": "docs(migration): Create Step 12 authentication testing plan",
+      "hash": "7acad99cabffa700045b7b5af6f09615873c91fd",
+      "message": "feat: Enable email service and deploy trigger functions",
       "author": "SirsiMaster",
-      "date": "2025-11-02 00:25:33 -0400"
+      "date": "2025-11-01 14:58:40 -0400"
     },
     {
-      "hash": "638b76c3f765e030e7fc9dfebf5c5eecaf6f99aa",
-      "message": "docs(migration): Complete Step 11 - Legacy endpoints audit",
+      "hash": "6f436d4fcf21af6add1f88a3cca03680cffa7803",
+      "message": "feat: Deploy working v2 API function with secrets configured",
       "author": "SirsiMaster",
-      "date": "2025-11-02 00:21:28 -0400"
+      "date": "2025-11-01 14:42:00 -0400"
     },
     {
-      "hash": "67557f080aa5609eea7718c9e000717834047246",
-      "message": "docs(session): Add comprehensive session summary for 2025-01-11",
+      "hash": "07a926c855eddea6ced2715a68731a5ea18a70aa",
+      "message": "docs: Update canonical documentation with Firebase modular SDK and v2 Functions progress",
       "author": "SirsiMaster",
-      "date": "2025-11-02 00:16:28 -0400"
+      "date": "2025-11-01 14:17:39 -0400"
     },
     {
-      "hash": "78e82ece4a5f2b12d5f3865e33c3c5411a39dd17",
-      "message": "chore(release): Bump version to 0.47.0 [skip ci]",
-      "author": "github-actions[bot]",
-      "date": "2025-11-02 04:14:43 +0000"
+      "hash": "1a7b204c32c0125d42598acc1fa7db5e5abeb440",
+      "message": "fix: Update functions to use v2 secrets with defineSecret",
+      "author": "SirsiMaster",
+      "date": "2025-11-01 14:10:13 -0400"
     },
     {
-      "hash": "7e4966ef93f4c39785f0be82866c632aa1673657",
-      "message": "feat(migration): Complete Step 5 (GitHub security) and create Step 18 (seed production data)",
+      "hash": "0e3e4cdddb08d47f78c4539b428359eff82ec5bd",
+      "message": "feat: Add Firebase modular SDK and authentication fixes",
       "author": "SirsiMaster",
-      "date": "2025-11-02 00:14:25 -0400"
+      "date": "2025-11-01 13:58:21 -0400"
     },
     {
-      "hash": "e5322402b48cd4d081c10b739af943e743d3349f",
-      "message": "docs: add Step 4 execution report and Step 5 guide",
+      "hash": "e5d27480a54fd6209f88e5d95ea658c3c6e4b46e",
+      "message": "docs: add comprehensive Cloud Functions status report",
       "author": "SirsiMaster",
-      "date": "2025-11-02 00:03:00 -0400"
+      "date": "2025-10-31 16:29:30 -0400"
     },
     {
-      "hash": "760493731544acabef36677e2d5784b94c0d2c9a",
-      "message": "chore: repository hygiene cleanup (Step 4)",
+      "hash": "e844a000bf583eebc2c4794137d68ba43cf2c099",
+      "message": "feat(functions): successfully deploy Stripe payment functions",
       "author": "SirsiMaster",
-      "date": "2025-11-02 00:00:21 -0400"
+      "date": "2025-10-31 16:28:22 -0400"
     }
   ],
   "automation": {
-    "lastRun": "2025-11-02T05:26:58.431Z",
+    "lastRun": "2025-11-01T19:21:55.997Z",
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",

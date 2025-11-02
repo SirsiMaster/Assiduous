@@ -1,0 +1,209 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - complementary [ref=e3]:
+    - link "Admin Portal" [ref=e5] [cursor=pointer]:
+      - /url: dashboard.html
+      - img [ref=e6]
+      - generic [ref=e9]: Admin Portal
+    - navigation [ref=e10]:
+      - generic [ref=e11]:
+        - generic [ref=e12]: Main
+        - link "Dashboard" [ref=e13] [cursor=pointer]:
+          - /url: dashboard.html
+          - img [ref=e14]
+          - text: Dashboard
+        - link "Realty Analytics" [ref=e19] [cursor=pointer]:
+          - /url: analytics.html
+          - img [ref=e20]
+          - text: Realty Analytics
+        - link "Market Analysis" [ref=e21] [cursor=pointer]:
+          - /url: market.html
+          - img [ref=e22]
+          - text: Market Analysis
+      - generic [ref=e24]:
+        - generic [ref=e25]: Management
+        - link "Properties" [ref=e26] [cursor=pointer]:
+          - /url: properties.html
+          - img [ref=e27]
+          - text: Properties
+        - link "Agents" [ref=e29] [cursor=pointer]:
+          - /url: agents.html
+          - img [ref=e30]
+          - text: Agents
+        - link "Clients" [ref=e33] [cursor=pointer]:
+          - /url: clients.html
+          - img [ref=e34]
+          - text: Clients
+        - link "Transactions" [ref=e37] [cursor=pointer]:
+          - /url: transactions.html
+          - img [ref=e38]
+          - text: Transactions
+      - generic [ref=e40]:
+        - generic [ref=e41]: Development
+        - link "Dev Dashboard" [ref=e42] [cursor=pointer]:
+          - /url: development/dashboard.html
+          - img [ref=e43]
+          - text: Dev Dashboard
+        - link "Dev Costs" [ref=e46] [cursor=pointer]:
+          - /url: development/costs.html
+          - img [ref=e47]
+          - text: Dev Costs
+        - link "Dev Analytics" [ref=e49] [cursor=pointer]:
+          - /url: development/analytics.html
+          - img [ref=e50]
+          - text: Dev Analytics
+        - link "Dev Reports" [ref=e53] [cursor=pointer]:
+          - /url: development/reports.html
+          - img [ref=e54]
+          - text: Dev Reports
+        - link "Dev Docs" [ref=e57] [cursor=pointer]:
+          - /url: development/docs.html
+          - img [ref=e58]
+          - text: Dev Docs
+      - generic [ref=e61]:
+        - generic [ref=e62]: System
+        - link "Knowledge Base" [ref=e63] [cursor=pointer]:
+          - /url: knowledge-base.html
+          - img [ref=e64]
+          - text: Knowledge Base
+        - link "Contracts" [ref=e67] [cursor=pointer]:
+          - /url: contracts/index.html
+          - img [ref=e68]
+          - text: Contracts
+        - link "Settings" [ref=e71] [cursor=pointer]:
+          - /url: settings.html
+          - img [ref=e72]
+          - text: Settings
+  - main [ref=e75]:
+    - generic [ref=e76]:
+      - generic [ref=e77]:
+        - generic [ref=e79]:
+          - heading "Admin Dashboard" [level=1] [ref=e80]
+          - paragraph [ref=e81]: Welcome back! Here's what's happening with your platform today.
+        - generic [ref=e83]:
+          - img
+          - textbox "Search properties, agents, transactions..." [ref=e84]
+        - generic [ref=e85]:
+          - link "Sign Out" [ref=e86] [cursor=pointer]:
+            - /url: /
+            - img [ref=e87]
+          - generic [ref=e90]:
+            - generic [ref=e91]:
+              - generic [ref=e92]: User
+              - generic [ref=e93]: Administrator
+            - generic [ref=e95] [cursor=pointer]: U
+      - generic [ref=e96]:
+        - link "Home" [ref=e97] [cursor=pointer]:
+          - /url: /
+        - generic [ref=e98]: /
+        - link "Admin Portal" [ref=e99] [cursor=pointer]:
+          - /url: /admin/
+        - generic [ref=e100]: /
+        - generic [ref=e101]: Dashboard
+      - button "Logout" [ref=e102] [cursor=pointer]: Logout
+    - generic [ref=e103]:
+      - generic [ref=e104]:
+        - generic [ref=e105] [cursor=pointer]:
+          - img [ref=e107]
+          - generic [ref=e110]: "20"
+          - generic [ref=e111]: Total Properties
+          - generic [ref=e112]: Sample data for demo
+        - generic [ref=e113] [cursor=pointer]:
+          - img [ref=e115]
+          - generic [ref=e117]: $362K
+          - generic [ref=e118]: Monthly Revenue (Sample)
+          - generic [ref=e119]: Sample calculation
+        - generic [ref=e120] [cursor=pointer]:
+          - img [ref=e122]
+          - generic [ref=e125]: "0"
+          - generic [ref=e126]: Active Agents
+          - generic [ref=e127]: 2 total agents
+        - generic [ref=e128] [cursor=pointer]:
+          - img [ref=e130]
+          - generic [ref=e131]: "15"
+          - generic [ref=e132]: Available Properties
+          - generic [ref=e133]: 15 available now
+      - generic [ref=e134]:
+        - generic [ref=e135]:
+          - generic [ref=e136]:
+            - heading "Recent Properties" [level=3] [ref=e137]
+            - button "View All" [ref=e138] [cursor=pointer]
+          - table [ref=e139]:
+            - rowgroup [ref=e140]:
+              - row "Property Agent Price Status Listed" [ref=e141]:
+                - cell "Property" [ref=e142]
+                - cell "Agent" [ref=e143]
+                - cell "Price" [ref=e144]
+                - cell "Status" [ref=e145]
+                - cell "Listed" [ref=e146]
+            - rowgroup [ref=e147]:
+              - row "6210 Girard Ave Philadelphia, PA 19141 Admin $162,085 Available 2 weeks ago" [ref=e148] [cursor=pointer]:
+                - cell "6210 Girard Ave Philadelphia, PA 19141" [ref=e149]:
+                  - generic [ref=e150]: 6210 Girard Ave
+                  - generic [ref=e151]: Philadelphia, PA 19141
+                - cell "Admin" [ref=e152]
+                - cell "$162,085" [ref=e153]
+                - cell "Available" [ref=e154]
+                - cell "2 weeks ago" [ref=e155]
+              - row "2585 South St Philadelphia, PA 19116 Admin $106,359 Pending 2 weeks ago" [ref=e156] [cursor=pointer]:
+                - cell "2585 South St Philadelphia, PA 19116" [ref=e157]:
+                  - generic [ref=e158]: 2585 South St
+                  - generic [ref=e159]: Philadelphia, PA 19116
+                - cell "Admin" [ref=e160]
+                - cell "$106,359" [ref=e161]
+                - cell "Pending" [ref=e162]
+                - cell "2 weeks ago" [ref=e163]
+              - row "7135 Pine St Philadelphia, PA 19129 Admin $153,252 Pending 2 weeks ago" [ref=e164] [cursor=pointer]:
+                - cell "7135 Pine St Philadelphia, PA 19129" [ref=e165]:
+                  - generic [ref=e166]: 7135 Pine St
+                  - generic [ref=e167]: Philadelphia, PA 19129
+                - cell "Admin" [ref=e168]
+                - cell "$153,252" [ref=e169]
+                - cell "Pending" [ref=e170]
+                - cell "2 weeks ago" [ref=e171]
+              - row "1364 Fairmount Ave Philadelphia, PA 19118 Admin $105,273 Available 2 weeks ago" [ref=e172] [cursor=pointer]:
+                - cell "1364 Fairmount Ave Philadelphia, PA 19118" [ref=e173]:
+                  - generic [ref=e174]: 1364 Fairmount Ave
+                  - generic [ref=e175]: Philadelphia, PA 19118
+                - cell "Admin" [ref=e176]
+                - cell "$105,273" [ref=e177]
+                - cell "Available" [ref=e178]
+                - cell "2 weeks ago" [ref=e179]
+              - row "8225 Spring Garden St Philadelphia, PA 19145 Admin $113,388 Available 2 weeks ago" [ref=e180] [cursor=pointer]:
+                - cell "8225 Spring Garden St Philadelphia, PA 19145" [ref=e181]:
+                  - generic [ref=e182]: 8225 Spring Garden St
+                  - generic [ref=e183]: Philadelphia, PA 19145
+                - cell "Admin" [ref=e184]
+                - cell "$113,388" [ref=e185]
+                - cell "Available" [ref=e186]
+                - cell "2 weeks ago" [ref=e187]
+        - generic [ref=e189]:
+          - heading "Recent Activity" [level=3] [ref=e191]
+          - generic [ref=e192]:
+            - img [ref=e194]
+            - generic [ref=e196]:
+              - generic [ref=e197]: "New property listed: 789 Sunset Blvd"
+              - generic [ref=e198]: 2 hours ago
+          - generic [ref=e199]:
+            - img [ref=e201]
+            - generic [ref=e204]:
+              - generic [ref=e205]: "New agent registered: Alex Thompson"
+              - generic [ref=e206]: 3 hours ago
+          - generic [ref=e207]:
+            - img [ref=e209]
+            - generic [ref=e211]:
+              - generic [ref=e212]: "Transaction completed: 123 Main St - $450,000"
+              - generic [ref=e213]: 5 hours ago
+          - generic [ref=e214]:
+            - img [ref=e216]
+            - generic [ref=e219]:
+              - generic [ref=e220]: Contract signed for 456 Oak Ave
+              - generic [ref=e221]: 6 hours ago
+          - generic [ref=e222]:
+            - img [ref=e224]
+            - generic [ref=e227]:
+              - generic [ref=e228]: "Property inquiry: 321 Elm St"
+              - generic [ref=e229]: 8 hours ago
+```

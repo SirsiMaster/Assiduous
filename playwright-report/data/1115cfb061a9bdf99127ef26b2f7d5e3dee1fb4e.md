@@ -1,0 +1,144 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - complementary [ref=e3]:
+    - link "Assiduous" [ref=e5] [cursor=pointer]:
+      - /url: /
+      - img [ref=e6]
+      - generic [ref=e8]: Assiduous
+    - navigation [ref=e9]:
+      - generic [ref=e10]:
+        - generic [ref=e11]: Main
+        - link "Dashboard" [ref=e12] [cursor=pointer]:
+          - /url: "#dashboard"
+          - img [ref=e13]
+          - text: Dashboard
+        - link "Search Properties" [ref=e15] [cursor=pointer]:
+          - /url: "#properties"
+          - img [ref=e16]
+          - text: Search Properties
+        - link "Deal Analyzer" [ref=e18] [cursor=pointer]:
+          - /url: /client/deal-analyzer.html
+          - img [ref=e19]
+          - text: Deal Analyzer
+      - generic [ref=e21]:
+        - generic [ref=e22]: Portfolio
+        - link "My Properties" [ref=e23] [cursor=pointer]:
+          - /url: "#portfolio"
+          - img [ref=e24]
+          - text: My Properties
+        - link "Saved" [ref=e26] [cursor=pointer]:
+          - /url: "#saved"
+          - img [ref=e27]
+          - text: Saved
+        - link "Market Insights" [ref=e29] [cursor=pointer]:
+          - /url: "#insights"
+          - img [ref=e30]
+          - text: Market Insights
+      - generic [ref=e32]:
+        - generic [ref=e33]: Account
+        - link "Settings" [ref=e34] [cursor=pointer]:
+          - /url: "#settings"
+          - img [ref=e35]
+          - text: Settings
+        - link "Sign Out" [ref=e38] [cursor=pointer]:
+          - /url: "#"
+          - img [ref=e39]
+          - text: Sign Out
+  - main [ref=e41]:
+    - generic [ref=e42]:
+      - generic [ref=e43]:
+        - generic [ref=e45]:
+          - heading "Dashboard" [level=1] [ref=e46]
+          - paragraph [ref=e47]: Welcome to your portal
+        - generic [ref=e49]:
+          - img
+          - textbox "Search..." [ref=e50]
+        - generic [ref=e51]:
+          - link "Sign Out" [ref=e52] [cursor=pointer]:
+            - /url: /
+            - img [ref=e53]
+          - generic [ref=e56]:
+            - generic [ref=e57]:
+              - generic [ref=e58]: User
+              - generic [ref=e59]: Client
+            - generic [ref=e61] [cursor=pointer]: U
+      - generic [ref=e62]:
+        - link "Home" [ref=e63] [cursor=pointer]:
+          - /url: /
+        - generic [ref=e64]: /
+        - link "Client" [ref=e65] [cursor=pointer]:
+          - /url: /client/
+        - generic [ref=e66]: /
+        - generic [ref=e67]: Dashboard
+      - button "Logout" [active] [ref=e68] [cursor=pointer]: Logout
+    - generic [ref=e69]:
+      - generic [ref=e70]:
+        - heading "Welcome back, John!" [level=2] [ref=e71]
+        - paragraph [ref=e72]: Here's what's happening with your real estate investments today.
+      - generic [ref=e73]:
+        - generic [ref=e74] [cursor=pointer]:
+          - generic [ref=e75]:
+            - img [ref=e76]
+            - text: Portfolio Value
+          - generic [ref=e78]: ...
+          - generic [ref=e79]:
+            - img [ref=e80]
+            - text: Start investing today
+        - generic [ref=e82] [cursor=pointer]:
+          - generic [ref=e83]:
+            - img [ref=e84]
+            - text: Active Properties
+          - generic [ref=e86]: "0"
+          - generic [ref=e87]: Browse available properties
+        - generic [ref=e88]: ...
+        - generic [ref=e89]:
+          - img [ref=e90]
+          - text: Avg. ROI
+        - generic [ref=e92]: ...
+        - generic [ref=e93]:
+          - img [ref=e94]
+          - text: "Industry average: 15%"
+      - generic [ref=e96] [cursor=pointer]:
+        - generic [ref=e97]:
+          - img [ref=e98]
+          - text: Deal Opportunities
+        - generic [ref=e100]: ...
+        - generic [ref=e101]:
+          - img [ref=e102]
+          - text: +12 new this week
+    - generic [ref=e104]:
+      - link "Search Properties Find investment opportunities" [ref=e105] [cursor=pointer]:
+        - /url: "#search"
+        - img [ref=e107]
+        - generic [ref=e109]: Search Properties
+        - generic [ref=e110]: Find investment opportunities
+      - link "Analyze Deal Calculate ROI & profits" [ref=e111] [cursor=pointer]:
+        - /url: "#analyzer"
+        - img [ref=e113]
+        - generic [ref=e115]: Analyze Deal
+        - generic [ref=e116]: Calculate ROI & profits
+      - link "Market Trends View latest insights" [ref=e117] [cursor=pointer]:
+        - /url: "#market"
+        - img [ref=e119]
+        - generic [ref=e121]: Market Trends
+        - generic [ref=e122]: View latest insights
+      - link "Connect with Agent Get expert guidance" [ref=e123] [cursor=pointer]:
+        - /url: "#connect"
+        - img [ref=e125]
+        - generic [ref=e127]: Connect with Agent
+        - generic [ref=e128]: Get expert guidance
+    - generic [ref=e129]:
+      - generic [ref=e130]:
+        - heading "Featured Investment Opportunities" [level=3] [ref=e131]
+        - link "View all →" [ref=e132] [cursor=pointer]:
+          - /url: "#properties"
+      - generic [ref=e134]: Loading properties...
+    - generic [ref=e135]:
+      - generic [ref=e136]:
+        - heading "Market Insights - Philadelphia Metro" [level=3] [ref=e137]
+        - link "View detailed report →" [ref=e138] [cursor=pointer]:
+          - /url: "#insights"
+      - paragraph [ref=e140]: 📊 Interactive market trends chart will appear here
+```

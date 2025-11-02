@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Properties - Assiduous Micro-Flipping Platform</title>
+    
+    <!-- Assiduous Design System -->
+    <link rel="stylesheet" href="assets/vendor/sirsimaster-ui/sirsimaster-ui.css">
+    <link rel="stylesheet" href="assiduous.css">
+    
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: "Geist Sans", system-ui, -apple-system, sans-serif;
+            background: var(--gray-50, #f9fafb);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .page-header {
+            margin-bottom: 40px;
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--navy, #1e3a5f);
+            margin: 0 0 8px 0;
+        }
+
+        .page-subtitle {
+            font-size: 16px;
+            color: var(--gray-600, #4b5563);
+            margin: 0;
+        }
+
+        .filters {
+            background: white;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 32px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .filter-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--gray-700, #374151);
+        }
+
+        .filter-input,
+        .filter-select {
+            padding: 10px 12px;
+            border: 1px solid var(--border, #e5e7eb);
+            border-radius: 6px;
+            font-size: 14px;
+            background: white;
+        }
+
+        .filter-input:focus,
+        .filter-select:focus {
+            outline: none;
+            border-color: var(--sky, #5ba5d9);
+            box-shadow: 0 0 0 3px rgba(91, 165, 217, 0.1);
+        }
+
+        .properties-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .property-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .property-card:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .property-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background: var(--gray-200, #e5e7eb);
+        }
+
+        .property-content {
+            padding: 20px;
+        }
+
+        .property-address {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--navy, #1e3a5f);
+            margin: 0 0 8px 0;
+        }
+
+        .property-neighborhood {
+            font-size: 14px;
+            color: var(--gray-600, #4b5563);
+            margin: 0 0 16px 0;
+        }
+
+        .property-details {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 16px;
+            font-size: 14px;
+            color: var(--gray-700, #374151);
+        }
+
+        .property-detail {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .property-price {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--sky, #5ba5d9);
+            margin: 16px 0 8px 0;
+        }
+
+        .property-metrics {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            padding: 16px;
+            background: var(--gray-50, #f9fafb);
+            border-radius: 8px;
+        }
+
+        .metric {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .metric-label {
+            font-size: 12px;
+            color: var(--gray-600, #4b5563);
+            margin-bottom: 4px;
+        }
+
+        .metric-value {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--navy, #1e3a5f);
+        }
+
+        .metric-value.positive {
+            color: var(--green-600, #16a34a);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--gray-600, #4b5563);
+        }
+
+        .error {
+            background: #fee;
+            border: 1px solid #fcc;
+            border-radius: 8px;
+            padding: 16px;
+            color: #c00;
+            margin-bottom: 24px;
+        }
+
+        .stats-bar {
+            background: white;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--navy, #1e3a5f);
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: var(--gray-600, #4b5563);
+            margin-top: 4px;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .pagination button {
+            padding: 10px 16px;
+            border: 1px solid var(--border, #e5e7eb);
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .pagination button:hover {
+            background: var(--gray-50, #f9fafb);
+        }
+
+        .pagination button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="page-header" style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <h1 class="page-title">Philadelphia Micro-Flip Properties</h1>
+                <p class="page-subtitle">Live property data from Firebase Cloud Functions</p>
+            </div>
+            <a href="property-form.html" class="btn" style="background: var(--sky, #5ba5d9); color: white; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: 600;">+ Add Property</a>
+        </div>
+
+        <div id="stats" class="stats-bar"></div>
+
+        <div class="filters">
+            <div class="filter-group">
+                <label class="filter-label">Neighborhood</label>
+                <select id="neighborhoodFilter" class="filter-select">
+                    <option value="">All Neighborhoods</option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label class="filter-label">Property Type</label>
+                <select id="typeFilter" class="filter-select">
+                    <option value="">All Types</option>
+                    <option value="single_family">Single Family</option>
+                    <option value="townhouse">Townhouse</option>
+                    <option value="condo">Condo</option>
+                    <option value="multi_family">Multi Family</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label class="filter-label">Min Price</label>
+                <input type="number" id="minPriceFilter" class="filter-input" placeholder="$0">
+            </div>
+
+            <div class="filter-group">
+                <label class="filter-label">Max Price</label>
+                <input type="number" id="maxPriceFilter" class="filter-input" placeholder="$500,000">
+            </div>
+
+            <div class="filter-group">
+                <label class="filter-label">Min Bedrooms</label>
+                <select id="bedroomsFilter" class="filter-select">
+                    <option value="">Any</option>
+                    <option value="1">1+</option>
+                    <option value="2">2+</option>
+                    <option value="3">3+</option>
+                    <option value="4">4+</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="error" class="error" style="display: none;"></div>
+        <div id="loading" class="loading">Loading properties...</div>
+        <div id="properties" class="properties-grid"></div>
+
+        <div id="pagination" class="pagination"></div>
+    </div>
+
+    <script type="module">
+        // Import property service
+        import { PropertyService } from './assets/js/services/propertyservice.js';
+        
+        const propertyService = new PropertyService();
+        
+        let currentFilters = {
+            limit: 12,
+            offset: 0
+        };
+
+        // DOM elements
+        const loadingEl = document.getElementById('loading');
+        const errorEl = document.getElementById('error');
+        const propertiesEl = document.getElementById('properties');
+        const statsEl = document.getElementById('stats');
+        const paginationEl = document.getElementById('pagination');
+
+        // Filter elements
+        const neighborhoodFilter = document.getElementById('neighborhoodFilter');
+        const typeFilter = document.getElementById('typeFilter');
+        const minPriceFilter = document.getElementById('minPriceFilter');
+        const maxPriceFilter = document.getElementById('maxPriceFilter');
+        const bedroomsFilter = document.getElementById('bedroomsFilter');
+
+        // Initialize page
+        async function init() {
+            try {
+                // Load neighborhoods for filter
+                const neighborhoods = await propertyService.getNeighborhoods();
+                neighborhoods.forEach(neighborhood => {
+                    const option = document.createElement('option');
+                    option.value = neighborhood;
+                    option.textContent = neighborhood;
+                    neighborhoodFilter.appendChild(option);
+                });
+
+                // Setup filter listeners
+                neighborhoodFilter.addEventListener('change', applyFilters);
+                typeFilter.addEventListener('change', applyFilters);
+                minPriceFilter.addEventListener('input', debounce(applyFilters, 500));
+                maxPriceFilter.addEventListener('input', debounce(applyFilters, 500));
+                bedroomsFilter.addEventListener('change', applyFilters);
+
+                // Load initial data
+                await loadProperties();
+                await loadStats();
+            } catch (error) {
+                showError('Failed to initialize page: ' + error.message);
+            }
+        }
+
+        // Load properties
+        async function loadProperties() {
+            try {
+                loadingEl.style.display = 'block';
+                propertiesEl.innerHTML = '';
+                errorEl.style.display = 'none';
+
+                const data = await propertyService.getProperties(currentFilters);
+                
+                loadingEl.style.display = 'none';
+
+                if (data.properties && data.properties.length > 0) {
+                    renderProperties(data.properties);
+                    renderPagination(data);
+                } else {
+                    propertiesEl.innerHTML = '<p style="text-align: center; padding: 40px; color: #6b7280;">No properties found matching your criteria.</p>';
+                }
+            } catch (error) {
+                loadingEl.style.display = 'none';
+                showError('Failed to load properties: ' + error.message);
+            }
+        }
+
+        // Render properties
+        function renderProperties(properties) {
+            propertiesEl.innerHTML = properties.map(property => {
+                const formatted = propertyService.formatProperty(property);
+                return `
+                    <div class="property-card" onclick="viewProperty('${property.id}')">
+                        <img src="${property.images?.[0]?.url || 'https://via.placeholder.com/400x300?text=No+Image'}" 
+                             alt="${formatted.fullAddress}" 
+                             class="property-image">
+                        <div class="property-content">
+                            <h3 class="property-address">${property.address?.street}</h3>
+                            <p class="property-neighborhood">${property.neighborhood}, PA ${property.address?.zip}</p>
+                            
+                            <div class="property-details">
+                                <div class="property-detail">
+                                    <span>🛏️ ${property.details?.bedrooms} bed</span>
+                                </div>
+                                <div class="property-detail">
+                                    <span>🛁 ${property.details?.bathrooms} bath</span>
+                                </div>
+                                <div class="property-detail">
+                                    <span>📐 ${property.details?.sqft.toLocaleString()} sqft</span>
+                                </div>
+                            </div>
+
+                            <div class="property-price">${formatted.priceFormatted}</div>
+
+                            <div class="property-metrics">
+                                <div class="metric">
+                                    <div class="metric-label">Estimated Profit</div>
+                                    <div class="metric-value positive">${formatted.profitFormatted}</div>
+                                </div>
+                                <div class="metric">
+                                    <div class="metric-label">ROI</div>
+                                    <div class="metric-value positive">${property.flipEstimate?.roi}%</div>
+                                </div>
+                                <div class="metric">
+                                    <div class="metric-label">ARV</div>
+                                    <div class="metric-value">${formatted.arvFormatted}</div>
+                                </div>
+                                <div class="metric">
+                                    <div class="metric-label">Holding Time</div>
+                                    <div class="metric-value">${property.flipEstimate?.holdingTime} days</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Load statistics
+        async function loadStats() {
+            try {
+                const data = await propertyService.getProperties({ limit: 1000 });
+                const total = data.total || 0;
+                const avgPrice = data.properties.reduce((sum, p) => sum + (p.price?.list || 0), 0) / (data.properties.length || 1);
+                const avgProfit = data.properties.reduce((sum, p) => sum + (p.flipEstimate?.profit || 0), 0) / (data.properties.length || 1);
+
+                statsEl.innerHTML = `
+                    <div class="stat-item">
+                        <div class="stat-value">${total}</div>
+                        <div class="stat-label">Total Properties</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">${propertyService.formatCurrency(avgPrice)}</div>
+                        <div class="stat-label">Avg List Price</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">${propertyService.formatCurrency(avgProfit)}</div>
+                        <div class="stat-label">Avg Est. Profit</div>
+                    </div>
+                `;
+            } catch (error) {
+                console.error('Failed to load stats:', error);
+            }
+        }
+
+        // Apply filters
+        function applyFilters() {
+            currentFilters = {
+                limit: 12,
+                offset: 0
+            };
+
+            if (neighborhoodFilter.value) {
+                currentFilters.neighborhood = neighborhoodFilter.value;
+            }
+            if (typeFilter.value) {
+                currentFilters.type = typeFilter.value;
+            }
+            if (minPriceFilter.value) {
+                currentFilters.minPrice = parseInt(minPriceFilter.value);
+            }
+            if (maxPriceFilter.value) {
+                currentFilters.maxPrice = parseInt(maxPriceFilter.value);
+            }
+            if (bedroomsFilter.value) {
+                currentFilters.minBedrooms = parseInt(bedroomsFilter.value);
+            }
+
+            loadProperties();
+        }
+
+        // Render pagination
+        function renderPagination(data) {
+            const { total, offset = 0, limit = 12 } = data;
+            const currentPage = Math.floor(offset / limit) + 1;
+            const totalPages = Math.ceil(total / limit);
+
+            if (totalPages <= 1) {
+                paginationEl.innerHTML = '';
+                return;
+            }
+
+            paginationEl.innerHTML = `
+                <button ${currentPage === 1 ? 'disabled' : ''} onclick="window.goToPage(${currentPage - 1})">Previous</button>
+                <span>Page ${currentPage} of ${totalPages}</span>
+                <button ${currentPage === totalPages ? 'disabled' : ''} onclick="window.goToPage(${currentPage + 1})">Next</button>
+            `;
+        }
+
+        // Go to page
+        window.goToPage = function(page) {
+            currentFilters.offset = (page - 1) * currentFilters.limit;
+            loadProperties();
+        };
+
+        // View property details
+        window.viewProperty = function(propertyId) {
+            window.location.href = `property-detail.html?id=${propertyId}`;
+        };
+
+        // Show error
+        function showError(message) {
+            errorEl.textContent = message;
+            errorEl.style.display = 'block';
+        }
+
+        // Debounce utility
+        function debounce(func, wait) {
+            let timeout;
+            return function(...args) {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => func.apply(this, args), wait);
+            };
+        }
+
+        // Start the app
+        init();
+    </script>
+</body>
+</html>

@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>My Schedule - Assiduous Agent Portal</title>
+    
+    <!-- Assiduous Design System -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="../assets/vendor/sirsimaster-ui/sirsimaster-ui.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <link rel="stylesheet" href="../assiduous.css">
+    <link rel="stylesheet" href="../components/admin-layout.css">
+    
+    <style>
+        /* Admin Layout - Consistent across all admin pages */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: "Geist Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+            background: var(--white);
+        }
+
+        .admin-wrapper {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 240px;
+            background: var(--navy);
+            color: var(--white);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-header {
+            padding: var(--space-lg);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .sidebar-logo {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            color: var(--white);
+            text-decoration: none;
+        }
+
+        .sidebar-logo svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .sidebar-logo-text {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: var(--space-md) 0;
+        }
+
+        .nav-section {
+            margin-bottom: var(--space-lg);
+        }
+
+        .nav-section-title {
+            padding: 0 var(--space-lg);
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            opacity: 0.6;
+            margin-bottom: var(--space-sm);
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: var(--space-sm) var(--space-lg);
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.15s;
+        }
+
+        .nav-item:hover {
+            background: rgba(255,255,255,0.05);
+            color: var(--white);
+        }
+
+        .nav-item.active {
+            background: var(--sky);
+            color: var(--white);
+        }
+
+        .nav-icon {
+            width: 18px;
+            height: 18px;
+            opacity: 0.8;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Page Content */
+        .page-content {
+            flex: 1;
+            padding: var(--space-xl);
+            overflow-y: auto;
+            background: var(--gray-50);
+        }
+
+        /* Calendar Container */
+        .calendar-container {
+            background: var(--white);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border);
+            padding: var(--space-lg);
+            margin-bottom: var(--space-xl);
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-lg);
+        }
+
+        .calendar-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--navy);
+        }
+
+        .calendar-controls {
+            display: flex;
+            gap: var(--space-sm);
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 1px;
+            background: var(--border);
+            border: 1px solid var(--border);
+        }
+
+        .calendar-day-header {
+            padding: var(--space-sm);
+            background: var(--gray-50);
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            text-align: center;
+            color: var(--text-secondary);
+        }
+
+        .calendar-day {
+            background: var(--white);
+            min-height: 100px;
+            padding: var(--space-sm);
+            position: relative;
+        }
+
+        .calendar-day-number {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: var(--space-xs);
+        }
+
+        .calendar-day.other-month .calendar-day-number {
+            color: var(--text-tertiary);
+        }
+
+        .calendar-day.today {
+            background: rgba(96, 163, 217, 0.05);
+        }
+
+        .calendar-day.today .calendar-day-number {
+            color: var(--sky);
+            font-weight: 700;
+        }
+
+        .calendar-event {
+            font-size: 11px;
+            padding: 2px 6px;
+            border-radius: var(--radius-sm);
+            margin-bottom: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            cursor: pointer;
+        }
+
+        .calendar-event.showing {
+            background: rgba(96, 163, 217, 0.1);
+            color: var(--sky);
+            border-left: 2px solid var(--sky);
+        }
+
+        .calendar-event.appointment {
+            background: rgba(34, 197, 94, 0.1);
+            color: var(--success);
+            border-left: 2px solid var(--success);
+        }
+
+        .calendar-event.inspection {
+            background: rgba(251, 191, 36, 0.1);
+            color: var(--warning);
+            border-left: 2px solid var(--warning);
+        }
+
+        /* Schedule List */
+        .schedule-list {
+            background: var(--white);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border);
+        }
+
+        .schedule-list-header {
+            padding: var(--space-lg);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .schedule-list-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--navy);
+        }
+
+        .schedule-item {
+            padding: var(--space-md);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            gap: var(--space-md);
+            align-items: start;
+            transition: background 0.2s;
+        }
+
+        .schedule-item:hover {
+            background: var(--gray-50);
+        }
+
+        .schedule-item:last-child {
+            border-bottom: none;
+        }
+
+        .schedule-time {
+            flex-shrink: 0;
+            width: 80px;
+        }
+
+        .schedule-time-value {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--navy);
+        }
+
+        .schedule-time-period {
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+
+        .schedule-details {
+            flex: 1;
+        }
+
+        .schedule-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .schedule-location {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+
+        .schedule-attendees {
+            display: flex;
+            gap: var(--space-xs);
+            flex-wrap: wrap;
+        }
+
+        .attendee-tag {
+            font-size: 11px;
+            padding: 2px 8px;
+            background: var(--gray-100);
+            border-radius: var(--radius-sm);
+            color: var(--text-secondary);
+        }
+
+        .schedule-type {
+            flex-shrink: 0;
+        }
+
+        .type-badge {
+            font-size: 11px;
+            padding: 4px 10px;
+            border-radius: var(--radius);
+            font-weight: 500;
+        }
+
+        .type-badge.showing {
+            background: rgba(96, 163, 217, 0.1);
+            color: var(--sky);
+        }
+
+        .type-badge.meeting {
+            background: rgba(34, 197, 94, 0.1);
+            color: var(--success);
+        }
+
+        .type-badge.inspection {
+            background: rgba(251, 191, 36, 0.1);
+            color: var(--warning);
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-wrapper">
+        
+        <!-- Sidebar Component -->
+        <aside class="sidebar" id="sidebar-root" data-active="schedule">
+<div class="sidebar-header">
+  <a href="dashboard.html" class="sidebar-logo">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+      <polyline points="9 22 9 12 15 12 15 22"></polyline>
+    </svg>
+    <span class="sidebar-logo-text">Agent Portal</span>
+  </a>
+</div>
+
+<nav class="sidebar-nav">
+  <div class="nav-section">
+    <div class="nav-section-title">Main</div>
+    <a href="dashboard.html" class="nav-item" data-key="dashboard">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="3" y="3" width="7" height="7"></rect>
+        <rect x="14" y="3" width="7" height="7"></rect>
+        <rect x="14" y="14" width="7" height="7"></rect>
+        <rect x="3" y="14" width="7" height="7"></rect>
+      </svg>
+      Dashboard
+    </a>
+    <a href="listings.html" class="nav-item" data-key="listings">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+      </svg>
+      My Listings
+    </a>
+    <a href="clients.html" class="nav-item" data-key="clients">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+        <circle cx="12" cy="7" r="4"></circle>
+      </svg>
+      My Clients
+    </a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">Activity</div>
+    <a href="leads.html" class="nav-item" data-key="leads">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+        <circle cx="9" cy="7" r="4"></circle>
+        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+      </svg>
+      My Leads
+    </a>
+    <a href="schedule.html" class="nav-item active" data-key="schedule">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+        <line x1="16" y1="2" x2="16" y2="6"></line>
+        <line x1="8" y1="2" x2="8" y2="6"></line>
+        <line x1="3" y1="10" x2="21" y2="10"></line>
+      </svg>
+      Schedule
+    </a>
+    <a href="commissions.html" class="nav-item" data-key="commissions">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="12" y1="1" x2="12" y2="23"></line>
+        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+      </svg>
+      Commission Tracker
+    </a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">Tools</div>
+    <a href="resources.html" class="nav-item" data-key="resources">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+      </svg>
+      Resources
+    </a>
+    <a href="settings.html" class="nav-item" data-key="settings">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="3"></circle>
+        <path d="M12 1v6m0 6v6m4.22-13.22l4.24 4.24M1.54 1.54l4.24 4.24M18.46 18.46l4.24 4.24M1.54 18.46l4.24-4.24"></path>
+      </svg>
+      My Settings
+    </a>
+  </div>
+</nav>
+</aside>
+        <main class="main-content">
+            <!-- Standardized Admin Header -->
+            <header id="universal-header-root" 
+                    data-title="My Schedule" 
+                    data-subtitle="Manage your appointments and property showings"
+                    data-search-placeholder="Search events..."
+                    data-user-role="agent"
+                    data-user-name="Sarah Johnson"
+                    data-user-email="sarah.johnson@assiduousrealty.com"
+                    data-actions='[{"label":"New Event","icon":"<line x1=\"12\" y1=\"5\" x2=\"12\" y2=\"19\"></line><line x1=\"5\" y1=\"12\" x2=\"19\" y2=\"12\"></line>","primary":true,"onclick":"showNewEventModal()"}]'></header>
+
+            <!-- Page Content -->
+            <div class="page-content">
+                
+                <!-- Calendar View -->
+                <div class="calendar-container">
+                    <div class="calendar-header">
+                        <h2 class="calendar-title">October 2025</h2>
+                        <div class="calendar-controls">
+                            <button class="sm-btn sm-btn-secondary" onclick="previousMonth()">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="15 18 9 12 15 6"></polyline>
+                                </svg>
+                            </button>
+                            <button class="sm-btn sm-btn-secondary" onclick="goToToday()">Today</button>
+                            <button class="sm-btn sm-btn-secondary" onclick="nextMonth()">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="9 18 15 12 9 6"></polyline>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="calendar-grid">
+                        <!-- Day Headers -->
+                        <div class="calendar-day-header">Sun</div>
+                        <div class="calendar-day-header">Mon</div>
+                        <div class="calendar-day-header">Tue</div>
+                        <div class="calendar-day-header">Wed</div>
+                        <div class="calendar-day-header">Thu</div>
+                        <div class="calendar-day-header">Fri</div>
+                        <div class="calendar-day-header">Sat</div>
+                        
+                        <!-- Calendar Days (simplified for demo) -->
+                        <div class="calendar-day other-month">
+                            <div class="calendar-day-number">29</div>
+                        </div>
+                        <div class="calendar-day other-month">
+                            <div class="calendar-day-number">30</div>
+                        </div>
+                        <div class="calendar-day">
+                            <div class="calendar-day-number">1</div>
+                        </div>
+                        <div class="calendar-day">
+                            <div class="calendar-day-number">2</div>
+                            <div class="calendar-event showing">10am - Showing</div>
+                        </div>
+                        <div class="calendar-day">
+                            <div class="calendar-day-number">3</div>
+                        </div>
+                        <div class="calendar-day">
+                            <div class="calendar-day-number">4</div>
+                            <div class="calendar-event appointment">2pm - Client Meeting</div>
+                        </div>
+                        <div class="calendar-day">
+                            <div class="calendar-day-number">5</div>
+                        </div>
+                        
+                        <!-- Week 2 -->
+                        <div class="calendar-day">
+                            <div class="calendar-day-number">6</div>
+                        </div>
+                        <div class="calendar-day">
+                            <div class="calendar-day-number">7</div>
+                            <div class="calendar-event inspection">11am - Inspection</div>
+                        </div>
+                        <div class="calendar-day">
+                            <div class="calendar-day-number">8</div>
+                        </div>
+                        <div class="calendar-day">
+                            <div class="calendar-day-number">9</div>
+                            <div class="calendar-event showing">3pm - Showing</div>
+                        </div>
+                        <div class="calendar-day today">
+                            <div class="calendar-day-number">10</div>
+                            <div class="calendar-event appointment">9am - Closing</div>
+                            <div class="calendar-event showing">2pm - Showing</div>
+                        </div>
+                        <div class="calendar-day">
+                            <div class="calendar-day-number">11</div>
+                        </div>
+                        <div class="calendar-day">
+                            <div class="calendar-day-number">12</div>
+                        </div>
+                        
+                        <!-- Remaining days... -->
+                    </div>
+                </div>
+                
+                <!-- Today's Schedule -->
+                <div class="schedule-list">
+                    <div class="schedule-list-header">
+                        <h3 class="schedule-list-title">Today's Schedule - October 10, 2025</h3>
+                    </div>
+                    
+                    <div class="schedule-item">
+                        <div class="schedule-time">
+                            <div class="schedule-time-value">9:00</div>
+                            <div class="schedule-time-period">AM</div>
+                        </div>
+                        <div class="schedule-details">
+                            <div class="schedule-title">Property Closing - 123 Main St</div>
+                            <div class="schedule-location">📍 Title Company Office, 456 Legal Ave</div>
+                            <div class="schedule-attendees">
+                                <span class="attendee-tag">John Smith (Buyer)</span>
+                                <span class="attendee-tag">Mary Johnson (Seller)</span>
+                                <span class="attendee-tag">Title Agent</span>
+                            </div>
+                        </div>
+                        <div class="schedule-type">
+                            <span class="type-badge meeting">Closing</span>
+                        </div>
+                    </div>
+                    
+                    <div class="schedule-item">
+                        <div class="schedule-time">
+                            <div class="schedule-time-value">2:00</div>
+                            <div class="schedule-time-period">PM</div>
+                        </div>
+                        <div class="schedule-details">
+                            <div class="schedule-title">Property Showing - 789 Oak Lane</div>
+                            <div class="schedule-location">📍 789 Oak Lane, Riverside</div>
+                            <div class="schedule-attendees">
+                                <span class="attendee-tag">Jennifer Williams</span>
+                                <span class="attendee-tag">Robert Williams</span>
+                            </div>
+                        </div>
+                        <div class="schedule-type">
+                            <span class="type-badge showing">Showing</span>
+                        </div>
+                    </div>
+                    
+                    <div class="schedule-item">
+                        <div class="schedule-time">
+                            <div class="schedule-time-value">4:30</div>
+                            <div class="schedule-time-period">PM</div>
+                        </div>
+                        <div class="schedule-details">
+                            <div class="schedule-title">Follow-up Call - Lead from Website</div>
+                            <div class="schedule-location">📞 Phone Call</div>
+                            <div class="schedule-attendees">
+                                <span class="attendee-tag">Michael Chen</span>
+                            </div>
+                        </div>
+                        <div class="schedule-type">
+                            <span class="type-badge meeting">Call</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Load Component Scripts -->
+    <script src="../components/universal-header.js"></script>
+    
+    <!-- Page-specific functionality -->
+    <script src="../firebase-config.js"></script>
+    <script>
+        // Initialize Firebase connection for schedule
+        let currentMonth = 10;
+        let currentYear = 2025;
+        
+        async function loadScheduleData() {
+            try {
+                // Check authentication
+                const user = await checkAuth();
+                if (!user) {
+                    window.location.href = '/agent/login.html';
+                    return;
+                }
+                
+                // Load events from Firestore
+                const events = await db.collection('events')
+                    .where('agentId', '==', user.uid)
+                    .where('date', '>=', new Date(currentYear, currentMonth - 1, 1))
+                    .where('date', '<=', new Date(currentYear, currentMonth, 0))
+                    .orderBy('date')
+                    .get();
+                
+                renderCalendarEvents(events.docs);
+                renderTodaySchedule(events.docs);
+                
+            } catch (error) {
+                console.error('Error loading schedule:', error);
+                // For now, using static data as shown above
+            }
+        }
+        
+        function renderCalendarEvents(events) {
+            // Render events on calendar
+            events.forEach(doc => {
+                const event = doc.data();
+                // Add event to appropriate calendar day
+            });
+        }
+        
+        function renderTodaySchedule(events) {
+            // Filter for today's events and render in schedule list
+            const today = new Date();
+            const todayEvents = events.filter(doc => {
+                const eventDate = doc.data().date.toDate();
+                return eventDate.toDateString() === today.toDateString();
+            });
+            
+            // Update schedule list with today's events
+        }
+        
+        function previousMonth() {
+            currentMonth--;
+            if (currentMonth < 1) {
+                currentMonth = 12;
+                currentYear--;
+            }
+            loadScheduleData();
+        }
+        
+        function nextMonth() {
+            currentMonth++;
+            if (currentMonth > 12) {
+                currentMonth = 1;
+                currentYear++;
+            }
+            loadScheduleData();
+        }
+        
+        function goToToday() {
+            const today = new Date();
+            currentMonth = today.getMonth() + 1;
+            currentYear = today.getFullYear();
+            loadScheduleData();
+        }
+        
+        function showNewEventModal() {
+            // Show modal for creating new event
+            console.log('Opening new event modal...');
+        }
+        
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadScheduleData();
+        });
+    </script>
+</body>
+</html>

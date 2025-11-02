@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PROJECT SCOPE - Assiduous Documentation</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3, h4, h5, h6 {
+            margin-top: 24px;
+            margin-bottom: 16px;
+            font-weight: 600;
+            line-height: 1.25;
+        }
+        h1 { font-size: 2em; border-bottom: 1px solid #e1e4e8; padding-bottom: 0.3em; }
+        h2 { font-size: 1.5em; border-bottom: 1px solid #e1e4e8; padding-bottom: 0.3em; }
+        h3 { font-size: 1.25em; }
+        code {
+            background: #f6f8fa;
+            padding: 0.2em 0.4em;
+            border-radius: 3px;
+            font-size: 85%;
+        }
+        pre {
+            background: #f6f8fa;
+            padding: 16px;
+            overflow: auto;
+            border-radius: 6px;
+            line-height: 1.45;
+        }
+        pre code {
+            background: transparent;
+            padding: 0;
+        }
+        ul, ol {
+            padding-left: 2em;
+            margin-bottom: 16px;
+        }
+        li {
+            margin-bottom: 4px;
+        }
+        a {
+            color: #0366d6;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        blockquote {
+            padding: 0 1em;
+            color: #6a737d;
+            border-left: 0.25em solid #dfe2e5;
+            margin: 0 0 16px 0;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 16px;
+        }
+        table th, table td {
+            padding: 6px 13px;
+            border: 1px solid #dfe2e5;
+        }
+        table tr:nth-child(2n) {
+            background-color: #f6f8fa;
+        }
+        .nav-link {
+            display: inline-block;
+            padding: 8px 16px;
+            background: #0366d6;
+            color: white;
+            border-radius: 6px;
+            margin: 10px 5px;
+            text-decoration: none;
+        }
+        .nav-link:hover {
+            background: #0256c7;
+            text-decoration: none;
+        }
+        .timestamp {
+            color: #6a737d;
+            font-size: 0.85em;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e1e4e8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <a href="/docs/index.html" class="nav-link">📚 Documentation Hub</a>
+            <a href="/docs/readme.html" class="nav-link">📖 README</a>
+            <a href="/docs/changelog.html" class="nav-link">📝 Changelog</a>
+            <a href="/docs/warp.html" class="nav-link">⚙️ WARP Rules</a>
+        </nav>
+        <h1>PROJECT SCOPE</h1>
+        <div class="content">
+<h1>PROJECT SCOPE DOCUMENT</h1>
+<h2>Assiduous Platform Scope and Boundaries</h2>
+<br>
+<strong>Document Type:</strong> Project Scope  
+<strong>Version:</strong> 2.0.0  
+<strong>Last Updated:</strong> October 9, 2025  
+<strong>Status:</strong> Authoritative Scope Document
+<strong>Consolidation Note:</strong> Merged from 10_DAY_MVP_PLAN.md
+<br>
+<hr>
+<br>
+<h1>MVP Development Plan &amp; Progress Tracker</h1>
+<strong>Target</strong>: Functional micro-flipping platform with three portals (Admin, Client, Agent)  
+<strong>Current Phase</strong>: Phase 3 - Agent Portal Development  
+<strong>Last Updated</strong>: October 9, 2025  
+<strong>Status</strong>: Phase 1 &amp; 2 Partially Complete (~60%), Phase 3 Not Started  
+<strong>Recalibration Note</strong>: Status corrected on October 9, 2025 to reflect actual project state
+<br>
+<hr>
+<br>
+<h2>Reality Check: Blueprint vs 10 Days</h2>
+<br>
+<h3>Current Blueprint Scope</h3>
+The technical blueprint envisions:
+<li>Advanced AI/ML matching (6-12 weeks)</li>
+<li>Multi-market expansion (3-6 months)</li>
+<li>Mobile apps (8-12 weeks)</li>
+<li>Complex integrations (MLS, CRM, etc.) (4-8 weeks)</li>
+<li>Enterprise-grade infrastructure (ongoing)</li>
+<br>
+<h3>What's Actually Possible in 10 Days</h3>
+<strong>One focused developer working 12-14 hour days</strong> can deliver a functional MVP with:
+<li>Basic backend API (Firebase Cloud Functions)</li>
+<li>Real property database (Firestore)</li>
+<li>Functional property search and display</li>
+<li>User authentication and profiles</li>
+<li>Lead capture and management</li>
+<li>Basic analytics</li>
+<li><strong>No AI/ML</strong> (future phase)</li>
+<li><strong>No MLS integration</strong> (future phase)</li>
+<li><strong>No mobile apps</strong> (future phase)</li>
+<br>
+<hr>
+<br>
+<h2>10-Day MVP Scope (October 6-15)</h2>
+<br>
+<h3>Core Value Proposition</h3>
+<strong>AssiduousFlip</strong>: A micro-flipping platform that helps buyers find flip-ready properties, estimate profits, and connect with experts.
+<br>
+<h3>⚠️ PHASE 1-2 PARTIALLY COMPLETED (~60% - October 9, 2025)</h3>
+<br>
+#### Admin Portal - COMPLETE
+1. ✅ <strong>Admin Dashboard</strong> - Full analytics and metrics
+2. ✅ <strong>Properties Management</strong> - List view with filters
+3. ✅ <strong>Property Detail</strong> - Full detail view with actions
+4. ✅ <strong>Property Form</strong> - Add/edit with live calculations
+5. ✅ <strong>Property CRUD</strong> - Create, read, update, delete, status change
+6. ✅ <strong>Agents Management</strong> - Agent directory and metrics
+7. ✅ <strong>Clients Management</strong> - Client tracking
+8. ✅ <strong>Transactions</strong> - Deal pipeline
+9. ✅ <strong>Analytics</strong> - Real-time insights
+10. ✅ <strong>Market Analysis</strong> - Neighborhood metrics
+<br>
+#### Client Portal - COMPLETE  
+1. ✅ <strong>Client Dashboard</strong> - Personal metrics and widgets
+2. ✅ <strong>Properties Browse</strong> - Grid view with filters
+3. ✅ <strong>Property Detail</strong> - Full details with actions
+4. ✅ <strong>Save Properties</strong> - Favorites with localStorage
+5. ✅ <strong>Schedule Viewing</strong> - Date/time picker modal
+6. ✅ <strong>Contact Agent</strong> - Contact form modal
+7. ✅ <strong>Recently Viewed</strong> - Auto-tracking last 10 properties
+8. ✅ <strong>Saved Properties Widget</strong> - Dashboard display
+9. ✅ <strong>Search &amp; Filters</strong> - Neighborhood, type, price, bedrooms
+10. ✅ <strong>Mobile Responsive</strong> - All pages work on mobile
+<br>
+#### Technical Infrastructure - COMPLETE
+1. ✅ <strong>PropertyService</strong> - Full CRUD API client (with getProperty fix)
+2. ✅ <strong>Firebase Hosting</strong> - Deployed to assiduous-prod.web.app
+3. ✅ <strong>Design System</strong> - Consistent UI across portals
+4. ✅ <strong>localStorage Integration</strong> - Client-side persistence
+5. ✅ <strong>Backend API</strong> - Cloud Functions at us-central1
+6. ✅ <strong>Firestore Database</strong> - Real property data
+7. ✅ <strong>QA/QC Framework</strong> - RULE 4 in WARP.md
+<br>
+<h3>Explicitly Out of Scope (Post-Oct 15)</h3>
+<li>❌ AI property matching</li>
+<li>❌ Automated property valuation (ML model)</li>
+<li>❌ MLS integration</li>
+<li>❌ CRM integrations</li>
+<li>❌ Mobile applications</li>
+<li>❌ Virtual tours/3D</li>
+<li>❌ Document management/e-signing</li>
+<li>❌ Payment processing</li>
+<li>❌ Advanced market analysis</li>
+<li>❌ Chatbot/NLP</li>
+<li>❌ Multi-language support</li>
+<br>
+<hr>
+<br>
+<h2>Day-by-Day Development Plan</h2>
+<br>
+<h3>Day 1-2 (Oct 6-7): Backend Foundation</h3>
+<strong>Goal</strong>: Firebase Cloud Functions + Firestore setup
+<br>
+#### Tasks:
+1. <strong>Firebase Functions Setup</strong> (4 hours)
+   - Initialize Cloud Functions project
+   - Set up TypeScript/JavaScript structure
+   - Configure environment variables
+   - Deploy hello-world function
+<br>
+2. <strong>Firestore Data Models</strong> (6 hours)
+   - Design collections schema:
+     - <code>properties</code> collection
+     - <code>users</code> collection
+     - <code>leads</code> collection
+     - <code>favorites</code> collection
+   - Create Firestore security rules
+   - Set up compound indexes
+   - Seed test data (10-20 properties)
+<br>
+3. <strong>Core API Endpoints</strong> (8 hours)
+   <code></code>`
+   GET  /api/properties - List properties
+   GET  /api/properties/:id - Get property details
+   POST /api/properties/search - Search properties
+   POST /api/leads - Submit lead
+   GET  /api/user/favorites - Get user favorites
+   POST /api/user/favorites - Add favorite
+   <code></code>`
+<br>
+4. <strong>Authentication Integration</strong> (4 hours)
+   - Firebase Auth setup
+   - Email/password authentication
+   - Auth middleware for protected routes
+   - User profile creation on signup
+<br>
+<strong>Deliverable</strong>: Working backend API deployed to Firebase
+<br>
+<hr>
+<br>
+<h3>Day 3-4 (Oct 8-9): Frontend-Backend Integration</h3>
+<strong>Goal</strong>: Connect existing UI to real backend
+<br>
+#### Tasks:
+1. <strong>Property Service Layer</strong> (6 hours)
+   - Create <code>PropertyService.js</code>
+   - Implement Firestore queries
+   - Add caching layer
+   - Error handling
+<br>
+2. <strong>Auth Service Integration</strong> (4 hours)
+   - Update <code>auth.js</code> with Firebase Auth
+   - Add login/signup flows
+   - Session management
+   - Protected routes
+<br>
+3. <strong>Property Listing Page</strong> (6 hours)
+   - Replace mockup data with Firestore
+   - Implement real-time search
+   - Add filtering (price, location, type)
+   - Pagination
+<br>
+4. <strong>Property Detail Page</strong> (4 hours)
+   - Fetch property by ID
+   - Display all property information
+   - Add to favorites functionality
+   - Contact form integration
+<br>
+<strong>Deliverable</strong>: Functional property browsing with real data
+<br>
+<hr>
+<br>
+<h3>⚡ PHASE 3: Agent Portal - NOT STARTED ❌</h3>
+<strong>Goal</strong>: Complete agent workflows for listing and client management  
+<strong>Status</strong>: Not Started - Only redirect stub exists  
+<strong>Completion Date</strong>: None - Work not done  
+<strong>Time Needed</strong>: Estimated 10-14 hours
+<br>
+#### Pages to Create:
+1. <strong>Agent Dashboard</strong> (<code>/agent/dashboard.html</code>) - 2-3 hours
+   - Agent sidebar navigation
+   - Personal metrics (listings, clients, commission)
+   - Leaderboard position
+   - Recent listings grid
+   - Upcoming viewings calendar
+   - New leads notification
+   - Quick action buttons
+   - Performance charts
+<br>
+2. <strong>Agent Listings</strong> (<code>/agent/listings.html</code>) - 2-3 hours
+   - My properties grid view
+   - Filter by status (available, pending, sold)
+   - Quick edit actions
+   - Status change dropdown
+   - Add new listing button
+   - Performance metrics per listing
+   - Sort by price, date, views
+<br>
+3. <strong>Agent Clients</strong> (<code>/agent/clients.html</code>) - 2-3 hours
+   - My clients list view
+   - Communication history
+   - Scheduled viewings
+   - Follow-up reminders
+   - Client notes
+   - Contact information
+   - Client status tracking
+<br>
+4. <strong>Agent Leads</strong> (<code>/agent/leads.html</code>) - 2-3 hours
+   - New leads queue
+   - Lead scoring display
+   - Qualification form
+   - Assign to me button
+   - Lead status tracking
+   - Conversion funnel
+   - Follow-up scheduler
+<br>
+<strong>Success Criteria</strong>:
+<li>[ ] All 4 agent pages created and deployed</li>
+<li>[ ] Agent sidebar navigation working</li>
+<li>[ ] PropertyService integration functional</li>
+<li>[ ] Mobile responsive verified</li>
+<li>[ ] RULE 4 QA/QC assessment passed</li>
+<li>[ ] Zero console errors in browser</li>
+<li>[ ] All workflows tested end-to-end</li>
+<br>
+<strong>Deliverable</strong>: Functional agent portal with complete workflows
+<br>
+<hr>
+<br>
+<h3>PHASE 4: Authentication System (CRITICAL)</h3>
+<strong>Goal</strong>: Add user authentication and role-based access  
+<strong>Status</strong>: Not started  
+<strong>Estimated Time</strong>: 6-8 hours  
+<strong>Dependencies</strong>: Phase 3 complete
+<br>
+#### Tasks:
+1. <strong>Firebase Authentication Setup</strong> (2 hours)
+   - Initialize Firebase Auth
+   - Configure auth providers
+   - Set up security rules
+<br>
+2. <strong>Login/Signup Pages</strong> (2 hours)
+   - Create <code>/login.html</code>
+   - Create <code>/signup.html</code> with role selection
+   - Password reset flow
+<br>
+3. <strong>Role-Based Access Control</strong> (2-3 hours)
+   - Implement RBAC middleware
+   - Store user roles in Firestore
+   - Redirect based on role
+   - Protect routes by role
+<br>
+4. <strong>Session Management</strong> (1-2 hours)
+   - Persistent sessions
+   - Auto-redirect on login
+   - Logout functionality
+<br>
+<h3>PHASE 5: Backend API Development (CRITICAL)</h3>
+<strong>Goal</strong>: Replace mock data with real Cloud Functions  
+<strong>Status</strong>: Not started  
+<strong>Estimated Time</strong>: 12-16 hours  
+<strong>Dependencies</strong>: Auth system complete
+<br>
+#### Endpoints to Create:
+1. <strong>Property Operations</strong> (4-6 hours)
+   - GET /api/properties
+   - GET /api/properties/:id
+   - POST /api/properties
+   - PATCH /api/properties/:id
+   - DELETE /api/properties/:id
+<br>
+2. <strong>User Operations</strong> (3-4 hours)
+   - POST /api/users (create profile)
+   - GET /api/users/:id
+   - PATCH /api/users/:id
+   - POST /api/users/:id/favorites
+   - DELETE /api/users/:id/favorites/:propertyId
+<br>
+3. <strong>Lead Operations</strong> (3-4 hours)
+   - POST /api/leads/contact
+   - POST /api/leads/viewing
+   - GET /api/leads (for agents)
+   - PATCH /api/leads/:id
+<br>
+4. <strong>Agent Operations</strong> (2-3 hours)
+   - GET /api/agents/:id/dashboard
+   - GET /api/agents/:id/listings
+   - GET /api/agents/:id/clients
+   - GET /api/agents/:id/leads
+<br>
+<h3>PHASE 6-9: Enhanced Features</h3>
+<strong>Status</strong>: Planned for future
+<br>
+<li><strong>Phase 6</strong>: Real-time Firestore listeners</li>
+<li><strong>Phase 7</strong>: Image upload to Cloud Storage</li>
+<li><strong>Phase 8</strong>: Email notifications (SendGrid)</li>
+<li><strong>Phase 9</strong>: Analytics tracking (Firebase + GA4)</li>
+   - Touch-friendly interactions
+   - Mobile menu
+<br>
+<strong>Deliverable</strong>: Polished, fast, functional platform
+<br>
+<hr>
+<br>
+<h3>Day 9 (Oct 14): Testing &amp; Bug Fixes</h3>
+<strong>Goal</strong>: Comprehensive testing and issue resolution
+<br>
+#### Tasks:
+1. <strong>Functional Testing</strong> (6 hours)
+   - Test all user flows
+   - Test admin functions
+   - Test edge cases
+   - Cross-browser testing
+   - Mobile testing
+<br>
+2. <strong>Security Review</strong> (4 hours)
+   - Review Firestore rules
+   - Check authentication flows
+   - Input sanitization
+   - XSS prevention
+   - Rate limiting
+<br>
+3. <strong>Performance Testing</strong> (2 hours)
+   - Load time testing
+   - Database query performance
+   - Image loading
+   - API response times
+<br>
+4. <strong>Bug Fixes</strong> (6 hours)
+   - Fix critical bugs
+   - Address UX issues
+   - Polish interactions
+   - Final adjustments
+<br>
+<strong>Deliverable</strong>: Production-ready platform
+<br>
+<hr>
+<br>
+<h3>Day 10 (Oct 15): Deployment &amp; Launch</h3>
+<strong>Goal</strong>: Production deployment and go-live
+<br>
+#### Tasks:
+1. <strong>Final Deployment</strong> (4 hours)
+   - Deploy Cloud Functions
+   - Update Firestore rules
+   - Configure custom domain
+   - SSL certificate
+   - CDN setup
+<br>
+2. <strong>Data Population</strong> (4 hours)
+   - Add real properties (50-100)
+   - Optimize images
+   - Verify data quality
+   - Test with production data
+<br>
+3. <strong>Monitoring Setup</strong> (2 hours)
+   - Error tracking (Sentry)
+   - Uptime monitoring
+   - Performance monitoring
+   - Alert configuration
+<br>
+4. <strong>Documentation</strong> (3 hours)
+   - User guide
+   - Admin manual
+   - API documentation
+   - Deployment notes
+<br>
+5. <strong>Launch</strong> (3 hours)
+   - Final smoke tests
+   - Announce launch
+   - Monitor initial traffic
+   - Quick response to issues
+<br>
+<strong>Deliverable</strong>: Live, functional AssiduousFlip platform
+<br>
+<hr>
+<br>
+<h2>Technical Architecture (MVP)</h2>
+<br>
+<h3>Backend Stack</h3>
+<code></code>`
+Firebase Cloud Functions (Node.js)
+├── /api/properties - Property management
+├── /api/users - User management
+├── /api/leads - Lead capture
+└── /api/search - Search functionality
+<br>
+Firestore Collections
+├── properties/
+│   ├── {propertyId}
+│   ├── address, price, details
+│   ├── images[], features[]
+│   └── flipEstimate{}
+├── users/
+│   ├── {userId}
+│   ├── profile, preferences
+│   └── favorites[]
+└── leads/
+    ├── {leadId}
+    ├── property, user, timestamp
+    └── status, notes
+<code></code>`
+<br>
+<h3>Frontend Integration</h3>
+<code></code>`
+Existing HTML/CSS/JS Frontend
+├── Updated with real API calls
+├── Firebase SDK integration
+├── Real-time Firestore queries
+└── Firebase Auth integration
+<code></code>`
+<br>
+<h3>Deployment</h3>
+<code></code>`
+Production Environment
+├── Firebase Hosting (frontend)
+├── Cloud Functions (backend)
+├── Firestore (database)
+├── Cloud Storage (images)
+└── Firebase Analytics
+<code></code>`
+<br>
+<hr>
+<br>
+<h2>Firestore Schema (MVP)</h2>
+<br>
+<h3>Properties Collection</h3>
+<code></code>`javascript
+properties/{propertyId}
+{
+  id: string,
+  address: {
+    street: string,
+    city: string,
+    state: string,
+    zip: string,
+    coordinates: GeoPoint
+  },
+  price: {
+    list: number,
+    arv: number,  // After Repair Value
+    repair: number
+  },
+  details: {
+    bedrooms: number,
+    bathrooms: number,
+    sqft: number,
+    lot: number,
+    year: number,
+    type: string  // single_family, condo, townhouse
+  },
+  images: [
+    {
+      url: string,
+      thumbnail: string,
+      caption: string
+    }
+  ],
+  features: string[],  // pool, garage, basement, etc.
+  status: string,  // available, pending, sold
+  flipEstimate: {
+    profit: number,
+    roi: number,
+    holdingTime: number
+  },
+  createdAt: timestamp,
+  updatedAt: timestamp
+}
+<code></code>`
+<br>
+<h3>Users Collection</h3>
+<code></code>`javascript
+users/{userId}
+{
+  id: string,
+  email: string,
+  profile: {
+    name: string,
+    phone: string,
+    role: string  // buyer, agent, admin
+  },
+  preferences: {
+    locations: string[],
+    priceRange: {min: number, max: number},
+    propertyTypes: string[]
+  },
+  favorites: string[],  // property IDs
+  createdAt: timestamp,
+  lastLogin: timestamp
+}
+<code></code>`
+<br>
+<h3>Leads Collection</h3>
+<code></code>`javascript
+leads/{leadId}
+{
+  id: string,
+  propertyId: string,
+  user: {
+    name: string,
+    email: string,
+    phone: string
+  },
+  message: string,
+  type: string,  // viewing, offer, question
+  status: string,  // new, contacted, qualified, closed
+  createdAt: timestamp
+}
+<code></code>`
+<br>
+<hr>
+<br>
+<h2>API Endpoints (MVP)</h2>
+<br>
+<h3>Properties API</h3>
+<code></code>`typescript
+// GET /api/properties
+// Query: ?limit=20&amp;offset=0&amp;city=Philadelphia&amp;minPrice=100000&amp;maxPrice=300000
+Response: {
+  properties: Property[],
+  total: number,
+  hasMore: boolean
+}
+<br>
+// GET /api/properties/:id
+Response: {
+  property: Property
+}
+<br>
+// POST /api/properties/search
+Body: {
+  location?: string,
+  priceRange?: {min: number, max: number},
+  bedrooms?: number,
+  propertyType?: string
+}
+Response: {
+  properties: Property[],
+  count: number
+}
+<code></code>`
+<br>
+<h3>Leads API</h3>
+<code></code>`typescript
+// POST /api/leads
+Body: {
+  propertyId: string,
+  name: string,
+  email: string,
+  phone: string,
+  message: string,
+  type: string
+}
+Response: {
+  leadId: string,
+  success: boolean
+}
+<code></code>`
+<br>
+<h3>User API</h3>
+<code></code>`typescript
+// GET /api/user/profile
+Authorization: Bearer token
+Response: {
+  user: User
+}
+<br>
+// PUT /api/user/profile
+Authorization: Bearer token
+Body: {
+  profile: {...},
+  preferences: {...}
+}
+<br>
+// GET /api/user/favorites
+Authorization: Bearer token
+Response: {
+  favorites: Property[]
+}
+<br>
+// POST /api/user/favorites
+Authorization: Bearer token
+Body: {
+  propertyId: string
+}
+<code></code>`
+<br>
+<hr>
+<br>
+<h2>Success Criteria (Oct 15)</h2>
+<br>
+<h3>Functional Requirements ✅</h3>
+<li>[ ] Users can browse properties</li>
+<li>[ ] Users can search/filter properties</li>
+<li>[ ] Users can view property details</li>
+<li>[ ] Users can register/login</li>
+<li>[ ] Users can save favorite properties</li>
+<li>[ ] Users can submit leads</li>
+<li>[ ] Profit calculator works</li>
+<li>[ ] Admin can add/edit properties</li>
+<li>[ ] Analytics tracking active</li>
+<br>
+<h3>Performance Requirements ✅</h3>
+<li>[ ] Page load &lt; 3 seconds</li>
+<li>[ ] API response &lt; 500ms</li>
+<li>[ ] Mobile responsive</li>
+<li>[ ] 99% uptime</li>
+<li>[ ] Images optimized</li>
+<br>
+<h3>Security Requirements ✅</h3>
+<li>[ ] HTTPS enabled</li>
+<li>[ ] Firestore rules configured</li>
+<li>[ ] Authentication working</li>
+<li>[ ] Input validation</li>
+<li>[ ] XSS protection</li>
+<br>
+<hr>
+<br>
+<h2>Post-Launch Roadmap (Phase 2+)</h2>
+<br>
+<h3>Weeks 2-4 (Oct 16 - Nov 6)</h3>
+<li>Add more properties (scale to 500+)</li>
+<li>Email notification system</li>
+<li>Advanced search filters</li>
+<li>Property comparison tool</li>
+<li>User reviews/ratings</li>
+<br>
+<h3>Months 2-3 (Nov 7 - Jan 6)</h3>
+<li>Basic AI recommendations (simple algorithm)</li>
+<li>Automated property valuation (regression model)</li>
+<li>Agent matching system</li>
+<li>Document upload/management</li>
+<li>Payment integration (deposits)</li>
+<br>
+<h3>Months 4-6 (Jan 7 - Apr 6)</h3>
+<li>MLS integration (start with one market)</li>
+<li>Mobile app (React Native)</li>
+<li>Advanced AI matching</li>
+<li>CRM integration</li>
+<li>Virtual tours</li>
+<br>
+<hr>
+<br>
+<h2>Risk Mitigation</h2>
+<br>
+<h3>High-Risk Items</h3>
+1. <strong>Time Constraint</strong>
+   - <em>Mitigation</em>: Strict scope control, no feature creep
+   - <em>Backup</em>: Cut profit calculator or admin panel if needed
+<br>
+2. <strong>Technical Complexity</strong>
+   - <em>Mitigation</em>: Use Firebase (managed services)
+   - <em>Backup</em>: Simplify data models, fewer features
+<br>
+3. <strong>Data Availability</strong>
+   - <em>Mitigation</em>: Manual data entry for initial properties
+   - <em>Backup</em>: Start with 20-30 properties, scale post-launch
+<br>
+4. <strong>Testing Time</strong>
+   - <em>Mitigation</em>: Test continuously, not just Day 9
+   - <em>Backup</em>: Focus on critical paths only
+<br>
+<h3>Contingency Plans</h3>
+<li><strong>If behind by Day 5</strong>: Cut admin panel, use Firebase console</li>
+<li><strong>If behind by Day 7</strong>: Cut profit calculator enhancement</li>
+<li><strong>If behind by Day 9</strong>: Launch with 20 properties, add more daily</li>
+<br>
+<hr>
+<br>
+<h2>Resource Requirements</h2>
+<br>
+<h3>Development</h3>
+<li><strong>1 Full-stack Developer</strong>: 120-140 hours over 10 days</li>
+<li><strong>Tools</strong>: Firebase, VS Code, Postman, Git</li>
+<li><strong>Services</strong>: Firebase Spark plan (free), upgrade to Blaze if needed</li>
+<br>
+<h3>Content</h3>
+<li><strong>Property Data</strong>: 50-100 Philadelphia properties</li>
+<li><strong>Images</strong>: 5-10 per property (royalty-free or real)</li>
+<li><strong>Content Writing</strong>: Property descriptions, site copy</li>
+<br>
+<h3>Budget</h3>
+<li><strong>Firebase</strong>: ~$25-50/month (Blaze plan for functions)</li>
+<li><strong>Domain</strong>: $12/year (already have)</li>
+<li><strong>CDN</strong>: Included in Firebase</li>
+<li><strong>Email</strong>: SendGrid free tier</li>
+<li><strong>Total</strong>: ~$50 for October</li>
+<br>
+<hr>
+<br>
+<h2>Bottom Line</h2>
+<br>
+<h3>What We're Building</h3>
+A <strong>functional micro-flipping platform</strong> where users can:
+<li>Browse real properties</li>
+<li>Search and filter</li>
+<li>Calculate flip profits</li>
+<li>Save favorites</li>
+<li>Submit leads</li>
+<li>Create accounts</li>
+<br>
+<h3>What We're NOT Building (Yet)</h3>
+<li>AI/ML features</li>
+<li>Mobile apps</li>
+<li>MLS integration</li>
+<li>Complex integrations</li>
+<li>Advanced analytics</li>
+<br>
+<h3>Is This Achievable?</h3>
+<strong>Yes</strong>, with focused execution and strict scope control. The plan is aggressive but realistic for a single developer working intensively for 10 days.
+<br>
+<h3>Success Definition</h3>
+By October 15, we have a <strong>live, functional platform</strong> that demonstrates value and can be iterated on post-launch.
+<br>
+<hr>
+<br>
+<strong>Created</strong>: October 5, 2025  
+<strong>Deadline</strong>: October 15, 2025  
+<strong>Status</strong>: Ready to execute  
+<strong>Next Action</strong>: Begin Day 1 implementation
+        </div>
+        <div class="timestamp">
+            Last updated: 2025-10-11 11:14:18
+        </div>
+    </div>
+</body>
+</html>

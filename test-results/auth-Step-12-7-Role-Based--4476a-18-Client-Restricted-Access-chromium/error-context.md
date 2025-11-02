@@ -1,0 +1,171 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - complementary [ref=e3]:
+    - link "Agent Portal" [ref=e5] [cursor=pointer]:
+      - /url: dashboard.html
+      - img [ref=e6]
+      - generic [ref=e9]: Agent Portal
+    - navigation [ref=e10]:
+      - generic [ref=e11]:
+        - generic [ref=e12]: Main
+        - link "Dashboard" [ref=e13] [cursor=pointer]:
+          - /url: dashboard.html
+          - img [ref=e14]
+          - text: Dashboard
+      - generic [ref=e19]:
+        - generic [ref=e20]: My Business
+        - link "My Listings" [ref=e21] [cursor=pointer]:
+          - /url: listings.html
+          - img [ref=e22]
+          - text: My Listings
+        - link "My Clients" [ref=e24] [cursor=pointer]:
+          - /url: clients.html
+          - img [ref=e25]
+          - text: My Clients
+        - link "My Leads" [ref=e28] [cursor=pointer]:
+          - /url: leads.html
+          - img [ref=e29]
+          - text: My Leads
+        - link "Schedule" [ref=e31] [cursor=pointer]:
+          - /url: schedule.html
+          - img [ref=e32]
+          - text: Schedule
+      - generic [ref=e34]:
+        - generic [ref=e35]: Tools
+        - link "Commission Tracker" [ref=e36] [cursor=pointer]:
+          - /url: commissions.html
+          - img [ref=e37]
+          - text: Commission Tracker
+        - link "Resources" [ref=e39] [cursor=pointer]:
+          - /url: resources.html
+          - img [ref=e40]
+          - text: Resources
+        - link "Settings" [ref=e43] [cursor=pointer]:
+          - /url: settings.html
+          - img [ref=e44]
+          - text: Settings
+  - main [ref=e47]:
+    - generic [ref=e48]:
+      - generic [ref=e49]:
+        - generic [ref=e51]:
+          - heading "Agent Dashboard" [level=1] [ref=e52]
+          - paragraph [ref=e53]: Welcome back! Here's an overview of your real estate business.
+        - generic [ref=e55]:
+          - img
+          - textbox "Search your listings, clients, leads..." [ref=e56]
+        - generic [ref=e57]:
+          - link "Sign Out" [ref=e58] [cursor=pointer]:
+            - /url: /
+            - img [ref=e59]
+          - generic [ref=e62]:
+            - generic [ref=e63]:
+              - generic [ref=e64]: Sarah Johnson
+              - generic [ref=e65]: Real Estate Agent
+            - generic [ref=e67] [cursor=pointer]: SJ
+      - generic [ref=e68]:
+        - link "Home" [ref=e69] [cursor=pointer]:
+          - /url: /
+        - generic [ref=e70]: /
+        - link "Agent" [ref=e71] [cursor=pointer]:
+          - /url: /agent/
+        - generic [ref=e72]: /
+        - generic [ref=e73]: Dashboard
+    - generic [ref=e74]:
+      - generic [ref=e75]:
+        - generic [ref=e76] [cursor=pointer]:
+          - img [ref=e78]
+          - generic [ref=e81]: "24"
+          - generic [ref=e82]: My Active Listings
+          - generic [ref=e83]: +3 this month
+        - generic [ref=e84] [cursor=pointer]:
+          - img [ref=e86]
+          - generic [ref=e88]: $45.2K
+          - generic [ref=e89]: Commission YTD
+          - generic [ref=e90]: +15% from last year
+        - generic [ref=e91] [cursor=pointer]:
+          - img [ref=e93]
+          - generic [ref=e96]: "18"
+          - generic [ref=e97]: Active Clients
+          - generic [ref=e98]: +2 this week
+        - generic [ref=e99] [cursor=pointer]:
+          - img [ref=e101]
+          - generic [ref=e102]: "7"
+          - generic [ref=e103]: New Leads
+          - generic [ref=e104]: +2 today
+      - generic [ref=e105]:
+        - generic [ref=e106]:
+          - generic [ref=e107]:
+            - heading "My Recent Listings" [level=3] [ref=e108]
+            - link "View All" [ref=e109] [cursor=pointer]:
+              - /url: listings.html
+          - table [ref=e110]:
+            - rowgroup [ref=e111]:
+              - row "Property Type Price Status Views" [ref=e112]:
+                - cell "Property" [ref=e113]
+                - cell "Type" [ref=e114]
+                - cell "Price" [ref=e115]
+                - cell "Status" [ref=e116]
+                - cell "Views" [ref=e117]
+            - rowgroup [ref=e118]:
+              - row "123 Sunset Boulevard Los Angeles, CA 90210 Single Family $850,000 Active 142" [ref=e119]:
+                - cell "123 Sunset Boulevard Los Angeles, CA 90210" [ref=e120]:
+                  - generic [ref=e121]: 123 Sunset Boulevard
+                  - generic [ref=e122]: Los Angeles, CA 90210
+                - cell "Single Family" [ref=e123]
+                - cell "$850,000" [ref=e124]
+                - cell "Active" [ref=e125]
+                - cell "142" [ref=e126]
+              - row "456 Ocean Drive Miami Beach, FL 33139 Condo $1,200,000 Pending 89" [ref=e127]:
+                - cell "456 Ocean Drive Miami Beach, FL 33139" [ref=e128]:
+                  - generic [ref=e129]: 456 Ocean Drive
+                  - generic [ref=e130]: Miami Beach, FL 33139
+                - cell "Condo" [ref=e131]
+                - cell "$1,200,000" [ref=e132]
+                - cell "Pending" [ref=e133]
+                - cell "89" [ref=e134]
+              - row "789 Park Avenue New York, NY 10021 Penthouse $2,300,000 Active 234" [ref=e135]:
+                - cell "789 Park Avenue New York, NY 10021" [ref=e136]:
+                  - generic [ref=e137]: 789 Park Avenue
+                  - generic [ref=e138]: New York, NY 10021
+                - cell "Penthouse" [ref=e139]
+                - cell "$2,300,000" [ref=e140]
+                - cell "Active" [ref=e141]
+                - cell "234" [ref=e142]
+              - row "321 Pine Street Seattle, WA 98101 Townhouse $695,000 Sold 567" [ref=e143]:
+                - cell "321 Pine Street Seattle, WA 98101" [ref=e144]:
+                  - generic [ref=e145]: 321 Pine Street
+                  - generic [ref=e146]: Seattle, WA 98101
+                - cell "Townhouse" [ref=e147]
+                - cell "$695,000" [ref=e148]
+                - cell "Sold" [ref=e149]
+                - cell "567" [ref=e150]
+        - generic [ref=e152]:
+          - heading "Recent Activity" [level=3] [ref=e154]
+          - generic [ref=e155]:
+            - img [ref=e157]
+            - generic [ref=e159]:
+              - generic [ref=e160]: Your listing at 789 Sunset Blvd received 5 new inquiries
+              - generic [ref=e161]: 2 hours ago
+          - generic [ref=e162]:
+            - img [ref=e164]
+            - generic [ref=e167]:
+              - generic [ref=e168]: "New client lead: Jennifer Williams - Looking for 3BR home"
+              - generic [ref=e169]: 3 hours ago
+          - generic [ref=e170]:
+            - img [ref=e172]
+            - generic [ref=e174]:
+              - generic [ref=e175]: "Commission earned: $13,500 from 123 Main St sale"
+              - generic [ref=e176]: 5 hours ago
+          - generic [ref=e177]:
+            - img [ref=e179]
+            - generic [ref=e182]:
+              - generic [ref=e183]: "Showing scheduled: 456 Oak Ave with the Johnsons at 3 PM"
+              - generic [ref=e184]: 6 hours ago
+          - generic [ref=e185]:
+            - img [ref=e187]
+            - generic [ref=e190]:
+              - generic [ref=e191]: "Offer received on your listing: 321 Elm St - $425,000"
+              - generic [ref=e192]: 8 hours ago
+```

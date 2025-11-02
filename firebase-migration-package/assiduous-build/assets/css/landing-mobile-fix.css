@@ -1,0 +1,211 @@
+
+/* Landing Page Mobile Fix CSS */
+/* Reset problematic styles */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    overflow-x: hidden !important;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+/* Fix carousel overlap */
+.carousel,
+.carousel-container,
+[class*="carousel"] {
+    position: relative !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
+    z-index: 1 !important;
+}
+
+.carousel-slide,
+.carousel-item {
+    position: absolute !important;
+    top: 0;
+    left: 0;
+    width: 100% !important;
+    height: 100% !important;
+    opacity: 0;
+    transition: opacity 1s ease !important;
+    z-index: 1 !important;
+}
+
+.carousel-slide.active,
+.carousel-item.active {
+    position: relative !important;
+    opacity: 1 !important;
+    z-index: 2 !important;
+}
+
+/* Fix greyed out text */
+h1, h2, h3, h4, h5, h6,
+p, span, div, section, article {
+    color: inherit !important;
+    opacity: 1 !important;
+}
+
+.text-gray,
+.text-muted,
+[class*="gray"],
+[class*="muted"] {
+    color: #666 !important;
+    opacity: 1 !important;
+}
+
+/* Ensure readability */
+.hero-content,
+.content-section,
+main section {
+    background: white !important;
+    color: #333 !important;
+    position: relative !important;
+    z-index: 10 !important;
+}
+
+/* Mobile responsive fixes */
+@media (max-width: 768px) {
+    /* Reset all widths */
+    body, html {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+    
+    /* Fix containers */
+    .container,
+    .container-fluid,
+    [class*="container"] {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding-left: 15px !important;
+        padding-right: 15px !important;
+        margin: 0 !important;
+    }
+    
+    /* Fix images */
+    img {
+        max-width: 100% !important;
+        height: auto !important;
+    }
+    
+    /* Fix carousels on mobile */
+    .carousel,
+    .carousel-container {
+        height: 50vh !important;
+        min-height: 300px !important;
+        max-height: 500px !important;
+    }
+    
+    /* Fix text sizing */
+    h1 { font-size: clamp(1.75rem, 5vw, 2.5rem) !important; }
+    h2 { font-size: clamp(1.5rem, 4vw, 2rem) !important; }
+    h3 { font-size: clamp(1.25rem, 3.5vw, 1.75rem) !important; }
+    p { font-size: clamp(0.9rem, 2.5vw, 1rem) !important; }
+    
+    /* Fix buttons on mobile */
+    button, .btn, a.button {
+        min-height: 48px !important;
+        min-width: 120px !important;
+        padding: 12px 20px !important;
+        font-size: 16px !important;
+    }
+    
+    /* Fix navigation */
+    nav, .navbar {
+        position: relative !important;
+        z-index: 1000 !important;
+    }
+    
+    .mobile-menu {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        background: white !important;
+        z-index: 9999 !important;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease !important;
+    }
+    
+    .mobile-menu.active {
+        transform: translateX(0) !important;
+    }
+    
+    /* Fix grid layouts */
+    .grid,
+    [class*="grid"],
+    .row {
+        display: flex !important;
+        flex-direction: column !important;
+    }
+    
+    .col,
+    [class*="col-"] {
+        width: 100% !important;
+        max-width: 100% !important;
+        flex: 0 0 100% !important;
+    }
+    
+    /* Fix overlapping elements */
+    * {
+        position: static !important;
+    }
+    
+    header, nav, main, section, footer {
+        position: relative !important;
+    }
+    
+    .fixed, .absolute, .sticky {
+        position: relative !important;
+    }
+    
+    /* Prevent horizontal scroll */
+    .row {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+    
+    [class*="col-"] {
+        padding-left: 15px !important;
+        padding-right: 15px !important;
+    }
+}
+
+/* iPhone specific fixes */
+@media (max-width: 414px) {
+    body {
+        -webkit-text-size-adjust: 100%;
+    }
+    
+    input, textarea, select {
+        font-size: 16px !important; /* Prevent zoom on focus */
+    }
+}
+
+/* Fix z-index stacking */
+.hero { z-index: 1 !important; }
+.content { z-index: 10 !important; }
+.overlay { z-index: 100 !important; }
+.modal { z-index: 1000 !important; }
+.navbar { z-index: 900 !important; }
+
+/* Ensure touch targets are large enough */
+a, button, input, select, textarea {
+    min-height: 44px;
+    min-width: 44px;
+}
+
+/* Performance optimizations */
+* {
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+
+img {
+    will-change: transform;
+}

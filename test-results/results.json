@@ -1,0 +1,1411 @@
+{
+  "config": {
+    "configFile": "/Users/thekryptodragon/Development/assiduous/playwright.config.js",
+    "rootDir": "/Users/thekryptodragon/Development/assiduous/tests",
+    "forbidOnly": false,
+    "fullyParallel": true,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 5
+    },
+    "preserveOutput": "always",
+    "reporter": [
+      [
+        "html",
+        {
+          "outputFolder": "playwright-report"
+        }
+      ],
+      [
+        "json",
+        {
+          "outputFile": "test-results/results.json"
+        }
+      ],
+      [
+        "list",
+        null
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "quiet": false,
+    "projects": [
+      {
+        "outputDir": "/Users/thekryptodragon/Development/assiduous/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 5
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/Users/thekryptodragon/Development/assiduous/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      },
+      {
+        "outputDir": "/Users/thekryptodragon/Development/assiduous/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 5
+        },
+        "id": "firefox",
+        "name": "firefox",
+        "testDir": "/Users/thekryptodragon/Development/assiduous/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      },
+      {
+        "outputDir": "/Users/thekryptodragon/Development/assiduous/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 5
+        },
+        "id": "webkit",
+        "name": "webkit",
+        "testDir": "/Users/thekryptodragon/Development/assiduous/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      },
+      {
+        "outputDir": "/Users/thekryptodragon/Development/assiduous/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 5
+        },
+        "id": "Mobile Chrome",
+        "name": "Mobile Chrome",
+        "testDir": "/Users/thekryptodragon/Development/assiduous/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      },
+      {
+        "outputDir": "/Users/thekryptodragon/Development/assiduous/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 5
+        },
+        "id": "Mobile Safari",
+        "name": "Mobile Safari",
+        "testDir": "/Users/thekryptodragon/Development/assiduous/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "shard": null,
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.56.1",
+    "workers": 5,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "auth.spec.js",
+      "file": "auth.spec.js",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Step 12.3: Admin Login Flow",
+          "file": "auth.spec.js",
+          "line": 110,
+          "column": 6,
+          "specs": [
+            {
+              "title": "TC-01: Admin Login Success",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 23529,
+                      "error": {
+                        "message": "TimeoutError: page.waitForLoadState: Timeout 20000ms exceeded.",
+                        "stack": "TimeoutError: page.waitForLoadState: Timeout 20000ms exceeded.\n    at login (/Users/thekryptodragon/Development/assiduous/tests/auth.spec.js:79:14)\n    at /Users/thekryptodragon/Development/assiduous/tests/auth.spec.js:123:5",
+                        "location": {
+                          "file": "/Users/thekryptodragon/Development/assiduous/tests/auth.spec.js",
+                          "column": 14,
+                          "line": 79
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 77 |\u001b[39m   \n \u001b[90m 78 |\u001b[39m   \u001b[90m// Wait for page to be fully loaded\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 79 |\u001b[39m   \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForLoadState(\u001b[32m'networkidle'\u001b[39m\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m \u001b[35m20000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m              \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 80 |\u001b[39m }\n \u001b[90m 81 |\u001b[39m\n \u001b[90m 82 |\u001b[39m \u001b[90m// Helper function to logout\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/thekryptodragon/Development/assiduous/tests/auth.spec.js",
+                            "column": 14,
+                            "line": 79
+                          },
+                          "message": "TimeoutError: page.waitForLoadState: Timeout 20000ms exceeded.\n\n\u001b[0m \u001b[90m 77 |\u001b[39m   \n \u001b[90m 78 |\u001b[39m   \u001b[90m// Wait for page to be fully loaded\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 79 |\u001b[39m   \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForLoadState(\u001b[32m'networkidle'\u001b[39m\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m \u001b[35m20000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m              \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 80 |\u001b[39m }\n \u001b[90m 81 |\u001b[39m\n \u001b[90m 82 |\u001b[39m \u001b[90m// Helper function to logout\u001b[39m\u001b[0m\n\u001b[2m    at login (/Users/thekryptodragon/Development/assiduous/tests/auth.spec.js:79:14)\u001b[22m\n\u001b[2m    at /Users/thekryptodragon/Development/assiduous/tests/auth.spec.js:123:5\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-02T16:01:09.485Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/thekryptodragon/Development/assiduous/test-results/auth-Step-12-3-Admin-Login-Flow-TC-01-Admin-Login-Success-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/thekryptodragon/Development/assiduous/test-results/auth-Step-12-3-Admin-Login-Flow-TC-01-Admin-Login-Success-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/thekryptodragon/Development/assiduous/test-results/auth-Step-12-3-Admin-Login-Flow-TC-01-Admin-Login-Success-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/thekryptodragon/Development/assiduous/tests/auth.spec.js",
+                        "column": 14,
+                        "line": 79
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "d5ed79a6b333c2ba7209-a517e150a269fada857d",
+              "file": "auth.spec.js",
+              "line": 117,
+              "column": 3
+            },
+            {
+              "title": "TC-02: Admin Dashboard Access",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "failed",
+                      "duration": 23629,
+                      "error": {
+                        "message": "TimeoutError: page.waitForLoadState: Timeout 20000ms exceeded.",
+                        "stack": "TimeoutError: page.waitForLoadState: Timeout 20000ms exceeded.\n    at login (/Users/thekryptodragon/Development/assiduous/tests/auth.spec.js:79:14)\n    at /Users/thekryptodragon/Development/assiduous/tests/auth.spec.js:137:5",
+                        "location": {
+                          "file": "/Users/thekryptodragon/Development/assiduous/tests/auth.spec.js",
+                          "column": 14,
+                          "line": 79
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 77 |\u001b[39m   \n \u001b[90m 78 |\u001b[39m   \u001b[90m// Wait for page to be fully loaded\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 79 |\u001b[39m   \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForLoadState(\u001b[32m'networkidle'\u001b[39m\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m \u001b[35m20000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m              \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 80 |\u001b[39m }\n \u001b[90m 81 |\u001b[39m\n \u001b[90m 82 |\u001b[39m \u001b[90m// Helper function to logout\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/thekryptodragon/Development/assiduous/tests/auth.spec.js",
+                            "column": 14,
+                            "line": 79
+                          },
+                          "message": "TimeoutError: page.waitForLoadState: Timeout 20000ms exceeded.\n\n\u001b[0m \u001b[90m 77 |\u001b[39m   \n \u001b[90m 78 |\u001b[39m   \u001b[90m// Wait for page to be fully loaded\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 79 |\u001b[39m   \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForLoadState(\u001b[32m'networkidle'\u001b[39m\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m \u001b[35m20000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m              \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 80 |\u001b[39m }\n \u001b[90m 81 |\u001b[39m\n \u001b[90m 82 |\u001b[39m \u001b[90m// Helper function to logout\u001b[39m\u001b[0m\n\u001b[2m    at login (/Users/thekryptodragon/Development/assiduous/tests/auth.spec.js:79:14)\u001b[22m\n\u001b[2m    at /Users/thekryptodragon/Development/assiduous/tests/auth.spec.js:137:5\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-02T16:01:09.491Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/thekryptodragon/Development/assiduous/test-results/auth-Step-12-3-Admin-Login-Flow-TC-02-Admin-Dashboard-Access-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/thekryptodragon/Development/assiduous/test-results/auth-Step-12-3-Admin-Login-Flow-TC-02-Admin-Dashboard-Access-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/thekryptodragon/Development/assiduous/test-results/auth-Step-12-3-Admin-Login-Flow-TC-02-Admin-Dashboard-Access-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/thekryptodragon/Development/assiduous/tests/auth.spec.js",
+                        "column": 14,
+                        "line": 79
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "d5ed79a6b333c2ba7209-a31202e5c46071ad5e29",
+              "file": "auth.spec.js",
+              "line": 136,
+              "column": 3
+            },
+            {
+              "title": "TC-03: Admin Logout",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "failed",
+                      "duration": 23753,
+                      "error": {
+                        "message": "TimeoutError: page.waitForLoadState: Timeout 20000ms exceeded.",
+                        "stack": "TimeoutError: page.waitForLoadState: Timeout 20000ms exceeded.\n    at login (/Users/thekryptodragon/Development/assiduous/tests/auth.spec.js:79:14)\n    at /Users/thekryptodragon/Development/assiduous/tests/auth.spec.js:151:5",
+                        "location": {
+                          "file": "/Users/thekryptodragon/Development/assiduous/tests/auth.spec.js",
+                          "column": 14,
+                          "line": 79
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 77 |\u001b[39m   \n \u001b[90m 78 |\u001b[39m   \u001b[90m// Wait for page to be fully loaded\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 79 |\u001b[39m   \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForLoadState(\u001b[32m'networkidle'\u001b[39m\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m \u001b[35m20000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m              \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 80 |\u001b[39m }\n \u001b[90m 81 |\u001b[39m\n \u001b[90m 82 |\u001b[39m \u001b[90m// Helper function to logout\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/thekryptodragon/Development/assiduous/tests/auth.spec.js",
+                            "column": 14,
+                            "line": 79
+                          },
+                          "message": "TimeoutError: page.waitForLoadState: Timeout 20000ms exceeded.\n\n\u001b[0m \u001b[90m 77 |\u001b[39m   \n \u001b[90m 78 |\u001b[39m   \u001b[90m// Wait for page to be fully loaded\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 79 |\u001b[39m   \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForLoadState(\u001b[32m'networkidle'\u001b[39m\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m \u001b[35m20000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m              \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 80 |\u001b[39m }\n \u001b[90m 81 |\u001b[39m\n \u001b[90m 82 |\u001b[39m \u001b[90m// Helper function to logout\u001b[39m\u001b[0m\n\u001b[2m    at login (/Users/thekryptodragon/Development/assiduous/tests/auth.spec.js:79:14)\u001b[22m\n\u001b[2m    at /Users/thekryptodragon/Development/assiduous/tests/auth.spec.js:151:5\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-02T16:01:09.503Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/thekryptodragon/Development/assiduous/test-results/auth-Step-12-3-Admin-Login-Flow-TC-03-Admin-Logout-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/thekryptodragon/Development/assiduous/test-results/auth-Step-12-3-Admin-Login-Flow-TC-03-Admin-Logout-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/thekryptodragon/Development/assiduous/test-results/auth-Step-12-3-Admin-Login-Flow-TC-03-Admin-Logout-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/thekryptodragon/Development/assiduous/tests/auth.spec.js",
+                        "column": 14,
+                        "line": 79
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "d5ed79a6b333c2ba7209-039b2817ca71417c19a8",
+              "file": "auth.spec.js",
+              "line": 150,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "Step 12.4: Agent Login Flow",
+          "file": "auth.spec.js",
+          "line": 168,
+          "column": 6,
+          "specs": [
+            {
+              "title": "TC-04: Agent Login Success",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "failed",
+                      "duration": 22276,
+                      "error": {
+                        "message": "TimeoutError: page.waitForURL: Timeout 20000ms exceeded.\n=========================== logs ===========================\nwaiting for navigation until \"load\"\n============================================================",
+                        "stack": "TimeoutError: page.waitForURL: Timeout 20000ms exceeded.\n=========================== logs ===========================\nwaiting for navigation until \"load\"\n============================================================\n    at login (/Users/thekryptodragon/Development/assiduous/tests/auth.spec.js:76:14)\n    at /Users/thekryptodragon/Development/assiduous/tests/auth.spec.js:181:5",
+                        "location": {
+                          "file": "/Users/thekryptodragon/Development/assiduous/tests/auth.spec.js",
+                          "column": 14,
+                          "line": 76
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 74 |\u001b[39m   \n \u001b[90m 75 |\u001b[39m   \u001b[90m// Wait for redirect (Firebase does this immediately)\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 76 |\u001b[39m   \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForURL(\u001b[35m/\\/(admin|agent|client)\\//\u001b[39m\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m \u001b[35m20000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m              \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 77 |\u001b[39m   \n \u001b[90m 78 |\u001b[39m   \u001b[90m// Wait for page to be fully loaded\u001b[39m\n \u001b[90m 79 |\u001b[39m   \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForLoadState(\u001b[32m'networkidle'\u001b[39m\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m \u001b[35m20000\u001b[39m })\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/thekryptodragon/Development/assiduous/tests/auth.spec.js",
+                            "column": 14,
+                            "line": 76
+                          },
+                          "message": "TimeoutError: page.waitForURL: Timeout 20000ms exceeded.\n=========================== logs ===========================\nwaiting for navigation until \"load\"\n============================================================\n\n\u001b[0m \u001b[90m 74 |\u001b[39m   \n \u001b[90m 75 |\u001b[39m   \u001b[90m// Wait for redirect (Firebase does this immediately)\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 76 |\u001b[39m   \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForURL(\u001b[35m/\\/(admin|agent|client)\\//\u001b[39m\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m \u001b[35m20000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m              \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 77 |\u001b[39m   \n \u001b[90m 78 |\u001b[39m   \u001b[90m// Wait for page to be fully loaded\u001b[39m\n \u001b[90m 79 |\u001b[39m   \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForLoadState(\u001b[32m'networkidle'\u001b[39m\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m \u001b[35m20000\u001b[39m })\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at login (/Users/thekryptodragon/Development/assiduous/tests/auth.spec.js:76:14)\u001b[22m\n\u001b[2m    at /Users/thekryptodragon/Development/assiduous/tests/auth.spec.js:181:5\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-02T16:01:09.503Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/thekryptodragon/Development/assiduous/test-results/auth-Step-12-4-Agent-Login-Flow-TC-04-Agent-Login-Success-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/thekryptodragon/Development/assiduous/test-results/auth-Step-12-4-Agent-Login-Flow-TC-04-Agent-Login-Success-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/thekryptodragon/Development/assiduous/test-results/auth-Step-12-4-Agent-Login-Flow-TC-04-Agent-Login-Success-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/thekryptodragon/Development/assiduous/tests/auth.spec.js",
+                        "column": 14,
+                        "line": 76
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "d5ed79a6b333c2ba7209-b02d7de522ced4e0793f",
+              "file": "auth.spec.js",
+              "line": 175,
+              "column": 3
+            },
+            {
+              "title": "TC-05: Agent Dashboard Access",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 4,
+                      "status": "failed",
+                      "duration": 22250,
+                      "error": {
+                        "message": "TimeoutError: page.waitForURL: Timeout 20000ms exceeded.\n=========================== logs ===========================\nwaiting for navigation until \"load\"\n============================================================",
+                        "stack": "TimeoutError: page.waitForURL: Timeout 20000ms exceeded.\n=========================== logs ===========================\nwaiting for navigation until \"load\"\n============================================================\n    at login (/Users/thekryptodragon/Development/assiduous/tests/auth.spec.js:76:14)\n    at /Users/thekryptodragon/Development/assiduous/tests/auth.spec.js:191:5",
+                        "location": {
+                          "file": "/Users/thekryptodragon/Development/assiduous/tests/auth.spec.js",
+                          "column": 14,
+                          "line": 76
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 74 |\u001b[39m   \n \u001b[90m 75 |\u001b[39m   \u001b[90m// Wait for redirect (Firebase does this immediately)\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 76 |\u001b[39m   \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForURL(\u001b[35m/\\/(admin|agent|client)\\//\u001b[39m\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m \u001b[35m20000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m              \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 77 |\u001b[39m   \n \u001b[90m 78 |\u001b[39m   \u001b[90m// Wait for page to be fully loaded\u001b[39m\n \u001b[90m 79 |\u001b[39m   \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForLoadState(\u001b[32m'networkidle'\u001b[39m\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m \u001b[35m20000\u001b[39m })\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/thekryptodragon/Development/assiduous/tests/auth.spec.js",
+                            "column": 14,
+                            "line": 76
+                          },
+                          "message": "TimeoutError: page.waitForURL: Timeout 20000ms exceeded.\n=========================== logs ===========================\nwaiting for navigation until \"load\"\n============================================================\n\n\u001b[0m \u001b[90m 74 |\u001b[39m   \n \u001b[90m 75 |\u001b[39m   \u001b[90m// Wait for redirect (Firebase does this immediately)\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 76 |\u001b[39m   \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForURL(\u001b[35m/\\/(admin|agent|client)\\//\u001b[39m\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m \u001b[35m20000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m              \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 77 |\u001b[39m   \n \u001b[90m 78 |\u001b[39m   \u001b[90m// Wait for page to be fully loaded\u001b[39m\n \u001b[90m 79 |\u001b[39m   \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForLoadState(\u001b[32m'networkidle'\u001b[39m\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m \u001b[35m20000\u001b[39m })\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at login (/Users/thekryptodragon/Development/assiduous/tests/auth.spec.js:76:14)\u001b[22m\n\u001b[2m    at /Users/thekryptodragon/Development/assiduous/tests/auth.spec.js:191:5\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-02T16:01:09.498Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/thekryptodragon/Development/assiduous/test-results/auth-Step-12-4-Agent-Login-Flow-TC-05-Agent-Dashboard-Access-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/thekryptodragon/Development/assiduous/test-results/auth-Step-12-4-Agent-Login-Flow-TC-05-Agent-Dashboard-Access-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/thekryptodragon/Development/assiduous/test-results/auth-Step-12-4-Agent-Login-Flow-TC-05-Agent-Dashboard-Access-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/thekryptodragon/Development/assiduous/tests/auth.spec.js",
+                        "column": 14,
+                        "line": 76
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "d5ed79a6b333c2ba7209-6f4745d12f4f29223567",
+              "file": "auth.spec.js",
+              "line": 190,
+              "column": 3
+            },
+            {
+              "title": "TC-06: Agent Cannot Access Admin Pages",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 4,
+                      "status": "failed",
+                      "duration": 20831,
+                      "error": {
+                        "message": "TimeoutError: page.waitForURL: Timeout 20000ms exceeded.\n=========================== logs ===========================\nwaiting for navigation until \"load\"\n============================================================",
+                        "stack": "TimeoutError: page.waitForURL: Timeout 20000ms exceeded.\n=========================== logs ===========================\nwaiting for navigation until \"load\"\n============================================================\n    at login (/Users/thekryptodragon/Development/assiduous/tests/auth.spec.js:76:14)\n    at /Users/thekryptodragon/Development/assiduous/tests/auth.spec.js:202:5",
+                        "location": {
+                          "file": "/Users/thekryptodragon/Development/assiduous/tests/auth.spec.js",
+                          "column": 14,
+                          "line": 76
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 74 |\u001b[39m   \n \u001b[90m 75 |\u001b[39m   \u001b[90m// Wait for redirect (Firebase does this immediately)\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 76 |\u001b[39m   \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForURL(\u001b[35m/\\/(admin|agent|client)\\//\u001b[39m\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m \u001b[35m20000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m              \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 77 |\u001b[39m   \n \u001b[90m 78 |\u001b[39m   \u001b[90m// Wait for page to be fully loaded\u001b[39m\n \u001b[90m 79 |\u001b[39m   \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForLoadState(\u001b[32m'networkidle'\u001b[39m\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m \u001b[35m20000\u001b[39m })\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/thekryptodragon/Development/assiduous/tests/auth.spec.js",
+                            "column": 14,
+                            "line": 76
+                          },
+                          "message": "TimeoutError: page.waitForURL: Timeout 20000ms exceeded.\n=========================== logs ===========================\nwaiting for navigation until \"load\"\n============================================================\n\n\u001b[0m \u001b[90m 74 |\u001b[39m   \n \u001b[90m 75 |\u001b[39m   \u001b[90m// Wait for redirect (Firebase does this immediately)\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 76 |\u001b[39m   \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForURL(\u001b[35m/\\/(admin|agent|client)\\//\u001b[39m\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m \u001b[35m20000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m              \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 77 |\u001b[39m   \n \u001b[90m 78 |\u001b[39m   \u001b[90m// Wait for page to be fully loaded\u001b[39m\n \u001b[90m 79 |\u001b[39m   \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForLoadState(\u001b[32m'networkidle'\u001b[39m\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m \u001b[35m20000\u001b[39m })\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at login (/Users/thekryptodragon/Development/assiduous/tests/auth.spec.js:76:14)\u001b[22m\n\u001b[2m    at /Users/thekryptodragon/Development/assiduous/tests/auth.spec.js:202:5\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-02T16:01:32.549Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/thekryptodragon/Development/assiduous/test-results/auth-Step-12-4-Agent-Login-75571-t-Cannot-Access-Admin-Pages-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/thekryptodragon/Development/assiduous/test-results/auth-Step-12-4-Agent-Login-75571-t-Cannot-Access-Admin-Pages-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/thekryptodragon/Development/assiduous/test-results/auth-Step-12-4-Agent-Login-75571-t-Cannot-Access-Admin-Pages-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/thekryptodragon/Development/assiduous/tests/auth.spec.js",
+                        "column": 14,
+                        "line": 76
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "d5ed79a6b333c2ba7209-6f019fc24861f36a035f",
+              "file": "auth.spec.js",
+              "line": 201,
+              "column": 3
+            },
+            {
+              "title": "TC-07: Agent Logout",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 3,
+                      "status": "failed",
+                      "duration": 20962,
+                      "error": {
+                        "message": "TimeoutError: page.waitForURL: Timeout 20000ms exceeded.\n=========================== logs ===========================\nwaiting for navigation until \"load\"\n============================================================",
+                        "stack": "TimeoutError: page.waitForURL: Timeout 20000ms exceeded.\n=========================== logs ===========================\nwaiting for navigation until \"load\"\n============================================================\n    at login (/Users/thekryptodragon/Development/assiduous/tests/auth.spec.js:76:14)\n    at /Users/thekryptodragon/Development/assiduous/tests/auth.spec.js:214:5",
+                        "location": {
+                          "file": "/Users/thekryptodragon/Development/assiduous/tests/auth.spec.js",
+                          "column": 14,
+                          "line": 76
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 74 |\u001b[39m   \n \u001b[90m 75 |\u001b[39m   \u001b[90m// Wait for redirect (Firebase does this immediately)\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 76 |\u001b[39m   \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForURL(\u001b[35m/\\/(admin|agent|client)\\//\u001b[39m\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m \u001b[35m20000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m              \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 77 |\u001b[39m   \n \u001b[90m 78 |\u001b[39m   \u001b[90m// Wait for page to be fully loaded\u001b[39m\n \u001b[90m 79 |\u001b[39m   \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForLoadState(\u001b[32m'networkidle'\u001b[39m\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m \u001b[35m20000\u001b[39m })\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/thekryptodragon/Development/assiduous/tests/auth.spec.js",
+                            "column": 14,
+                            "line": 76
+                          },
+                          "message": "TimeoutError: page.waitForURL: Timeout 20000ms exceeded.\n=========================== logs ===========================\nwaiting for navigation until \"load\"\n============================================================\n\n\u001b[0m \u001b[90m 74 |\u001b[39m   \n \u001b[90m 75 |\u001b[39m   \u001b[90m// Wait for redirect (Firebase does this immediately)\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 76 |\u001b[39m   \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForURL(\u001b[35m/\\/(admin|agent|client)\\//\u001b[39m\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m \u001b[35m20000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m              \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 77 |\u001b[39m   \n \u001b[90m 78 |\u001b[39m   \u001b[90m// Wait for page to be fully loaded\u001b[39m\n \u001b[90m 79 |\u001b[39m   \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForLoadState(\u001b[32m'networkidle'\u001b[39m\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m \u001b[35m20000\u001b[39m })\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at login (/Users/thekryptodragon/Development/assiduous/tests/auth.spec.js:76:14)\u001b[22m\n\u001b[2m    at /Users/thekryptodragon/Development/assiduous/tests/auth.spec.js:214:5\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-02T16:01:32.549Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/thekryptodragon/Development/assiduous/test-results/auth-Step-12-4-Agent-Login-Flow-TC-07-Agent-Logout-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/thekryptodragon/Development/assiduous/test-results/auth-Step-12-4-Agent-Login-Flow-TC-07-Agent-Logout-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/thekryptodragon/Development/assiduous/test-results/auth-Step-12-4-Agent-Login-Flow-TC-07-Agent-Logout-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/thekryptodragon/Development/assiduous/tests/auth.spec.js",
+                        "column": 14,
+                        "line": 76
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "d5ed79a6b333c2ba7209-355f26af22eb4e9118c7",
+              "file": "auth.spec.js",
+              "line": 213,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "Step 12.5: Client Login Flow",
+          "file": "auth.spec.js",
+          "line": 220,
+          "column": 6,
+          "specs": [
+            {
+              "title": "TC-08: Client Login Success",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 7,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 2363,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoHaveLength\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected length: \u001b[32m0\u001b[39m\nReceived length: \u001b[31m3\u001b[39m\nReceived array:  \u001b[31m[\"Failed to load resource: the server responded with a status of 404 ()\", \"[2025-11-02T16:01:34.782Z]  @firebase/analytics: FirebaseError: Analytics: Dynamic config fetch failed: [404] App not found. App [1:9355377564:web:84bd6fa0e7c8a2e7c3f56b] (analytics/config-fetch-failed).\u001b[39m\n\u001b[31m    at fetchDynamicConfig (https://www.gstatic.com/firebasejs/10.7.0/firebase-analytics.js:1:22282)\u001b[39m\n\u001b[31m    at async attemptFetchDynamicConfigWithRetry (https://www.gstatic.com/firebasejs/10.7.0/firebase-analytics.js:1:21888)\", \"[Firebase] ❌ Initialization error: TypeError: firebase.storage is not a function\u001b[39m\n\u001b[31m    at initializeFirebase (https://assiduous-prod.web.app/firebase-config.js:60:28)\"]\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoHaveLength\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected length: \u001b[32m0\u001b[39m\nReceived length: \u001b[31m3\u001b[39m\nReceived array:  \u001b[31m[\"Failed to load resource: the server responded with a status of 404 ()\", \"[2025-11-02T16:01:34.782Z]  @firebase/analytics: FirebaseError: Analytics: Dynamic config fetch failed: [404] App not found. App [1:9355377564:web:84bd6fa0e7c8a2e7c3f56b] (analytics/config-fetch-failed).\u001b[39m\n\u001b[31m    at fetchDynamicConfig (https://www.gstatic.com/firebasejs/10.7.0/firebase-analytics.js:1:22282)\u001b[39m\n\u001b[31m    at async attemptFetchDynamicConfigWithRetry (https://www.gstatic.com/firebasejs/10.7.0/firebase-analytics.js:1:21888)\", \"[Firebase] ❌ Initialization error: TypeError: firebase.storage is not a function\u001b[39m\n\u001b[31m    at initializeFirebase (https://assiduous-prod.web.app/firebase-config.js:60:28)\"]\u001b[39m\n    at /Users/thekryptodragon/Development/assiduous/tests/auth.spec.js:239:20",
+                        "location": {
+                          "file": "/Users/thekryptodragon/Development/assiduous/tests/auth.spec.js",
+                          "column": 20,
+                          "line": 239
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 237 |\u001b[39m     \n \u001b[90m 238 |\u001b[39m     \u001b[90m// Verify no console errors\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 239 |\u001b[39m     expect(errors)\u001b[33m.\u001b[39mtoHaveLength(\u001b[35m0\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                    \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 240 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 241 |\u001b[39m   \n \u001b[90m 242 |\u001b[39m   test(\u001b[32m'TC-09: Client Dashboard Access'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/thekryptodragon/Development/assiduous/tests/auth.spec.js",
+                            "column": 20,
+                            "line": 239
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoHaveLength\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected length: \u001b[32m0\u001b[39m\nReceived length: \u001b[31m3\u001b[39m\nReceived array:  \u001b[31m[\"Failed to load resource: the server responded with a status of 404 ()\", \"[2025-11-02T16:01:34.782Z]  @firebase/analytics: FirebaseError: Analytics: Dynamic config fetch failed: [404] App not found. App [1:9355377564:web:84bd6fa0e7c8a2e7c3f56b] (analytics/config-fetch-failed).\u001b[39m\n\u001b[31m    at fetchDynamicConfig (https://www.gstatic.com/firebasejs/10.7.0/firebase-analytics.js:1:22282)\u001b[39m\n\u001b[31m    at async attemptFetchDynamicConfigWithRetry (https://www.gstatic.com/firebasejs/10.7.0/firebase-analytics.js:1:21888)\", \"[Firebase] ❌ Initialization error: TypeError: firebase.storage is not a function\u001b[39m\n\u001b[31m    at initializeFirebase (https://assiduous-prod.web.app/firebase-config.js:60:28)\"]\u001b[39m\n\n\u001b[0m \u001b[90m 237 |\u001b[39m     \n \u001b[90m 238 |\u001b[39m     \u001b[90m// Verify no console errors\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 239 |\u001b[39m     expect(errors)\u001b[33m.\u001b[39mtoHaveLength(\u001b[35m0\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                    \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 240 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 241 |\u001b[39m   \n \u001b[90m 242 |\u001b[39m   test(\u001b[32m'TC-09: Client Dashboard Access'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\u001b[0m\n\u001b[2m    at /Users/thekryptodragon/Development/assiduous/tests/auth.spec.js:239:20\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-02T16:01:33.995Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/thekryptodragon/Development/assiduous/test-results/auth-Step-12-5-Client-Login-Flow-TC-08-Client-Login-Success-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/thekryptodragon/Development/assiduous/test-results/auth-Step-12-5-Client-Login-Flow-TC-08-Client-Login-Success-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/thekryptodragon/Development/assiduous/test-results/auth-Step-12-5-Client-Login-Flow-TC-08-Client-Login-Success-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/thekryptodragon/Development/assiduous/tests/auth.spec.js",
+                        "column": 20,
+                        "line": 239
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "d5ed79a6b333c2ba7209-fef8441f602088d019f2",
+              "file": "auth.spec.js",
+              "line": 227,
+              "column": 3
+            },
+            {
+              "title": "TC-09: Client Dashboard Access",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 8,
+                      "parallelIndex": 1,
+                      "status": "failed",
+                      "duration": 12288,
+                      "error": {
+                        "message": "TimeoutError: page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-page=\"dashboard\"], .dashboard-container') to be visible\u001b[22m\n",
+                        "stack": "TimeoutError: page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-page=\"dashboard\"], .dashboard-container') to be visible\u001b[22m\n\n    at /Users/thekryptodragon/Development/assiduous/tests/auth.spec.js:246:16",
+                        "location": {
+                          "file": "/Users/thekryptodragon/Development/assiduous/tests/auth.spec.js",
+                          "column": 16,
+                          "line": 246
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 244 |\u001b[39m     \n \u001b[90m 245 |\u001b[39m     \u001b[90m// Wait for dashboard to load\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 246 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForSelector(\u001b[32m'[data-page=\"dashboard\"], .dashboard-container'\u001b[39m\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m \u001b[35m10000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 247 |\u001b[39m     \n \u001b[90m 248 |\u001b[39m     \u001b[90m// Verify client-specific content\u001b[39m\n \u001b[90m 249 |\u001b[39m     \u001b[36mconst\u001b[39m clientContent \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'text=/Properties|Saved|Search|Viewings/i'\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/thekryptodragon/Development/assiduous/tests/auth.spec.js",
+                            "column": 16,
+                            "line": 246
+                          },
+                          "message": "TimeoutError: page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-page=\"dashboard\"], .dashboard-container') to be visible\u001b[22m\n\n\n\u001b[0m \u001b[90m 244 |\u001b[39m     \n \u001b[90m 245 |\u001b[39m     \u001b[90m// Wait for dashboard to load\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 246 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForSelector(\u001b[32m'[data-page=\"dashboard\"], .dashboard-container'\u001b[39m\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m \u001b[35m10000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 247 |\u001b[39m     \n \u001b[90m 248 |\u001b[39m     \u001b[90m// Verify client-specific content\u001b[39m\n \u001b[90m 249 |\u001b[39m     \u001b[36mconst\u001b[39m clientContent \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'text=/Properties|Saved|Search|Viewings/i'\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at /Users/thekryptodragon/Development/assiduous/tests/auth.spec.js:246:16\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-02T16:01:34.063Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/thekryptodragon/Development/assiduous/test-results/auth-Step-12-5-Client-Logi-8f948--09-Client-Dashboard-Access-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/thekryptodragon/Development/assiduous/test-results/auth-Step-12-5-Client-Logi-8f948--09-Client-Dashboard-Access-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/thekryptodragon/Development/assiduous/test-results/auth-Step-12-5-Client-Logi-8f948--09-Client-Dashboard-Access-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/thekryptodragon/Development/assiduous/tests/auth.spec.js",
+                        "column": 16,
+                        "line": 246
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "d5ed79a6b333c2ba7209-769e5ed36892379bab44",
+              "file": "auth.spec.js",
+              "line": 242,
+              "column": 3
+            },
+            {
+              "title": "TC-10: Client Cannot Access Admin/Agent Pages",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 9,
+                      "parallelIndex": 2,
+                      "status": "failed",
+                      "duration": 3891,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mnot\u001b[2m.\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected substring: not \u001b[32m\"/agent/dashboard.html\"\u001b[39m\nReceived string:        \u001b[31m\"https://assiduous-prod.web.app\u001b[7m/agent/dashboard.html\u001b[27m\"\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mnot\u001b[2m.\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected substring: not \u001b[32m\"/agent/dashboard.html\"\u001b[39m\nReceived string:        \u001b[31m\"https://assiduous-prod.web.app\u001b[7m/agent/dashboard.html\u001b[27m\"\u001b[39m\n    at /Users/thekryptodragon/Development/assiduous/tests/auth.spec.js:264:28",
+                        "location": {
+                          "file": "/Users/thekryptodragon/Development/assiduous/tests/auth.spec.js",
+                          "column": 28,
+                          "line": 264
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 262 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m`${BASE_URL}/agent/dashboard.html`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 263 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForLoadState(\u001b[32m'networkidle'\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 264 |\u001b[39m     expect(page\u001b[33m.\u001b[39murl())\u001b[33m.\u001b[39mnot\u001b[33m.\u001b[39mtoContain(\u001b[32m'/agent/dashboard.html'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                            \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 265 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 266 |\u001b[39m   \n \u001b[90m 267 |\u001b[39m   test(\u001b[32m'TC-11: Client Logout'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/thekryptodragon/Development/assiduous/tests/auth.spec.js",
+                            "column": 28,
+                            "line": 264
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mnot\u001b[2m.\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected substring: not \u001b[32m\"/agent/dashboard.html\"\u001b[39m\nReceived string:        \u001b[31m\"https://assiduous-prod.web.app\u001b[7m/agent/dashboard.html\u001b[27m\"\u001b[39m\n\n\u001b[0m \u001b[90m 262 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m`${BASE_URL}/agent/dashboard.html`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 263 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForLoadState(\u001b[32m'networkidle'\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 264 |\u001b[39m     expect(page\u001b[33m.\u001b[39murl())\u001b[33m.\u001b[39mnot\u001b[33m.\u001b[39mtoContain(\u001b[32m'/agent/dashboard.html'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                            \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 265 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 266 |\u001b[39m   \n \u001b[90m 267 |\u001b[39m   test(\u001b[32m'TC-11: Client Logout'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\u001b[0m\n\u001b[2m    at /Users/thekryptodragon/Development/assiduous/tests/auth.spec.js:264:28\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-02T16:01:34.126Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/thekryptodragon/Development/assiduous/test-results/auth-Step-12-5-Client-Logi-a4851-ot-Access-Admin-Agent-Pages-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/thekryptodragon/Development/assiduous/test-results/auth-Step-12-5-Client-Logi-a4851-ot-Access-Admin-Agent-Pages-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/thekryptodragon/Development/assiduous/test-results/auth-Step-12-5-Client-Logi-a4851-ot-Access-Admin-Agent-Pages-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/thekryptodragon/Development/assiduous/tests/auth.spec.js",
+                        "column": 28,
+                        "line": 264
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "d5ed79a6b333c2ba7209-329cbe69760bd5770052",
+              "file": "auth.spec.js",
+              "line": 253,
+              "column": 3
+            },
+            {
+              "title": "TC-11: Client Logout",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 10,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 6867,
+                      "error": {
+                        "message": "ReferenceError: context is not defined",
+                        "stack": "ReferenceError: context is not defined\n    at logout (/Users/thekryptodragon/Development/assiduous/tests/auth.spec.js:94:5)\n    at /Users/thekryptodragon/Development/assiduous/tests/auth.spec.js:269:5",
+                        "location": {
+                          "file": "/Users/thekryptodragon/Development/assiduous/tests/auth.spec.js",
+                          "column": 5,
+                          "line": 94
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 92 |\u001b[39m   } \u001b[36mcatch\u001b[39m (error) {\n \u001b[90m 93 |\u001b[39m     \u001b[90m// If logout button not found, manually clear auth and navigate\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 94 |\u001b[39m     \u001b[36mawait\u001b[39m context\u001b[33m.\u001b[39mclearCookies()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m     \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 95 |\u001b[39m     \u001b[90m// Cleared by context\u001b[39m\n \u001b[90m 96 |\u001b[39m   }\n \u001b[90m 97 |\u001b[39m }\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/thekryptodragon/Development/assiduous/tests/auth.spec.js",
+                            "column": 5,
+                            "line": 94
+                          },
+                          "message": "ReferenceError: context is not defined\n\n\u001b[0m \u001b[90m 92 |\u001b[39m   } \u001b[36mcatch\u001b[39m (error) {\n \u001b[90m 93 |\u001b[39m     \u001b[90m// If logout button not found, manually clear auth and navigate\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 94 |\u001b[39m     \u001b[36mawait\u001b[39m context\u001b[33m.\u001b[39mclearCookies()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m     \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 95 |\u001b[39m     \u001b[90m// Cleared by context\u001b[39m\n \u001b[90m 96 |\u001b[39m   }\n \u001b[90m 97 |\u001b[39m }\u001b[0m\n\u001b[2m    at logout (/Users/thekryptodragon/Development/assiduous/tests/auth.spec.js:94:5)\u001b[22m\n\u001b[2m    at /Users/thekryptodragon/Development/assiduous/tests/auth.spec.js:269:5\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-02T16:01:36.907Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/thekryptodragon/Development/assiduous/test-results/auth-Step-12-5-Client-Login-Flow-TC-11-Client-Logout-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/thekryptodragon/Development/assiduous/test-results/auth-Step-12-5-Client-Login-Flow-TC-11-Client-Logout-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/thekryptodragon/Development/assiduous/test-results/auth-Step-12-5-Client-Login-Flow-TC-11-Client-Logout-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/thekryptodragon/Development/assiduous/tests/auth.spec.js",
+                        "column": 5,
+                        "line": 94
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "d5ed79a6b333c2ba7209-d3e17245a7a37d21a7ac",
+              "file": "auth.spec.js",
+              "line": 267,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "Step 12.7: Role-Based Access Control",
+          "file": "auth.spec.js",
+          "line": 274,
+          "column": 6,
+          "specs": [
+            {
+              "title": "TC-16: Admin Full Access",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 11,
+                      "parallelIndex": 2,
+                      "status": "failed",
+                      "duration": 21509,
+                      "error": {
+                        "message": "TimeoutError: page.waitForLoadState: Timeout 20000ms exceeded.",
+                        "stack": "TimeoutError: page.waitForLoadState: Timeout 20000ms exceeded.\n    at login (/Users/thekryptodragon/Development/assiduous/tests/auth.spec.js:79:14)\n    at /Users/thekryptodragon/Development/assiduous/tests/auth.spec.js:282:5",
+                        "location": {
+                          "file": "/Users/thekryptodragon/Development/assiduous/tests/auth.spec.js",
+                          "column": 14,
+                          "line": 79
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 77 |\u001b[39m   \n \u001b[90m 78 |\u001b[39m   \u001b[90m// Wait for page to be fully loaded\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 79 |\u001b[39m   \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForLoadState(\u001b[32m'networkidle'\u001b[39m\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m \u001b[35m20000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m              \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 80 |\u001b[39m }\n \u001b[90m 81 |\u001b[39m\n \u001b[90m 82 |\u001b[39m \u001b[90m// Helper function to logout\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/thekryptodragon/Development/assiduous/tests/auth.spec.js",
+                            "column": 14,
+                            "line": 79
+                          },
+                          "message": "TimeoutError: page.waitForLoadState: Timeout 20000ms exceeded.\n\n\u001b[0m \u001b[90m 77 |\u001b[39m   \n \u001b[90m 78 |\u001b[39m   \u001b[90m// Wait for page to be fully loaded\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 79 |\u001b[39m   \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForLoadState(\u001b[32m'networkidle'\u001b[39m\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m \u001b[35m20000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m              \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 80 |\u001b[39m }\n \u001b[90m 81 |\u001b[39m\n \u001b[90m 82 |\u001b[39m \u001b[90m// Helper function to logout\u001b[39m\u001b[0m\n\u001b[2m    at login (/Users/thekryptodragon/Development/assiduous/tests/auth.spec.js:79:14)\u001b[22m\n\u001b[2m    at /Users/thekryptodragon/Development/assiduous/tests/auth.spec.js:282:5\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-02T16:01:38.526Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/thekryptodragon/Development/assiduous/test-results/auth-Step-12-7-Role-Based--9c04f-rol-TC-16-Admin-Full-Access-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/thekryptodragon/Development/assiduous/test-results/auth-Step-12-7-Role-Based--9c04f-rol-TC-16-Admin-Full-Access-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/thekryptodragon/Development/assiduous/test-results/auth-Step-12-7-Role-Based--9c04f-rol-TC-16-Admin-Full-Access-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/thekryptodragon/Development/assiduous/tests/auth.spec.js",
+                        "column": 14,
+                        "line": 79
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "d5ed79a6b333c2ba7209-119a41e7704d3ae3a339",
+              "file": "auth.spec.js",
+              "line": 281,
+              "column": 3
+            },
+            {
+              "title": "TC-17: Agent Limited Access",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 12,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 20777,
+                      "error": {
+                        "message": "TimeoutError: page.waitForURL: Timeout 20000ms exceeded.\n=========================== logs ===========================\nwaiting for navigation until \"load\"\n============================================================",
+                        "stack": "TimeoutError: page.waitForURL: Timeout 20000ms exceeded.\n=========================== logs ===========================\nwaiting for navigation until \"load\"\n============================================================\n    at login (/Users/thekryptodragon/Development/assiduous/tests/auth.spec.js:76:14)\n    at /Users/thekryptodragon/Development/assiduous/tests/auth.spec.js:294:5",
+                        "location": {
+                          "file": "/Users/thekryptodragon/Development/assiduous/tests/auth.spec.js",
+                          "column": 14,
+                          "line": 76
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 74 |\u001b[39m   \n \u001b[90m 75 |\u001b[39m   \u001b[90m// Wait for redirect (Firebase does this immediately)\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 76 |\u001b[39m   \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForURL(\u001b[35m/\\/(admin|agent|client)\\//\u001b[39m\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m \u001b[35m20000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m              \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 77 |\u001b[39m   \n \u001b[90m 78 |\u001b[39m   \u001b[90m// Wait for page to be fully loaded\u001b[39m\n \u001b[90m 79 |\u001b[39m   \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForLoadState(\u001b[32m'networkidle'\u001b[39m\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m \u001b[35m20000\u001b[39m })\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/thekryptodragon/Development/assiduous/tests/auth.spec.js",
+                            "column": 14,
+                            "line": 76
+                          },
+                          "message": "TimeoutError: page.waitForURL: Timeout 20000ms exceeded.\n=========================== logs ===========================\nwaiting for navigation until \"load\"\n============================================================\n\n\u001b[0m \u001b[90m 74 |\u001b[39m   \n \u001b[90m 75 |\u001b[39m   \u001b[90m// Wait for redirect (Firebase does this immediately)\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 76 |\u001b[39m   \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForURL(\u001b[35m/\\/(admin|agent|client)\\//\u001b[39m\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m \u001b[35m20000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m              \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 77 |\u001b[39m   \n \u001b[90m 78 |\u001b[39m   \u001b[90m// Wait for page to be fully loaded\u001b[39m\n \u001b[90m 79 |\u001b[39m   \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForLoadState(\u001b[32m'networkidle'\u001b[39m\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m \u001b[35m20000\u001b[39m })\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at login (/Users/thekryptodragon/Development/assiduous/tests/auth.spec.js:76:14)\u001b[22m\n\u001b[2m    at /Users/thekryptodragon/Development/assiduous/tests/auth.spec.js:294:5\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-02T16:01:44.269Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/thekryptodragon/Development/assiduous/test-results/auth-Step-12-7-Role-Based--025e9--TC-17-Agent-Limited-Access-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/thekryptodragon/Development/assiduous/test-results/auth-Step-12-7-Role-Based--025e9--TC-17-Agent-Limited-Access-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/thekryptodragon/Development/assiduous/test-results/auth-Step-12-7-Role-Based--025e9--TC-17-Agent-Limited-Access-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/thekryptodragon/Development/assiduous/tests/auth.spec.js",
+                        "column": 14,
+                        "line": 76
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "d5ed79a6b333c2ba7209-78362c0f21ffe4cf3175",
+              "file": "auth.spec.js",
+              "line": 293,
+              "column": 3
+            },
+            {
+              "title": "TC-18: Client Restricted Access",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 13,
+                      "parallelIndex": 1,
+                      "status": "failed",
+                      "duration": 3829,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mnot\u001b[2m.\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected substring: not \u001b[32m\"/agent/dashboard.html\"\u001b[39m\nReceived string:        \u001b[31m\"https://assiduous-prod.web.app\u001b[7m/agent/dashboard.html\u001b[27m\"\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mnot\u001b[2m.\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected substring: not \u001b[32m\"/agent/dashboard.html\"\u001b[39m\nReceived string:        \u001b[31m\"https://assiduous-prod.web.app\u001b[7m/agent/dashboard.html\u001b[27m\"\u001b[39m\n    at /Users/thekryptodragon/Development/assiduous/tests/auth.spec.js:321:28",
+                        "location": {
+                          "file": "/Users/thekryptodragon/Development/assiduous/tests/auth.spec.js",
+                          "column": 28,
+                          "line": 321
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 319 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m`${BASE_URL}/agent/dashboard.html`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 320 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForLoadState(\u001b[32m'networkidle'\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 321 |\u001b[39m     expect(page\u001b[33m.\u001b[39murl())\u001b[33m.\u001b[39mnot\u001b[33m.\u001b[39mtoContain(\u001b[32m'/agent/dashboard.html'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                            \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 322 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 323 |\u001b[39m   \n \u001b[90m 324 |\u001b[39m   test(\u001b[32m'TC-19: Custom Claims Verification'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/thekryptodragon/Development/assiduous/tests/auth.spec.js",
+                            "column": 28,
+                            "line": 321
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mnot\u001b[2m.\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected substring: not \u001b[32m\"/agent/dashboard.html\"\u001b[39m\nReceived string:        \u001b[31m\"https://assiduous-prod.web.app\u001b[7m/agent/dashboard.html\u001b[27m\"\u001b[39m\n\n\u001b[0m \u001b[90m 319 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m`${BASE_URL}/agent/dashboard.html`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 320 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForLoadState(\u001b[32m'networkidle'\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 321 |\u001b[39m     expect(page\u001b[33m.\u001b[39murl())\u001b[33m.\u001b[39mnot\u001b[33m.\u001b[39mtoContain(\u001b[32m'/agent/dashboard.html'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                            \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 322 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 323 |\u001b[39m   \n \u001b[90m 324 |\u001b[39m   test(\u001b[32m'TC-19: Custom Claims Verification'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\u001b[0m\n\u001b[2m    at /Users/thekryptodragon/Development/assiduous/tests/auth.spec.js:321:28\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-02T16:01:46.880Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/thekryptodragon/Development/assiduous/test-results/auth-Step-12-7-Role-Based--4476a-18-Client-Restricted-Access-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/thekryptodragon/Development/assiduous/test-results/auth-Step-12-7-Role-Based--4476a-18-Client-Restricted-Access-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/thekryptodragon/Development/assiduous/test-results/auth-Step-12-7-Role-Based--4476a-18-Client-Restricted-Access-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/thekryptodragon/Development/assiduous/tests/auth.spec.js",
+                        "column": 28,
+                        "line": 321
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "d5ed79a6b333c2ba7209-1256cae80b5363b8b271",
+              "file": "auth.spec.js",
+              "line": 306,
+              "column": 3
+            },
+            {
+              "title": "TC-19: Custom Claims Verification",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 14,
+                      "parallelIndex": 1,
+                      "status": "failed",
+                      "duration": 21686,
+                      "error": {
+                        "message": "TimeoutError: page.waitForLoadState: Timeout 20000ms exceeded.",
+                        "stack": "TimeoutError: page.waitForLoadState: Timeout 20000ms exceeded.\n    at login (/Users/thekryptodragon/Development/assiduous/tests/auth.spec.js:79:14)\n    at /Users/thekryptodragon/Development/assiduous/tests/auth.spec.js:325:5",
+                        "location": {
+                          "file": "/Users/thekryptodragon/Development/assiduous/tests/auth.spec.js",
+                          "column": 14,
+                          "line": 79
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 77 |\u001b[39m   \n \u001b[90m 78 |\u001b[39m   \u001b[90m// Wait for page to be fully loaded\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 79 |\u001b[39m   \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForLoadState(\u001b[32m'networkidle'\u001b[39m\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m \u001b[35m20000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m              \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 80 |\u001b[39m }\n \u001b[90m 81 |\u001b[39m\n \u001b[90m 82 |\u001b[39m \u001b[90m// Helper function to logout\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/thekryptodragon/Development/assiduous/tests/auth.spec.js",
+                            "column": 14,
+                            "line": 79
+                          },
+                          "message": "TimeoutError: page.waitForLoadState: Timeout 20000ms exceeded.\n\n\u001b[0m \u001b[90m 77 |\u001b[39m   \n \u001b[90m 78 |\u001b[39m   \u001b[90m// Wait for page to be fully loaded\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 79 |\u001b[39m   \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForLoadState(\u001b[32m'networkidle'\u001b[39m\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m \u001b[35m20000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m              \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 80 |\u001b[39m }\n \u001b[90m 81 |\u001b[39m\n \u001b[90m 82 |\u001b[39m \u001b[90m// Helper function to logout\u001b[39m\u001b[0m\n\u001b[2m    at login (/Users/thekryptodragon/Development/assiduous/tests/auth.spec.js:79:14)\u001b[22m\n\u001b[2m    at /Users/thekryptodragon/Development/assiduous/tests/auth.spec.js:325:5\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-02T16:01:51.225Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/thekryptodragon/Development/assiduous/test-results/auth-Step-12-7-Role-Based--cffde--Custom-Claims-Verification-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/thekryptodragon/Development/assiduous/test-results/auth-Step-12-7-Role-Based--cffde--Custom-Claims-Verification-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/thekryptodragon/Development/assiduous/test-results/auth-Step-12-7-Role-Based--cffde--Custom-Claims-Verification-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/thekryptodragon/Development/assiduous/tests/auth.spec.js",
+                        "column": 14,
+                        "line": 79
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "d5ed79a6b333c2ba7209-fa35a7ed1ca8c09453c0",
+              "file": "auth.spec.js",
+              "line": 324,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "Step 12.6: Password Reset Flow",
+          "file": "auth.spec.js",
+          "line": 341,
+          "column": 6,
+          "specs": [
+            {
+              "title": "TC-12: Forgot Password Link",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 15,
+                      "parallelIndex": 4,
+                      "status": "failed",
+                      "duration": 5771,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('a[href=\"/auth/reset-password.html\"]')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('a[href=\"/auth/reset-password.html\"]')\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('a[href=\"/auth/reset-password.html\"]')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('a[href=\"/auth/reset-password.html\"]')\u001b[22m\n\n    at /Users/thekryptodragon/Development/assiduous/tests/auth.spec.js:349:30",
+                        "location": {
+                          "file": "/Users/thekryptodragon/Development/assiduous/tests/auth.spec.js",
+                          "column": 30,
+                          "line": 349
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 347 |\u001b[39m     \u001b[90m// Click forgot password link\u001b[39m\n \u001b[90m 348 |\u001b[39m     \u001b[36mconst\u001b[39m forgotLink \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'a[href=\"/auth/reset-password.html\"]'\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 349 |\u001b[39m     \u001b[36mawait\u001b[39m expect(forgotLink)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                              \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 350 |\u001b[39m     \u001b[36mawait\u001b[39m forgotLink\u001b[33m.\u001b[39mclick()\u001b[33m;\u001b[39m\n \u001b[90m 351 |\u001b[39m     \n \u001b[90m 352 |\u001b[39m     \u001b[90m// Wait for navigation to reset password page\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/thekryptodragon/Development/assiduous/tests/auth.spec.js",
+                            "column": 30,
+                            "line": 349
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('a[href=\"/auth/reset-password.html\"]')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('a[href=\"/auth/reset-password.html\"]')\u001b[22m\n\n\n\u001b[0m \u001b[90m 347 |\u001b[39m     \u001b[90m// Click forgot password link\u001b[39m\n \u001b[90m 348 |\u001b[39m     \u001b[36mconst\u001b[39m forgotLink \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'a[href=\"/auth/reset-password.html\"]'\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 349 |\u001b[39m     \u001b[36mawait\u001b[39m expect(forgotLink)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                              \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 350 |\u001b[39m     \u001b[36mawait\u001b[39m forgotLink\u001b[33m.\u001b[39mclick()\u001b[33m;\u001b[39m\n \u001b[90m 351 |\u001b[39m     \n \u001b[90m 352 |\u001b[39m     \u001b[90m// Wait for navigation to reset password page\u001b[39m\u001b[0m\n\u001b[2m    at /Users/thekryptodragon/Development/assiduous/tests/auth.spec.js:349:30\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-02T16:01:54.061Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/thekryptodragon/Development/assiduous/test-results/auth-Step-12-6-Password-Re-4a1b7--TC-12-Forgot-Password-Link-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/thekryptodragon/Development/assiduous/test-results/auth-Step-12-6-Password-Re-4a1b7--TC-12-Forgot-Password-Link-chromium/video.webm"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/thekryptodragon/Development/assiduous/tests/auth.spec.js",
+                        "column": 30,
+                        "line": 349
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "d5ed79a6b333c2ba7209-dd08d8f18e8c64b06989",
+              "file": "auth.spec.js",
+              "line": 343,
+              "column": 3
+            },
+            {
+              "title": "TC-13-15: Password Reset Email Flow",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "location": {
+                        "file": "/Users/thekryptodragon/Development/assiduous/tests/auth.spec.js",
+                        "line": 359,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "expectedStatus": "skipped",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-02T16:01:53.807Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "d5ed79a6b333c2ba7209-a3e9aac65edbc2aa5910",
+              "file": "auth.spec.js",
+              "line": 359,
+              "column": 8
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2025-11-02T16:01:09.080Z",
+    "duration": 63972.837,
+    "expected": 0,
+    "skipped": 1,
+    "unexpected": 16,
+    "flaky": 0
+  }
+}

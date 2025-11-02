@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAINTENANCE SUPPORT - Assiduous Documentation</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3, h4, h5, h6 {
+            margin-top: 24px;
+            margin-bottom: 16px;
+            font-weight: 600;
+            line-height: 1.25;
+        }
+        h1 { font-size: 2em; border-bottom: 1px solid #e1e4e8; padding-bottom: 0.3em; }
+        h2 { font-size: 1.5em; border-bottom: 1px solid #e1e4e8; padding-bottom: 0.3em; }
+        h3 { font-size: 1.25em; }
+        code {
+            background: #f6f8fa;
+            padding: 0.2em 0.4em;
+            border-radius: 3px;
+            font-size: 85%;
+        }
+        pre {
+            background: #f6f8fa;
+            padding: 16px;
+            overflow: auto;
+            border-radius: 6px;
+            line-height: 1.45;
+        }
+        pre code {
+            background: transparent;
+            padding: 0;
+        }
+        ul, ol {
+            padding-left: 2em;
+            margin-bottom: 16px;
+        }
+        li {
+            margin-bottom: 4px;
+        }
+        a {
+            color: #0366d6;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        blockquote {
+            padding: 0 1em;
+            color: #6a737d;
+            border-left: 0.25em solid #dfe2e5;
+            margin: 0 0 16px 0;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 16px;
+        }
+        table th, table td {
+            padding: 6px 13px;
+            border: 1px solid #dfe2e5;
+        }
+        table tr:nth-child(2n) {
+            background-color: #f6f8fa;
+        }
+        .nav-link {
+            display: inline-block;
+            padding: 8px 16px;
+            background: #0366d6;
+            color: white;
+            border-radius: 6px;
+            margin: 10px 5px;
+            text-decoration: none;
+        }
+        .nav-link:hover {
+            background: #0256c7;
+            text-decoration: none;
+        }
+        .timestamp {
+            color: #6a737d;
+            font-size: 0.85em;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e1e4e8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <a href="/docs/index.html" class="nav-link">📚 Documentation Hub</a>
+            <a href="/docs/readme.html" class="nav-link">📖 README</a>
+            <a href="/docs/changelog.html" class="nav-link">📝 Changelog</a>
+            <a href="/docs/warp.html" class="nav-link">⚙️ WARP Rules</a>
+        </nav>
+        <h1>MAINTENANCE SUPPORT</h1>
+        <div class="content">
+<h1>MAINTENANCE AND SUPPORT DOCUMENT</h1>
+<h2>Comprehensive System Maintenance, Monitoring, and Support Procedures</h2>
+<br>
+<strong>Document Type:</strong> Maintenance &amp; Support  
+<strong>Version:</strong> 3.0.0  
+<strong>Last Updated:</strong> October 10, 2025  
+<strong>Status:</strong> Complete Maintenance &amp; Support Documentation  
+<strong>Implementation Status:</strong> Partially implemented (monitoring active, procedures defined)  
+<strong>Reality Check:</strong> GitHub Actions monitoring works, manual procedures not tested
+<br>
+<hr>
+<br>
+<h2>Maintenance Schedule</h2>
+<br>
+<h3>Daily Tasks</h3>
+<li>Monitor Firebase Console for errors</li>
+<li>Check GitHub Actions for failed workflows</li>
+<li>Review Dependabot security alerts</li>
+<li>Verify production site availability</li>
+<br>
+<h3>Weekly Tasks</h3>
+<li>Update dependencies</li>
+<li>Run security scans</li>
+<li>Review performance metrics</li>
+<li>Backup Firestore database</li>
+<br>
+<h3>Monthly Tasks</h3>
+<li>Review and update documentation</li>
+<li>Analyze usage patterns</li>
+<li>Update SSL certificates (if needed)</li>
+<li>Review Firebase billing</li>
+<br>
+<h2>Support Procedures</h2>
+<br>
+<h3>Issue Triage</h3>
+1. Check error logs in Firebase Console
+2. Review GitHub Issues
+3. Prioritize by severity
+4. Assign to appropriate team member
+<br>
+<h3>Emergency Response</h3>
+<li>Production down: Follow rollback procedures</li>
+<li>Security breach: Disable affected services</li>
+<li>Data loss: Restore from backup</li>
+<li>Performance issues: Scale Firebase resources</li>
+<br>
+<h3>Contact Information</h3>
+<li>Technical Lead: Via GitHub Issues</li>
+<li>Emergency: Create urgent GitHub Issue with 'urgent' label</li>
+<br>
+<hr>
+<br>
+<h2>COMPREHENSIVE MONITORING PROCEDURES</h2>
+<br>
+<h3>Real-Time Monitoring Dashboard</h3>
+<strong>URL:</strong> https://assiduous-prod.web.app/admin/development  
+<strong>Frequency:</strong> Check every 4 hours during business hours
+<br>
+#### Key Metrics to Monitor
+<code></code>`
+✅ Green Indicators (Healthy)
+<li>Response time &lt; 2s</li>
+<li>Error rate &lt; 1%</li>
+<li>Active users &gt; 0</li>
+<li>Database connections stable</li>
+<br>
+⚠️ Yellow Indicators (Warning)
+<li>Response time 2-5s</li>
+<li>Error rate 1-5%</li>
+<li>Memory usage &gt; 80%</li>
+<li>Queue backlog &gt; 100</li>
+<br>
+🔴 Red Indicators (Critical)
+<li>Response time &gt; 5s</li>
+<li>Error rate &gt; 5%</li>
+<li>Service unavailable</li>
+<li>Database disconnected</li>
+<code></code>`
+<br>
+<h3>Automated Monitoring Systems</h3>
+<br>
+#### 1. GitHub Actions Site Monitor
+<strong>File:</strong> <code>.github/workflows/site-monitor.yml</code>  
+<strong>Frequency:</strong> Every 15 minutes  
+<strong>Checks:</strong>
+<li>Production site (https://assiduous-prod.web.app)</li>
+<li>Admin portal (/admin)</li>
+<li>Client portal (/client)</li>
+<li>API endpoints health</li>
+<br>
+<strong>Actions on Failure:</strong>
+<li>Creates GitHub issue automatically</li>
+<li>Tags: <code>site-down</code>, <code>urgent</code>, <code>automated</code></li>
+<li>Notifications sent to repository watchers</li>
+<br>
+#### 2. Firebase Performance Monitoring
+<strong>Console:</strong> https://console.firebase.google.com/project/assiduous-prod/performance  
+<strong>Key Metrics:</strong>
+<li>Page load time</li>
+<li>Network request latency</li>
+<li>JavaScript errors</li>
+<li>Custom traces for critical paths</li>
+<br>
+#### 3. Error Tracking
+<strong>Firebase Crashlytics:</strong> Enabled for production  
+<strong>Sentry.io:</strong> (Future integration planned)  
+<br>
+<h3>Manual Monitoring Checklist</h3>
+<br>
+#### Daily (9 AM PST)
+<li>[ ] Check production site availability</li>
+<li>[ ] Review Firebase Console for errors</li>
+<li>[ ] Check GitHub Actions status</li>
+<li>[ ] Monitor active user count</li>
+<li>[ ] Review error logs from last 24h</li>
+<li>[ ] Check Dependabot alerts</li>
+<br>
+#### Weekly (Monday 10 AM PST)
+<li>[ ] Run full site crawler test</li>
+<li>[ ] Review performance metrics trends</li>
+<li>[ ] Check SSL certificate expiry (30 day warning)</li>
+<li>[ ] Analyze user behavior patterns</li>
+<li>[ ] Review security scan results</li>
+<li>[ ] Update dependency versions</li>
+<br>
+#### Monthly (1st Monday)
+<li>[ ] Full backup verification</li>
+<li>[ ] Load testing (simulate 100 concurrent users)</li>
+<li>[ ] Security audit</li>
+<li>[ ] Review Firebase billing</li>
+<li>[ ] Update documentation</li>
+<li>[ ] Team retrospective meeting</li>
+<br>
+<hr>
+<br>
+<h2>TROUBLESHOOTING GUIDES</h2>
+<br>
+<h3>Common Issues and Solutions</h3>
+<br>
+#### Issue 1: Site Returns 404 Errors
+<strong>Symptoms:</strong> Pages not loading, 404 errors  
+<strong>Likely Cause:</strong> Firebase hosting misconfiguration  
+<strong>Solution:</strong>
+<code></code>`bash
+cd firebase-migration-package
+firebase deploy --only hosting:production
+<code></code>`
+<strong>Verification:</strong> <code>curl -I https://assiduous-prod.web.app</code>
+<br>
+#### Issue 2: Authentication Not Working
+<strong>Symptoms:</strong> Users can't log in, "Auth failed" errors  
+<strong>Likely Cause:</strong> Firebase Auth service issue or wrong config  
+<strong>Solution:</strong>
+1. Check Firebase Console → Authentication
+2. Verify environment variables:
+   <code></code>`bash
+   cat .env | grep FIREBASE
+   <code></code>`
+3. Restart auth service:
+   <code></code>`bash
+   firebase deploy --only functions:auth
+   <code></code>`
+<br>
+#### Issue 3: Database Connection Failed
+<strong>Symptoms:</strong> "Cannot read properties" errors, no data loading  
+<strong>Likely Cause:</strong> Firestore rules or network issue  
+<strong>Solution:</strong>
+1. Check Firestore rules in console
+2. Verify indexes:
+   <code></code>`bash
+   firebase deploy --only firestore:rules,firestore:indexes
+   <code></code>`
+3. Check service account permissions
+<br>
+#### Issue 4: High Latency/Slow Performance
+<strong>Symptoms:</strong> Pages loading &gt; 5 seconds  
+<strong>Likely Cause:</strong> Unoptimized queries or CDN issues  
+<strong>Solution:</strong>
+1. Check Firebase Performance dashboard
+2. Enable caching:
+   <code></code>`javascript
+   firebase.firestore().enablePersistence()
+   <code></code>`
+3. Implement pagination for large datasets
+4. Check CDN status: https://status.firebase.google.com
+<br>
+#### Issue 5: Payment Processing Failed
+<strong>Symptoms:</strong> Stripe payments not going through  
+<strong>Likely Cause:</strong> API key issue or webhook misconfiguration  
+<strong>Solution:</strong>
+1. Verify Stripe keys in environment
+2. Check webhook endpoints in Stripe dashboard
+3. Review Stripe logs for detailed errors
+4. Test with Stripe CLI:
+   <code></code>`bash
+   stripe listen --forward-to localhost:3000/api/webhook
+   <code></code>`
+<br>
+<hr>
+<br>
+<h2>BACKUP AND RECOVERY PROCEDURES</h2>
+<br>
+<h3>Automated Backups</h3>
+<br>
+#### Firestore Automated Backups
+<strong>Schedule:</strong> Daily at 2 AM PST  
+<strong>Retention:</strong> 30 days  
+<strong>Location:</strong> gs://assiduous-backups  
+<br>
+<strong>Setup Command:</strong>
+<code></code>`bash
+gcloud firestore export gs://assiduous-backups/$(date +%Y%m%d)
+<code></code>`
+<br>
+<strong>Automation Script:</strong> <code>scripts/backup-firestore.sh</code>
+<code></code>`bash
+#!/bin/bash
+DATE=$(date +%Y%m%d_%H%M%S)
+BUCKET="gs://assiduous-backups"
+<br>
+<h1>Export Firestore</h1>
+gcloud firestore export ${BUCKET}/${DATE} \
+  --project=assiduous-prod
+<br>
+<h1>Clean old backups (keep 30 days)</h1>
+gsutil ls ${BUCKET} | \
+  while read backup; do
+    AGE=$(gsutil stat $backup | grep 'Creation time' | awk '{print $3}')
+    # Delete if older than 30 days
+  done
+<code></code>`
+<br>
+#### Code Repository Backup
+<strong>Primary:</strong> GitHub (automatic)  
+<strong>Secondary:</strong> Weekly local backup  
+<code></code>`bash
+<h1>Weekly local backup script</h1>
+tar -czf ~/backups/assiduous-$(date +%Y%m%d).tar.gz \
+  --exclude node_modules \
+  --exclude .next \
+  /Users/thekryptodragon/Development/assiduous
+<code></code>`
+<br>
+<h3>Recovery Procedures</h3>
+<br>
+#### Scenario 1: Complete Data Loss
+<strong>Recovery Time Objective (RTO):</strong> 4 hours  
+<strong>Recovery Point Objective (RPO):</strong> 24 hours  
+<br>
+<strong>Steps:</strong>
+1. <strong>Hour 1:</strong> Assess damage and notify stakeholders
+2. <strong>Hour 2:</strong> Restore Firestore from backup:
+   <code></code>`bash
+   gcloud firestore import gs://assiduous-backups/20251010
+   <code></code>`
+3. <strong>Hour 3:</strong> Redeploy application:
+   <code></code>`bash
+   cd firebase-migration-package
+   ./deploy.sh production
+   <code></code>`
+4. <strong>Hour 4:</strong> Verify all services and run tests
+<br>
+#### Scenario 2: Partial Data Corruption
+<strong>Steps:</strong>
+1. Identify affected collections
+2. Export current data for analysis
+3. Restore specific collections:
+   <code></code>`bash
+   gcloud firestore import \
+     gs://assiduous-backups/20251010 \
+     --collection-ids='properties,users'
+   <code></code>`
+4. Verify data integrity
+<br>
+#### Scenario 3: Code Rollback Needed
+<strong>Steps:</strong>
+1. Identify last known good commit:
+   <code></code>`bash
+   git log --oneline -20
+   <code></code>`
+2. Create rollback branch:
+   <code></code>`bash
+   git checkout -b hotfix/rollback
+   git revert HEAD~N  # N = number of commits to revert
+   <code></code>`
+3. Deploy rollback:
+   <code></code>`bash
+   firebase deploy --project assiduous-prod
+   <code></code>`
+<br>
+<hr>
+<br>
+<h2>MAINTENANCE PROCEDURES</h2>
+<br>
+<h3>Routine Maintenance Tasks</h3>
+<br>
+#### Database Maintenance
+<strong>Frequency:</strong> Weekly  
+<strong>Tasks:</strong>
+1. Remove orphaned documents:
+   <code></code>`javascript
+   // Clean up orphaned property images
+   const orphanedImages = await db.collection('images')
+     .where('propertyId', '==', null).get();
+   
+   const batch = db.batch();
+   orphanedImages.forEach(doc =&gt; batch.delete(doc.ref));
+   await batch.commit();
+   <code></code>`
+<br>
+2. Optimize indexes:
+   <code></code>`bash
+   firebase firestore:indexes &gt; indexes.json
+   # Review and optimize
+   firebase deploy --only firestore:indexes
+   <code></code>`
+<br>
+3. Archive old data (&gt; 1 year):
+   <code></code>`javascript
+   // Move to cold storage
+   const oldTransactions = await db.collection('transactions')
+     .where('createdAt', '&lt;', oneYearAgo).get();
+   <code></code>`
+<br>
+#### Security Maintenance
+<strong>Frequency:</strong> Bi-weekly  
+<strong>Tasks:</strong>
+1. Update dependencies:
+   <code></code>`bash
+   npm audit fix
+   npm update --save
+   <code></code>`
+<br>
+2. Rotate API keys:
+   - Firebase Admin SDK keys (quarterly)
+   - Stripe API keys (monthly)
+   - Third-party service keys (quarterly)
+<br>
+3. Review access logs:
+   <code></code>`bash
+   gcloud logging read "resource.type=gae_app" \
+     --limit 100 \
+     --format json | jq '.[] | select(.severity=="ERROR")'
+   <code></code>`
+<br>
+#### Performance Maintenance
+<strong>Frequency:</strong> Monthly  
+<strong>Tasks:</strong>
+1. Clear CDN cache:
+   <code></code>`bash
+   firebase hosting:channel:deploy production --expires 1h
+   <code></code>`
+<br>
+2. Optimize images:
+   <code></code>`bash
+   # Compress all images &gt; 100KB
+   find public/images -size +100k -exec convert {} -quality 85 {} \;
+   <code></code>`
+<br>
+3. Bundle size analysis:
+   <code></code>`bash
+   npm run build
+   npm run analyze
+   <code></code>`
+<br>
+<hr>
+<br>
+<h2>INCIDENT RESPONSE PLAN</h2>
+<br>
+<h3>Severity Levels</h3>
+<br>
+#### SEV1 - Critical (Production Down)
+<strong>Response Time:</strong> 15 minutes  
+<strong>Examples:</strong> Site completely down, data breach, payment system failure  
+<strong>Actions:</strong>
+1. Page on-call engineer immediately
+2. Create war room Slack channel
+3. Begin incident timeline documentation
+4. Notify executive team within 30 minutes
+<br>
+#### SEV2 - High (Major Feature Broken)
+<strong>Response Time:</strong> 1 hour  
+<strong>Examples:</strong> Login not working, search broken, slow performance  
+<strong>Actions:</strong>
+1. Create GitHub issue with <code>sev2</code> label
+2. Assign to feature owner
+3. Update status page
+4. Communicate ETA to stakeholders
+<br>
+#### SEV3 - Medium (Minor Feature Issue)
+<strong>Response Time:</strong> 4 hours  
+<strong>Examples:</strong> UI glitch, non-critical API error  
+<strong>Actions:</strong>
+1. Log in issue tracker
+2. Schedule for next sprint
+3. Workaround documentation if available
+<br>
+#### SEV4 - Low (Cosmetic Issue)
+<strong>Response Time:</strong> Next business day  
+<strong>Examples:</strong> Typo, alignment issue, color inconsistency  
+<strong>Actions:</strong>
+1. Add to backlog
+2. Fix in next release
+<br>
+<h3>Incident Response Checklist</h3>
+<br>
+#### During Incident
+<li>[ ] Identify severity level</li>
+<li>[ ] Create incident channel/issue</li>
+<li>[ ] Assign incident commander</li>
+<li>[ ] Start incident timeline</li>
+<li>[ ] Implement immediate mitigation</li>
+<li>[ ] Communicate status every 30 minutes</li>
+<li>[ ] Document all actions taken</li>
+<br>
+#### Post-Incident
+<li>[ ] Write incident report (within 24 hours)</li>
+<li>[ ] Conduct blameless postmortem (within 72 hours)</li>
+<li>[ ] Create follow-up tickets for improvements</li>
+<li>[ ] Update runbooks based on learnings</li>
+<li>[ ] Share learnings with team</li>
+<br>
+<hr>
+<br>
+<h2>SUPPORT PROCEDURES</h2>
+<br>
+<h3>User Support Channels</h3>
+<br>
+#### Primary Support (GitHub Issues)
+<strong>URL:</strong> https://github.com/SirsiMaster/Assiduous/issues  
+<strong>Response Time SLA:</strong>
+<li>Critical: 2 hours</li>
+<li>High: 8 hours</li>
+<li>Medium: 24 hours</li>
+<li>Low: 72 hours</li>
+<br>
+#### Support Ticket Template
+<code></code>`markdown
+<h2>Issue Type</h2>
+<li>[ ] Bug</li>
+<li>[ ] Feature Request</li>
+<li>[ ] Question</li>
+<li>[ ] Other</li>
+<br>
+<h2>Description</h2>
+[Clear description of the issue]
+<br>
+<h2>Steps to Reproduce (for bugs)</h2>
+1. Go to...
+2. Click on...
+3. See error...
+<br>
+<h2>Expected Behavior</h2>
+[What should happen]
+<br>
+<h2>Actual Behavior</h2>
+[What actually happens]
+<br>
+<h2>Environment</h2>
+<li>Browser:</li>
+<li>OS:</li>
+<li>User Role:</li>
+<li>Time/Date:</li>
+<br>
+<h2>Screenshots</h2>
+[If applicable]
+<code></code>`
+<br>
+<h3>Internal Support Procedures</h3>
+<br>
+#### Escalation Path
+1. <strong>Level 1:</strong> GitHub issue triage (community/automated)
+2. <strong>Level 2:</strong> Development team review
+3. <strong>Level 3:</strong> Technical lead intervention
+4. <strong>Level 4:</strong> Executive escalation
+<br>
+#### Knowledge Base Articles
+Location: <code>/docs/kb/</code>  
+Format: Markdown with screenshots  
+Categories:
+<li>Getting Started</li>
+<li>Account Management</li>
+<li>Property Management</li>
+<li>Troubleshooting</li>
+<li>FAQs</li>
+<br>
+<hr>
+<br>
+<h2>DEPLOYMENT PROCEDURES</h2>
+<br>
+<h3>Production Deployment Checklist</h3>
+<br>
+#### Pre-Deployment (1 day before)
+<li>[ ] Code freeze announced</li>
+<li>[ ] All PRs merged to main</li>
+<li>[ ] Tests passing (100% required)</li>
+<li>[ ] Security scan completed</li>
+<li>[ ] Release notes drafted</li>
+<li>[ ] Rollback plan documented</li>
+<br>
+#### Deployment Day
+<li>[ ] Backup current production</li>
+<li>[ ] Deploy to staging first</li>
+<li>[ ] Run smoke tests on staging</li>
+<li>[ ] Get approval from QA</li>
+<li>[ ] Deploy to production</li>
+<li>[ ] Verify deployment</li>
+<li>[ ] Monitor for 2 hours</li>
+<li>[ ] Send deployment notification</li>
+<br>
+#### Post-Deployment
+<li>[ ] Update documentation</li>
+<li>[ ] Close related issues</li>
+<li>[ ] Update status page</li>
+<li>[ ] Team retrospective</li>
+<br>
+<h3>Deployment Commands</h3>
+<br>
+#### Standard Deployment
+<code></code>`bash
+<h1>From project root</h1>
+cd firebase-migration-package
+<br>
+<h1>Deploy everything</h1>
+./deploy.sh production
+<br>
+<h1>Or deploy specific services</h1>
+firebase deploy --only hosting --project assiduous-prod
+firebase deploy --only functions --project assiduous-prod
+firebase deploy --only firestore --project assiduous-prod
+<code></code>`
+<br>
+#### Emergency Hotfix
+<code></code>`bash
+<h1>Create hotfix branch</h1>
+git checkout -b hotfix/critical-fix
+<br>
+<h1>Make fix and test locally</h1>
+npm test
+<br>
+<h1>Deploy directly to production (bypass staging)</h1>
+firebase deploy --project assiduous-prod --force
+<br>
+<h1>Merge back to main</h1>
+git checkout main
+git merge hotfix/critical-fix
+git push origin main
+<code></code>`
+<br>
+<hr>
+<br>
+<h2>MONITORING ALERTS CONFIGURATION</h2>
+<br>
+<h3>Alert Rules</h3>
+<br>
+<code></code>`yaml
+<h1>alerts.yaml</h1>
+alerts:
+  - name: "Site Down"
+    condition: "response_code != 200"
+    threshold: 2  # failures
+    window: 5m
+    severity: critical
+    notify:
+      - github_issue
+      - email
+      - slack
+<br>
+  - name: "High Error Rate"
+    condition: "error_rate &gt; 5%"
+    threshold: 5  # minutes
+    window: 10m
+    severity: high
+    notify:
+      - github_issue
+      - slack
+<br>
+  - name: "Slow Response"
+    condition: "response_time &gt; 3000ms"
+    threshold: 10  # requests
+    window: 15m
+    severity: medium
+    notify:
+      - slack
+<br>
+  - name: "Low Disk Space"
+    condition: "disk_usage &gt; 90%"
+    threshold: 1
+    window: 5m
+    severity: high
+    notify:
+      - email
+<code></code>`
+<br>
+<hr>
+<br>
+<h2>MAINTENANCE WINDOWS</h2>
+<br>
+<h3>Scheduled Maintenance</h3>
+<strong>Regular Window:</strong> Sundays 2-4 AM PST  
+<strong>Notification:</strong> 72 hours in advance  
+<strong>Duration:</strong> Maximum 2 hours  
+<br>
+<h3>Emergency Maintenance</h3>
+<strong>Notification:</strong> As soon as possible  
+<strong>Duration:</strong> Minimum necessary  
+<strong>Approval:</strong> Technical lead required  
+<br>
+<h3>Maintenance Communication Template</h3>
+<code></code>`
+Subject: [Scheduled/Emergency] Maintenance - [Date] [Time] PST
+<br>
+Dear Users,
+<br>
+We will be performing [scheduled/emergency] maintenance on the Assiduous platform.
+<br>
+Date: [Date]
+Time: [Start] - [End] PST
+Expected Downtime: [Duration]
+<br>
+Affected Services:
+<li>[ ] Main website</li>
+<li>[ ] Admin portal</li>
+<li>[ ] Agent portal</li>
+<li>[ ] Client portal</li>
+<li>[ ] API services</li>
+<br>
+During this time, you may experience:
+<li>Intermittent connectivity</li>
+<li>Slow response times</li>
+<li>Limited functionality</li>
+<br>
+We apologize for any inconvenience.
+<br>
+Status Updates: https://assiduous-prod.web.app/status
+<br>
+Thank you for your patience.
+<br>
+The Assiduous Team
+<code></code>`
+<br>
+<hr>
+<br>
+<h2>TOOLS AND RESOURCES</h2>
+<br>
+<h3>Monitoring Tools</h3>
+<li><strong>Firebase Console:</strong> https://console.firebase.google.com/project/assiduous-prod</li>
+<li><strong>GitHub Actions:</strong> https://github.com/SirsiMaster/Assiduous/actions</li>
+<li><strong>Status Page:</strong> https://assiduous-prod.web.app/status.html</li>
+<li><strong>Metrics Dashboard:</strong> https://assiduous-prod.web.app/admin/development</li>
+<br>
+<h3>Command Line Tools</h3>
+<code></code>`bash
+<h1>Install Firebase CLI</h1>
+npm install -g firebase-tools
+<br>
+<h1>Install Google Cloud SDK</h1>
+curl https://sdk.cloud.google.com | bash
+<br>
+<h1>Install GitHub CLI</h1>
+brew install gh
+<code></code>`
+<br>
+<h3>Useful Scripts</h3>
+<li><code>scripts/backup-firestore.sh</code> - Backup database</li>
+<li><code>scripts/deploy.sh</code> - Deployment automation</li>
+<li><code>scripts/update-metrics-enhanced.js</code> - Update metrics</li>
+<li><code>scripts/health-check.sh</code> - Quick health check</li>
+<br>
+<h3>Documentation</h3>
+<li>[Firebase Documentation](https://firebase.google.com/docs)</li>
+<li>[Next.js Documentation](https://nextjs.org/docs)</li>
+<li>[GitHub Actions Documentation](https://docs.github.com/actions)</li>
+<br>
+<hr>
+<br>
+<h2>APPENDIX: QUICK REFERENCE</h2>
+<br>
+<h3>Critical Commands</h3>
+<code></code>`bash
+<h1>Check site status</h1>
+curl -I https://assiduous-prod.web.app
+<br>
+<h1>View recent errors</h1>
+firebase functions:log --limit 50
+<br>
+<h1>Emergency rollback</h1>
+git revert HEAD &amp;&amp; git push origin main
+<br>
+<h1>Clear CDN cache</h1>
+firebase hosting:clone production:staging --project assiduous-prod
+<br>
+<h1>Database backup</h1>
+gcloud firestore export gs://assiduous-backups/emergency-$(date +%Y%m%d)
+<br>
+<h1>Check GitHub issues</h1>
+gh issue list --label urgent
+<code></code>`
+<br>
+<h3>Key Contacts</h3>
+<li><strong>GitHub Issues:</strong> https://github.com/SirsiMaster/Assiduous/issues</li>
+<li><strong>Firebase Support:</strong> https://firebase.google.com/support</li>
+<li><strong>Status Page:</strong> https://status.firebase.google.com</li>
+<br>
+<h3>Service Dependencies</h3>
+<li>Firebase Hosting</li>
+<li>Firebase Authentication</li>
+<li>Cloud Firestore</li>
+<li>Cloud Functions</li>
+<li>Cloud Storage</li>
+<li>GitHub Actions</li>
+<li>Stripe API (future)</li>
+<br>
+<hr>
+<br>
+<strong>Document Status:</strong> This maintenance document provides comprehensive procedures for monitoring, maintaining, and supporting the Assiduous platform. Regular updates should be made based on operational experience and incident learnings.
+<br>
+        </div>
+        <div class="timestamp">
+            Last updated: 2025-10-11 11:14:18
+        </div>
+    </div>
+</body>
+</html>

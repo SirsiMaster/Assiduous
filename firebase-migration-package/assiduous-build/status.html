@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AssiduousFlip - Site Status</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            opacity: 0.9;
+            font-size: 14px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .status-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .status-item:last-child {
+            border-bottom: none;
+        }
+        
+        .status-label {
+            font-weight: 600;
+            font-size: 16px;
+        }
+        
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .status-up {
+            background: #10b981;
+            color: white;
+        }
+        
+        .status-down {
+            background: #ef4444;
+            color: white;
+        }
+        
+        .status-checking {
+            background: #f59e0b;
+            color: white;
+        }
+        
+        .refresh-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        
+        .refresh-btn:active {
+            transform: scale(0.98);
+        }
+        
+        .last-check {
+            text-align: center;
+            color: white;
+            font-size: 14px;
+            margin-top: 20px;
+            opacity: 0.9;
+        }
+        
+        .quick-links {
+            margin-top: 20px;
+        }
+        
+        .quick-link {
+            display: block;
+            padding: 12px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            text-align: center;
+            font-weight: 500;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+        }
+        
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .response-time {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏥 Site Status</h1>
+            <p>Real-time health monitoring</p>
+        </div>
+        
+        <div class="card">
+            <div id="status-list" class="loading">
+                <div class="spinner"></div>
+                <p>Checking site health...</p>
+            </div>
+        </div>
+        
+        <button class="refresh-btn" onclick="checkStatus()">🔄 Refresh Status</button>
+        
+        <div class="last-check" id="last-check"></div>
+        
+        <div class="quick-links">
+            <a href="https://github.com/SirsiMaster/Assiduous/actions" class="quick-link" target="_blank">
+                📊 View GitHub Actions
+            </a>
+            <a href="https://console.firebase.google.com/project/assiduous-prod" class="quick-link" target="_blank">
+                🔥 Firebase Console
+            </a>
+            <a href="https://assiduous-prod.web.app" class="quick-link" target="_blank">
+                🏠 Go to Main Site
+            </a>
+        </div>
+    </div>
+    
+    <script>
+        const endpoints = [
+            { name: 'Production Site', url: 'https://assiduous-prod.web.app' },
+            { name: 'Admin Dashboard', url: 'https://assiduous-prod.web.app/admin/dashboard.html' },
+            { name: 'DEV Environment', url: 'https://assiduous-dev.web.app' },
+            { name: 'STAGING Environment', url: 'https://assiduous-staging.web.app' }
+        ];
+        
+        async function checkEndpoint(endpoint) {
+            const startTime = Date.now();
+            try {
+                const response = await fetch(endpoint.url, { 
+                    method: 'HEAD',
+                    mode: 'no-cors',
+                    cache: 'no-cache'
+                });
+                const responseTime = Date.now() - startTime;
+                
+                // With no-cors, we can't read the status, but if it doesn't throw, it's accessible
+                return { 
+                    status: 'up', 
+                    responseTime: responseTime,
+                    statusCode: 'OK'
+                };
+            } catch (error) {
+                const responseTime = Date.now() - startTime;
+                return { 
+                    status: 'down', 
+                    responseTime: responseTime,
+                    error: error.message 
+                };
+            }
+        }
+        
+        async function checkStatus() {
+            const statusList = document.getElementById('status-list');
+            statusList.innerHTML = '<div class="loading"><div class="spinner"></div><p>Checking...</p></div>';
+            
+            const results = await Promise.all(
+                endpoints.map(endpoint => checkEndpoint(endpoint))
+            );
+            
+            let html = '';
+            endpoints.forEach((endpoint, index) => {
+                const result = results[index];
+                const badge = result.status === 'up' 
+                    ? `<span class="status-badge status-up">✓ UP</span>` 
+                    : `<span class="status-badge status-down">✗ DOWN</span>`;
+                
+                html += `
+                    <div class="status-item">
+                        <div>
+                            <div class="status-label">${endpoint.name}</div>
+                            ${result.responseTime ? `<div class="response-time">${result.responseTime}ms</div>` : ''}
+                        </div>
+                        ${badge}
+                    </div>
+                `;
+            });
+            
+            statusList.innerHTML = html;
+            
+            const now = new Date().toLocaleString();
+            document.getElementById('last-check').textContent = `Last checked: ${now}`;
+        }
+        
+        // Check status on load
+        checkStatus();
+        
+        // Auto-refresh every 60 seconds
+        setInterval(checkStatus, 60000);
+    </script>
+</body>
+</html>

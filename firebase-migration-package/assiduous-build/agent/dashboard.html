@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Agent Dashboard — Assiduous</title>
+    <meta property="og:title" content="Agent Dashboard — Assiduous">
+    <meta name="twitter:title" content="Agent Dashboard — Assiduous">
+    
+    <!-- Assiduous Design System -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SirsiMaster/ui-components@latest/dist/sirsimaster-ui.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fontsource/geist-sans@5.0.6/latin.css" rel="stylesheet">
+    <link rel="stylesheet" href="../assiduous.css">
+    <link rel="stylesheet" href="../components/admin-layout.css">
+    <link rel="stylesheet" href="../assets/css/button-override.css">
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics-compat.js"></script>
+    
+    <!-- Sirsi Auth Components -->
+    <script src="../components/sirsi-auth.js"></script>
+    <script src="../components/auth-guard.js"></script>
+    
+    <style>
+        /* Minimal dashboard-specific styles only */
+        .dashboard-content {
+            padding: var(--space-xl);
+            overflow-y: auto;
+            background: var(--gray-50);
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--space-lg);
+            margin-bottom: var(--space-2xl);
+        }
+
+        .stat-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: var(--space-lg);
+            transition: all 0.2s;
+        }
+
+        .stat-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .stat-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: var(--space-md);
+        }
+
+        .stat-icon.blue { background: rgba(96, 163, 217, 0.1); color: var(--sky); }
+        .stat-icon.green { background: rgba(5, 150, 105, 0.1); color: var(--success); }
+        .stat-icon.yellow { background: rgba(255, 217, 64, 0.1); color: var(--warning); }
+        .stat-icon.red { background: rgba(220, 38, 38, 0.1); color: var(--danger); }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: var(--space-xs);
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+            margin-bottom: var(--space-sm);
+        }
+
+        .stat-change {
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .stat-change.up { color: var(--success); }
+        .stat-change.down { color: var(--danger); }
+
+        /* Content Grid */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: var(--space-xl);
+        }
+
+        /* Tables */
+        .data-table {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+        }
+
+        .table-header {
+            padding: var(--space-md) var(--space-lg);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .table-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .table-action {
+            padding: var(--space-xs) var(--space-sm);
+            background: var(--sky);
+            color: var(--white);
+            border: none;
+            border-radius: var(--radius);
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .table-action:hover {
+            background: #4A8BC2;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            padding: var(--space-sm) var(--space-lg);
+            text-align: left;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+            background: var(--gray-50);
+        }
+
+        td {
+            padding: var(--space-md) var(--space-lg);
+            border-top: 1px solid var(--border);
+            font-size: 14px;
+        }
+
+        .status {
+            padding: var(--space-xs) var(--space-sm);
+            border-radius: var(--radius);
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+        }
+
+        .status.active { background: rgba(5, 150, 105, 0.1); color: var(--success); }
+        .status.pending { background: rgba(255, 217, 64, 0.1); color: var(--warning); }
+        .status.inactive { background: rgba(107, 114, 128, 0.1); color: var(--text-secondary); }
+
+        /* Activity Feed */
+        .activity-feed {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+        }
+
+        .activity-item {
+            padding: var(--space-md) var(--space-lg);
+            display: flex;
+            gap: var(--space-md);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--gray-50);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            color: var(--text-secondary);
+        }
+
+        .activity-content {
+            flex: 1;
+        }
+
+        .activity-text {
+            font-size: 14px;
+            color: var(--dark);
+            margin-bottom: var(--space-xs);
+        }
+
+        .activity-time {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+    </style>
+    <!-- Removed old Sirsi UI -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SirsiMaster/ui-components@latest/dist/sirsimaster-ui.css">
+    <link rel="stylesheet" href="/assets/css/button-override.css">
+    
+    <script>
+        // Ensure button styles are loaded
+        (function() {
+            const checkButtons = function() {
+                const testBtn = document.querySelector('button');
+                if (testBtn) {
+                    const styles = window.getComputedStyle(testBtn);
+                    if (styles.borderStyle === 'outset' || styles.backgroundColor.includes('192')) {
+                        // Force reload override styles
+                        const link = document.querySelector('link[href*="button-override"]');
+                        if (link) {
+                            link.href = link.href.split('?')[0] + '?v=' + Date.now();
+                        }
+                    }
+                }
+            };
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', checkButtons);
+            } else {
+                checkButtons();
+            }
+        })();
+    </script>
+</head>
+<body>
+    <div class="admin-wrapper">
+        
+        <!-- Sidebar Component -->
+        <aside class="sidebar" id="sidebar-root" data-active="dashboard">
+<div class="sidebar-header">
+  <a href="dashboard.html" class="sidebar-logo">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+      <polyline points="9 22 9 12 15 12 15 22"></polyline>
+    </svg>
+    <span class="sidebar-logo-text">Agent Portal</span>
+  </a>
+</div>
+
+<nav class="sidebar-nav">
+  <div class="nav-section">
+    <div class="nav-section-title">Main</div>
+    <a href="dashboard.html" class="nav-item" data-key="dashboard" class="nav-item active">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="3" y="3" width="7" height="7"></rect>
+        <rect x="14" y="3" width="7" height="7"></rect>
+        <rect x="14" y="14" width="7" height="7"></rect>
+        <rect x="3" y="14" width="7" height="7"></rect>
+      </svg>
+      Dashboard
+    </a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">My Business</div>
+    <a href="listings.html" class="nav-item" data-key="listings">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+      </svg>
+      My Listings
+    </a>
+    <a href="clients.html" class="nav-item" data-key="clients">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+        <circle cx="12" cy="7" r="4"></circle>
+      </svg>
+      My Clients
+    </a>
+    <a href="leads.html" class="nav-item" data-key="leads">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M22 17H2a3 3 0 0 0 3-3V9a7 7 0 0 1 14 0v5a3 3 0 0 0 3 3zm-8.27 4a2 2 0 0 1-3.46 0"></path>
+      </svg>
+      My Leads
+    </a>
+    <a href="schedule.html" class="nav-item" data-key="schedule">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+        <line x1="16" y1="2" x2="16" y2="6"></line>
+        <line x1="8" y1="2" x2="8" y2="6"></line>
+        <line x1="3" y1="10" x2="21" y2="10"></line>
+      </svg>
+      Schedule
+    </a>
+  </div>
+
+
+  <div class="nav-section">
+    <div class="nav-section-title">Tools</div>
+    <a href="commissions.html" class="nav-item" data-key="commissions">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="12" y1="1" x2="12" y2="23"></line>
+        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+      </svg>
+      Commission Tracker
+    </a>
+    <a href="resources.html" class="nav-item" data-key="resources">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+      </svg>
+      Resources
+    </a>
+    <a href="settings.html" class="nav-item" data-key="settings">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="3"></circle>
+        <path d="M12 1v6m0 6v6m4.22-13.22l4.24 4.24M1.54 1.54l4.24 4.24M18.46 18.46l4.24 4.24M1.54 18.46l4.24-4.24"></path>
+      </svg>
+      Settings
+    </a>
+  </div>
+</nav>
+</aside>
+        <main class="main-content">
+            <!-- Dynamic Universal Header -->
+            <header id="universal-header-root" 
+                    data-title="Agent Dashboard"
+                    data-subtitle="Welcome back! Here's an overview of your real estate business."
+                    data-search-placeholder="Search your listings, clients, leads..."
+                    data-user-role="agent"
+                    data-user-name="Sarah Johnson"
+                    data-user-email="sarah.johnson@assiduousrealty.com">
+            </header>
+
+            <!-- Dashboard Content -->
+            <div class="dashboard-content">
+                <!-- Stats Grid -->
+                <div class="stats-grid" id="statsGrid">
+                    <div class="stat-card sirsi-card sirsi-sm-sm-card--elevated">
+                        <div class="stat-icon blue">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                            </svg>
+                        </div>
+                        <div class="stat-value" id="activeListingsCount">24</div>
+                        <div class="stat-label">My Active Listings</div>
+                        <div class="stat-change up">+3 this month</div>
+                    </div>
+
+                    <div class="stat-card sirsi-card sirsi-sm-sm-card--elevated">
+                        <div class="stat-icon green">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="12" y1="1" x2="12" y2="23"></line>
+                                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                            </svg>
+                        </div>
+                        <div class="stat-value" id="commissionYTD">$45.2K</div>
+                        <div class="stat-label">Commission YTD</div>
+                        <div class="stat-change up">+15% from last year</div>
+                    </div>
+
+                    <div class="stat-card sirsi-card sirsi-sm-sm-card--elevated">
+                        <div class="stat-icon yellow">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                        </div>
+                        <div class="stat-value" id="activeClientsCount">18</div>
+                        <div class="stat-label">Active Clients</div>
+                        <div class="stat-change up">+2 this week</div>
+                    </div>
+
+                    <div class="stat-card sirsi-card sirsi-sm-sm-card--elevated">
+                        <div class="stat-icon red">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="12" y1="20" x2="12" y2="10"></line>
+                                <line x1="18" y1="20" x2="18" y2="4"></line>
+                                <line x1="6" y1="20" x2="6" y2="16"></line>
+                            </svg>
+                        </div>
+                        <div class="stat-value" id="newLeadsCount">7</div>
+                        <div class="stat-label">New Leads</div>
+                        <div class="stat-change up">+2 today</div>
+                    </div>
+                </div>
+
+                <!-- Content Grid -->
+                <div class="content-grid">
+                    <!-- Recent Properties Table -->
+                    <div class="data-table sirsi-sm-sm-card">
+                        <div class="table-header">
+                            <h3 class="table-title">My Recent Listings</h3>
+                            <a href="listings.html" class="sm-btn sm-btn-primary">View All</a>
+                        </div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Property</th>
+                                    <th>Type</th>
+                                    <th>Price</th>
+                                    <th>Status</th>
+                                    <th>Views</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div style="font-weight: 600;">123 Sunset Boulevard</div>
+                                        <div style="font-size: 12px; color: var(--text-secondary);">Los Angeles, CA 90210</div>
+                                    </td>
+                                    <td>Single Family</td>
+                                    <td>$850,000</td>
+                                    <td><span class="sirsi-badge sirsi-sm-sm-badge--success">Active</span></td>
+                                    <td>142</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div style="font-weight: 600;">456 Ocean Drive</div>
+                                        <div style="font-size: 12px; color: var(--text-secondary);">Miami Beach, FL 33139</div>
+                                    </td>
+                                    <td>Condo</td>
+                                    <td>$1,200,000</td>
+                                    <td><span class="sirsi-badge sirsi-sm-sm-badge--warning">Pending</span></td>
+                                    <td>89</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div style="font-weight: 600;">789 Park Avenue</div>
+                                        <div style="font-size: 12px; color: var(--text-secondary);">New York, NY 10021</div>
+                                    </td>
+                                    <td>Penthouse</td>
+                                    <td>$2,300,000</td>
+                                    <td><span class="sirsi-badge sirsi-sm-sm-badge--success">Active</span></td>
+                                    <td>234</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div style="font-weight: 600;">321 Pine Street</div>
+                                        <div style="font-size: 12px; color: var(--text-secondary);">Seattle, WA 98101</div>
+                                    </td>
+                                    <td>Townhouse</td>
+                                    <td>$695,000</td>
+                                    <td><span class="sirsi-badge sirsi-sm-sm-badge--success">Sold</span></td>
+                                    <td>567</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Activity Feed -->
+                    <div>
+                        <div class="activity-feed sirsi-sm-sm-card">
+                            <div class="table-header">
+                                <h3 class="table-title">Recent Activity</h3>
+                            </div>
+                            
+                            <div class="activity-item">
+                                <div class="activity-icon">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                    </svg>
+                                </div>
+                                <div class="activity-content">
+                                    <div class="activity-text">Your listing at 789 Sunset Blvd received 5 new inquiries</div>
+                                    <div class="activity-time">2 hours ago</div>
+                                </div>
+                            </div>
+                            
+                            <div class="activity-item">
+                                <div class="activity-icon">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="12" cy="7" r="4"></circle>
+                                    </svg>
+                                </div>
+                                <div class="activity-content">
+                                    <div class="activity-text">New client lead: Jennifer Williams - Looking for 3BR home</div>
+                                    <div class="activity-time">3 hours ago</div>
+                                </div>
+                            </div>
+                            
+                            <div class="activity-item">
+                                <div class="activity-icon">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <line x1="12" y1="1" x2="12" y2="23"></line>
+                                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                                    </svg>
+                                </div>
+                                <div class="activity-content">
+                                    <div class="activity-text">Commission earned: $13,500 from 123 Main St sale</div>
+                                    <div class="activity-time">5 hours ago</div>
+                                </div>
+                            </div>
+                            
+                            <div class="activity-item">
+                                <div class="activity-icon">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                        <polyline points="14 2 14 8 20 8"></polyline>
+                                    </svg>
+                                </div>
+                                <div class="activity-content">
+                                    <div class="activity-text">Showing scheduled: 456 Oak Ave with the Johnsons at 3 PM</div>
+                                    <div class="activity-time">6 hours ago</div>
+                                </div>
+                            </div>
+                            
+                            <div class="activity-item">
+                                <div class="activity-icon">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="11" cy="11" r="8"></circle>
+                                        <path d="m21 21-4.35-4.35"></path>
+                                    </svg>
+                                </div>
+                                <div class="activity-content">
+                                    <div class="activity-text">Offer received on your listing: 321 Elm St - $425,000</div>
+                                    <div class="activity-time">8 hours ago</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Load Component Scripts -->
+    <!-- Sidebar pre-rendered, no JS needed -->
+    <script src="../components/universal-header.js"></script>
+    
+    <!-- Firebase Integration -->
+    <script src="../firebase-config.js"></script>
+    
+    <!-- Dashboard-specific functionality -->
+    <script>
+        // Initialize Sirsi Auth and Auth Guard
+        const auth = new SirsiAuth({
+            firebaseConfig: window.firebaseConfig || {}, // Should be defined in firebase-config.js
+        });
+        
+        const guard = new AuthGuard();
+        
+        // Protect this page - agents only
+        (async function() {
+            await auth.initialize();
+            await guard.initialize(auth);
+            
+            // Protect agent route
+            await guard.protectAgent(async (user) => {
+                // User is authenticated and authorized
+                console.log('Agent authenticated:', user);
+                
+                // Update header with actual user data
+                const headerRoot = document.getElementById('universal-header-root');
+                if (headerRoot) {
+                    headerRoot.setAttribute('data-user-name', `${user.firstName} ${user.lastName}`);
+                    headerRoot.setAttribute('data-user-email', user.email);
+                }
+                
+                // Load agent dashboard data
+                await loadAgentDashboard(user);
+            });
+        })();
+        
+        // Initialize dashboard with user data
+        async function loadAgentDashboard(user) {
+            try {
+                const db = firebase.firestore();
+                console.log('[Agent Dashboard] Loading data for agent:', user.email);
+                
+                // Get actual statistics from collections
+                // 1. Count properties assigned to this agent
+                const propertiesSnapshot = await db.collection('properties')
+                    .where('agent.email', '==', user.email)
+                    .where('status', '==', 'available')
+                    .get();
+                const activeListings = propertiesSnapshot.size;
+                
+                // 2. Count leads assigned to this agent
+                const leadsSnapshot = await db.collection('leads')
+                    .where('assignedAgent', '==', user.email)
+                    .where('status', '==', 'new')
+                    .get();
+                const newLeads = leadsSnapshot.size;
+                
+                // 3. Calculate commission from transactions
+                const transactionsSnapshot = await db.collection('transactions')
+                    .where('agentId', '==', user.uid)
+                    .where('status', '==', 'closed')
+                    .get();
+                
+                let totalCommission = 0;
+                transactionsSnapshot.forEach(doc => {
+                    const data = doc.data();
+                    if (data.financial && data.financial.commission) {
+                        totalCommission += data.financial.commission;
+                    }
+                });
+                
+                // 4. Count active clients (users who have inquired about properties)
+                const clientsSnapshot = await db.collection('leads')
+                    .where('assignedAgent', '==', user.email)
+                    .get();
+                
+                // Get unique client emails
+                const uniqueClients = new Set();
+                clientsSnapshot.forEach(doc => {
+                    const data = doc.data();
+                    if (data.user && data.user.email) {
+                        uniqueClients.add(data.user.email);
+                    }
+                });
+                const activeClients = uniqueClients.size;
+                
+                // Update dashboard stats with real data
+                document.getElementById('activeListingsCount').textContent = activeListings;
+                document.getElementById('commissionYTD').textContent = formatCurrency(totalCommission);
+                document.getElementById('activeClientsCount').textContent = activeClients;
+                document.getElementById('newLeadsCount').textContent = newLeads;
+                
+                console.log('[Agent Dashboard] Stats loaded:', {
+                    activeListings,
+                    totalCommission,
+                    activeClients,
+                    newLeads
+                });
+                
+                // Load recent properties for the table
+                await loadRecentListings(user.email);
+                
+                // Set up real-time listeners for live updates
+                setupRealtimeListeners(user);
+                
+            } catch (error) {
+                console.error('[Agent Dashboard] Error loading data:', error);
+                // Show error message to user
+                showError('Failed to load dashboard data. Please refresh the page.');
+            }
+        }
+        
+        function formatCurrency(amount) {
+            if (amount >= 1000) {
+                return `$${(amount / 1000).toFixed(1)}K`;
+            }
+            return `$${amount.toLocaleString()}`;
+        }
+        
+        function setupRealtimeListeners(user) {
+            const db = firebase.firestore();
+            
+            // Listen for new leads assigned to this agent
+            db.collection('leads')
+                .where('assignedAgent', '==', user.email)
+                .onSnapshot((snapshot) => {
+                    const newLeads = snapshot.docs.filter(doc => doc.data().status === 'new').length;
+                    document.getElementById('newLeadsCount').textContent = newLeads;
+                });
+            
+            // Listen for property updates
+            db.collection('properties')
+                .where('agent.email', '==', user.email)
+                .onSnapshot((snapshot) => {
+                    const activeListings = snapshot.docs.filter(doc => doc.data().status === 'available').length;
+                    document.getElementById('activeListingsCount').textContent = activeListings;
+                });
+        }
+        
+        async function loadRecentListings(agentEmail) {
+            const db = firebase.firestore();
+            
+            // Get recent properties for this agent
+            const snapshot = await db.collection('properties')
+                .where('agent.email', '==', agentEmail)
+                .limit(5)
+                .get();
+            
+            const tbody = document.querySelector('.data-table tbody');
+            if (!tbody) return;
+            
+            // Clear existing rows
+            tbody.innerHTML = '';
+            
+            if (snapshot.empty) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="5" style="text-align: center; padding: var(--space-xl); color: var(--text-secondary);">
+                            No listings found. Properties will appear here when assigned to you.
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            // Add real property data
+            snapshot.forEach(doc => {
+                const data = doc.data();
+                const row = document.createElement('tr');
+                
+                const statusClass = data.status === 'available' ? 'success' : 
+                                   data.status === 'pending' ? 'warning' : 'inactive';
+                
+                row.innerHTML = `
+                    <td>
+                        <div style="font-weight: 600;">${data.address?.street || 'N/A'}</div>
+                        <div style="font-size: 12px; color: var(--text-secondary);">
+                            ${data.address?.city || 'Philadelphia'}, ${data.address?.state || 'PA'} ${data.address?.zip || ''}
+                        </div>
+                    </td>
+                    <td>${data.details?.type || 'N/A'}</td>
+                    <td>$${(data.price?.list || 0).toLocaleString()}</td>
+                    <td><span class="sirsi-badge sirsi-sm-sm-badge--${statusClass}">${data.status || 'Unknown'}</span></td>
+                    <td>${data.metrics?.views || 0}</td>
+                `;
+                
+                tbody.appendChild(row);
+            });
+        }
+        
+        function showError(message) {
+            const errorDiv = document.createElement('div');
+            errorDiv.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: var(--danger);
+                color: white;
+                padding: var(--space-md) var(--space-lg);
+                border-radius: var(--radius-md);
+                box-shadow: var(--shadow-lg);
+                z-index: 9999;
+            `;
+            errorDiv.textContent = message;
+            document.body.appendChild(errorDiv);
+            
+            setTimeout(() => {
+                errorDiv.remove();
+            }, 5000);
+        }
+        
+        function updateListingsTable(listings) {
+            // Update the listings table with real data
+            const tbody = document.querySelector('.data-table tbody');
+            if (!tbody || listings.length === 0) return;
+            
+            tbody.innerHTML = listings.map(listing => `
+                <tr>
+                    <td>
+                        <div style="font-weight: 600;">${listing.address || '123 Main St'}</div>
+                        <div style="font-size: 12px; color: var(--text-secondary);">${listing.city || 'Chicago'}, ${listing.state || 'IL'} ${listing.zip || '60601'}</div>
+                    </td>
+                    <td>${listing.type || 'House'}</td>
+                    <td>${formatCurrency(listing.price || 450000)}</td>
+                    <td><span class="sirsi-badge sirsi-sm-sm-badge--${listing.status === 'active' ? 'success' : 'warning'}">${listing.status || 'Active'}</span></td>
+                    <td>${listing.views || 0}</td>
+                </tr>
+            `).join('');
+        }
+        
+        
+        // Page initialization is handled by the auth guard above
+    </script>
+</body>
+</html>
