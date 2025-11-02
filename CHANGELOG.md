@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.56.0] - 2025-11-02
+
+### Added
+- feat(step18): add Firestore seed script for test data
+
+
 ## [0.55.0] - 2025-11-02
 
 ### Added
@@ -2467,7 +2473,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.55.0...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.56.0...HEAD
+
+
+## [0.56.0] - 2025-11-02
+
+### Added
+- feat(step18): add Firestore seed script for test data
 
 
 ## [0.55.0] - 2025-11-02
@@ -3306,3 +3318,4 @@ To generate changelog entries:
 [0.54.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.53.1...v0.54.0
 [0.54.1]: https://github.com/SirsiMaster/Assiduous/compare/v0.54.0...v0.54.1
 [0.55.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.54.1...v0.55.0
+[0.56.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.55.0...v0.56.0
