@@ -8,6 +8,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.48.0] - 2025-11-02
+
+### Added
+- feat(step7): complete Firestore integration for clients and transactions pages
+- feat(step7): Integrate Firestore data in analytics.html
+
+
 ## [0.47.0] - 2025-11-02
 
 ### Added
@@ -2384,7 +2391,14 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.47.0...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.48.0...HEAD
+
+
+## [0.48.0] - 2025-11-02
+
+### Added
+- feat(step7): complete Firestore integration for clients and transactions pages
+- feat(step7): Integrate Firestore data in analytics.html
 
 
 ## [0.47.0] - 2025-11-02
@@ -3149,3 +3163,4 @@ To generate changelog entries:
 [0.46.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.45.0...v0.46.0
 [0.46.1]: https://github.com/SirsiMaster/Assiduous/compare/v0.46.0...v0.46.1
 [0.47.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.46.1...v0.47.0
+[0.48.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.47.0...v0.48.0
