@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.59.0] - 2025-11-02
+
+### Added
+- feat(metrics): complete step 23 - update dashboard with 23-step completion
+
+
 ## [0.58.0] - 2025-11-02
 
 ### Added
@@ -2485,7 +2491,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.58.0...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.59.0...HEAD
+
+
+## [0.59.0] - 2025-11-02
+
+### Added
+- feat(metrics): complete step 23 - update dashboard with 23-step completion
 
 
 ## [0.58.0] - 2025-11-02
@@ -3345,3 +3357,4 @@ To generate changelog entries:
 [0.56.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.55.0...v0.56.0
 [0.57.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.56.0...v0.57.0
 [0.58.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.57.0...v0.58.0
+[0.59.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.58.0...v0.59.0
