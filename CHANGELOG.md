@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.54.1] - 2025-11-02
+
+### Fixed
+- fix: convert final 3 compat SDK references to modular SDK
+
+
 ## [0.54.0] - 2025-11-02
 
 ### Added
@@ -2455,7 +2461,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.54.0...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.54.1...HEAD
+
+
+## [0.54.1] - 2025-11-02
+
+### Fixed
+- fix: convert final 3 compat SDK references to modular SDK
 
 
 ## [0.54.0] - 2025-11-02
@@ -3280,3 +3292,4 @@ To generate changelog entries:
 [0.53.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.52.0...v0.53.0
 [0.53.1]: https://github.com/SirsiMaster/Assiduous/compare/v0.53.0...v0.53.1
 [0.54.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.53.1...v0.54.0
+[0.54.1]: https://github.com/SirsiMaster/Assiduous/compare/v0.54.0...v0.54.1
