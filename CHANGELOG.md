@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.52.0] - 2025-11-02
+
+### Added
+- feat(step12): Add RBAC frontend enforcement and CI/CD backend validation
+
+
 ## [0.51.0] - 2025-11-02
 
 ### Added
@@ -2428,7 +2434,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.51.0...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.52.0...HEAD
+
+
+## [0.52.0] - 2025-11-02
+
+### Added
+- feat(step12): Add RBAC frontend enforcement and CI/CD backend validation
 
 
 ## [0.51.0] - 2025-11-02
@@ -3222,3 +3234,4 @@ To generate changelog entries:
 [0.49.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.48.0...v0.49.0
 [0.50.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.49.0...v0.50.0
 [0.51.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.50.0...v0.51.0
+[0.52.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.51.0...v0.52.0
