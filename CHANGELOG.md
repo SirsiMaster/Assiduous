@@ -8,6 +8,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.54.0] - 2025-11-02
+
+### Added
+- feat(auth): consolidate to single modular SDK auth service (Phase 2)
+
+### Fixed
+- fix(auth): remove duplicate auth-consolidated.js file
+
+
 ## [0.53.1] - 2025-11-02
 
 ### Fixed
@@ -2446,7 +2455,16 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.53.1...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.54.0...HEAD
+
+
+## [0.54.0] - 2025-11-02
+
+### Added
+- feat(auth): consolidate to single modular SDK auth service (Phase 2)
+
+### Fixed
+- fix(auth): remove duplicate auth-consolidated.js file
 
 
 ## [0.53.1] - 2025-11-02
@@ -3261,3 +3279,4 @@ To generate changelog entries:
 [0.52.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.51.0...v0.52.0
 [0.53.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.52.0...v0.53.0
 [0.53.1]: https://github.com/SirsiMaster/Assiduous/compare/v0.53.0...v0.53.1
+[0.54.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.53.1...v0.54.0
