@@ -1,4 +1,11 @@
-# API SPECIFICATION DOCUMENT
+# API SPECIFICATION
+**Version:** 2.0.0-canonical
+**Last Updated:** 2025-11-02
+**Status:** Canonical Document (1 of 19)
+**Consolidation Date:** November 2, 2025
+
+---
+
 ## RESTful API Endpoints and Contracts
 
 **Document Type:** API Specification
