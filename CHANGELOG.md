@@ -7,6 +7,91 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+
+## [0.47.0] - 2025-11-02
+
+### Added
+- feat(migration): Complete Step 5 (GitHub security) and create Step 18 (seed production data)
+- feat: implement Firebase migration steps 1-3 and documentation
+- feat(dashboard): integrate modular Firebase SDK with live Firestore data
+- feat: Enable email service and deploy trigger functions
+- feat: Deploy working v2 API function with secrets configured
+- feat: Add Firebase modular SDK and authentication fixes
+- feat(functions): successfully deploy Stripe payment functions
+- feat(functions): add Stripe callable functions and update dependencies
+- feat(email): implement SendGrid email system with automated triggers
+- feat(api): implement and deploy property ingestion API
+- feat(api): add property ingestion endpoints with image processing
+- feat(images): implement complete image upload system with compression, cleanup, and thumbnails
+- feat(payments): integrate Stripe payment system for micro-flipping transactions
+- feat: Complete client portal with onboarding, password reset, messaging, and viewings
+- feat(client): complete saved properties and real API backend
+- feat(client): complete property detail page with all features
+- feat(client): implement micro-flip calculator and property data scripts
+- feat(knowledge-base): implement dynamic metrics from Firebase with accurate project status
+- feat(agent): connect agent dashboard to real Firestore data
+- feat(auth): complete MVP authentication and data population system
+- feat: implement 100% automation - git push auto-deploys to Firebase
+- feat: add 100% automation options (GitHub Actions, git push hook, cron)
+- feat: add automated deployment script and self-service guide
+- feat: implement 100% dynamic real-time metrics - NO hardcoded data
+- feat(scripts): add Firebase account creation and validation tools
+- feat(auth): add enhanced authentication with username/accountId and pipeline enforcement
+- feat: Phase 1 branding fixes + ID generator service
+- feat(staging): Complete infrastructure parity
+- feat(staging): Add Firestore copy script and complete staging setup
+- feat(staging): deploy production codebase to staging environment
+- feat(pipeline): enforce Firebase staging testing, complete analytics integration
+- feat(client): integrate client dashboard with Firestore and add logout
+- feat(admin): integrate admin dashboard with Firestore and add logout
+- feat(auth): implement Firebase authentication system
+- feat: Implement enterprise-grade security configuration
+- feat: Add automatic redirects to force custom domain usage
+- feat: Create comprehensive document hub with all 39 documents
+- feat: implement complete release management system with approval gates
+- feat: implement simplified 2-environment CI/CD pipeline
+
+### Fixed
+- fix: update GitHub Actions workflows for new directory structure
+- fix: prevent double redirect in admin dashboard auth check
+- fix: admin dashboard authentication check now waits for Firebase auth state
+- fix: update index.html to use modular Firebase SDK for authentication
+- fix: update firebase.json to use public/ directory
+- fix: Update functions to use v2 secrets with defineSecret
+- fix(knowledge-base): use ONLY verified data - never invent metrics
+- fix: dashboard now displays dynamic recent activity and progress
+- fix: unify metrics pipeline to use enhanced comprehensive metrics
+- fix: calculate totalDays as calendar days since project start
+- fix(security): resolve 3 Dependabot alerts
+- fix(hosting): remove root redirect causing 302 status
+- fix(ci): deploy production from correct directory
+- fix(deployment): clean up redirects and simplify production workflow
+- fix(config): sync root firebase.json with correct CSP headers
+- fix(ci): deploy from correct directory with firebase.json
+- fix(csp): allow all https and wss connections for Firebase
+- fix(firebase): resolve CSP violations and initialization race conditions
+- fix(ci): remove automatic git pushes from workflows
+- fix(ci): remove GitHub environment approval from production
+- fix(ci): remove approval requirement from staging deployment
+- fix(auth): make auth-guard.js dynamic and environment-aware
+- fix(firebase): redirect all login/signup page requests to index.html
+- fix(auth): delete standalone login/signup pages - use modals only
+- fix(config): add missing comma in firebase.json
+- fix(config): both staging and prod deploy from same source
+- fix(ci): correct pipeline flow - main auto-deploys to staging
+- fix(pipeline): separate staging and prod deployments
+- fix(config): add prod hosting target to staging Firebase config
+- fix(pipeline): specify --only hosting for staging deployment
+- fix(auth): redirect to landing page modal instead of non-existent login.html
+- fix: Remove orphaned login pages, enforce modal-based auth
+- fix(staging): properly mirror production deployment configuration
+- fix(staging): add /css/ directory to resolve broken styling
+- fix(staging): configure Firebase staging environment and auto-detect
+- fix: Remove redirect loop causing ERR_TOO_MANY_REDIRECTS
+- fix: Deploy redirect page to assiduous-prod.web.app to prevent confusion
+- fix: Critical deployment workflow fixes to prevent site downtime
+- fix: clarify environment structure and URLs
+
 ## [0.54.0] - 2025-11-01
 
 ### Changed - DIRECTORY REORGANIZATION FOR CLARITY
@@ -2299,7 +2384,92 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.46.1...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.47.0...HEAD
+
+
+## [0.47.0] - 2025-11-02
+
+### Added
+- feat(migration): Complete Step 5 (GitHub security) and create Step 18 (seed production data)
+- feat: implement Firebase migration steps 1-3 and documentation
+- feat(dashboard): integrate modular Firebase SDK with live Firestore data
+- feat: Enable email service and deploy trigger functions
+- feat: Deploy working v2 API function with secrets configured
+- feat: Add Firebase modular SDK and authentication fixes
+- feat(functions): successfully deploy Stripe payment functions
+- feat(functions): add Stripe callable functions and update dependencies
+- feat(email): implement SendGrid email system with automated triggers
+- feat(api): implement and deploy property ingestion API
+- feat(api): add property ingestion endpoints with image processing
+- feat(images): implement complete image upload system with compression, cleanup, and thumbnails
+- feat(payments): integrate Stripe payment system for micro-flipping transactions
+- feat: Complete client portal with onboarding, password reset, messaging, and viewings
+- feat(client): complete saved properties and real API backend
+- feat(client): complete property detail page with all features
+- feat(client): implement micro-flip calculator and property data scripts
+- feat(knowledge-base): implement dynamic metrics from Firebase with accurate project status
+- feat(agent): connect agent dashboard to real Firestore data
+- feat(auth): complete MVP authentication and data population system
+- feat: implement 100% automation - git push auto-deploys to Firebase
+- feat: add 100% automation options (GitHub Actions, git push hook, cron)
+- feat: add automated deployment script and self-service guide
+- feat: implement 100% dynamic real-time metrics - NO hardcoded data
+- feat(scripts): add Firebase account creation and validation tools
+- feat(auth): add enhanced authentication with username/accountId and pipeline enforcement
+- feat: Phase 1 branding fixes + ID generator service
+- feat(staging): Complete infrastructure parity
+- feat(staging): Add Firestore copy script and complete staging setup
+- feat(staging): deploy production codebase to staging environment
+- feat(pipeline): enforce Firebase staging testing, complete analytics integration
+- feat(client): integrate client dashboard with Firestore and add logout
+- feat(admin): integrate admin dashboard with Firestore and add logout
+- feat(auth): implement Firebase authentication system
+- feat: Implement enterprise-grade security configuration
+- feat: Add automatic redirects to force custom domain usage
+- feat: Create comprehensive document hub with all 39 documents
+- feat: implement complete release management system with approval gates
+- feat: implement simplified 2-environment CI/CD pipeline
+
+### Fixed
+- fix: update GitHub Actions workflows for new directory structure
+- fix: prevent double redirect in admin dashboard auth check
+- fix: admin dashboard authentication check now waits for Firebase auth state
+- fix: update index.html to use modular Firebase SDK for authentication
+- fix: update firebase.json to use public/ directory
+- fix: Update functions to use v2 secrets with defineSecret
+- fix(knowledge-base): use ONLY verified data - never invent metrics
+- fix: dashboard now displays dynamic recent activity and progress
+- fix: unify metrics pipeline to use enhanced comprehensive metrics
+- fix: calculate totalDays as calendar days since project start
+- fix(security): resolve 3 Dependabot alerts
+- fix(hosting): remove root redirect causing 302 status
+- fix(ci): deploy production from correct directory
+- fix(deployment): clean up redirects and simplify production workflow
+- fix(config): sync root firebase.json with correct CSP headers
+- fix(ci): deploy from correct directory with firebase.json
+- fix(csp): allow all https and wss connections for Firebase
+- fix(firebase): resolve CSP violations and initialization race conditions
+- fix(ci): remove automatic git pushes from workflows
+- fix(ci): remove GitHub environment approval from production
+- fix(ci): remove approval requirement from staging deployment
+- fix(auth): make auth-guard.js dynamic and environment-aware
+- fix(firebase): redirect all login/signup page requests to index.html
+- fix(auth): delete standalone login/signup pages - use modals only
+- fix(config): add missing comma in firebase.json
+- fix(config): both staging and prod deploy from same source
+- fix(ci): correct pipeline flow - main auto-deploys to staging
+- fix(pipeline): separate staging and prod deployments
+- fix(config): add prod hosting target to staging Firebase config
+- fix(pipeline): specify --only hosting for staging deployment
+- fix(auth): redirect to landing page modal instead of non-existent login.html
+- fix: Remove orphaned login pages, enforce modal-based auth
+- fix(staging): properly mirror production deployment configuration
+- fix(staging): add /css/ directory to resolve broken styling
+- fix(staging): configure Firebase staging environment and auto-detect
+- fix: Remove redirect loop causing ERR_TOO_MANY_REDIRECTS
+- fix: Deploy redirect page to assiduous-prod.web.app to prevent confusion
+- fix: Critical deployment workflow fixes to prevent site downtime
+- fix: clarify environment structure and URLs
 
 
 ## [0.46.1] - 2025-10-11
@@ -2978,3 +3148,4 @@ To generate changelog entries:
 [0.45.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.44.0...v0.45.0
 [0.46.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.45.0...v0.46.0
 [0.46.1]: https://github.com/SirsiMaster/Assiduous/compare/v0.46.0...v0.46.1
+[0.47.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.46.1...v0.47.0
