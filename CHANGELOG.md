@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.65.0] - 2025-11-02
+
+### Added
+- feat(transactions): Day 5 - Transaction pipeline, documents, commission tracking
+
+
 ## [0.64.0] - 2025-11-02
 
 ### Added
@@ -2521,7 +2527,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.64.0...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.65.0...HEAD
+
+
+## [0.65.0] - 2025-11-02
+
+### Added
+- feat(transactions): Day 5 - Transaction pipeline, documents, commission tracking
 
 
 ## [0.64.0] - 2025-11-02
@@ -3423,3 +3435,4 @@ To generate changelog entries:
 [0.62.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.61.0...v0.62.0
 [0.63.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.62.0...v0.63.0
 [0.64.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.63.0...v0.64.0
+[0.65.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.64.0...v0.65.0
