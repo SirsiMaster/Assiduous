@@ -606,6 +606,364 @@ async function sendEmailNotification(to, subject, htmlContent) {
 // Export helper for use in other functions
 exports.sendEmailNotification = sendEmailNotification;
 
+// --- Day 5: Transactions & Documents ---
+
+// Create transaction
+app.post('/api/v1/transactions', withAuth, async (req, res) => {
+  try {
+    if (!isAdmin(req) && !isAgent(req)) {
+      return res.status(403).json({ error: 'Forbidden' });
+    }
+
+    const now = admin.firestore.FieldValue.serverTimestamp();
+    const transaction = {
+      propertyId: req.body.propertyId || null,
+      offerPrice: Number(req.body.offerPrice || 0),
+      agreedPrice: Number(req.body.agreedPrice || 0),
+      buyerId: req.body.buyerId || null,
+      agentId: isAgent(req) ? req.user.uid : (req.body.agentId || null),
+      status: 'offer',
+      milestones: [{
+        name: 'Offer Submitted',
+        timestamp: now,
+        note: req.body.initialNote || ''
+      }],
+      commissionRate: Number(req.body.commissionRate || 0.03),
+      commissionAmount: 0,
+      closingDate: req.body.closingDate || null,
+      createdAt: now,
+      updatedAt: now
+    };
+
+    // Calculate commission
+    if (transaction.agreedPrice > 0) {
+      transaction.commissionAmount = Math.round(transaction.agreedPrice * transaction.commissionRate);
+    }
+
+    const ref = await db.collection('transactions').add(transaction);
+    console.log('Transaction created:', ref.id);
+    res.status(201).json({ id: ref.id, transaction });
+  } catch (e) {
+    console.error('Create transaction error:', e);
+    res.status(500).json({ error: 'Create transaction failed' });
+  }
+});
+
+// Get transaction by ID
+app.get('/api/v1/transactions/:id', withAuth, async (req, res) => {
+  try {
+    const ref = db.collection('transactions').doc(req.params.id);
+    const doc = await ref.get();
+
+    if (!doc.exists) {
+      return res.status(404).json({ error: 'Transaction not found' });
+    }
+
+    const txn = doc.data();
+
+    // Check permissions
+    if (!isAdmin(req)) {
+      if (isAgent(req) && txn.agentId !== req.user.uid) {
+        return res.status(403).json({ error: 'Forbidden' });
+      }
+      if (isClient(req) && txn.buyerId !== req.user.uid) {
+        return res.status(403).json({ error: 'Forbidden' });
+      }
+    }
+
+    res.json({ id: doc.id, ...txn });
+  } catch (e) {
+    console.error('Get transaction error:', e);
+    res.status(500).json({ error: 'Failed to get transaction' });
+  }
+});
+
+// List transactions
+app.get('/api/v1/transactions', withAuth, async (req, res) => {
+  try {
+    let q = db.collection('transactions');
+
+    // Filter by role
+    if (isAgent(req)) {
+      q = q.where('agentId', '==', req.user.uid);
+    } else if (isClient(req)) {
+      q = q.where('buyerId', '==', req.user.uid);
+    }
+
+    // Additional filters
+    if (req.query.status) {
+      q = q.where('status', '==', req.query.status);
+    }
+    if (req.query.propertyId) {
+      q = q.where('propertyId', '==', req.query.propertyId);
+    }
+
+    const limitVal = Math.min(Number(req.query.limit) || 100, 500);
+    q = q.orderBy('createdAt', 'desc').limit(limitVal);
+
+    const snap = await q.get();
+    const transactions = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+
+    res.json({ data: transactions });
+  } catch (e) {
+    console.error('List transactions error:', e);
+    res.status(500).json({ error: 'List transactions failed' });
+  }
+});
+
+// Update transaction
+app.put('/api/v1/transactions/:id', withAuth, async (req, res) => {
+  try {
+    const ref = db.collection('transactions').doc(req.params.id);
+    const doc = await ref.get();
+
+    if (!doc.exists) {
+      return res.status(404).json({ error: 'Not found' });
+    }
+
+    const existing = doc.data();
+
+    // Check permissions
+    if (!isAdmin(req)) {
+      if (isAgent(req) && existing.agentId !== req.user.uid) {
+        return res.status(403).json({ error: 'Forbidden' });
+      } else if (isClient(req)) {
+        return res.status(403).json({ error: 'Clients cannot update transactions' });
+      }
+    }
+
+    const update = {
+      ...req.body,
+      updatedAt: admin.firestore.FieldValue.serverTimestamp()
+    };
+
+    // Recalculate commission if price or rate changed
+    if (update.agreedPrice !== undefined || update.commissionRate !== undefined) {
+      const newPrice = update.agreedPrice !== undefined ? Number(update.agreedPrice) : existing.agreedPrice;
+      const newRate = update.commissionRate !== undefined ? Number(update.commissionRate) : existing.commissionRate;
+      update.commissionAmount = Math.round(newPrice * newRate);
+    }
+
+    // Add milestone if status changed
+    if (update.status && update.status !== existing.status) {
+      const milestone = {
+        name: `Status: ${update.status}`,
+        timestamp: admin.firestore.FieldValue.serverTimestamp(),
+        note: update.statusNote || ''
+      };
+      update.milestones = admin.firestore.FieldValue.arrayUnion(milestone);
+      delete update.statusNote; // Remove temporary field
+    }
+
+    await ref.update(update);
+    console.log('Transaction updated:', req.params.id);
+    res.json({ ok: true });
+  } catch (e) {
+    console.error('Update transaction error:', e);
+    res.status(500).json({ error: 'Update transaction failed' });
+  }
+});
+
+// Delete transaction (admin only)
+app.delete('/api/v1/transactions/:id', withAuth, async (req, res) => {
+  try {
+    if (!isAdmin(req)) {
+      return res.status(403).json({ error: 'Admin only' });
+    }
+
+    await db.collection('transactions').doc(req.params.id).delete();
+    console.log('Transaction deleted:', req.params.id);
+    res.json({ ok: true });
+  } catch (e) {
+    console.error('Delete transaction error:', e);
+    res.status(500).json({ error: 'Delete transaction failed' });
+  }
+});
+
+// Get signed upload URL for transaction document
+app.post('/api/v1/transactions/:id/documents:signedUpload', withAuth, async (req, res) => {
+  try {
+    const { fileName, contentType, type } = req.body;
+
+    if (!fileName || !contentType) {
+      return res.status(400).json({ error: 'fileName and contentType required' });
+    }
+
+    // Verify transaction exists and user has access
+    const txnRef = db.collection('transactions').doc(req.params.id);
+    const txnDoc = await txnRef.get();
+
+    if (!txnDoc.exists) {
+      return res.status(404).json({ error: 'Transaction not found' });
+    }
+
+    const txn = txnDoc.data();
+
+    // Check permissions
+    if (!isAdmin(req)) {
+      if (isAgent(req) && txn.agentId !== req.user.uid) {
+        return res.status(403).json({ error: 'Forbidden' });
+      }
+      if (isClient(req) && txn.buyerId !== req.user.uid) {
+        return res.status(403).json({ error: 'Forbidden' });
+      }
+    }
+
+    const destPath = `documents/${req.params.id}/${Date.now()}_${fileName}`;
+    const file = admin.storage().bucket().file(destPath);
+
+    const [url] = await file.getSignedUrl({
+      version: 'v4',
+      action: 'write',
+      expires: Date.now() + 15 * 60 * 1000, // 15 minutes
+      contentType
+    });
+
+    console.log('Generated signed upload URL for transaction:', req.params.id);
+    res.json({
+      uploadUrl: url,
+      storagePath: destPath,
+      docType: type || 'general'
+    });
+  } catch (e) {
+    console.error('Signed upload URL error:', e);
+    res.status(500).json({ error: 'Signed URL failed' });
+  }
+});
+
+// List transaction documents
+app.get('/api/v1/transactions/:id/documents', withAuth, async (req, res) => {
+  try {
+    // Verify transaction exists and user has access
+    const txnRef = db.collection('transactions').doc(req.params.id);
+    const txnDoc = await txnRef.get();
+
+    if (!txnDoc.exists) {
+      return res.status(404).json({ error: 'Transaction not found' });
+    }
+
+    const txn = txnDoc.data();
+
+    // Check permissions
+    if (!isAdmin(req)) {
+      if (isAgent(req) && txn.agentId !== req.user.uid) {
+        return res.status(403).json({ error: 'Forbidden' });
+      }
+      if (isClient(req) && txn.buyerId !== req.user.uid) {
+        return res.status(403).json({ error: 'Forbidden' });
+      }
+    }
+
+    const docsSnap = await db.collection('transactions').doc(req.params.id)
+      .collection('documents')
+      .orderBy('uploadedAt', 'desc')
+      .get();
+
+    const documents = docsSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+
+    res.json({ data: documents });
+  } catch (e) {
+    console.error('List documents error:', e);
+    res.status(500).json({ error: 'Failed to list documents' });
+  }
+});
+
+// Save document metadata after upload
+app.post('/api/v1/transactions/:id/documents', withAuth, async (req, res) => {
+  try {
+    const { fileName, storagePath, type, size } = req.body;
+
+    if (!fileName || !storagePath) {
+      return res.status(400).json({ error: 'fileName and storagePath required' });
+    }
+
+    // Verify transaction exists and user has access
+    const txnRef = db.collection('transactions').doc(req.params.id);
+    const txnDoc = await txnRef.get();
+
+    if (!txnDoc.exists) {
+      return res.status(404).json({ error: 'Transaction not found' });
+    }
+
+    const txn = txnDoc.data();
+
+    // Check permissions
+    if (!isAdmin(req)) {
+      if (isAgent(req) && txn.agentId !== req.user.uid) {
+        return res.status(403).json({ error: 'Forbidden' });
+      }
+      if (isClient(req) && txn.buyerId !== req.user.uid) {
+        return res.status(403).json({ error: 'Forbidden' });
+      }
+    }
+
+    const docData = {
+      fileName,
+      storagePath,
+      type: type || 'general',
+      size: size || 0,
+      uploadedBy: req.user.uid,
+      uploadedAt: admin.firestore.FieldValue.serverTimestamp()
+    };
+
+    const docRef = await db.collection('transactions').doc(req.params.id)
+      .collection('documents')
+      .add(docData);
+
+    console.log('Document metadata saved:', docRef.id);
+    res.status(201).json({ id: docRef.id, ...docData });
+  } catch (e) {
+    console.error('Save document metadata error:', e);
+    res.status(500).json({ error: 'Failed to save document metadata' });
+  }
+});
+
+// Delete transaction document
+app.delete('/api/v1/transactions/:txnId/documents/:docId', withAuth, async (req, res) => {
+  try {
+    // Verify transaction exists and user has access
+    const txnRef = db.collection('transactions').doc(req.params.txnId);
+    const txnDoc = await txnRef.get();
+
+    if (!txnDoc.exists) {
+      return res.status(404).json({ error: 'Transaction not found' });
+    }
+
+    const txn = txnDoc.data();
+
+    // Only admin or transaction agent can delete documents
+    if (!isAdmin(req)) {
+      if (!isAgent(req) || txn.agentId !== req.user.uid) {
+        return res.status(403).json({ error: 'Forbidden' });
+      }
+    }
+
+    const docRef = db.collection('transactions').doc(req.params.txnId)
+      .collection('documents').doc(req.params.docId);
+    
+    const docSnap = await docRef.get();
+    if (docSnap.exists) {
+      const docData = docSnap.data();
+      
+      // Delete from Storage
+      if (docData.storagePath) {
+        try {
+          await admin.storage().bucket().file(docData.storagePath).delete();
+        } catch (e) {
+          console.warn('Failed to delete storage file:', e.message);
+        }
+      }
+    }
+
+    await docRef.delete();
+    console.log('Document deleted:', req.params.docId);
+    res.json({ ok: true });
+  } catch (e) {
+    console.error('Delete document error:', e);
+    res.status(500).json({ error: 'Failed to delete document' });
+  }
+});
+
 // Import GitHub automation functions
 const { githubWebhook } = require('./github-webhook');
 const { syncGitHubData, scheduledSync } = require('./sync-service');
