@@ -27,6 +27,9 @@ let stripeModule: any = {
 // Import Email Service
 import * as emailService from "./emailService";
 
+// Import Test Users function (REMOVE before production!)
+import {createTestUsers} from "./createTestUsers";
+
 // Define secrets for v2 functions
 const sendgridApiKey = defineSecret("SENDGRID_API_KEY");
 const sendgridFromEmail = defineSecret("SENDGRID_FROM_EMAIL");
@@ -697,3 +700,14 @@ export const getSubscriptionStatus = stripeModule.getSubscriptionStatus;
 // export const ingestProperty = propertyIngestion.ingestProperty;
 // export const bulkDeleteProperties = propertyIngestion.bulkDeleteProperties;
 // export const createApiKey = propertyIngestion.createApiKey;
+
+// ============================================================================
+// TEST USERS API (REMOVE BEFORE PRODUCTION!)
+// ============================================================================
+
+/**
+ * Create Test Users - Development/Staging Only
+ * Creates test users for authentication testing
+ * SECURITY: This function should be removed before production deployment
+ */
+export {createTestUsers};
