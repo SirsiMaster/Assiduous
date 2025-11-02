@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.62.0] - 2025-11-02
+
+### Added
+- feat(client): integrate favorites and lead services into property-detail page
+
+
 ## [0.61.0] - 2025-11-02
 
 ### Added
@@ -2503,7 +2509,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.61.0...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.62.0...HEAD
+
+
+## [0.62.0] - 2025-11-02
+
+### Added
+- feat(client): integrate favorites and lead services into property-detail page
 
 
 ## [0.61.0] - 2025-11-02
@@ -3384,3 +3396,4 @@ To generate changelog entries:
 [0.59.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.58.0...v0.59.0
 [0.60.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.59.0...v0.60.0
 [0.61.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.60.0...v0.61.0
+[0.62.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.61.0...v0.62.0
