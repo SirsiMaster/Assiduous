@@ -30,6 +30,9 @@ import * as emailService from "./emailService";
 // Import Test Users function (REMOVE before production!)
 import {createTestUsers} from "./createTestUsers";
 
+// Import RBAC functions
+import * as rbacFunctions from "./rbac";
+
 // Define secrets for v2 functions
 const sendgridApiKey = defineSecret("SENDGRID_API_KEY");
 const sendgridFromEmail = defineSecret("SENDGRID_FROM_EMAIL");
@@ -711,3 +714,18 @@ export const getSubscriptionStatus = stripeModule.getSubscriptionStatus;
  * SECURITY: This function should be removed before production deployment
  */
 export {createTestUsers};
+
+// ============================================================================
+// RBAC (ROLE-BASED ACCESS CONTROL) FUNCTIONS
+// ============================================================================
+
+/**
+ * RBAC Functions - Server-side role validation and management
+ * All role checks and updates happen in Cloud Functions for security
+ */
+export const checkUserRole = rbacFunctions.checkUserRole;
+export const checkPermission = rbacFunctions.checkPermission;
+export const getUserPermissions = rbacFunctions.getUserPermissions;
+export const updateUserRole = rbacFunctions.updateUserRole;
+export const auditRoleChanges = rbacFunctions.auditRoleChanges;
+export const validateRoleAssignment = rbacFunctions.validateRoleAssignment;
