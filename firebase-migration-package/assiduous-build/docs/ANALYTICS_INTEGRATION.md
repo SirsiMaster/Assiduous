@@ -1,7 +1,7 @@
 # Analytics Real-Time Data Integration
 
 ## Overview
-The Analytics Dashboard now fetches real-time data from Firestore instead of using hardcoded values. This provides accurate, up-to-date insights into platform performance.
+The Analytics Dashboard now fetches real-time data from Firestore instead of using hardcoded values. The dashboard uses Firestore listeners for instant updates when data changes, plus auto-refresh polling every 30 seconds as a fallback. This provides accurate, up-to-date insights into platform performance with minimal latency.
 
 ## Architecture
 
@@ -67,6 +67,35 @@ Returns property performance by type:
 - **Cache Duration**: 5 minutes
 - **Purpose**: Reduce Firestore reads and improve page load performance
 - **Method**: `clearCache()` can be called to force fresh data
+- **Note**: Cache is automatically updated by real-time listeners
+
+### Real-Time Updates
+
+#### `enableRealTimeUpdates(callback)`
+Enables Firestore listeners for automatic updates:
+```javascript
+window.analyticsLoader.enableRealTimeUpdates((collectionName, data) => {
+  console.log(`${collectionName} changed, reloading analytics...`);
+  loadAnalyticsData();
+});
+```
+
+Listens to:
+- `properties` collection
+- `users` collection
+- `transactions` collection
+- `leads` collection
+
+#### `disableRealTimeUpdates()`
+Cleans up all Firestore listeners:
+```javascript
+window.analyticsLoader.disableRealTimeUpdates();
+```
+
+**Usage Pattern:**
+- Enable on page load
+- Disable on page unload to prevent memory leaks
+- Automatically updates cache when data changes
 
 ### Formatting Utilities
 

@@ -1307,6 +1307,31 @@
 
             // Load analytics data from Firestore
             loadAnalyticsData();
+            
+            // Enable real-time updates with Firestore listeners
+            if (window.analyticsLoader) {
+                window.analyticsLoader.enableRealTimeUpdates(async (collectionName, data) => {
+                    console.log(`[Analytics] Real-time update detected for ${collectionName}`);
+                    // Reload analytics when data changes
+                    await loadAnalyticsData();
+                });
+                
+                console.log('✅ Real-time analytics updates enabled');
+            }
+            
+            // Fallback: Auto-refresh every 30 seconds if real-time listeners not available
+            setInterval(async () => {
+                console.log('[Analytics] Auto-refresh: updating data...');
+                await loadAnalyticsData();
+            }, 30 * 1000);
+        });
+        
+        // Cleanup listeners when leaving page
+        window.addEventListener('beforeunload', function() {
+            if (window.analyticsLoader) {
+                window.analyticsLoader.disableRealTimeUpdates();
+                console.log('[Analytics] Real-time listeners disabled');
+            }
         });
     </script>
     <!-- Sidebar pre-rendered, no JS needed -->

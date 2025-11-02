@@ -8,6 +8,8 @@ class AnalyticsLoader {
     this.db = window.db;
     this.cache = {};
     this.cacheExpiry = 5 * 60 * 1000; // 5 minutes
+    this.listeners = []; // Track active listeners
+    this.updateCallbacks = []; // Callbacks for real-time updates
   }
 
   /**
@@ -199,6 +201,50 @@ class AnalyticsLoader {
    */
   clearCache() {
     this.cache = {};
+  }
+
+  /**
+   * Enable real-time updates with Firestore listeners
+   * @param {Function} callback - Called when data updates
+   */
+  enableRealTimeUpdates(callback) {
+    console.log('[AnalyticsLoader] Enabling real-time updates...');
+    this.updateCallbacks.push(callback);
+
+    // Set up listeners for each collection
+    const collections = ['properties', 'users', 'transactions', 'leads'];
+    
+    collections.forEach(collectionName => {
+      const unsubscribe = this.db.collection(collectionName).onSnapshot(
+        (snapshot) => {
+          console.log(`[AnalyticsLoader] Real-time update: ${collectionName} changed (${snapshot.size} docs)`);
+          
+          // Update cache with new data
+          const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+          this.setCached(collectionName, data);
+          
+          // Trigger all callbacks
+          this.updateCallbacks.forEach(cb => cb(collectionName, data));
+        },
+        (error) => {
+          console.error(`[AnalyticsLoader] Listener error for ${collectionName}:`, error);
+        }
+      );
+      
+      this.listeners.push({ collection: collectionName, unsubscribe });
+    });
+
+    console.log('[AnalyticsLoader] Real-time listeners active for:', collections);
+  }
+
+  /**
+   * Disable real-time updates and clean up listeners
+   */
+  disableRealTimeUpdates() {
+    console.log('[AnalyticsLoader] Disabling real-time updates...');
+    this.listeners.forEach(({ unsubscribe }) => unsubscribe());
+    this.listeners = [];
+    this.updateCallbacks = [];
   }
 
   /**
