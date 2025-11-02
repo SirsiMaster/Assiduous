@@ -985,12 +985,14 @@
     <!-- Firebase Integration -->
     <script type="module" src="../assets/js/firebase-init.js"></script>
     <script src="/assets/js/rbac-ui.js"></script>
-    <script type="module" src="assets/analytics-data-loader.js"></script>
+    <script src="../assets/js/analytics-loader.js"></script>
     
     <script type="module">
-        // Import Firebase services
-        import { DatabaseService } from '../assets/js/firebase-init.js';
-        import { AnalyticsDataLoader } from './assets/analytics-data-loader.js';
+        // Wait for Firebase and services to load
+        await new Promise(resolve => {
+            if (window.db && window.analyticsLoader) resolve();
+            else window.addEventListener('firebase-ready', resolve);
+        });
 
         // Global charts for updates
         let salesChart, commissionChart, roiChart;
@@ -998,57 +1000,59 @@
         // Load and display analytics data
         async function loadAnalyticsData() {
             try {
-                // Show loading state
-                showLoadingState();
+                console.log('[Analytics] Loading data from Firestore...');
 
-                // Fetch all data from Firestore
-                const data = await AnalyticsDataLoader.fetchAllData();
-                const kpis = AnalyticsDataLoader.calculateKPIs(
-                    data.properties,
-                    data.transactions,
-                    data.users,
-                    data.leads
-                );
+                // Fetch all analytics data
+                const analytics = await window.analyticsLoader.getAnalytics();
+                console.log('[Analytics] Data loaded:', analytics);
 
                 // Update KPI cards
-                updateKPICards(kpis);
+                updateKPICards(analytics);
 
                 // Update charts with real data
-                updateSalesChart(data.transactions);
-                updateCommissionChart(data.transactions);
+                updateSalesChart(analytics.transactions);
+                updateCommissionChart(analytics.transactions);
                 updateROIChart();
 
                 // Update performance tables
-                updateAgentPerformance(data.users, data.transactions);
-                updatePropertyPerformance(data.properties);
-
-                // Hide loading state
-                hideLoadingState();
+                await updateAgentPerformance();
+                await updatePropertyPerformance();
 
                 console.log('✅ Analytics data loaded successfully');
             } catch (error) {
                 console.error('❌ Error loading analytics data:', error);
-                showErrorState(error.message);
+                // Fall back to static data if Firebase fails
+                console.warn('Displaying fallback static data');
             }
         }
 
         // Update KPI cards with real data
-        function updateKPICards(kpis) {
+        function updateKPICards(analytics) {
+            const formatter = window.analyticsLoader;
+            
             // Total Sales Volume
-            document.querySelector('.kpi-card:nth-child(1) .kpi-value').textContent = 
-                '$' + (kpis.totalSalesVolume / 1000000).toFixed(1) + 'M';
+            const salesVolumeEl = document.querySelector('.kpi-grid .kpi-card:nth-child(1) .kpi-value');
+            if (salesVolumeEl) {
+                salesVolumeEl.textContent = formatter.formatCurrency(analytics.totalSalesVolume);
+            }
 
             // Properties Sold
-            document.querySelector('.kpi-card:nth-child(2) .kpi-value').textContent = 
-                kpis.propertiesSold;
+            const propertiesSoldEl = document.querySelector('.kpi-grid .kpi-card:nth-child(2) .kpi-value');
+            if (propertiesSoldEl) {
+                propertiesSoldEl.textContent = analytics.propertiesSold.toLocaleString();
+            }
 
-            // Active Agents
-            document.querySelector('.kpi-card:nth-child(3) .kpi-value').textContent = 
-                kpis.activeAgents;
+            // Active Users
+            const activeUsersEl = document.querySelector('.kpi-grid .kpi-card:nth-child(3) .kpi-value');
+            if (activeUsersEl) {
+                activeUsersEl.textContent = formatter.formatNumber(analytics.activeUsers);
+            }
 
-            // Avg Deal Time
-            document.querySelector('.kpi-card:nth-child(4) .kpi-value').textContent = 
-                kpis.avgDealTime + ' days';
+            // Conversion Rate
+            const conversionRateEl = document.querySelector('.kpi-grid .kpi-card:nth-child(4) .kpi-value');
+            if (conversionRateEl) {
+                conversionRateEl.textContent = analytics.conversionRate.toFixed(1) + '%';
+            }
         }
 
         // Update sales volume chart with transaction data
@@ -1200,81 +1204,59 @@
         }
 
         // Update agent performance table
-        function updateAgentPerformance(users, transactions) {
-            const agents = users.filter(u => u.role === 'agent');
-            const agentStats = agents.map(agent => {
-                const agentTxns = transactions.filter(t => t.agentId === agent.id && t.status === 'completed');
-                const totalVolume = agentTxns.reduce((sum, t) => sum + (t.amount || t.financial?.purchasePrice || 0), 0);
-                const avgCommission = totalVolume * 0.03; // 3% average commission
-
-                return {
-                    name: agent.displayName || `${agent.profile?.firstName || ''} ${agent.profile?.lastName || ''}`.trim() || 'Unknown',
-                    initials: getInitials(agent.displayName || agent.email),
-                    deals: agentTxns.length,
-                    volume: totalVolume,
-                    commission: avgCommission,
-                    performance: Math.min(100, (agentTxns.length / 50) * 100)
-                };
-            }).sort((a, b) => b.volume - a.volume).slice(0, 5);
-
-            // Update table rows
-            const tbody = document.querySelector('.performance-table tbody');
-            if (tbody && agentStats.length > 0) {
-                tbody.innerHTML = agentStats.map(agent => `
-                    <tr>
-                        <td>
-                            <div class="agent-name">
-                                <div class="agent-avatar">${agent.initials}</div>
-                                <span>${agent.name}</span>
-                            </div>
-                        </td>
-                        <td>${agent.deals}</td>
-                        <td>$${(agent.volume / 1000000).toFixed(1)}M</td>
-                        <td>$${(agent.commission / 1000).toFixed(0)}K</td>
-                        <td>
-                            <div class="performance-bar">
-                                <div class="performance-fill" style="width: ${agent.performance}%"></div>
-                            </div>
-                        </td>
-                    </tr>
-                `).join('');
+        async function updateAgentPerformance() {
+            try {
+                const agentStats = await window.analyticsLoader.getAgentPerformance();
+                const formatter = window.analyticsLoader;
+                
+                // Update table rows
+                const tbody = document.querySelector('.performance-table tbody');
+                if (tbody && agentStats.length > 0) {
+                    tbody.innerHTML = agentStats.slice(0, 5).map(agent => `
+                        <tr>
+                            <td>
+                                <div class="agent-name">
+                                    <div class="agent-avatar">${getInitials(agent.name)}</div>
+                                    <span>${agent.name}</span>
+                                </div>
+                            </td>
+                            <td>${agent.transactions}</td>
+                            <td>${formatter.formatCurrency(agent.totalSales)}</td>
+                            <td>${formatter.formatCurrency(agent.commission)}</td>
+                            <td>
+                                <div class="performance-bar">
+                                    <div class="performance-fill" style="width: ${Math.min(100, (agent.transactions / 50) * 100)}%"></div>
+                                </div>
+                            </td>
+                        </tr>
+                    `).join('');
+                }
+            } catch (error) {
+                console.error('[Analytics] Failed to update agent performance:', error);
             }
         }
 
         // Update property performance table
-        function updatePropertyPerformance(properties) {
-            const types = ['house', 'condo', 'townhouse', 'multi-family'];
-            const typeStats = types.map(type => {
-                const typeProps = properties.filter(p => p.type === type || p.details?.type === type);
-                const sold = typeProps.filter(p => p.status === 'sold');
-                const avgPrice = sold.length > 0 
-                    ? sold.reduce((sum, p) => sum + (p.price?.amount || p.price?.list || 0), 0) / sold.length
-                    : 0;
-                const avgDOM = sold.length > 0
-                    ? sold.reduce((sum, p) => sum + (p.daysOnMarket || 30), 0) / sold.length
-                    : 0;
-
-                return {
-                    type: type.charAt(0).toUpperCase() + type.slice(1).replace('-', ' '),
-                    listed: typeProps.length,
-                    sold: sold.length,
-                    avgPrice,
-                    avgDOM: Math.round(avgDOM)
-                };
-            });
-
-            // Update property performance table if exists
-            const propTbody = document.querySelectorAll('.performance-table')[1]?.querySelector('tbody');
-            if (propTbody && typeStats.length > 0) {
-                propTbody.innerHTML = typeStats.map(stat => `
-                    <tr>
-                        <td>${stat.type}</td>
-                        <td>${stat.listed}</td>
-                        <td>${stat.sold}</td>
-                        <td>$${(stat.avgPrice / 1000).toFixed(0)}K</td>
-                        <td>${stat.avgDOM} days</td>
-                    </tr>
-                `).join('');
+        async function updatePropertyPerformance() {
+            try {
+                const typeStats = await window.analyticsLoader.getPropertyTypePerformance();
+                const formatter = window.analyticsLoader;
+                
+                // Update property performance table if exists
+                const propTbody = document.querySelectorAll('.performance-table')[1]?.querySelector('tbody');
+                if (propTbody && typeStats.length > 0) {
+                    propTbody.innerHTML = typeStats.map(stat => `
+                        <tr>
+                            <td>${stat.type}</td>
+                            <td>${stat.count}</td>
+                            <td>${stat.sold}</td>
+                            <td>${formatter.formatCurrency(stat.avgPrice)}</td>
+                            <td>${stat.sellThroughRate.toFixed(1)}%</td>
+                        </tr>
+                    `).join('');
+                }
+            } catch (error) {
+                console.error('[Analytics] Failed to update property performance:', error);
             }
         }
 
