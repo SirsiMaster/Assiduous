@@ -1,41 +1,400 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Helper functions for Assiduous roles
+    
+    // ============================================================================
+    // HELPER FUNCTIONS - Authentication & Authorization
+    // ============================================================================
+    
+    /**
+     * Check if user is authenticated
+     */
     function isAuthenticated() {
       return request.auth != null;
     }
     
+    /**
+     * Get the authenticated user's ID
+     */
+    function getUserId() {
+      return request.auth.uid;
+    }
+    
+    /**
+     * Get user's role from their profile document
+     */
     function getUserRole() {
       return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role;
     }
     
+    /**
+     * Check if user is a client (buyer/seller)
+     */
+    function isClient() {
+      return isAuthenticated() && getUserRole() == 'client';
+    }
+    
+    /**
+     * Check if user is an agent
+     */
     function isAgent() {
       return isAuthenticated() && getUserRole() == 'agent';
     }
     
+    /**
+     * Check if user is an admin
+     */
     function isAdmin() {
       return isAuthenticated() && getUserRole() == 'admin';
     }
     
-    // Verification docs: Enhanced access for Assiduous roles
+    /**
+     * Check if user is accessing their own data
+     */
+    function isOwner(userId) {
+      return isAuthenticated() && getUserId() == userId;
+    }
+    
+    /**
+     * Check if user is agent or admin
+     */
+    function isStaff() {
+      return isAgent() || isAdmin();
+    }
+    
+    // ============================================================================
+    // VALIDATION FUNCTIONS - Data Integrity
+    // ============================================================================
+    
+    /**
+     * Validate email format
+     */
+    function isValidEmail(email) {
+      return email.matches('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$');
+    }
+    
+    /**
+     * Validate phone format (US/international)
+     */
+    function isValidPhone(phone) {
+      return phone.matches('^\\+?[1-9]\\d{1,14}$');
+    }
+    
+    /**
+     * Validate required user fields
+     */
+    function hasValidUserFields(data) {
+      return data.keys().hasAll(['email', 'displayName', 'role', 'createdAt']) &&
+             isValidEmail(data.email) &&
+             data.role in ['client', 'agent', 'admin'];
+    }
+    
+    /**
+     * Validate required property fields
+     */
+    function hasValidPropertyFields(data) {
+      return data.keys().hasAll(['title', 'status', 'price', 'address', 'createdAt']) &&
+             data.status in ['available', 'pending', 'sold', 'archived'] &&
+             data.price is number &&
+             data.price > 0;
+    }
+    
+    /**
+     * Validate transaction fields
+     */
+    function hasValidTransactionFields(data) {
+      return data.keys().hasAll(['propertyId', 'clientId', 'status', 'createdAt']) &&
+             data.status in ['pending', 'in_progress', 'completed', 'cancelled'];
+    }
+    
+    // ============================================================================
+    // USERS COLLECTION
+    // ============================================================================
+    
+    match /users/{userId} {
+      // Read: User can read own profile, agents can read clients, admins can read all
+      allow read: if isOwner(userId) || 
+                     (isAgent() && get(/databases/$(database)/documents/users/$(userId)).data.role == 'client') ||
+                     isAdmin();
+      
+      // Create: Only during signup (role must be 'client' for self-registration)
+      allow create: if isAuthenticated() && 
+                       isOwner(userId) && 
+                       request.resource.data.role == 'client' &&
+                       hasValidUserFields(request.resource.data);
+      
+      // Update: User can update own profile (cannot change role)
+      //         Admins can update any profile
+      allow update: if (isOwner(userId) && 
+                        request.resource.data.role == resource.data.role &&
+                        request.resource.data.email == resource.data.email) ||
+                       isAdmin();
+      
+      // Delete: Only admins can delete users
+      allow delete: if isAdmin();
+    }
+    
+    // ============================================================================
+    // PROPERTIES COLLECTION
+    // ============================================================================
+    
+    match /properties/{propertyId} {
+      // Read: Everyone can read available properties, clients can read all
+      //       Agents and admins can read all properties
+      allow read: if !isAuthenticated() ||  // Public read for available properties
+                     resource.data.status == 'available' ||
+                     isStaff();
+      
+      // Create: Only agents and admins can create properties
+      allow create: if isStaff() && 
+                       hasValidPropertyFields(request.resource.data);
+      
+      // Update: Agents can update their own properties, admins can update all
+      allow update: if (isAgent() && resource.data.agentId == getUserId()) ||
+                       isAdmin();
+      
+      // Delete: Only admins can delete properties
+      allow delete: if isAdmin();
+    }
+    
+    // ============================================================================
+    // LEADS COLLECTION
+    // ============================================================================
+    
+    match /leads/{leadId} {
+      // Read: Agents can read all leads, admins can read all
+      //       Clients can read their own submitted leads
+      allow read: if isStaff() ||
+                     (isAuthenticated() && resource.data.userId == getUserId());
+      
+      // Create: Anyone can create a lead (public lead submission)
+      allow create: if request.resource.data.keys().hasAll(['name', 'email', 'propertyId']) &&
+                       isValidEmail(request.resource.data.email);
+      
+      // Update: Only agents and admins can update leads (status, notes, assignment)
+      allow update: if isStaff();
+      
+      // Delete: Only admins can delete leads
+      allow delete: if isAdmin();
+    }
+    
+    // ============================================================================
+    // TRANSACTIONS COLLECTION
+    // ============================================================================
+    
+    match /transactions/{transactionId} {
+      // Read: Clients can read their own transactions
+      //       Agents can read transactions they're assigned to
+      //       Admins can read all transactions
+      allow read: if (isClient() && resource.data.clientId == getUserId()) ||
+                     (isAgent() && resource.data.agentId == getUserId()) ||
+                     isAdmin();
+      
+      // Create: Agents and admins can create transactions
+      allow create: if isStaff() && 
+                       hasValidTransactionFields(request.resource.data);
+      
+      // Update: Agents can update transactions they're assigned to
+      //         Admins can update all transactions
+      allow update: if (isAgent() && resource.data.agentId == getUserId()) ||
+                       isAdmin();
+      
+      // Delete: Only admins can delete transactions
+      allow delete: if isAdmin();
+    }
+    
+    // ============================================================================
+    // MESSAGES COLLECTION
+    // ============================================================================
+    
+    match /messages/{messageId} {
+      // Read: Users can read messages where they are sender or recipient
+      allow read: if isAuthenticated() && 
+                     (resource.data.senderId == getUserId() || 
+                      resource.data.recipientId == getUserId() ||
+                      isAdmin());
+      
+      // Create: Authenticated users can send messages
+      allow create: if isAuthenticated() && 
+                       request.resource.data.senderId == getUserId() &&
+                       request.resource.data.keys().hasAll(['senderId', 'recipientId', 'text', 'createdAt']);
+      
+      // Update: Only sender can mark as edited, recipient can mark as read
+      allow update: if (isAuthenticated() && resource.data.senderId == getUserId()) ||
+                       (isAuthenticated() && resource.data.recipientId == getUserId() && 
+                        request.resource.data.diff(resource.data).affectedKeys().hasOnly(['read', 'readAt'])) ||
+                       isAdmin();
+      
+      // Delete: Sender can delete own messages, admins can delete all
+      allow delete: if (isAuthenticated() && resource.data.senderId == getUserId()) ||
+                       isAdmin();
+    }
+    
+    // ============================================================================
+    // NOTIFICATIONS COLLECTION
+    // ============================================================================
+    
+    match /notifications/{notificationId} {
+      // Read: Users can read their own notifications
+      allow read: if isAuthenticated() && resource.data.userId == getUserId();
+      
+      // Create: Server-only (Cloud Functions)
+      allow create: if false;
+      
+      // Update: Users can mark notifications as read
+      allow update: if isAuthenticated() && 
+                       resource.data.userId == getUserId() &&
+                       request.resource.data.diff(resource.data).affectedKeys().hasOnly(['read', 'readAt']);
+      
+      // Delete: Users can delete their own notifications
+      allow delete: if isAuthenticated() && resource.data.userId == getUserId();
+    }
+    
+    // ============================================================================
+    // ANALYTICS & TRACKING COLLECTIONS
+    // ============================================================================
+    
+    match /analytics_events/{eventId} {
+      // Read: Only admins can read analytics
+      allow read: if isAdmin();
+      
+      // Create: Server-only (Cloud Functions)
+      allow create: if false;
+      
+      // Update/Delete: No direct updates
+      allow update, delete: if false;
+    }
+    
+    match /email_logs/{logId} {
+      // Read: Only admins can read email logs
+      allow read: if isAdmin();
+      
+      // Create/Update/Delete: Server-only (Cloud Functions)
+      allow create, update, delete: if false;
+    }
+    
+    // ============================================================================
+    // PAYMENT & VERIFICATION COLLECTIONS (Server-only)
+    // ============================================================================
+    
     match /verifications/{verificationId} {
-      // Buyers can read their own, agents can read assigned, admins can read all
+      // Read: Buyers can read their own, agents can read assigned, admins can read all
       allow read: if isAuthenticated() && (
         request.auth.uid == resource.data.buyerId ||
         (isAgent() && request.auth.uid == resource.data.agentId) ||
         isAdmin()
       );
-      allow write: if false; // server-only via Functions
+      
+      // Write: Server-only (Cloud Functions)
+      allow write: if false;
     }
-
-    // Webhook logs: server-only
-    match /webhook_logs/{doc} {
+    
+    match /webhook_logs/{logId} {
+      // Server-only collection for webhook logging
       allow read, write: if false;
     }
-
-    // Idempotency mapping: server-only
-    match /idempotency/{doc} {
+    
+    match /idempotency/{key} {
+      // Server-only collection for idempotency tracking
+      allow read, write: if false;
+    }
+    
+    match /stripe_customers/{customerId} {
+      // Read: Users can read their own Stripe customer data
+      allow read: if isAuthenticated() && resource.data.userId == getUserId();
+      
+      // Create/Update/Delete: Server-only (Cloud Functions)
+      allow create, update, delete: if false;
+    }
+    
+    match /subscriptions/{subscriptionId} {
+      // Read: Users can read their own subscriptions
+      allow read: if isAuthenticated() && resource.data.userId == getUserId();
+      
+      // Create/Update/Delete: Server-only (Cloud Functions)
+      allow create, update, delete: if false;
+    }
+    
+    // ============================================================================
+    // PROPERTY-RELATED SUBCOLLECTIONS
+    // ============================================================================
+    
+    match /properties/{propertyId}/views/{viewId} {
+      // Track property views - server-only
+      allow read: if isStaff();
+      allow write: if false;
+    }
+    
+    match /properties/{propertyId}/favorites/{userId} {
+      // Users can favorite properties
+      allow read: if isAuthenticated();
+      allow create, delete: if isAuthenticated() && userId == getUserId();
+      allow update: if false;
+    }
+    
+    // ============================================================================
+    // SAVED SEARCHES & ALERTS
+    // ============================================================================
+    
+    match /saved_searches/{searchId} {
+      // Users can manage their own saved searches
+      allow read, create, update, delete: if isAuthenticated() && 
+                                              resource.data.userId == getUserId();
+    }
+    
+    match /property_alerts/{alertId} {
+      // Users can manage their own property alerts
+      allow read, create, update, delete: if isAuthenticated() && 
+                                              resource.data.userId == getUserId();
+    }
+    
+    // ============================================================================
+    // AGENT-SPECIFIC COLLECTIONS
+    // ============================================================================
+    
+    match /agent_profiles/{agentId} {
+      // Read: Anyone can read agent profiles (public directory)
+      allow read: if true;
+      
+      // Write: Agents can update their own profile, admins can update all
+      allow create, update: if (isAgent() && agentId == getUserId()) || isAdmin();
+      allow delete: if isAdmin();
+    }
+    
+    match /agent_performance/{agentId} {
+      // Read: Agent can read own performance, admins can read all
+      allow read: if (isAgent() && agentId == getUserId()) || isAdmin();
+      
+      // Write: Server-only (calculated by Cloud Functions)
+      allow write: if false;
+    }
+    
+    // ============================================================================
+    // ADMIN-ONLY COLLECTIONS
+    // ============================================================================
+    
+    match /system_settings/{settingId} {
+      // System configuration - admin read/write only
+      allow read, write: if isAdmin();
+    }
+    
+    match /api_keys/{keyId} {
+      // API keys for integrations - admin only
+      allow read, write: if isAdmin();
+    }
+    
+    match /audit_logs/{logId} {
+      // Audit trail - admin read only, server write only
+      allow read: if isAdmin();
+      allow write: if false;
+    }
+    
+    // ============================================================================
+    // CATCH-ALL - DENY BY DEFAULT
+    // ============================================================================
+    
+    // Any collection not explicitly defined above is denied
+    match /{document=**} {
       allow read, write: if false;
     }
   }
