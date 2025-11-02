@@ -133,6 +133,65 @@ export const api = onRequest(
 });
 
 // ============================================================================
+// HELPER FUNCTIONS - Auth & Validation
+// ============================================================================
+
+/**
+ * Extract and verify Firebase Auth token
+ */
+async function verifyAuth(authHeader: string): Promise<any> {
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    throw new Error("Invalid authorization header");
+  }
+  const token = authHeader.substring(7);
+  const decodedToken = await admin.auth().verifyIdToken(token);
+  
+  // Get user document to check role
+  const userDoc = await db.collection("users").doc(decodedToken.uid).get();
+  const userData = userDoc.data() || {};
+  
+  return {
+    ...decodedToken,
+    uid: decodedToken.uid,
+    email: decodedToken.email,
+    role: userData.role || "client",
+  };
+}
+
+/**
+ * Check if user is admin
+ */
+function isAdmin(user: any): boolean {
+  return user && user.role === "admin";
+}
+
+/**
+ * Check if user is agent
+ */
+function isAgent(user: any): boolean {
+  return user && user.role === "agent";
+}
+
+/**
+ * Validate property data
+ */
+function validateProperty(payload: any): string | null {
+  const required = ["title", "price", "status", "city", "state", "zip", "type"];
+  for (const key of required) {
+    if (payload[key] === undefined || payload[key] === null || payload[key] === "") {
+      return `Missing required field: ${key}`;
+    }
+  }
+  
+  // Validate price is a number
+  if (typeof payload.price !== "number" || payload.price < 0) {
+    return "Invalid price: must be a positive number";
+  }
+  
+  return null;
+}
+
+// ============================================================================
 // PROPERTY ROUTES
 // ============================================================================
 
@@ -142,100 +201,243 @@ async function handlePropertyRoutes(
   path: string,
   method: string
 ) {
-  // GET /properties - List properties
-  if (path === "/properties" && method === "GET") {
-    const limit = parseInt(req.query.limit || "20");
-    const city = req.query.city;
-    const status = req.query.status || "available";
+  try {
+    // GET /properties - List properties with filters
+    if (path === "/properties" && method === "GET") {
+      const {
+        status = "available",
+        city,
+        type,
+        agentId,
+        minPrice,
+        maxPrice,
+        beds,
+        baths,
+        limit = "25",
+        orderBy = "createdAt",
+        direction = "desc",
+      } = req.query;
 
-    let query = db.collection("properties").where("status", "==", status);
+      let query: any = db.collection("properties");
 
-    if (city) {
-      query = query.where("address.city", "==", city);
-    }
+      // Apply filters
+      if (status) query = query.where("status", "==", status);
+      if (city) query = query.where("city", "==", city);
+      if (type) query = query.where("type", "==", type);
+      if (agentId) query = query.where("agentId", "==", agentId);
+      
+      // Note: Range queries need indexes
+      if (minPrice) query = query.where("price", ">=", Number(minPrice));
+      if (maxPrice) query = query.where("price", "<=", Number(maxPrice));
+      if (beds) query = query.where("beds", ">=", Number(beds));
+      if (baths) query = query.where("baths", ">=", Number(baths));
 
-    const snapshot = await query.limit(limit).get();
-    const properties = snapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
+      query = query.orderBy(orderBy, direction).limit(Number(limit));
 
-    res.json({properties, total: properties.length});
-    return;
-  }
+      const snapshot = await query.get();
+      const data = snapshot.docs.map((doc: any) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
 
-  // GET /properties/:id - Get single property
-  if (path.match(/\/properties\/[a-zA-Z0-9]+$/) && method === "GET") {
-    const id = path.split("/").pop();
-    const doc = await db.collection("properties").doc(id!).get();
-
-    if (!doc.exists) {
-      res.status(404).json({error: "Property not found"});
+      res.json({data, total: data.length});
       return;
     }
 
-    res.json({property: {id: doc.id, ...doc.data()}});
-    return;
-  }
+    // GET /properties/:id - Get single property
+    if (path.match(/\/properties\/[a-zA-Z0-9]+$/) && method === "GET") {
+      const id = path.split("/").pop();
+      const doc = await db.collection("properties").doc(id!).get();
 
-  // POST /properties/search - Search properties
-  if (path === "/properties/search" && method === "POST") {
-    const {priceRange, bedrooms, propertyType} = req.body;
+      if (!doc.exists) {
+        res.status(404).json({error: "Property not found"});
+        return;
+      }
 
-    let query = db.collection("properties").where("status", "==", "available");
-
-    if (propertyType) {
-      query = query.where("details.type", "==", propertyType);
+      res.json({id: doc.id, ...doc.data()});
+      return;
     }
 
-    const snapshot = await query.get();
-    let properties = snapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
+    // POST /properties - Create property (authenticated, agent/admin only)
+    if (path === "/properties" && method === "POST") {
+      const authHeader = req.headers.authorization;
+      if (!authHeader) {
+        res.status(401).json({error: "Authentication required"});
+        return;
+      }
 
-    // Client-side filtering
-    if (priceRange) {
-      properties = properties.filter((p: any) => {
-        const price = p.price?.list || 0;
-        return (
-          (!priceRange.min || price >= priceRange.min) &&
-          (!priceRange.max || price <= priceRange.max)
-        );
+      const user = await verifyAuth(authHeader);
+      if (!isAdmin(user) && !isAgent(user)) {
+        res.status(403).json({error: "Forbidden: Admin or Agent role required"});
+        return;
+      }
+
+      // Validate property data
+      const validationError = validateProperty(req.body);
+      if (validationError) {
+        res.status(400).json({error: validationError});
+        return;
+      }
+
+      const now = admin.firestore.FieldValue.serverTimestamp();
+      const propertyData = {
+        ...req.body,
+        price: Number(req.body.price),
+        beds: Number(req.body.beds || 0),
+        baths: Number(req.body.baths || 0),
+        sqft: Number(req.body.sqft || 0),
+        agentId: isAgent(user) ? user.uid : (req.body.agentId || null),
+        createdAt: now,
+        updatedAt: now,
+        images: req.body.images || [],
+        features: req.body.features || [],
+        status: req.body.status || "available",
+      };
+
+      const docRef = await db.collection("properties").add(propertyData);
+      res.status(201).json({id: docRef.id, message: "Property created successfully"});
+      return;
+    }
+
+    // PUT /properties/:id - Update property (authenticated, agent/admin)
+    if (path.match(/\/properties\/[a-zA-Z0-9]+$/) && method === "PUT") {
+      const authHeader = req.headers.authorization;
+      if (!authHeader) {
+        res.status(401).json({error: "Authentication required"});
+        return;
+      }
+
+      const user = await verifyAuth(authHeader);
+      if (!isAdmin(user) && !isAgent(user)) {
+        res.status(403).json({error: "Forbidden: Admin or Agent role required"});
+        return;
+      }
+
+      const id = path.split("/").pop();
+      const docRef = db.collection("properties").doc(id!);
+      const doc = await docRef.get();
+
+      if (!doc.exists) {
+        res.status(404).json({error: "Property not found"});
+        return;
+      }
+
+      const existingData = doc.data();
+      
+      // Agents can only edit their own properties
+      if (isAgent(user) && existingData?.agentId !== user.uid) {
+        res.status(403).json({error: "Forbidden: Cannot edit another agent's property"});
+        return;
+      }
+
+      const updateData: any = {
+        ...req.body,
+        updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+      };
+      
+      // Convert numeric fields
+      if (updateData.price) updateData.price = Number(updateData.price);
+      if (updateData.beds) updateData.beds = Number(updateData.beds);
+      if (updateData.baths) updateData.baths = Number(updateData.baths);
+      if (updateData.sqft) updateData.sqft = Number(updateData.sqft);
+
+      await docRef.update(updateData);
+      res.json({success: true, message: "Property updated successfully"});
+      return;
+    }
+
+    // DELETE /properties/:id - Delete property (admin only)
+    if (path.match(/\/properties\/[a-zA-Z0-9]+$/) && method === "DELETE") {
+      const authHeader = req.headers.authorization;
+      if (!authHeader) {
+        res.status(401).json({error: "Authentication required"});
+        return;
+      }
+
+      const user = await verifyAuth(authHeader);
+      if (!isAdmin(user)) {
+        res.status(403).json({error: "Forbidden: Admin role required"});
+        return;
+      }
+
+      const id = path.split("/").pop();
+      const docRef = db.collection("properties").doc(id!);
+      const doc = await docRef.get();
+
+      if (!doc.exists) {
+        res.status(404).json({error: "Property not found"});
+        return;
+      }
+
+      await docRef.delete();
+      res.json({success: true, message: "Property deleted successfully"});
+      return;
+    }
+
+    // POST /properties/:id/images:signedUpload - Get signed URL for image upload
+    if (path.match(/\/properties\/[a-zA-Z0-9]+\/images:signedUpload$/) && method === "POST") {
+      const authHeader = req.headers.authorization;
+      if (!authHeader) {
+        res.status(401).json({error: "Authentication required"});
+        return;
+      }
+
+      const user = await verifyAuth(authHeader);
+      if (!isAdmin(user) && !isAgent(user)) {
+        res.status(403).json({error: "Forbidden: Admin or Agent role required"});
+        return;
+      }
+
+      const propertyId = path.split("/")[2];
+      const propRef = db.collection("properties").doc(propertyId);
+      const propDoc = await propRef.get();
+
+      if (!propDoc.exists) {
+        res.status(404).json({error: "Property not found"});
+        return;
+      }
+
+      const propData = propDoc.data();
+      if (isAgent(user) && propData?.agentId !== user.uid) {
+        res.status(403).json({error: "Forbidden: Cannot upload images for another agent's property"});
+        return;
+      }
+
+      const {fileName, contentType} = req.body;
+      if (!fileName || !contentType) {
+        res.status(400).json({error: "fileName and contentType are required"});
+        return;
+      }
+
+      // Generate signed URL for upload
+      const bucket = admin.storage().bucket();
+      const destPath = `properties/${propertyId}/${Date.now()}_${fileName}`;
+      const file = bucket.file(destPath);
+
+      const [url] = await file.getSignedUrl({
+        version: "v4",
+        action: "write",
+        expires: Date.now() + 15 * 60 * 1000, // 15 minutes
+        contentType,
       });
-    }
 
-    if (bedrooms) {
-      properties = properties.filter(
-        (p: any) => p.details?.bedrooms >= bedrooms
-      );
-    }
-
-    res.json({properties, count: properties.length});
-    return;
-  }
-
-  // POST /properties - Create property (authenticated)
-  if (path === "/properties" && method === "POST") {
-    const authHeader = req.headers.authorization;
-    if (!authHeader) {
-      res.status(401).json({error: "Unauthorized"});
+      res.json({
+        uploadUrl: url,
+        storagePath: destPath,
+        message: "Upload your file to the uploadUrl using PUT request",
+      });
       return;
     }
 
-    const propertyData = {
-      ...req.body,
-      createdAt: admin.firestore.FieldValue.serverTimestamp(),
-      updatedAt: admin.firestore.FieldValue.serverTimestamp(),
-      status: req.body.status || "available",
-    };
-
-    const docRef = await db.collection("properties").add(propertyData);
-    res.status(201).json({id: docRef.id, message: "Property created"});
-    return;
+    res.status(404).json({error: "Route not found"});
+  } catch (error: any) {
+    logger.error("Property route error", error);
+    if (error.message.includes("Invalid authorization")) {
+      res.status(401).json({error: "Invalid or expired token"});
+    } else {
+      res.status(500).json({error: "Internal server error", details: error.message});
+    }
   }
-
-  res.status(404).json({error: "Route not found"});
 }
 
 // ============================================================================

@@ -10,10 +10,13 @@
 
 import { onCall, HttpsError } from 'firebase-functions/v2/https';
 import { onDocumentWritten } from 'firebase-functions/v2/firestore';
-import { getFirestore, FieldValue } from 'firebase-admin/firestore';
-import { getAuth } from 'firebase-admin/auth';
+import * as admin from 'firebase-admin';
+import { FieldValue } from 'firebase-admin/firestore';
 
-const db = getFirestore();
+// Get Firestore instance lazily (after admin.initializeApp() is called)
+function getDb() {
+  return admin.firestore();
+}
 
 /**
  * Valid roles in the system
@@ -80,7 +83,7 @@ export const checkUserRole = onCall(async (request) => {
 
   try {
     // Get user document from Firestore
-    const userDoc = await db.collection('users').doc(uid).get();
+    const userDoc = await getDb().collection('users').doc(uid).get();
 
     if (!userDoc.exists) {
       throw new HttpsError('not-found', 'User document not found');
@@ -116,7 +119,7 @@ export const checkPermission = onCall(async (request) => {
 
   try {
     // Get user role
-    const userDoc = await db.collection('users').doc(uid).get();
+    const userDoc = await getDb().collection('users').doc(uid).get();
 
     if (!userDoc.exists) {
       throw new HttpsError('not-found', 'User document not found');
@@ -155,7 +158,7 @@ export const getUserPermissions = onCall(async (request) => {
   }
 
   try {
-    const userDoc = await db.collection('users').doc(uid).get();
+    const userDoc = await getDb().collection('users').doc(uid).get();
 
     if (!userDoc.exists) {
       throw new HttpsError('not-found', 'User document not found');
@@ -197,7 +200,7 @@ export const updateUserRole = onCall(async (request) => {
 
   try {
     // Check if requester is admin
-    const adminDoc = await db.collection('users').doc(adminUid).get();
+    const adminDoc = await getDb().collection('users').doc(adminUid).get();
     const adminData = adminDoc.data();
 
     if (adminData?.role !== UserRole.ADMIN) {
@@ -210,7 +213,7 @@ export const updateUserRole = onCall(async (request) => {
     }
 
     // Get target user
-    const targetUserDoc = await db.collection('users').doc(targetUserId).get();
+    const targetUserDoc = await getDb().collection('users').doc(targetUserId).get();
 
     if (!targetUserDoc.exists) {
       throw new HttpsError('not-found', 'Target user not found');
@@ -219,17 +222,17 @@ export const updateUserRole = onCall(async (request) => {
     const oldRole = targetUserDoc.data()?.role;
 
     // Update role in Firestore
-    await db.collection('users').doc(targetUserId).update({
+    await getDb().collection('users').doc(targetUserId).update({
       role: newRole,
       roleUpdatedAt: FieldValue.serverTimestamp(),
       roleUpdatedBy: adminUid
     });
 
     // Update custom claims in Firebase Auth
-    await getAuth().setCustomUserClaims(targetUserId, { role: newRole });
+    await admin.auth().setCustomUserClaims(targetUserId, { role: newRole });
 
     // Log role change for audit
-    await db.collection('audit_logs').add({
+    await getDb().collection('audit_logs').add({
       type: 'role_change',
       targetUserId,
       oldRole,
@@ -264,7 +267,7 @@ export const auditRoleChanges = onDocumentWritten('users/{userId}', async (event
 
     // Create audit log entry
     try {
-      await db.collection('audit_logs').add({
+      await getDb().collection('audit_logs').add({
         type: 'role_change',
         userId,
         oldRole: before?.role || 'none',
@@ -295,14 +298,14 @@ export const validateRoleAssignment = onCall(async (request) => {
 
   try {
     // Check admin permissions
-    const adminDoc = await db.collection('users').doc(adminUid).get();
+    const adminDoc = await getDb().collection('users').doc(adminUid).get();
 
     if (adminDoc.data()?.role !== UserRole.ADMIN) {
       throw new HttpsError('permission-denied', 'Admin access required');
     }
 
     // Get user document
-    const userDoc = await db.collection('users').doc(userId).get();
+    const userDoc = await getDb().collection('users').doc(userId).get();
 
     if (!userDoc.exists) {
       return {
@@ -332,7 +335,7 @@ export const validateRoleAssignment = onCall(async (request) => {
     }
 
     // Check Auth custom claims
-    const authUser = await getAuth().getUser(userId);
+    const authUser = await admin.auth().getUser(userId);
     const customClaims = authUser.customClaims || {};
 
     if (customClaims.role !== userRole) {

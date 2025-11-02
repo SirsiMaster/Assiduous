@@ -1,4 +1,4 @@
-import * as sgMail from "@sendgrid/mail";
+import sgMail from "@sendgrid/mail";
 import * as logger from "firebase-functions/logger";
 import * as admin from "firebase-admin";
 
