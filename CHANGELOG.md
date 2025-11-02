@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.55.0] - 2025-11-02
+
+### Added
+- feat(rbac): add RBAC UI enforcement to admin pages (Step 13 partial)
+
+
 ## [0.54.1] - 2025-11-02
 
 ### Fixed
@@ -2461,7 +2467,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.54.1...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.55.0...HEAD
+
+
+## [0.55.0] - 2025-11-02
+
+### Added
+- feat(rbac): add RBAC UI enforcement to admin pages (Step 13 partial)
 
 
 ## [0.54.1] - 2025-11-02
@@ -3293,3 +3305,4 @@ To generate changelog entries:
 [0.53.1]: https://github.com/SirsiMaster/Assiduous/compare/v0.53.0...v0.53.1
 [0.54.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.53.1...v0.54.0
 [0.54.1]: https://github.com/SirsiMaster/Assiduous/compare/v0.54.0...v0.54.1
+[0.55.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.54.1...v0.55.0
