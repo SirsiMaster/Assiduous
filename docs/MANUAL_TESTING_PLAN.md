@@ -518,6 +518,97 @@ Before marking Day 2 complete:
 
 ---
 
+## Day 3: Agent Portal - Listings & Lead Management
+
+### Test Case 3.1: Agent My Listings
+**URL:** `https://assiduous-staging.web.app/agent/listings.html`
+**Prerequisites:** Logged in as `agent@sirsimaster.com`
+
+**Steps:**
+1. Navigate to agent listings page
+2. Verify only agent's properties display
+3. Check filter functionality (status, price, etc.)
+4. Create new listing
+5. Edit existing listing
+
+**Expected Results:**
+- [ ] Only listings with `agentId === current_agent_uid` display
+- [ ] List sorted by `updatedAt DESC`
+- [ ] Total count matches agent's listings
+- [ ] Create listing form works correctly
+- [ ] Edit saves changes successfully
+- [ ] No console errors
+
+**Screenshot:** `screenshots/day3_agent_listings.png`
+
+---
+
+### Test Case 3.2: Agent My Leads
+**URL:** `https://assiduous-staging.web.app/agent/leads.html`
+**Prerequisites:** Logged in as agent with assigned leads
+
+**Steps:**
+1. Navigate to leads page
+2. Verify only assigned leads display
+3. Filter by status (new, assigned, contacted)
+4. Update lead status
+5. View lead details
+
+**Expected Results:**
+- [ ] Only leads with `assignedAgentId === agent_uid` display
+- [ ] Status filter works correctly
+- [ ] Update status via PUT /leads/:id succeeds
+- [ ] Lead count updates in real-time
+- [ ] No console errors
+
+**Screenshot:** `screenshots/day3_agent_leads.png`
+
+---
+
+### Test Case 3.3: Agent Statistics Dashboard
+**URL:** `https://assiduous-staging.web.app/agent/dashboard.html`
+
+**Steps:**
+1. Navigate to agent dashboard
+2. Verify stats display correctly:
+   - Total listings
+   - Active listings
+   - Total leads
+   - New leads count
+   - Commission summary
+
+**Expected Results:**
+- [ ] All statistics calculate correctly
+- [ ] Numbers match actual data in Firestore
+- [ ] Charts render without errors
+- [ ] Performance: Stats load in under 2 seconds
+- [ ] No console errors
+
+**Screenshot:** `screenshots/day3_agent_dashboard.png`
+
+---
+
+### Test Case 3.4: Lead Status Update Workflow
+**Prerequisites:** Agent has at least one assigned lead
+
+**Steps:**
+1. View lead with status "assigned"
+2. Update status to "contacted"
+3. Add notes or comments
+4. Save changes
+5. Verify Firestore update
+
+**Expected Results:**
+- [ ] PUT /leads/:id returns 200 OK
+- [ ] Firestore `leads/{id}.status` updates
+- [ ] Firestore `leads/{id}.updatedAt` timestamp updates
+- [ ] UI reflects new status immediately
+- [ ] No console errors
+
+**Screenshot:** `screenshots/day3_lead_status_update.png`
+
+---
+
 **Last Updated:** 2025-11-02  
 **Document Owner:** Development Team  
 **Next Review:** After each major feature completion
