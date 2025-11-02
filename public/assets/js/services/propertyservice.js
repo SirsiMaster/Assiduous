@@ -26,7 +26,7 @@ export class PropertyService {
   async getProperties(filters = {}) {
     try {
       const queryParams = new URLSearchParams();
-      
+
       // Add filters to query string
       Object.entries(filters).forEach(([key, value]) => {
         if (value !== undefined && value !== null && value !== '') {
@@ -36,7 +36,7 @@ export class PropertyService {
 
       const url = `${this.apiUrl}/properties${queryParams.toString() ? '?' + queryParams.toString() : ''}`;
       const response = await fetch(url);
-      
+
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -57,7 +57,7 @@ export class PropertyService {
   async getPropertyById(propertyId) {
     try {
       const response = await fetch(`${this.apiUrl}/properties/${propertyId}`);
-      
+
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -82,7 +82,7 @@ export class PropertyService {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(propertyData)
+        body: JSON.stringify(propertyData),
       });
 
       if (!response.ok) {
@@ -110,7 +110,7 @@ export class PropertyService {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(updates)
+        body: JSON.stringify(updates),
       });
 
       if (!response.ok) {
@@ -133,7 +133,7 @@ export class PropertyService {
   async deleteProperty(propertyId) {
     try {
       const response = await fetch(`${this.apiUrl}/properties/${propertyId}`, {
-        method: 'DELETE'
+        method: 'DELETE',
       });
 
       if (!response.ok) {
@@ -164,7 +164,7 @@ export class PropertyService {
   async getPropertyStats() {
     try {
       const response = await fetch(`${this.apiUrl}/properties/stats`);
-      
+
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -179,7 +179,7 @@ export class PropertyService {
         available: 0,
         pending: 0,
         sold: 0,
-        averagePrice: 0
+        averagePrice: 0,
       };
     }
   }
@@ -210,7 +210,7 @@ export class PropertyService {
   calculateFlipEstimate(params) {
     const { listPrice, repairCost, arv } = params;
     const totalInvestment = listPrice + repairCost;
-    const holdingCosts = arv * 0.10; // 10% holding costs
+    const holdingCosts = arv * 0.1; // 10% holding costs
     const profit = arv - totalInvestment - holdingCosts;
     const roi = (profit / totalInvestment) * 100;
 
@@ -218,7 +218,7 @@ export class PropertyService {
       profit: Math.round(profit),
       roi: Math.round(roi * 10) / 10,
       totalInvestment: Math.round(totalInvestment),
-      holdingCosts: Math.round(holdingCosts)
+      holdingCosts: Math.round(holdingCosts),
     };
   }
 
@@ -232,7 +232,7 @@ export class PropertyService {
       style: 'currency',
       currency: 'USD',
       minimumFractionDigits: 0,
-      maximumFractionDigits: 0
+      maximumFractionDigits: 0,
     }).format(amount);
   }
 
@@ -248,7 +248,7 @@ export class PropertyService {
       arvFormatted: this.formatCurrency(property.price?.arv || 0),
       repairFormatted: this.formatCurrency(property.price?.repair || 0),
       profitFormatted: this.formatCurrency(property.flipEstimate?.profit || 0),
-      fullAddress: `${property.address?.street}, ${property.address?.city}, ${property.address?.state} ${property.address?.zip}`
+      fullAddress: `${property.address?.street}, ${property.address?.city}, ${property.address?.state} ${property.address?.zip}`,
     };
   }
 }

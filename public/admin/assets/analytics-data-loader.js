@@ -15,7 +15,7 @@ export const AnalyticsDataLoader = {
         DatabaseService.getDocuments('properties'),
         DatabaseService.getDocuments('transactions'),
         DatabaseService.getDocuments('users'),
-        DatabaseService.getDocuments('leads')
+        DatabaseService.getDocuments('leads'),
       ]);
 
       return {
@@ -23,7 +23,7 @@ export const AnalyticsDataLoader = {
         transactions,
         users,
         leads,
-        kpis: this.calculateKPIs(properties, transactions, users, leads)
+        kpis: this.calculateKPIs(properties, transactions, users, leads),
       };
     } catch (error) {
       console.error('Error loading analytics data:', error);
@@ -55,28 +55,33 @@ export const AnalyticsDataLoader = {
     }).length;
 
     // Conversion Rate (leads to transactions)
-    const conversionRate = leads.length > 0 
-      ? ((transactions.length / leads.length) * 100).toFixed(1)
-      : 0;
+    const conversionRate =
+      leads.length > 0 ? ((transactions.length / leads.length) * 100).toFixed(1) : 0;
 
     // Average Time to Close (in days)
-    const completedTransactions = transactions.filter(t => t.status === 'completed' && t.closedAt && t.createdAt);
-    const avgTimeToClose = completedTransactions.length > 0
-      ? Math.round(
-          completedTransactions.reduce((sum, t) => {
-            const created = t.createdAt.toDate ? t.createdAt.toDate() : new Date(t.createdAt);
-            const closed = t.closedAt.toDate ? t.closedAt.toDate() : new Date(t.closedAt);
-            const days = (closed - created) / (1000 * 60 * 60 * 24);
-            return sum + days;
-          }, 0) / completedTransactions.length
-        )
-      : 0;
+    const completedTransactions = transactions.filter(
+      t => t.status === 'completed' && t.closedAt && t.createdAt
+    );
+    const avgTimeToClose =
+      completedTransactions.length > 0
+        ? Math.round(
+            completedTransactions.reduce((sum, t) => {
+              const created = t.createdAt.toDate ? t.createdAt.toDate() : new Date(t.createdAt);
+              const closed = t.closedAt.toDate ? t.closedAt.toDate() : new Date(t.closedAt);
+              const days = (closed - created) / (1000 * 60 * 60 * 24);
+              return sum + days;
+            }, 0) / completedTransactions.length
+          )
+        : 0;
 
     // Client Satisfaction (average rating from completed transactions)
     const ratedTransactions = transactions.filter(t => t.clientRating);
-    const clientSatisfaction = ratedTransactions.length > 0
-      ? (ratedTransactions.reduce((sum, t) => sum + t.clientRating, 0) / ratedTransactions.length).toFixed(1)
-      : 4.5; // Default
+    const clientSatisfaction =
+      ratedTransactions.length > 0
+        ? (
+            ratedTransactions.reduce((sum, t) => sum + t.clientRating, 0) / ratedTransactions.length
+          ).toFixed(1)
+        : 4.5; // Default
 
     return {
       totalSalesVolume,
@@ -84,7 +89,7 @@ export const AnalyticsDataLoader = {
       activeUsers,
       conversionRate,
       avgTimeToClose,
-      clientSatisfaction
+      clientSatisfaction,
     };
   },
 
@@ -145,7 +150,7 @@ export const AnalyticsDataLoader = {
       propertyInquiries,
       propertyViewings,
       offersMade,
-      dealsClosed
+      dealsClosed,
     };
   },
 
@@ -155,27 +160,33 @@ export const AnalyticsDataLoader = {
   async generateAgentPerformance() {
     try {
       const [agents, transactions] = await Promise.all([
-        DatabaseService.getDocuments('users', [
-          { field: 'role', operator: '==', value: 'agent' }
-        ]),
-        DatabaseService.getDocuments('transactions')
+        DatabaseService.getDocuments('users', [{ field: 'role', operator: '==', value: 'agent' }]),
+        DatabaseService.getDocuments('transactions'),
       ]);
 
-      return agents.map(agent => {
-        const agentTransactions = transactions.filter(t => t.agentId === agent.id && t.status === 'completed');
-        const totalSales = agentTransactions.reduce((sum, t) => sum + (t.amount || 0), 0);
-        const avgCommission = agentTransactions.length > 0 ? totalSales * 0.03 : 0; // 3% commission
+      return agents
+        .map(agent => {
+          const agentTransactions = transactions.filter(
+            t => t.agentId === agent.id && t.status === 'completed'
+          );
+          const totalSales = agentTransactions.reduce((sum, t) => sum + (t.amount || 0), 0);
+          const avgCommission = agentTransactions.length > 0 ? totalSales * 0.03 : 0; // 3% commission
 
-        return {
-          id: agent.id,
-          name: agent.displayName || 'Unknown Agent',
-          avatar: (agent.displayName || 'UA').substring(0, 2).toUpperCase(),
-          properties: agentTransactions.length,
-          totalSales: totalSales,
-          avgCommission: avgCommission,
-          performanceScore: Math.min(100, (agentTransactions.length / (agents.length > 0 ? 35 : 1)) * 100)
-        };
-      }).sort((a, b) => b.totalSales - a.totalSales).slice(0, 5); // Top 5 agents
+          return {
+            id: agent.id,
+            name: agent.displayName || 'Unknown Agent',
+            avatar: (agent.displayName || 'UA').substring(0, 2).toUpperCase(),
+            properties: agentTransactions.length,
+            totalSales: totalSales,
+            avgCommission: avgCommission,
+            performanceScore: Math.min(
+              100,
+              (agentTransactions.length / (agents.length > 0 ? 35 : 1)) * 100
+            ),
+          };
+        })
+        .sort((a, b) => b.totalSales - a.totalSales)
+        .slice(0, 5); // Top 5 agents
     } catch (error) {
       console.error('Error generating agent performance:', error);
       return [];
@@ -191,35 +202,37 @@ export const AnalyticsDataLoader = {
       single_family: 'Single Family',
       condo: 'Condos',
       townhouse: 'Townhouses',
-      multi_family: 'Multi-Family'
+      multi_family: 'Multi-Family',
     };
 
     return types.map(type => {
       const typeProperties = properties.filter(p => p.details?.type === type);
       const soldProperties = typeProperties.filter(p => p.status === 'sold');
-      const avgPrice = typeProperties.length > 0
-        ? typeProperties.reduce((sum, p) => sum + (p.price?.list || 0), 0) / typeProperties.length
-        : 0;
-      
+      const avgPrice =
+        typeProperties.length > 0
+          ? typeProperties.reduce((sum, p) => sum + (p.price?.list || 0), 0) / typeProperties.length
+          : 0;
+
       // Calculate average days on market
       const propertiesWithDates = soldProperties.filter(p => p.listedAt && p.soldAt);
-      const avgDOM = propertiesWithDates.length > 0
-        ? Math.round(
-            propertiesWithDates.reduce((sum, p) => {
-              const listed = p.listedAt.toDate ? p.listedAt.toDate() : new Date(p.listedAt);
-              const sold = p.soldAt.toDate ? p.soldAt.toDate() : new Date(p.soldAt);
-              return sum + ((sold - listed) / (1000 * 60 * 60 * 24));
-            }, 0) / propertiesWithDates.length
-          )
-        : 0;
+      const avgDOM =
+        propertiesWithDates.length > 0
+          ? Math.round(
+              propertiesWithDates.reduce((sum, p) => {
+                const listed = p.listedAt.toDate ? p.listedAt.toDate() : new Date(p.listedAt);
+                const sold = p.soldAt.toDate ? p.soldAt.toDate() : new Date(p.soldAt);
+                return sum + (sold - listed) / (1000 * 60 * 60 * 24);
+              }, 0) / propertiesWithDates.length
+            )
+          : 0;
 
       return {
         type: typeNames[type] || type,
         listed: typeProperties.length,
         sold: soldProperties.length,
         avgPrice: '$' + Math.round(avgPrice / 1000) + 'K',
-        avgDOM: avgDOM + ' days'
+        avgDOM: avgDOM + ' days',
       };
     });
-  }
+  },
 };
