@@ -1,215 +1,163 @@
 /**
- * Authentication Service for Assiduous Realty
- * This is a wrapper around SirsiAuth to maintain backward compatibility
- * while using the unified authentication system
+ * Unified Authentication Service
+ * Single source of truth - uses Firebase Modular SDK only
+ * Replaces: auth.js, enhanced-auth.js, sirsi-auth.js
  */
 
-// Ensure SirsiAuth is loaded
-if (typeof window.SirsiAuth === 'undefined') {
-  console.warn('SirsiAuth not loaded. Loading now...');
-  const script = document.createElement('script');
-  script.src = '/components/sirsi-auth.js';
-  document.head.appendChild(script);
-}
+import { 
+  getAuth, 
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+  sendPasswordResetEmail,
+  sendEmailVerification,
+  onAuthStateChanged
+} from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
 
-// Initialize SirsiAuth instance if not already done
-let sirsiAuthInstance = null;
+import { 
+  getFirestore,
+  collection,
+  doc,
+  getDoc,
+  setDoc,
+  updateDoc,
+  serverTimestamp
+} from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
-const initializeSirsiAuth = async () => {
-  if (!sirsiAuthInstance) {
-    sirsiAuthInstance = new window.SirsiAuth({
-      firebaseConfig: window.firebaseConfig,
-    });
-    await sirsiAuthInstance.initialize();
+class UnifiedAuthService {
+  constructor() {
+    this.auth = null;
+    this.db = null;
+    this.currentUser = null;
+    this.initialized = false;
   }
-  return sirsiAuthInstance;
-};
 
-// Authentication service wrapper
-const AuthService = {
-  /**
-   * User authentication using SirsiAuth
-   * @param {string} email - User's email
-   * @param {string} password - User's password
-   * @param {string} role - User's role (not used - determined from Firestore)
-   * @returns {Promise} Authentication result
-   */
-  async login(email, password, role = null) {
-    try {
-      const auth = await initializeSirsiAuth();
-      const result = await auth.signIn(email, password, false);
-
-      if (result.success) {
-        // Store in localStorage for backward compatibility
-        localStorage.setItem('auth_token', result.user.uid);
-        localStorage.setItem('user_role', result.user.role);
-        localStorage.setItem('user_data', JSON.stringify(result.user));
-
-        return {
-          success: true,
-          user: result.user,
-          token: result.user.uid,
-          redirect: result.redirect,
-        };
+  async initialize() {
+    if (this.initialized) return;
+    this.auth = getAuth(window.app);
+    this.db = getFirestore(window.app);
+    
+    onAuthStateChanged(this.auth, async (user) => {
+      if (user) {
+        const userDoc = await getDoc(doc(this.db, 'users', user.uid));
+        this.currentUser = userDoc.exists() ? { uid: user.uid, email: user.email, ...userDoc.data() } : null;
       } else {
-        return {
-          success: false,
-          error: result.error || result.message || 'Authentication failed',
-          needsApproval: result.needsApproval,
-          status: result.status,
-        };
+        this.currentUser = null;
       }
+    });
+    
+    this.initialized = true;
+  }
+
+  async login(identifier, password) {
+    if (!this.initialized) await this.initialize();
+    
+    let email = identifier.includes('@') ? identifier : await this.getEmailFromIdentifier(identifier);
+    if (!email) return { success: false, error: 'Invalid credentials' };
+
+    try {
+      const userCredential = await signInWithEmailAndPassword(this.auth, email, password);
+      const userDoc = await getDoc(doc(this.db, 'users', userCredential.user.uid));
+      const userData = userDoc.data();
+
+      await updateDoc(doc(this.db, 'users', userCredential.user.uid), { lastLogin: serverTimestamp() });
+
+      let redirect = '/client/dashboard.html';
+      if (userData.role === 'admin') redirect = '/admin/dashboard.html';
+      else if (userData.role === 'agent') redirect = userData.agentInfo?.status === 'approved' ? '/agent/dashboard.html' : '/agent-pending.html';
+
+      return { success: true, user: { uid: userCredential.user.uid, ...userData }, redirect };
     } catch (error) {
-      console.error('Login error:', error);
-      return {
-        success: false,
-        error: error.message || 'Authentication failed',
-      };
+      return { success: false, error: this.getErrorMessage(error) };
     }
-  },
+  }
 
-  /**
-   * Check if user is authenticated
-   * @returns {Promise<boolean>}
-   */
-  async isAuthenticated() {
-    try {
-      const auth = await initializeSirsiAuth();
-      return auth.isAuthenticated();
-    } catch {
-      // Fallback to localStorage check
-      return !!localStorage.getItem('auth_token');
-    }
-  },
-
-  /**
-   * Get current user role
-   * @returns {Promise<string|null>}
-   */
-  async getCurrentRole() {
-    try {
-      const auth = await initializeSirsiAuth();
-      return auth.getUserRole();
-    } catch {
-      // Fallback to localStorage
-      return localStorage.getItem('user_role');
-    }
-  },
-
-  /**
-   * Get current user data
-   * @returns {Promise<Object|null>}
-   */
-  async getCurrentUser() {
-    try {
-      const auth = await initializeSirsiAuth();
-      return auth.getCurrentUser();
-    } catch {
-      // Fallback to localStorage
-      const userData = localStorage.getItem('user_data');
-      return userData ? JSON.parse(userData) : null;
-    }
-  },
-
-  /**
-   * User signup using SirsiAuth
-   * @param {Object} userData - User signup data
-   * @param {string} userData.name - User's full name (will be split into first/last)
-   * @param {string} userData.firstName - User's first name
-   * @param {string} userData.lastName - User's last name
-   * @param {string} userData.email - User's email
-   * @param {string} userData.password - User's password
-   * @param {string} userData.role - User's role (client, agent, investor, admin)
-   * @param {string} [userData.licenseNumber] - Agent's license number (required for agents)
-   * @returns {Promise} Signup result
-   */
   async signup(userData) {
-    try {
-      const auth = await initializeSirsiAuth();
-
-      // Handle name splitting if full name is provided
-      if (userData.name && (!userData.firstName || !userData.lastName)) {
-        const nameParts = userData.name.trim().split(' ');
-        userData.firstName = userData.firstName || nameParts[0];
-        userData.lastName = userData.lastName || nameParts.slice(1).join(' ') || nameParts[0];
-      }
-
-      // Map role names for backward compatibility
-      const roleMap = {
-        buyer: 'client',
-        seller: 'client',
-        agent: 'agent',
-        investor: 'investor',
-      };
-      userData.role = roleMap[userData.role] || userData.role;
-
-      const result = await auth.signUp(userData);
-
-      if (result.success) {
-        return {
-          success: true,
-          message: result.message || 'Account created successfully',
-          user: result.user,
-          requiresApproval: result.requiresApproval,
-        };
-      } else {
-        return {
-          success: false,
-          error: result.error || 'Failed to create account',
-        };
-      }
-    } catch (error) {
-      console.error('Signup error:', error);
-      return {
-        success: false,
-        error: error.message || 'Failed to create account',
-      };
+    if (!this.initialized) await this.initialize();
+    
+    const { email, password, firstName, lastName, role = 'client', username } = userData;
+    if (!email || !password || !firstName || !lastName) {
+      return { success: false, error: 'Required fields missing' };
     }
-  },
 
-  /**
-   * User logout using SirsiAuth
-   */
+    try {
+      const userCredential = await createUserWithEmailAndPassword(this.auth, email, password);
+      const accountId = `ACCT-${new Date().getFullYear()}-${Math.floor(Math.random() * 1000000).toString().padStart(6, '0')}`;
+
+      const profile = {
+        uid: userCredential.user.uid,
+        accountId,
+        email: email.toLowerCase(),
+        username: username?.toLowerCase() || null,
+        firstName,
+        lastName,
+        role,
+        createdAt: serverTimestamp(),
+        emailVerified: false
+      };
+
+      if (role === 'agent') profile.agentInfo = { status: 'pending_approval' };
+
+      await setDoc(doc(this.db, 'users', userCredential.user.uid), profile);
+      if (username) await setDoc(doc(this.db, 'usernames', username.toLowerCase()), { uid: userCredential.user.uid, email: email.toLowerCase() });
+      await setDoc(doc(this.db, 'accountIds', accountId), { uid: userCredential.user.uid, email: email.toLowerCase() });
+
+      try { await sendEmailVerification(userCredential.user); } catch {}
+
+      return { success: true, user: profile, requiresApproval: role === 'agent' };
+    } catch (error) {
+      return { success: false, error: this.getErrorMessage(error) };
+    }
+  }
+
   async logout() {
-    try {
-      const auth = await initializeSirsiAuth();
-      await auth.signOut();
-    } catch (error) {
-      console.error('Logout error:', error);
-    }
-
-    // Clear localStorage for backward compatibility
-    localStorage.removeItem('auth_token');
-    localStorage.removeItem('user_role');
-    localStorage.removeItem('user_data');
+    await signOut(this.auth);
+    localStorage.clear();
     window.location.href = '/';
-  },
+  }
 
-  /**
-   * Reset password using SirsiAuth
-   * @param {string} email - User's email
-   * @returns {Promise} Password reset result
-   */
   async resetPassword(email) {
     try {
-      const auth = await initializeSirsiAuth();
-      return await auth.resetPassword(email);
+      await sendPasswordResetEmail(this.auth, email);
+      return { success: true };
     } catch (error) {
-      console.error('Password reset error:', error);
-      return {
-        success: false,
-        error: error.message || 'Failed to send password reset email',
-      };
+      return { success: false, error: this.getErrorMessage(error) };
     }
-  },
+  }
 
-  /**
-   * Get SirsiAuth instance for advanced operations
-   * @returns {Promise<SirsiAuth>} SirsiAuth instance
-   */
-  async getSirsiAuth() {
-    return await initializeSirsiAuth();
-  },
+  async getEmailFromIdentifier(identifier) {
+    if (identifier.match(/^ACCT-\d{4}-\d{6}$/)) {
+      const doc = await getDoc(doc(this.db, 'accountIds', identifier));
+      return doc.exists() ? doc.data().email : null;
+    }
+    const doc = await getDoc(doc(this.db, 'usernames', identifier.toLowerCase()));
+    return doc.exists() ? doc.data().email : null;
+  }
+
+  getErrorMessage(error) {
+    const messages = {
+      'auth/email-already-in-use': 'Email already in use',
+      'auth/user-not-found': 'Invalid credentials',
+      'auth/wrong-password': 'Invalid credentials'
+    };
+    return messages[error.code] || error.message;
+  }
+
+  isAuthenticated() { return !!this.currentUser; }
+  getCurrentUser() { return this.currentUser; }
+  getCurrentRole() { return this.currentUser?.role || null; }
+}
+
+const authService = new UnifiedAuthService();
+authService.initialize();
+
+window.authService = authService;
+window.AuthService = {
+  login: (...args) => authService.login(...args),
+  signup: (...args) => authService.signup(...args),
+  logout: () => authService.logout(),
+  resetPassword: (...args) => authService.resetPassword(...args),
+  isAuthenticated: () => authService.isAuthenticated(),
+  getCurrentUser: () => authService.getCurrentUser(),
+  getCurrentRole: () => authService.getCurrentRole()
 };
-
-export default AuthService;
