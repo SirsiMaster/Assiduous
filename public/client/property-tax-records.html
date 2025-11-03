@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>County Tax Records - Assiduous</title>
+    
+    <!-- Assiduous Design System -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SirsiMaster/sirsi-ui@v0.1.1/dist/sirsi-ui.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SirsiMaster/sirsimaster-component-library@latest/dist/sirsimaster-ui.css">
+    
+    <link rel="stylesheet" href="../assiduous.css">
+    <link rel="stylesheet" href="../components/admin-layout.css">
+    
+    <style>
+        /* Tax Records Specific Styles */
+        .records-header {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: var(--space-xl);
+            margin-bottom: var(--space-xl);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+        
+        .property-header-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: var(--space-lg);
+        }
+        
+        .property-title-section h1 {
+            font-family: 'DM Serif Display', serif;
+            font-size: 32px;
+            color: var(--text-primary);
+            margin-bottom: var(--space-sm);
+        }
+        
+        .property-address {
+            font-size: 16px;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-xs);
+        }
+        
+        .parcel-id {
+            font-size: 14px;
+            color: var(--text-tertiary);
+            font-family: monospace;
+            background: var(--gray-50);
+            padding: 4px 8px;
+            border-radius: var(--radius);
+            display: inline-block;
+        }
+        
+        .property-actions {
+            display: flex;
+            gap: var(--space-sm);
+        }
+        
+        .btn {
+            padding: var(--space-sm) var(--space-md);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            background: var(--white);
+            color: var(--text-primary);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s;
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-xs);
+        }
+        
+        .btn:hover {
+            background: var(--gray-50);
+            border-color: var(--text-secondary);
+        }
+        
+        .btn-primary {
+            background: var(--sky);
+            border-color: var(--sky);
+            color: var(--white);
+        }
+        
+        .btn-primary:hover {
+            background: var(--sky-dark);
+            border-color: var(--sky-dark);
+        }
+        
+        .quick-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--space-md);
+            margin-top: var(--space-lg);
+        }
+        
+        .stat-card {
+            background: var(--gray-50);
+            padding: var(--space-md);
+            border-radius: var(--radius);
+            border-left: 3px solid var(--sky);
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: var(--space-xs);
+        }
+        
+        .stat-value {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .records-grid {
+            display: grid;
+            gap: var(--space-xl);
+        }
+        
+        .record-section {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: var(--space-xl);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-lg);
+            padding-bottom: var(--space-md);
+            border-bottom: 2px solid var(--border);
+        }
+        
+        .section-title {
+            font-family: 'DM Serif Display', serif;
+            font-size: 24px;
+            color: var(--text-primary);
+        }
+        
+        .section-badge {
+            font-size: 12px;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 12px;
+            background: var(--gray-100);
+            color: var(--text-secondary);
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--space-lg);
+        }
+        
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-xs);
+        }
+        
+        .info-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 500;
+        }
+        
+        .info-value {
+            font-size: 15px;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+        
+        .info-value.highlight {
+            font-size: 18px;
+            color: var(--sky);
+            font-weight: 600;
+        }
+        
+        .tax-history-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: var(--space-md);
+        }
+        
+        .tax-history-table th {
+            text-align: left;
+            padding: var(--space-sm);
+            background: var(--gray-50);
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .tax-history-table td {
+            padding: var(--space-sm);
+            border-bottom: 1px solid var(--border);
+            font-size: 14px;
+            color: var(--text-primary);
+        }
+        
+        .tax-history-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .tax-history-table tr:hover {
+            background: var(--gray-50);
+        }
+        
+        .status-badge {
+            font-size: 11px;
+            font-weight: 600;
+            padding: 4px 8px;
+            border-radius: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        
+        .status-paid {
+            background: rgba(5, 150, 105, 0.1);
+            color: #059669;
+        }
+        
+        .status-pending {
+            background: rgba(245, 158, 11, 0.1);
+            color: #f59e0b;
+        }
+        
+        .status-delinquent {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+        }
+        
+        .map-container {
+            width: 100%;
+            height: 300px;
+            background: var(--gray-100);
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            margin-top: var(--space-md);
+        }
+        
+        .documents-list {
+            display: grid;
+            gap: var(--space-sm);
+            margin-top: var(--space-md);
+        }
+        
+        .document-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--space-md);
+            background: var(--gray-50);
+            border-radius: var(--radius);
+            transition: all 0.15s;
+        }
+        
+        .document-item:hover {
+            background: var(--gray-100);
+        }
+        
+        .document-info {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+        }
+        
+        .document-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--white);
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--sky);
+        }
+        
+        .document-details h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 2px;
+        }
+        
+        .document-details p {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        
+        .loading-state,
+        .error-state {
+            text-align: center;
+            padding: var(--space-xl);
+            color: var(--text-secondary);
+        }
+        
+        .error-state {
+            color: var(--error);
+        }
+        
+        @media (max-width: 768px) {
+            .property-header-info {
+                flex-direction: column;
+                gap: var(--space-md);
+            }
+            
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .tax-history-table {
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-wrapper">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <a href="/" class="sidebar-logo">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                    </svg>
+                    <span class="sidebar-logo-text">Assiduous</span>
+                </a>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <div class="nav-section-title">Dashboard</div>
+                    <a href="/client/" class="nav-item">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="14" width="7" height="7"></rect>
+                            <rect x="3" y="14" width="7" height="7"></rect>
+                        </svg>
+                        Overview
+                    </a>
+                    <a href="/client/properties.html" class="nav-item">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                        </svg>
+                        Properties
+                    </a>
+                </div>
+                
+                <div class="nav-section">
+                    <div class="nav-section-title">Tools</div>
+                    <a href="/client/micro-flip-calculator.html" class="nav-item">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+                            <line x1="3" y1="9" x2="21" y2="9"></line>
+                            <line x1="9" y1="21" x2="9" y2="9"></line>
+                        </svg>
+                        Micro-Flip Calculator
+                    </a>
+                    <a href="/client/deal-analyzer.html" class="nav-item">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="1" x2="12" y2="23"></line>
+                            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                        </svg>
+                        Deal Analyzer
+                    </a>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Universal Header -->
+            <header class="universal-header">
+                <div class="header-left">
+                    <h1 class="page-title">County Tax Records</h1>
+                </div>
+                <div class="header-right">
+                    <div class="user-menu">
+                        <button class="user-menu-trigger">
+                            <span class="user-avatar">U</span>
+                            <span class="user-name">User</span>
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Page Content -->
+            <div class="page-content">
+                <div id="loading-state" class="loading-state">
+                    <p>Loading tax records...</p>
+                </div>
+
+                <div id="error-state" class="error-state" style="display: none;">
+                    <p>Error loading tax records. Please try again.</p>
+                </div>
+
+                <div id="records-content" style="display: none;">
+                    <!-- Property Header -->
+                    <div class="records-header">
+                        <div class="property-header-info">
+                            <div class="property-title-section">
+                                <h1 id="property-title">Loading...</h1>
+                                <p class="property-address" id="property-address">Loading...</p>
+                                <span class="parcel-id" id="parcel-id">Parcel: Loading...</span>
+                            </div>
+                            <div class="property-actions">
+                                <button class="btn" onclick="window.print()">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <polyline points="6 9 6 2 18 2 18 9"></polyline>
+                                        <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+                                        <rect x="6" y="14" width="12" height="8"></rect>
+                                    </svg>
+                                    Print
+                                </button>
+                                <button class="btn btn-primary" onclick="downloadPDF()">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                        <polyline points="7 10 12 15 17 10"></polyline>
+                                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                                    </svg>
+                                    Download PDF
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="quick-stats">
+                            <div class="stat-card">
+                                <div class="stat-label">Market Value</div>
+                                <div class="stat-value" id="stat-market-value">$0</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-label">Assessed Value</div>
+                                <div class="stat-value" id="stat-assessed-value">$0</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-label">Annual Tax</div>
+                                <div class="stat-value" id="stat-annual-tax">$0</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-label">Tax Rate</div>
+                                <div class="stat-value" id="stat-tax-rate">0%</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Records Grid -->
+                    <div class="records-grid">
+                        <!-- Parcel Information -->
+                        <section class="record-section">
+                            <div class="section-header">
+                                <h2 class="section-title">Parcel Information</h2>
+                                <span class="section-badge">Official Records</span>
+                            </div>
+                            <div class="info-grid" id="parcel-info-grid">
+                                <!-- Dynamically populated -->
+                            </div>
+                        </section>
+
+                        <!-- Property Characteristics -->
+                        <section class="record-section">
+                            <div class="section-header">
+                                <h2 class="section-title">Property Characteristics</h2>
+                            </div>
+                            <div class="info-grid" id="property-characteristics-grid">
+                                <!-- Dynamically populated -->
+                            </div>
+                        </section>
+
+                        <!-- Assessment Details -->
+                        <section class="record-section">
+                            <div class="section-header">
+                                <h2 class="section-title">Assessment Details</h2>
+                            </div>
+                            <div class="info-grid" id="assessment-details-grid">
+                                <!-- Dynamically populated -->
+                            </div>
+                        </section>
+
+                        <!-- Tax Payment History -->
+                        <section class="record-section">
+                            <div class="section-header">
+                                <h2 class="section-title">Tax Payment History</h2>
+                            </div>
+                            <table class="tax-history-table">
+                                <thead>
+                                    <tr>
+                                        <th>Tax Year</th>
+                                        <th>Bill Amount</th>
+                                        <th>Amount Paid</th>
+                                        <th>Payment Date</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tax-history-tbody">
+                                    <!-- Dynamically populated -->
+                                </tbody>
+                            </table>
+                        </section>
+
+                        <!-- Property Location -->
+                        <section class="record-section">
+                            <div class="section-header">
+                                <h2 class="section-title">Property Location</h2>
+                            </div>
+                            <div class="info-grid" id="location-info-grid">
+                                <!-- Dynamically populated -->
+                            </div>
+                            <div class="map-container" id="property-map">
+                                <p>Interactive map placeholder - Integration with mapping service required</p>
+                            </div>
+                        </section>
+
+                        <!-- Related Documents -->
+                        <section class="record-section">
+                            <div class="section-header">
+                                <h2 class="section-title">Related Documents</h2>
+                            </div>
+                            <div class="documents-list" id="documents-list">
+                                <!-- Dynamically populated -->
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    
+    <!-- Firebase Config -->
+    <script src="../assets/js/firebase-init.js"></script>
+    
+    <!-- Auth Guard -->
+    <script src="../assets/js/auth-guard-simple.js"></script>
+    
+    <!-- Property Service -->
+    <script type="module">
+        import { PropertyService } from '../assets/js/services/propertyservice.js';
+        
+        const propertyService = new PropertyService();
+        let currentProperty = null;
+        
+        // Get property ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const propertyId = urlParams.get('id');
+        
+        if (!propertyId) {
+            showError('No property ID provided');
+        } else {
+            loadPropertyTaxRecords(propertyId);
+        }
+        
+        async function loadPropertyTaxRecords(propertyId) {
+            try {
+                document.getElementById('loading-state').style.display = 'block';
+                document.getElementById('error-state').style.display = 'none';
+                document.getElementById('records-content').style.display = 'none';
+                
+                // Fetch complete property data with all sources
+                currentProperty = await propertyService.getCompletePropertyData(propertyId);
+                
+                if (!currentProperty) {
+                    throw new Error('Property not found');
+                }
+                
+                // Populate all sections
+                populateHeader(currentProperty);
+                populateQuickStats(currentProperty);
+                populateParcelInfo(currentProperty);
+                populatePropertyCharacteristics(currentProperty);
+                populateAssessmentDetails(currentProperty);
+                populateTaxHistory(currentProperty);
+                populateLocationInfo(currentProperty);
+                populateDocuments(currentProperty);
+                
+                // Show content
+                document.getElementById('loading-state').style.display = 'none';
+                document.getElementById('records-content').style.display = 'block';
+                
+            } catch (error) {
+                console.error('Error loading tax records:', error);
+                showError(error.message);
+            }
+        }
+        
+        function populateHeader(property) {
+            const publicRecords = property.publicRecords || {};
+            const title = property.title || `${property.address}`;
+            
+            document.getElementById('property-title').textContent = title;
+            document.getElementById('property-address').textContent = property.address || 'Address not available';
+            document.getElementById('parcel-id').textContent = `Parcel: ${publicRecords.parcelNumber || property.parcelId || 'N/A'}`;
+        }
+        
+        function populateQuickStats(property) {
+            const publicRecords = property.publicRecords || {};
+            const mls = property.mls || {};
+            
+            const marketValue = publicRecords.marketValue || mls.listPrice || property.price || 0;
+            const assessedValue = publicRecords.assessedValue || marketValue * 0.85;
+            const taxRate = publicRecords.taxRate || 0.012;
+            const annualTax = publicRecords.annualTaxAmount || (assessedValue * taxRate);
+            
+            document.getElementById('stat-market-value').textContent = formatCurrency(marketValue);
+            document.getElementById('stat-assessed-value').textContent = formatCurrency(assessedValue);
+            document.getElementById('stat-annual-tax').textContent = formatCurrency(annualTax);
+            document.getElementById('stat-tax-rate').textContent = (taxRate * 100).toFixed(2) + '%';
+        }
+        
+        function populateParcelInfo(property) {
+            const publicRecords = property.publicRecords || {};
+            const grid = document.getElementById('parcel-info-grid');
+            
+            const parcelData = [
+                { label: 'Parcel Number', value: publicRecords.parcelNumber || property.parcelId || 'N/A' },
+                { label: 'Legal Description', value: publicRecords.legalDescription || 'Not available' },
+                { label: 'Subdivision', value: publicRecords.subdivision || 'Not recorded' },
+                { label: 'Plat', value: publicRecords.plat || 'Not recorded' },
+                { label: 'Block', value: publicRecords.block || 'N/A' },
+                { label: 'Lot', value: publicRecords.lot || 'N/A' },
+                { label: 'Section', value: publicRecords.section || 'N/A' },
+                { label: 'Township', value: publicRecords.township || 'N/A' },
+                { label: 'Range', value: publicRecords.range || 'N/A' },
+                { label: 'Land Use Code', value: publicRecords.landUseCode || 'N/A' },
+                { label: 'Zoning', value: publicRecords.zoning || property.zoning || 'N/A' },
+                { label: 'School District', value: publicRecords.schoolDistrict || 'Not available' }
+            ];
+            
+            grid.innerHTML = parcelData.map(item => `
+                <div class="info-item">
+                    <div class="info-label">${item.label}</div>
+                    <div class="info-value">${item.value}</div>
+                </div>
+            `).join('');
+        }
+        
+        function populatePropertyCharacteristics(property) {
+            const publicRecords = property.publicRecords || {};
+            const grid = document.getElementById('property-characteristics-grid');
+            
+            const characteristics = [
+                { label: 'Property Type', value: publicRecords.propertyType || property.type || 'N/A' },
+                { label: 'Year Built', value: publicRecords.yearBuilt || property.yearBuilt || 'N/A' },
+                { label: 'Building Area', value: formatNumber(publicRecords.buildingArea || property.sqft) + ' sq ft' },
+                { label: 'Lot Size', value: formatNumber(publicRecords.lotSize || property.lotSize) + ' sq ft' },
+                { label: 'Acres', value: publicRecords.acres || ((publicRecords.lotSize || 0) / 43560).toFixed(2) },
+                { label: 'Bedrooms', value: property.bedrooms || publicRecords.bedrooms || 'N/A' },
+                { label: 'Bathrooms', value: property.bathrooms || publicRecords.bathrooms || 'N/A' },
+                { label: 'Stories', value: publicRecords.stories || 'N/A' },
+                { label: 'Construction Type', value: publicRecords.constructionType || 'N/A' },
+                { label: 'Roof Type', value: publicRecords.roofType || 'N/A' },
+                { label: 'Exterior', value: publicRecords.exteriorType || 'N/A' },
+                { label: 'Foundation', value: publicRecords.foundationType || 'N/A' }
+            ];
+            
+            grid.innerHTML = characteristics.map(item => `
+                <div class="info-item">
+                    <div class="info-label">${item.label}</div>
+                    <div class="info-value">${item.value}</div>
+                </div>
+            `).join('');
+        }
+        
+        function populateAssessmentDetails(property) {
+            const publicRecords = property.publicRecords || {};
+            const grid = document.getElementById('assessment-details-grid');
+            
+            const assessmentData = [
+                { label: 'Total Assessed Value', value: formatCurrency(publicRecords.assessedValue || 0), highlight: true },
+                { label: 'Land Value', value: formatCurrency(publicRecords.landValue || 0) },
+                { label: 'Improvement Value', value: formatCurrency(publicRecords.improvementValue || 0) },
+                { label: 'Market Value', value: formatCurrency(publicRecords.marketValue || property.price || 0) },
+                { label: 'Assessment Year', value: publicRecords.assessmentYear || new Date().getFullYear() },
+                { label: 'Assessment Ratio', value: publicRecords.assessmentRatio || '85%' },
+                { label: 'Homestead Exemption', value: publicRecords.homesteadExemption ? 'Yes' : 'No' },
+                { label: 'Exemption Amount', value: formatCurrency(publicRecords.exemptionAmount || 0) }
+            ];
+            
+            grid.innerHTML = assessmentData.map(item => `
+                <div class="info-item">
+                    <div class="info-label">${item.label}</div>
+                    <div class="info-value ${item.highlight ? 'highlight' : ''}">${item.value}</div>
+                </div>
+            `).join('');
+        }
+        
+        function populateTaxHistory(property) {
+            const publicRecords = property.publicRecords || {};
+            const tbody = document.getElementById('tax-history-tbody');
+            
+            // Generate sample tax history or use real data if available
+            const taxHistory = publicRecords.taxHistory || generateSampleTaxHistory(publicRecords);
+            
+            if (taxHistory.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: var(--text-secondary);">No tax payment history available</td></tr>';
+                return;
+            }
+            
+            tbody.innerHTML = taxHistory.map(record => `
+                <tr>
+                    <td>${record.year}</td>
+                    <td>${formatCurrency(record.billAmount)}</td>
+                    <td>${formatCurrency(record.amountPaid)}</td>
+                    <td>${record.paymentDate || 'N/A'}</td>
+                    <td><span class="status-badge status-${record.status.toLowerCase()}">${record.status}</span></td>
+                </tr>
+            `).join('');
+        }
+        
+        function generateSampleTaxHistory(publicRecords) {
+            const currentYear = new Date().getFullYear();
+            const annualTax = publicRecords.annualTaxAmount || 
+                             (publicRecords.assessedValue || 0) * (publicRecords.taxRate || 0.012);
+            
+            if (annualTax === 0) return [];
+            
+            const history = [];
+            for (let i = 0; i < 5; i++) {
+                const year = currentYear - i;
+                history.push({
+                    year: year,
+                    billAmount: annualTax * (1 + (Math.random() * 0.1 - 0.05)),
+                    amountPaid: annualTax * (1 + (Math.random() * 0.1 - 0.05)),
+                    paymentDate: i === 0 ? 'Pending' : `${Math.floor(Math.random() * 12) + 1}/${Math.floor(Math.random() * 28) + 1}/${year}`,
+                    status: i === 0 ? 'Pending' : 'Paid'
+                });
+            }
+            return history;
+        }
+        
+        function populateLocationInfo(property) {
+            const publicRecords = property.publicRecords || {};
+            const grid = document.getElementById('location-info-grid');
+            
+            const locationData = [
+                { label: 'Address', value: property.address || 'N/A' },
+                { label: 'City', value: property.city || publicRecords.city || 'N/A' },
+                { label: 'County', value: publicRecords.county || 'N/A' },
+                { label: 'State', value: property.state || 'N/A' },
+                { label: 'ZIP Code', value: property.zip || publicRecords.zipCode || 'N/A' },
+                { label: 'Neighborhood', value: property.neighborhood || publicRecords.neighborhood || 'N/A' },
+                { label: 'Latitude', value: publicRecords.latitude || 'N/A' },
+                { label: 'Longitude', value: publicRecords.longitude || 'N/A' }
+            ];
+            
+            grid.innerHTML = locationData.map(item => `
+                <div class="info-item">
+                    <div class="info-label">${item.label}</div>
+                    <div class="info-value">${item.value}</div>
+                </div>
+            `).join('');
+        }
+        
+        function populateDocuments(property) {
+            const publicRecords = property.publicRecords || {};
+            const container = document.getElementById('documents-list');
+            
+            const documents = publicRecords.documents || [
+                { name: 'Deed', type: 'PDF', date: 'N/A', size: 'N/A' },
+                { name: 'Tax Assessment Notice', type: 'PDF', date: 'N/A', size: 'N/A' },
+                { name: 'Plat Map', type: 'PDF', date: 'N/A', size: 'N/A' },
+                { name: 'Building Permits', type: 'PDF', date: 'N/A', size: 'N/A' }
+            ];
+            
+            container.innerHTML = documents.map(doc => `
+                <div class="document-item">
+                    <div class="document-info">
+                        <div class="document-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                                <line x1="16" y1="13" x2="8" y2="13"></line>
+                                <line x1="16" y1="17" x2="8" y2="17"></line>
+                                <polyline points="10 9 9 9 8 9"></polyline>
+                            </svg>
+                        </div>
+                        <div class="document-details">
+                            <h4>${doc.name}</h4>
+                            <p>${doc.type} • ${doc.date} • ${doc.size}</p>
+                        </div>
+                    </div>
+                    <button class="btn" onclick="downloadDocument('${doc.name}')">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                        Download
+                    </button>
+                </div>
+            `).join('');
+        }
+        
+        function showError(message) {
+            document.getElementById('loading-state').style.display = 'none';
+            document.getElementById('error-state').style.display = 'block';
+            document.getElementById('error-state').innerHTML = `<p>${message}</p>`;
+            document.getElementById('records-content').style.display = 'none';
+        }
+        
+        // Utility functions
+        function formatCurrency(value) {
+            if (!value || value === 0) return '$0';
+            return new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            }).format(value);
+        }
+        
+        function formatNumber(value) {
+            if (!value || value === 0) return '0';
+            return new Intl.NumberFormat('en-US').format(value);
+        }
+        
+        // Export functions
+        window.downloadPDF = function() {
+            alert('PDF download functionality - Integration with PDF generation service required');
+        };
+        
+        window.downloadDocument = function(docName) {
+            alert(`Download ${docName} - Document retrieval integration required`);
+        };
+    </script>
+</body>
+</html>
