@@ -222,6 +222,46 @@ After completing QA/QC, provide a report like this:
 **This QA/QC assessment is MANDATORY before any completion claim.**
 **Perform it EVERY TIME without exception.**
 
+### **RULE 6: MANDATORY DESIGN CONSISTENCY**
+**ALL pages and components you create MUST follow the existing site design:**
+
+#### **Design System Requirements**
+1. **Check existing pages FIRST** - Open and review similar pages in the browser
+2. **Match fonts exactly** - Use the same font families (Inter, DM Serif Display, Geist Sans, etc.)
+3. **Match colors exactly** - Use the same color palette and CSS variables
+4. **Match layout structure** - Use the same header, navigation, content wrapper patterns
+5. **Match component styling** - Buttons, cards, forms must look identical to existing ones
+6. **Match animations and transitions** - Use the same timing and easing functions
+
+#### **Before Creating ANY New Page:**
+1. Open the main site (index.html) in a browser
+2. Open similar existing pages (admin/client dashboards, etc.)
+3. Take note of:
+   - Header design and navigation structure
+   - Color scheme and gradients used
+   - Button styles and hover states
+   - Card/section layouts and spacing
+   - Typography (font families, sizes, weights)
+   - Animations and micro-interactions
+4. Use the EXACT same CSS patterns and design tokens
+
+#### **NEVER:**
+- ❌ Create pages with different fonts than the site uses
+- ❌ Use different button styles or colors
+- ❌ Invent new layout patterns when existing ones exist
+- ❌ Use different spacing or sizing conventions
+- ❌ Create inconsistent navigation structures
+- ❌ Assume design choices - always check existing pages
+
+#### **ALWAYS:**
+- ✅ Copy and adapt CSS from existing pages
+- ✅ Reuse existing component styles
+- ✅ Match the visual hierarchy of similar pages
+- ✅ Test your page next to existing pages to compare
+- ✅ Ask which design pattern to follow if unclear
+
+**If a page doesn't match the site's design, it's not complete - no matter how functional the code is.**
+
 ### **RULE 5: MANDATORY DEVELOPMENT PIPELINE (NEVER SKIP)**
 **ALL code changes MUST flow through this pipeline. NO EXCEPTIONS.**
 
