@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.69.0] - 2025-11-03
+
+### Added
+- feat(analytics): Add color-coded Firebase services display
+
+
 ## [0.68.7] - 2025-11-03
 
 ### Fixed
@@ -2629,7 +2635,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.68.7...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.69.0...HEAD
+
+
+## [0.69.0] - 2025-11-03
+
+### Added
+- feat(analytics): Add color-coded Firebase services display
 
 
 ## [0.68.7] - 2025-11-03
@@ -3657,3 +3669,4 @@ To generate changelog entries:
 [0.68.5]: https://github.com/SirsiMaster/Assiduous/compare/v0.68.4...v0.68.5
 [0.68.6]: https://github.com/SirsiMaster/Assiduous/compare/v0.68.5...v0.68.6
 [0.68.7]: https://github.com/SirsiMaster/Assiduous/compare/v0.68.6...v0.68.7
+[0.69.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.68.7...v0.69.0
