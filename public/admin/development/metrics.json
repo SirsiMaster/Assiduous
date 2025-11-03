@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-11-03T02:27:34.404Z",
+  "lastUpdated": "2025-11-03T02:30:11.969Z",
   "summary": {
     "health": "Good",
     "score": 46,
@@ -110,35 +110,35 @@
     "laborCost": 33600,
     "toolsCost": 1815,
     "monthsElapsed": "2.8",
-    "totalCommits": 678,
+    "totalCommits": 679,
     "totalFiles": 662,
     "activeDays": 28,
     "totalDays": 85,
     "projectAgeDays": 85,
-    "linesAdded": 9649268,
-    "linesDeleted": 9369886,
-    "netLines": 279382,
-    "velocity": "24.2",
+    "linesAdded": 9649413,
+    "linesDeleted": 9369941,
+    "netLines": 279472,
+    "velocity": "24.3",
     "completionPercentage": 46,
     "actualStartDate": "2025-08-10"
   },
   "today": {
     "date": "2025-11-03",
-    "hours": "29.4",
-    "cost": 4406,
-    "commits": 89,
+    "hours": "29.7",
+    "cost": 4455,
+    "commits": 90,
     "deployments": 0
   },
   "thisWeek": {
-    "hours": "37.0",
-    "cost": 5544,
-    "commits": 112,
+    "hours": "37.3",
+    "cost": 5594,
+    "commits": 113,
     "days": 7
   },
   "thisMonth": {
-    "hours": "117.8",
-    "cost": 17672,
-    "commits": 357
+    "hours": "118.1",
+    "cost": 17721,
+    "commits": 358
   },
   "quality": {
     "testCoverage": {
@@ -172,7 +172,7 @@
       "critical": 0,
       "total": 0
     },
-    "lastAudit": "2025-11-03T02:27:11.856Z",
+    "lastAudit": "2025-11-03T02:29:45.398Z",
     "dependencies": {
       "total": {
         "prod": 256,
@@ -218,14 +218,14 @@
     }
   },
   "deployment": {
-    "lastDeployment": "2025-11-02 21:02:33 -0500",
-    "totalDeployments": 121,
+    "lastDeployment": "2025-11-02 21:29:20 -0500",
+    "totalDeployments": 122,
     "deploymentFrequency": "Weekly",
     "environments": {
       "production": {
         "url": "https://assiduous-prod.web.app",
         "status": "Active",
-        "lastDeploy": "2025-11-02 21:02:33 -0500"
+        "lastDeploy": "2025-11-02 21:29:20 -0500"
       },
       "staging": {
         "url": "https://assiduous-staging.web.app",
@@ -271,7 +271,7 @@
   },
   "productivity": {
     "velocityTrend": "increasing",
-    "weeklyCommits": 112,
+    "weeklyCommits": 113,
     "contributors": {
       "total": 0,
       "active": 0
@@ -349,6 +349,12 @@
   },
   "recentActivity": [
     {
+      "hash": "736a38c41903a6f1575243a2c097c309648f31fd",
+      "message": "feat(analytics): Make analytics page fully dynamic with real metrics",
+      "author": "SirsiMaster",
+      "date": "2025-11-02 21:29:20 -0500"
+    },
+    {
       "hash": "05acda83d9bb23635b4456b9c0fafba8c0d27520",
       "message": "refactor(metrics): Clean up metrics workflow - remove dead code and Firebase dependencies",
       "author": "SirsiMaster",
@@ -401,16 +407,10 @@
       "message": "refactor(pipeline): unify to single source of truth - public/ only",
       "author": "SirsiMaster",
       "date": "2025-11-02 21:02:33 -0500"
-    },
-    {
-      "hash": "2aece0e8a677cf6f3bf26a65c9ca683198f6328d",
-      "message": "chore(metrics): auto-updated metrics from git hook",
-      "author": "SirsiMaster",
-      "date": "2025-11-02 20:53:08 -0500"
     }
   ],
   "automation": {
-    "lastRun": "2025-11-03T02:27:34.405Z",
+    "lastRun": "2025-11-03T02:30:11.969Z",
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",
