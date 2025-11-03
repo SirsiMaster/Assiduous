@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-11-03T04:01:48.610Z",
+  "lastUpdated": "2025-11-03T04:24:13.854Z",
   "summary": {
     "health": "Good",
     "score": 46,
@@ -104,21 +104,21 @@
     }
   },
   "project": {
-    "totalHours": "237",
+    "totalHours": "238",
     "avgHoursPerDay": "8.5",
-    "totalCost": 37365,
-    "laborCost": 35550,
+    "totalCost": 37515,
+    "laborCost": 35700,
     "toolsCost": 1815,
     "monthsElapsed": "2.8",
-    "totalCommits": 717,
-    "totalFiles": 662,
+    "totalCommits": 722,
+    "totalFiles": 664,
     "activeDays": 28,
     "totalDays": 85,
     "projectAgeDays": 85,
-    "linesAdded": 9650997,
-    "linesDeleted": 9371039,
-    "netLines": 279958,
-    "velocity": "25.6",
+    "linesAdded": 9651702,
+    "linesDeleted": 9371071,
+    "netLines": 280631,
+    "velocity": "25.8",
     "completionPercentage": 46,
     "actualStartDate": "2025-08-10"
   },
@@ -130,15 +130,15 @@
     "deployments": 0
   },
   "thisWeek": {
-    "hours": "49.8",
-    "cost": 7475,
-    "commits": 151,
+    "hours": "51.5",
+    "cost": 7722,
+    "commits": 156,
     "days": 7
   },
   "thisMonth": {
-    "hours": "130.7",
-    "cost": 19602,
-    "commits": 396
+    "hours": "132.3",
+    "cost": 19850,
+    "commits": 401
   },
   "quality": {
     "testCoverage": {
@@ -172,7 +172,7 @@
       "critical": 0,
       "total": 0
     },
-    "lastAudit": "2025-11-03T04:01:18.556Z",
+    "lastAudit": "2025-11-03T04:23:50.528Z",
     "dependencies": {
       "total": {
         "prod": 256,
@@ -251,9 +251,9 @@
     }
   },
   "documentation": {
-    "markdownFiles": 2504,
-    "jsFilesTotal": 23927,
-    "jsFilesDocumented": 23927,
+    "markdownFiles": 2505,
+    "jsFilesTotal": 23928,
+    "jsFilesDocumented": 23928,
     "coverage": 427,
     "apiEndpoints": {
       "total": 0,
@@ -267,16 +267,16 @@
     "changelog": true,
     "contributing": false,
     "license": false,
-    "lastUpdate": "2025-11-03 03:40:13 +0000"
+    "lastUpdate": "2025-11-02 23:23:14 -0500"
   },
   "productivity": {
     "velocityTrend": "increasing",
-    "weeklyCommits": 151,
+    "weeklyCommits": 156,
     "contributors": {
       "total": 0,
       "active": 0
     },
-    "averageCommitSize": 120,
+    "averageCommitSize": 119,
     "pullRequests": {
       "open": 0,
       "merged": 0,
@@ -349,6 +349,36 @@
   },
   "recentActivity": [
     {
+      "hash": "42a35dfa60bdbf8e91a2082a2f6d1d1f8cfa51d0",
+      "message": "docs: Add portal completion implementation specification",
+      "author": "SirsiMaster",
+      "date": "2025-11-02 23:23:14 -0500"
+    },
+    {
+      "hash": "5d2fff0968e5fa457fa6690b4a1e5f9af12327ee",
+      "message": "chore(release): Bump version to 0.74.0 [skip ci]",
+      "author": "github-actions[bot]",
+      "date": "2025-11-03 04:13:50 +0000"
+    },
+    {
+      "hash": "ed27e5930d473e256cea6501641a5a4bc4703a7b",
+      "message": "chore: Update metrics",
+      "author": "SirsiMaster",
+      "date": "2025-11-02 23:13:36 -0500"
+    },
+    {
+      "hash": "f4258a0fe0d82d9fbbe0a029fffd24bc444d1659",
+      "message": "feat(admin): Add bulk operations for properties/agents/clients",
+      "author": "SirsiMaster",
+      "date": "2025-11-02 23:13:10 -0500"
+    },
+    {
+      "hash": "2c2ed339dfd32c65c4db2aa1dd0f73b6879c3c81",
+      "message": "chore(release): Bump version to 0.73.2 [skip ci]",
+      "author": "github-actions[bot]",
+      "date": "2025-11-03 04:01:07 +0000"
+    },
+    {
       "hash": "08afec34706f16344fc7677964a7a77c5d3915da",
       "message": "fix: Change metrics.json fetch paths to relative paths",
       "author": "SirsiMaster",
@@ -377,40 +407,10 @@
       "message": "fix(dashboard): Correct today's metrics to realistic values (4.5 hrs, 23 commits)",
       "author": "SirsiMaster",
       "date": "2025-11-02 22:39:14 -0500"
-    },
-    {
-      "hash": "8b9b7f654cb828a4bb7e0db24836e4a05ab7ebb7",
-      "message": "chore(release): Bump version to 0.73.0 [skip ci]",
-      "author": "github-actions[bot]",
-      "date": "2025-11-03 03:38:31 +0000"
-    },
-    {
-      "hash": "dc5e2a1b14120ea4e637a7717fdd5232f0160783",
-      "message": "feat(dashboard): Add today's activity metrics - 39.3 hrs, $5,891, 119 commits",
-      "author": "SirsiMaster",
-      "date": "2025-11-02 22:38:10 -0500"
-    },
-    {
-      "hash": "2ecca243dedfb89d171d43487f53df294b0c5366",
-      "message": "chore(release): Bump version to 0.72.2 [skip ci]",
-      "author": "github-actions[bot]",
-      "date": "2025-11-03 03:34:27 +0000"
-    },
-    {
-      "hash": "734ed3c9d7941fa89421b8923b2fe982d233a0d2",
-      "message": "fix(dashboard): Use correct metrics from metrics.json as default values",
-      "author": "SirsiMaster",
-      "date": "2025-11-02 22:34:08 -0500"
-    },
-    {
-      "hash": "6b03839dbcb885da3f408710cdfcc515c8cfeb37",
-      "message": "chore(release): Bump version to 0.72.1 [skip ci]",
-      "author": "github-actions[bot]",
-      "date": "2025-11-03 03:32:50 +0000"
     }
   ],
   "automation": {
-    "lastRun": "2025-11-03T04:01:48.610Z",
+    "lastRun": "2025-11-03T04:24:13.854Z",
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",
