@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.67.3] - 2025-11-03
+
+### Fixed
+- fix(costs): update to correct rates - $150/hr and $650/month tools
+
+
 ## [0.67.2] - 2025-11-03
 
 ### Fixed
@@ -2569,7 +2575,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.67.2...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.67.3...HEAD
+
+
+## [0.67.3] - 2025-11-03
+
+### Fixed
+- fix(costs): update to correct rates - $150/hr and $650/month tools
 
 
 ## [0.67.2] - 2025-11-03
@@ -3527,3 +3539,4 @@ To generate changelog entries:
 [0.67.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.66.3...v0.67.0
 [0.67.1]: https://github.com/SirsiMaster/Assiduous/compare/v0.67.0...v0.67.1
 [0.67.2]: https://github.com/SirsiMaster/Assiduous/compare/v0.67.1...v0.67.2
+[0.67.3]: https://github.com/SirsiMaster/Assiduous/compare/v0.67.2...v0.67.3
