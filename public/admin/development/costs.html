@@ -637,14 +637,41 @@
         </main>
     </div>
 
-    <!-- Load the developmentcostservice if it exists -->
+    <!-- Load REAL metrics from cache -->
     <script>
-        // Simple functionality for the page
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', async function() {
             console.log('Development Costs page loaded');
             
-            // Add click handlers for sirsi-button components
-            document.querySelectorAll('sirsi-button').forEach(btn => {
+            // Load real metrics from cache
+            try {
+                const response = await fetch('/admin/development/metrics_cache.json');
+                if (response.ok) {
+                    const metrics = await response.json();
+                    console.log('Loaded real cost metrics:', metrics);
+                    
+                    // Update all metric values with REAL data
+                    const metricValues = document.querySelectorAll('.metric-value');
+                    if (metricValues[0]) metricValues[0].textContent = `$${parseInt(metrics.today?.cost || 0).toLocaleString()}`;
+                    if (metricValues[1]) metricValues[1].textContent = `$${parseInt(metrics.thisWeek?.cost || 0).toLocaleString()}`;
+                    if (metricValues[2]) metricValues[2].textContent = `$${parseInt(metrics.thisMonth?.cost || 0).toLocaleString()}`;
+                    if (metricValues[3]) metricValues[3].textContent = `$${parseInt(metrics.project?.totalCost || 0).toLocaleString()}`;
+                    
+                    // Update metric changes with hours
+                    const metricChanges = document.querySelectorAll('.metric-change');
+                    if (metricChanges[0]) metricChanges[0].textContent = `${metrics.today?.hours || 0}h worked`;
+                    if (metricChanges[1]) metricChanges[1].textContent = `${metrics.thisWeek?.hours || 0}h • ${metrics.thisWeek?.days || 0} days`;
+                    if (metricChanges[3]) metricChanges[3].textContent = `Since Aug 2025 • ${metrics.project?.totalHours || 0}h`;
+                    
+                    console.log('Cost page updated with real metrics');
+                } else {
+                    console.warn('Metrics cache not available');
+                }
+            } catch (error) {
+                console.error('Error loading metrics:', error);
+            }
+            
+            // Add click handlers for buttons
+            document.querySelectorAll('sirsi-button, button').forEach(btn => {
                 btn.addEventListener('click', function(e) {
                     const buttonText = this.textContent.trim();
                     if (buttonText === 'Export CSV') {
