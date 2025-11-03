@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-11-03T01:49:01.650Z",
+  "lastUpdated": "2025-11-03T01:50:23.288Z",
   "summary": {
     "health": "Good",
     "score": 46,
@@ -104,40 +104,40 @@
     }
   },
   "project": {
-    "totalHours": "219",
-    "avgHoursPerDay": "7.8",
-    "totalCost": 32850,
-    "laborCost": 32850,
+    "totalHours": "220",
+    "avgHoursPerDay": "7.9",
+    "totalCost": 33000,
+    "laborCost": 33000,
     "toolsCost": 450,
-    "totalCommits": 664,
+    "totalCommits": 666,
     "totalFiles": 931,
     "activeDays": 28,
     "totalDays": 85,
     "projectAgeDays": 85,
-    "linesAdded": 9648326,
-    "linesDeleted": 8998411,
-    "netLines": 649915,
-    "velocity": "23.7",
+    "linesAdded": 9648493,
+    "linesDeleted": 8998556,
+    "netLines": 649937,
+    "velocity": "23.8",
     "completionPercentage": 46,
     "actualStartDate": "2025-08-10"
   },
   "today": {
     "date": "2025-11-03",
-    "hours": "24.8",
-    "cost": 3713,
-    "commits": 75,
+    "hours": "25.4",
+    "cost": 3812,
+    "commits": 77,
     "deployments": 0
   },
   "thisWeek": {
-    "hours": "32.3",
-    "cost": 4851,
-    "commits": 98,
+    "hours": "33.0",
+    "cost": 4950,
+    "commits": 100,
     "days": 7
   },
   "thisMonth": {
-    "hours": "113.2",
-    "cost": 16979,
-    "commits": 343
+    "hours": "113.9",
+    "cost": 17078,
+    "commits": 345
   },
   "quality": {
     "testCoverage": {
@@ -171,7 +171,7 @@
       "critical": 0,
       "total": 0
     },
-    "lastAudit": "2025-11-03T01:48:36.827Z",
+    "lastAudit": "2025-11-03T01:50:00.137Z",
     "dependencies": {
       "total": {
         "prod": 256,
@@ -266,11 +266,11 @@
     "changelog": true,
     "contributing": false,
     "license": false,
-    "lastUpdate": "2025-11-02 20:33:50 -0500"
+    "lastUpdate": "2025-11-03 01:34:11 +0000"
   },
   "productivity": {
     "velocityTrend": "increasing",
-    "weeklyCommits": 98,
+    "weeklyCommits": 100,
     "contributors": {
       "total": 0,
       "active": 0
@@ -348,6 +348,18 @@
   },
   "recentActivity": [
     {
+      "hash": "9ec36663355954039198c32df09c2c6d7c605283",
+      "message": "fix(metrics): repair automation to write to both public/ and firebase-migration-package/",
+      "author": "SirsiMaster",
+      "date": "2025-11-02 20:49:20 -0500"
+    },
+    {
+      "hash": "ab1cf65064af387e7c2ac08a16e4f23f6fc5c6cc",
+      "message": "chore(release): Bump version to 0.67.0 [skip ci]",
+      "author": "github-actions[bot]",
+      "date": "2025-11-03 01:34:11 +0000"
+    },
+    {
       "hash": "df46e129914cc027d54eb1e71ebd8395ddd22713",
       "message": "feat(metrics): add real metrics service with infrastructure vs business features distinction",
       "author": "SirsiMaster",
@@ -394,22 +406,10 @@
       "message": "docs(pipeline): document emergency production deployment",
       "author": "SirsiMaster",
       "date": "2025-11-02 19:48:20 -0500"
-    },
-    {
-      "hash": "fc7e5a61b549cf21887392c7821050e8e7735c01",
-      "message": "chore(release): Bump version to 0.66.1 [skip ci]",
-      "author": "github-actions[bot]",
-      "date": "2025-11-03 00:43:14 +0000"
-    },
-    {
-      "hash": "23e2306cf6c277b6572a14f0182472735cb410b5",
-      "message": "fix(email): attach SendGrid secrets to Firestore triggers",
-      "author": "SirsiMaster",
-      "date": "2025-11-02 19:42:41 -0500"
     }
   ],
   "automation": {
-    "lastRun": "2025-11-03T01:49:01.650Z",
+    "lastRun": "2025-11-03T01:50:23.288Z",
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",
