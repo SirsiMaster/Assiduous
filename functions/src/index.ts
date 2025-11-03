@@ -1373,7 +1373,10 @@ async function handleTransactionRoutes(
  * Trigger: New lead created - Send notification to agent
  */
 export const onLeadCreated = onDocumentCreated(
-  "leads/{leadId}",
+  {
+    document: "leads/{leadId}",
+    secrets: [sendgridApiKey, sendgridFromEmail],
+  },
   async (event) => {
     if (!event.data) {
       return null;
@@ -1424,7 +1427,10 @@ export const onNewUserCreated = beforeUserCreated(async (event) => {
  * Trigger: User profile created - Send welcome email
  */
 export const onUserProfileCreated = onDocumentCreated(
-  "users/{userId}",
+  {
+    document: "users/{userId}",
+    secrets: [sendgridApiKey, sendgridFromEmail],
+  },
   async (event) => {
     if (!event.data) return null;
     
