@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-11-03T02:11:24.445Z",
+  "lastUpdated": "2025-11-03T02:14:45.447Z",
   "summary": {
     "health": "Good",
     "score": 46,
@@ -104,40 +104,40 @@
     }
   },
   "project": {
-    "totalHours": "221",
+    "totalHours": "222",
     "avgHoursPerDay": "7.9",
-    "totalCost": 33150,
-    "laborCost": 33150,
-    "toolsCost": 450,
-    "totalCommits": 671,
-    "totalFiles": 711,
+    "totalCost": 33300,
+    "laborCost": 33300,
+    "toolsCost": 650,
+    "totalCommits": 673,
+    "totalFiles": 666,
     "activeDays": 28,
     "totalDays": 85,
     "projectAgeDays": 85,
-    "linesAdded": 9648810,
-    "linesDeleted": 9171461,
-    "netLines": 477349,
+    "linesAdded": 9648900,
+    "linesDeleted": 9368588,
+    "netLines": 280312,
     "velocity": "24.0",
     "completionPercentage": 46,
     "actualStartDate": "2025-08-10"
   },
   "today": {
     "date": "2025-11-03",
-    "hours": "27.1",
-    "cost": 4059,
-    "commits": 82,
+    "hours": "27.7",
+    "cost": 4158,
+    "commits": 84,
     "deployments": 0
   },
   "thisWeek": {
-    "hours": "34.6",
-    "cost": 5198,
-    "commits": 105,
+    "hours": "35.3",
+    "cost": 5297,
+    "commits": 107,
     "days": 7
   },
   "thisMonth": {
-    "hours": "115.5",
-    "cost": 17325,
-    "commits": 350
+    "hours": "116.2",
+    "cost": 17424,
+    "commits": 352
   },
   "quality": {
     "testCoverage": {
@@ -171,7 +171,7 @@
       "critical": 0,
       "total": 0
     },
-    "lastAudit": "2025-11-03T02:11:02.807Z",
+    "lastAudit": "2025-11-03T02:14:23.601Z",
     "dependencies": {
       "total": {
         "prod": 256,
@@ -266,11 +266,11 @@
     "changelog": true,
     "contributing": false,
     "license": false,
-    "lastUpdate": "2025-11-02 21:02:33 -0500"
+    "lastUpdate": "2025-11-02 21:11:54 -0500"
   },
   "productivity": {
     "velocityTrend": "increasing",
-    "weeklyCommits": 105,
+    "weeklyCommits": 107,
     "contributors": {
       "total": 0,
       "active": 0
@@ -348,6 +348,18 @@
   },
   "recentActivity": [
     {
+      "hash": "fe961b857a79d65b5cee8ba319e7c3965c53792c",
+      "message": "refactor(metrics): consolidate to single source of truth - metrics.json",
+      "author": "SirsiMaster",
+      "date": "2025-11-02 21:11:54 -0500"
+    },
+    {
+      "hash": "64d05688c579311666889fdf991a2c4eb300595d",
+      "message": "chore(release): Bump version to 0.67.2 [skip ci]",
+      "author": "github-actions[bot]",
+      "date": "2025-11-03 02:06:05 +0000"
+    },
+    {
       "hash": "bc07f27269d1012ef006f60aca994b96972416cd",
       "message": "fix(costs): load real metrics from cache instead of hardcoded values",
       "author": "SirsiMaster",
@@ -394,22 +406,10 @@
       "message": "feat(metrics): add real metrics service with infrastructure vs business features distinction",
       "author": "SirsiMaster",
       "date": "2025-11-02 20:33:50 -0500"
-    },
-    {
-      "hash": "511702c00e5b64810e1f007a526995b875eae39d",
-      "message": "docs(qaqc): update report - all 4 critical bugs FIXED",
-      "author": "SirsiMaster",
-      "date": "2025-11-02 20:16:08 -0500"
-    },
-    {
-      "hash": "71b25dd3e59ae4cec50894b6b889e46511635b2a",
-      "message": "chore(release): Bump version to 0.66.3 [skip ci]",
-      "author": "github-actions[bot]",
-      "date": "2025-11-03 01:08:40 +0000"
     }
   ],
   "automation": {
-    "lastRun": "2025-11-03T02:11:24.445Z",
+    "lastRun": "2025-11-03T02:14:45.447Z",
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",

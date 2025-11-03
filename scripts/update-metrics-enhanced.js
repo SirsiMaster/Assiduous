@@ -14,8 +14,9 @@ const REPO_ROOT = path.resolve(__dirname, '..');
 // SINGLE SOURCE OF TRUTH for all metrics
 const METRICS_FILE = path.join(REPO_ROOT, 'public', 'admin', 'development', 'metrics.json');
 
-// Configuration
-const HOURLY_RATE = 150;
+// Configuration (updated per owner specs)
+const HOURLY_RATE = 150; // Owner development rate
+const MONTHLY_TOOLS_COST = 650; // Monthly tools/services cost
 const AVG_HOURS_PER_COMMIT = 0.33;
 
 // Helper functions
@@ -515,7 +516,7 @@ function calculateAllMetrics() {
             avgHoursPerDay: (estimatedHours / uniqueCommitDays).toFixed(1),
             totalCost: estimatedCost,
             laborCost: estimatedCost,
-            toolsCost: 450,
+            toolsCost: MONTHLY_TOOLS_COST,
             totalCommits: totalCommits,
             totalFiles: fileCount,
             activeDays: uniqueCommitDays,           // Days with actual commits
