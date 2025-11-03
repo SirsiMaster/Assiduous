@@ -124,6 +124,12 @@ export const api = onRequest(
       return;
     }
 
+    // Transaction endpoints
+    if (path.startsWith("/transactions")) {
+      await handleTransactionRoutes(req, res, path, method);
+      return;
+    }
+
     // Route not found
     res.status(404).json({error: "Route not found"});
   } catch (error) {
@@ -1010,6 +1016,353 @@ async function handlePaymentRoutes(
   }
 
   res.status(404).json({error: "Route not found"});
+}
+
+// ============================================================================
+// TRANSACTION ROUTES
+// ============================================================================
+
+async function handleTransactionRoutes(
+  req: any,
+  res: any,
+  path: string,
+  method: string
+) {
+  try {
+    // POST /transactions - Create transaction
+    if (path === "/transactions" && method === "POST") {
+      const authHeader = req.headers.authorization;
+      if (!authHeader) {
+        res.status(401).json({error: "Authentication required"});
+        return;
+      }
+
+      const user = await verifyAuth(authHeader);
+      if (!isAdmin(user) && !isAgent(user)) {
+        res.status(403).json({error: "Forbidden: Admin or Agent role required"});
+        return;
+      }
+
+      const {
+        propertyId,
+        offerPrice,
+        agreedPrice,
+        buyerId,
+        commissionRate = 0.03,
+      } = req.body;
+
+      if (!propertyId || !offerPrice) {
+        res.status(400).json({error: "propertyId and offerPrice are required"});
+        return;
+      }
+
+      const agentId = isAgent(user) ? user.uid : req.body.agentId;
+      const agreed = agreedPrice || offerPrice;
+      const commissionAmount = agreed * commissionRate;
+
+      const transactionData = {
+        propertyId,
+        offerPrice: Number(offerPrice),
+        agreedPrice: Number(agreed),
+        buyerId: buyerId || null,
+        agentId,
+        status: "offer",
+        milestones: [
+          {
+            name: "Offer Submitted",
+            at: admin.firestore.FieldValue.serverTimestamp(),
+          },
+        ],
+        commissionRate: Number(commissionRate),
+        commissionAmount,
+        createdAt: admin.firestore.FieldValue.serverTimestamp(),
+        updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+      };
+
+      const txnRef = await db.collection("transactions").add(transactionData);
+      logger.info("Transaction created", {transactionId: txnRef.id, agentId});
+
+      res.status(201).json({success: true, id: txnRef.id});
+      return;
+    }
+
+    // GET /transactions - List transactions
+    if (path === "/transactions" && method === "GET") {
+      const authHeader = req.headers.authorization;
+      if (!authHeader) {
+        res.status(401).json({error: "Authentication required"});
+        return;
+      }
+
+      const user = await verifyAuth(authHeader);
+      let query = db.collection("transactions");
+
+      // Agents see only their transactions
+      if (isAgent(user)) {
+        query = query.where("agentId", "==", user.uid) as any;
+      }
+
+      // Clients see transactions where they're the buyer
+      if (!isAdmin(user) && !isAgent(user)) {
+        query = query.where("buyerId", "==", user.uid) as any;
+      }
+
+      const snapshot = await query.orderBy("createdAt", "desc").limit(100).get();
+      const transactions = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+
+      res.json({data: transactions});
+      return;
+    }
+
+    // GET /transactions/:id - Get transaction details
+    if (path.match(/\/transactions\/[a-zA-Z0-9]+$/) && method === "GET") {
+      const authHeader = req.headers.authorization;
+      if (!authHeader) {
+        res.status(401).json({error: "Authentication required"});
+        return;
+      }
+
+      const user = await verifyAuth(authHeader);
+      const id = path.split("/").pop();
+      const docRef = db.collection("transactions").doc(id!);
+      const doc = await docRef.get();
+
+      if (!doc.exists) {
+        res.status(404).json({error: "Transaction not found"});
+        return;
+      }
+
+      const txnData = doc.data();
+
+      // Check access permissions
+      if (
+        !isAdmin(user) &&
+        txnData?.agentId !== user.uid &&
+        txnData?.buyerId !== user.uid
+      ) {
+        res.status(403).json({error: "Forbidden: Access denied"});
+        return;
+      }
+
+      res.json({id: doc.id, ...txnData});
+      return;
+    }
+
+    // PUT /transactions/:id - Update transaction
+    if (path.match(/\/transactions\/[a-zA-Z0-9]+$/) && method === "PUT") {
+      const authHeader = req.headers.authorization;
+      if (!authHeader) {
+        res.status(401).json({error: "Authentication required"});
+        return;
+      }
+
+      const user = await verifyAuth(authHeader);
+      const id = path.split("/").pop();
+      const docRef = db.collection("transactions").doc(id!);
+      const doc = await docRef.get();
+
+      if (!doc.exists) {
+        res.status(404).json({error: "Transaction not found"});
+        return;
+      }
+
+      const existingData = doc.data();
+
+      // Only admin or transaction agent can update
+      if (!isAdmin(user) && existingData?.agentId !== user.uid) {
+        res.status(403).json({error: "Forbidden: Access denied"});
+        return;
+      }
+
+      const updateData: any = {
+        ...req.body,
+        updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+      };
+
+      // Recalculate commission if agreed price or rate changes
+      if (updateData.agreedPrice || updateData.commissionRate) {
+        const agreed = updateData.agreedPrice || existingData?.agreedPrice || 0;
+        const rate = updateData.commissionRate || existingData?.commissionRate || 0.03;
+        updateData.commissionAmount = Number(agreed) * Number(rate);
+      }
+
+      // Add milestone if status changes
+      if (updateData.status && updateData.status !== existingData?.status) {
+        updateData.milestones = admin.firestore.FieldValue.arrayUnion({
+          name: `Status: ${updateData.status}`,
+          at: admin.firestore.FieldValue.serverTimestamp(),
+        });
+      }
+
+      await docRef.update(updateData);
+      logger.info("Transaction updated", {transactionId: id, agentId: user.uid});
+
+      res.json({success: true, message: "Transaction updated"});
+      return;
+    }
+
+    // DELETE /transactions/:id - Delete transaction (admin only)
+    if (path.match(/\/transactions\/[a-zA-Z0-9]+$/) && method === "DELETE") {
+      const authHeader = req.headers.authorization;
+      if (!authHeader) {
+        res.status(401).json({error: "Authentication required"});
+        return;
+      }
+
+      const user = await verifyAuth(authHeader);
+      if (!isAdmin(user)) {
+        res.status(403).json({error: "Forbidden: Admin role required"});
+        return;
+      }
+
+      const id = path.split("/").pop();
+      await db.collection("transactions").doc(id!).delete();
+      logger.info("Transaction deleted", {transactionId: id});
+
+      res.json({success: true, message: "Transaction deleted"});
+      return;
+    }
+
+    // POST /transactions/:id/documents:signedUpload - Get signed URL for document upload
+    if (
+      path.match(/\/transactions\/[a-zA-Z0-9]+\/documents:signedUpload$/) &&
+      method === "POST"
+    ) {
+      const authHeader = req.headers.authorization;
+      if (!authHeader) {
+        res.status(401).json({error: "Authentication required"});
+        return;
+      }
+
+      const user = await verifyAuth(authHeader);
+      const transactionId = path.split("/")[2];
+      const txnRef = db.collection("transactions").doc(transactionId);
+      const txnDoc = await txnRef.get();
+
+      if (!txnDoc.exists) {
+        res.status(404).json({error: "Transaction not found"});
+        return;
+      }
+
+      const txnData = txnDoc.data();
+
+      // Check access permissions
+      if (
+        !isAdmin(user) &&
+        txnData?.agentId !== user.uid &&
+        txnData?.buyerId !== user.uid
+      ) {
+        res.status(403).json({error: "Forbidden: Access denied"});
+        return;
+      }
+
+      const {fileName, contentType, docType = "general"} = req.body;
+      if (!fileName || !contentType) {
+        res.status(400).json({error: "fileName and contentType are required"});
+        return;
+      }
+
+      // Generate signed URL for upload
+      const bucket = admin.storage().bucket();
+      const destPath = `documents/${transactionId}/${Date.now()}_${fileName}`;
+      const file = bucket.file(destPath);
+
+      const [url] = await file.getSignedUrl({
+        version: "v4",
+        action: "write",
+        expires: Date.now() + 15 * 60 * 1000, // 15 minutes
+        contentType,
+      });
+
+      // Optionally store document metadata in subcollection
+      await db
+        .collection("transactions")
+        .doc(transactionId)
+        .collection("documents")
+        .add({
+          fileName,
+          storagePath: destPath,
+          type: docType,
+          uploadedBy: user.uid,
+          uploadedAt: admin.firestore.FieldValue.serverTimestamp(),
+        });
+
+      logger.info("Document signed URL generated", {
+        transactionId,
+        fileName,
+        uploadedBy: user.uid,
+      });
+
+      res.json({
+        uploadUrl: url,
+        storagePath: destPath,
+        docType,
+        message: "Upload your file to the uploadUrl using PUT request",
+      });
+      return;
+    }
+
+    // GET /transactions/:id/documents - List transaction documents
+    if (
+      path.match(/\/transactions\/[a-zA-Z0-9]+\/documents$/) &&
+      method === "GET"
+    ) {
+      const authHeader = req.headers.authorization;
+      if (!authHeader) {
+        res.status(401).json({error: "Authentication required"});
+        return;
+      }
+
+      const user = await verifyAuth(authHeader);
+      const transactionId = path.split("/")[2];
+      const txnRef = db.collection("transactions").doc(transactionId);
+      const txnDoc = await txnRef.get();
+
+      if (!txnDoc.exists) {
+        res.status(404).json({error: "Transaction not found"});
+        return;
+      }
+
+      const txnData = txnDoc.data();
+
+      // Check access permissions
+      if (
+        !isAdmin(user) &&
+        txnData?.agentId !== user.uid &&
+        txnData?.buyerId !== user.uid
+      ) {
+        res.status(403).json({error: "Forbidden: Access denied"});
+        return;
+      }
+
+      const docsSnapshot = await db
+        .collection("transactions")
+        .doc(transactionId)
+        .collection("documents")
+        .orderBy("uploadedAt", "desc")
+        .get();
+
+      const documents = docsSnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+
+      res.json({data: documents});
+      return;
+    }
+
+    res.status(404).json({error: "Route not found"});
+  } catch (error: any) {
+    logger.error("Transaction route error", error);
+    if (error.message.includes("Invalid authorization")) {
+      res.status(401).json({error: "Invalid or expired token"});
+    } else {
+      res.status(500).json({error: "Internal server error", details: error.message});
+    }
+  }
 }
 
 // ============================================================================
