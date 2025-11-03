@@ -243,74 +243,71 @@ LOCAL (Code Only) → GIT (GitHub) → STAGING (Firebase) → PROD (Firebase)
 | **STAGING** | Firebase Staging Project | Full testing with Firebase backend | ✅ Complete | `https://assiduous-staging.web.app` |
 | **PROD** | Firebase Production | Live production site | ✅ Complete | `https://assiduous-prod.web.app` |
 
-#### **C. Development Workflow (MANDATORY STEPS)**
+#### **C. Development Workflow (STREAMLINED PIPELINE)**
 
-**Step 1: LOCAL Development (CODE ONLY)**
-1. Make ALL changes in your local project directory
-2. **DO NOT test locally** - Assiduous requires Firebase backend
-3. **DO NOT start local servers** - Static servers cannot provide Firebase services
-4. Review code for syntax errors and obvious issues
-5. Ensure imports and paths are correct
-6. Run linters if available
+**AUTHORIZED PIPELINE: LOCAL → GITHUB → PROD**
 
-**Step 2: Commit to GIT (GitHub)**
+**Step 1: LOCAL Development**
+1. Make ALL changes in your local project directory (`public/` for frontend)
+2. Review code for syntax errors and obvious issues
+3. Ensure imports and paths are correct
+4. Run linters if available
+5. **NO LOCAL TESTING** - Assiduous requires Firebase backend
+6. Code review only at this stage
+
+**Step 2: Commit to GITHUB**
 1. Review all changes: `git status` and `git diff`
 2. Stage changes: `git add .` (or specific files)
 3. Commit with conventional message: `git commit -m "type(scope): description"`
 4. Push to GitHub: `git push origin main`
-5. Verify push succeeded: Check GitHub repository
-6. **GitHub is now the source of truth**
-7. Git hooks automatically update metrics
+5. **GitHub is the single source of truth**
+6. Git hooks automatically:
+   - Run metrics update script
+   - Update cache files
+   - Trigger GitHub Actions (if configured)
 
-**Step 3: Deploy to STAGING (Firebase)**
-1. Copy changed files to `public/`
-2. Maintain exact directory structure
-3. Navigate to staging directory: `cd public`
-4. Deploy to staging: `firebase use staging && firebase deploy`
-5. **Wait for deployment to complete**
-6. Open staging in browser: `https://assiduous-staging.web.app`
-7. Run RULE 4 QA/QC assessment (full browser testing with Firebase backend)
-8. Test ALL user workflows end-to-end
-9. Verify Firebase services (Auth, Firestore, Storage, Functions)
-10. Check browser console for errors
-11. Test on mobile/responsive view
-12. Fix ALL bugs found and repeat from Step 1
+**Step 3: Deploy to PROD (Auto or Manual)**
 
-**Step 4: Deploy to PROD (Firebase)**
-1. **ONLY after staging validation is 100% complete**
-2. Ensure all changes committed to GitHub
-3. Switch to production: `firebase use production`
-4. Deploy to production: `firebase deploy`
-5. Wait for deployment to complete
-6. Verify deployment at https://assiduous-prod.web.app
-7. Test critical user workflows in production
-8. Monitor Firebase console for errors
-9. Check analytics and metrics
-10. Update deployment logs
+**Option A: Automatic (GitHub Actions)**
+- Push to main triggers auto-deployment to Firebase Production
+- No manual intervention required
+- Check deployment logs in GitHub Actions tab
 
-#### **D. Pipeline Rules (ABSOLUTE)**
+**Option B: Manual Deployment**
+1. Navigate to project root: `cd /Users/thekryptodragon/Development/assiduous`
+2. Deploy to production: `firebase deploy --only hosting`
+3. Wait for deployment to complete
+4. Verify deployment succeeded
+
+**Step 4: Production Verification (CRITICAL)**
+1. Open production in browser: https://assiduous-prod.web.app
+2. Test the specific feature/page you changed
+3. Check browser DevTools Console for errors
+4. Verify Firebase services work (Auth, Firestore, Functions)
+5. Test critical user workflows
+6. Monitor Firebase console for errors
+7. If issues found: fix locally and repeat from Step 1
+
+#### **D. Pipeline Rules (STREAMLINED)**
 
 **NEVER:**
-- ❌ Test locally with `python -m http.server` or any static server
-- ❌ Test locally without Firebase backend
-- ❌ Deploy to production without staging validation
+- ❌ Test locally with static servers (Firebase backend required)
 - ❌ Deploy to Firebase without committing to GitHub first
-- ❌ Make changes directly in `public/`
-- ❌ Skip staging deployment and testing
+- ❌ Make changes directly in Firebase console
 - ❌ Push broken code to GitHub
-- ❌ Bypass QA/QC assessment
-- ❌ Claim features work without testing in staging
+- ❌ Claim features work without testing in production browser
+- ❌ Skip production verification after deployment
 
 **ALWAYS:**
-- ✅ Write code locally (Step 1)
-- ✅ Commit to GitHub (Step 2)
-- ✅ Deploy to staging Firebase (Step 3)
-- ✅ Test in staging with full Firebase backend (Step 3)
-- ✅ Run RULE 4 QA/QC in staging browser (Step 3)
-- ✅ Fix bugs and repeat Steps 1-3 until perfect (Step 3)
-- ✅ Deploy to production ONLY after staging is 100% validated (Step 4)
+- ✅ Write code locally in `public/` directory (Step 1)
+- ✅ Commit to GitHub with conventional commit message (Step 2)
+- ✅ Push to GitHub (source of truth) (Step 2)
+- ✅ Deploy to production (auto or manual) (Step 3)
+- ✅ Test in production browser immediately (Step 4)
+- ✅ Check browser console for errors (Step 4)
+- ✅ Verify Firebase services work (Step 4)
 - ✅ Document what changed in commits
-- ✅ Verify deployment succeeded in production
+- ✅ Fix bugs immediately if found and repeat pipeline
 
 #### **E. Validation Requirements Per Stage**
 
@@ -322,43 +319,31 @@ LOCAL (Code Only) → GIT (GitHub) → STAGING (Firebase) → PROD (Firebase)
 - ✅ Code follows project conventions
 - ✅ **NO FUNCTIONAL TESTING** - requires Firebase backend
 
-**GIT Stage Validation:**
+**GITHUB Stage Validation:**
 - ✅ All changes committed with proper conventional commit message
 - ✅ Push succeeded to GitHub
 - ✅ GitHub repository reflects latest changes
 - ✅ No merge conflicts
 - ✅ Commit history is clean and logical
 - ✅ Git hooks ran successfully
-- ✅ Metrics updated automatically
+- ✅ Metrics updated automatically in cache files
 
-**STAGING Stage Validation (CRITICAL - FULL TESTING HERE):**
-- ✅ Files copied correctly to assiduous-build/
-- ✅ Directory structure matches production
-- ✅ Deployed successfully to Firebase staging
-- ✅ **Opened in browser**: https://assiduous-staging.web.app
-- ✅ **Browser DevTools Console**: Zero JavaScript errors
-- ✅ **Firebase Auth**: Login/logout works correctly
-- ✅ **Firestore**: Data loads and saves correctly
-- ✅ **Cloud Functions**: API calls succeed
-- ✅ **Storage**: File uploads work (if applicable)
-- ✅ **All user workflows**: Tested end-to-end in browser
-- ✅ **Mobile responsive**: Tested on responsive view
-- ✅ **Navigation**: All links work correctly
-- ✅ **Forms**: Submit and validate correctly
-- ✅ **Real-time updates**: Firestore listeners working
-- ✅ **Performance**: Page load < 3 seconds
-- ✅ **Production-ready quality**: No known bugs
-- ✅ **RULE 4 QA/QC**: Full assessment completed
-
-**PROD Stage Validation:**
+**PRODUCTION Stage Validation (CRITICAL - FULL TESTING HERE):**
 - ✅ Firebase deployment succeeded
-- ✅ All pages accessible at https://assiduous-prod.web.app
-- ✅ Critical user workflows tested in production
-- ✅ No errors in Firebase console logs
+- ✅ **Opened in browser**: https://assiduous-prod.web.app
+- ✅ **Browser DevTools Console**: Zero JavaScript errors
+- ✅ **Firebase Auth**: Login/logout works correctly (if applicable)
+- ✅ **Firestore**: Data loads and saves correctly (if applicable)
+- ✅ **Cloud Functions**: API calls succeed (if applicable)
+- ✅ **Storage**: File uploads work (if applicable)
+- ✅ **Changed feature works**: The specific thing you deployed
+- ✅ **Mobile responsive**: Check on responsive view
+- ✅ **Navigation**: All links work correctly
+- ✅ **Forms**: Submit and validate correctly (if changed)
+- ✅ **Performance**: Page load < 3 seconds
+- ✅ **No regressions**: Existing features still work
 - ✅ Analytics and metrics tracking works
-- ✅ Performance is acceptable (page load < 3s)
-- ✅ Monitoring alerts configured
-- ✅ Rollback plan ready if needed
+- ✅ No errors in Firebase console logs
 
 #### **F. Emergency Hotfix Process**
 
