@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-11-03T02:01:58.974Z",
+  "lastUpdated": "2025-11-03T02:11:24.445Z",
   "summary": {
     "health": "Good",
     "score": 46,
@@ -109,35 +109,35 @@
     "totalCost": 33150,
     "laborCost": 33150,
     "toolsCost": 450,
-    "totalCommits": 669,
-    "totalFiles": 931,
+    "totalCommits": 671,
+    "totalFiles": 711,
     "activeDays": 28,
     "totalDays": 85,
     "projectAgeDays": 85,
-    "linesAdded": 9648680,
-    "linesDeleted": 8998745,
-    "netLines": 649935,
-    "velocity": "23.9",
+    "linesAdded": 9648810,
+    "linesDeleted": 9171461,
+    "netLines": 477349,
+    "velocity": "24.0",
     "completionPercentage": 46,
     "actualStartDate": "2025-08-10"
   },
   "today": {
     "date": "2025-11-03",
-    "hours": "26.4",
-    "cost": 3960,
-    "commits": 80,
+    "hours": "27.1",
+    "cost": 4059,
+    "commits": 82,
     "deployments": 0
   },
   "thisWeek": {
-    "hours": "34.0",
-    "cost": 5099,
-    "commits": 103,
+    "hours": "34.6",
+    "cost": 5198,
+    "commits": 105,
     "days": 7
   },
   "thisMonth": {
-    "hours": "114.8",
-    "cost": 17226,
-    "commits": 348
+    "hours": "115.5",
+    "cost": 17325,
+    "commits": 350
   },
   "quality": {
     "testCoverage": {
@@ -147,7 +147,7 @@
       "branches": 0,
       "functions": 0,
       "lines": 0,
-      "testFiles": 213,
+      "testFiles": 161,
       "testSuites": 0,
       "passingTests": 0,
       "failingTests": 0
@@ -157,7 +157,7 @@
       "eslintWarnings": 0,
       "codeComplexity": "N/A",
       "duplicateCode": 0,
-      "technicalDebt": 14238,
+      "technicalDebt": 13712,
       "codeSmells": 0
     },
     "score": 100
@@ -171,7 +171,7 @@
       "critical": 0,
       "total": 0
     },
-    "lastAudit": "2025-11-03T02:01:26.727Z",
+    "lastAudit": "2025-11-03T02:11:02.807Z",
     "dependencies": {
       "total": {
         "prod": 256,
@@ -217,14 +217,14 @@
     }
   },
   "deployment": {
-    "lastDeployment": "2025-11-02 20:52:39 -0500",
-    "totalDeployments": 120,
+    "lastDeployment": "2025-11-02 21:02:33 -0500",
+    "totalDeployments": 121,
     "deploymentFrequency": "Weekly",
     "environments": {
       "production": {
         "url": "https://assiduous-prod.web.app",
         "status": "Active",
-        "lastDeploy": "2025-11-02 20:52:39 -0500"
+        "lastDeploy": "2025-11-02 21:02:33 -0500"
       },
       "staging": {
         "url": "https://assiduous-staging.web.app",
@@ -250,27 +250,27 @@
     }
   },
   "documentation": {
-    "markdownFiles": 2898,
-    "jsFilesTotal": 26519,
-    "jsFilesDocumented": 26519,
-    "coverage": 436,
+    "markdownFiles": 2503,
+    "jsFilesTotal": 23929,
+    "jsFilesDocumented": 23929,
+    "coverage": 427,
     "apiEndpoints": {
       "total": 0,
       "documented": 0
     },
     "components": {
-      "total": 487,
+      "total": 482,
       "documented": 0
     },
     "readme": true,
     "changelog": true,
     "contributing": false,
     "license": false,
-    "lastUpdate": "2025-11-02 20:52:39 -0500"
+    "lastUpdate": "2025-11-02 21:02:33 -0500"
   },
   "productivity": {
     "velocityTrend": "increasing",
-    "weeklyCommits": 103,
+    "weeklyCommits": 105,
     "contributors": {
       "total": 0,
       "active": 0
@@ -348,6 +348,18 @@
   },
   "recentActivity": [
     {
+      "hash": "bc07f27269d1012ef006f60aca994b96972416cd",
+      "message": "fix(costs): load real metrics from cache instead of hardcoded values",
+      "author": "SirsiMaster",
+      "date": "2025-11-02 21:05:44 -0500"
+    },
+    {
+      "hash": "9961de58b80a68cccfab15c6094e48c042dc60c4",
+      "message": "refactor(pipeline): unify to single source of truth - public/ only",
+      "author": "SirsiMaster",
+      "date": "2025-11-02 21:02:33 -0500"
+    },
+    {
       "hash": "2aece0e8a677cf6f3bf26a65c9ca683198f6328d",
       "message": "chore(metrics): auto-updated metrics from git hook",
       "author": "SirsiMaster",
@@ -394,22 +406,10 @@
       "message": "chore(release): Bump version to 0.66.3 [skip ci]",
       "author": "github-actions[bot]",
       "date": "2025-11-03 01:08:40 +0000"
-    },
-    {
-      "hash": "8573b028bac936210ecb3727e1cb6cbdbda59a5e",
-      "message": "fix(stripe): convert to Gen2 API routes (proper solution)",
-      "author": "SirsiMaster",
-      "date": "2025-11-02 20:08:04 -0500"
-    },
-    {
-      "hash": "e6735c70ab36cb94fd34123bc2b0f47857362939",
-      "message": "chore(release): Bump version to 0.66.2 [skip ci]",
-      "author": "github-actions[bot]",
-      "date": "2025-11-03 01:00:27 +0000"
     }
   ],
   "automation": {
-    "lastRun": "2025-11-03T02:01:58.974Z",
+    "lastRun": "2025-11-03T02:11:24.445Z",
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",

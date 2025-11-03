@@ -642,9 +642,9 @@
         document.addEventListener('DOMContentLoaded', async function() {
             console.log('Development Costs page loaded');
             
-            // Load real metrics from cache
+            // Load real metrics from SINGLE SOURCE OF TRUTH
             try {
-                const response = await fetch('/admin/development/metrics_cache.json');
+                const response = await fetch('/admin/development/metrics.json');
                 if (response.ok) {
                     const metrics = await response.json();
                     console.log('Loaded real cost metrics:', metrics);

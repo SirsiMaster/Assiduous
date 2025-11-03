@@ -11,8 +11,8 @@ const path = require('path');
 
 // Paths
 const REPO_ROOT = path.resolve(__dirname, '..');
-// Single source of truth: public/ directory (what Firebase deploys)
-const METRICS_FILE = path.join(REPO_ROOT, 'public', 'admin', 'development', 'metrics_cache.json');
+// SINGLE SOURCE OF TRUTH for all metrics
+const METRICS_FILE = path.join(REPO_ROOT, 'public', 'admin', 'development', 'metrics.json');
 
 // Configuration
 const HOURLY_RATE = 150;
@@ -607,10 +607,7 @@ function saveMetrics(metrics) {
         fs.writeFileSync(METRICS_FILE, JSON.stringify(metrics, null, 2));
         console.log(`✅ Metrics saved to: ${METRICS_FILE}`);
         
-        // Also save backup in root
-        const backupFile = path.join(REPO_ROOT, 'metrics_cache_enhanced.json');
-        fs.writeFileSync(backupFile, JSON.stringify(metrics, null, 2));
-        console.log(`📋 Backup saved to: ${backupFile}`);
+        // No backup needed - single source of truth
         
         return true;
     } catch (error) {

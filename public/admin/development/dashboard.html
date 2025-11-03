@@ -1092,8 +1092,8 @@
 
         async function loadMetrics() {
             try {
-                // First try to load cached metrics with real data
-                const cacheResponse = await fetch('/admin/development/metrics_cache.json');
+                // Load metrics from SINGLE SOURCE OF TRUTH
+                const cacheResponse = await fetch('/admin/development/metrics.json');
                 if (cacheResponse.ok) {
                     const cachedMetrics = await cacheResponse.json();
                     console.log('Loaded accurate metrics from cache:', cachedMetrics);
