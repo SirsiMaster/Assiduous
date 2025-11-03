@@ -3,9 +3,24 @@ const admin = require('firebase-admin');
 
 // Stripe will be initialized with the secret from environment
 // The secret is injected by Firebase when using defineSecret
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY || 'sk_test_placeholder');
+let stripe = null;
 
-const db = admin.firestore();
+// Lazy initialization - only create Stripe instance when needed
+function getStripe() {
+  if (!stripe) {
+    const apiKey = process.env.STRIPE_SECRET_KEY;
+    if (!apiKey || apiKey === 'sk_test_placeholder') {
+      throw new Error('STRIPE_SECRET_KEY not configured');
+    }
+    stripe = require('stripe')(apiKey);
+  }
+  return stripe;
+}
+
+// Lazy get Firestore - admin is initialized in index.ts
+function getDb() {
+  return admin.firestore();
+}
 
 /**
  * Create Stripe Checkout Session for Agent Subscription
@@ -23,14 +38,14 @@ exports.createCheckoutSession = functions.https.onCall(async (data, context) => 
 
     // Get or create Stripe customer
     let customerId;
-    const userDoc = await db.collection('users').doc(userId).get();
+    const userDoc = await getDb().collection('users').doc(userId).get();
     const userData = userDoc.data();
 
     if (userData.stripeCustomerId) {
       customerId = userData.stripeCustomerId;
     } else {
       // Create new Stripe customer
-      const customer = await stripe.customers.create({
+      const customer = await getStripe().customers.create({
         email: userData.email,
         metadata: {
           firebaseUID: userId,
@@ -40,13 +55,13 @@ exports.createCheckoutSession = functions.https.onCall(async (data, context) => 
       customerId = customer.id;
 
       // Save customer ID to Firestore
-      await db.collection('users').doc(userId).update({
+      await getDb().collection('users').doc(userId).update({
         stripeCustomerId: customerId,
       });
     }
 
     // Create checkout session
-    const session = await stripe.checkout.sessions.create({
+    const session = await getStripe().checkout.sessions.create({
       customer: customerId,
       payment_method_types: ['card'],
       mode: 'subscription',
@@ -92,7 +107,7 @@ exports.createPortalSession = functions.https.onCall(async (data, context) => {
     const { returnUrl } = data;
 
     // Get Stripe customer ID
-    const userDoc = await db.collection('users').doc(userId).get();
+    const userDoc = await getDb().collection('users').doc(userId).get();
     const userData = userDoc.data();
 
     if (!userData.stripeCustomerId) {
@@ -100,7 +115,7 @@ exports.createPortalSession = functions.https.onCall(async (data, context) => {
     }
 
     // Create portal session
-    const session = await stripe.billingPortal.sessions.create({
+    const session = await getStripe().billingPortal.sessions.create({
       customer: userData.stripeCustomerId,
       return_url: returnUrl || `https://www.assiduousflip.com/agent/settings`,
     });
@@ -126,7 +141,7 @@ exports.stripeWebhook = functions.https.onRequest(async (req, res) => {
   let event;
 
   try {
-    event = stripe.webhooks.constructEvent(req.rawBody, sig, webhookSecret);
+    event = getStripe().webhooks.constructEvent(req.rawBody, sig, webhookSecret);
   } catch (err) {
     console.error('Webhook signature verification failed:', err.message);
     return res.status(400).send(`Webhook Error: ${err.message}`);
@@ -180,7 +195,7 @@ async function handleSubscriptionCreated(subscription) {
     return;
   }
 
-  await db.collection('users').doc(userId).update({
+  await getDb().collection('users').doc(userId).update({
     subscription: {
       id: subscription.id,
       status: subscription.status,
@@ -194,7 +209,7 @@ async function handleSubscriptionCreated(subscription) {
   });
 
   // Create subscription record
-  await db.collection('subscriptions').doc(subscription.id).set({
+  await getDb().collection('subscriptions').doc(subscription.id).set({
     userId,
     customerId: subscription.customer,
     status: subscription.status,
@@ -219,7 +234,7 @@ async function handleSubscriptionUpdated(subscription) {
     ? 'active' 
     : 'inactive';
 
-  await db.collection('users').doc(userId).update({
+  await getDb().collection('users').doc(userId).update({
     subscription: {
       id: subscription.id,
       status: subscription.status,
@@ -232,7 +247,7 @@ async function handleSubscriptionUpdated(subscription) {
     updatedAt: admin.firestore.FieldValue.serverTimestamp(),
   });
 
-  await db.collection('subscriptions').doc(subscription.id).update({
+  await getDb().collection('subscriptions').doc(subscription.id).update({
     status: subscription.status,
     currentPeriodStart: new Date(subscription.current_period_start * 1000),
     currentPeriodEnd: new Date(subscription.current_period_end * 1000),
@@ -250,13 +265,13 @@ async function handleSubscriptionDeleted(subscription) {
   const userId = subscription.metadata.firebaseUID;
   if (!userId) return;
 
-  await db.collection('users').doc(userId).update({
+  await getDb().collection('users').doc(userId).update({
     'subscription.status': 'canceled',
     subscriptionStatus: 'inactive',
     updatedAt: admin.firestore.FieldValue.serverTimestamp(),
   });
 
-  await db.collection('subscriptions').doc(subscription.id).update({
+  await getDb().collection('subscriptions').doc(subscription.id).update({
     status: 'canceled',
     canceledAt: admin.firestore.FieldValue.serverTimestamp(),
     updatedAt: admin.firestore.FieldValue.serverTimestamp(),
@@ -273,7 +288,7 @@ async function handlePaymentSucceeded(invoice) {
   const subscriptionId = invoice.subscription;
 
   // Record payment
-  await db.collection('payments').add({
+  await getDb().collection('payments').add({
     customerId,
     subscriptionId,
     invoiceId: invoice.id,
@@ -295,7 +310,7 @@ async function handlePaymentFailed(invoice) {
   const subscriptionId = invoice.subscription;
 
   // Record failed payment
-  await db.collection('payments').add({
+  await getDb().collection('payments').add({
     customerId,
     subscriptionId,
     invoiceId: invoice.id,
@@ -307,14 +322,14 @@ async function handlePaymentFailed(invoice) {
   });
 
   // Find user and update status
-  const usersSnapshot = await db.collection('users')
+  const usersSnapshot = await getDb().collection('users')
     .where('stripeCustomerId', '==', customerId)
     .limit(1)
     .get();
 
   if (!usersSnapshot.empty) {
     const userId = usersSnapshot.docs[0].id;
-    await db.collection('users').doc(userId).update({
+    await getDb().collection('users').doc(userId).update({
       subscriptionStatus: 'payment_failed',
       updatedAt: admin.firestore.FieldValue.serverTimestamp(),
     });
@@ -330,7 +345,7 @@ async function handleCheckoutCompleted(session) {
   const userId = session.metadata?.firebaseUID;
   if (!userId) return;
 
-  await db.collection('users').doc(userId).update({
+  await getDb().collection('users').doc(userId).update({
     stripeCustomerId: session.customer,
     subscriptionStatus: 'active',
     onboardingComplete: true,
@@ -346,7 +361,7 @@ async function handleCheckoutCompleted(session) {
  */
 exports.createPaymentIntent = async (amount, currency, metadata) => {
   try {
-    const paymentIntent = await stripe.paymentIntents.create({
+    const paymentIntent = await getStripe().paymentIntents.create({
       amount: Math.round(amount), // Amount in cents
       currency: currency || 'usd',
       metadata: metadata || {},
@@ -368,7 +383,7 @@ exports.createPaymentIntent = async (amount, currency, metadata) => {
  */
 exports.retrievePaymentIntent = async (paymentIntentId) => {
   try {
-    const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
+    const paymentIntent = await getStripe().paymentIntents.retrieve(paymentIntentId);
     return paymentIntent;
   } catch (error) {
     console.error('Error retrieving payment intent:', error);
@@ -392,7 +407,7 @@ exports.createRefund = async (paymentIntentId, amount, reason) => {
       refundData.amount = Math.round(amount);
     }
 
-    const refund = await stripe.refunds.create(refundData);
+    const refund = await getStripe().refunds.create(refundData);
     return refund;
   } catch (error) {
     console.error('Error creating refund:', error);
@@ -417,7 +432,7 @@ exports.getSubscriptionStatus = functions.https.onCall(async (data, context) => 
     }
 
     const userId = context.auth.uid;
-    const userDoc = await db.collection('users').doc(userId).get();
+    const userDoc = await getDb().collection('users').doc(userId).get();
     const userData = userDoc.data();
 
     if (!userData.stripeCustomerId) {
@@ -428,7 +443,7 @@ exports.getSubscriptionStatus = functions.https.onCall(async (data, context) => 
     }
 
     // Get latest subscription from Stripe
-    const subscriptions = await stripe.subscriptions.list({
+    const subscriptions = await getStripe().subscriptions.list({
       customer: userData.stripeCustomerId,
       limit: 1,
       status: 'all',

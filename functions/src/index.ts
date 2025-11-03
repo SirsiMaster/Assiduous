@@ -13,13 +13,8 @@ import {defineSecret} from "firebase-functions/params";
 import * as logger from "firebase-functions/logger";
 import * as admin from "firebase-admin";
 
-// Import Stripe functions (temporarily disabled for deployment)
-let stripeModule: any = {
-  createPaymentIntent: () => Promise.reject(new Error("Stripe not configured")),
-  retrievePaymentIntent: () => Promise.reject(new Error("Stripe not configured")),
-  createRefund: () => Promise.reject(new Error("Stripe not configured")),
-  handleStripeWebhook: () => Promise.reject(new Error("Stripe not configured")),
-};
+// Import Stripe functions
+const stripeModule = require("./stripe");
 
 // Import Property Ingestion functions (temporarily disabled)
 // import * as propertyIngestion from "./propertyIngestion";
@@ -63,7 +58,7 @@ setGlobalOptions({maxInstances: 10});
  */
 export const api = onRequest(
   {
-    secrets: [sendgridApiKey, sendgridFromEmail, stripeSecretKey],
+    secrets: [sendgridApiKey, sendgridFromEmail, stripeSecretKey, stripeWebhookSecret],
     region: "us-central1",
     maxInstances: 10,
   },
