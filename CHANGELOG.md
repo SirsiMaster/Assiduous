@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.81.0] - 2025-11-03
+
+### Added
+- feat(microflip): implement comprehensive micro-flipping engine service
+
+
 ## [0.80.0] - 2025-11-03
 
 ### Added
@@ -2726,7 +2732,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.80.0...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.81.0...HEAD
+
+
+## [0.81.0] - 2025-11-03
+
+### Added
+- feat(microflip): implement comprehensive micro-flipping engine service
 
 
 ## [0.80.0] - 2025-11-03
@@ -3867,3 +3879,4 @@ To generate changelog entries:
 [0.78.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.77.0...v0.78.0
 [0.79.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.78.0...v0.79.0
 [0.80.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.79.0...v0.80.0
+[0.81.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.80.0...v0.81.0
