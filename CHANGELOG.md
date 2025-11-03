@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.74.0] - 2025-11-03
+
+### Added
+- feat(admin): Add bulk operations for properties/agents/clients
+
+
 ## [0.73.2] - 2025-11-03
 
 ### Fixed
@@ -2684,7 +2690,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.73.2...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.74.0...HEAD
+
+
+## [0.74.0] - 2025-11-03
+
+### Added
+- feat(admin): Add bulk operations for properties/agents/clients
 
 
 ## [0.73.2] - 2025-11-03
@@ -3776,3 +3788,4 @@ To generate changelog entries:
 [0.73.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.72.2...v0.73.0
 [0.73.1]: https://github.com/SirsiMaster/Assiduous/compare/v0.73.0...v0.73.1
 [0.73.2]: https://github.com/SirsiMaster/Assiduous/compare/v0.73.1...v0.73.2
+[0.74.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.73.2...v0.74.0
