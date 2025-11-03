@@ -1,6 +1,12 @@
 name: Deploy to Production
 
 on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'public/**'
+      - '.github/workflows/deploy-production.yml'
   workflow_dispatch:
     inputs:
       confirm:
@@ -13,10 +19,11 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - name: Validate Confirmation
+      - name: Validate Confirmation (Manual Deploys Only)
+        if: github.event_name == 'workflow_dispatch'
         run: |
           if [ "${{ github.event.inputs.confirm }}" != "DEPLOY" ]; then
-            echo "❌ Cancelled"
+            echo "❌ Manual deployment cancelled"
             exit 1
           fi
           
@@ -32,8 +39,9 @@ jobs:
         run: npm install -g firebase-tools
           
       - name: Deploy to Production
+        working-directory: ./public
         run: |
-          echo "🚀 Deploying to Production"
+          echo "🚀 Deploying to Production (auto-triggered by push to main)"
           firebase deploy --only hosting --project assiduous-prod --token "${{ secrets.FIREBASE_TOKEN }}"
           
       - name: Verify
