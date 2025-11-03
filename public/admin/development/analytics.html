@@ -993,28 +993,56 @@
         
         // Initialize
         document.addEventListener('DOMContentLoaded', async function() {
+            console.log('🚀 Analytics page loaded');
+            
             try {
                 // Load metrics first
+                console.log('📊 Fetching metrics from ./metrics.json...');
                 const response = await fetch('./metrics.json');
+                console.log('📦 Response status:', response.status);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
                 const metrics = await response.json();
-                console.log('✅ Metrics loaded:', metrics);
+                console.log('✅ Metrics loaded successfully:', metrics);
                 
                 // Initialize all components with metrics
+                console.log('🔄 Initializing analytics...');
                 await loadAnalytics();
+                console.log('📈 Creating performance chart...');
                 createPerformanceChart(metrics);
+                console.log('✅ Analytics initialization complete');
                 
                 // Auto-refresh every 60 seconds
                 setInterval(async () => {
-                    const refreshResponse = await fetch('./metrics.json');
-                    const refreshMetrics = await refreshResponse.json();
-                    await loadAnalytics();
+                    console.log('🔄 Auto-refreshing metrics...');
+                    try {
+                        const refreshResponse = await fetch('./metrics.json');
+                        const refreshMetrics = await refreshResponse.json();
+                        await loadAnalytics();
+                    } catch (refreshError) {
+                        console.error('❌ Auto-refresh failed:', refreshError);
+                    }
                 }, 60 * 1000);
             } catch (error) {
                 console.error('❌ Failed to initialize analytics:', error);
+                console.error('Error details:', {
+                    message: error.message,
+                    stack: error.stack,
+                    currentURL: window.location.href,
+                    fetchPath: './metrics.json'
+                });
+                
                 // Show error state
                 document.querySelectorAll('.stat-value').forEach(el => {
                     el.textContent = 'Error';
+                    el.style.color = 'var(--danger)';
                 });
+                
+                // Show alert to user
+                alert('Failed to load analytics data. Check browser console for details.');
             }
             
             // Highlight active page in sidebar
