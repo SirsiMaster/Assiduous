@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.68.0] - 2025-11-03
+
+### Added
+- feat(analytics): Make analytics page fully dynamic with real metrics
+
+
 ## [0.67.4] - 2025-11-03
 
 ### Fixed
@@ -2581,7 +2587,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.67.4...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.68.0...HEAD
+
+
+## [0.68.0] - 2025-11-03
+
+### Added
+- feat(analytics): Make analytics page fully dynamic with real metrics
 
 
 ## [0.67.4] - 2025-11-03
@@ -3553,3 +3565,4 @@ To generate changelog entries:
 [0.67.2]: https://github.com/SirsiMaster/Assiduous/compare/v0.67.1...v0.67.2
 [0.67.3]: https://github.com/SirsiMaster/Assiduous/compare/v0.67.2...v0.67.3
 [0.67.4]: https://github.com/SirsiMaster/Assiduous/compare/v0.67.3...v0.67.4
+[0.68.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.67.4...v0.68.0
