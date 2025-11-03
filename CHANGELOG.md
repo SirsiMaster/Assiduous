@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.68.6] - 2025-11-03
+
+### Fixed
+- fix(analytics): Fix metrics.json fetch path and add error handling
+
+
 ## [0.68.5] - 2025-11-03
 
 ### Fixed
@@ -2617,7 +2623,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.68.5...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.68.6...HEAD
+
+
+## [0.68.6] - 2025-11-03
+
+### Fixed
+- fix(analytics): Fix metrics.json fetch path and add error handling
 
 
 ## [0.68.5] - 2025-11-03
@@ -3631,3 +3643,4 @@ To generate changelog entries:
 [0.68.3]: https://github.com/SirsiMaster/Assiduous/compare/v0.68.2...v0.68.3
 [0.68.4]: https://github.com/SirsiMaster/Assiduous/compare/v0.68.3...v0.68.4
 [0.68.5]: https://github.com/SirsiMaster/Assiduous/compare/v0.68.4...v0.68.5
+[0.68.6]: https://github.com/SirsiMaster/Assiduous/compare/v0.68.5...v0.68.6
