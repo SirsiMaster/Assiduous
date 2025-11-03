@@ -9,6 +9,9 @@
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
     
+    <!-- Micro-Flipping Engine Service -->
+    <script src="../assets/js/services/microflip-engine.js"></script>
+    
     <link rel="stylesheet" href="../assets/css/styles.css">
     
     <style>
@@ -543,6 +546,9 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
         
+        // Initialize Micro-Flip Engine
+        const microFlipEngine = new MicroFlipEngine();
+        
         function calculateROI() {
             // Get input values
             const purchasePrice = parseFloat(document.getElementById('purchasePrice').value) || 0;
@@ -552,84 +558,81 @@
             const monthlyHolding = parseFloat(document.getElementById('holdingCosts').value) || 0;
             const closingPercent = parseFloat(document.getElementById('closingPercent').value) || 8;
             
-            // Calculate costs
-            const purchaseClosing = purchasePrice * 0.03; // 3% purchase closing
-            const totalHoldingCosts = monthlyHolding * holdingMonths;
-            const sellingCosts = arvPrice * (closingPercent / 100);
+            // Prepare property data for engine
+            const propertyData = {
+                purchasePrice: purchasePrice,
+                afterRepairValue: arvPrice,
+                rehabCosts: repairCosts,
+                holdingPeriod: holdingMonths * 30, // Convert to days
+                closingCosts: purchasePrice * 0.03, // 3% purchase closing
+                sellingCosts: arvPrice * (closingPercent / 100),
+                utilities: monthlyHolding,
+                financingType: 'cash'
+            };
             
-            // Total investment
-            const totalInvestment = purchasePrice + repairCosts + totalHoldingCosts + purchaseClosing;
+            // Run comprehensive analysis through Micro-Flip Engine
+            const analysis = microFlipEngine.analyzeDeal(propertyData);
             
-            // Net proceeds
-            const netProceeds = arvPrice - sellingCosts;
+            // Calculate investment score using engine's scoring system
+            const score = microFlipEngine.calculateDealScore(analysis);
             
-            // Net profit
-            const netProfit = netProceeds - totalInvestment;
+            // Update display with engine results
+            document.getElementById('totalInvestment').textContent = microFlipEngine.formatCurrency(analysis.metrics.totalInvestment);
+            document.getElementById('netProfit').textContent = microFlipEngine.formatCurrency(analysis.metrics.netProfit);
+            document.getElementById('netProfit').className = analysis.metrics.netProfit > 0 ? 'result-value positive' : 'result-value negative';
+            document.getElementById('cashOnCash').textContent = microFlipEngine.formatPercentage(analysis.metrics.cashOnCashReturn);
+            document.getElementById('annualizedROI').textContent = microFlipEngine.formatPercentage(analysis.metrics.annualizedROI);
+            document.getElementById('roiValue').textContent = microFlipEngine.formatPercentage(analysis.metrics.roi);
             
-            // ROI calculations
-            const roi = (netProfit / totalInvestment) * 100;
-            const annualizedROI = (roi / holdingMonths) * 12;
-            const cashOnCash = roi; // Assuming all cash deal
-            
-            // Investment score calculation
-            let score = 50; // Base score
-            if (roi > 30) score += 30;
-            else if (roi > 20) score += 20;
-            else if (roi > 10) score += 10;
-            
-            if (holdingMonths <= 4) score += 20;
-            else if (holdingMonths <= 6) score += 10;
-            
-            if (netProfit > 50000) score += 20;
-            else if (netProfit > 30000) score += 10;
-            
-            score = Math.min(100, score);
-            
-            // Update display
-            document.getElementById('totalInvestment').textContent = `$${totalInvestment.toLocaleString()}`;
-            document.getElementById('netProfit').textContent = `$${netProfit.toLocaleString()}`;
-            document.getElementById('netProfit').className = netProfit > 0 ? 'result-value positive' : 'result-value negative';
-            document.getElementById('cashOnCash').textContent = `${cashOnCash.toFixed(1)}%`;
-            document.getElementById('annualizedROI').textContent = `${annualizedROI.toFixed(1)}%`;
-            document.getElementById('roiValue').textContent = `${roi.toFixed(1)}%`;
-            
-            // ROI Rating
-            let rating = 'Poor Investment';
-            if (roi > 30) rating = '🔥 Excellent Deal!';
-            else if (roi > 20) rating = '✅ Great Investment';
-            else if (roi > 15) rating = '👍 Good Opportunity';
-            else if (roi > 10) rating = '⚠️ Marginal Deal';
-            document.getElementById('roiRating').textContent = rating;
+            // ROI Rating using engine's deal quality assessment
+            const rating = analysis.assessment.dealQuality;
+            let displayRating = '';
+            if (rating.includes('A+')) displayRating = '🔥 ' + rating;
+            else if (rating.includes('A')) displayRating = '✅ ' + rating;
+            else if (rating.includes('B')) displayRating = '👍 ' + rating;
+            else if (rating.includes('C')) displayRating = '⚠️ ' + rating;
+            else displayRating = '❌ ' + rating;
+            document.getElementById('roiRating').textContent = displayRating;
             
             // Investment Score
-            document.getElementById('investmentScore').textContent = `${score}/100`;
+            document.getElementById('investmentScore').textContent = `${Math.round(score)}/100`;
             document.getElementById('scoreFill').style.width = `${score}%`;
             
             // Breakdown
-            document.getElementById('breakdownPurchase').textContent = `$${purchasePrice.toLocaleString()}`;
-            document.getElementById('breakdownRepairs').textContent = `$${repairCosts.toLocaleString()}`;
-            document.getElementById('breakdownHolding').textContent = `$${totalHoldingCosts.toLocaleString()}`;
-            document.getElementById('breakdownPurchaseClosing').textContent = `$${purchaseClosing.toLocaleString()}`;
-            document.getElementById('breakdownTotalInvest').innerHTML = `<strong>$${totalInvestment.toLocaleString()}</strong>`;
-            document.getElementById('breakdownARV').textContent = `$${arvPrice.toLocaleString()}`;
-            document.getElementById('breakdownSelling').textContent = `-$${sellingCosts.toLocaleString()}`;
-            document.getElementById('breakdownProceeds').innerHTML = `<strong>$${netProceeds.toLocaleString()}</strong>`;
-            document.getElementById('breakdownProfit').innerHTML = `<strong>$${netProfit.toLocaleString()}</strong>`;
+            document.getElementById('breakdownPurchase').textContent = microFlipEngine.formatCurrency(purchasePrice);
+            document.getElementById('breakdownRepairs').textContent = microFlipEngine.formatCurrency(repairCosts);
+            document.getElementById('breakdownHolding').textContent = microFlipEngine.formatCurrency(analysis.costs.holding);
+            document.getElementById('breakdownPurchaseClosing').textContent = microFlipEngine.formatCurrency(analysis.costs.acquisition - purchasePrice);
+            document.getElementById('breakdownTotalInvest').innerHTML = `<strong>${microFlipEngine.formatCurrency(analysis.metrics.totalInvestment)}</strong>`;
+            document.getElementById('breakdownARV').textContent = microFlipEngine.formatCurrency(arvPrice);
+            document.getElementById('breakdownSelling').textContent = `-${microFlipEngine.formatCurrency(analysis.costs.exit)}`;
+            const netProceeds = arvPrice - analysis.costs.exit;
+            document.getElementById('breakdownProceeds').innerHTML = `<strong>${microFlipEngine.formatCurrency(netProceeds)}</strong>`;
+            document.getElementById('breakdownProfit').innerHTML = `<strong>${microFlipEngine.formatCurrency(analysis.metrics.netProfit)}</strong>`;
             
             // Timeline
             document.getElementById('saleTime').textContent = `Month ${holdingMonths}`;
             document.getElementById('renovationTime').textContent = `${Math.ceil(holdingMonths * 0.5)} months`;
             document.getElementById('marketTime').textContent = `${Math.floor(holdingMonths * 0.25)} month`;
             
+            // Display recommendations if any
+            if (analysis.recommendations.length > 0) {
+                console.log('💡 Investment Recommendations:', analysis.recommendations);
+            }
+            
             // Save to Firebase for analytics
             saveCalculation({
                 purchasePrice,
                 arvPrice,
-                repairCosts,
-                netProfit,
-                roi,
+                rehabCosts,
+                netProfit: analysis.metrics.netProfit,
+                roi: analysis.metrics.roi,
                 investmentScore: score,
-                timestamp: new Date()
+                viability: analysis.assessment.viability,
+                dealQuality: analysis.assessment.dealQuality,
+                riskLevel: analysis.assessment.riskLevel,
+                timestamp: new Date(),
+                fullAnalysis: analysis
             });
         }
         
