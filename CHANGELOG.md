@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.73.0] - 2025-11-03
+
+### Added
+- feat(dashboard): Add today's activity metrics - 39.3 hrs, $5,891, 119 commits
+
+
 ## [0.72.2] - 2025-11-03
 
 ### Fixed
@@ -2665,7 +2671,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.72.2...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.73.0...HEAD
+
+
+## [0.73.0] - 2025-11-03
+
+### Added
+- feat(dashboard): Add today's activity metrics - 39.3 hrs, $5,891, 119 commits
 
 
 ## [0.72.2] - 2025-11-03
@@ -3735,3 +3747,4 @@ To generate changelog entries:
 [0.72.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.71.0...v0.72.0
 [0.72.1]: https://github.com/SirsiMaster/Assiduous/compare/v0.72.0...v0.72.1
 [0.72.2]: https://github.com/SirsiMaster/Assiduous/compare/v0.72.1...v0.72.2
+[0.73.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.72.2...v0.73.0
