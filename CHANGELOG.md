@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.72.1] - 2025-11-03
+
+### Fixed
+- fix(dashboard): Replace hardcoded placeholder values with loading state
+
+
 ## [0.72.0] - 2025-11-03
 
 ### Added
@@ -2653,7 +2659,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.72.0...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.72.1...HEAD
+
+
+## [0.72.1] - 2025-11-03
+
+### Fixed
+- fix(dashboard): Replace hardcoded placeholder values with loading state
 
 
 ## [0.72.0] - 2025-11-03
@@ -3709,3 +3721,4 @@ To generate changelog entries:
 [0.70.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.69.0...v0.70.0
 [0.71.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.70.0...v0.71.0
 [0.72.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.71.0...v0.72.0
+[0.72.1]: https://github.com/SirsiMaster/Assiduous/compare/v0.72.0...v0.72.1
