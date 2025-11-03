@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="en" data-auth-protect="client,investor">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>My Documents — Assiduous Client Portal</title>
+    
+    <!-- Assiduous Design System -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="../assets/vendor/sirsimaster-ui/sirsimaster-ui.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="../assiduous.css">
+    <link rel="stylesheet" href="../components/admin-layout.css">
+    
+    <style>
+        /* Document Management Styles */
+        .upload-section {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: var(--space-lg);
+            margin-bottom: var(--space-xl);
+        }
+        
+        .upload-area {
+            border: 2px dashed var(--border);
+            border-radius: var(--radius-md);
+            padding: var(--space-2xl);
+            text-align: center;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        
+        .upload-area:hover,
+        .upload-area.dragover {
+            border-color: var(--sky);
+            background: rgba(96, 163, 217, 0.05);
+        }
+        
+        .upload-icon {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto var(--space-md);
+            color: var(--sky);
+        }
+        
+        .upload-text {
+            font-size: 16px;
+            color: var(--text-primary);
+            margin-bottom: var(--space-xs);
+        }
+        
+        .upload-hint {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-lg);
+        }
+        
+        .file-input {
+            display: none;
+        }
+        
+        .document-type-select {
+            max-width: 300px;
+            margin: var(--space-lg) auto 0;
+        }
+        
+        /* Document Stats */
+        .document-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--space-lg);
+            margin-bottom: var(--space-xl);
+        }
+        
+        .stat-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: var(--space-lg);
+        }
+        
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: var(--space-xs);
+        }
+        
+        .stat-label {
+            font-size: 13px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        /* Document List */
+        .documents-container {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+        }
+        
+        .documents-header {
+            padding: var(--space-lg);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .documents-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--navy);
+        }
+        
+        .documents-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: var(--space-lg);
+            padding: var(--space-lg);
+        }
+        
+        .document-card {
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: var(--space-md);
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        
+        .document-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+        
+        .document-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: var(--space-md);
+        }
+        
+        .document-icon.pdf {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+        }
+        
+        .document-icon.image {
+            background: rgba(34, 197, 94, 0.1);
+            color: var(--success);
+        }
+        
+        .document-icon.doc {
+            background: rgba(96, 163, 217, 0.1);
+            color: var(--sky);
+        }
+        
+        .document-icon.other {
+            background: rgba(156, 163, 175, 0.1);
+            color: var(--text-secondary);
+        }
+        
+        .document-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--navy);
+            margin-bottom: var(--space-xs);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        .document-type {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-sm);
+        }
+        
+        .document-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            color: var(--text-secondary);
+            padding-top: var(--space-sm);
+            border-top: 1px solid var(--border);
+        }
+        
+        .document-actions {
+            display: flex;
+            gap: var(--space-xs);
+            margin-top: var(--space-sm);
+        }
+        
+        .doc-action-btn {
+            padding: 6px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            background: var(--white);
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .doc-action-btn:hover {
+            background: var(--gray-50);
+            border-color: var(--sky);
+        }
+        
+        .doc-action-btn svg {
+            width: 16px;
+            height: 16px;
+        }
+        
+        /* Upload Progress */
+        .upload-progress {
+            position: fixed;
+            bottom: var(--space-lg);
+            right: var(--space-lg);
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: var(--space-md);
+            box-shadow: var(--shadow-lg);
+            min-width: 300px;
+            z-index: 1000;
+        }
+        
+        .progress-item {
+            margin-bottom: var(--space-sm);
+        }
+        
+        .progress-name {
+            font-size: 14px;
+            color: var(--text-primary);
+            margin-bottom: var(--space-xs);
+        }
+        
+        .progress-bar {
+            height: 6px;
+            background: var(--gray-200);
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: var(--sky);
+            transition: width 0.3s;
+        }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: var(--space-3xl) var(--space-xl);
+        }
+        
+        .empty-state svg {
+            width: 64px;
+            height: 64px;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-lg);
+        }
+        
+        .empty-state-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: var(--space-sm);
+        }
+        
+        .empty-state-message {
+            color: var(--text-secondary);
+            margin-bottom: var(--space-lg);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .documents-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .upload-progress {
+                left: var(--space-md);
+                right: var(--space-md);
+                min-width: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-wrapper">
+        
+        <!-- Client Sidebar -->
+        <aside class="sidebar" id="sidebar-root" data-active="documents">
+            <div class="sidebar-header">
+                <a href="dashboard.html" class="sidebar-logo">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                    </svg>
+                    <span class="sidebar-logo-text">Client Portal</span>
+                </a>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <div class="nav-section-title">Main</div>
+                    <a href="dashboard.html" class="nav-item" data-key="dashboard">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="14" width="7" height="7"></rect>
+                            <rect x="3" y="14" width="7" height="7"></rect>
+                        </svg>
+                        Dashboard
+                    </a>
+                    <a href="properties.html" class="nav-item" data-key="properties">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                            <circle cx="12" cy="10" r="3"></circle>
+                        </svg>
+                        Browse Properties
+                    </a>
+                    <a href="saved.html" class="nav-item" data-key="saved">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+                        </svg>
+                        Saved Properties
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-title">Activity</div>
+                    <a href="viewings.html" class="nav-item" data-key="viewings">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="16" y1="2" x2="16" y2="6"></line>
+                            <line x1="8" y1="2" x2="8" y2="6"></line>
+                            <line x1="3" y1="10" x2="21" y2="10"></line>
+                        </svg>
+                        My Viewings
+                    </a>
+                    <a href="messages.html" class="nav-item" data-key="messages">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                        </svg>
+                        Messages
+                    </a>
+                    <a href="documents.html" class="nav-item active" data-key="documents">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                            <polyline points="10 9 9 9 8 9"></polyline>
+                        </svg>
+                        My Documents
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-title">Tools</div>
+                    <a href="deal-analyzer.html" class="nav-item" data-key="calculator">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect>
+                            <line x1="8" y1="6" x2="16" y2="6"></line>
+                            <line x1="8" y1="10" x2="16" y2="10"></line>
+                            <line x1="8" y1="14" x2="16" y2="14"></line>
+                        </svg>
+                        Deal Analyzer
+                    </a>
+                </div>
+            </nav>
+        </aside>
+        
+        <main class="main-content">
+            <!-- Standardized Header -->
+            <header id="universal-header-root" 
+                    data-title="My Documents" 
+                    data-subtitle="Securely upload and manage your real estate documents"
+                    data-search-placeholder="Search documents..."
+                    data-user-role="client"
+                    data-user-name="John Doe"
+                    data-user-email="john.doe@assiduousrealty.com"></header>
+
+            <!-- Page Content -->
+            <div class="page-content">
+                
+                <!-- Document Stats -->
+                <div class="document-stats">
+                    <div class="stat-card">
+                        <div class="stat-value" id="totalDocuments">0</div>
+                        <div class="stat-label">Total Documents</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="storageUsed">0 MB</div>
+                        <div class="stat-label">Storage Used</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="recentUploads">0</div>
+                        <div class="stat-label">Recent Uploads</div>
+                    </div>
+                </div>
+                
+                <!-- Upload Section -->
+                <div class="upload-section">
+                    <div class="upload-area" id="uploadArea">
+                        <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="17 8 12 3 7 8"></polyline>
+                            <line x1="12" y1="3" x2="12" y2="15"></line>
+                        </svg>
+                        <div class="upload-text">Drag and drop files here</div>
+                        <div class="upload-hint">or click to browse (Max 10MB per file)</div>
+                        <button class="sm-btn sm-btn-primary" onclick="document.getElementById('fileInput').click()">
+                            Select Files
+                        </button>
+                        <input type="file" id="fileInput" class="file-input" multiple accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.gif">
+                    </div>
+                    
+                    <div class="document-type-select">
+                        <label style="display: block; margin-bottom: var(--space-xs); font-size: 14px; font-weight: 600;">Document Type</label>
+                        <select id="documentType" class="sirsi-select" style="width: 100%;">
+                            <option value="general">General Document</option>
+                            <option value="id">Identification</option>
+                            <option value="income">Income Verification</option>
+                            <option value="credit">Credit Report</option>
+                            <option value="tax">Tax Returns</option>
+                            <option value="bank">Bank Statements</option>
+                            <option value="contract">Contract/Agreement</option>
+                            <option value="inspection">Inspection Report</option>
+                            <option value="appraisal">Appraisal</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Documents List -->
+                <div class="documents-container">
+                    <div class="documents-header">
+                        <h3 class="documents-title">My Documents</h3>
+                        <div style="display: flex; gap: var(--space-sm);">
+                            <select class="sirsi-select" id="filterType" onchange="filterDocuments()">
+                                <option value="">All Types</option>
+                                <option value="general">General</option>
+                                <option value="id">ID</option>
+                                <option value="income">Income</option>
+                                <option value="credit">Credit</option>
+                                <option value="tax">Tax</option>
+                                <option value="bank">Bank</option>
+                                <option value="contract">Contract</option>
+                                <option value="inspection">Inspection</option>
+                                <option value="appraisal">Appraisal</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div id="documentsGrid" class="documents-grid">
+                        <!-- Documents will be loaded here -->
+                    </div>
+                    
+                    <div id="emptyState" class="empty-state" style="display: none;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                        </svg>
+                        <h3 class="empty-state-title">No documents yet</h3>
+                        <p class="empty-state-message">Upload your first document to get started</p>
+                    </div>
+                </div>
+                
+            </div>
+        </main>
+    </div>
+
+    <!-- Upload Progress Indicator -->
+    <div id="uploadProgress" class="upload-progress" style="display: none;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-sm);">
+            <strong>Uploading...</strong>
+            <button onclick="closeUploadProgress()" style="background: none; border: none; cursor: pointer;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+        <div id="progressItems"></div>
+    </div>
+
+    <!-- Firebase Integration -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+    <script src="../firebase-config.js"></script>
+    <script src="../components/universal-header.js"></script>
+    <script src="../components/auth-guard-simple.js"></script>
+    
+    <script>
+        // ==========================================
+        // FIREBASE DOCUMENT MANAGEMENT SERVICE
+        // ==========================================
+        
+        const DocumentService = {
+            db: firebase.firestore(),
+            storage: firebase.storage(),
+            auth: firebase.auth(),
+            
+            /**
+             * Upload document to Firebase Storage
+             */
+            async uploadDocument(file, type, metadata = {}) {
+                try {
+                    const user = this.auth.currentUser;
+                    if (!user) throw new Error('Not authenticated');
+                    
+                    // Create storage reference
+                    const timestamp = Date.now();
+                    const fileName = `${timestamp}_${file.name}`;
+                    const storageRef = this.storage.ref(`users/${user.uid}/documents/${fileName}`);
+                    
+                    // Upload file
+                    const uploadTask = storageRef.put(file, {
+                        contentType: file.type,
+                        customMetadata: {
+                            uploadedBy: user.uid,
+                            originalName: file.name,
+                            documentType: type
+                        }
+                    });
+                    
+                    // Track progress
+                    return new Promise((resolve, reject) => {
+                        uploadTask.on('state_changed',
+                            (snapshot) => {
+                                const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                                this.updateUploadProgress(file.name, progress);
+                            },
+                            (error) => reject(error),
+                            async () => {
+                                const downloadURL = await uploadTask.snapshot.ref.getDownloadURL();
+                                
+                                // Save document metadata to Firestore
+                                const docData = {
+                                    userId: user.uid,
+                                    fileName: file.name,
+                                    storagePath: fileName,
+                                    downloadURL: downloadURL,
+                                    fileType: file.type,
+                                    fileSize: file.size,
+                                    documentType: type,
+                                    uploadedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                                    ...metadata
+                                };
+                                
+                                const docRef = await this.db.collection('documents').add(docData);
+                                resolve({ id: docRef.id, ...docData });
+                            }
+                        );
+                    });
+                } catch (error) {
+                    console.error('Error uploading document:', error);
+                    throw error;
+                }
+            },
+            
+            /**
+             * Get user documents
+             */
+            async getUserDocuments(filters = {}) {
+                try {
+                    const user = this.auth.currentUser;
+                    if (!user) throw new Error('Not authenticated');
+                    
+                    let query = this.db.collection('documents')
+                        .where('userId', '==', user.uid);
+                    
+                    // Apply type filter
+                    if (filters.type) {
+                        query = query.where('documentType', '==', filters.type);
+                    }
+                    
+                    const snapshot = await query.orderBy('uploadedAt', 'desc').get();
+                    
+                    return snapshot.docs.map(doc => ({
+                        id: doc.id,
+                        ...doc.data(),
+                        uploadedAt: doc.data().uploadedAt?.toDate() || new Date()
+                    }));
+                } catch (error) {
+                    console.error('Error fetching documents:', error);
+                    return [];
+                }
+            },
+            
+            /**
+             * Delete document
+             */
+            async deleteDocument(docId, storagePath) {
+                try {
+                    const user = this.auth.currentUser;
+                    if (!user) throw new Error('Not authenticated');
+                    
+                    // Delete from Storage
+                    const storageRef = this.storage.ref(`users/${user.uid}/documents/${storagePath}`);
+                    await storageRef.delete();
+                    
+                    // Delete from Firestore
+                    await this.db.collection('documents').doc(docId).delete();
+                    
+                    return true;
+                } catch (error) {
+                    console.error('Error deleting document:', error);
+                    return false;
+                }
+            },
+            
+            /**
+             * Calculate storage usage
+             */
+            calculateStorageUsage(documents) {
+                const totalBytes = documents.reduce((sum, doc) => sum + (doc.fileSize || 0), 0);
+                return (totalBytes / (1024 * 1024)).toFixed(2); // Convert to MB
+            },
+            
+            /**
+             * Update upload progress UI
+             */
+            updateUploadProgress(fileName, progress) {
+                const progressDiv = document.getElementById('uploadProgress');
+                const progressItems = document.getElementById('progressItems');
+                
+                progressDiv.style.display = 'block';
+                
+                let progressItem = document.getElementById(`progress-${fileName}`);
+                if (!progressItem) {
+                    progressItem = document.createElement('div');
+                    progressItem.id = `progress-${fileName}`;
+                    progressItem.className = 'progress-item';
+                    progressItem.innerHTML = `
+                        <div class="progress-name">${fileName}</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 0%"></div>
+                        </div>
+                    `;
+                    progressItems.appendChild(progressItem);
+                }
+                
+                const progressFill = progressItem.querySelector('.progress-fill');
+                progressFill.style.width = progress + '%';
+                
+                if (progress >= 100) {
+                    setTimeout(() => {
+                        progressItem.remove();
+                        if (progressItems.children.length === 0) {
+                            progressDiv.style.display = 'none';
+                        }
+                    }, 2000);
+                }
+            }
+        };
+        
+        // ==========================================
+        // UI FUNCTIONS
+        // ==========================================
+        
+        let allDocuments = [];
+        
+        /**
+         * Load and display documents
+         */
+        async function loadDocuments() {
+            try {
+                allDocuments = await DocumentService.getUserDocuments();
+                
+                // Update stats
+                updateStats(allDocuments);
+                
+                // Render documents
+                renderDocuments(allDocuments);
+            } catch (error) {
+                console.error('Error loading documents:', error);
+            }
+        }
+        
+        /**
+         * Update statistics
+         */
+        function updateStats(documents) {
+            document.getElementById('totalDocuments').textContent = documents.length;
+            
+            const storageUsed = DocumentService.calculateStorageUsage(documents);
+            document.getElementById('storageUsed').textContent = storageUsed + ' MB';
+            
+            // Recent uploads (last 7 days)
+            const oneWeekAgo = new Date();
+            oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+            const recentCount = documents.filter(d => 
+                new Date(d.uploadedAt) >= oneWeekAgo
+            ).length;
+            document.getElementById('recentUploads').textContent = recentCount;
+        }
+        
+        /**
+         * Render documents grid
+         */
+        function renderDocuments(documents) {
+            const grid = document.getElementById('documentsGrid');
+            const emptyState = document.getElementById('emptyState');
+            
+            if (documents.length === 0) {
+                grid.style.display = 'none';
+                emptyState.style.display = 'block';
+                return;
+            }
+            
+            grid.style.display = 'grid';
+            emptyState.style.display = 'none';
+            
+            grid.innerHTML = documents.map(doc => {
+                const icon = getDocumentIcon(doc.fileType);
+                const iconClass = getIconClass(doc.fileType);
+                
+                return `
+                    <div class="document-card">
+                        <div class="document-icon ${iconClass}">
+                            ${icon}
+                        </div>
+                        <div class="document-name" title="${doc.fileName}">${doc.fileName}</div>
+                        <div class="document-type">${formatDocumentType(doc.documentType)}</div>
+                        <div class="document-meta">
+                            <span>${formatFileSize(doc.fileSize)}</span>
+                            <span>${getRelativeTime(doc.uploadedAt)}</span>
+                        </div>
+                        <div class="document-actions">
+                            <button class="doc-action-btn" onclick="downloadDocument('${doc.downloadURL}', '${doc.fileName}')" title="Download">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="7 10 12 15 17 10"></polyline>
+                                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                                </svg>
+                            </button>
+                            <button class="doc-action-btn" onclick="viewDocument('${doc.downloadURL}')" title="View">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                            </button>
+                            <button class="doc-action-btn" onclick="deleteDocument('${doc.id}', '${doc.storagePath}')" title="Delete">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="3 6 5 6 21 6"></polyline>
+                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        /**
+         * Get document icon
+         */
+        function getDocumentIcon(fileType) {
+            if (fileType.includes('pdf')) {
+                return '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>';
+            }
+            if (fileType.includes('image')) {
+                return '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>';
+            }
+            if (fileType.includes('word') || fileType.includes('doc')) {
+                return '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>';
+            }
+            return '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline></svg>';
+        }
+        
+        /**
+         * Get icon class based on file type
+         */
+        function getIconClass(fileType) {
+            if (fileType.includes('pdf')) return 'pdf';
+            if (fileType.includes('image')) return 'image';
+            if (fileType.includes('word') || fileType.includes('doc')) return 'doc';
+            return 'other';
+        }
+        
+        /**
+         * Format document type
+         */
+        function formatDocumentType(type) {
+            const types = {
+                general: 'General',
+                id: 'Identification',
+                income: 'Income Verification',
+                credit: 'Credit Report',
+                tax: 'Tax Returns',
+                bank: 'Bank Statement',
+                contract: 'Contract',
+                inspection: 'Inspection Report',
+                appraisal: 'Appraisal',
+                other: 'Other'
+            };
+            return types[type] || type;
+        }
+        
+        /**
+         * Format file size
+         */
+        function formatFileSize(bytes) {
+            if (bytes < 1024) return bytes + ' B';
+            if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+            return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+        }
+        
+        /**
+         * Get relative time
+         */
+        function getRelativeTime(date) {
+            const now = new Date();
+            const diff = now - new Date(date);
+            const hours = Math.floor(diff / 3600000);
+            const days = Math.floor(diff / 86400000);
+            
+            if (hours < 24) return 'Today';
+            if (days === 1) return 'Yesterday';
+            if (days < 7) return `${days} days ago`;
+            return new Date(date).toLocaleDateString();
+        }
+        
+        // ==========================================
+        // EVENT HANDLERS
+        // ==========================================
+        
+        /**
+         * Handle file upload
+         */
+        async function handleFileUpload(files) {
+            const documentType = document.getElementById('documentType').value;
+            
+            for (const file of files) {
+                // Validate file size (10MB max)
+                if (file.size > 10 * 1024 * 1024) {
+                    alert(`File ${file.name} is too large. Maximum size is 10MB.`);
+                    continue;
+                }
+                
+                try {
+                    await DocumentService.uploadDocument(file, documentType);
+                } catch (error) {
+                    console.error(`Error uploading ${file.name}:`, error);
+                    alert(`Failed to upload ${file.name}`);
+                }
+            }
+            
+            // Reload documents
+            await loadDocuments();
+        }
+        
+        /**
+         * Filter documents by type
+         */
+        function filterDocuments() {
+            const filterType = document.getElementById('filterType').value;
+            
+            if (filterType) {
+                const filtered = allDocuments.filter(d => d.documentType === filterType);
+                renderDocuments(filtered);
+            } else {
+                renderDocuments(allDocuments);
+            }
+        }
+        
+        /**
+         * Download document
+         */
+        function downloadDocument(url, fileName) {
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fileName;
+            a.click();
+        }
+        
+        /**
+         * View document in new tab
+         */
+        function viewDocument(url) {
+            window.open(url, '_blank');
+        }
+        
+        /**
+         * Delete document
+         */
+        async function deleteDocument(docId, storagePath) {
+            if (!confirm('Are you sure you want to delete this document?')) return;
+            
+            const success = await DocumentService.deleteDocument(docId, storagePath);
+            
+            if (success) {
+                await loadDocuments();
+            } else {
+                alert('Failed to delete document');
+            }
+        }
+        
+        /**
+         * Close upload progress indicator
+         */
+        function closeUploadProgress() {
+            document.getElementById('uploadProgress').style.display = 'none';
+        }
+        
+        // ==========================================
+        // DRAG AND DROP
+        // ==========================================
+        
+        const uploadArea = document.getElementById('uploadArea');
+        
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+        
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+        
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            
+            const files = Array.from(e.dataTransfer.files);
+            handleFileUpload(files);
+        });
+        
+        uploadArea.addEventListener('click', (e) => {
+            if (e.target.tagName !== 'BUTTON') {
+                document.getElementById('fileInput').click();
+            }
+        });
+        
+        document.getElementById('fileInput').addEventListener('change', (e) => {
+            const files = Array.from(e.target.files);
+            handleFileUpload(files);
+            e.target.value = ''; // Reset input
+        });
+        
+        // ==========================================
+        // INITIALIZATION
+        // ==========================================
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            firebase.auth().onAuthStateChanged(user => {
+                if (!user) {
+                    window.location.href = '/client/login.html';
+                    return;
+                }
+                
+                loadDocuments();
+            });
+        });
+    </script>
+</body>
+</html>
