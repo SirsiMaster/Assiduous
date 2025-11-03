@@ -11,7 +11,11 @@ const path = require('path');
 
 // Paths
 const REPO_ROOT = path.resolve(__dirname, '..');
-const METRICS_FILE = path.join(REPO_ROOT, 'firebase-migration-package', 'assiduous-build', 'admin', 'development', 'metrics_cache.json');
+// Output to BOTH locations so it works in all environments
+const METRICS_FILES = [
+    path.join(REPO_ROOT, 'public', 'admin', 'development', 'metrics_cache.json'),
+    path.join(REPO_ROOT, 'firebase-migration-package', 'assiduous-build', 'admin', 'development', 'metrics_cache.json')
+];
 
 // Configuration
 const HOURLY_RATE = 150;
@@ -598,14 +602,18 @@ function calculateAllMetrics() {
 // Save metrics function
 function saveMetrics(metrics) {
     try {
-        const dir = path.dirname(METRICS_FILE);
-        if (!fs.existsSync(dir)) {
-            fs.mkdirSync(dir, { recursive: true });
-        }
+        // Write to ALL locations so metrics work everywhere
+        let success = true;
+        METRICS_FILES.forEach(file => {
+            const dir = path.dirname(file);
+            if (!fs.existsSync(dir)) {
+                fs.mkdirSync(dir, { recursive: true });
+            }
+            fs.writeFileSync(file, JSON.stringify(metrics, null, 2));
+            console.log(`✅ Metrics saved to: ${file}`);
+        });
         
-        fs.writeFileSync(METRICS_FILE, JSON.stringify(metrics, null, 2));
-        console.log(`\n✅ Enhanced metrics saved to: ${METRICS_FILE}`);
-        
+        // Also save backup in root
         const backupFile = path.join(REPO_ROOT, 'metrics_cache_enhanced.json');
         fs.writeFileSync(backupFile, JSON.stringify(metrics, null, 2));
         console.log(`📋 Backup saved to: ${backupFile}`);
@@ -621,7 +629,7 @@ function saveMetrics(metrics) {
 function main() {
     console.log('🚀 Starting ENHANCED automated metrics update...');
     console.log(`📁 Repository: ${REPO_ROOT}`);
-    console.log(`📊 Output: ${METRICS_FILE}\n`);
+    console.log(`📊 Outputs: ${METRICS_FILES.length} locations\n`);
     
     try {
         const metrics = calculateAllMetrics();
