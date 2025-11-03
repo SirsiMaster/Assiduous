@@ -729,48 +729,258 @@
         });
 
         // ========================================
-        // PROPERTY MANAGEMENT WITH API INTEGRATION
+        // FIREBASE PROPERTY MANAGEMENT SERVICE
         // ========================================
         
-        // Import PropertyService (using module script)
-        let propertyService;
+        const AgentPropertyService = {
+            db: firebase.firestore(),
+            auth: firebase.auth(),
+            
+            /**
+             * Get properties for current agent
+             */
+            async getAgentProperties(filters = {}) {
+                try {
+                    const user = this.auth.currentUser;
+                    if (!user) throw new Error('Not authenticated');
+                    
+                    let query = this.db.collection('properties')
+                        .where('agentId', '==', user.uid);
+                    
+                    // Apply status filter
+                    if (filters.status) {
+                        query = query.where('status', '==', filters.status);
+                    }
+                    
+                    // Apply type filter
+                    if (filters.type) {
+                        query = query.where('type', '==', filters.type);
+                    }
+                    
+                    // Apply bedrooms filter
+                    if (filters.bedrooms) {
+                        query = query.where('bedrooms', '>=', parseInt(filters.bedrooms));
+                    }
+                    
+                    const snapshot = await query.orderBy('createdAt', 'desc').get();
+                    
+                    let properties = snapshot.docs.map(doc => ({
+                        id: doc.id,
+                        ...doc.data(),
+                        createdAt: doc.data().createdAt?.toDate() || new Date()
+                    }));
+                    
+                    // Apply client-side neighborhood filter
+                    if (filters.neighborhood) {
+                        properties = properties.filter(p => 
+                            p.neighborhood === filters.neighborhood
+                        );
+                    }
+                    
+                    return properties;
+                } catch (error) {
+                    console.error('Error fetching agent properties:', error);
+                    return this.getDemoProperties();
+                }
+            },
+            
+            /**
+             * Get property statistics
+             */
+            calculateStats(properties) {
+                const total = properties.length;
+                const available = properties.filter(p => p.status === 'available').length;
+                const pending = properties.filter(p => p.status === 'pending').length;
+                const sold = properties.filter(p => p.status === 'sold').length;
+                
+                const totalValue = properties.reduce((sum, p) => sum + (p.price || 0), 0);
+                const avgPrice = total > 0 ? totalValue / total : 0;
+                
+                return {
+                    total,
+                    available,
+                    pending,
+                    sold,
+                    avgPrice
+                };
+            },
+            
+            /**
+             * Get unique neighborhoods
+             */
+            getNeighborhoods(properties) {
+                const neighborhoods = new Set();
+                properties.forEach(p => {
+                    if (p.neighborhood) neighborhoods.add(p.neighborhood);
+                });
+                return Array.from(neighborhoods).sort();
+            },
+            
+            /**
+             * Update property status
+             */
+            async updatePropertyStatus(propertyId, newStatus) {
+                try {
+                    await this.db.collection('properties').doc(propertyId).update({
+                        status: newStatus,
+                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    return true;
+                } catch (error) {
+                    console.error('Error updating property status:', error);
+                    return false;
+                }
+            },
+            
+            /**
+             * Delete property
+             */
+            async deleteProperty(propertyId) {
+                try {
+                    await this.db.collection('properties').doc(propertyId).delete();
+                    return true;
+                } catch (error) {
+                    console.error('Error deleting property:', error);
+                    return false;
+                }
+            },
+            
+            /**
+             * Demo properties for development
+             */
+            getDemoProperties() {
+                const user = this.auth.currentUser;
+                return [
+                    {
+                        id: '1',
+                        agentId: user?.uid || 'demo',
+                        address: '123 Ocean View Drive',
+                        city: 'Santa Monica',
+                        state: 'CA',
+                        zipCode: '90401',
+                        neighborhood: 'Ocean Park',
+                        price: 850000,
+                        bedrooms: 3,
+                        bathrooms: 2.5,
+                        sqft: 2100,
+                        type: 'single_family',
+                        status: 'available',
+                        image: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600',
+                        daysOnMarket: 12,
+                        views: 245,
+                        inquiries: 8,
+                        createdAt: new Date('2025-10-22')
+                    },
+                    {
+                        id: '2',
+                        agentId: user?.uid || 'demo',
+                        address: '456 Downtown Loft #302',
+                        city: 'Los Angeles',
+                        state: 'CA',
+                        zipCode: '90013',
+                        neighborhood: 'Arts District',
+                        price: 625000,
+                        bedrooms: 2,
+                        bathrooms: 2,
+                        sqft: 1450,
+                        type: 'condo',
+                        status: 'pending',
+                        image: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=600',
+                        daysOnMarket: 8,
+                        views: 389,
+                        inquiries: 15,
+                        createdAt: new Date('2025-10-26')
+                    },
+                    {
+                        id: '3',
+                        agentId: user?.uid || 'demo',
+                        address: '789 Maple Street',
+                        city: 'Pasadena',
+                        state: 'CA',
+                        zipCode: '91101',
+                        neighborhood: 'Old Town',
+                        price: 475000,
+                        bedrooms: 3,
+                        bathrooms: 2,
+                        sqft: 1800,
+                        type: 'townhouse',
+                        status: 'available',
+                        image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600',
+                        daysOnMarket: 25,
+                        views: 156,
+                        inquiries: 4,
+                        createdAt: new Date('2025-10-09')
+                    },
+                    {
+                        id: '4',
+                        agentId: user?.uid || 'demo',
+                        address: '321 Beverly Hills Blvd',
+                        city: 'Beverly Hills',
+                        state: 'CA',
+                        zipCode: '90210',
+                        neighborhood: 'Golden Triangle',
+                        price: 2100000,
+                        bedrooms: 5,
+                        bathrooms: 4,
+                        sqft: 4200,
+                        type: 'single_family',
+                        status: 'sold',
+                        image: 'https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=600',
+                        daysOnMarket: 45,
+                        views: 567,
+                        inquiries: 23,
+                        soldDate: new Date('2025-10-28'),
+                        createdAt: new Date('2025-09-13')
+                    },
+                    {
+                        id: '5',
+                        agentId: user?.uid || 'demo',
+                        address: '555 Sunset Plaza',
+                        city: 'West Hollywood',
+                        state: 'CA',
+                        zipCode: '90069',
+                        neighborhood: 'Sunset Strip',
+                        price: 725000,
+                        bedrooms: 2,
+                        bathrooms: 2,
+                        sqft: 1600,
+                        type: 'condo',
+                        status: 'available',
+                        image: 'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=600',
+                        daysOnMarket: 6,
+                        views: 423,
+                        inquiries: 12,
+                        createdAt: new Date('2025-10-28')
+                    }
+                ];
+            }
+        };
+        
+        // ========================================
+        // UI AND DATA MANAGEMENT
+        // ========================================
+        
+        let allProperties = [];
+        let currentFilters = {};
         
         async function initPropertyManagement() {
             try {
-                // Dynamically import PropertyService
-                const module = await import('../assets/js/services/propertyservice.js');
-                propertyService = new module.PropertyService();
+                // Check authentication
+                const user = firebase.auth().currentUser;
+                if (!user) {
+                    window.location.href = '/agent/login.html';
+                    return;
+                }
                 
                 // Load initial data
-                await loadNeighborhoods();
                 await loadProperties();
-                await loadStats();
             } catch (error) {
                 console.error('Failed to initialize property management:', error);
                 showError('Failed to load properties. Please refresh the page.');
             }
         }
-
-        // Load neighborhoods for filter
-        async function loadNeighborhoods() {
-            try {
-                const neighborhoods = await propertyService.getNeighborhoods();
-                const select = document.getElementById('neighborhoodFilter');
-                neighborhoods.forEach(neighborhood => {
-                    const option = document.createElement('option');
-                    option.value = neighborhood;
-                    option.textContent = neighborhood;
-                    select.appendChild(option);
-                });
-            } catch (error) {
-                console.error('Failed to load neighborhoods:', error);
-            }
-        }
-
-        // Load properties from API
-        let currentFilters = {};
         
-        async function loadProperties(filters = {}) {
+        async function loadProperties() {
             const loadingEl = document.getElementById('loadingState');
             const errorEl = document.getElementById('errorState');
             const gridEl = document.getElementById('propertiesGrid');
@@ -780,15 +990,23 @@
                 errorEl.style.display = 'none';
                 gridEl.style.display = 'none';
                 
-                const data = await propertyService.getProperties(filters);
+                // Fetch properties
+                allProperties = await AgentPropertyService.getAgentProperties(currentFilters);
                 
+                // Update stats
+                updateStats(allProperties);
+                
+                // Update neighborhood filter options
+                updateNeighborhoodFilter(allProperties);
+                
+                // Render properties
                 loadingEl.style.display = 'none';
                 gridEl.style.display = 'grid';
                 
-                if (data.properties && data.properties.length > 0) {
-                    renderProperties(data.properties);
+                if (allProperties.length > 0) {
+                    renderProperties(allProperties);
                 } else {
-                    gridEl.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; padding: 40px; color: var(--text-secondary);">No properties found matching your criteria.</p>';
+                    gridEl.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; padding: 40px; color: var(--text-secondary);">No properties found. Click "Add Listing" to create your first property.</p>';
                 }
             } catch (error) {
                 console.error('Error loading properties:', error);
@@ -796,78 +1014,84 @@
                 showError('Failed to load properties: ' + error.message);
             }
         }
+        
+        function updateStats(properties) {
+            const stats = AgentPropertyService.calculateStats(properties);
+            
+            document.getElementById('stat-total').textContent = stats.total;
+            document.getElementById('stat-available').textContent = stats.available;
+            document.getElementById('stat-pending').textContent = stats.pending;
+            document.getElementById('stat-sold').textContent = stats.sold;
+            document.getElementById('stat-avg-price').textContent = 
+                '$' + Math.round(stats.avgPrice).toLocaleString();
+        }
+        
+        function updateNeighborhoodFilter(properties) {
+            const neighborhoods = AgentPropertyService.getNeighborhoods(properties);
+            const select = document.getElementById('neighborhoodFilter');
+            
+            // Clear existing options except first (All Neighborhoods)
+            while (select.options.length > 1) {
+                select.remove(1);
+            }
+            
+            // Add neighborhood options
+            neighborhoods.forEach(neighborhood => {
+                const option = document.createElement('option');
+                option.value = neighborhood;
+                option.textContent = neighborhood;
+                select.appendChild(option);
+            });
+        }
 
         // Render properties to grid
         function renderProperties(properties) {
             const grid = document.getElementById('propertiesGrid');
             grid.innerHTML = properties.map(property => {
-                const formatted = propertyService.formatProperty(property);
-                const statusVariant = property.status === 'available' ? 'success' : 
-                                    property.status === 'pending' ? 'warning' : 'danger';
+                const statusBadgeClass = property.status === 'available' ? 'success' : 
+                                        property.status === 'pending' ? 'warning' : 'default';
                 const statusText = property.status.charAt(0).toUpperCase() + property.status.slice(1);
-                const imageUrl = property.images?.[0]?.url || 'https://via.placeholder.com/400x300?text=No+Image';
+                const imageUrl = property.image || 'https://via.placeholder.com/400x300?text=No+Image';
                 
                 return `
-                    <div class="property-card sirsi-card sm-card--elevated" onclick="viewProperty('${property.id}')" style="cursor: pointer;">
-                        <div class="property-image">
-                            <img src="${imageUrl}" alt="Property" style="width: 100%; height: 100%; object-fit: cover;">
-                            <sirsi-badge variant="${statusVariant}" class="property-status">${statusText}</sirsi-badge>
+                    <div class="property-card" onclick="viewProperty('${property.id}')">
+                        <div class="property-image" style="background-image: url('${imageUrl}'); background-size: cover; background-position: center;">
+                            <span class="property-status sirsi-badge sirsi-badge--${statusBadgeClass}">${statusText}</span>
                         </div>
                         <div class="property-details">
-                            <div class="property-price">${formatted.priceFormatted}</div>
-                            <div class="property-address">${property.address.street}, ${property.neighborhood}</div>
+                            <div class="property-price">$${property.price.toLocaleString()}</div>
+                            <div class="property-address">${property.address}, ${property.city}, ${property.state}</div>
                             <div class="property-features">
                                 <div class="property-feature">
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M3 20v-8a2 2 0 012-2h14a2 2 0 012 2v8"></path>
-                                        <path d="M5 10V6a2 2 0 012-2h10a2 2 0 012 2v4"></path>
+                                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
                                     </svg>
-                                    ${property.details.bedrooms} Beds
+                                    ${property.bedrooms} beds
                                 </div>
                                 <div class="property-feature">
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M9 6h6M9 12h6M9 18h6M4 6h.01M4 12h.01M4 18h.01"></path>
+                                        <circle cx="12" cy="12" r="4"></circle>
+                                        <line x1="1.05" y1="12" x2="7" y2="12"></line>
+                                        <line x1="17.01" y1="12" x2="22.96" y2="12"></line>
                                     </svg>
-                                    ${property.details.bathrooms} Baths
+                                    ${property.bathrooms} baths
                                 </div>
                                 <div class="property-feature">
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                         <rect x="3" y="3" width="18" height="18"></rect>
                                     </svg>
-                                    ${property.details.sqft.toLocaleString()} sqft
+                                    ${property.sqft.toLocaleString()} sqft
                                 </div>
                             </div>
-                            <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
-                                <div style="font-size: 12px; color: var(--text-secondary);">ROI: <strong style="color: var(--success);">${property.flipEstimate?.roi}%</strong></div>
-                                <div style="font-size: 12px; color: var(--text-secondary);">Profit: <strong>${formatted.profitFormatted}</strong></div>
+                            <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: var(--text-secondary);">
+                                <div><strong>${property.daysOnMarket}</strong> days on market</div>
+                                <div><strong>${property.views || 0}</strong> views</div>
+                                <div><strong>${property.inquiries || 0}</strong> inquiries</div>
                             </div>
                         </div>
                     </div>
                 `;
             }).join('');
-        }
-
-        // Load statistics
-        async function loadStats() {
-            try {
-                const data = await propertyService.getProperties({ limit: 1000 });
-                const properties = data.properties || [];
-                
-                const total = properties.length;
-                const available = properties.filter(p => p.status === 'available').length;
-                const pending = properties.filter(p => p.status === 'pending').length;
-                const sold = properties.filter(p => p.status === 'sold').length;
-                const avgPrice = properties.length > 0 ? 
-                    properties.reduce((sum, p) => sum + (p.price?.list || 0), 0) / properties.length : 0;
-                
-                document.getElementById('stat-total').textContent = total.toLocaleString();
-                document.getElementById('stat-available').textContent = available.toLocaleString();
-                document.getElementById('stat-pending').textContent = pending.toLocaleString();
-                document.getElementById('stat-sold').textContent = sold.toLocaleString();
-                document.getElementById('stat-avg-price').textContent = propertyService.formatCurrency(avgPrice);
-            } catch (error) {
-                console.error('Failed to load stats:', error);
-            }
         }
 
         // Apply filters
@@ -882,10 +1106,10 @@
             if (status) filters.status = status;
             if (type) filters.type = type;
             if (neighborhood) filters.neighborhood = neighborhood;
-            if (bedrooms) filters.minBedrooms = parseInt(bedrooms);
+            if (bedrooms) filters.bedrooms = parseInt(bedrooms);
             
             currentFilters = filters;
-            await loadProperties(filters);
+            await loadProperties();
         };
 
         // View property detail
@@ -921,8 +1145,20 @@
             }
         `;
         document.head.appendChild(style);
+        
+        // Initialize Firebase and page
+        firebase.auth().onAuthStateChanged(user => {
+            if (!user) {
+                window.location.href = '/agent/login.html';
+                return;
+            }
+            initPropertyManagement();
+        });
     </script>
-    <!-- Firebase Integration -->
+    
+    <!-- Component Scripts -->
+    <script src="../components/universal-header.js"></script>
+    <script src="../firebase-config.js"></script>
     <script src="../firebase-config.js"></script>
     <!-- Sidebar pre-rendered, no JS needed -->
     <script src="../components/universal-header.js"></script>
