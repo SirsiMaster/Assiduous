@@ -8,6 +8,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.83.0] - 2025-11-03
+
+### Added
+- feat(calculators): complete micro-flip calculator workflow with property selection
+- feat(calculators): add MicroFlipEngine service and property selector foundation
+
+
 ## [0.82.0] - 2025-11-03
 
 ### Added
@@ -2744,7 +2751,14 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.82.0...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.83.0...HEAD
+
+
+## [0.83.0] - 2025-11-03
+
+### Added
+- feat(calculators): complete micro-flip calculator workflow with property selection
+- feat(calculators): add MicroFlipEngine service and property selector foundation
 
 
 ## [0.82.0] - 2025-11-03
@@ -3906,3 +3920,4 @@ To generate changelog entries:
 [0.81.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.80.0...v0.81.0
 [0.81.1]: https://github.com/SirsiMaster/Assiduous/compare/v0.81.0...v0.81.1
 [0.82.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.81.1...v0.82.0
+[0.83.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.82.0...v0.83.0
