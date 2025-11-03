@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.78.0] - 2025-11-03
+
+### Added
+- feat(agent): implement complete property listings with Firebase integration
+
+
 ## [0.77.0] - 2025-11-03
 
 ### Added
@@ -2708,7 +2714,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.77.0...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.78.0...HEAD
+
+
+## [0.78.0] - 2025-11-03
+
+### Added
+- feat(agent): implement complete property listings with Firebase integration
 
 
 ## [0.77.0] - 2025-11-03
@@ -3828,3 +3840,4 @@ To generate changelog entries:
 [0.75.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.74.0...v0.75.0
 [0.76.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.75.0...v0.76.0
 [0.77.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.76.0...v0.77.0
+[0.78.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.77.0...v0.78.0
