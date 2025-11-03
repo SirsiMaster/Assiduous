@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.81.1] - 2025-11-03
+
+### Fixed
+- fix(calculators): professional styling, auth timeout, and carousel flickering
+
+
 ## [0.81.0] - 2025-11-03
 
 ### Added
@@ -2732,7 +2738,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.81.0...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.81.1...HEAD
+
+
+## [0.81.1] - 2025-11-03
+
+### Fixed
+- fix(calculators): professional styling, auth timeout, and carousel flickering
 
 
 ## [0.81.0] - 2025-11-03
@@ -3880,3 +3892,4 @@ To generate changelog entries:
 [0.79.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.78.0...v0.79.0
 [0.80.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.79.0...v0.80.0
 [0.81.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.80.0...v0.81.0
+[0.81.1]: https://github.com/SirsiMaster/Assiduous/compare/v0.81.0...v0.81.1
