@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-11-03T03:15:28.981Z",
+  "lastUpdated": "2025-11-03T03:17:32.995Z",
   "summary": {
     "health": "Good",
     "score": 46,
@@ -104,41 +104,41 @@
     }
   },
   "project": {
-    "totalHours": "229",
+    "totalHours": "230",
     "avgHoursPerDay": "8.2",
-    "totalCost": 36165,
-    "laborCost": 34350,
+    "totalCost": 36315,
+    "laborCost": 34500,
     "toolsCost": 1815,
     "monthsElapsed": "2.8",
-    "totalCommits": 693,
+    "totalCommits": 696,
     "totalFiles": 662,
     "activeDays": 28,
     "totalDays": 85,
     "projectAgeDays": 85,
-    "linesAdded": 9650003,
-    "linesDeleted": 9370345,
-    "netLines": 279658,
-    "velocity": "24.8",
+    "linesAdded": 9650086,
+    "linesDeleted": 9370389,
+    "netLines": 279697,
+    "velocity": "24.9",
     "completionPercentage": 46,
     "actualStartDate": "2025-08-10"
   },
   "today": {
     "date": "2025-11-03",
-    "hours": "34.3",
-    "cost": 5148,
-    "commits": 104,
+    "hours": "35.3",
+    "cost": 5297,
+    "commits": 107,
     "deployments": 0
   },
   "thisWeek": {
-    "hours": "41.9",
-    "cost": 6287,
-    "commits": 127,
+    "hours": "42.9",
+    "cost": 6435,
+    "commits": 130,
     "days": 7
   },
   "thisMonth": {
-    "hours": "122.8",
-    "cost": 18414,
-    "commits": 372
+    "hours": "123.8",
+    "cost": 18563,
+    "commits": 375
   },
   "quality": {
     "testCoverage": {
@@ -172,7 +172,7 @@
       "critical": 0,
       "total": 0
     },
-    "lastAudit": "2025-11-03T03:15:02.905Z",
+    "lastAudit": "2025-11-03T03:17:02.780Z",
     "dependencies": {
       "total": {
         "prod": 256,
@@ -267,11 +267,11 @@
     "changelog": true,
     "contributing": false,
     "license": false,
-    "lastUpdate": "2025-11-03 03:13:31 +0000"
+    "lastUpdate": "2025-11-03 03:14:56 +0000"
   },
   "productivity": {
     "velocityTrend": "increasing",
-    "weeklyCommits": 127,
+    "weeklyCommits": 130,
     "contributors": {
       "total": 0,
       "active": 0
@@ -349,6 +349,24 @@
   },
   "recentActivity": [
     {
+      "hash": "37f183d3ea99c61793c36f904ab72a767b93f257",
+      "message": "chore: update metrics.json",
+      "author": "SirsiMaster",
+      "date": "2025-11-02 22:16:41 -0500"
+    },
+    {
+      "hash": "d5d3eeaa17e2149df41af94a207cb8861964f731",
+      "message": "fix(analytics): Add comprehensive error handling and debugging for analytics page",
+      "author": "SirsiMaster",
+      "date": "2025-11-02 22:16:20 -0500"
+    },
+    {
+      "hash": "04273bf60638740f5485ef096482302ae046848b",
+      "message": "chore(release): Bump version to 0.68.6 [skip ci]",
+      "author": "github-actions[bot]",
+      "date": "2025-11-03 03:14:56 +0000"
+    },
+    {
       "hash": "2e1447b73e2324393cea97ba86c5f3602fc9a89f",
       "message": "fix(analytics): Fix metrics.json fetch path and add error handling",
       "author": "SirsiMaster",
@@ -389,28 +407,10 @@
       "message": "fix: Remove irregular breadcrumb navigation from development pages",
       "author": "SirsiMaster",
       "date": "2025-11-02 21:57:33 -0500"
-    },
-    {
-      "hash": "ecb84d34b0acc982b5260f5716a973ed609ad39a",
-      "message": "chore(release): Bump version to 0.68.2 [skip ci]",
-      "author": "github-actions[bot]",
-      "date": "2025-11-03 02:51:44 +0000"
-    },
-    {
-      "hash": "398ba16b8e5c97a994ab393022345426f3cfe7a1",
-      "message": "chore: update metrics.json",
-      "author": "SirsiMaster",
-      "date": "2025-11-02 21:51:30 -0500"
-    },
-    {
-      "hash": "ba8f0fc8d94521fa262e366d7f07fd775fc6e588",
-      "message": "fix(dashboard): Make Project Metrics and Development Progress fully dynamic",
-      "author": "SirsiMaster",
-      "date": "2025-11-02 21:51:07 -0500"
     }
   ],
   "automation": {
-    "lastRun": "2025-11-03T03:15:28.981Z",
+    "lastRun": "2025-11-03T03:17:32.995Z",
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",
