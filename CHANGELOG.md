@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.68.2] - 2025-11-03
+
+### Fixed
+- fix(dashboard): Make Project Metrics and Development Progress fully dynamic
+
+
 ## [0.68.1] - 2025-11-03
 
 ### Fixed
@@ -2593,7 +2599,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.68.1...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.68.2...HEAD
+
+
+## [0.68.2] - 2025-11-03
+
+### Fixed
+- fix(dashboard): Make Project Metrics and Development Progress fully dynamic
 
 
 ## [0.68.1] - 2025-11-03
@@ -3579,3 +3591,4 @@ To generate changelog entries:
 [0.67.4]: https://github.com/SirsiMaster/Assiduous/compare/v0.67.3...v0.67.4
 [0.68.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.67.4...v0.68.0
 [0.68.1]: https://github.com/SirsiMaster/Assiduous/compare/v0.68.0...v0.68.1
+[0.68.2]: https://github.com/SirsiMaster/Assiduous/compare/v0.68.1...v0.68.2
