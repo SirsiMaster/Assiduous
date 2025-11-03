@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.66.3] - 2025-11-03
+
+### Fixed
+- fix(stripe): convert to Gen2 API routes (proper solution)
+
+
 ## [0.66.2] - 2025-11-03
 
 ### Fixed
@@ -2545,7 +2551,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.66.2...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.66.3...HEAD
+
+
+## [0.66.3] - 2025-11-03
+
+### Fixed
+- fix(stripe): convert to Gen2 API routes (proper solution)
 
 
 ## [0.66.2] - 2025-11-03
@@ -3475,3 +3487,4 @@ To generate changelog entries:
 [0.66.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.65.0...v0.66.0
 [0.66.1]: https://github.com/SirsiMaster/Assiduous/compare/v0.66.0...v0.66.1
 [0.66.2]: https://github.com/SirsiMaster/Assiduous/compare/v0.66.1...v0.66.2
+[0.66.3]: https://github.com/SirsiMaster/Assiduous/compare/v0.66.2...v0.66.3
