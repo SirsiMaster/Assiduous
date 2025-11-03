@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-11-03T02:18:16.534Z",
+  "lastUpdated": "2025-11-03T02:19:32.525Z",
   "summary": {
     "health": "Good",
     "score": 46,
@@ -104,41 +104,41 @@
     }
   },
   "project": {
-    "totalHours": "222",
-    "avgHoursPerDay": "7.9",
-    "totalCost": 35115,
-    "laborCost": 33300,
+    "totalHours": "223",
+    "avgHoursPerDay": "8.0",
+    "totalCost": 35265,
+    "laborCost": 33450,
     "toolsCost": 1815,
     "monthsElapsed": "2.8",
-    "totalCommits": 674,
+    "totalCommits": 676,
     "totalFiles": 666,
     "activeDays": 28,
     "totalDays": 85,
     "projectAgeDays": 85,
-    "linesAdded": 9648942,
-    "linesDeleted": 9368628,
-    "netLines": 280314,
+    "linesAdded": 9648993,
+    "linesDeleted": 9368659,
+    "netLines": 280334,
     "velocity": "24.1",
     "completionPercentage": 46,
     "actualStartDate": "2025-08-10"
   },
   "today": {
     "date": "2025-11-03",
-    "hours": "28.1",
-    "cost": 4208,
-    "commits": 85,
+    "hours": "28.7",
+    "cost": 4307,
+    "commits": 87,
     "deployments": 0
   },
   "thisWeek": {
-    "hours": "35.6",
-    "cost": 5346,
-    "commits": 108,
+    "hours": "36.3",
+    "cost": 5445,
+    "commits": 110,
     "days": 7
   },
   "thisMonth": {
-    "hours": "116.5",
-    "cost": 17474,
-    "commits": 353
+    "hours": "117.2",
+    "cost": 17573,
+    "commits": 355
   },
   "quality": {
     "testCoverage": {
@@ -172,7 +172,7 @@
       "critical": 0,
       "total": 0
     },
-    "lastAudit": "2025-11-03T02:17:46.606Z",
+    "lastAudit": "2025-11-03T02:19:09.980Z",
     "dependencies": {
       "total": {
         "prod": 256,
@@ -267,16 +267,16 @@
     "changelog": true,
     "contributing": false,
     "license": false,
-    "lastUpdate": "2025-11-02 21:11:54 -0500"
+    "lastUpdate": "2025-11-03 02:15:22 +0000"
   },
   "productivity": {
     "velocityTrend": "increasing",
-    "weeklyCommits": 108,
+    "weeklyCommits": 110,
     "contributors": {
       "total": 0,
       "active": 0
     },
-    "averageCommitSize": 128,
+    "averageCommitSize": 127,
     "pullRequests": {
       "open": 0,
       "merged": 0,
@@ -349,6 +349,18 @@
   },
   "recentActivity": [
     {
+      "hash": "ffd6bff86153850a52b743db3b4743e4fce59d75",
+      "message": "fix(metrics): resolve syntax error in tools cost calculation",
+      "author": "SirsiMaster",
+      "date": "2025-11-02 21:18:33 -0500"
+    },
+    {
+      "hash": "fc696e01a81bce91e379e669812daa86f3ed3b31",
+      "message": "chore(release): Bump version to 0.67.3 [skip ci]",
+      "author": "github-actions[bot]",
+      "date": "2025-11-03 02:15:22 +0000"
+    },
+    {
       "hash": "c156a54caef2c4cb73049d19941ef08b61d1502b",
       "message": "fix(costs): update to correct rates - $150/hr and $650/month tools",
       "author": "SirsiMaster",
@@ -395,22 +407,10 @@
       "message": "chore(release): Bump version to 0.67.1 [skip ci]",
       "author": "github-actions[bot]",
       "date": "2025-11-03 01:49:54 +0000"
-    },
-    {
-      "hash": "9ec36663355954039198c32df09c2c6d7c605283",
-      "message": "fix(metrics): repair automation to write to both public/ and firebase-migration-package/",
-      "author": "SirsiMaster",
-      "date": "2025-11-02 20:49:20 -0500"
-    },
-    {
-      "hash": "ab1cf65064af387e7c2ac08a16e4f23f6fc5c6cc",
-      "message": "chore(release): Bump version to 0.67.0 [skip ci]",
-      "author": "github-actions[bot]",
-      "date": "2025-11-03 01:34:11 +0000"
     }
   ],
   "automation": {
-    "lastRun": "2025-11-03T02:18:16.534Z",
+    "lastRun": "2025-11-03T02:19:32.525Z",
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",

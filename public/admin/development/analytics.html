@@ -811,19 +811,10 @@
         </main>
     </div>
 
-    <!-- Load Firebase Analytics Service -->
-    <script src="../../assets/js/services/firebaseanalyticsservice.js"></script>
-    
     <!-- Chart.js for performance graphs -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
     <script>
-        // Initialize Firebase Analytics
-        let firebaseAnalytics = null;
-        if (window.firebaseanalyticsservice) {
-            firebaseAnalytics = new firebaseanalyticsservice();
-            firebaseAnalytics.init();
-        }
         
         // Create performance chart
         function createPerformanceChart() {

@@ -1017,121 +1017,45 @@
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
-    
-    <!-- Firebase Configuration -->
     <script>
-        // Firebase configuration for Assiduous Production
-        window.firebaseConfig = {
-// REMOVED:           "apiKey": "AIzaSyCnQajchoBwP_VMEvc9mKH-vO0xlZjGCRE", // Use secure config loading instead
-          "authDomain": "assiduous-prod.firebaseapp.com",
-          "projectId": "assiduous-prod",
-          "storageBucket": "assiduous-prod.firebasestorage.app",
-          "messagingSenderId": "9355377564",
-          "appId": "1:9355377564:web:cee09f952eea43976ee659",
-          "measurementId": "G-DVBZP21459"
-};
-    </script>
-    
-    <!-- Development Metrics Service -->
-    <script src="../../assets/js/services/developmentmetricsservice.js"></script>
-    
-    <script>
-        // Dashboard Data
+        // Dashboard Data - Simple metrics.json loader
         let chart = null;
-        let metricsService = null;
 
         async function init() {
-            // Trigger metrics update on load (runs in background)
-            triggerMetricsUpdate();
-            
-            // Initialize Firebase if configured
-            try {
-                if (typeof firebase !== 'undefined' && window.firebaseConfig) {
-                    firebase.initializeApp(window.firebaseConfig);
-                    await window.developmentmetricsservice.initialize();
-                    metricsService = window.developmentmetricsservice;
-                    console.log('Firebase metrics service initialized');
-                }
-            } catch (error) {
-                console.log('Firebase not configured, using fallback data');
-            }
-            
             await loadMetrics();
             createChart();
             
-            // Auto-refresh every 30 seconds for real-time updates
+            // Auto-refresh every 60 seconds
             setInterval(() => {
                 loadMetrics();
-            }, 30 * 1000);
-            
-            // Update metrics every 5 minutes as requested
-            setInterval(() => {
-                triggerMetricsUpdate();
-                loadMetrics();
-                console.log('Auto-refresh: Loading latest metrics from Firebase');
-            }, 5 * 60 * 1000);
-        }
-        
-        async function triggerMetricsUpdate() {
-            try {
-                // Try to trigger server-side update if available
-                // This will fail on static hosting but work with a backend
-                const response = await fetch('/api/update-metrics', { 
-                    method: 'POST',
-                    mode: 'no-cors'
-                });
-                console.log('Metrics update triggered');
-            } catch (e) {
-                // Silently fail - metrics will be updated by git hooks or manual runs
-                console.debug('Background metrics update not available');
-            }
+            }, 60 * 1000);
         }
 
         async function loadMetrics() {
             try {
-                // Load metrics from SINGLE SOURCE OF TRUTH
-                const cacheResponse = await fetch('/admin/development/metrics.json');
-                if (cacheResponse.ok) {
-                    const cachedMetrics = await cacheResponse.json();
-                    console.log('Loaded accurate metrics from cache:', cachedMetrics);
-                    updateDashboardMetrics(cachedMetrics);
-                    
-                    // Use recentActivity from metrics file if available
-                    const activity = cachedMetrics.recentActivity || [];
-                    if (activity.length > 0) {
-                        displayActivity(activity.slice(0, 8)); // Show top 8
-                    } else {
-                        // Fallback to loading from other sources
-                        const fallbackActivity = await loadRecentActivity();
-                        displayActivity(fallbackActivity);
-                    }
-                    return;
-                }
-            } catch (cacheError) {
-                console.log('Cache not available, trying Firebase...');
-            }
-            
-            try {
-                // Fallback to Firebase service
-                const metrics = metricsService ? 
-                    await metricsService.getDashboardMetrics() : 
-                    getFallbackMetrics();
+                // Load metrics from SINGLE SOURCE OF TRUTH: metrics.json
+                const response = await fetch('/admin/development/metrics.json');
+                if (!response.ok) throw new Error('Metrics file not found');
+                
+                const metrics = await response.json();
+                console.log('✅ Loaded metrics from cache:', metrics);
                 
                 updateDashboardMetrics(metrics);
                 
-                // Get recent activity
-                const activity = metricsService ? 
-                    await metricsService.getRecentActivity(8) : 
-                    getFallbackActivity();
-                
-                displayActivity(activity);
+                // Display recent activity from metrics file
+                const activity = metrics.recentActivity || [];
+                if (activity.length > 0) {
+                    displayActivity(activity.slice(0, 8)); // Show top 8
+                } else {
+                    console.warn('No recent activity in metrics file');
+                }
             } catch (error) {
-                console.error('Error loading metrics data:', error);
-                // Fallback to showing local data if service fails
-                showOfflineNotice();
+                console.error('❌ Error loading metrics:', error);
+                document.getElementById('commits').innerHTML = `
+                    <div style="padding: 20px; text-align: center; color: var(--error);">
+                        ⚠️ Unable to load metrics. Make sure metrics.json exists.
+                    </div>
+                `;
             }
         }
 
@@ -1373,36 +1297,6 @@
             return 'just now';
         }
 
-        async function loadRecentActivity() {
-            try {
-                // Try to load from Firebase upload data
-                const response = await fetch('../../data/development_history/firebase_upload_data.json');
-                if (response.ok) {
-                    const data = await response.json();
-                    if (data.sessions && data.sessions.length > 0) {
-                        return data.sessions.map(session => ({
-                            id: session.sessionId?.substring(0, 7) || 'N/A',
-                            author: session.author || 'Developer',
-                            message: session.commits?.[0]?.message || session.description || 'Development activity',
-                            timeAgo: formatTimeAgo(session.date)
-                        }));
-                    }
-                }
-            } catch (e) {
-                console.log('Could not load activity from history');
-            }
-            // Return recent actual commits
-            return [
-                { id: '28b3f56', author: 'Admin', message: 'refactor: improve breadcrumb UX and add logout to header', timeAgo: '1 hour ago' },
-                { id: '56a2fe7', author: 'Admin', message: 'feat: add smart breadcrumb navigation and back button', timeAgo: '2 hours ago' },
-                { id: 'a25fee1', author: 'Admin', message: 'fix: add missing universal-header.js script to costs page', timeAgo: '3 hours ago' },
-                { id: 'c7d4884', author: 'Admin', message: 'refactor: convert all paths and filenames to lowercase', timeAgo: '4 hours ago' },
-                { id: 'd63d09e', author: 'Admin', message: 'fix: correct sidebar navigation links', timeAgo: '5 hours ago' },
-                { id: '08b6864', author: 'Admin', message: 'feat: standardize naming to assiduous-prod.web.app', timeAgo: '6 hours ago' },
-                { id: 'bd4cf63', author: 'Admin', message: 'fix: correct component paths in admin pages', timeAgo: '7 hours ago' },
-                { id: '4e7ee9f', author: 'Admin', message: 'feat: complete directory reorganization', timeAgo: '8 hours ago' }
-            ];
-        }
         
         function formatTimeAgo(dateStr) {
             if (!dateStr) return 'Recently';
