@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-11-03T03:49:52.689Z",
+  "lastUpdated": "2025-11-03T04:01:48.610Z",
   "summary": {
     "health": "Good",
     "score": 46,
@@ -104,19 +104,19 @@
     }
   },
   "project": {
-    "totalHours": "236",
-    "avgHoursPerDay": "8.4",
-    "totalCost": 37215,
-    "laborCost": 35400,
+    "totalHours": "237",
+    "avgHoursPerDay": "8.5",
+    "totalCost": 37365,
+    "laborCost": 35550,
     "toolsCost": 1815,
     "monthsElapsed": "2.8",
-    "totalCommits": 716,
+    "totalCommits": 717,
     "totalFiles": 662,
     "activeDays": 28,
     "totalDays": 85,
     "projectAgeDays": 85,
-    "linesAdded": 9650964,
-    "linesDeleted": 9371006,
+    "linesAdded": 9650997,
+    "linesDeleted": 9371039,
     "netLines": 279958,
     "velocity": "25.6",
     "completionPercentage": 46,
@@ -124,21 +124,21 @@
   },
   "today": {
     "date": "2025-11-03",
-    "hours": "41.9",
-    "cost": 6287,
-    "commits": 127,
+    "hours": "41.6",
+    "cost": 6237,
+    "commits": 126,
     "deployments": 0
   },
   "thisWeek": {
-    "hours": "49.5",
-    "cost": 7425,
-    "commits": 150,
+    "hours": "49.8",
+    "cost": 7475,
+    "commits": 151,
     "days": 7
   },
   "thisMonth": {
-    "hours": "130.3",
-    "cost": 19553,
-    "commits": 395
+    "hours": "130.7",
+    "cost": 19602,
+    "commits": 396
   },
   "quality": {
     "testCoverage": {
@@ -172,7 +172,7 @@
       "critical": 0,
       "total": 0
     },
-    "lastAudit": "2025-11-03T03:49:29.215Z",
+    "lastAudit": "2025-11-03T04:01:18.556Z",
     "dependencies": {
       "total": {
         "prod": 256,
@@ -271,7 +271,7 @@
   },
   "productivity": {
     "velocityTrend": "increasing",
-    "weeklyCommits": 150,
+    "weeklyCommits": 151,
     "contributors": {
       "total": 0,
       "active": 0
@@ -349,6 +349,12 @@
   },
   "recentActivity": [
     {
+      "hash": "08afec34706f16344fc7677964a7a77c5d3915da",
+      "message": "fix: Change metrics.json fetch paths to relative paths",
+      "author": "SirsiMaster",
+      "date": "2025-11-02 23:00:52 -0500"
+    },
+    {
       "hash": "49d84bc5fc34f01e621dc81253e8e95b624610b2",
       "message": "refactor(dashboard): Remove all hardcoded dates and values - fully dynamic from metrics.json",
       "author": "SirsiMaster",
@@ -401,16 +407,10 @@
       "message": "chore(release): Bump version to 0.72.1 [skip ci]",
       "author": "github-actions[bot]",
       "date": "2025-11-03 03:32:50 +0000"
-    },
-    {
-      "hash": "f37e0be15ce50039f85d3130b8495ea6b2faef75",
-      "message": "fix(dashboard): Replace hardcoded placeholder values with loading state",
-      "author": "SirsiMaster",
-      "date": "2025-11-02 22:32:21 -0500"
     }
   ],
   "automation": {
-    "lastRun": "2025-11-03T03:49:52.689Z",
+    "lastRun": "2025-11-03T04:01:48.610Z",
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",
