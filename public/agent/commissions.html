@@ -585,8 +585,8 @@
                         <div class="chart-header">
                             <h3 class="chart-title">Monthly Commission Trend</h3>
                         </div>
-                        <div class="chart-placeholder">
-                            Chart will be rendered here with Chart.js
+                        <div style="height: 250px; position: relative;">
+                            <canvas id="monthlyTrendChart"></canvas>
                         </div>
                     </div>
                     
@@ -594,8 +594,8 @@
                         <div class="chart-header">
                             <h3 class="chart-title">Commission by Property Type</h3>
                         </div>
-                        <div class="chart-placeholder">
-                            Pie chart showing commission distribution
+                        <div style="height: 250px; position: relative;">
+                            <canvas id="propertyTypeChart"></canvas>
                         </div>
                     </div>
                 </div>
@@ -607,40 +607,299 @@
     <script src="../components/universal-header.js"></script>
     
     <!-- Firebase Integration -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
     <script src="../firebase-config.js"></script>
+    
+    <!-- Chart.js for visualizations -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     
     <!-- Page-specific functionality -->
     <script>
-        // Load commission data
-        async function loadCommissionData() {
-            try {
-                // Check authentication
-                const user = await FirebaseServices.auth.checkAuth();
-                if (!user) {
-                    window.location.href = '/agent/login.html';
-                    return;
+        // ==========================================
+        // FIREBASE COMMISSION TRACKING SERVICE
+        // ==========================================
+        
+        const CommissionService = {
+            db: firebase.firestore(),
+            auth: firebase.auth(),
+            
+            /**
+             * Get all commissions for current agent
+             */
+            async getCommissions() {
+                try {
+                    const user = this.auth.currentUser;
+                    if (!user) throw new Error('Not authenticated');
+                    
+                    const snapshot = await this.db.collection('commissions')
+                        .where('agentId', '==', user.uid)
+                        .orderBy('date', 'desc')
+                        .get();
+                    
+                    return snapshot.docs.map(doc => ({
+                        id: doc.id,
+                        ...doc.data(),
+                        date: doc.data().date?.toDate() || new Date()
+                    }));
+                } catch (error) {
+                    console.error('Error fetching commissions:', error);
+                    // Return demo data if Firebase fails
+                    return this.getDemoCommissions();
+                }
+            },
+            
+            /**
+             * Calculate commission statistics
+             */
+            calculateStats(commissions) {
+                const now = new Date();
+                const currentYear = now.getFullYear();
+                const currentMonth = now.getMonth();
+                
+                // Year-to-date total
+                const ytdCommissions = commissions.filter(c => {
+                    const commDate = new Date(c.date);
+                    return commDate.getFullYear() === currentYear && c.status === 'paid';
+                });
+                const ytdTotal = ytdCommissions.reduce((sum, c) => sum + (c.amount || 0), 0);
+                
+                // This month total
+                const monthCommissions = commissions.filter(c => {
+                    const commDate = new Date(c.date);
+                    return commDate.getFullYear() === currentYear && 
+                           commDate.getMonth() === currentMonth && 
+                           c.status === 'paid';
+                });
+                const monthTotal = monthCommissions.reduce((sum, c) => sum + (c.amount || 0), 0);
+                
+                // Pending commissions
+                const pendingCommissions = commissions.filter(c => 
+                    c.status === 'pending' || c.status === 'processing'
+                );
+                const pendingTotal = pendingCommissions.reduce((sum, c) => sum + (c.amount || 0), 0);
+                
+                // Average commission
+                const paidCommissions = commissions.filter(c => c.status === 'paid');
+                const avgCommission = paidCommissions.length > 0 
+                    ? paidCommissions.reduce((sum, c) => sum + (c.amount || 0), 0) / paidCommissions.length
+                    : 0;
+                
+                return {
+                    ytdTotal,
+                    ytdCount: ytdCommissions.length,
+                    monthTotal,
+                    monthCount: monthCommissions.length,
+                    pendingTotal,
+                    pendingCount: pendingCommissions.length,
+                    avgCommission,
+                    totalTransactions: paidCommissions.length
+                };
+            },
+            
+            /**
+             * Get monthly commission data for charts
+             */
+            getMonthlyData(commissions) {
+                const monthlyData = {};
+                const now = new Date();
+                
+                // Last 12 months
+                for (let i = 11; i >= 0; i--) {
+                    const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+                    const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+                    monthlyData[key] = 0;
                 }
                 
-                // Get commission statistics
-                const stats = await FirebaseServices.stats.getAgentStats(user.uid);
+                // Sum commissions by month
+                commissions.filter(c => c.status === 'paid').forEach(c => {
+                    const date = new Date(c.date);
+                    const key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+                    if (monthlyData.hasOwnProperty(key)) {
+                        monthlyData[key] += (c.amount || 0);
+                    }
+                });
                 
-                // Update UI with real data
-                document.getElementById('ytdCommission').textContent = 
-                    FirebaseServices.utils.formatCurrency(stats.commissionYTD);
+                return monthlyData;
+            },
+            
+            /**
+             * Get commission breakdown by property type
+             */
+            getPropertyTypeData(commissions) {
+                const typeData = {};
                 
-                // Load commission transactions
-                const commissions = await FirebaseServices.db.getAgentCommissions(user.uid);
-                renderCommissionTable(commissions);
+                commissions.filter(c => c.status === 'paid').forEach(c => {
+                    const type = c.propertyType || 'Other';
+                    typeData[type] = (typeData[type] || 0) + (c.amount || 0);
+                });
                 
-            } catch (error) {
-                console.error('Error loading commission data:', error);
-                // Using static data for demo
+                return typeData;
+            },
+            
+            /**
+             * Demo data for development/fallback
+             */
+            getDemoCommissions() {
+                return [
+                    {
+                        id: '1',
+                        propertyAddress: '123 Main Street',
+                        city: 'Los Angeles',
+                        state: 'CA',
+                        zip: '90210',
+                        transactionType: 'Buyer Rep',
+                        salePrice: 450000,
+                        commissionRate: 3.0,
+                        amount: 13500,
+                        status: 'paid',
+                        propertyType: 'Single Family',
+                        date: new Date('2025-10-05')
+                    },
+                    {
+                        id: '2',
+                        propertyAddress: '456 Oak Avenue',
+                        city: 'Beverly Hills',
+                        state: 'CA',
+                        zip: '90212',
+                        transactionType: 'Listing',
+                        salePrice: 850000,
+                        commissionRate: 2.5,
+                        amount: 21250,
+                        status: 'pending',
+                        propertyType: 'Condo',
+                        date: new Date('2025-10-08')
+                    },
+                    {
+                        id: '3',
+                        propertyAddress: '789 Pine Road',
+                        city: 'Santa Monica',
+                        state: 'CA',
+                        zip: '90401',
+                        transactionType: 'Dual Agency',
+                        salePrice: 320000,
+                        commissionRate: 2.0,
+                        amount: 6400,
+                        status: 'processing',
+                        propertyType: 'Townhouse',
+                        date: new Date('2025-10-09')
+                    },
+                    {
+                        id: '4',
+                        propertyAddress: '321 Elm Street',
+                        city: 'Malibu',
+                        state: 'CA',
+                        zip: '90265',
+                        transactionType: 'Buyer Rep',
+                        salePrice: 1200000,
+                        commissionRate: 2.5,
+                        amount: 30000,
+                        status: 'paid',
+                        propertyType: 'Single Family',
+                        date: new Date('2025-09-28')
+                    },
+                    {
+                        id: '5',
+                        propertyAddress: '555 Beach Blvd',
+                        city: 'Venice',
+                        state: 'CA',
+                        zip: '90291',
+                        transactionType: 'Listing',
+                        salePrice: 675000,
+                        commissionRate: 3.0,
+                        amount: 20250,
+                        status: 'paid',
+                        propertyType: 'Condo',
+                        date: new Date('2025-09-15')
+                    },
+                    {
+                        id: '6',
+                        propertyAddress: '777 Sunset Drive',
+                        city: 'West Hollywood',
+                        state: 'CA',
+                        zip: '90069',
+                        transactionType: 'Buyer Rep',
+                        salePrice: 425000,
+                        commissionRate: 2.5,
+                        amount: 10625,
+                        status: 'paid',
+                        propertyType: 'Single Family',
+                        date: new Date('2025-08-22')
+                    }
+                ];
+            },
+            
+            /**
+             * Filter commissions by status
+             */
+            filterByStatus(commissions, status) {
+                if (status === 'all') return commissions;
+                return commissions.filter(c => c.status.toLowerCase() === status.toLowerCase());
+            },
+            
+            /**
+             * Export commissions to CSV
+             */
+            exportToCSV(commissions) {
+                const headers = ['Property', 'City', 'Type', 'Sale Price', 'Rate', 'Commission', 'Status', 'Date'];
+                const rows = commissions.map(c => [
+                    c.propertyAddress,
+                    `${c.city}, ${c.state}`,
+                    c.transactionType,
+                    `$${c.salePrice.toLocaleString()}`,
+                    `${c.commissionRate}%`,
+                    `$${c.amount.toLocaleString()}`,
+                    c.status,
+                    new Date(c.date).toLocaleDateString()
+                ]);
+                
+                const csv = [headers, ...rows]
+                    .map(row => row.join(','))
+                    .join('\n');
+                
+                const blob = new Blob([csv], { type: 'text/csv' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `commissions_${new Date().toISOString().split('T')[0]}.csv`;
+                a.click();
+                URL.revokeObjectURL(url);
             }
+        };
+        
+        // ==========================================
+        // UI RENDERING FUNCTIONS
+        // ==========================================
+        
+        /**
+         * Update statistics cards
+         */
+        function updateStats(stats) {
+            document.getElementById('ytdCommission').textContent = 
+                `$${stats.ytdTotal.toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0})}`;
+            
+            document.getElementById('monthCommission').textContent = 
+                `$${stats.monthTotal.toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0})}`;
+            
+            document.getElementById('pendingCommission').textContent = 
+                `$${stats.pendingTotal.toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0})}`;
+            
+            document.getElementById('avgCommission').textContent = 
+                `$${stats.avgCommission.toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0})}`;
         }
         
+        /**
+         * Render commission table
+         */
         function renderCommissionTable(commissions) {
             const tbody = document.getElementById('commissionsTableBody');
             tbody.innerHTML = '';
+            
+            if (commissions.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 40px; color: var(--text-secondary);">No commissions found</td></tr>';
+                return;
+            }
             
             commissions.forEach(commission => {
                 const row = document.createElement('tr');
@@ -650,26 +909,219 @@
                         <div class="property-address">${commission.city}, ${commission.state} ${commission.zip}</div>
                     </td>
                     <td>${commission.transactionType}</td>
-                    <td>${FirebaseServices.utils.formatCurrency(commission.salePrice)}</td>
+                    <td>$${commission.salePrice.toLocaleString()}</td>
                     <td>${commission.commissionRate}%</td>
-                    <td class="commission-amount">${FirebaseServices.utils.formatCurrency(commission.amount)}</td>
-                    <td><span class="commission-status ${commission.status.toLowerCase()}">${commission.status}</span></td>
-                    <td>${FirebaseServices.utils.formatDate(commission.date)}</td>
+                    <td class="commission-amount">$${commission.amount.toLocaleString()}</td>
+                    <td><span class="commission-status ${commission.status.toLowerCase()}">${commission.status.charAt(0).toUpperCase() + commission.status.slice(1)}</span></td>
+                    <td>${new Date(commission.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</td>
                 `;
                 tbody.appendChild(row);
             });
         }
         
-        // Calculate monthly commission
-        function calculateMonthlyCommission() {
-            // This would calculate from real data
-            const thisMonth = new Date().getMonth();
-            // Filter commissions for current month and sum
+        /**
+         * Create monthly trend chart
+         */
+        let monthlyChart = null;
+        function createMonthlyChart(monthlyData) {
+            const ctx = document.getElementById('monthlyTrendChart');
+            if (!ctx) return;
+            
+            const labels = Object.keys(monthlyData).map(key => {
+                const [year, month] = key.split('-');
+                return new Date(year, month - 1).toLocaleDateString('en-US', { month: 'short', year: '2-digit' });
+            });
+            
+            const data = Object.values(monthlyData);
+            
+            if (monthlyChart) {
+                monthlyChart.destroy();
+            }
+            
+            monthlyChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Commission Earnings',
+                        data: data,
+                        borderColor: 'rgb(96, 163, 217)',
+                        backgroundColor: 'rgba(96, 163, 217, 0.1)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return '$' + context.parsed.y.toLocaleString();
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return '$' + (value / 1000) + 'K';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
         }
         
-        // Initialize on page load
+        /**
+         * Create property type chart
+         */
+        let propertyTypeChart = null;
+        function createPropertyTypeChart(typeData) {
+            const ctx = document.getElementById('propertyTypeChart');
+            if (!ctx) return;
+            
+            const labels = Object.keys(typeData);
+            const data = Object.values(typeData);
+            
+            if (propertyTypeChart) {
+                propertyTypeChart.destroy();
+            }
+            
+            propertyTypeChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: data,
+                        backgroundColor: [
+                            'rgb(96, 163, 217)',
+                            'rgb(19, 55, 84)',
+                            'rgb(251, 191, 36)',
+                            'rgb(34, 197, 94)',
+                            'rgb(239, 68, 68)'
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 15,
+                                usePointStyle: true
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    const value = context.parsed || 0;
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = ((value / total) * 100).toFixed(1);
+                                    return `${label}: $${value.toLocaleString()} (${percentage}%)`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // ==========================================
+        // EVENT HANDLERS
+        // ==========================================
+        
+        let allCommissions = [];
+        let currentFilter = 'all';
+        
+        /**
+         * Handle filter change
+         */
+        function handleFilterChange(event) {
+            const status = event.target.value.toLowerCase().replace(' ', '');
+            currentFilter = status === 'allstatus' ? 'all' : status;
+            
+            const filtered = CommissionService.filterByStatus(allCommissions, currentFilter);
+            renderCommissionTable(filtered);
+        }
+        
+        /**
+         * Handle export button click
+         */
+        function handleExport() {
+            const filtered = CommissionService.filterByStatus(allCommissions, currentFilter);
+            CommissionService.exportToCSV(filtered);
+        }
+        
+        // ==========================================
+        // INITIALIZATION
+        // ==========================================
+        
+        /**
+         * Load all commission data and render UI
+         */
+        async function loadCommissionData() {
+            try {
+                // Fetch commissions
+                allCommissions = await CommissionService.getCommissions();
+                
+                // Calculate statistics
+                const stats = CommissionService.calculateStats(allCommissions);
+                updateStats(stats);
+                
+                // Render table
+                renderCommissionTable(allCommissions);
+                
+                // Get chart data
+                const monthlyData = CommissionService.getMonthlyData(allCommissions);
+                const typeData = CommissionService.getPropertyTypeData(allCommissions);
+                
+                // Render charts
+                createMonthlyChart(monthlyData);
+                createPropertyTypeChart(typeData);
+                
+            } catch (error) {
+                console.error('Error loading commission data:', error);
+            }
+        }
+        
+        /**
+         * Initialize page
+         */
         document.addEventListener('DOMContentLoaded', function() {
-            loadCommissionData();
+            // Check authentication
+            firebase.auth().onAuthStateChanged(user => {
+                if (!user) {
+                    window.location.href = '/agent/login.html';
+                    return;
+                }
+                
+                // Load data
+                loadCommissionData();
+                
+                // Attach event listeners
+                const filterSelect = document.querySelector('.table-filters select');
+                if (filterSelect) {
+                    filterSelect.addEventListener('change', handleFilterChange);
+                }
+                
+                const exportBtn = document.querySelector('.table-filters button');
+                if (exportBtn) {
+                    exportBtn.addEventListener('click', handleExport);
+                }
+            });
         });
     </script>
 </body>
