@@ -1054,7 +1054,7 @@
         async function loadMetrics() {
             try {
                 // Load metrics from SINGLE SOURCE OF TRUTH: metrics.json
-                const response = await fetch('/admin/development/metrics.json');
+                const response = await fetch('./metrics.json');
                 if (!response.ok) throw new Error('Metrics file not found');
                 
                 const metrics = await response.json();
