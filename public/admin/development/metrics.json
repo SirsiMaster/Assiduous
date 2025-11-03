@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-11-03T03:33:20.543Z",
+  "lastUpdated": "2025-11-03T03:34:57.876Z",
   "summary": {
     "health": "Good",
     "score": 46,
@@ -104,19 +104,19 @@
     }
   },
   "project": {
-    "totalHours": "233",
-    "avgHoursPerDay": "8.3",
-    "totalCost": 36765,
-    "laborCost": 34950,
+    "totalHours": "234",
+    "avgHoursPerDay": "8.4",
+    "totalCost": 36915,
+    "laborCost": 35100,
     "toolsCost": 1815,
     "monthsElapsed": "2.8",
-    "totalCommits": 707,
+    "totalCommits": 708,
     "totalFiles": 662,
     "activeDays": 28,
     "totalDays": 85,
     "projectAgeDays": 85,
-    "linesAdded": 9650712,
-    "linesDeleted": 9370817,
+    "linesAdded": 9650760,
+    "linesDeleted": 9370865,
     "netLines": 279895,
     "velocity": "25.3",
     "completionPercentage": 46,
@@ -124,21 +124,21 @@
   },
   "today": {
     "date": "2025-11-03",
-    "hours": "38.9",
-    "cost": 5841,
-    "commits": 118,
+    "hours": "39.3",
+    "cost": 5891,
+    "commits": 119,
     "deployments": 0
   },
   "thisWeek": {
-    "hours": "46.5",
-    "cost": 6980,
-    "commits": 141,
+    "hours": "46.9",
+    "cost": 7029,
+    "commits": 142,
     "days": 7
   },
   "thisMonth": {
-    "hours": "127.4",
-    "cost": 19107,
-    "commits": 386
+    "hours": "127.7",
+    "cost": 19157,
+    "commits": 387
   },
   "quality": {
     "testCoverage": {
@@ -172,7 +172,7 @@
       "critical": 0,
       "total": 0
     },
-    "lastAudit": "2025-11-03T03:32:57.273Z",
+    "lastAudit": "2025-11-03T03:34:33.421Z",
     "dependencies": {
       "total": {
         "prod": 256,
@@ -267,16 +267,16 @@
     "changelog": true,
     "contributing": false,
     "license": false,
-    "lastUpdate": "2025-11-03 03:27:45 +0000"
+    "lastUpdate": "2025-11-03 03:32:50 +0000"
   },
   "productivity": {
     "velocityTrend": "increasing",
-    "weeklyCommits": 141,
+    "weeklyCommits": 143,
     "contributors": {
       "total": 0,
       "active": 0
     },
-    "averageCommitSize": 122,
+    "averageCommitSize": 121,
     "pullRequests": {
       "open": 0,
       "merged": 0,
@@ -349,6 +349,12 @@
   },
   "recentActivity": [
     {
+      "hash": "bd2abe8cd3a62c27225293860829ce58092396c7",
+      "message": "fix(dashboard): Use correct metrics from metrics.json as default values",
+      "author": "SirsiMaster",
+      "date": "2025-11-02 22:34:08 -0500"
+    },
+    {
       "hash": "f37e0be15ce50039f85d3130b8495ea6b2faef75",
       "message": "fix(dashboard): Replace hardcoded placeholder values with loading state",
       "author": "SirsiMaster",
@@ -401,16 +407,10 @@
       "message": "chore(release): Bump version to 0.69.0 [skip ci]",
       "author": "github-actions[bot]",
       "date": "2025-11-03 03:18:04 +0000"
-    },
-    {
-      "hash": "badab16967d12f561899f84b6123f372a3e1a63b",
-      "message": "feat(analytics): Add color-coded Firebase services display",
-      "author": "SirsiMaster",
-      "date": "2025-11-02 22:17:44 -0500"
     }
   ],
   "automation": {
-    "lastRun": "2025-11-03T03:33:20.543Z",
+    "lastRun": "2025-11-03T03:34:57.876Z",
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",
