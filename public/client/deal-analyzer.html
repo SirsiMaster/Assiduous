@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-auth-protect="client,investor">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -131,72 +131,80 @@
         }
 
         .results-section {
-            background: var(--sky);
-            border-radius: var(--radius-lg);
+            background: var(--white);
+            border-radius: var(--radius-md);
             padding: var(--space-lg);
-            color: var(--white);
+            color: var(--dark);
         }
 
         .result-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 24px;
-            margin-bottom: 32px;
+            gap: var(--space-md);
+            margin-bottom: var(--space-lg);
         }
 
         .result-item {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 20px;
-            backdrop-filter: blur(10px);
+            background: var(--gray-50);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: var(--space-lg);
         }
 
         .result-label {
-            font-size: 14px;
-            opacity: 0.9;
-            margin-bottom: 8px;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-sm);
+            font-weight: 600;
         }
 
         .result-value {
-            font-size: 28px;
+            font-size: 32px;
             font-weight: 700;
+            color: var(--dark);
         }
 
         .result-value.positive {
-            color: #68d391;
+            color: var(--success);
         }
 
         .result-value.negative {
-            color: #fc8181;
+            color: var(--danger);
         }
 
         .profit-breakdown {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 24px;
-            backdrop-filter: blur(10px);
+            background: var(--gray-50);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: var(--space-lg);
         }
 
         .breakdown-title {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 16px;
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: var(--space-md);
         }
 
         .breakdown-item {
             display: flex;
             justify-content: space-between;
-            padding: 12px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: var(--space-sm) 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 14px;
+            color: var(--dark);
         }
 
         .breakdown-item:last-child {
             border-bottom: none;
-            padding-top: 16px;
-            margin-top: 8px;
-            border-top: 2px solid rgba(255, 255, 255, 0.3);
+            padding-top: var(--space-md);
+            margin-top: var(--space-sm);
+            border-top: 2px solid var(--border);
             font-weight: 700;
-            font-size: 18px;
+            font-size: 16px;
+            color: var(--sky);
         }
 
         .tips-section {
@@ -486,7 +494,7 @@
 
             <!-- Results -->
             <div class="calc-section results-section" id="resultsSection" style="display: none;">
-                <h2 class="section-title" style="color: white; margin-bottom: 32px;">
+                <h2 class="section-title">
                     Investment Analysis Results
                 </h2>
 
