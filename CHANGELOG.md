@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.67.0] - 2025-11-03
+
+### Added
+- feat(metrics): add real metrics service with infrastructure vs business features distinction
+
+
 ## [0.66.3] - 2025-11-03
 
 ### Fixed
@@ -2551,7 +2557,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.66.3...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.67.0...HEAD
+
+
+## [0.67.0] - 2025-11-03
+
+### Added
+- feat(metrics): add real metrics service with infrastructure vs business features distinction
 
 
 ## [0.66.3] - 2025-11-03
@@ -3488,3 +3500,4 @@ To generate changelog entries:
 [0.66.1]: https://github.com/SirsiMaster/Assiduous/compare/v0.66.0...v0.66.1
 [0.66.2]: https://github.com/SirsiMaster/Assiduous/compare/v0.66.1...v0.66.2
 [0.66.3]: https://github.com/SirsiMaster/Assiduous/compare/v0.66.2...v0.66.3
+[0.67.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.66.3...v0.67.0
