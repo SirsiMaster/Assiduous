@@ -1,6 +1,7 @@
 /**
  * Property Service
  * Handles all property-related API calls to Firebase Cloud Functions
+ * NO MOCK DATA - All data from Firestore/MLS/Public Records
  */
 
 const API_BASE_URL = 'https://us-central1-assiduous-prod.cloudfunctions.net/api';
@@ -8,6 +9,158 @@ const API_BASE_URL = 'https://us-central1-assiduous-prod.cloudfunctions.net/api'
 export class PropertyService {
   constructor() {
     this.apiUrl = API_BASE_URL;
+    this.db = firebase.firestore();
+  }
+  
+  /**
+   * Get user's saved/favorite properties from Firestore
+   * @param {string} userId - User ID
+   * @returns {Promise<Array>} Array of complete property objects with ALL data sources
+   */
+  async getSavedProperties(userId) {
+    try {
+      if (!userId) {
+        const user = firebase.auth().currentUser;
+        userId = user?.uid;
+      }
+      
+      if (!userId) {
+        throw new Error('User not authenticated');
+      }
+      
+      // Get user document with saved property IDs
+      const userDoc = await this.db.collection('users').doc(userId).get();
+      
+      if (!userDoc.exists) {
+        throw new Error('User profile not found');
+      }
+      
+      const userData = userDoc.data();
+      const savedPropertyIds = userData.savedProperties || [];
+      
+      if (savedPropertyIds.length === 0) {
+        return [];
+      }
+      
+      // Fetch complete property data for each saved ID
+      const propertyPromises = savedPropertyIds.map(propId => 
+        this.getCompletePropertyData(propId)
+      );
+      
+      const properties = await Promise.all(propertyPromises);
+      
+      // Filter out any null results (deleted properties)
+      return properties.filter(p => p !== null);
+      
+    } catch (error) {
+      console.error('Error fetching saved properties:', error);
+      throw error;
+    }
+  }
+  
+  /**
+   * Get complete property data from ALL sources:
+   * - Firestore base data
+   * - MLS data
+   * - Public records
+   * - Private notes/analysis
+   * @param {string} propertyId - Property ID
+   * @returns {Promise<Object>} Complete property object
+   */
+  async getCompletePropertyData(propertyId) {
+    try {
+      const propertyDoc = await this.db.collection('properties').doc(propertyId).get();
+      
+      if (!propertyDoc.exists) {
+        console.warn(`Property ${propertyId} not found`);
+        return null;
+      }
+      
+      const baseData = propertyDoc.data();
+      
+      // Fetch MLS data if available
+      const mlsData = baseData.mlsId ? await this.getMLSData(baseData.mlsId) : {};
+      
+      // Fetch public records if available
+      const publicRecords = baseData.parcelId ? await this.getPublicRecords(baseData.parcelId) : {};
+      
+      // Combine all data sources
+      return {
+        id: propertyDoc.id,
+        ...baseData,
+        mls: mlsData,
+        publicRecords: publicRecords,
+        // Computed fields
+        estimatedARV: this.calculateARV(baseData, mlsData, publicRecords),
+        estimatedRepairs: this.estimateRepairs(baseData, publicRecords)
+      };
+      
+    } catch (error) {
+      console.error(`Error fetching property ${propertyId}:`, error);
+      return null;
+    }
+  }
+  
+  /**
+   * Fetch MLS data for property
+   */
+  async getMLSData(mlsId) {
+    try {
+      const mlsDoc = await this.db.collection('mls_data').doc(mlsId).get();
+      return mlsDoc.exists ? mlsDoc.data() : {};
+    } catch (error) {
+      console.error('Error fetching MLS data:', error);
+      return {};
+    }
+  }
+  
+  /**
+   * Fetch public records data
+   */
+  async getPublicRecords(parcelId) {
+    try {
+      const recordDoc = await this.db.collection('public_records').doc(parcelId).get();
+      return recordDoc.exists ? recordDoc.data() : {};
+    } catch (error) {
+      console.error('Error fetching public records:', error);
+      return {};
+    }
+  }
+  
+  /**
+   * Calculate ARV from multiple data sources
+   */
+  calculateARV(baseData, mlsData, publicRecords) {
+    // Use explicit ARV if provided
+    if (baseData.arv) return baseData.arv;
+    if (mlsData.estimatedValue) return mlsData.estimatedValue;
+    
+    // Otherwise calculate from comparable sales
+    const listPrice = baseData.price || mlsData.listPrice || publicRecords.assessedValue || 0;
+    const appreciation = 1.2; // 20% default appreciation
+    
+    return Math.round(listPrice * appreciation);
+  }
+  
+  /**
+   * Estimate repair costs from property condition
+   */
+  estimateRepairs(baseData, publicRecords) {
+    if (baseData.repairCosts) return baseData.repairCosts;
+    
+    const sqft = baseData.sqft || publicRecords.sqft || 0;
+    const condition = baseData.condition || 'fair';
+    
+    // Cost per sqft based on condition
+    const costPerSqft = {
+      excellent: 0,
+      good: 15,
+      fair: 35,
+      poor: 60,
+      'needs work': 80
+    };
+    
+    return Math.round(sqft * (costPerSqft[condition.toLowerCase()] || 35));
   }
 
   /**

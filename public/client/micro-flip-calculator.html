@@ -752,15 +752,23 @@
         }
         
         async function loadSavedProperties() {
+            const propertyGrid = document.getElementById('propertyGrid');
+            const emptyState = document.getElementById('emptyState');
+            
             try {
-                // Try to get from PropertyService (will use mock data if Firebase fails)
+                // Get REAL properties from Firestore - NO FALLBACK
                 availableProperties = await propertyService.getSavedProperties();
                 
-                const propertyGrid = document.getElementById('propertyGrid');
-                const emptyState = document.getElementById('emptyState');
-                
-                if (availableProperties.length === 0) {
+                if (!availableProperties || availableProperties.length === 0) {
                     propertyGrid.style.display = 'none';
+                    emptyState.innerHTML = `
+                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-bottom: var(--space-md);">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                        </svg>
+                        <h3>No Saved Properties</h3>
+                        <p>Browse properties and save them to analyze deals here.</p>
+                        <a href="properties.html" class="sm-btn sm-btn-primary" style="margin-top: var(--space-md);">Browse Properties</a>
+                    `;
                     emptyState.style.display = 'block';
                     return;
                 }
@@ -773,9 +781,22 @@
                     const card = createPropertyCard(property);
                     propertyGrid.appendChild(card);
                 });
+                
             } catch (error) {
                 console.error('Error loading properties:', error);
-                document.getElementById('emptyState').style.display = 'block';
+                propertyGrid.style.display = 'none';
+                emptyState.innerHTML = `
+                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-bottom: var(--space-md); color: var(--danger);">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="8" x2="12" y2="12"></line>
+                        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                    </svg>
+                    <h3>Error Loading Properties</h3>
+                    <p>${error.message || 'Could not load saved properties from database.'}</p>
+                    <p style="font-size: 13px; color: var(--text-secondary); margin-top: var(--space-sm);">Please check your connection and try again.</p>
+                    <button onclick="loadSavedProperties()" class="sm-btn sm-btn-primary" style="margin-top: var(--space-md);">Retry</button>
+                `;
+                emptyState.style.display = 'block';
             }
         }
         
@@ -784,15 +805,39 @@
             card.className = 'property-card';
             card.onclick = () => selectPropertyCard(property, card);
             
-            const price = property.price || property.price?.list || 0;
-            const arv = property.arv || property.price?.arv || price * 1.2;
-            const repair = property.repairCosts || property.price?.repair || 0;
+            // Extract price from various sources
+            const price = property.price || 
+                         property.mls?.listPrice || 
+                         property.publicRecords?.assessedValue || 0;
+            
+            // Use estimatedARV from service (combines all sources)
+            const arv = property.estimatedARV || property.arv || price * 1.2;
+            
+            // Use estimatedRepairs from service (based on condition + sqft)
+            const repair = property.estimatedRepairs || property.repairCosts || 0;
+            
+            // Get address from various sources
+            const address = property.address?.street || 
+                           property.address || 
+                           property.mls?.address ||
+                           property.publicRecords?.address || 'Unknown Address';
+            
+            // Get property details from various sources
+            const beds = property.beds || property.mls?.bedrooms || property.publicRecords?.bedrooms || 0;
+            const baths = property.baths || property.mls?.bathrooms || property.publicRecords?.bathrooms || 0;
+            const sqft = property.sqft || property.mls?.sqft || property.publicRecords?.sqft || 0;
+            
+            // Data source indicators
+            const dataSources = [];
+            if (property.mls && Object.keys(property.mls).length > 0) dataSources.push('MLS');
+            if (property.publicRecords && Object.keys(property.publicRecords).length > 0) dataSources.push('Public');
+            const dataSourceLabel = dataSources.length > 0 ? ` (${dataSources.join(' + ')})` : '';
             
             card.innerHTML = `
-                <div class="property-address">${property.address || property.address?.street}</div>
+                <div class="property-address">${address}${dataSourceLabel}</div>
                 <div class="property-price">${formatCurrency(price)}</div>
                 <div class="property-details">
-                    ${property.beds || 0} bed • ${property.baths || 0} bath • ${property.sqft || 0} sqft<br>
+                    ${beds} bed • ${baths} bath • ${sqft.toLocaleString()} sqft<br>
                     ARV: ${formatCurrency(arv)} • Repairs: ${formatCurrency(repair)}
                 </div>
             `;
@@ -842,9 +887,16 @@
         }
         
         function populateCalculator(property) {
-            const price = property.price || property.price?.list || 0;
-            const arv = property.arv || property.price?.arv || price * 1.2;
-            const repair = property.repairCosts || property.price?.repair || 0;
+            // Extract price from all available sources
+            const price = property.price || 
+                         property.mls?.listPrice || 
+                         property.publicRecords?.assessedValue || 0;
+            
+            // Use calculated ARV from service
+            const arv = property.estimatedARV || property.arv || 0;
+            
+            // Use calculated repair estimate from service
+            const repair = property.estimatedRepairs || property.repairCosts || 0;
             
             document.getElementById('purchasePrice').value = price;
             document.getElementById('arvPrice').value = arv;
