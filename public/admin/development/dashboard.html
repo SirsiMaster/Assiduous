@@ -970,31 +970,51 @@
                     <div class="sm-sm-sm-sm-card-body">
                         <div class="progress-item">
                             <div class="progress-header">
-                                <div class="progress-title">Phase 1: Foundation (HTML/CSS)</div>
-                                <div class="progress-percentage">70%</div>
+                                <div class="progress-title">Authentication & Infrastructure</div>
+                                <div class="progress-percentage" id="phase1-pct">--</div>
                             </div>
                             <div class="progress-bar">
-                                <div class="progress-fill" style="width: 70%;"></div>
+                                <div class="progress-fill" id="phase1-bar" style="width: 0%;"></div>
                             </div>
                         </div>
                         
                         <div class="progress-item">
                             <div class="progress-header">
-                                <div class="progress-title">Phase 2: Backend Integration</div>
-                                <div class="progress-percentage">10%</div>
+                                <div class="progress-title">Admin & Agent Portals</div>
+                                <div class="progress-percentage" id="phase2-pct">--</div>
                             </div>
                             <div class="progress-bar">
-                                <div class="progress-fill" style="width: 10%;"></div>
+                                <div class="progress-fill" id="phase2-bar" style="width: 0%;"></div>
                             </div>
                         </div>
                         
                         <div class="progress-item">
                             <div class="progress-header">
-                                <div class="progress-title">Phase 3: Launch Ready Features</div>
-                                <div class="progress-percentage">0%</div>
+                                <div class="progress-title">Client Portal & Deal Analyzer</div>
+                                <div class="progress-percentage" id="phase3-pct">--</div>
                             </div>
                             <div class="progress-bar">
-                                <div class="progress-fill" style="width: 0%;"></div>
+                                <div class="progress-fill" id="phase3-bar" style="width: 0%;"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="progress-item">
+                            <div class="progress-header">
+                                <div class="progress-title">Micro-Flipping Engine (Core Business)</div>
+                                <div class="progress-percentage" id="phase4-pct">--</div>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="phase4-bar" style="width: 0%;"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="progress-item">
+                            <div class="progress-header">
+                                <div class="progress-title">AI & Payment Integration</div>
+                                <div class="progress-percentage" id="phase5-pct">--</div>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="phase5-bar" style="width: 0%;"></div>
                             </div>
                         </div>
                         
@@ -1100,7 +1120,7 @@
             document.getElementById('weekHours').textContent = `${metrics.thisWeek?.hours || '0.0'} hrs`;
             document.getElementById('weekCommits').textContent = `${metrics.thisWeek?.commits || '0'} commits`;
             
-            // Update Project Metrics card
+            // Update Project Metrics card with REAL data
             if (document.getElementById('projectCost')) {
                 document.getElementById('projectCost').textContent = `$${parseInt(metrics.project?.totalCost || 0).toLocaleString()}`;
             }
@@ -1108,10 +1128,16 @@
                 document.getElementById('activeSessions').textContent = metrics.project?.activeDays || '0';
             }
             if (document.getElementById('automationLevel')) {
-                document.getElementById('automationLevel').textContent = '100%';
+                // Calculate real automation level based on automation metrics
+                const gitHookInstalled = metrics.automation?.gitHookInstalled ? 1 : 0;
+                const metricsUpdating = 1; // metrics.json is updating
+                const cicdConfigured = metrics.deployment?.cicd?.status === 'Configured' ? 1 : 0;
+                const automationPct = Math.round(((gitHookInstalled + metricsUpdating + cicdConfigured) / 3) * 100);
+                document.getElementById('automationLevel').textContent = `${automationPct}%`;
             }
             if (document.getElementById('deploymentStatus')) {
-                document.getElementById('deploymentStatus').textContent = '✅ Live';
+                const status = metrics.deployment?.environments?.production?.status || 'Unknown';
+                document.getElementById('deploymentStatus').textContent = status === 'Active' ? '✅ Live' : `⚠️ ${status}`;
             }
             
             // Update Development Progress from features
@@ -1130,7 +1156,7 @@
                 featureList.reduce((sum, f) => sum + f.percentage, 0) / featureList.length
             );
             
-            // Update overall progress
+            // Update overall progress (last item)
             const overallPercentageEl = document.querySelector('.progress-item:last-child .progress-percentage');
             const overallFillEl = document.querySelector('.progress-item:last-child .progress-fill');
             if (overallPercentageEl && overallFillEl) {
@@ -1138,33 +1164,34 @@
                 overallFillEl.style.width = `${overallCompletion}%`;
             }
             
-            // Update phase progress based on features
-            // Phase 1: Foundation (auth + admin)
-            const phase1 = Math.round((features.authentication?.percentage + features.adminPortal?.percentage) / 2);
-            const phase1PercentageEl = document.querySelectorAll('.progress-item')[0]?.querySelector('.progress-percentage');
-            const phase1FillEl = document.querySelectorAll('.progress-item')[0]?.querySelector('.progress-fill');
-            if (phase1PercentageEl && phase1FillEl) {
-                phase1PercentageEl.textContent = `${phase1}%`;
-                phase1FillEl.style.width = `${phase1}%`;
+            // Phase 1: Authentication & Infrastructure
+            const phase1 = features.authentication?.percentage || 0;
+            document.getElementById('phase1-pct').textContent = `${phase1}%`;
+            document.getElementById('phase1-bar').style.width = `${phase1}%`;
+            
+            // Phase 2: Admin & Agent Portals
+            const phase2 = Math.round((features.adminPortal?.percentage + features.agentPortal?.percentage) / 2);
+            document.getElementById('phase2-pct').textContent = `${phase2}%`;
+            document.getElementById('phase2-bar').style.width = `${phase2}%`;
+            
+            // Phase 3: Client Portal & Deal Analyzer
+            const phase3 = features.clientPortal?.percentage || 0;
+            document.getElementById('phase3-pct').textContent = `${phase3}%`;
+            document.getElementById('phase3-bar').style.width = `${phase3}%`;
+            
+            // Phase 4: Micro-Flipping Engine (CORE BUSINESS)
+            const phase4 = features.microFlipping?.percentage || 0;
+            document.getElementById('phase4-pct').textContent = `${phase4}%`;
+            document.getElementById('phase4-bar').style.width = `${phase4}%`;
+            // Highlight if not started
+            if (phase4 === 0) {
+                document.getElementById('phase4-bar').style.background = 'var(--danger)';
             }
             
-            // Phase 2: Backend Integration (agent + client + microflipping)
-            const phase2 = Math.round((features.agentPortal?.percentage + features.clientPortal?.percentage + features.microFlipping?.percentage) / 3);
-            const phase2PercentageEl = document.querySelectorAll('.progress-item')[1]?.querySelector('.progress-percentage');
-            const phase2FillEl = document.querySelectorAll('.progress-item')[1]?.querySelector('.progress-fill');
-            if (phase2PercentageEl && phase2FillEl) {
-                phase2PercentageEl.textContent = `${phase2}%`;
-                phase2FillEl.style.width = `${phase2}%`;
-            }
-            
-            // Phase 3: Launch Features (AI + payments)
-            const phase3 = Math.round((features.aiIntegration?.percentage + features.paymentProcessing?.percentage) / 2);
-            const phase3PercentageEl = document.querySelectorAll('.progress-item')[2]?.querySelector('.progress-percentage');
-            const phase3FillEl = document.querySelectorAll('.progress-item')[2]?.querySelector('.progress-fill');
-            if (phase3PercentageEl && phase3FillEl) {
-                phase3PercentageEl.textContent = `${phase3}%`;
-                phase3FillEl.style.width = `${phase3}%`;
-            }
+            // Phase 5: AI & Payment Integration
+            const phase5 = Math.round((features.aiIntegration?.percentage + features.paymentProcessing?.percentage) / 2);
+            document.getElementById('phase5-pct').textContent = `${phase5}%`;
+            document.getElementById('phase5-bar').style.width = `${phase5}%`;
         }
 
         function displayActivity(activities) {
