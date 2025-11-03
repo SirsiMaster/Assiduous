@@ -501,6 +501,11 @@ function calculateAllMetrics() {
     console.log('💰 Calculating infrastructure costs...');
     const infrastructure = calculateInfrastructure();
     
+    // Calculate tools cost based on months elapsed
+    const monthsElapsed = projectAgeDays / 30.44; // Average days per month
+    const toolsCost = Math.round(MONTHLY_TOOLS_COST * monthsElapsed);
+    const totalCostWithTools = estimatedCost + toolsCost;
+    
     // Build comprehensive metrics object
     const metrics = {
         lastUpdated: new Date().toISOString(),
@@ -514,9 +519,10 @@ function calculateAllMetrics() {
         project: {
             totalHours: estimatedHours.toString(),
             avgHoursPerDay: (estimatedHours / uniqueCommitDays).toFixed(1),
-            totalCost: estimatedCost,
+            totalCost: totalCostWithTools,
             laborCost: estimatedCost,
-            toolsCost: MONTHLY_TOOLS_COST,
+            toolsCost: toolsCost,
+            monthsElapsed: monthsElapsed.toFixed(1),
             totalCommits: totalCommits,
             totalFiles: fileCount,
             activeDays: uniqueCommitDays,           // Days with actual commits

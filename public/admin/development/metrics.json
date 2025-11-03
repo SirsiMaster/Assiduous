@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-11-03T02:14:45.447Z",
+  "lastUpdated": "2025-11-03T02:18:16.534Z",
   "summary": {
     "health": "Good",
     "score": 46,
@@ -106,38 +106,39 @@
   "project": {
     "totalHours": "222",
     "avgHoursPerDay": "7.9",
-    "totalCost": 33300,
+    "totalCost": 35115,
     "laborCost": 33300,
-    "toolsCost": 650,
-    "totalCommits": 673,
+    "toolsCost": 1815,
+    "monthsElapsed": "2.8",
+    "totalCommits": 674,
     "totalFiles": 666,
     "activeDays": 28,
     "totalDays": 85,
     "projectAgeDays": 85,
-    "linesAdded": 9648900,
-    "linesDeleted": 9368588,
-    "netLines": 280312,
-    "velocity": "24.0",
+    "linesAdded": 9648942,
+    "linesDeleted": 9368628,
+    "netLines": 280314,
+    "velocity": "24.1",
     "completionPercentage": 46,
     "actualStartDate": "2025-08-10"
   },
   "today": {
     "date": "2025-11-03",
-    "hours": "27.7",
-    "cost": 4158,
-    "commits": 84,
+    "hours": "28.1",
+    "cost": 4208,
+    "commits": 85,
     "deployments": 0
   },
   "thisWeek": {
-    "hours": "35.3",
-    "cost": 5297,
-    "commits": 107,
+    "hours": "35.6",
+    "cost": 5346,
+    "commits": 108,
     "days": 7
   },
   "thisMonth": {
-    "hours": "116.2",
-    "cost": 17424,
-    "commits": 352
+    "hours": "116.5",
+    "cost": 17474,
+    "commits": 353
   },
   "quality": {
     "testCoverage": {
@@ -171,7 +172,7 @@
       "critical": 0,
       "total": 0
     },
-    "lastAudit": "2025-11-03T02:14:23.601Z",
+    "lastAudit": "2025-11-03T02:17:46.606Z",
     "dependencies": {
       "total": {
         "prod": 256,
@@ -270,7 +271,7 @@
   },
   "productivity": {
     "velocityTrend": "increasing",
-    "weeklyCommits": 107,
+    "weeklyCommits": 108,
     "contributors": {
       "total": 0,
       "active": 0
@@ -348,6 +349,12 @@
   },
   "recentActivity": [
     {
+      "hash": "c156a54caef2c4cb73049d19941ef08b61d1502b",
+      "message": "fix(costs): update to correct rates - $150/hr and $650/month tools",
+      "author": "SirsiMaster",
+      "date": "2025-11-02 21:15:03 -0500"
+    },
+    {
       "hash": "fe961b857a79d65b5cee8ba319e7c3965c53792c",
       "message": "refactor(metrics): consolidate to single source of truth - metrics.json",
       "author": "SirsiMaster",
@@ -400,16 +407,10 @@
       "message": "chore(release): Bump version to 0.67.0 [skip ci]",
       "author": "github-actions[bot]",
       "date": "2025-11-03 01:34:11 +0000"
-    },
-    {
-      "hash": "df46e129914cc027d54eb1e71ebd8395ddd22713",
-      "message": "feat(metrics): add real metrics service with infrastructure vs business features distinction",
-      "author": "SirsiMaster",
-      "date": "2025-11-02 20:33:50 -0500"
     }
   ],
   "automation": {
-    "lastRun": "2025-11-03T02:14:45.447Z",
+    "lastRun": "2025-11-03T02:18:16.534Z",
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",
