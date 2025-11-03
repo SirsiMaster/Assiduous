@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-11-03T02:30:11.969Z",
+  "lastUpdated": "2025-11-03T02:48:28.388Z",
   "summary": {
     "health": "Good",
     "score": 46,
@@ -104,41 +104,41 @@
     }
   },
   "project": {
-    "totalHours": "224",
+    "totalHours": "225",
     "avgHoursPerDay": "8.0",
-    "totalCost": 35415,
-    "laborCost": 33600,
+    "totalCost": 35565,
+    "laborCost": 33750,
     "toolsCost": 1815,
     "monthsElapsed": "2.8",
-    "totalCommits": 679,
+    "totalCommits": 682,
     "totalFiles": 662,
     "activeDays": 28,
     "totalDays": 85,
     "projectAgeDays": 85,
-    "linesAdded": 9649413,
-    "linesDeleted": 9369941,
-    "netLines": 279472,
-    "velocity": "24.3",
+    "linesAdded": 9649516,
+    "linesDeleted": 9370007,
+    "netLines": 279509,
+    "velocity": "24.4",
     "completionPercentage": 46,
     "actualStartDate": "2025-08-10"
   },
   "today": {
     "date": "2025-11-03",
-    "hours": "29.7",
-    "cost": 4455,
-    "commits": 90,
+    "hours": "30.7",
+    "cost": 4604,
+    "commits": 93,
     "deployments": 0
   },
   "thisWeek": {
-    "hours": "37.3",
-    "cost": 5594,
-    "commits": 113,
+    "hours": "38.3",
+    "cost": 5742,
+    "commits": 116,
     "days": 7
   },
   "thisMonth": {
-    "hours": "118.1",
-    "cost": 17721,
-    "commits": 358
+    "hours": "119.1",
+    "cost": 17870,
+    "commits": 361
   },
   "quality": {
     "testCoverage": {
@@ -172,7 +172,7 @@
       "critical": 0,
       "total": 0
     },
-    "lastAudit": "2025-11-03T02:29:45.398Z",
+    "lastAudit": "2025-11-03T02:47:55.058Z",
     "dependencies": {
       "total": {
         "prod": 256,
@@ -267,16 +267,16 @@
     "changelog": true,
     "contributing": false,
     "license": false,
-    "lastUpdate": "2025-11-02 21:26:35 -0500"
+    "lastUpdate": "2025-11-03 02:29:40 +0000"
   },
   "productivity": {
     "velocityTrend": "increasing",
-    "weeklyCommits": 113,
+    "weeklyCommits": 116,
     "contributors": {
       "total": 0,
       "active": 0
     },
-    "averageCommitSize": 127,
+    "averageCommitSize": 126,
     "pullRequests": {
       "open": 0,
       "merged": 0,
@@ -349,6 +349,24 @@
   },
   "recentActivity": [
     {
+      "hash": "f44ee2415c5491ecfbb87a205ea9b13305f4c198",
+      "message": "chore: update metrics.json from git hook",
+      "author": "SirsiMaster",
+      "date": "2025-11-02 21:47:25 -0500"
+    },
+    {
+      "hash": "3d70bf5aede4da7bb320ae02bcde4104b2df11b8",
+      "message": "fix(costs): Make activity table and cost breakdown fully dynamic",
+      "author": "SirsiMaster",
+      "date": "2025-11-02 21:46:57 -0500"
+    },
+    {
+      "hash": "c2ef6b235ae0a8c522b295bdf71619f5ea87cbb4",
+      "message": "chore(release): Bump version to 0.68.0 [skip ci]",
+      "author": "github-actions[bot]",
+      "date": "2025-11-03 02:29:40 +0000"
+    },
+    {
       "hash": "736a38c41903a6f1575243a2c097c309648f31fd",
       "message": "feat(analytics): Make analytics page fully dynamic with real metrics",
       "author": "SirsiMaster",
@@ -389,28 +407,10 @@
       "message": "refactor(metrics): consolidate to single source of truth - metrics.json",
       "author": "SirsiMaster",
       "date": "2025-11-02 21:11:54 -0500"
-    },
-    {
-      "hash": "64d05688c579311666889fdf991a2c4eb300595d",
-      "message": "chore(release): Bump version to 0.67.2 [skip ci]",
-      "author": "github-actions[bot]",
-      "date": "2025-11-03 02:06:05 +0000"
-    },
-    {
-      "hash": "bc07f27269d1012ef006f60aca994b96972416cd",
-      "message": "fix(costs): load real metrics from cache instead of hardcoded values",
-      "author": "SirsiMaster",
-      "date": "2025-11-02 21:05:44 -0500"
-    },
-    {
-      "hash": "9961de58b80a68cccfab15c6094e48c042dc60c4",
-      "message": "refactor(pipeline): unify to single source of truth - public/ only",
-      "author": "SirsiMaster",
-      "date": "2025-11-02 21:02:33 -0500"
     }
   ],
   "automation": {
-    "lastRun": "2025-11-03T02:30:11.969Z",
+    "lastRun": "2025-11-03T02:48:28.388Z",
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",
