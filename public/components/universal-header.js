@@ -204,8 +204,8 @@
     var searchInput = document.querySelector('[data-search-input]');
     var actionsContainer = document.querySelector('[data-header-actions]');
 
-    // Add breadcrumb navigation for nested pages
-    if (pathParts.length > 1) {
+    // Add breadcrumb navigation for nested pages (disabled for development pages)
+    if (pathParts.length > 1 && !path.includes('/admin/development/')) {
       var breadcrumbContainer = document.querySelector('[data-breadcrumb-container]');
       if (breadcrumbContainer) {
         var breadcrumb = createBreadcrumb(pathParts);

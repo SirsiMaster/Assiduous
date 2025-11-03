@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-11-03T02:48:28.388Z",
+  "lastUpdated": "2025-11-03T02:52:24.543Z",
   "summary": {
     "health": "Good",
     "score": 46,
@@ -104,41 +104,41 @@
     }
   },
   "project": {
-    "totalHours": "225",
-    "avgHoursPerDay": "8.0",
-    "totalCost": 35565,
-    "laborCost": 33750,
+    "totalHours": "226",
+    "avgHoursPerDay": "8.1",
+    "totalCost": 35715,
+    "laborCost": 33900,
     "toolsCost": 1815,
     "monthsElapsed": "2.8",
-    "totalCommits": 682,
+    "totalCommits": 685,
     "totalFiles": 662,
     "activeDays": 28,
     "totalDays": 85,
     "projectAgeDays": 85,
-    "linesAdded": 9649516,
-    "linesDeleted": 9370007,
-    "netLines": 279509,
-    "velocity": "24.4",
+    "linesAdded": 9649637,
+    "linesDeleted": 9370088,
+    "netLines": 279549,
+    "velocity": "24.5",
     "completionPercentage": 46,
     "actualStartDate": "2025-08-10"
   },
   "today": {
     "date": "2025-11-03",
-    "hours": "30.7",
-    "cost": 4604,
-    "commits": 93,
+    "hours": "31.7",
+    "cost": 4752,
+    "commits": 96,
     "deployments": 0
   },
   "thisWeek": {
-    "hours": "38.3",
-    "cost": 5742,
-    "commits": 116,
+    "hours": "39.3",
+    "cost": 5891,
+    "commits": 119,
     "days": 7
   },
   "thisMonth": {
-    "hours": "119.1",
-    "cost": 17870,
-    "commits": 361
+    "hours": "120.1",
+    "cost": 18018,
+    "commits": 364
   },
   "quality": {
     "testCoverage": {
@@ -172,7 +172,7 @@
       "critical": 0,
       "total": 0
     },
-    "lastAudit": "2025-11-03T02:47:55.058Z",
+    "lastAudit": "2025-11-03T02:51:57.694Z",
     "dependencies": {
       "total": {
         "prod": 256,
@@ -218,14 +218,14 @@
     }
   },
   "deployment": {
-    "lastDeployment": "2025-11-02 21:29:20 -0500",
-    "totalDeployments": 122,
+    "lastDeployment": "2025-11-02 21:51:07 -0500",
+    "totalDeployments": 123,
     "deploymentFrequency": "Weekly",
     "environments": {
       "production": {
         "url": "https://assiduous-prod.web.app",
         "status": "Active",
-        "lastDeploy": "2025-11-02 21:29:20 -0500"
+        "lastDeploy": "2025-11-02 21:51:07 -0500"
       },
       "staging": {
         "url": "https://assiduous-staging.web.app",
@@ -267,11 +267,11 @@
     "changelog": true,
     "contributing": false,
     "license": false,
-    "lastUpdate": "2025-11-03 02:29:40 +0000"
+    "lastUpdate": "2025-11-03 02:47:38 +0000"
   },
   "productivity": {
     "velocityTrend": "increasing",
-    "weeklyCommits": 116,
+    "weeklyCommits": 119,
     "contributors": {
       "total": 0,
       "active": 0
@@ -349,6 +349,24 @@
   },
   "recentActivity": [
     {
+      "hash": "398ba16b8e5c97a994ab393022345426f3cfe7a1",
+      "message": "chore: update metrics.json",
+      "author": "SirsiMaster",
+      "date": "2025-11-02 21:51:30 -0500"
+    },
+    {
+      "hash": "ba8f0fc8d94521fa262e366d7f07fd775fc6e588",
+      "message": "fix(dashboard): Make Project Metrics and Development Progress fully dynamic",
+      "author": "SirsiMaster",
+      "date": "2025-11-02 21:51:07 -0500"
+    },
+    {
+      "hash": "097f7348c52b3b5c82416384349a7f6918298c51",
+      "message": "chore(release): Bump version to 0.68.1 [skip ci]",
+      "author": "github-actions[bot]",
+      "date": "2025-11-03 02:47:38 +0000"
+    },
+    {
       "hash": "f44ee2415c5491ecfbb87a205ea9b13305f4c198",
       "message": "chore: update metrics.json from git hook",
       "author": "SirsiMaster",
@@ -389,28 +407,10 @@
       "message": "fix(metrics): resolve syntax error in tools cost calculation",
       "author": "SirsiMaster",
       "date": "2025-11-02 21:18:33 -0500"
-    },
-    {
-      "hash": "fc696e01a81bce91e379e669812daa86f3ed3b31",
-      "message": "chore(release): Bump version to 0.67.3 [skip ci]",
-      "author": "github-actions[bot]",
-      "date": "2025-11-03 02:15:22 +0000"
-    },
-    {
-      "hash": "c156a54caef2c4cb73049d19941ef08b61d1502b",
-      "message": "fix(costs): update to correct rates - $150/hr and $650/month tools",
-      "author": "SirsiMaster",
-      "date": "2025-11-02 21:15:03 -0500"
-    },
-    {
-      "hash": "fe961b857a79d65b5cee8ba319e7c3965c53792c",
-      "message": "refactor(metrics): consolidate to single source of truth - metrics.json",
-      "author": "SirsiMaster",
-      "date": "2025-11-02 21:11:54 -0500"
     }
   ],
   "automation": {
-    "lastRun": "2025-11-03T02:48:28.388Z",
+    "lastRun": "2025-11-03T02:52:24.543Z",
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",
