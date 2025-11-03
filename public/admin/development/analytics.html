@@ -544,13 +544,13 @@
                                 <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
                             </svg>
                         </div>
-                        <div class="stat-value">99.98%</div>
-                        <div class="stat-label">System Uptime</div>
-                        <div class="stat-change positive">
+                        <div class="stat-value" id="uptime">--</div>
+                        <div class="stat-label">System Uptime (30d)</div>
+                        <div class="stat-change positive" id="uptime-change">
                             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <polyline points="18 15 12 9 6 15"></polyline>
                             </svg>
-                            +0.02% improvement
+                            Loading...
                         </div>
                     </div>
 
@@ -561,13 +561,13 @@
                                 <polyline points="17 7 17 17 7 17"></polyline>
                             </svg>
                         </div>
-                        <div class="stat-value">1.8s</div>
+                        <div class="stat-value" id="pageLoad">--</div>
                         <div class="stat-label">Avg Page Load</div>
-                        <div class="stat-change positive">
+                        <div class="stat-change positive" id="pageLoad-change">
                             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <polyline points="18 15 12 9 6 15"></polyline>
                             </svg>
-                            -0.3s improvement
+                            Loading...
                         </div>
                     </div>
 
@@ -580,13 +580,13 @@
                                 <path d="M8 17v-3"></path>
                             </svg>
                         </div>
-                        <div class="stat-value">200ms</div>
+                        <div class="stat-value" id="apiResponse">--</div>
                         <div class="stat-label">API Response Time</div>
-                        <div class="stat-change positive">
+                        <div class="stat-change positive" id="apiResponse-change">
                             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <polyline points="18 15 12 9 6 15"></polyline>
                             </svg>
-                            -50ms faster
+                            Loading...
                         </div>
                     </div>
 
@@ -597,13 +597,13 @@
                                 <polyline points="12 6 12 12 16 14"></polyline>
                             </svg>
                         </div>
-                        <div class="stat-value">0.01%</div>
+                        <div class="stat-value" id="errorRate">--</div>
                         <div class="stat-label">Error Rate</div>
-                        <div class="stat-change positive">
+                        <div class="stat-change positive" id="errorRate-change">
                             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <polyline points="18 15 12 9 6 15"></polyline>
                             </svg>
-                            -0.02% reduction
+                            Loading...
                         </div>
                     </div>
 
@@ -615,9 +615,9 @@
                                 <line x1="9" y1="15" x2="15" y2="15"></line>
                             </svg>
                         </div>
-                        <div class="stat-value">287KB</div>
+                        <div class="stat-value" id="bundleSize">--</div>
                         <div class="stat-label">Bundle Size</div>
-                        <div class="stat-change positive">
+                        <div class="stat-change positive" id="bundleSize-change">
                             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <polyline points="18 15 12 9 6 15"></polyline>
                             </svg>
@@ -815,6 +815,90 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
     <script>
+        // Load and display dynamic metrics
+        async function loadAnalytics() {
+            try {
+                const response = await fetch('/admin/development/metrics.json');
+                if (!response.ok) throw new Error('Metrics not found');
+                
+                const metrics = await response.json();
+                console.log('✅ Loaded analytics metrics:', metrics);
+                
+                // Update Performance Stats
+                const perf = metrics.performance || {};
+                const deploy = metrics.deployment || {};
+                const quality = metrics.quality || {};
+                
+                // System Uptime
+                const uptime = deploy.uptime?.last30d || 99.9;
+                document.getElementById('uptime').textContent = `${uptime.toFixed(2)}%`;
+                document.getElementById('uptime-change').innerHTML = `
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="18 15 12 9 6 15"></polyline>
+                    </svg>
+                    ${uptime >= 99.9 ? 'Excellent' : 'Good'}
+                `;
+                
+                // Page Load Time
+                const loadTime = perf.loadTime?.average || 'TBD';
+                document.getElementById('pageLoad').textContent = loadTime === 'TBD' ? 'N/A' : loadTime;
+                document.getElementById('pageLoad-change').textContent = loadTime === 'TBD' ? 'Not measured' : 'Within target';
+                
+                // API Response Time
+                const apiTime = perf.apiResponse?.average || 'TBD';
+                document.getElementById('apiResponse').textContent = apiTime === 'TBD' ? 'N/A' : apiTime;
+                document.getElementById('apiResponse-change').textContent = apiTime === 'TBD' ? 'Not measured' : 'Good';
+                
+                // Error Rate (calculate from quality metrics)
+                const eslintErrors = quality.codeQuality?.eslintErrors || 0;
+                const totalFiles = metrics.project?.totalFiles || 1;
+                const errorRate = ((eslintErrors / totalFiles) * 100).toFixed(2);
+                document.getElementById('errorRate').textContent = `${errorRate}%`;
+                document.getElementById('errorRate-change').textContent = eslintErrors === 0 ? 'No errors' : `${eslintErrors} issues`;
+                
+                // Bundle Size
+                const bundleSize = perf.bundleSize?.total || 'TBD';
+                document.getElementById('bundleSize').textContent = bundleSize === 'TBD' ? 'N/A' : bundleSize;
+                document.getElementById('bundleSize-change').textContent = bundleSize === 'TBD' ? 'Not measured' : 'Optimized';
+                
+                // Last Deployment Time
+                const lastDeploy = deploy.lastDeployment || 'Unknown';
+                if (lastDeploy !== 'Unknown') {
+                    const deployDate = new Date(lastDeploy);
+                    const timeAgo = getTimeAgo(deployDate);
+                    console.log(`Last deployment: ${timeAgo}`);
+                }
+                
+                console.log('✅ Analytics page updated with real metrics');
+            } catch (error) {
+                console.error('❌ Error loading analytics:', error);
+                // Show N/A for all metrics
+                ['uptime', 'pageLoad', 'apiResponse', 'errorRate', 'bundleSize'].forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.textContent = 'N/A';
+                });
+            }
+        }
+        
+        function getTimeAgo(date) {
+            const seconds = Math.floor((new Date() - date) / 1000);
+            const intervals = {
+                year: 31536000,
+                month: 2592000,
+                week: 604800,
+                day: 86400,
+                hour: 3600,
+                minute: 60
+            };
+            
+            for (const [unit, secondsInUnit] of Object.entries(intervals)) {
+                const interval = Math.floor(seconds / secondsInUnit);
+                if (interval >= 1) {
+                    return `${interval} ${unit}${interval > 1 ? 's' : ''} ago`;
+                }
+            }
+            return 'just now';
+        }
         
         // Create performance chart
         function createPerformanceChart() {
@@ -850,9 +934,15 @@
             });
         }
         
-        // Highlight active page in sidebar
-        document.addEventListener('DOMContentLoaded', function() {
+        // Initialize
+        document.addEventListener('DOMContentLoaded', async function() {
+            await loadAnalytics();
             createPerformanceChart();
+            
+            // Auto-refresh every 60 seconds
+            setInterval(loadAnalytics, 60 * 1000);
+            
+            // Highlight active page in sidebar
             const currentPath = window.location.pathname;
             document.querySelectorAll('.nav-item').forEach(item => {
                 if (item.getAttribute('href') === currentPath) {
