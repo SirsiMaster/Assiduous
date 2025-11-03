@@ -12,6 +12,9 @@ import {beforeUserCreated} from "firebase-functions/v2/identity";
 import {defineSecret} from "firebase-functions/params";
 import * as logger from "firebase-functions/logger";
 import * as admin from "firebase-admin";
+// Stripe SDK (used in Gen2 API routes)
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const Stripe = require("stripe");
 
 // Import Stripe functions
 const stripeModule = require("./stripe");
@@ -896,6 +899,110 @@ async function handlePaymentRoutes(
   path: string,
   method: string
 ) {
+  // Helper: get Stripe instance (cached)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let stripeInstance: any | null = null;
+  function getStripe() {
+    if (!stripeInstance) {
+      const key = process.env.STRIPE_SECRET_KEY;
+      if (!key) throw new Error("STRIPE_SECRET_KEY not configured");
+      stripeInstance = new Stripe(key);
+    }
+    return stripeInstance;
+  }
+
+  // Webhook must use raw body for signature verification
+  if (path === "/payments/webhook" && method === "POST") {
+    try {
+      const sig = req.headers["stripe-signature"];
+      const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
+      if (!webhookSecret) {
+        res.status(500).send("Webhook secret not configured");
+        return;
+      }
+      const stripe = getStripe();
+      const event = stripe.webhooks.constructEvent(req.rawBody, sig, webhookSecret);
+
+      // Minimal handlers (extend as needed)
+      if (event.type === "checkout.session.completed") {
+        const session = event.data.object as any;
+        const uid = session.metadata?.firebaseUID || null;
+        if (uid) {
+          await db.collection("users").doc(uid).set({
+            stripeCustomerId: session.customer,
+            subscriptionStatus: "active",
+            updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+          }, {merge: true});
+        }
+      }
+
+      if (event.type === "invoice.payment_failed") {
+        const invoice = event.data.object as any;
+        const cust = invoice.customer;
+        const snap = await db.collection("users").where("stripeCustomerId", "==", cust).limit(1).get();
+        if (!snap.empty) {
+          await db.collection("users").doc(snap.docs[0].id).set({
+            subscriptionStatus: "payment_failed",
+            updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+          }, {merge: true});
+        }
+      }
+
+      res.json({received: true});
+      return;
+    } catch (err: any) {
+      logger.error("Stripe webhook error", err);
+      res.status(400).send(`Webhook Error: ${err.message}`);
+      return;
+    }
+  }
+  // POST /payments/create-checkout-session - Start subscription checkout
+  if (path === "/payments/create-checkout-session" && method === "POST") {
+    const authHeader = req.headers.authorization;
+    if (!authHeader) {
+      res.status(401).json({error: "Unauthorized"});
+      return;
+    }
+    try {
+      const user = await verifyAuth(authHeader);
+      const {priceId, successUrl, cancelUrl} = req.body;
+      if (!priceId) {
+        res.status(400).json({error: "priceId required"});
+        return;
+      }
+      // Ensure customer exists
+      const userRef = db.collection("users").doc(user.uid);
+      const userDoc = await userRef.get();
+      const userData = userDoc.data() || {};
+      const stripe = getStripe();
+      let customerId = userData.stripeCustomerId;
+      if (!customerId) {
+        const customer = await stripe.customers.create({
+          email: user.email,
+          metadata: {firebaseUID: user.uid},
+        });
+        customerId = customer.id;
+        await userRef.set({stripeCustomerId: customerId}, {merge: true});
+      }
+      const session = await stripe.checkout.sessions.create({
+        customer: customerId,
+        mode: "subscription",
+        payment_method_types: ["card"],
+        line_items: [{price: priceId, quantity: 1}],
+        success_url: successUrl || `${req.headers.origin || "https://assiduous-prod.web.app"}/agent/settings.html?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: cancelUrl || `${req.headers.origin || "https://assiduous-prod.web.app"}/agent/settings.html?canceled=true`,
+        metadata: {firebaseUID: user.uid},
+        subscription_data: {metadata: {firebaseUID: user.uid}},
+      });
+      res.json({url: session.url});
+      return;
+    } catch (e: any) {
+      logger.error("Checkout session error", e);
+      res.status(500).json({error: e.message || "Checkout failed"});
+      return;
+    }
+  }
+
   // POST /payments/create-intent - Create payment intent
   if (path === "/payments/create-intent" && method === "POST") {
     const authHeader = req.headers.authorization;
@@ -968,6 +1075,35 @@ async function handlePaymentRoutes(
     } catch (error: any) {
       logger.error("Payment verification error", error);
       res.status(500).json({error: error.message || "Verification failed"});
+      return;
+    }
+  }
+
+  // POST /payments/portal-session - Customer portal session
+  if (path === "/payments/portal-session" && method === "POST") {
+    const authHeader = req.headers.authorization;
+    if (!authHeader) {
+      res.status(401).json({error: "Unauthorized"});
+      return;
+    }
+    try {
+      const user = await verifyAuth(authHeader);
+      const {returnUrl} = req.body;
+      const userDoc = await db.collection("users").doc(user.uid).get();
+      const custId = userDoc.data()?.stripeCustomerId;
+      if (!custId) {
+        res.status(400).json({error: "No Stripe customer"});
+        return;
+      }
+      const portal = await getStripe().billingPortal.sessions.create({
+        customer: custId,
+        return_url: returnUrl || `${req.headers.origin || "https://assiduous-prod.web.app"}/agent/settings.html`,
+      });
+      res.json({url: portal.url});
+      return;
+    } catch (e: any) {
+      logger.error("Portal session error", e);
+      res.status(500).json({error: e.message || "Portal failed"});
       return;
     }
   }
