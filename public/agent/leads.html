@@ -647,105 +647,444 @@
         </main>
     </div>
 
-    <!-- Load Component Scripts -->
+    <!-- Firebase Integration -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="../firebase-config.js"></script>
     <script src="../components/universal-header.js"></script>
     
-    <!-- Firebase Integration -->
-    <script src="../firebase-config.js"></script>
-    
-    <!-- Page-specific functionality -->
     <script>
-        // Load leads data
-        async function loadLeadsData() {
-            try {
-                // Check authentication
-                const user = await FirebaseServices.auth.checkAuth();
-                if (!user) {
-                    console.log('No authenticated user, using demo data');
-                    return;
+        // ==========================================
+        // FIREBASE LEAD MANAGEMENT SERVICE
+        // ==========================================
+        
+        const LeadManagementService = {
+            db: firebase.firestore(),
+            auth: firebase.auth(),
+            
+            /**
+             * Get leads for current agent
+             */
+            async getAgentLeads(filters = {}) {
+                try {
+                    const user = this.auth.currentUser;
+                    if (!user) throw new Error('Not authenticated');
+                    
+                    let query = this.db.collection('leads')
+                        .where('agentId', '==', user.uid);
+                    
+                    // Apply status filter
+                    if (filters.status) {
+                        query = query.where('status', '==', filters.status);
+                    }
+                    
+                    // Apply source filter
+                    if (filters.source) {
+                        query = query.where('source', '==', filters.source);
+                    }
+                    
+                    const snapshot = await query.orderBy('createdAt', 'desc').get();
+                    
+                    let leads = snapshot.docs.map(doc => ({
+                        id: doc.id,
+                        ...doc.data(),
+                        createdAt: doc.data().createdAt?.toDate() || new Date(),
+                        lastContact: doc.data().lastContact?.toDate() || new Date()
+                    }));
+                    
+                    // Apply client-side filters
+                    if (filters.interest) {
+                        leads = leads.filter(l => l.interest === filters.interest);
+                    }
+                    
+                    if (filters.dateRange) {
+                        leads = this.filterByDateRange(leads, filters.dateRange);
+                    }
+                    
+                    return leads;
+                } catch (error) {
+                    console.error('Error fetching leads:', error);
+                    return this.getDemoLeads();
+                }
+            },
+            
+            /**
+             * Calculate lead statistics
+             */
+            calculateStats(leads) {
+                const total = leads.length;
+                
+                // New this week
+                const oneWeekAgo = new Date();
+                oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+                const newThisWeek = leads.filter(l => 
+                    new Date(l.createdAt) >= oneWeekAgo
+                ).length;
+                
+                // Hot leads (new or contacted recently)
+                const threeDaysAgo = new Date();
+                threeDaysAgo.setDate(threeDaysAgo.getDate() - 3);
+                const hotLeads = leads.filter(l => 
+                    l.status === 'new' || 
+                    (l.status === 'contacted' && new Date(l.lastContact) >= threeDaysAgo)
+                ).length;
+                
+                // Conversion rate (qualified leads / total)
+                const qualified = leads.filter(l => l.status === 'qualified').length;
+                const conversionRate = total > 0 ? (qualified / total * 100).toFixed(0) : 0;
+                
+                return {
+                    total,
+                    newThisWeek,
+                    hotLeads,
+                    conversionRate: conversionRate + '%'
+                };
+            },
+            
+            /**
+             * Filter leads by date range
+             */
+            filterByDateRange(leads, range) {
+                const now = new Date();
+                let startDate;
+                
+                switch(range) {
+                    case 'today':
+                        startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                        break;
+                    case 'week':
+                        startDate = new Date(now);
+                        startDate.setDate(startDate.getDate() - 7);
+                        break;
+                    case 'month':
+                        startDate = new Date(now);
+                        startDate.setMonth(startDate.getMonth() - 1);
+                        break;
+                    case 'quarter':
+                        startDate = new Date(now);
+                        startDate.setMonth(startDate.getMonth() - 3);
+                        break;
+                    default:
+                        return leads;
                 }
                 
-                // Get leads from Firestore
-                const leads = await FirebaseServices.db.getAgentLeads(user.uid);
+                return leads.filter(l => new Date(l.createdAt) >= startDate);
+            },
+            
+            /**
+             * Update lead status
+             */
+            async updateLeadStatus(leadId, newStatus) {
+                try {
+                    await this.db.collection('leads').doc(leadId).update({
+                        status: newStatus,
+                        lastContact: firebase.firestore.FieldValue.serverTimestamp(),
+                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    return true;
+                } catch (error) {
+                    console.error('Error updating lead status:', error);
+                    return false;
+                }
+            },
+            
+            /**
+             * Export leads to CSV
+             */
+            exportToCSV(leads) {
+                const headers = ['Name', 'Email', 'Phone', 'Interest', 'Budget', 'Source', 'Status', 'Created', 'Last Contact'];
+                const rows = leads.map(l => [
+                    l.name,
+                    l.email,
+                    l.phone || '',
+                    l.interest,
+                    l.budget,
+                    l.source,
+                    l.status,
+                    new Date(l.createdAt).toLocaleDateString(),
+                    new Date(l.lastContact).toLocaleDateString()
+                ]);
+                
+                const csv = [headers, ...rows]
+                    .map(row => row.join(','))
+                    .join('\n');
+                
+                const blob = new Blob([csv], { type: 'text/csv' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `leads_${new Date().toISOString().split('T')[0]}.csv`;
+                a.click();
+                URL.revokeObjectURL(url);
+            },
+            
+            /**
+             * Demo leads for development
+             */
+            getDemoLeads() {
+                const user = this.auth.currentUser;
+                return [
+                    {
+                        id: '1',
+                        agentId: user?.uid || 'demo',
+                        name: 'Jennifer Williams',
+                        email: 'jennifer.w@email.com',
+                        phone: '(555) 123-4567',
+                        interest: 'Buying - 3BR Single Family Home',
+                        budget: '$400K - $500K',
+                        source: 'website',
+                        status: 'new',
+                        createdAt: new Date(Date.now() - 2 * 3600 * 1000),
+                        lastContact: new Date(Date.now() - 2 * 3600 * 1000)
+                    },
+                    {
+                        id: '2',
+                        agentId: user?.uid || 'demo',
+                        name: 'Michael Chen',
+                        email: 'm.chen@company.com',
+                        phone: '(555) 234-5678',
+                        interest: 'Buying - Downtown Condo',
+                        budget: '$600K - $750K',
+                        source: 'referral',
+                        status: 'contacted',
+                        createdAt: new Date(Date.now() - 24 * 3600 * 1000),
+                        lastContact: new Date(Date.now() - 24 * 3600 * 1000)
+                    },
+                    {
+                        id: '3',
+                        agentId: user?.uid || 'demo',
+                        name: 'Sarah Johnson',
+                        email: 'sjohnson@gmail.com',
+                        phone: '(555) 345-6789',
+                        interest: 'Selling - Current Home',
+                        budget: '$350K Listed',
+                        source: 'social',
+                        status: 'qualified',
+                        createdAt: new Date(Date.now() - 3 * 24 * 3600 * 1000),
+                        lastContact: new Date(Date.now() - 3 * 24 * 3600 * 1000)
+                    },
+                    {
+                        id: '4',
+                        agentId: user?.uid || 'demo',
+                        name: 'Robert Davis',
+                        email: 'rdavis@outlook.com',
+                        phone: '(555) 456-7890',
+                        interest: 'Buying - Investment Property',
+                        budget: '$200K - $300K',
+                        source: 'email',
+                        status: 'contacted',
+                        createdAt: new Date(Date.now() - 5 * 24 * 3600 * 1000),
+                        lastContact: new Date(Date.now() - 5 * 24 * 3600 * 1000)
+                    },
+                    {
+                        id: '5',
+                        agentId: user?.uid || 'demo',
+                        name: 'Emily Martinez',
+                        email: 'emartinez@mail.com',
+                        phone: '(555) 567-8901',
+                        interest: 'Buying - First Home',
+                        budget: '$300K - $400K',
+                        source: 'website',
+                        status: 'new',
+                        createdAt: new Date(Date.now() - 6 * 3600 * 1000),
+                        lastContact: new Date(Date.now() - 6 * 3600 * 1000)
+                    },
+                    {
+                        id: '6',
+                        agentId: user?.uid || 'demo',
+                        name: 'David Kim',
+                        email: 'dkim@tech.com',
+                        phone: '(555) 678-9012',
+                        interest: 'Buying - Luxury Condo',
+                        budget: '$1M+',
+                        source: 'referral',
+                        status: 'qualified',
+                        createdAt: new Date(Date.now() - 2 * 24 * 3600 * 1000),
+                        lastContact: new Date(Date.now() - 24 * 3600 * 1000)
+                    }
+                ];
+            }
+        };
+        
+        // ==========================================
+        // UI AND DATA MANAGEMENT
+        // ==========================================
+        
+        let allLeads = [];
+        let currentFilters = {};
+        
+        /**
+         * Load and display leads
+         */
+        async function loadLeads() {
+            try {
+                // Fetch leads
+                allLeads = await LeadManagementService.getAgentLeads(currentFilters);
                 
                 // Update stats
-                document.getElementById('totalLeads').textContent = leads.length;
+                updateStats(allLeads);
                 
-                // Update leads table
-                renderLeadsTable(leads);
-                
-                // Set up real-time listeners
-                FirebaseServices.db.subscribeToLeads(user.uid, (updatedLeads) => {
-                    document.getElementById('totalLeads').textContent = updatedLeads.length;
-                    renderLeadsTable(updatedLeads);
-                });
-                
+                // Render table
+                renderLeadsTable(allLeads);
             } catch (error) {
                 console.error('Error loading leads:', error);
             }
         }
         
+        /**
+         * Update statistics cards
+         */
+        function updateStats(leads) {
+            const stats = LeadManagementService.calculateStats(leads);
+            
+            document.getElementById('totalLeads').textContent = stats.total;
+            document.querySelectorAll('.stat-value')[1].textContent = stats.newThisWeek;
+            document.querySelectorAll('.stat-value')[2].textContent = stats.hotLeads;
+            document.querySelectorAll('.stat-value')[3].textContent = stats.conversionRate;
+        }
+        
+        /**
+         * Render leads table
+         */
         function renderLeadsTable(leads) {
             const tbody = document.getElementById('leadsTableBody');
-            if (!tbody || leads.length === 0) return;
             
-            // Keep existing static data for demo if no leads
-            if (leads.length > 0) {
-                tbody.innerHTML = leads.map(lead => `
-                    <tr>
-                        <td>
-                            <div class="lead-name">${lead.name}</div>
-                            <div class="lead-email">${lead.email}</div>
-                        </td>
-                        <td>${lead.interest}</td>
-                        <td>${lead.budget}</td>
-                        <td>${lead.source}</td>
-                        <td><span class="lead-status ${lead.status.toLowerCase()}">${lead.status}</span></td>
-                        <td>${FirebaseServices.utils.getRelativeTime(lead.lastContact)}</td>
-                        <td>
-                            <div class="lead-actions">
-                                <button class="action-btn" title="Call" onclick="callLead('${lead.phone}')">
-                                    <svg viewBox="0 0 24 24" fill="none">
-                                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-                                    </svg>
-                                </button>
-                                <button class="action-btn" title="Email" onclick="emailLead('${lead.email}')">
-                                    <svg viewBox="0 0 24 24" fill="none">
-                                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                                        <polyline points="22,6 12,13 2,6"></polyline>
-                                    </svg>
-                                </button>
-                                <button class="action-btn" title="View Details" onclick="viewLeadDetails('${lead.id}')">
-                                    <svg viewBox="0 0 24 24" fill="none">
-                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                                        <circle cx="12" cy="12" r="3"></circle>
-                                    </svg>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                `).join('');
+            if (leads.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 40px; color: var(--text-secondary);">No leads found. Click "Add Lead" to create your first lead.</td></tr>';
+                return;
             }
+            
+            tbody.innerHTML = leads.map(lead => `
+                <tr>
+                    <td>
+                        <div class="lead-name">${lead.name}</div>
+                        <div class="lead-email">${lead.email}</div>
+                    </td>
+                    <td>${lead.interest}</td>
+                    <td>${lead.budget}</td>
+                    <td>${lead.source.charAt(0).toUpperCase() + lead.source.slice(1)}</td>
+                    <td><span class="lead-status ${lead.status}">${lead.status.charAt(0).toUpperCase() + lead.status.slice(1)}</span></td>
+                    <td>${getRelativeTime(lead.lastContact)}</td>
+                    <td>
+                        <div class="lead-actions">
+                            <button class="action-btn" title="Call" onclick="callLead('${lead.phone}')">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                                </svg>
+                            </button>
+                            <button class="action-btn" title="Email" onclick="emailLead('${lead.email}')">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                    <polyline points="22,6 12,13 2,6"></polyline>
+                                </svg>
+                            </button>
+                            <button class="action-btn" title="View Details" onclick="viewLeadDetails('${lead.id}')">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
         }
         
-        // Action handlers
+        /**
+         * Get relative time string
+         */
+        function getRelativeTime(date) {
+            const now = new Date();
+            const diff = now - new Date(date);
+            const minutes = Math.floor(diff / 60000);
+            const hours = Math.floor(diff / 3600000);
+            const days = Math.floor(diff / 86400000);
+            
+            if (minutes < 60) return `${minutes} ${minutes === 1 ? 'minute' : 'minutes'} ago`;
+            if (hours < 24) return `${hours} ${hours === 1 ? 'hour' : 'hours'} ago`;
+            if (days === 1) return 'Yesterday';
+            if (days < 7) return `${days} days ago`;
+            return new Date(date).toLocaleDateString();
+        }
+        
+        // ==========================================
+        // EVENT HANDLERS
+        // ==========================================
+        
+        /**
+         * Apply filters
+         */
+        function applyFilters() {
+            const statusSelect = document.querySelectorAll('.sirsi-select')[0];
+            const sourceSelect = document.querySelectorAll('.sirsi-select')[1];
+            const interestSelect = document.querySelectorAll('.sirsi-select')[2];
+            const dateRangeSelect = document.querySelectorAll('.sirsi-select')[3];
+            
+            currentFilters = {};
+            
+            if (statusSelect.value) currentFilters.status = statusSelect.value;
+            if (sourceSelect.value) currentFilters.source = sourceSelect.value;
+            if (interestSelect.value) currentFilters.interest = interestSelect.value;
+            if (dateRangeSelect.value) currentFilters.dateRange = dateRangeSelect.value;
+            
+            loadLeads();
+        }
+        
+        /**
+         * Export leads to CSV
+         */
+        function exportLeads() {
+            LeadManagementService.exportToCSV(allLeads);
+        }
+        
+        /**
+         * Call lead
+         */
         function callLead(phone) {
-            console.log('Calling lead:', phone);
-            // Implement actual call functionality
+            window.location.href = 'tel:' + phone;
         }
         
+        /**
+         * Email lead
+         */
         function emailLead(email) {
             window.location.href = 'mailto:' + email;
         }
         
+        /**
+         * View lead details
+         */
         function viewLeadDetails(leadId) {
-            console.log('Viewing lead details:', leadId);
-            // Implement lead details modal
+            window.location.href = `lead-detail.html?id=${leadId}`;
         }
         
-        // Initialize on page load
+        // ==========================================
+        // INITIALIZATION
+        // ==========================================
+        
         document.addEventListener('DOMContentLoaded', function() {
-            loadLeadsData();
+            // Check authentication
+            firebase.auth().onAuthStateChanged(user => {
+                if (!user) {
+                    window.location.href = '/agent/login.html';
+                    return;
+                }
+                
+                // Load leads
+                loadLeads();
+                
+                // Attach filter listeners
+                document.querySelectorAll('.sirsi-select').forEach(select => {
+                    select.addEventListener('change', applyFilters);
+                });
+                
+                // Attach export listener
+                const exportBtn = document.querySelector('.table-header button');
+                if (exportBtn) {
+                    exportBtn.addEventListener('click', exportLeads);
+                }
+            });
         });
     </script>
 </body>
