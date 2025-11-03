@@ -547,43 +547,22 @@
         <!-- Today's Activities -->
         <div class="sm-sm-card">
             <div class="sm-sm-sm-sm-card-header">
-                <div class="sm-sm-card-title">📋 Today's Activities</div>
+                <div class="sm-sm-card-title">📋 Recent Activity</div>
                 <button class="sm-btn sm-btn-primary">Add Entry</button>
             </div>
             <div class="sm-sm-sm-sm-card-body">
                 <table class="sm-table">
                     <thead>
                         <tr>
+                            <th>Commit</th>
+                            <th>Message</th>
+                            <th>Author</th>
                             <th>Time</th>
-                            <th>Activity</th>
-                            <th>Duration</th>
-                            <th>Cost</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="activity-table">
                         <tr>
-                            <td>8:00 PM</td>
-                            <td>Dashboard visual metrics restoration</td>
-                            <td>150 min</td>
-                            <td>$750</td>
-                        </tr>
-                        <tr>
-                            <td>10:30 PM</td>
-                            <td>Chart.js integration & GitHub API</td>
-                            <td>45 min</td>
-                            <td>$225</td>
-                        </tr>
-                        <tr>
-                            <td>11:15 PM</td>
-                            <td>Sidebar component standardization</td>
-                            <td>60 min</td>
-                            <td>$300</td>
-                        </tr>
-                        <tr>
-                            <td>12:15 AM</td>
-                            <td>CI/CD pipeline fixes & deployment</td>
-                            <td>30 min</td>
-                            <td>$150</td>
+                            <td colspan="4" style="text-align: center; padding: 20px; color: var(--gray-400);">Loading...</td>
                         </tr>
                     </tbody>
                 </table>
@@ -598,24 +577,24 @@
             <div class="sm-sm-sm-sm-card-body">
                 <div class="metrics-grid">
                     <div>
-                        <div class="metric-label">Labor Cost (97%)</div>
-                        <div style="font-size: 24px; font-weight: 600; color: var(--navy);">$1,164</div>
+                        <div class="metric-label">Labor Cost</div>
+                        <div id="labor-cost" style="font-size: 24px; font-weight: 600; color: var(--navy);">--</div>
                         <div style="margin-top: 8px; height: 8px; background: var(--gray-200); border-radius: 4px; overflow: hidden;">
-                            <div style="width: 97%; height: 100%; background: var(--sky);"></div>
+                            <div id="labor-bar" style="width: 0%; height: 100%; background: var(--sky);"></div>
                         </div>
                     </div>
                     <div>
-                        <div class="metric-label">Tools & Services (3%)</div>
-                        <div style="font-size: 24px; font-weight: 600; color: var(--success);">$36</div>
+                        <div class="metric-label">Tools & Services</div>
+                        <div id="tools-cost" style="font-size: 24px; font-weight: 600; color: var(--success);">--</div>
                         <div style="margin-top: 8px; height: 8px; background: var(--gray-200); border-radius: 4px; overflow: hidden;">
-                            <div style="width: 3%; height: 100%; background: var(--success);"></div>
+                            <div id="tools-bar" style="width: 0%; height: 100%; background: var(--success);"></div>
                         </div>
                     </div>
                     <div>
-                        <div class="metric-label">Cloud Infrastructure (0%)</div>
-                        <div style="font-size: 24px; font-weight: 600; color: var(--gray-400);">$0</div>
+                        <div class="metric-label">Cloud Infrastructure</div>
+                        <div id="cloud-cost" style="font-size: 24px; font-weight: 600; color: var(--gray-400);">$0</div>
                         <div style="margin-top: 8px; height: 8px; background: var(--gray-200); border-radius: 4px; overflow: hidden;">
-                            <div style="width: 0%; height: 100%; background: var(--gray-400);"></div>
+                            <div id="cloud-bar" style="width: 0%; height: 100%; background: var(--gray-400);"></div>
                         </div>
                     </div>
                 </div>
@@ -640,6 +619,14 @@
 
     <!-- Load REAL metrics from cache -->
     <script>
+        function getTimeAgo(date) {
+            const seconds = Math.floor((new Date() - date) / 1000);
+            if (seconds < 3600) return `${Math.floor(seconds / 60)}m ago`;
+            if (seconds < 86400) return `${Math.floor(seconds / 3600)}h ago`;
+            if (seconds < 2592000) return `${Math.floor(seconds / 86400)}d ago`;
+            return new Date(date).toLocaleDateString();
+        }
+        
         document.addEventListener('DOMContentLoaded', async function() {
             console.log('Development Costs page loaded');
             
@@ -662,6 +649,43 @@
                     if (metricChanges[0]) metricChanges[0].textContent = `${metrics.today?.hours || 0}h worked`;
                     if (metricChanges[1]) metricChanges[1].textContent = `${metrics.thisWeek?.hours || 0}h • ${metrics.thisWeek?.days || 0} days`;
                     if (metricChanges[3]) metricChanges[3].textContent = `Since Aug 2025 • ${metrics.project?.totalHours || 0}h`;
+                    
+                    // Update Recent Activity Table
+                    const activityTable = document.getElementById('activity-table');
+                    const recentActivity = metrics.recentActivity || [];
+                    if (recentActivity.length > 0) {
+                        activityTable.innerHTML = recentActivity.slice(0, 8).map(activity => `
+                            <tr>
+                                <td><code style="font-size: 11px; background: var(--gray-100); padding: 2px 6px; border-radius: 4px;">${activity.hash ? activity.hash.substring(0, 7) : 'N/A'}</code></td>
+                                <td>${activity.message || 'No message'}</td>
+                                <td>${activity.author || 'Unknown'}</td>
+                                <td style="white-space: nowrap;">${activity.date ? getTimeAgo(new Date(activity.date)) : 'Recently'}</td>
+                            </tr>
+                        `).join('');
+                    } else {
+                        activityTable.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 20px;">No recent activity</td></tr>';
+                    }
+                    
+                    // Update Cost Breakdown
+                    const laborCost = metrics.project?.laborCost || 0;
+                    const toolsCost = metrics.project?.toolsCost || 0;
+                    const totalCost = metrics.project?.totalCost || 1;
+                    
+                    document.getElementById('labor-cost').textContent = `$${laborCost.toLocaleString()}`;
+                    document.getElementById('tools-cost').textContent = `$${toolsCost.toLocaleString()}`;
+                    
+                    const laborPct = Math.round((laborCost / totalCost) * 100);
+                    const toolsPct = Math.round((toolsCost / totalCost) * 100);
+                    
+                    document.getElementById('labor-bar').style.width = `${laborPct}%`;
+                    document.getElementById('tools-bar').style.width = `${toolsPct}%`;
+                    
+                    // Update labels with percentages
+                    const labels = document.querySelectorAll('.metric-label');
+                    labels.forEach(label => {
+                        if (label.textContent.includes('Labor')) label.textContent = `Labor Cost (${laborPct}%)`;
+                        if (label.textContent.includes('Tools')) label.textContent = `Tools & Services (${toolsPct}%)`;
+                    });
                     
                     console.log('Cost page updated with real metrics');
                 } else {
