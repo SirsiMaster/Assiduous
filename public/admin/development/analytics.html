@@ -818,7 +818,7 @@
         // Load and display dynamic metrics
         async function loadAnalytics() {
             try {
-                const response = await fetch('/admin/development/metrics.json');
+                const response = await fetch('./metrics.json');
                 if (!response.ok) throw new Error('Metrics not found');
                 
                 const metrics = await response.json();
@@ -993,20 +993,29 @@
         
         // Initialize
         document.addEventListener('DOMContentLoaded', async function() {
-            // Load metrics first
-            const response = await fetch('/admin/development/metrics.json');
-            const metrics = await response.json();
-            
-            // Initialize all components with metrics
-            await loadAnalytics();
-            createPerformanceChart(metrics);
-            
-            // Auto-refresh every 60 seconds
-            setInterval(async () => {
-                const refreshResponse = await fetch('/admin/development/metrics.json');
-                const refreshMetrics = await refreshResponse.json();
+            try {
+                // Load metrics first
+                const response = await fetch('./metrics.json');
+                const metrics = await response.json();
+                console.log('✅ Metrics loaded:', metrics);
+                
+                // Initialize all components with metrics
                 await loadAnalytics();
-            }, 60 * 1000);
+                createPerformanceChart(metrics);
+                
+                // Auto-refresh every 60 seconds
+                setInterval(async () => {
+                    const refreshResponse = await fetch('./metrics.json');
+                    const refreshMetrics = await refreshResponse.json();
+                    await loadAnalytics();
+                }, 60 * 1000);
+            } catch (error) {
+                console.error('❌ Failed to initialize analytics:', error);
+                // Show error state
+                document.querySelectorAll('.stat-value').forEach(el => {
+                    el.textContent = 'Error';
+                });
+            }
             
             // Highlight active page in sidebar
             const currentPath = window.location.pathname;
