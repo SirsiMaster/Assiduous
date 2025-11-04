@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-11-04T05:19:39.065Z",
+  "lastUpdated": "2025-11-04T05:24:20.912Z",
   "summary": {
     "health": "Good",
     "score": 46,
@@ -104,41 +104,41 @@
     }
   },
   "project": {
-    "totalHours": "251",
+    "totalHours": "252",
     "avgHoursPerDay": "8.7",
-    "totalCost": 39486,
-    "laborCost": 37650,
+    "totalCost": 39636,
+    "laborCost": 37800,
     "toolsCost": 1836,
     "monthsElapsed": "2.8",
-    "totalCommits": 762,
+    "totalCommits": 765,
     "totalFiles": 669,
     "activeDays": 29,
     "totalDays": 86,
     "projectAgeDays": 86,
-    "linesAdded": 9660530,
-    "linesDeleted": 9373613,
-    "netLines": 286917,
-    "velocity": "26.3",
+    "linesAdded": 9660608,
+    "linesDeleted": 9373666,
+    "netLines": 286942,
+    "velocity": "26.4",
     "completionPercentage": 46,
     "actualStartDate": "2025-08-10"
   },
   "today": {
     "date": "2025-11-04",
-    "hours": "7.6",
-    "cost": 1139,
-    "commits": 23,
+    "hours": "8.3",
+    "cost": 1238,
+    "commits": 25,
     "deployments": 0
   },
   "thisWeek": {
-    "hours": "64.7",
-    "cost": 9702,
-    "commits": 196,
+    "hours": "65.7",
+    "cost": 9851,
+    "commits": 199,
     "days": 7
   },
   "thisMonth": {
-    "hours": "141.2",
-    "cost": 21186,
-    "commits": 428
+    "hours": "142.2",
+    "cost": 21335,
+    "commits": 431
   },
   "quality": {
     "testCoverage": {
@@ -172,7 +172,7 @@
       "critical": 0,
       "total": 0
     },
-    "lastAudit": "2025-11-04T05:19:13.853Z",
+    "lastAudit": "2025-11-04T05:23:50.365Z",
     "dependencies": {
       "total": {
         "prod": 256,
@@ -267,16 +267,16 @@
     "changelog": true,
     "contributing": false,
     "license": false,
-    "lastUpdate": "2025-11-04 05:13:45 +0000"
+    "lastUpdate": "2025-11-04 05:19:03 +0000"
   },
   "productivity": {
     "velocityTrend": "increasing",
-    "weeklyCommits": 196,
+    "weeklyCommits": 199,
     "contributors": {
       "total": 0,
       "active": 0
     },
-    "averageCommitSize": 113,
+    "averageCommitSize": 112,
     "pullRequests": {
       "open": 0,
       "merged": 0,
@@ -349,6 +349,24 @@
   },
   "recentActivity": [
     {
+      "hash": "291c689a108982cab7f3937e434beb06011d5cd8",
+      "message": "chore: merge metrics",
+      "author": "SirsiMaster",
+      "date": "2025-11-04 00:23:29 -0500"
+    },
+    {
+      "hash": "644f48a14c1ebab982a1df4bcd4fd24194377035",
+      "message": "fix(client): resolve Firebase initialization race condition with auth guard",
+      "author": "SirsiMaster",
+      "date": "2025-11-04 00:23:18 -0500"
+    },
+    {
+      "hash": "d6bedaee60be7229cd2a3b95715cc5df028c8720",
+      "message": "chore(release): Bump version to 0.85.3 [skip ci]",
+      "author": "github-actions[bot]",
+      "date": "2025-11-04 05:19:03 +0000"
+    },
+    {
       "hash": "acc1b442cfcb98f4d9aa027a73739e9275b9ba86",
       "message": "chore: metrics",
       "author": "SirsiMaster",
@@ -389,28 +407,10 @@
       "message": "fix(client): add universal header styling, empty state, and better error handling for tax records",
       "author": "SirsiMaster",
       "date": "2025-11-04 00:08:29 -0500"
-    },
-    {
-      "hash": "6b3a9c8078491d5ec1ef82aa2c3646ae16a8ee9a",
-      "message": "chore(release): Bump version to 0.85.0 [skip ci]",
-      "author": "github-actions[bot]",
-      "date": "2025-11-04 04:56:41 +0000"
-    },
-    {
-      "hash": "e4e179c2a0b65c6ea0692b24d53f9382e2a58c6e",
-      "message": "chore: update development metrics",
-      "author": "SirsiMaster",
-      "date": "2025-11-03 23:56:29 -0500"
-    },
-    {
-      "hash": "9830e5b10a9b0c2cdb07b3fd14a6c2b23337100a",
-      "message": "feat(client): add editable fields and document upload to tax records page",
-      "author": "SirsiMaster",
-      "date": "2025-11-03 23:55:56 -0500"
     }
   ],
   "automation": {
-    "lastRun": "2025-11-04T05:19:39.065Z",
+    "lastRun": "2025-11-04T05:24:20.912Z",
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",
