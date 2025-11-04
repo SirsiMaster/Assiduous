@@ -188,6 +188,115 @@
             font-weight: 600;
         }
         
+        /* Editable Fields */
+        .editable-field {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+        }
+        
+        .editable-field input,
+        .editable-field textarea {
+            width: 100%;
+            padding: 6px 10px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            font-size: 14px;
+            font-family: inherit;
+            background: var(--white);
+            transition: all 0.15s;
+        }
+        
+        .editable-field input:focus,
+        .editable-field textarea:focus {
+            outline: none;
+            border-color: var(--sky);
+            box-shadow: 0 0 0 3px rgba(96, 163, 217, 0.1);
+        }
+        
+        .editable-field input:disabled {
+            background: var(--gray-50);
+            color: var(--text-primary);
+            border-color: transparent;
+            cursor: default;
+        }
+        
+        .edit-toggle-btn {
+            padding: 4px 8px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            background: var(--white);
+            color: var(--sky);
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.15s;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        
+        .edit-toggle-btn:hover {
+            background: var(--sky);
+            color: var(--white);
+            border-color: var(--sky);
+        }
+        
+        .save-changes-bar {
+            position: fixed;
+            bottom: -100px;
+            left: 0;
+            right: 0;
+            background: var(--sky);
+            padding: var(--space-md) var(--space-xl);
+            box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            transition: bottom 0.3s ease;
+        }
+        
+        .save-changes-bar.visible {
+            bottom: 0;
+        }
+        
+        .save-changes-bar .message {
+            color: var(--white);
+            font-weight: 500;
+        }
+        
+        .save-changes-bar .actions {
+            display: flex;
+            gap: var(--space-sm);
+        }
+        
+        .save-changes-bar button {
+            padding: var(--space-sm) var(--space-lg);
+            border-radius: var(--radius);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.2);
+            color: var(--white);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        
+        .save-changes-bar button:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .save-changes-bar button.primary {
+            background: var(--white);
+            color: var(--sky);
+            border-color: var(--white);
+        }
+        
+        .save-changes-bar button.primary:hover {
+            background: var(--gray-50);
+        }
+        
         .tax-history-table {
             width: 100%;
             border-collapse: collapse;
@@ -260,6 +369,96 @@
             display: grid;
             gap: var(--space-sm);
             margin-top: var(--space-md);
+        }
+        
+        /* Upload Section */
+        .upload-section {
+            margin-top: var(--space-lg);
+            padding: var(--space-xl);
+            background: var(--gray-50);
+            border: 2px dashed var(--border);
+            border-radius: var(--radius-lg);
+            text-align: center;
+        }
+        
+        .upload-section h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: var(--space-sm);
+        }
+        
+        .upload-section p {
+            color: var(--text-secondary);
+            margin-bottom: var(--space-lg);
+        }
+        
+        .upload-buttons {
+            display: flex;
+            justify-content: center;
+            gap: var(--space-md);
+            flex-wrap: wrap;
+        }
+        
+        .upload-btn {
+            padding: var(--space-md) var(--space-xl);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            background: var(--white);
+            color: var(--text-primary);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.15s;
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+        
+        .upload-btn:hover {
+            background: var(--gray-50);
+            border-color: var(--sky);
+            color: var(--sky);
+        }
+        
+        .upload-btn.primary {
+            background: var(--sky);
+            border-color: var(--sky);
+            color: var(--white);
+        }
+        
+        .upload-btn.primary:hover {
+            background: var(--sky-dark);
+            border-color: var(--sky-dark);
+        }
+        
+        .upload-progress {
+            margin-top: var(--space-md);
+            display: none;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background: var(--gray-200);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: var(--space-xs);
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: var(--sky);
+            transition: width 0.3s ease;
+        }
+        
+        .progress-text {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        
+        #file-input,
+        #scan-input {
+            display: none;
         }
         
         .document-item {
@@ -424,6 +623,13 @@
                                 <span class="parcel-id" id="parcel-id">Parcel: Loading...</span>
                             </div>
                             <div class="property-actions">
+                                <button class="btn" id="edit-mode-btn" onclick="toggleEditMode()">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                                    </svg>
+                                    <span id="edit-mode-text">Edit Records</span>
+                                </button>
                                 <button class="btn" onclick="window.print()">
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                         <polyline points="6 9 6 2 18 2 18 9"></polyline>
@@ -538,6 +744,38 @@
                             <div class="documents-list" id="documents-list">
                                 <!-- Dynamically populated -->
                             </div>
+                            
+                            <!-- Upload Section -->
+                            <div class="upload-section">
+                                <h3>Upload Tax Documents</h3>
+                                <p>Upload scanned documents, PDFs, or images of tax records, deeds, and other property documents</p>
+                                <div class="upload-buttons">
+                                    <button class="upload-btn primary" onclick="document.getElementById('file-input').click()">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                            <polyline points="17 8 12 3 7 8"></polyline>
+                                            <line x1="12" y1="3" x2="12" y2="15"></line>
+                                        </svg>
+                                        Upload Files
+                                    </button>
+                                    <button class="upload-btn" onclick="document.getElementById('scan-input').click()">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                                            <circle cx="12" cy="13" r="4"></circle>
+                                        </svg>
+                                        Scan Document
+                                    </button>
+                                </div>
+                                <input type="file" id="file-input" multiple accept=".pdf,.jpg,.jpeg,.png,.doc,.docx" onchange="handleFileUpload(event)">
+                                <input type="file" id="scan-input" accept="image/*" capture="environment" onchange="handleFileUpload(event)">
+                                
+                                <div class="upload-progress" id="upload-progress">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" id="progress-fill"></div>
+                                    </div>
+                                    <div class="progress-text" id="progress-text">Uploading...</div>
+                                </div>
+                            </div>
                         </section>
                     </div>
                 </div>
@@ -545,10 +783,20 @@
         </div>
     </div>
 
+    <!-- Save Changes Bar -->
+    <div class="save-changes-bar" id="save-changes-bar">
+        <div class="message">You have unsaved changes</div>
+        <div class="actions">
+            <button onclick="cancelChanges()">Cancel</button>
+            <button class="primary" onclick="saveChanges()">Save Changes</button>
+        </div>
+    </div>
+
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
     
     <!-- Firebase Config -->
     <script src="../assets/js/firebase-init.js"></script>
@@ -562,6 +810,9 @@
         
         const propertyService = new PropertyService();
         let currentProperty = null;
+        let isEditMode = false;
+        let hasUnsavedChanges = false;
+        let originalData = {};
         
         // Get property ID from URL
         const urlParams = new URLSearchParams(window.location.search);
@@ -652,9 +903,17 @@
             grid.innerHTML = parcelData.map(item => `
                 <div class="info-item">
                     <div class="info-label">${item.label}</div>
-                    <div class="info-value">${item.value}</div>
+                    <div class="editable-field">
+                        <input type="text" 
+                               class="field-input" 
+                               data-field="${item.label.toLowerCase().replace(/\s+/g, '_')}" 
+                               value="${item.value}" 
+                               disabled>
+                    </div>
                 </div>
             `).join('');
+            
+            attachInputListeners();
         }
         
         function populatePropertyCharacteristics(property) {
@@ -679,9 +938,17 @@
             grid.innerHTML = characteristics.map(item => `
                 <div class="info-item">
                     <div class="info-label">${item.label}</div>
-                    <div class="info-value">${item.value}</div>
+                    <div class="editable-field">
+                        <input type="text" 
+                               class="field-input" 
+                               data-field="${item.label.toLowerCase().replace(/\s+/g, '_')}" 
+                               value="${item.value}" 
+                               disabled>
+                    </div>
                 </div>
             `).join('');
+            
+            attachInputListeners();
         }
         
         function populateAssessmentDetails(property) {
@@ -702,9 +969,17 @@
             grid.innerHTML = assessmentData.map(item => `
                 <div class="info-item">
                     <div class="info-label">${item.label}</div>
-                    <div class="info-value ${item.highlight ? 'highlight' : ''}">${item.value}</div>
+                    <div class="editable-field">
+                        <input type="text" 
+                               class="field-input ${item.highlight ? 'highlight' : ''}" 
+                               data-field="${item.label.toLowerCase().replace(/\s+/g, '_')}" 
+                               value="${item.value}" 
+                               disabled>
+                    </div>
                 </div>
             `).join('');
+            
+            attachInputListeners();
         }
         
         function populateTaxHistory(property) {
@@ -769,9 +1044,17 @@
             grid.innerHTML = locationData.map(item => `
                 <div class="info-item">
                     <div class="info-label">${item.label}</div>
-                    <div class="info-value">${item.value}</div>
+                    <div class="editable-field">
+                        <input type="text" 
+                               class="field-input" 
+                               data-field="${item.label.toLowerCase().replace(/\s+/g, '_')}" 
+                               value="${item.value}" 
+                               disabled>
+                    </div>
                 </div>
             `).join('');
+            
+            attachInputListeners();
         }
         
         function populateDocuments(property) {
@@ -844,6 +1127,180 @@
         
         window.downloadDocument = function(docName) {
             alert(`Download ${docName} - Document retrieval integration required`);
+        };
+        
+        // Edit Mode Functions
+        window.toggleEditMode = function() {
+            isEditMode = !isEditMode;
+            const inputs = document.querySelectorAll('.field-input');
+            const btn = document.getElementById('edit-mode-btn');
+            const btnText = document.getElementById('edit-mode-text');
+            
+            inputs.forEach(input => {
+                input.disabled = !isEditMode;
+            });
+            
+            if (isEditMode) {
+                btnText.textContent = 'Cancel Edit';
+                btn.classList.add('btn-primary');
+                // Store original data
+                originalData = {};
+                inputs.forEach(input => {
+                    originalData[input.dataset.field] = input.value;
+                });
+            } else {
+                btnText.textContent = 'Edit Records';
+                btn.classList.remove('btn-primary');
+                if (hasUnsavedChanges) {
+                    cancelChanges();
+                }
+            }
+        };
+        
+        function attachInputListeners() {
+            const inputs = document.querySelectorAll('.field-input');
+            inputs.forEach(input => {
+                input.addEventListener('input', () => {
+                    if (isEditMode) {
+                        hasUnsavedChanges = true;
+                        document.getElementById('save-changes-bar').classList.add('visible');
+                    }
+                });
+            });
+        }
+        
+        window.saveChanges = async function() {
+            if (!hasUnsavedChanges || !currentProperty) return;
+            
+            try {
+                // Collect all changed fields
+                const inputs = document.querySelectorAll('.field-input');
+                const updates = {};
+                
+                inputs.forEach(input => {
+                    const field = input.dataset.field;
+                    const value = input.value;
+                    if (originalData[field] !== value) {
+                        updates[field] = value;
+                    }
+                });
+                
+                // Update Firestore
+                const db = firebase.firestore();
+                await db.collection('properties').doc(propertyId).update({
+                    'publicRecords': {
+                        ...currentProperty.publicRecords,
+                        ...updates,
+                        lastUpdated: new Date().toISOString()
+                    }
+                });
+                
+                // Hide save bar
+                document.getElementById('save-changes-bar').classList.remove('visible');
+                hasUnsavedChanges = false;
+                
+                // Show success message
+                alert('Changes saved successfully!');
+                
+                // Reload data
+                loadPropertyTaxRecords(propertyId);
+                
+            } catch (error) {
+                console.error('Error saving changes:', error);
+                alert('Error saving changes: ' + error.message);
+            }
+        };
+        
+        window.cancelChanges = function() {
+            // Restore original values
+            const inputs = document.querySelectorAll('.field-input');
+            inputs.forEach(input => {
+                const field = input.dataset.field;
+                if (originalData[field] !== undefined) {
+                    input.value = originalData[field];
+                }
+            });
+            
+            // Hide save bar
+            document.getElementById('save-changes-bar').classList.remove('visible');
+            hasUnsavedChanges = false;
+        };
+        
+        // File Upload Functions
+        window.handleFileUpload = async function(event) {
+            const files = event.target.files;
+            if (!files || files.length === 0) return;
+            
+            const storage = firebase.storage();
+            const db = firebase.firestore();
+            const user = firebase.auth().currentUser;
+            
+            if (!user) {
+                alert('You must be logged in to upload files');
+                return;
+            }
+            
+            // Show progress
+            const progressContainer = document.getElementById('upload-progress');
+            const progressFill = document.getElementById('progress-fill');
+            const progressText = document.getElementById('progress-text');
+            progressContainer.style.display = 'block';
+            
+            try {
+                for (let i = 0; i < files.length; i++) {
+                    const file = files[i];
+                    const fileName = `${Date.now()}_${file.name}`;
+                    const storageRef = storage.ref(`properties/${propertyId}/documents/${fileName}`);
+                    
+                    progressText.textContent = `Uploading ${file.name} (${i + 1}/${files.length})...`;
+                    
+                    // Upload file
+                    const uploadTask = storageRef.put(file);
+                    
+                    await new Promise((resolve, reject) => {
+                        uploadTask.on('state_changed',
+                            (snapshot) => {
+                                const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                                progressFill.style.width = progress + '%';
+                            },
+                            (error) => reject(error),
+                            async () => {
+                                // Get download URL
+                                const downloadURL = await uploadTask.snapshot.ref.getDownloadURL();
+                                
+                                // Save document metadata to Firestore
+                                await db.collection('properties').doc(propertyId).update({
+                                    documents: firebase.firestore.FieldValue.arrayUnion({
+                                        name: file.name,
+                                        url: downloadURL,
+                                        type: file.type,
+                                        size: file.size,
+                                        uploadedAt: new Date().toISOString(),
+                                        uploadedBy: user.uid
+                                    })
+                                });
+                                
+                                resolve();
+                            }
+                        );
+                    });
+                }
+                
+                // Success
+                progressText.textContent = 'Upload complete!';
+                setTimeout(() => {
+                    progressContainer.style.display = 'none';
+                    progressFill.style.width = '0%';
+                }, 2000);
+                
+                // Reload documents
+                loadPropertyTaxRecords(propertyId);
+                
+            } catch (error) {
+                console.error('Error uploading files:', error);
+                alert('Error uploading files: ' + error.message);
+                progressContainer.style.display = 'none';
+            }
         };
     </script>
 </body>
