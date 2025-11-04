@@ -1,243 +1,184 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-auth-protect="client,investor">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scheduled Viewings - Assiduous</title>
+    <meta name="robots" content="noindex, nofollow">
+    <title>Scheduled Viewings — Assiduous Client Portal</title>
+    
+    <!-- Assiduous Design System -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="../assets/vendor/sirsimaster-ui/sirsimaster-ui.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="../assiduous.css">
+    <link rel="stylesheet" href="../components/admin-layout.css">
     
     <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #f5f5f5;
-            min-height: 100vh;
-        }
-        
-        .header {
-            background: white;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            padding: 15px 0;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        
-        .header-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-            color: #1e3a5f;
-        }
-        
-        .nav-links {
-            display: flex;
-            gap: 30px;
-        }
-        
-        .nav-link {
-            color: #666;
-            text-decoration: none;
-            font-weight: 500;
-        }
-        
-        .nav-link:hover, .nav-link.active {
-            color: #1e3a5f;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 30px 20px;
-        }
-        
-        .page-header {
-            margin-bottom: 30px;
-        }
-        
-        .page-title {
-            font-size: 36px;
-            font-weight: 700;
-            color: #1e3a5f;
-            margin-bottom: 10px;
-        }
-        
-        .page-subtitle {
-            font-size: 18px;
-            color: #666;
-        }
-        
+        /* Page-specific styles using design system variables */
         .content-grid {
             display: grid;
             grid-template-columns: 1fr 350px;
-            gap: 30px;
+            gap: var(--space-xl);
+            margin-bottom: var(--space-xl);
         }
         
         .viewings-section {
-            background: white;
-            border-radius: 12px;
-            padding: 25px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: var(--space-lg);
         }
         
         .section-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 25px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #f0f0f0;
+            margin-bottom: var(--space-lg);
+            padding-bottom: var(--space-md);
+            border-bottom: 1px solid var(--border);
         }
         
         .section-title {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 600;
-            color: #333;
+            color: var(--navy);
         }
         
         .tabs {
             display: flex;
-            gap: 10px;
-            margin-bottom: 25px;
+            gap: var(--space-sm);
+            margin-bottom: var(--space-lg);
         }
         
         .tab {
-            padding: 10px 20px;
-            background: #f8f9fa;
+            padding: var(--space-sm) var(--space-md);
+            background: var(--gray-50);
             border: none;
-            border-radius: 8px;
+            border-radius: var(--radius);
             font-size: 14px;
             font-weight: 600;
-            color: #666;
+            color: var(--text-secondary);
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.2s;
         }
         
         .tab:hover {
-            background: #e9ecef;
+            background: var(--gray-100);
         }
         
         .tab.active {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
+            background: var(--sky);
+            color: var(--white);
         }
         
         .viewing-card {
-            background: #f8f9fa;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 15px;
-            border-left: 4px solid #667eea;
-            transition: all 0.3s;
+            background: var(--gray-50);
+            border-radius: var(--radius-md);
+            padding: var(--space-md);
+            margin-bottom: var(--space-md);
+            border-left: 4px solid var(--sky);
+            transition: all 0.2s;
             cursor: pointer;
         }
         
         .viewing-card:hover {
-            transform: translateX(5px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transform: translateX(4px);
+            box-shadow: var(--shadow-md);
         }
         
         .viewing-card.cancelled {
             opacity: 0.6;
-            border-left-color: #dc3545;
+            border-left-color: var(--danger);
         }
         
         .viewing-card.completed {
-            border-left-color: #28a745;
+            border-left-color: var(--success);
         }
         
         .viewing-header {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: 15px;
+            margin-bottom: var(--space-md);
         }
         
         .viewing-date {
             font-size: 16px;
             font-weight: 600;
-            color: #333;
+            color: var(--navy);
         }
         
         .viewing-time {
             font-size: 14px;
-            color: #666;
-            margin-top: 5px;
+            color: var(--text-secondary);
+            margin-top: 4px;
         }
         
         .viewing-status {
-            padding: 5px 12px;
-            border-radius: 20px;
+            padding: 4px 12px;
+            border-radius: var(--radius);
             font-size: 12px;
             font-weight: 600;
         }
         
         .status-pending {
-            background: #fff3cd;
-            color: #856404;
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--warning);
         }
         
         .status-confirmed {
-            background: #d4edda;
-            color: #155724;
+            background: rgba(5, 150, 105, 0.1);
+            color: var(--success);
         }
         
         .status-cancelled {
-            background: #f8d7da;
-            color: #721c24;
+            background: rgba(220, 38, 38, 0.1);
+            color: var(--danger);
         }
         
         .property-info {
-            background: white;
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 15px;
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: var(--space-md);
+            margin-bottom: var(--space-md);
         }
         
         .property-title {
             font-size: 16px;
             font-weight: 600;
-            color: #1e3a5f;
-            margin-bottom: 5px;
+            color: var(--navy);
+            margin-bottom: 4px;
         }
         
         .property-address {
             font-size: 14px;
-            color: #666;
+            color: var(--text-secondary);
         }
         
         .viewing-notes {
             font-size: 14px;
-            color: #666;
-            background: white;
-            padding: 10px;
-            border-radius: 6px;
-            margin-top: 10px;
+            color: var(--text-secondary);
+            background: var(--white);
+            padding: var(--space-sm);
+            border-radius: var(--radius);
+            margin-top: var(--space-sm);
         }
         
         .action-buttons {
             display: flex;
-            gap: 10px;
-            margin-top: 15px;
+            gap: var(--space-sm);
+            margin-top: var(--space-md);
         }
         
         .btn {
-            padding: 8px 16px;
+            padding: var(--space-xs) var(--space-md);
             border: none;
-            border-radius: 6px;
+            border-radius: var(--radius);
             font-size: 14px;
             font-weight: 600;
             cursor: pointer;
@@ -249,75 +190,90 @@
         }
         
         .btn-primary {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
+            background: var(--sky);
+            color: var(--white);
+        }
+        
+        .btn-primary:hover {
+            background: var(--sky-dark);
         }
         
         .btn-secondary {
-            background: white;
-            color: #666;
-            border: 2px solid #e0e0e0;
+            background: var(--white);
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+        }
+        
+        .btn-secondary:hover {
+            background: var(--gray-50);
         }
         
         .btn-danger {
-            background: #dc3545;
-            color: white;
+            background: var(--danger);
+            color: var(--white);
         }
         
-        .calendar-widget {
-            background: white;
-            border-radius: 12px;
-            padding: 25px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        .btn-danger:hover {
+            background: #b91c1c;
+        }
+        
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-lg);
+        }
+        
+        .calendar-widget, .quick-stats {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: var(--space-lg);
         }
         
         .calendar-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: var(--space-md);
         }
         
         .month-year {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 600;
-            color: #333;
+            color: var(--navy);
         }
         
         .calendar-nav {
             display: flex;
-            gap: 10px;
+            gap: var(--space-sm);
         }
         
         .nav-btn {
             width: 32px;
             height: 32px;
             border: none;
-            background: #f0f0f0;
+            background: var(--gray-50);
             border-radius: 50%;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             transition: all 0.2s;
         }
         
         .nav-btn:hover {
-            background: #e0e0e0;
+            background: var(--gray-100);
         }
         
         .calendar-grid {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
-            gap: 5px;
+            gap: 4px;
         }
         
         .day-header {
             text-align: center;
             font-size: 12px;
             font-weight: 600;
-            color: #999;
-            padding: 10px 0;
+            color: var(--text-secondary);
+            padding: var(--space-sm) 0;
         }
         
         .calendar-day {
@@ -325,7 +281,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 8px;
+            border-radius: var(--radius);
             font-size: 14px;
             cursor: pointer;
             position: relative;
@@ -333,22 +289,22 @@
         }
         
         .calendar-day:hover {
-            background: #f0f0f0;
+            background: var(--gray-50);
         }
         
         .calendar-day.other-month {
-            color: #ccc;
+            color: var(--text-tertiary);
         }
         
         .calendar-day.today {
-            background: #f0f7ff;
-            color: #667eea;
+            background: rgba(96, 163, 217, 0.1);
+            color: var(--sky);
             font-weight: 600;
         }
         
         .calendar-day.has-viewing {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
+            background: var(--sky);
+            color: var(--white);
         }
         
         .viewing-dot {
@@ -356,64 +312,56 @@
             bottom: 4px;
             width: 6px;
             height: 6px;
-            background: #ff6b6b;
+            background: var(--danger);
             border-radius: 50%;
-        }
-        
-        .quick-stats {
-            background: white;
-            border-radius: 12px;
-            padding: 25px;
-            margin-top: 20px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
         }
         
         .stats-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--space-md);
         }
         
         .stat-item {
             text-align: center;
-            padding: 15px;
-            background: #f8f9fa;
-            border-radius: 8px;
         }
         
         .stat-value {
             font-size: 24px;
             font-weight: 700;
-            color: #1e3a5f;
+            color: var(--navy);
+            margin-bottom: 4px;
         }
         
         .stat-label {
             font-size: 12px;
-            color: #999;
-            margin-top: 5px;
+            color: var(--text-secondary);
         }
         
         .empty-state {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: var(--space-3xl);
             text-align: center;
-            padding: 60px 20px;
         }
         
         .empty-icon {
             font-size: 64px;
-            margin-bottom: 20px;
+            margin-bottom: var(--space-lg);
         }
         
         .empty-title {
-            font-size: 24px;
+            font-size: 20px;
             font-weight: 600;
-            color: #333;
-            margin-bottom: 10px;
+            color: var(--navy);
+            margin-bottom: var(--space-sm);
         }
         
         .empty-text {
             font-size: 16px;
-            color: #666;
-            margin-bottom: 25px;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-xl);
         }
         
         .modal {
@@ -434,9 +382,9 @@
         }
         
         .modal-content {
-            background: white;
-            border-radius: 12px;
-            padding: 30px;
+            background: var(--white);
+            border-radius: var(--radius-md);
+            padding: var(--space-xl);
             max-width: 500px;
             width: 90%;
             max-height: 90vh;
@@ -447,101 +395,94 @@
             .content-grid {
                 grid-template-columns: 1fr;
             }
-            
-            .nav-links {
-                display: none;
-            }
         }
     </style>
 </head>
 <body>
-    <header class="header">
-        <div class="header-content">
-            <div class="logo">🏠 Assiduous</div>
-            <nav class="nav-links">
-                <a href="/" class="nav-link">Home</a>
-                <a href="/client/properties.html" class="nav-link">Properties</a>
-                <a href="/client/saved.html" class="nav-link">Saved</a>
-                <a href="/client/viewings.html" class="nav-link active">Viewings</a>
-                <a href="/client/micro-flip-calculator.html" class="nav-link">ROI Calculator</a>
-                <a href="/client/dashboard.html" class="nav-link">Dashboard</a>
-            </nav>
-        </div>
-    </header>
+    <!-- Universal Header -->
+    <header id="universal-header-root" 
+            data-title="Scheduled Viewings" 
+            data-subtitle="Manage your property viewing appointments"
+            data-search-placeholder="Search viewings..."
+            data-user-role="client"></header>
     
-    <div class="container">
-        <div class="page-header">
-            <h1 class="page-title">Scheduled Viewings</h1>
-            <p class="page-subtitle">Manage your property viewing appointments</p>
-        </div>
+    <!-- Admin Layout Wrapper -->
+    <div class="admin-wrapper">
+        <!-- Sidebar -->
+        <nav id="sidebar-root" data-active="viewings"></nav>
         
-        <div class="content-grid">
-            <div class="viewings-section">
-                <div class="section-header">
-                    <h2 class="section-title">Your Viewings</h2>
-                    <button class="btn btn-primary" onclick="window.location.href='/client/properties.html'">
-                        + Schedule New
-                    </button>
-                </div>
-                
-                <div class="tabs">
-                    <button class="tab active" onclick="filterViewings('upcoming')">Upcoming</button>
-                    <button class="tab" onclick="filterViewings('past')">Past</button>
-                    <button class="tab" onclick="filterViewings('cancelled')">Cancelled</button>
-                    <button class="tab" onclick="filterViewings('all')">All</button>
-                </div>
-                
-                <div id="viewingsList">
-                    <!-- Viewings will be loaded here -->
-                </div>
-                
-                <div id="emptyState" class="empty-state" style="display: none;">
-                    <div class="empty-icon">📅</div>
-                    <h2 class="empty-title">No Scheduled Viewings</h2>
-                    <p class="empty-text">Browse properties and schedule viewings to see them here</p>
-                    <button class="btn btn-primary" onclick="window.location.href='/client/properties.html'">
-                        Browse Properties
-                    </button>
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="page-content">
+                <div class="content-grid">
+                    <div class="viewings-section">
+                        <div class="section-header">
+                            <h2 class="section-title">Your Viewings</h2>
+                            <button class="btn btn-primary" onclick="window.location.href='/client/properties.html'">
+                                + Schedule New
+                            </button>
+                        </div>
+                        
+                        <div class="tabs">
+                            <button class="tab active" onclick="filterViewings('upcoming')">Upcoming</button>
+                            <button class="tab" onclick="filterViewings('past')">Past</button>
+                            <button class="tab" onclick="filterViewings('cancelled')">Cancelled</button>
+                            <button class="tab" onclick="filterViewings('all')">All</button>
+                        </div>
+                        
+                        <div id="viewingsList">
+                            <!-- Viewings will be loaded here -->
+                        </div>
+                        
+                        <div id="emptyState" class="empty-state" style="display: none;">
+                            <div class="empty-icon">📅</div>
+                            <h2 class="empty-title">No Scheduled Viewings</h2>
+                            <p class="empty-text">Browse properties and schedule viewings to see them here</p>
+                            <button class="btn btn-primary" onclick="window.location.href='/client/properties.html'">
+                                Browse Properties
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="sidebar">
+                        <div class="calendar-widget">
+                            <div class="calendar-header">
+                                <div class="month-year" id="currentMonth">December 2025</div>
+                                <div class="calendar-nav">
+                                    <button class="nav-btn" onclick="previousMonth()">‹</button>
+                                    <button class="nav-btn" onclick="nextMonth()">›</button>
+                                </div>
+                            </div>
+                            <div class="calendar-grid" id="calendar">
+                                <!-- Calendar will be generated here -->
+                            </div>
+                        </div>
+                        
+                        <div class="quick-stats">
+                            <h3 class="section-title">Quick Stats</h3>
+                            <div class="stats-grid">
+                                <div class="stat-item">
+                                    <div class="stat-value" id="totalViewings">0</div>
+                                    <div class="stat-label">Total Viewings</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value" id="upcomingCount">0</div>
+                                    <div class="stat-label">Upcoming</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value" id="thisWeek">0</div>
+                                    <div class="stat-label">This Week</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value" id="confirmedCount">0</div>
+                                    <div class="stat-label">Confirmed</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            
-            <div class="sidebar">
-                <div class="calendar-widget">
-                    <div class="calendar-header">
-                        <div class="month-year" id="currentMonth">December 2025</div>
-                        <div class="calendar-nav">
-                            <button class="nav-btn" onclick="previousMonth()">‹</button>
-                            <button class="nav-btn" onclick="nextMonth()">›</button>
-                        </div>
-                    </div>
-                    <div class="calendar-grid" id="calendar">
-                        <!-- Calendar will be generated here -->
-                    </div>
-                </div>
-                
-                <div class="quick-stats">
-                    <h3 class="section-title">Quick Stats</h3>
-                    <div class="stats-grid">
-                        <div class="stat-item">
-                            <div class="stat-value" id="totalViewings">0</div>
-                            <div class="stat-label">Total Viewings</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-value" id="upcomingCount">0</div>
-                            <div class="stat-label">Upcoming</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-value" id="thisWeek">0</div>
-                            <div class="stat-label">This Week</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-value" id="confirmedCount">0</div>
-                            <div class="stat-label">Confirmed</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        </main>
     </div>
     
     <!-- Reschedule Modal -->
@@ -576,20 +517,29 @@
         </div>
     </div>
     
+    <!-- Firebase Configuration -->
+    <script src="../firebase-config.js"></script>
+    
+    <!-- Load Header and Auth after Firebase Ready -->
     <script>
-        // Firebase configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyCzPcEJ0TPKnJtcVT2qymgJrII1p0vAJxs",
-            authDomain: "assiduous-prod.firebaseapp.com",
-            projectId: "assiduous-prod",
-            storageBucket: "assiduous-prod.appspot.com",
-            messagingSenderId: "594472642287",
-            appId: "1:594472642287:web:adf723a456b123c4567890"
-        };
-        
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
-        const auth = firebase.auth();
+        window.addEventListener('firebase-ready', function() {
+            const headerScript = document.createElement('script');
+            headerScript.src = '../components/universal-header.js';
+            document.head.appendChild(headerScript);
+            
+            headerScript.onload = function() {
+                const authScript = document.createElement('script');
+                authScript.src = '../components/auth-guard-simple.js';
+                document.head.appendChild(authScript);
+            };
+        });
+    </script>
+    
+    <script>
+        window.addEventListener('firebase-ready', function() {
+            const db = window.db;
+            const auth = window.auth;
+
         
         let allViewings = [];
         let currentFilter = 'upcoming';
@@ -965,6 +915,7 @@
             if (!auth.currentUser) {
                 loadViewings();
             }
+        });
         });
     </script>
 </body>
