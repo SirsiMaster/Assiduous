@@ -823,15 +823,27 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
-    
-    <!-- Firebase Config -->
     <script src="../firebase-config.js"></script>
     
-    <!-- Universal Header Component -->
-    <script src="../components/universal-header.js"></script>
-    
-    <!-- Auth Guard -->
-    <script src="../components/auth-guard-simple.js"></script>
+    <!-- Wait for Firebase to be ready before loading components that need it -->
+    <script>
+        // Wait for firebase-ready event before loading auth-dependent scripts
+        window.addEventListener('firebase-ready', function() {
+            console.log('[Tax Records] Firebase ready, loading auth guard and header');
+            
+            // Load universal header
+            const headerScript = document.createElement('script');
+            headerScript.src = '../components/universal-header.js';
+            document.head.appendChild(headerScript);
+            
+            // Load auth guard after header
+            headerScript.onload = function() {
+                const authScript = document.createElement('script');
+                authScript.src = '../components/auth-guard-simple.js';
+                document.head.appendChild(authScript);
+            };
+        });
+    </script>
     
     <!-- Property Service -->
     <script type="module">
