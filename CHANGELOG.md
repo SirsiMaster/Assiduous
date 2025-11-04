@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.90.0] - 2025-11-04
+
+### Added
+- feat(ucs-phase3): migrate docs pages to UCS
+
+
 ## [0.89.0] - 2025-11-04
 
 ### Added
@@ -2862,7 +2868,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.89.0...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.90.0...HEAD
+
+
+## [0.90.0] - 2025-11-04
+
+### Added
+- feat(ucs-phase3): migrate docs pages to UCS
 
 
 ## [0.89.0] - 2025-11-04
@@ -4117,3 +4129,4 @@ To generate changelog entries:
 [0.87.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.86.0...v0.87.0
 [0.88.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.87.0...v0.88.0
 [0.89.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.88.0...v0.89.0
+[0.90.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.89.0...v0.90.0
