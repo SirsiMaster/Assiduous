@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.85.3] - 2025-11-04
+
+### Fixed
+- fix(client): correct Firebase config and auth guard paths on tax records page
+
+
 ## [0.85.2] - 2025-11-04
 
 ### Fixed
@@ -2781,7 +2787,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.85.2...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.85.3...HEAD
+
+
+## [0.85.3] - 2025-11-04
+
+### Fixed
+- fix(client): correct Firebase config and auth guard paths on tax records page
 
 
 ## [0.85.2] - 2025-11-04
@@ -3986,3 +3998,4 @@ To generate changelog entries:
 [0.85.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.84.0...v0.85.0
 [0.85.1]: https://github.com/SirsiMaster/Assiduous/compare/v0.85.0...v0.85.1
 [0.85.2]: https://github.com/SirsiMaster/Assiduous/compare/v0.85.1...v0.85.2
+[0.85.3]: https://github.com/SirsiMaster/Assiduous/compare/v0.85.2...v0.85.3
