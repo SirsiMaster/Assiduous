@@ -1,6 +1,6 @@
 # ARCHITECTURE DESIGN
-**Version:** 2.0.0-canonical
-**Last Updated:** 2025-11-02
+**Version:** 2.1.0-canonical
+**Last Updated:** 2025-11-04
 **Status:** Canonical Document (1 of 19)
 **Consolidation Date:** November 2, 2025
 
@@ -9,10 +9,165 @@
 ## System Architecture and Design Patterns
 
 **Document Type:** Architecture Design  
-**Version:** 2.0.0  
-**Last Updated:** October 9, 2025  
+**Version:** 2.1.0  
+**Last Updated:** November 4, 2025  
 **Status:** Authoritative Architecture Document
 **Consolidation Note:** Merged from CI_CD_CORRECTED_ARCHITECTURE.md and technical sections of WARP.md
+
+**Recent Updates:**
+- November 4, 2025: Added Universal Component System (UCS) as architectural layer
+- October 9, 2025: Initial architecture documentation
+
+---
+
+# Universal Component System (UCS) Architecture Layer
+**Added:** November 4, 2025  
+**Status:** Phase 0 Complete - Infrastructure Operational
+
+## Architectural Overview
+
+UCS introduces a new **build-time processing layer** between source code and deployment:
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│ DEVELOPER WRITES                                                │
+├─────────────────────────────────────────────────────────────────┤
+│ .template.html files with component directives                 │
+│ <!-- @component:sidebar active="dashboard" -->                 │
+│ <!-- @component:header title="My Page" -->                     │
+└─────────────────────────────────────────────────────────────────┘
+                               ↓
+┌─────────────────────────────────────────────────────────────────┐
+│ BUILD SYSTEM PROCESSES (npm run ucs:build)                     │
+├─────────────────────────────────────────────────────────────────┤
+│ scripts/build-pages.js                                          │
+│ • Discovers .template.html files                                │
+│ • Parses component directives                                   │
+│ • Loads components from public/components/                      │
+│ • Replaces tokens ({{BASE_PATH}}, {{ASSETS_PATH}})             │
+│ • Validates against component registry                          │
+│ • Injects components with proper wrappers                       │
+│ • Generates output .html files                                  │
+└─────────────────────────────────────────────────────────────────┘
+                               ↓
+┌─────────────────────────────────────────────────────────────────┐
+│ BROWSER RECEIVES                                                │
+├─────────────────────────────────────────────────────────────────┤
+│ .html files with fully resolved paths                          │
+│ <aside class="sidebar">...sidebar HTML...</aside>              │
+│ <header>...header HTML...</header>                             │
+│ All paths: ../assets/css/styles.css (calculated)              │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+## Build-Time vs Runtime Architecture
+
+### Traditional Runtime Component Loading (Before UCS)
+```
+Browser loads HTML
+    ↓
+JavaScript executes
+    ↓
+Fetch component HTML
+    ↓
+Calculate paths dynamically
+    ↓
+Inject into DOM
+    ↓
+Render (slower, FOUC possible)
+```
+
+### Build-Time Component System (After UCS)
+```
+Developer runs npm run ucs:build
+    ↓
+Build system generates static HTML
+    ↓
+Browser loads complete HTML
+    ↓
+Render immediately (fast, no FOUC)
+```
+
+## Component Dependency Graph
+
+```
+public/assiduous.config.js
+    ↓ (configuration)
+public/components/registry.json
+    ↓ (schema validation)
+public/components/*.html
+    ↓ (component templates)
+scripts/build-pages.js
+    ↓ (build processor)
+public/**/*.template.html
+    ↓ (source templates)
+public/**/*.html
+    ↓ (generated output)
+Firebase Hosting
+```
+
+## Integration Points
+
+### 1. Development Workflow Integration
+- Developers create `.template.html` files
+- Run `npm run ucs:build` before testing
+- Local server serves generated `.html` files
+- Changes to components require rebuild
+
+### 2. CI/CD Pipeline Integration
+- GitHub Actions runs `npm run ucs:build:prod` before deployment
+- Only generated `.html` files deployed to Firebase
+- `.template.html` files excluded from deployment
+- Build artifacts tracked in build-report.json
+
+### 3. Firebase Hosting Integration
+- Firebase serves static `.html` files
+- All paths pre-resolved during build
+- No client-side path calculation needed
+- CDN caches generated files efficiently
+
+## Architectural Benefits
+
+### Performance
+- **Zero runtime overhead** - No JavaScript needed for components
+- **Faster page load** - All HTML in initial payload
+- **Better caching** - Static files cached longer
+- **No FOUC** - Components present in HTML source
+
+### Maintainability
+- **Single source of truth** - All config in assiduous.config.js
+- **Component reuse** - Write once, use everywhere
+- **Automatic consistency** - Components always identical
+- **Easy updates** - Change component once, rebuild all
+
+### Developer Experience
+- **Simple syntax** - Comment-based directives
+- **Build-time validation** - Errors caught before deployment
+- **Path automation** - Never calculate paths manually
+- **Environment-aware** - Different builds for dev/staging/prod
+
+## Protected Zones
+
+### Admin Pages (Excluded from UCS)
+- `public/admin/**` explicitly excluded
+- Admin pages remain gold standard
+- No UCS migration until system proven
+- Preserves existing working functionality
+
+### Component Files
+- `public/components/*.html` are templates
+- Contain `{{TOKEN}}` placeholders
+- Never served directly to browser
+- Processed during build only
+
+## Rollback Strategy
+
+If UCS causes issues:
+
+1. **Keep existing .html files** - Templates don't replace originals
+2. **Stop running builds** - Disable npm run ucs:build
+3. **Deploy without UCS** - Existing pages still work
+4. **No breaking changes** - UCS is additive, not destructive
 
 ---
 
