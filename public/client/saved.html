@@ -1,200 +1,118 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-auth-protect="client,investor">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Saved Properties - Assiduous</title>
+    <meta name="robots" content="noindex, nofollow">
+    <title>Saved Properties — Assiduous Client Portal</title>
+    
+    <!-- Assiduous Design System -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="../assets/vendor/sirsimaster-ui/sirsimaster-ui.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="../assiduous.css">
+    <link rel="stylesheet" href="../components/admin-layout.css">
     
     <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #f5f5f5;
-            min-height: 100vh;
+        /* Minimal page-specific styles - design system handles most */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--space-lg);
+            margin-bottom: var(--space-xl);
         }
         
-        .header {
-            background: white;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            padding: 15px 0;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        
-        .header-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-            color: #1e3a5f;
-        }
-        
-        .nav-links {
-            display: flex;
-            gap: 30px;
-        }
-        
-        .nav-link {
-            color: #666;
-            text-decoration: none;
-            font-weight: 500;
-        }
-        
-        .nav-link:hover, .nav-link.active {
-            color: #1e3a5f;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 30px 20px;
-        }
-        
-        .page-header {
-            margin-bottom: 30px;
-        }
-        
-        .page-title {
-            font-size: 36px;
-            font-weight: 700;
-            color: #1e3a5f;
-            margin-bottom: 10px;
-        }
-        
-        .page-subtitle {
-            font-size: 18px;
-            color: #666;
-        }
-        
-        .stats-bar {
-            background: white;
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 30px;
-            display: flex;
-            justify-content: space-around;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-        }
-        
-        .stat-item {
+        .stat-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: var(--space-lg);
             text-align: center;
         }
         
         .stat-value {
             font-size: 28px;
             font-weight: 700;
-            color: #1e3a5f;
+            color: var(--navy);
+            margin-bottom: var(--space-xs);
         }
         
         .stat-label {
-            font-size: 13px;
-            color: #999;
-            margin-top: 5px;
+            font-size: 12px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
         
-        .filters {
-            background: white;
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 30px;
+        .filters-bar {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: var(--space-lg);
+            margin-bottom: var(--space-xl);
             display: flex;
-            gap: 15px;
+            gap: var(--space-md);
             align-items: center;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            flex-wrap: wrap;
         }
         
         .filter-select {
-            padding: 10px 15px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
+            padding: var(--space-sm) var(--space-md);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
             font-size: 14px;
-            background: white;
+            background: var(--white);
             cursor: pointer;
-        }
-        
-        .btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-        
-        .btn:hover {
-            transform: translateY(-2px);
-        }
-        
-        .btn-primary {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-        }
-        
-        .btn-secondary {
-            background: white;
-            color: #666;
-            border: 2px solid #e0e0e0;
         }
         
         .properties-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 25px;
-            margin-bottom: 30px;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: var(--space-lg);
         }
         
         .property-card {
-            background: white;
-            border-radius: 12px;
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
             overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            transition: all 0.3s;
+            transition: all 0.2s;
             cursor: pointer;
             position: relative;
         }
         
         .property-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-4px);
         }
         
         .property-image {
             width: 100%;
             height: 220px;
             object-fit: cover;
-            background: #f0f0f0;
+            background: var(--gray-100);
         }
         
         .saved-badge {
             position: absolute;
-            top: 15px;
-            right: 15px;
-            background: rgba(255,255,255,0.95);
-            width: 40px;
-            height: 40px;
+            top: var(--space-md);
+            right: var(--space-md);
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
+            background: var(--white);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 20px;
             cursor: pointer;
-            transition: transform 0.2s;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            transition: all 0.2s;
+            box-shadow: var(--shadow-md);
+            font-size: 18px;
         }
         
         .saved-badge:hover {
@@ -202,211 +120,203 @@
         }
         
         .property-content {
-            padding: 20px;
+            padding: var(--space-md);
         }
         
         .property-price {
-            font-size: 24px;
+            font-size: 20px;
             font-weight: 700;
-            color: #1e3a5f;
-            margin-bottom: 8px;
+            color: var(--navy);
+            margin-bottom: var(--space-xs);
         }
         
         .property-title {
             font-size: 16px;
             font-weight: 600;
-            color: #333;
-            margin-bottom: 5px;
+            color: var(--dark);
+            margin-bottom: var(--space-xs);
         }
         
         .property-address {
             font-size: 14px;
-            color: #666;
-            margin-bottom: 15px;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-md);
         }
         
         .property-details {
             display: flex;
-            gap: 15px;
-            padding-top: 15px;
-            border-top: 1px solid #f0f0f0;
-        }
-        
-        .detail {
-            display: flex;
-            align-items: center;
-            gap: 5px;
+            gap: var(--space-md);
+            padding-top: var(--space-md);
+            border-top: 1px solid var(--border);
             font-size: 14px;
-            color: #666;
+            color: var(--text-secondary);
         }
         
         .property-badges {
             display: flex;
-            gap: 10px;
-            margin-top: 15px;
+            gap: var(--space-sm);
+            margin-top: var(--space-md);
         }
         
         .badge {
-            padding: 5px 10px;
-            border-radius: 20px;
+            padding: 4px 12px;
+            border-radius: var(--radius);
             font-size: 12px;
             font-weight: 600;
         }
         
         .badge-roi {
-            background: #e6f7ed;
-            color: #10b981;
+            background: rgba(5, 150, 105, 0.1);
+            color: var(--success);
         }
         
         .badge-score {
-            background: #f0f4ff;
-            color: #667eea;
+            background: rgba(96, 163, 217, 0.1);
+            color: var(--sky);
         }
         
         .saved-date {
             font-size: 12px;
-            color: #999;
-            margin-top: 10px;
+            color: var(--text-secondary);
+            margin-top: var(--space-sm);
         }
         
         .empty-state {
-            background: white;
-            border-radius: 12px;
-            padding: 60px;
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: var(--space-3xl);
             text-align: center;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
         }
         
         .empty-icon {
             font-size: 64px;
-            margin-bottom: 20px;
+            margin-bottom: var(--space-lg);
         }
         
         .empty-title {
             font-size: 24px;
             font-weight: 600;
-            color: #333;
-            margin-bottom: 10px;
+            color: var(--navy);
+            margin-bottom: var(--space-sm);
         }
         
         .empty-text {
             font-size: 16px;
-            color: #666;
-            margin-bottom: 25px;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-xl);
         }
         
         .loading {
             text-align: center;
-            padding: 40px;
+            padding: var(--space-3xl);
             font-size: 18px;
-            color: #666;
-        }
-        
-        @media (max-width: 768px) {
-            .properties-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .nav-links {
-                display: none;
-            }
-            
-            .stats-bar {
-                flex-direction: column;
-                gap: 20px;
-            }
+            color: var(--text-secondary);
         }
     </style>
 </head>
 <body>
-    <header class="header">
-        <div class="header-content">
-            <div class="logo">🏠 Assiduous</div>
-            <nav class="nav-links">
-                <a href="/" class="nav-link">Home</a>
-                <a href="/client/properties.html" class="nav-link">Properties</a>
-                <a href="/client/saved.html" class="nav-link active">Saved</a>
-                <a href="/client/viewings.html" class="nav-link">Viewings</a>
-                <a href="/client/micro-flip-calculator.html" class="nav-link">ROI Calculator</a>
-                <a href="/client/dashboard.html" class="nav-link">Dashboard</a>
-            </nav>
-        </div>
-    </header>
+    <!-- Universal Header -->
+    <header id="universal-header-root" 
+            data-title="Saved Properties" 
+            data-subtitle="Your collection of favorite investment opportunities"
+            data-search-placeholder="Search saved properties..."
+            data-user-role="client"></header>
     
-    <div class="container">
-        <div class="page-header">
-            <h1 class="page-title">Saved Properties</h1>
-            <p class="page-subtitle">Your collection of favorite investment opportunities</p>
-        </div>
+    <!-- Admin Layout Wrapper -->
+    <div class="admin-wrapper">
+        <!-- Sidebar (auto-loaded by admin-layout.css) -->
+        <nav id="sidebar-root" data-active="saved"></nav>
         
-        <div class="stats-bar" id="statsBar">
-            <div class="stat-item">
-                <div class="stat-value" id="totalSaved">0</div>
-                <div class="stat-label">Total Saved</div>
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="page-content">
+                <!-- Statistics Cards -->
+                <div class="stats-grid" id="statsBar">
+                    <div class="stat-card">
+                        <div class="stat-value" id="totalSaved">0</div>
+                        <div class="stat-label">Total Saved</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="totalValue">$0</div>
+                        <div class="stat-label">Combined Value</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="avgROI">0%</div>
+                        <div class="stat-label">Average ROI</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="potentialProfit">$0</div>
+                        <div class="stat-label">Total Potential Profit</div>
+                    </div>
+                </div>
+        
+                <!-- Filters Bar -->
+                <div class="filters-bar">
+                    <select class="filter-select" id="sortBy">
+                        <option value="savedAt">Recently Saved</option>
+                        <option value="price-low">Price: Low to High</option>
+                        <option value="price-high">Price: High to Low</option>
+                        <option value="roi">ROI: High to Low</option>
+                        <option value="neighborhood">Neighborhood</option>
+                    </select>
+                    
+                    <select class="filter-select" id="filterType">
+                        <option value="">All Types</option>
+                        <option value="single_family">Single Family</option>
+                        <option value="townhouse">Townhouse</option>
+                        <option value="condo">Condo</option>
+                        <option value="multi_family">Multi Family</option>
+                    </select>
+                    
+                    <button class="btn btn-secondary" onclick="exportSaved()">📥 Export List</button>
+                    <button class="btn btn-secondary" onclick="clearAll()">🗑️ Clear All</button>
+                </div>
+        
+                <!-- Loading State -->
+                <div id="loading" class="loading" style="display: none;">Loading saved properties...</div>
+                
+                <!-- Properties Grid -->
+                <div id="propertiesGrid" class="properties-grid"></div>
+                
+                <!-- Empty State -->
+                <div id="emptyState" class="empty-state" style="display: none;">
+                    <div class="empty-icon">❤️</div>
+                    <h2 class="empty-title">No Saved Properties Yet</h2>
+                    <p class="empty-text">Start browsing properties and save your favorites to see them here</p>
+                    <button class="btn btn-primary" onclick="window.location.href='/client/properties.html'">
+                        📋 Browse Properties
+                    </button>
+                </div>
             </div>
-            <div class="stat-item">
-                <div class="stat-value" id="totalValue">$0</div>
-                <div class="stat-label">Combined Value</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-value" id="avgROI">0%</div>
-                <div class="stat-label">Average ROI</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-value" id="potentialProfit">$0</div>
-                <div class="stat-label">Total Potential Profit</div>
-            </div>
-        </div>
-        
-        <div class="filters">
-            <select class="filter-select" id="sortBy">
-                <option value="savedAt">Recently Saved</option>
-                <option value="price-low">Price: Low to High</option>
-                <option value="price-high">Price: High to Low</option>
-                <option value="roi">ROI: High to Low</option>
-                <option value="neighborhood">Neighborhood</option>
-            </select>
-            
-            <select class="filter-select" id="filterType">
-                <option value="">All Types</option>
-                <option value="single_family">Single Family</option>
-                <option value="townhouse">Townhouse</option>
-                <option value="condo">Condo</option>
-                <option value="multi_family">Multi Family</option>
-            </select>
-            
-            <button class="btn btn-secondary" onclick="exportSaved()">Export List</button>
-            <button class="btn btn-secondary" onclick="clearAll()">Clear All</button>
-        </div>
-        
-        <div id="loading" class="loading" style="display: none;">Loading saved properties...</div>
-        
-        <div id="propertiesGrid" class="properties-grid"></div>
-        
-        <div id="emptyState" class="empty-state" style="display: none;">
-            <div class="empty-icon">❤️</div>
-            <h2 class="empty-title">No Saved Properties Yet</h2>
-            <p class="empty-text">Start browsing properties and save your favorites to see them here</p>
-            <button class="btn btn-primary" onclick="window.location.href='/client/properties.html'">
-                Browse Properties
-            </button>
-        </div>
+        </main>
     </div>
     
+    <!-- Firebase Configuration -->
+    <script src="../firebase-config.js"></script>
+    
+    <!-- Load Header and Auth after Firebase Ready -->
     <script>
-        // Firebase configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyCzPcEJ0TPKnJtcVT2qymgJrII1p0vAJxs",
-            authDomain: "assiduous-prod.firebaseapp.com",
-            projectId: "assiduous-prod",
-            storageBucket: "assiduous-prod.appspot.com",
-            messagingSenderId: "594472642287",
-            appId: "1:594472642287:web:adf723a456b123c4567890"
-        };
-        
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
-        const auth = firebase.auth();
+        window.addEventListener('firebase-ready', function() {
+            // Load universal header
+            const headerScript = document.createElement('script');
+            headerScript.src = '../components/universal-header.js';
+            document.head.appendChild(headerScript);
+            
+            // Load auth guard after header
+            headerScript.onload = function() {
+                const authScript = document.createElement('script');
+                authScript.src = '../components/auth-guard-simple.js';
+                document.head.appendChild(authScript);
+            };
+        });
+    </script>
+    
+    <script>
+        // Wait for Firebase to be ready
+        window.addEventListener('firebase-ready', function() {
+            const db = window.db;
+            const auth = window.auth;
         
         let savedProperties = [];
         let displayedProperties = [];
@@ -691,8 +601,7 @@
             loadSavedProperties();
         });
         
-        // Load on page load
-        window.addEventListener('load', () => {
+            // Load on page load
             if (!auth.currentUser) {
                 // Still load from localStorage even if not logged in
                 loadSavedProperties();
