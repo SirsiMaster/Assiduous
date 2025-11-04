@@ -11,6 +11,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.86.0] - 2025-11-04
 
 ### Added
+- feat(ucs): add npm scripts for UCS build system
+- feat(ucs): implement Universal Component System build infrastructure
+
+
+## [0.86.0] - 2025-11-04
+
+### Added
 - feat(ucs): implement Universal Component System build infrastructure
 - feat(ucs): add npm scripts for UCS build system
 - Complete build-time component framework with zero runtime overhead
@@ -2837,7 +2844,14 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.85.5...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.86.0...HEAD
+
+
+## [0.86.0] - 2025-11-04
+
+### Added
+- feat(ucs): add npm scripts for UCS build system
+- feat(ucs): implement Universal Component System build infrastructure
 
 
 ## [0.85.5] - 2025-11-04
@@ -4063,3 +4077,4 @@ To generate changelog entries:
 [0.85.3]: https://github.com/SirsiMaster/Assiduous/compare/v0.85.2...v0.85.3
 [0.85.4]: https://github.com/SirsiMaster/Assiduous/compare/v0.85.3...v0.85.4
 [0.85.5]: https://github.com/SirsiMaster/Assiduous/compare/v0.85.4...v0.85.5
+[0.86.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.85.5...v0.86.0
