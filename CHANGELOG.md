@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.87.0] - 2025-11-04
+
+### Added
+- feat(ucs-phase1): migrate client dashboard to UCS
+
+
 ## [0.86.0] - 2025-11-04
 
 ### Added
@@ -2844,7 +2850,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.86.0...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.87.0...HEAD
+
+
+## [0.87.0] - 2025-11-04
+
+### Added
+- feat(ucs-phase1): migrate client dashboard to UCS
 
 
 ## [0.86.0] - 2025-11-04
@@ -4078,3 +4090,4 @@ To generate changelog entries:
 [0.85.4]: https://github.com/SirsiMaster/Assiduous/compare/v0.85.3...v0.85.4
 [0.85.5]: https://github.com/SirsiMaster/Assiduous/compare/v0.85.4...v0.85.5
 [0.86.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.85.5...v0.86.0
+[0.87.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.86.0...v0.87.0
