@@ -847,23 +847,28 @@
     
     <!-- Property Service -->
     <script type="module">
-        import { PropertyService } from '../assets/js/services/propertyservice.js';
-        
-        const propertyService = new PropertyService();
-        let currentProperty = null;
-        let isEditMode = false;
-        let hasUnsavedChanges = false;
-        let originalData = {};
-        
-        // Get property ID from URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const propertyId = urlParams.get('id');
-        
-        if (!propertyId) {
-            showError('No property ID provided');
-        } else {
-            loadPropertyTaxRecords(propertyId);
-        }
+        // Wait for Firebase to be ready before initializing PropertyService
+        window.addEventListener('firebase-ready', async function() {
+            console.log('[Tax Records] Initializing PropertyService after Firebase ready');
+            
+            const { PropertyService } = await import('../assets/js/services/propertyservice.js');
+            
+            const propertyService = new PropertyService();
+            window.propertyService = propertyService; // Make available globally
+            let currentProperty = null;
+            let isEditMode = false;
+            let hasUnsavedChanges = false;
+            let originalData = {};
+            
+            // Get property ID from URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const propertyId = urlParams.get('id');
+            
+            if (!propertyId) {
+                showError('No property ID provided');
+            } else {
+                loadPropertyTaxRecords(propertyId);
+            }
         
         async function loadPropertyTaxRecords(propertyId) {
             try {
@@ -1372,6 +1377,8 @@
                 progressContainer.style.display = 'none';
             }
         };
+        
+        }); // End firebase-ready event listener
     </script>
 </body>
 </html>
