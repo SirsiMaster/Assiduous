@@ -1,6 +1,6 @@
 # TRAINING DOCUMENTATION
-**Version:** 2.0.0-canonical
-**Last Updated:** 2025-11-02
+**Version:** 2.1.0-canonical
+**Last Updated:** 2025-11-04
 **Status:** Canonical Document (1 of 19)
 **Consolidation Date:** November 2, 2025
 
@@ -9,10 +9,153 @@
 ## Training Materials and User Guides
 
 **Document Type:** Training Documentation  
-**Version:** 2.0.0  
-**Last Updated:** October 9, 2025  
+**Version:** 2.1.0  
+**Last Updated:** November 4, 2025  
 **Status:** Authoritative Training Document
 **Consolidation Note:** Merged from CLAUDE.md and user guides
+
+**Recent Updates:**
+- November 4, 2025: Added Universal Component System (UCS) developer guide
+- October 9, 2025: Initial training documentation
+
+## Universal Component System (UCS) Developer Guide
+
+### Quick Start
+
+**Creating a Page with UCS:**
+
+```html
+<!-- Step 1: Create my-page.template.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Page</title>
+</head>
+<body>
+    <!-- Step 2: Add component directives -->
+    <!-- @component:sidebar active="my-page" role="admin" -->
+    
+    <!-- Step 3: Add your page content -->
+    <main>
+        <h1>My Page Content</h1>
+    </main>
+</body>
+</html>
+```
+
+```bash
+# Step 4: Build the template
+npm run ucs:build
+
+# Step 5: Test locally
+python -m http.server 8080
+open http://localhost:8080/public/my-page.html
+```
+
+### Component Directive Syntax
+
+**Basic Syntax:**
+```html
+<!-- @component:name prop1="value1" prop2="value2" -->
+```
+
+**Available Components:**
+- `sidebar` - Universal sidebar navigation
+- `header` - Universal page header (coming soon)
+
+**Sidebar Props:**
+- `active` (required) - Active page identifier (e.g., "dashboard", "properties")
+- `role` (optional) - User role: "admin", "agent", "client" (default: "admin")
+
+**Example:**
+```html
+<!-- Admin sidebar with dashboard active -->
+<!-- @component:sidebar active="dashboard" role="admin" -->
+
+<!-- Client sidebar with properties active -->
+<!-- @component:sidebar active="properties" role="client" -->
+```
+
+### Token Usage
+
+**Available Tokens:**
+- `{{BASE_PATH}}` - Relative path to public/ root
+- `{{ASSETS_PATH}}` - Path to assets directory
+- `{{COMPONENTS_PATH}}` - Path to components directory
+- `{{PROP_*}}` - Component prop values
+
+**Tokens are automatically replaced during build:**
+- File in `public/` → `{{BASE_PATH}}` = `./`
+- File in `public/docs/` → `{{BASE_PATH}}` = `../`
+- File in `public/admin/development/` → `{{BASE_PATH}}` = `../../`
+
+### Build Commands
+
+```bash
+# Build all templates (development environment)
+npm run ucs:build
+
+# Build for specific environment
+npm run ucs:build:dev      # Development configuration
+npm run ucs:build:staging  # Staging configuration
+npm run ucs:build:prod     # Production configuration
+
+# Verify templates without building
+npm run ucs:verify
+```
+
+### Troubleshooting Common Issues
+
+#### Issue: Build Fails with "Component not found"
+**Solution:**
+```bash
+# Check component exists
+ls -la public/components/sidebar.html
+
+# Check component registry
+cat public/components/registry.json | grep "sidebar"
+```
+
+#### Issue: Paths Not Resolving Correctly
+**Solution:**
+```bash
+# Verify tokens were replaced
+grep "{{BASE_PATH}}" public/**/*.html
+# Should return no results
+
+# Check generated HTML
+head -50 public/my-page.html
+# Paths should be relative: ../assets/css/styles.css
+```
+
+#### Issue: Component Not Appearing on Page
+**Solution:**
+1. Check directive syntax: `<!-- @component:name -->`
+2. Verify component name matches registry
+3. Check build report: `cat build-report.json`
+4. Test locally before deploying
+
+#### Issue: Changes Not Showing
+**Solution:**
+```bash
+# Rebuild templates
+npm run ucs:build
+
+# Clear browser cache
+# Hard refresh: Cmd+Shift+R (Mac) or Ctrl+Shift+R (Windows)
+
+# Restart local server
+python -m http.server 8080
+```
+
+### Best Practices
+
+1. **Always test locally** before committing
+2. **Run UCS build** before pushing to Git
+3. **Check build-report.json** for errors
+4. **Use semantic active names** (e.g., "dashboard" not "page1")
+5. **Follow existing patterns** in admin pages (gold standard)
+6. **Commit both templates and generated files**
 
 ---
 

@@ -1,6 +1,6 @@
 # QA PLAN
-**Version:** 2.0.0-canonical
-**Last Updated:** 2025-11-02
+**Version:** 2.1.0-canonical
+**Last Updated:** 2025-11-04
 **Status:** Canonical Document (1 of 19)
 **Consolidation Date:** November 2, 2025
 
@@ -9,10 +9,130 @@
 ## QA Procedures and Standards
 
 **Document Type:** QA Plan  
-**Version:** 2.0.0  
-**Last Updated:** October 9, 2025  
+**Version:** 2.1.0  
+**Last Updated:** November 4, 2025  
 **Status:** Authoritative QA Document
 **Consolidation Note:** Extracted from WARP.md RULE 4
+
+**Recent Updates:**
+- November 4, 2025: Added UCS build verification and component integration testing requirements
+- October 9, 2025: Initial QA plan documentation
+
+## Universal Component System (UCS) Testing Requirements
+
+### UCS Build Verification Tests
+
+**Before deploying any UCS changes:**
+
+```bash
+# 1. Verify build succeeds
+npm run ucs:verify
+# Expected: Exit code 0, no errors
+
+# 2. Run full build
+npm run ucs:build:prod
+
+# 3. Check build report
+cat build-report.json
+# Expected:
+# {
+#   "pages": { "built": N, "skipped": 0, "errors": 0 },
+#   "duration": "<1s"
+# }
+```
+
+### Component Integration Tests
+
+**Test Checklist for Each Component:**
+
+- [ ] **Sidebar Component:**
+  - [ ] Injects at correct location in HTML
+  - [ ] Wrapped in `<aside class="sidebar">` tag
+  - [ ] Active page highlighted correctly
+  - [ ] All navigation links work
+  - [ ] Responsive on mobile devices
+  - [ ] Role-specific navigation shown
+
+- [ ] **Header Component (When Available):**
+  - [ ] Injects at correct location
+  - [ ] Title displays correctly
+  - [ ] User info shown (if authenticated)
+  - [ ] Logout button works
+  - [ ] Responsive design verified
+
+### Path Resolution Validation
+
+**Verify all tokens replaced:**
+
+```bash
+# Check for unreplaced tokens
+grep -r "{{BASE_PATH}}" public/**/*.html
+grep -r "{{ASSETS_PATH}}" public/**/*.html
+grep -r "{{PROP_" public/**/*.html
+
+# All commands should return no results
+```
+
+**Test path resolution:**
+
+```bash
+# For file at public/docs/page.html
+# Verify paths are: ../assets/css/styles.css
+
+# For file at public/admin/development/page.html  
+# Verify paths are: ../../assets/css/styles.css
+```
+
+### Environment-Specific Build Tests
+
+**Test each environment configuration:**
+
+```bash
+# Development build
+npm run ucs:build:dev
+# Verify: Debug features enabled, dev paths used
+
+# Staging build
+npm run ucs:build:staging
+# Verify: Testing features enabled, staging paths used
+
+# Production build  
+npm run ucs:build:prod
+# Verify: Optimizations enabled, prod paths used
+```
+
+### Template Exclusion Tests
+
+**Verify templates not deployed:**
+
+```bash
+# Check Firebase deployment doesn't include templates
+firebase hosting:channel:deploy test
+
+# Verify on deployed site
+curl -I https://assiduous-staging.web.app/docs/ucs-test.template.html
+# Expected: 404 Not Found
+
+curl -I https://assiduous-staging.web.app/docs/ucs-test.html
+# Expected: 200 OK
+```
+
+### UCS QA Checklist
+
+**Before claiming UCS migration complete:**
+
+- [ ] All templates build without errors
+- [ ] Build report shows 0 errors, 0 warnings
+- [ ] All components inject correctly
+- [ ] All tokens replaced with correct paths
+- [ ] All navigation links work
+- [ ] Pages display correctly in browser
+- [ ] Mobile responsive verified
+- [ ] Browser console shows no errors
+- [ ] Template files excluded from deployment
+- [ ] Staging site tested and approved
+- [ ] Production deployment verified
+- [ ] No regressions in existing pages
 
 ---
 

@@ -1,6 +1,6 @@
 # CHANGE MANAGEMENT
-**Version:** 2.0.0-canonical
-**Last Updated:** 2025-11-02
+**Version:** 2.1.0-canonical
+**Last Updated:** 2025-11-04
 **Status:** Canonical Document (1 of 19)
 **Consolidation Date:** November 2, 2025
 
@@ -9,10 +9,94 @@
 ## Change Control Procedures
 
 **Document Type:** Change Management  
-**Version:** 2.0.0  
-**Last Updated:** October 9, 2025  
+**Version:** 2.1.0  
+**Last Updated:** November 4, 2025  
 **Status:** Authoritative Change Document
 **Consolidation Note:** Merged from rollback_registry.md and CANONICAL_DOCS.md
+
+**Recent Updates:**
+- November 4, 2025: Added UCS migration strategy and rollback procedures
+- October 9, 2025: Initial change management documentation
+
+## Universal Component System (UCS) Migration Strategy
+
+### Phased Migration Approach
+
+**Migration Order (Lowest Risk First):**
+1. **Phase 1:** Client portal pages (`public/client/**`) - Low traffic, high flexibility
+2. **Phase 2:** Agent portal pages (`public/agent/**`) - Medium traffic
+3. **Phase 3:** Documentation pages (`public/docs/**`) - Static content
+4. **Phase 4:** Admin development pages (`public/admin/development/**`) - Internal tools
+5. **Phase 5:** Core admin pages (`public/admin/**`) - **PROTECTED - Last priority**
+
+### Backward Compatibility Guarantees
+
+**UCS is Additive, Not Destructive:**
+- Existing `.html` files remain functional
+- Templates (`.template.html`) are NEW files
+- No breaking changes to existing pages
+- Build system optional until migration complete
+- Can run UCS and non-UCS pages simultaneously
+
+### Rollback Procedures for UCS
+
+#### Emergency Rollback (Immediate)
+```bash
+# 1. Stop running UCS builds
+# Remove from package.json scripts or disable in CI/CD
+
+# 2. Deploy existing .html files (no build)
+firebase deploy --only hosting
+
+# 3. Verify production
+curl -I https://assiduous-prod.web.app
+```
+
+#### Planned Rollback (Controlled)
+```bash
+# 1. Revert to pre-UCS commit
+git log --oneline | grep "before UCS"
+git checkout <commit-hash>
+
+# 2. Remove UCS artifacts
+rm -f build-report.json
+rm -rf .maps/ .build/
+
+# 3. Deploy clean version
+firebase deploy
+```
+
+### Change Impact Assessment
+
+| Change Type | Risk Level | Rollback Time | Testing Required |
+|-------------|------------|---------------|------------------|
+| UCS Phase 1 (Client) | Low | < 5 min | Staging only |
+| UCS Phase 2 (Agent) | Low | < 5 min | Staging only |
+| UCS Phase 3 (Docs) | Minimal | < 2 min | Visual check |
+| UCS Phase 4 (Dev Admin) | Low | < 5 min | Functional test |
+| UCS Phase 5 (Core Admin) | **HIGH** | < 10 min | **Full QA** |
+
+### Admin Pages Protection
+
+**Admin pages explicitly excluded until system proven:**
+- `public/admin/**` in UCS config exclude patterns
+- These pages define the design gold standard
+- Migration only after:
+  - All other phases successful
+  - 30+ days of stable UCS operation
+  - Zero reported UCS-related issues
+  - Stakeholder approval obtained
+
+### Migration Approval Process
+
+**For Each Phase:**
+1. Create migration plan document
+2. Test in staging environment
+3. Visual QA approval
+4. Stakeholder sign-off
+5. Deploy to production
+6. Monitor for 48 hours
+7. Proceed to next phase or rollback
 
 ---
 
