@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-11-03T19:17:17.709Z",
+  "lastUpdated": "2025-11-03T19:43:01.264Z",
   "summary": {
     "health": "Good",
     "score": 46,
@@ -104,21 +104,21 @@
     }
   },
   "project": {
-    "totalHours": "247",
-    "avgHoursPerDay": "8.8",
-    "totalCost": 38865,
-    "laborCost": 37050,
-    "toolsCost": 1815,
+    "totalHours": "248",
+    "avgHoursPerDay": "8.9",
+    "totalCost": 39036,
+    "laborCost": 37200,
+    "toolsCost": 1836,
     "monthsElapsed": "2.8",
-    "totalCommits": 748,
-    "totalFiles": 668,
+    "totalCommits": 751,
+    "totalFiles": 669,
     "activeDays": 28,
-    "totalDays": 85,
-    "projectAgeDays": 85,
-    "linesAdded": 9658762,
-    "linesDeleted": 9373263,
-    "netLines": 285499,
-    "velocity": "26.7",
+    "totalDays": 86,
+    "projectAgeDays": 86,
+    "linesAdded": 9659673,
+    "linesDeleted": 9373311,
+    "netLines": 286362,
+    "velocity": "26.8",
     "completionPercentage": 46,
     "actualStartDate": "2025-08-10"
   },
@@ -130,15 +130,15 @@
     "deployments": 0
   },
   "thisWeek": {
-    "hours": "60.1",
-    "cost": 9009,
-    "commits": 182,
+    "hours": "61.1",
+    "cost": 9158,
+    "commits": 185,
     "days": 7
   },
   "thisMonth": {
-    "hours": "140.9",
-    "cost": 21137,
-    "commits": 427
+    "hours": "141.9",
+    "cost": 21285,
+    "commits": 430
   },
   "quality": {
     "testCoverage": {
@@ -172,7 +172,7 @@
       "critical": 0,
       "total": 0
     },
-    "lastAudit": "2025-11-03T19:16:51.435Z",
+    "lastAudit": "2025-11-03T19:42:36.393Z",
     "dependencies": {
       "total": {
         "prod": 256,
@@ -267,16 +267,16 @@
     "changelog": true,
     "contributing": false,
     "license": false,
-    "lastUpdate": "2025-11-03 05:47:47 +0000"
+    "lastUpdate": "2025-11-03 19:16:40 +0000"
   },
   "productivity": {
     "velocityTrend": "increasing",
-    "weeklyCommits": 182,
+    "weeklyCommits": 185,
     "contributors": {
       "total": 0,
       "active": 0
     },
-    "averageCommitSize": 115,
+    "averageCommitSize": 114,
     "pullRequests": {
       "open": 0,
       "merged": 0,
@@ -349,6 +349,24 @@
   },
   "recentActivity": [
     {
+      "hash": "29021c2423036873d24c5c5a6c794678dd455168",
+      "message": "chore: update metrics cache and Firebase hosting cache",
+      "author": "SirsiMaster",
+      "date": "2025-11-03 14:42:03 -0500"
+    },
+    {
+      "hash": "6b7a4be1c05daffd3a2ac1a81ed861d19e5a2854",
+      "message": "feat(client): add comprehensive county tax records page",
+      "author": "SirsiMaster",
+      "date": "2025-11-03 14:41:31 -0500"
+    },
+    {
+      "hash": "8735f6c7196bc8100ebd93de0d2fa8cdfdcc7c41",
+      "message": "chore(release): Bump version to 0.83.1 [skip ci]",
+      "author": "github-actions[bot]",
+      "date": "2025-11-03 19:16:40 +0000"
+    },
+    {
       "hash": "4171b993b8ed240ac5c959991fdd4ccd0bbb3fd1",
       "message": "fix(propertyservice): remove ALL mock data, use comprehensive real data from MLS/public records",
       "author": "SirsiMaster",
@@ -389,28 +407,10 @@
       "message": "chore(release): Bump version to 0.81.1 [skip ci]",
       "author": "github-actions[bot]",
       "date": "2025-11-03 05:29:55 +0000"
-    },
-    {
-      "hash": "2591c41cba02803b43abb8729ace44c36b228c8a",
-      "message": "fix(calculators): professional styling, auth timeout, and carousel flickering",
-      "author": "SirsiMaster",
-      "date": "2025-11-03 00:29:43 -0500"
-    },
-    {
-      "hash": "d25b48d12d7e163613759fbb05c8274109acc68b",
-      "message": "refactor(deal-analyzer): apply admin-wrapper layout to match site design",
-      "author": "SirsiMaster",
-      "date": "2025-11-03 00:21:18 -0500"
-    },
-    {
-      "hash": "e0f43a1c8b5efee58b5dc1d7376c7d74b31fa297",
-      "message": "docs(warp): add RULE 6 - mandatory design consistency",
-      "author": "SirsiMaster",
-      "date": "2025-11-03 00:12:54 -0500"
     }
   ],
   "automation": {
-    "lastRun": "2025-11-03T19:17:17.709Z",
+    "lastRun": "2025-11-03T19:43:01.264Z",
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",
