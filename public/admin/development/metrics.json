@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-11-04T08:19:45.339Z",
+  "lastUpdated": "2025-11-04T08:43:18.917Z",
   "summary": {
     "health": "Good",
     "score": 46,
@@ -104,41 +104,41 @@
     }
   },
   "project": {
-    "totalHours": "257",
+    "totalHours": "259",
     "avgHoursPerDay": "8.9",
-    "totalCost": 40386,
-    "laborCost": 38550,
+    "totalCost": 40686,
+    "laborCost": 38850,
     "toolsCost": 1836,
     "monthsElapsed": "2.8",
-    "totalCommits": 779,
-    "totalFiles": 678,
+    "totalCommits": 784,
+    "totalFiles": 681,
     "activeDays": 29,
     "totalDays": 86,
     "projectAgeDays": 86,
-    "linesAdded": 9665411,
-    "linesDeleted": 9374864,
-    "netLines": 290547,
-    "velocity": "26.9",
+    "linesAdded": 9666269,
+    "linesDeleted": 9375405,
+    "netLines": 290864,
+    "velocity": "27.0",
     "completionPercentage": 46,
     "actualStartDate": "2025-08-10"
   },
   "today": {
     "date": "2025-11-04",
-    "hours": "10.6",
-    "cost": 1584,
-    "commits": 32,
+    "hours": "12.2",
+    "cost": 1832,
+    "commits": 37,
     "deployments": 0
   },
   "thisWeek": {
-    "hours": "70.3",
-    "cost": 10544,
-    "commits": 213,
+    "hours": "71.9",
+    "cost": 10791,
+    "commits": 218,
     "days": 7
   },
   "thisMonth": {
-    "hours": "146.8",
-    "cost": 22028,
-    "commits": 445
+    "hours": "148.5",
+    "cost": 22275,
+    "commits": 450
   },
   "quality": {
     "testCoverage": {
@@ -172,7 +172,7 @@
       "critical": 0,
       "total": 0
     },
-    "lastAudit": "2025-11-04T08:19:20.131Z",
+    "lastAudit": "2025-11-04T08:42:52.931Z",
     "dependencies": {
       "total": {
         "prod": 256,
@@ -267,11 +267,11 @@
     "changelog": true,
     "contributing": false,
     "license": false,
-    "lastUpdate": "2025-11-04 03:18:38 -0500"
+    "lastUpdate": "2025-11-04 08:21:38 +0000"
   },
   "productivity": {
     "velocityTrend": "increasing",
-    "weeklyCommits": 213,
+    "weeklyCommits": 217,
     "contributors": {
       "total": 0,
       "active": 0
@@ -349,6 +349,36 @@
   },
   "recentActivity": [
     {
+      "hash": "7960210663f5fab91055597f2efa8e951957ce76",
+      "message": "fix(ucs): replace tokens in page templates, not just components",
+      "author": "SirsiMaster",
+      "date": "2025-11-04 03:37:19 -0500"
+    },
+    {
+      "hash": "6320e93b2fff612109c8d59f5f7c92d4671099a7",
+      "message": "chore(release): Bump version to 0.87.0 [skip ci]",
+      "author": "github-actions[bot]",
+      "date": "2025-11-04 08:21:38 +0000"
+    },
+    {
+      "hash": "89b46811df5de758e5dfce2067853c5b484c1a59",
+      "message": "chore: update metrics.json",
+      "author": "SirsiMaster",
+      "date": "2025-11-04 03:21:24 -0500"
+    },
+    {
+      "hash": "907b773b68b9cab1d64af3fa8c353d9f7003d728",
+      "message": "feat(ucs-phase1): migrate client dashboard to UCS",
+      "author": "SirsiMaster",
+      "date": "2025-11-04 03:20:59 -0500"
+    },
+    {
+      "hash": "4cd9bc28595e58f6fb88f20d2795e150759fdd63",
+      "message": "chore(release): Bump version to 0.86.0 [skip ci]",
+      "author": "github-actions[bot]",
+      "date": "2025-11-04 08:19:14 +0000"
+    },
+    {
       "hash": "8dab582c3108a6dca66e25b7dcd2628233146ada",
       "message": "docs(ucs): update final 5 canonical files with UCS details",
       "author": "SirsiMaster",
@@ -377,40 +407,10 @@
       "message": "feat(ucs): add npm scripts for UCS build system",
       "author": "SirsiMaster",
       "date": "2025-11-04 01:46:12 -0500"
-    },
-    {
-      "hash": "d18c7234ac5193f754ec49d5bdeaea00c5e0c7f5",
-      "message": "feat(ucs): implement Universal Component System build infrastructure",
-      "author": "SirsiMaster",
-      "date": "2025-11-04 01:45:38 -0500"
-    },
-    {
-      "hash": "7d41a1a53ab7768feb7f638956bbad671e95106d",
-      "message": "refactor(client): migrate property-detail and onboarding to design system",
-      "author": "SirsiMaster",
-      "date": "2025-11-04 00:45:41 -0500"
-    },
-    {
-      "hash": "8576882907bc1c75143110f09f164c09a65afddc",
-      "message": "refactor(client): migrate messages.html to Assiduous design system",
-      "author": "SirsiMaster",
-      "date": "2025-11-04 00:44:23 -0500"
-    },
-    {
-      "hash": "c042d6544bebdd3fc391771f2a9bc8455cd2b257",
-      "message": "refactor(client): migrate viewings.html to Assiduous design system",
-      "author": "SirsiMaster",
-      "date": "2025-11-04 00:43:00 -0500"
-    },
-    {
-      "hash": "968561865e42e375a4e49807cad856d6cf8af30f",
-      "message": "refactor(client): migrate saved.html to Assiduous design system",
-      "author": "SirsiMaster",
-      "date": "2025-11-04 00:34:57 -0500"
     }
   ],
   "automation": {
-    "lastRun": "2025-11-04T08:19:45.339Z",
+    "lastRun": "2025-11-04T08:43:18.917Z",
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",

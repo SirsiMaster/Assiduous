@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cybersecurity Due Diligence & Insurance Evaluation Proposal</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        @page {
+            size: letter;
+            margin: 0.75in;
+        }
+        
+        @page:first {
+            margin-top: 0;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            line-height: 1.6;
+            color: #1a1a1a;
+            background: white;
+        }
+        
+        .cover-page {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #0066cc 0%, #004499 100%);
+            color: white;
+            text-align: center;
+            page-break-after: always;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cover-page::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 10px,
+                rgba(255,255,255,0.03) 10px,
+                rgba(255,255,255,0.03) 20px
+            );
+            animation: slide 20s linear infinite;
+        }
+        
+        @keyframes slide {
+            0% {
+                transform: translate(0, 0);
+            }
+            100% {
+                transform: translate(50px, 50px);
+            }
+        }
+        
+        .cover-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .cover-logo {
+            font-size: 36px;
+            font-weight: 800;
+            letter-spacing: -1px;
+            margin-bottom: 10px;
+        }
+        
+        .cover-tagline {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 60px;
+            font-style: italic;
+        }
+        
+        .cover-title {
+            font-size: 42px;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            max-width: 800px;
+        }
+        
+        .cover-subtitle {
+            font-size: 18px;
+            opacity: 0.9;
+            margin-bottom: 80px;
+        }
+        
+        .cover-details {
+            border-top: 2px solid rgba(255,255,255,0.3);
+            padding-top: 30px;
+            margin-top: 30px;
+        }
+        
+        .cover-detail {
+            margin: 10px 0;
+            font-size: 16px;
+        }
+        
+        .cover-detail-label {
+            opacity: 0.8;
+            font-weight: 400;
+        }
+        
+        .cover-detail-value {
+            font-weight: 600;
+        }
+        
+        .confidential-badge {
+            position: absolute;
+            top: 40px;
+            right: 40px;
+            background: rgba(255,255,255,0.2);
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .content {
+            max-width: 850px;
+            margin: 0 auto;
+            padding: 60px 40px;
+        }
+        
+        .section {
+            margin-bottom: 50px;
+            page-break-inside: avoid;
+        }
+        
+        .section-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #0066cc;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #0066cc;
+        }
+        
+        .subsection-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #333;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+        
+        .executive-summary {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 30px;
+            border-radius: 10px;
+            border-left: 5px solid #0066cc;
+            margin-bottom: 40px;
+        }
+        
+        .executive-summary p {
+            font-size: 16px;
+            line-height: 1.8;
+            color: #2c3e50;
+        }
+        
+        .phase-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .phase-card {
+            background: white;
+            border: 2px solid #e1e4e8;
+            border-radius: 8px;
+            padding: 25px;
+            transition: all 0.3s ease;
+        }
+        
+        .phase-card:hover {
+            border-color: #0066cc;
+            box-shadow: 0 4px 12px rgba(0,102,204,0.1);
+        }
+        
+        .phase-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .phase-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #0066cc;
+        }
+        
+        .phase-price {
+            font-size: 24px;
+            font-weight: 700;
+            color: #28a745;
+        }
+        
+        .phase-content {
+            color: #495057;
+            line-height: 1.7;
+        }
+        
+        .deliverables-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .deliverable-item {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #0066cc;
+        }
+        
+        .deliverable-title {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+        
+        .deliverable-desc {
+            font-size: 14px;
+            color: #6c757d;
+            line-height: 1.5;
+        }
+        
+        .assumptions-list {
+            background: #fff9e6;
+            border: 1px solid #ffc107;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        .assumptions-list ul {
+            margin-left: 20px;
+            color: #495057;
+        }
+        
+        .assumptions-list li {
+            margin: 10px 0;
+            line-height: 1.6;
+        }
+        
+        .bio-section {
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            border-radius: 10px;
+            padding: 30px;
+            margin-top: 20px;
+        }
+        
+        .bio-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .bio-avatar {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #0066cc 0%, #004499 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 32px;
+            font-weight: 700;
+            margin-right: 20px;
+        }
+        
+        .bio-title-block {
+            flex: 1;
+        }
+        
+        .bio-name {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 5px;
+        }
+        
+        .bio-credentials {
+            font-size: 14px;
+            color: #6c757d;
+            font-weight: 500;
+        }
+        
+        .bio-content {
+            color: #495057;
+            line-height: 1.8;
+        }
+        
+        .bio-highlights {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #dee2e6;
+        }
+        
+        .bio-highlight {
+            display: flex;
+            align-items: center;
+        }
+        
+        .bio-highlight-icon {
+            width: 24px;
+            height: 24px;
+            background: #0066cc;
+            border-radius: 50%;
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+        
+        .bio-highlight-text {
+            font-size: 13px;
+            color: #495057;
+        }
+        
+        .insurance-section {
+            background: #f0f8ff;
+            border: 2px solid #0066cc;
+            border-radius: 10px;
+            padding: 30px;
+            margin-top: 30px;
+        }
+        
+        .insurance-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .insurance-item {
+            background: white;
+            padding: 15px;
+            border-radius: 6px;
+            text-align: center;
+            border: 1px solid #d1e7ff;
+        }
+        
+        .insurance-item-title {
+            font-weight: 600;
+            color: #0066cc;
+            font-size: 14px;
+        }
+        
+        .timeline-section {
+            margin-top: 30px;
+        }
+        
+        .timeline {
+            position: relative;
+            padding-left: 40px;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #0066cc;
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 30px;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -29px;
+            top: 5px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #0066cc;
+            border: 3px solid white;
+            box-shadow: 0 0 0 2px #0066cc;
+        }
+        
+        .timeline-phase {
+            font-weight: 600;
+            color: #0066cc;
+            margin-bottom: 5px;
+        }
+        
+        .timeline-duration {
+            font-size: 14px;
+            color: #6c757d;
+            margin-bottom: 5px;
+        }
+        
+        .timeline-desc {
+            color: #495057;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        
+        .footer {
+            margin-top: 60px;
+            padding-top: 30px;
+            border-top: 2px solid #dee2e6;
+            text-align: center;
+            color: #6c757d;
+            font-size: 12px;
+        }
+        
+        @media print {
+            .phase-card:hover {
+                border-color: #e1e4e8;
+                box-shadow: none;
+            }
+            
+            .cover-page {
+                min-height: 100vh;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Cover Page -->
+    <div class="cover-page">
+        <div class="confidential-badge">CONFIDENTIAL</div>
+        <div class="cover-content">
+            <div class="cover-logo">COLLYMORE CONSULTING</div>
+            <div class="cover-tagline">Cybersecurity Risk & Privacy Excellence</div>
+            
+            <h1 class="cover-title">Cybersecurity Due Diligence & Insurance Evaluation Proposal</h1>
+            <div class="cover-subtitle">Comprehensive Risk Assessment for Private Equity Portfolio</div>
+            
+            <div class="cover-details">
+                <div class="cover-detail">
+                    <span class="cover-detail-label">Prepared for:</span>
+                    <span class="cover-detail-value">Fort Greene Partners</span>
+                </div>
+                <div class="cover-detail">
+                    <span class="cover-detail-label">Attention:</span>
+                    <span class="cover-detail-value">Mr. Nigel W. Jones, Advisor</span>
+                </div>
+                <div class="cover-detail">
+                    <span class="cover-detail-label">Prepared by:</span>
+                    <span class="cover-detail-value">Cylton Collymore, CEO</span>
+                </div>
+                <div class="cover-detail">
+                    <span class="cover-detail-label">Date:</span>
+                    <span class="cover-detail-value">November 4, 2025</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="content">
+        <!-- Executive Summary -->
+        <section class="section">
+            <h2 class="section-title">Executive Summary</h2>
+            <div class="executive-summary">
+                <p>
+                    Collymore Consulting proposes a limited-scope cybersecurity due diligence and insurance-aligned evaluation designed to assess digital risk, privacy posture, and control maturity for Fort Greene Partners' investment portfolio. Our assessment benchmarks controls against NIST Cybersecurity Framework (CSF) and Center for Internet Security (CIS) standards to identify key exposures and insurability gaps that could impact investment valuations and post-acquisition integration.
+                </p>
+                <p style="margin-top: 15px;">
+                    This engagement leverages our extensive experience with private equity firms and insurance providers to deliver actionable insights that directly inform investment decisions, risk pricing, and cyber insurance procurement strategies. Our contingent fee structure aligns our interests with Fort Greene Partners' success in identifying and mitigating cyber risks.
+                </p>
+            </div>
+        </section>
+        
+        <!-- Scope of Work -->
+        <section class="section">
+            <h2 class="section-title">Scope of Work</h2>
+            <div class="phase-container">
+                <div class="phase-card">
+                    <div class="phase-header">
+                        <span class="phase-title">Phase 1 – Data Room & Pre-Assessment Review</span>
+                        <span class="phase-price">$10,000</span>
+                    </div>
+                    <div class="phase-content">
+                        Comprehensive review of existing documentation to establish baseline understanding and identify critical gaps. This phase includes analysis of security policies, architecture diagrams, compliance certifications, incident history, and vendor assessments. Deliverable includes a preliminary risk outline highlighting key areas of concern and documentation gaps requiring further investigation.
+                    </div>
+                </div>
+                
+                <div class="phase-card">
+                    <div class="phase-header">
+                        <span class="phase-title">Phase 2 – Cyber & Privacy Control Evaluation</span>
+                        <span class="phase-price">$25,000</span>
+                    </div>
+                    <div class="phase-content">
+                        In-depth evaluation of technical controls, privacy practices, and operational readiness. This phase encompasses identity and access management review, data protection assessment, network security evaluation, incident response capability testing, and third-party risk analysis. Includes stakeholder interviews and control validation to verify implementation effectiveness.
+                    </div>
+                </div>
+                
+                <div class="phase-card">
+                    <div class="phase-header">
+                        <span class="phase-title">Phase 3 – Risk Synthesis & Insurance Readiness</span>
+                        <span class="phase-price">$15,000</span>
+                    </div>
+                    <div class="phase-content">
+                        Consolidation of findings into actionable intelligence for investment decisions. This phase produces a comprehensive risk scoring matrix, maps findings to cyber insurance requirements, provides remediation cost estimates, and develops a post-acquisition integration roadmap. Includes executive presentation and insurability assessment aligned with major carrier requirements.
+                    </div>
+                </div>
+            </div>
+            
+            <div style="margin-top: 30px; padding: 20px; background: #e8f5e9; border-radius: 8px;">
+                <strong style="color: #2e7d32;">Total Investment: $50,000</strong>
+                <span style="color: #666; font-size: 14px; margin-left: 15px;">(Contingent upon findings and scope adjustments)</span>
+            </div>
+        </section>
+        
+        <!-- Deliverables -->
+        <section class="section">
+            <h2 class="section-title">Deliverables</h2>
+            <div class="deliverables-grid">
+                <div class="deliverable-item">
+                    <div class="deliverable-title">Cyber & Privacy Risk Report</div>
+                    <div class="deliverable-desc">Comprehensive technical assessment with risk ratings, control gaps, and remediation roadmap</div>
+                </div>
+                <div class="deliverable-item">
+                    <div class="deliverable-title">Executive Summary Deck</div>
+                    <div class="deliverable-desc">Board-ready presentation highlighting key findings, risk impacts, and investment considerations</div>
+                </div>
+                <div class="deliverable-item">
+                    <div class="deliverable-title">Insurance Readiness Matrix</div>
+                    <div class="deliverable-desc">Detailed mapping to insurer requirements with premium impact analysis</div>
+                </div>
+                <div class="deliverable-item">
+                    <div class="deliverable-title">Remediation Cost Model</div>
+                    <div class="deliverable-desc">Prioritized budget estimates for addressing identified vulnerabilities</div>
+                </div>
+            </div>
+            
+            <h3 class="subsection-title">Optional Add-On Services</h3>
+            <div class="deliverables-grid">
+                <div class="deliverable-item">
+                    <div class="deliverable-title">Limited Penetration Testing</div>
+                    <div class="deliverable-desc">Targeted validation of critical vulnerabilities ($15,000)</div>
+                </div>
+                <div class="deliverable-item">
+                    <div class="deliverable-title">Cloud Security Audit</div>
+                    <div class="deliverable-desc">Deep-dive into AWS/Azure/GCP configurations ($12,000)</div>
+                </div>
+                <div class="deliverable-item">
+                    <div class="deliverable-title">Forensics Readiness Assessment</div>
+                    <div class="deliverable-desc">Evaluation of incident response and recovery capabilities ($8,000)</div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Key Assumptions -->
+        <section class="section">
+            <h2 class="section-title">Key Assumptions & Terms</h2>
+            <div class="assumptions-list">
+                <ul>
+                    <li><strong>Advisory Scope:</strong> This engagement provides advisory services only and does not constitute a formal audit or regulatory certification</li>
+                    <li><strong>Non-Intrusive Assessment:</strong> No intrusive testing or system modifications will be performed unless explicitly authorized in writing</li>
+                    <li><strong>Scope Adjustments:</strong> All scope changes and additional work must be pre-approved with corresponding fee adjustments</li>
+                    <li><strong>Confidentiality:</strong> All findings and materials will be treated as strictly confidential under mutual NDA</li>
+                    <li><strong>Resource Access:</strong> Client will provide timely access to required documentation, systems, and personnel</li>
+                    <li><strong>Timeline Flexibility:</strong> Assessment timeline may be adjusted based on data room availability and stakeholder schedules</li>
+                    <li><strong>Deliverable Rights:</strong> Fort Greene Partners receives unlimited use rights to all deliverables for internal purposes</li>
+                </ul>
+            </div>
+        </section>
+        
+        <!-- Timeline -->
+        <section class="section">
+            <h2 class="section-title">Engagement Timeline</h2>
+            <div class="timeline-section">
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-phase">Phase 1: Data Room Review</div>
+                        <div class="timeline-duration">Week 1-2</div>
+                        <div class="timeline-desc">Documentation analysis, gap identification, preliminary risk assessment</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-phase">Phase 2: Control Evaluation</div>
+                        <div class="timeline-duration">Week 3-5</div>
+                        <div class="timeline-desc">Technical assessment, stakeholder interviews, control validation</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-phase">Phase 3: Risk Synthesis</div>
+                        <div class="timeline-duration">Week 6</div>
+                        <div class="timeline-desc">Report generation, executive briefing, recommendations delivery</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Consultant Background -->
+        <section class="section">
+            <h2 class="section-title">Principal Consultant</h2>
+            <div class="bio-section">
+                <div class="bio-header">
+                    <div class="bio-avatar">CC</div>
+                    <div class="bio-title-block">
+                        <div class="bio-name">Cylton Collymore</div>
+                        <div class="bio-credentials">MBA, CISSP, CISM – Chief Executive Officer</div>
+                    </div>
+                </div>
+                <div class="bio-content">
+                    <p>
+                        Mr. Collymore brings over two decades of cybersecurity leadership experience across government, Fortune 500, and private equity sectors. As the former Expert Cybersecurity Examiner for the Federal Reserve Board (Atlanta Fed), he developed and implemented risk assessment frameworks for systemically important financial institutions. His unique perspective combines regulatory expertise with practical implementation experience from leading security transformations at scale.
+                    </p>
+                    <p style="margin-top: 15px;">
+                        At the U.S. Department of State, Mr. Collymore architected and led the identity infrastructure supporting critical visa and passport databases, managing security for systems processing over 20 million transactions annually. His tenure at Meta (formerly Facebook) focused on privacy engineering and data protection initiatives, where he designed controls for handling billions of user records while maintaining regulatory compliance across multiple jurisdictions.
+                    </p>
+                    <p style="margin-top: 15px;">
+                        Currently, Mr. Collymore advises private equity firms and insurance carriers on cyber maturity assessments, risk quantification, and portfolio company security transformations. His expertise spans NIST CSF implementation, insurance underwriting criteria, M&A due diligence, and post-acquisition integration strategies.
+                    </p>
+                </div>
+                <div class="bio-highlights">
+                    <div class="bio-highlight">
+                        <div class="bio-highlight-icon"></div>
+                        <div class="bio-highlight-text">Former Federal Reserve Examiner</div>
+                    </div>
+                    <div class="bio-highlight">
+                        <div class="bio-highlight-icon"></div>
+                        <div class="bio-highlight-text">U.S. State Dept. Identity Systems</div>
+                    </div>
+                    <div class="bio-highlight">
+                        <div class="bio-highlight-icon"></div>
+                        <div class="bio-highlight-text">Meta Privacy Engineering Lead</div>
+                    </div>
+                    <div class="bio-highlight">
+                        <div class="bio-highlight-icon"></div>
+                        <div class="bio-highlight-text">20+ Years Security Experience</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Insurance Readiness -->
+        <section class="section">
+            <h2 class="section-title">Insurance Readiness Framework</h2>
+            <div class="insurance-section">
+                <p style="margin-bottom: 20px;">
+                    Our assessment aligns with leading cyber insurance carrier requirements, ensuring Fort Greene Partners' portfolio companies can secure favorable coverage terms. We evaluate against frameworks recognized by major insurers including AIG, Chubb, Hiscox, and Beazley.
+                </p>
+                
+                <h3 class="subsection-title">Assessment Coverage Areas</h3>
+                <div class="insurance-grid">
+                    <div class="insurance-item">
+                        <div class="insurance-item-title">Governance</div>
+                    </div>
+                    <div class="insurance-item">
+                        <div class="insurance-item-title">Identity & Access</div>
+                    </div>
+                    <div class="insurance-item">
+                        <div class="insurance-item-title">Data Protection</div>
+                    </div>
+                    <div class="insurance-item">
+                        <div class="insurance-item-title">Incident Response</div>
+                    </div>
+                    <div class="insurance-item">
+                        <div class="insurance-item-title">Network Security</div>
+                    </div>
+                    <div class="insurance-item">
+                        <div class="insurance-item-title">Third-Party Risk</div>
+                    </div>
+                    <div class="insurance-item">
+                        <div class="insurance-item-title">Business Continuity</div>
+                    </div>
+                    <div class="insurance-item">
+                        <div class="insurance-item-title">Compliance Status</div>
+                    </div>
+                </div>
+                
+                <h3 class="subsection-title" style="margin-top: 30px;">Standards Alignment</h3>
+                <ul style="margin-left: 20px; color: #495057; line-height: 1.8;">
+                    <li><strong>NIST Cybersecurity Framework (CSF):</strong> Complete mapping to all five core functions</li>
+                    <li><strong>CIS Controls v8:</strong> Assessment against implementation groups 1-3</li>
+                    <li><strong>ISO 27001/27002:</strong> Gap analysis for international compliance requirements</li>
+                    <li><strong>SOC 2 Type II:</strong> Readiness assessment for trust service criteria</li>
+                </ul>
+            </div>
+        </section>
+        
+        <!-- Why Collymore Consulting -->
+        <section class="section">
+            <h2 class="section-title">Why Collymore Consulting</h2>
+            <div style="line-height: 1.8; color: #495057;">
+                <p>
+                    <strong>Private Equity Focus:</strong> We understand the unique requirements of PE due diligence, including rapid assessments, value creation opportunities, and post-acquisition integration challenges.
+                </p>
+                <p style="margin-top: 15px;">
+                    <strong>Insurance Expertise:</strong> Direct experience with cyber insurance underwriters ensures our assessments address the specific criteria that impact premium pricing and coverage terms.
+                </p>
+                <p style="margin-top: 15px;">
+                    <strong>Regulatory Insight:</strong> Federal Reserve examination experience provides deep understanding of regulatory expectations and compliance requirements across industries.
+                </p>
+                <p style="margin-top: 15px;">
+                    <strong>Practical Approach:</strong> We focus on material risks that impact investment decisions, avoiding unnecessary technical complexity while maintaining thoroughness.
+                </p>
+                <p style="margin-top: 15px;">
+                    <strong>Contingent Structure:</strong> Our fee structure demonstrates confidence in our ability to deliver value and aligns our success with yours.
+                </p>
+            </div>
+        </section>
+        
+        <!-- Next Steps -->
+        <section class="section">
+            <h2 class="section-title">Next Steps</h2>
+            <div style="background: #f8f9fa; padding: 30px; border-radius: 10px; border-left: 5px solid #28a745;">
+                <ol style="margin-left: 20px; color: #495057; line-height: 2;">
+                    <li><strong>Review & Discussion:</strong> Schedule a call to review this proposal and address any questions</li>
+                    <li><strong>Scope Refinement:</strong> Adjust assessment focus based on specific portfolio company or acquisition target</li>
+                    <li><strong>Engagement Letter:</strong> Execute formal agreement with detailed terms and conditions</li>
+                    <li><strong>NDA Execution:</strong> Complete mutual non-disclosure agreement for data room access</li>
+                    <li><strong>Kickoff Meeting:</strong> Align stakeholders on timeline, deliverables, and communication protocols</li>
+                </ol>
+            </div>
+        </section>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <p>© 2025 Collymore Consulting. All rights reserved. This proposal is confidential and proprietary.</p>
+            <p>Contact: Cylton Collymore, CEO | cylton@collymoreconsulting.com</p>
+        </div>
+    </div>
+</body>
+</html>
