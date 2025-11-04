@@ -504,65 +504,6 @@
             color: var(--text-secondary);
         }
         
-        /* Universal Header Styling */
-        .universal-header {
-            background: var(--white);
-            border-bottom: 1px solid var(--border);
-            padding: var(--space-lg) var(--space-xl);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            min-height: 64px;
-        }
-        
-        .header-left .page-title {
-            font-family: 'DM Serif Display', serif;
-            font-size: 24px;
-            color: var(--navy);
-            margin: 0;
-        }
-        
-        .header-right {
-            display: flex;
-            align-items: center;
-            gap: var(--space-md);
-        }
-        
-        .user-menu-trigger {
-            display: flex;
-            align-items: center;
-            gap: var(--space-sm);
-            padding: var(--space-sm) var(--space-md);
-            background: var(--gray-50);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            cursor: pointer;
-            transition: all 0.15s;
-        }
-        
-        .user-menu-trigger:hover {
-            background: var(--gray-100);
-        }
-        
-        .user-avatar {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: var(--sky);
-            color: var(--white);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-            font-size: 14px;
-        }
-        
-        .user-name {
-            font-size: 14px;
-            font-weight: 500;
-            color: var(--text-primary);
-        }
-        
         /* Page Content */
         .page-content {
             flex: 1;
@@ -672,19 +613,12 @@
 
         <!-- Main Content -->
         <div class="main-content">
-            <!-- Universal Header -->
-            <header class="universal-header">
-                <div class="header-left">
-                    <h1 class="page-title">County Tax Records</h1>
-                </div>
-                <div class="header-right">
-                    <div class="user-menu">
-                        <button class="user-menu-trigger">
-                            <span class="user-avatar">U</span>
-                            <span class="user-name">User</span>
-                        </button>
-                    </div>
-                </div>
+            <!-- Universal Header Component -->
+            <header id="universal-header-root" 
+                    data-title="County Tax Records" 
+                    data-subtitle="View and edit property tax records and parcel information"
+                    data-search-placeholder="Search tax records..."
+                    data-user-role="client">
             </header>
 
             <!-- Page Content -->
@@ -895,6 +829,9 @@
     
     <!-- Auth Guard -->
     <script src="../assets/js/auth-guard-simple.js"></script>
+    
+    <!-- Universal Header Component -->
+    <script src="../components/universal-header.js"></script>
     
     <!-- Property Service -->
     <script type="module">
