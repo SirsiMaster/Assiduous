@@ -1,15 +1,26 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-auth-protect="client,investor">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Property Details - Assiduous</title>
+    <meta name="robots" content="noindex, nofollow">
+    <title>Property Details — Assiduous Client Portal</title>
     
-    <!-- Firebase Modular SDK (imported in scripts below) -->
+    <!-- Assiduous Design System -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="../assets/vendor/sirsimaster-ui/sirsimaster-ui.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="../assiduous.css">
+    <link rel="stylesheet" href="../components/admin-layout.css">
     
-    <link rel="stylesheet" href="../assets/css/styles.css">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     
     <style>
+        /* Page-specific custom styles */
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
@@ -417,21 +428,28 @@
                 display: none;
             }
         }
+    
     </style>
 </head>
 <body>
-    <header class="header">
-        <div class="header-content">
-            <div class="logo">🏠 Assiduous</div>
-            <nav class="nav-links">
-                <a href="/" class="nav-link">Home</a>
-                <a href="/client/properties.html" class="nav-link">Properties</a>
-                <a href="/client/saved.html" class="nav-link">Saved</a>
-                <a href="/client/micro-flip-calculator.html" class="nav-link">ROI Calculator</a>
-                <a href="/client/dashboard.html" class="nav-link">Dashboard</a>
-            </nav>
-        </div>
-    </header>
+    <!-- Universal Header -->
+    <header id="universal-header-root" 
+            data-title="Property Details" 
+            data-subtitle="View complete property information"
+            data-search-placeholder="Search..."
+            data-user-role="client"></header>
+    
+    <!-- Admin Layout Wrapper -->
+    <div class="admin-wrapper">
+        <!-- Sidebar -->
+        <nav id="sidebar-root" data-active="properties"></nav>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="page-content">
+                <!-- Content preserved from original -->
+
+    
     
     <div class="container">
         <div class="property-header">
@@ -620,20 +638,34 @@
         </div>
     </div>
     
+    
+            </div>
+        </main>
+    </div>
+    
+    <!-- Firebase Configuration -->
+    <script src="../firebase-config.js"></script>
+    
+    <!-- Load Header and Auth after Firebase Ready -->
     <script>
-        // Firebase configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyCzPcEJ0TPKnJtcVT2qymgJrII1p0vAJxs",
-            authDomain: "assiduous-prod.firebaseapp.com",
-            projectId: "assiduous-prod",
-            storageBucket: "assiduous-prod.appspot.com",
-            messagingSenderId: "594472642287",
-            appId: "1:594472642287:web:adf723a456b123c4567890"
-        };
-        
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
-        const auth = firebase.auth();
+        window.addEventListener('firebase-ready', function() {
+            const headerScript = document.createElement('script');
+            headerScript.src = '../components/universal-header.js';
+            document.head.appendChild(headerScript);
+            
+            headerScript.onload = function() {
+                const authScript = document.createElement('script');
+                authScript.src = '../components/auth-guard-simple.js';
+                document.head.appendChild(authScript);
+            };
+        });
+    </script>
+    
+    <script>
+        window.addEventListener('firebase-ready', function() {
+            const db = window.db;
+            const auth = window.auth;
+
         
         // Get property ID from URL
         const urlParams = new URLSearchParams(window.location.search);
@@ -1022,6 +1054,7 @@
         
         // Load property on page load
         window.addEventListener('load', loadProperty);
+        });
     </script>
 </body>
 </html>

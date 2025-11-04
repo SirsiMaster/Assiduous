@@ -1,16 +1,26 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-auth-protect="client,investor">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to Assiduous - Set Up Your Profile</title>
+    <meta name="robots" content="noindex, nofollow">
+    <title>Welcome to Assiduous — Assiduous Client Portal</title>
+    
+    <!-- Assiduous Design System -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="../assets/vendor/sirsimaster-ui/sirsimaster-ui.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="../assiduous.css">
+    <link rel="stylesheet" href="../components/admin-layout.css">
     
     <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     
     <style>
+        /* Page-specific custom styles */
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
@@ -318,9 +328,27 @@
                 display: none;
             }
         }
+    
     </style>
 </head>
 <body>
+    <!-- Universal Header -->
+    <header id="universal-header-root" 
+            data-title="Welcome to Assiduous" 
+            data-subtitle="Complete your profile setup"
+            data-search-placeholder="Search..."
+            data-user-role="client"></header>
+    
+    <!-- Admin Layout Wrapper -->
+    <div class="admin-wrapper">
+        <!-- Sidebar -->
+        <nav id="sidebar-root" data-active="dashboard"></nav>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="page-content">
+                <!-- Content preserved from original -->
+
     <div class="onboarding-container">
         <div class="progress-bar">
             <div class="progress-fill" id="progressBar" style="width: 25%;"></div>
@@ -550,20 +578,34 @@
         </div>
     </div>
     
+    
+            </div>
+        </main>
+    </div>
+    
+    <!-- Firebase Configuration -->
+    <script src="../firebase-config.js"></script>
+    
+    <!-- Load Header and Auth after Firebase Ready -->
     <script>
-        // Firebase configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyCzPcEJ0TPKnJtcVT2qymgJrII1p0vAJxs",
-            authDomain: "assiduous-prod.firebaseapp.com",
-            projectId: "assiduous-prod",
-            storageBucket: "assiduous-prod.appspot.com",
-            messagingSenderId: "594472642287",
-            appId: "1:594472642287:web:adf723a456b123c4567890"
-        };
-        
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
-        const auth = firebase.auth();
+        window.addEventListener('firebase-ready', function() {
+            const headerScript = document.createElement('script');
+            headerScript.src = '../components/universal-header.js';
+            document.head.appendChild(headerScript);
+            
+            headerScript.onload = function() {
+                const authScript = document.createElement('script');
+                authScript.src = '../components/auth-guard-simple.js';
+                document.head.appendChild(authScript);
+            };
+        });
+    </script>
+    
+    <script>
+        window.addEventListener('firebase-ready', function() {
+            const db = window.db;
+            const auth = window.auth;
+
         
         let currentStep = 1;
         const totalSteps = 4;
@@ -745,6 +787,7 @@
                     }
                 });
             }
+        });
         });
     </script>
 </body>
