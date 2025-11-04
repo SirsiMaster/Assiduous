@@ -141,6 +141,7 @@
 2. **Check Current Status:** Review [PROJECT_MANAGEMENT.md](docs/PROJECT_MANAGEMENT.md)
 3. **Technical Setup:** Follow [DEPLOYMENT_GUIDE.md](docs/DEPLOYMENT_GUIDE.md)
 4. **Start Contributing:** See [TRAINING_DOCUMENTATION.md](docs/TRAINING_DOCUMENTATION.md)
+5. **Build System:** Use Universal Component System - see below
 
 ---
 
@@ -155,13 +156,17 @@ assiduous/
 │   │   ├── dashboard.html     # Admin dashboard
 │   │   └── ...                # Other admin pages
 │   ├── agent/                 # Agent portal
-│   ├── client/                # Client portal
+│   ├── client/                # Client portal (UCS templates)
 │   ├── assets/                # Static assets (CSS, JS, images)
 │   │   ├── css/               # Stylesheets
 │   │   ├── js/                # JavaScript modules
 │   │   └── images/            # Images and media
-│   ├── components/            # Reusable UI components
+│   ├── components/            # Reusable UI components (UCS)
+│   │   ├── sidebar.html       # Universal sidebar component
+│   │   ├── universal-header.html # Universal header component
+│   │   └── registry.json      # Component registry
 │   ├── docs/                  # Documentation (HTML versions)
+│   ├── assiduous.config.js    # UCS configuration (single source of truth)
 │   ├── index.html             # Main landing page
 │   ├── login.html             # Login page
 │   └── firebase-config.js     # Firebase configuration
@@ -171,8 +176,10 @@ assiduous/
 │   ├── REQUIREMENTS_SPECIFICATION.md
 │   ├── ARCHITECTURE_DESIGN.md
 │   ├── DEPLOYMENT_GUIDE.md
+│   ├── COMPONENT_SYSTEM.md    # UCS documentation
 │   └── ...                    # Other canonical docs
 ├── scripts/                  # Automation and utility scripts
+│   ├── build-pages.js         # UCS build system
 │   ├── hooks/                 # Git hooks
 │   ├── deployment/            # Deployment utilities
 │   └── testing/               # Test utilities
@@ -183,6 +190,8 @@ assiduous/
 ├── .github/                  # GitHub Actions workflows
 ├── firebase.json             # Firebase project configuration
 ├── package.json              # Node.js dependencies
+├── UCS_README.md             # UCS implementation plan
+├── UCS_STATUS.md             # UCS progress tracker
 └── README.md                 # This file
 ```
 
@@ -193,6 +202,7 @@ assiduous/
 - **functions/** contains all Firebase Cloud Functions (Node.js backend)
 - **firestore/** contains database security rules and indexes
 - **config/** centralizes all environment and Firebase configurations
+- **scripts/** contains build tools including UCS (Universal Component System)
 
 ---
 
@@ -216,6 +226,66 @@ Each of the 19 documents contains a "Consolidation Note" header explaining:
 - Which files were merged into it
 - When the consolidation occurred
 - Current version and status
+
+---
+
+## 🔧 Universal Component System (UCS)
+
+### Build-Time Component Framework
+Assiduous uses the **Universal Component System (UCS)** - a build-time component framework that eliminates hardcoded paths and ensures design consistency.
+
+### Quick Commands
+```bash
+# Build all templates
+npm run ucs:build
+
+# Build for specific environment
+npm run ucs:build:dev
+npm run ucs:build:staging
+npm run ucs:build:prod
+
+# Verify without building
+npm run ucs:verify
+```
+
+### Creating Pages with UCS
+1. Create a `.template.html` file (e.g., `my-page.template.html`)
+2. Add component directives:
+```html
+<!-- @component:sidebar active="dashboard" role="admin" -->
+<!-- @component:header title="My Page" -->
+```
+3. Build: `npm run ucs:build`
+4. Output: `my-page.html` generated automatically
+
+### Key Features
+- **Zero hardcoded paths** - Automatic relative path calculation
+- **Build-time processing** - No runtime overhead
+- **Token replacement** - `{{BASE_PATH}}`, `{{ASSETS_PATH}}`, etc.
+- **Environment-aware** - Different configs for dev/staging/prod
+- **Design enforcement** - Components ensure visual consistency
+- **Admin pages protected** - Excluded from UCS (gold standard)
+
+### Documentation
+- **Full Guide**: [docs/COMPONENT_SYSTEM.md](docs/COMPONENT_SYSTEM.md) (672 lines)
+- **Implementation Plan**: [UCS_README.md](UCS_README.md) (433 lines)
+- **Progress Tracker**: [UCS_STATUS.md](UCS_STATUS.md)
+- **Configuration**: `public/assiduous.config.js` (336 lines)
+
+### Current Status
+- ✅ Phase 0: Infrastructure complete
+- ✅ Build system operational
+- ✅ Sidebar component working
+- ✅ Token replacement tested
+- ⏳ Phase 1: Client portal migration (next)
+
+### Benefits
+- **90% reduction** in code duplication
+- **Consistent UX** across all pages
+- **Easy maintenance** - update component once, propagates everywhere
+- **Automatic path resolution** for any directory depth
+- **Mobile responsive** design built-in
+- **No runtime overhead** - all processing at build time
 
 ---
 

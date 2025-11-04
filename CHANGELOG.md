@@ -8,6 +8,44 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.86.0] - 2025-11-04
+
+### Added
+- feat(ucs): implement Universal Component System build infrastructure
+- feat(ucs): add npm scripts for UCS build system
+- Complete build-time component framework with zero runtime overhead
+- Token replacement system for automatic path resolution
+- Component registry with JSON schemas and validation
+- Build script for template discovery and directive parsing
+- Configuration system in `public/assiduous.config.js` (336 lines)
+- Component registry at `public/components/registry.json` (252 lines)
+- Build system at `scripts/build-pages.js` (336 lines)
+- Documentation at `docs/COMPONENT_SYSTEM.md` (672 lines)
+- Implementation plan in `UCS_README.md` (433 lines)
+- Progress tracker in `UCS_STATUS.md`
+- npm commands: `ucs:build`, `ucs:build:dev`, `ucs:build:staging`, `ucs:build:prod`, `ucs:verify`
+- Standardized sidebar component with `{{BASE_PATH}}` tokens
+- Test page: `public/docs/ucs-test.template.html`
+- Build reports with stats and verification
+- Updated `.gitignore` to exclude UCS build artifacts
+
+### Changed
+- Admin pages explicitly protected from UCS (gold standard)
+- Client portal pages ready for Phase 1 migration
+- All component directives use comment-based syntax
+- Build system calculates relative paths automatically
+
+### Technical Details
+- Phase 0 (infrastructure) complete and tested
+- Build system tested successfully: built test page in 0.01s
+- Test page verified working in browser at `http://localhost:8080/docs/ucs-test.html`
+- Token replacement working: `{{BASE_PATH}}` → correct relative paths
+- Sidebar component injects with proper HTML structure
+- npm commands operational
+- Zero hardcoded paths in components
+- Build-time processing eliminates runtime overhead
+
+
 ## [0.85.5] - 2025-11-04
 
 ### Fixed
