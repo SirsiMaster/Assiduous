@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-11-04T05:14:33.486Z",
+  "lastUpdated": "2025-11-04T05:19:39.065Z",
   "summary": {
     "health": "Good",
     "score": 46,
@@ -104,41 +104,41 @@
     }
   },
   "project": {
-    "totalHours": "250",
-    "avgHoursPerDay": "8.6",
-    "totalCost": 39336,
-    "laborCost": 37500,
+    "totalHours": "251",
+    "avgHoursPerDay": "8.7",
+    "totalCost": 39486,
+    "laborCost": 37650,
     "toolsCost": 1836,
     "monthsElapsed": "2.8",
-    "totalCommits": 759,
+    "totalCommits": 762,
     "totalFiles": 669,
     "activeDays": 29,
     "totalDays": 86,
     "projectAgeDays": 86,
-    "linesAdded": 9660445,
-    "linesDeleted": 9373541,
-    "netLines": 286904,
-    "velocity": "26.2",
+    "linesAdded": 9660530,
+    "linesDeleted": 9373613,
+    "netLines": 286917,
+    "velocity": "26.3",
     "completionPercentage": 46,
     "actualStartDate": "2025-08-10"
   },
   "today": {
     "date": "2025-11-04",
-    "hours": "6.6",
-    "cost": 990,
-    "commits": 20,
+    "hours": "7.6",
+    "cost": 1139,
+    "commits": 23,
     "deployments": 0
   },
   "thisWeek": {
-    "hours": "63.7",
-    "cost": 9554,
-    "commits": 193,
+    "hours": "64.7",
+    "cost": 9702,
+    "commits": 196,
     "days": 7
   },
   "thisMonth": {
-    "hours": "140.3",
-    "cost": 21038,
-    "commits": 425
+    "hours": "141.2",
+    "cost": 21186,
+    "commits": 428
   },
   "quality": {
     "testCoverage": {
@@ -172,7 +172,7 @@
       "critical": 0,
       "total": 0
     },
-    "lastAudit": "2025-11-04T05:13:56.338Z",
+    "lastAudit": "2025-11-04T05:19:13.853Z",
     "dependencies": {
       "total": {
         "prod": 256,
@@ -267,11 +267,11 @@
     "changelog": true,
     "contributing": false,
     "license": false,
-    "lastUpdate": "2025-11-04 05:09:09 +0000"
+    "lastUpdate": "2025-11-04 05:13:45 +0000"
   },
   "productivity": {
     "velocityTrend": "increasing",
-    "weeklyCommits": 193,
+    "weeklyCommits": 196,
     "contributors": {
       "total": 0,
       "active": 0
@@ -349,6 +349,24 @@
   },
   "recentActivity": [
     {
+      "hash": "acc1b442cfcb98f4d9aa027a73739e9275b9ba86",
+      "message": "chore: metrics",
+      "author": "SirsiMaster",
+      "date": "2025-11-04 00:18:52 -0500"
+    },
+    {
+      "hash": "21212b183a0f59729b42e7833aa2ed42ba054c4e",
+      "message": "fix(client): correct Firebase config and auth guard paths on tax records page",
+      "author": "SirsiMaster",
+      "date": "2025-11-04 00:18:31 -0500"
+    },
+    {
+      "hash": "316bb59339a229a2c1c6b2dbc03c84c360e9a338",
+      "message": "chore(release): Bump version to 0.85.2 [skip ci]",
+      "author": "github-actions[bot]",
+      "date": "2025-11-04 05:13:45 +0000"
+    },
+    {
       "hash": "d515622cb841cdcbebd81daa9e357bf38e144632",
       "message": "chore: update metrics",
       "author": "SirsiMaster",
@@ -389,28 +407,10 @@
       "message": "feat(client): add editable fields and document upload to tax records page",
       "author": "SirsiMaster",
       "date": "2025-11-03 23:55:56 -0500"
-    },
-    {
-      "hash": "7b3c52a90c195b01ff84f4af6a893f3c7c0d623f",
-      "message": "chore(release): Bump version to 0.84.0 [skip ci]",
-      "author": "github-actions[bot]",
-      "date": "2025-11-03 19:42:30 +0000"
-    },
-    {
-      "hash": "29021c2423036873d24c5c5a6c794678dd455168",
-      "message": "chore: update metrics cache and Firebase hosting cache",
-      "author": "SirsiMaster",
-      "date": "2025-11-03 14:42:03 -0500"
-    },
-    {
-      "hash": "6b7a4be1c05daffd3a2ac1a81ed861d19e5a2854",
-      "message": "feat(client): add comprehensive county tax records page",
-      "author": "SirsiMaster",
-      "date": "2025-11-03 14:41:31 -0500"
     }
   ],
   "automation": {
-    "lastRun": "2025-11-04T05:14:33.486Z",
+    "lastRun": "2025-11-04T05:19:39.065Z",
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",
