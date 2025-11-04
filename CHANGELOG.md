@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.85.5] - 2025-11-04
+
+### Fixed
+- fix(client): eliminate Firebase initialization race condition in PropertyService
+
+
 ## [0.85.4] - 2025-11-04
 
 ### Fixed
@@ -2793,7 +2799,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.85.4...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.85.5...HEAD
+
+
+## [0.85.5] - 2025-11-04
+
+### Fixed
+- fix(client): eliminate Firebase initialization race condition in PropertyService
 
 
 ## [0.85.4] - 2025-11-04
@@ -4012,3 +4024,4 @@ To generate changelog entries:
 [0.85.2]: https://github.com/SirsiMaster/Assiduous/compare/v0.85.1...v0.85.2
 [0.85.3]: https://github.com/SirsiMaster/Assiduous/compare/v0.85.2...v0.85.3
 [0.85.4]: https://github.com/SirsiMaster/Assiduous/compare/v0.85.3...v0.85.4
+[0.85.5]: https://github.com/SirsiMaster/Assiduous/compare/v0.85.4...v0.85.5
