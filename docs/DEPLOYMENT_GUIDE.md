@@ -1,6 +1,6 @@
 # DEPLOYMENT GUIDE
-**Version:** 2.0.0-canonical
-**Last Updated:** 2025-11-02
+**Version:** 2.1.0-canonical
+**Last Updated:** 2025-11-04
 **Status:** Canonical Document (1 of 19)
 **Consolidation Date:** November 2, 2025
 
@@ -9,14 +9,169 @@
 ## Deployment Procedures and Configuration
 
 **Document Type:** Deployment Guide  
-**Version:** 2.0.0  
-**Last Updated:** October 9, 2025  
+**Version:** 2.1.0  
+**Last Updated:** November 4, 2025  
 **Status:** Authoritative Deployment Document
 **Consolidation Note:** Merged from CI/CD guides and Firebase setup
 
+**Recent Updates:**
+- November 4, 2025: Added Universal Component System (UCS) build steps to deployment pipeline
+- October 9, 2025: Initial deployment guide
+
 ---
 
+# Universal Component System (UCS) Build Integration
+**Added:** November 4, 2025
 
+## UCS in Deployment Pipeline
+
+The Universal Component System requires building templates **before** deployment to Firebase.
+
+### Pre-Deployment Build Step
+
+**CRITICAL:** All deployments must run UCS build before pushing to Firebase:
+
+```bash
+# Step 1: Build templates for target environment
+npm run ucs:build:prod  # For production
+npm run ucs:build:staging  # For staging
+npm run ucs:build:dev  # For development
+
+# Step 2: Verify build succeeded
+if [ $? -ne 0 ]; then
+  echo "UCS build failed - aborting deployment"
+  exit 1
+fi
+
+# Step 3: Deploy to Firebase
+firebase deploy --only hosting
+```
+
+### Environment-Specific Builds
+
+| Environment | Command | Output Files | Configuration |
+|-------------|---------|--------------|---------------|
+| Development | `npm run ucs:build:dev` | `*.html` | Dev paths, debug enabled |
+| Staging | `npm run ucs:build:staging` | `*.html` | Staging paths, testing enabled |
+| Production | `npm run ucs:build:prod` | `*.html` | Prod paths, optimized |
+
+### UCS Verification Steps
+
+Before deploying, verify UCS build:
+
+```bash
+# 1. Check build report
+cat build-report.json
+
+# Expected output:
+# {
+#   "pages": { "built": N, "skipped": 0, "errors": 0 },
+#   "duration": "<1s"
+# }
+
+# 2. Verify no template files in deployment
+find public/ -name "*.template.html"
+# Should return no results (templates excluded)
+
+# 3. Verify generated files exist
+ls -la public/client/*.html
+ls -la public/docs/*.html
+
+# 4. Test build output locally
+python -m http.server 8080
+open http://localhost:8080/docs/ucs-test.html
+```
+
+### Deployment Checklist with UCS
+
+- [ ] 1. Make code changes in `.template.html` files
+- [ ] 2. Run `npm run ucs:build:dev` and test locally
+- [ ] 3. Commit changes (templates + generated files)
+- [ ] 4. Push to GitHub
+- [ ] 5. CI/CD runs `npm run ucs:build:prod` automatically
+- [ ] 6. Firebase deploys generated `.html` files
+- [ ] 7. Verify deployment at production URL
+
+### CI/CD Integration
+
+Add UCS build to GitHub Actions workflows:
+
+```yaml
+# .github/workflows/deploy-production.yml
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      # Install dependencies
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      - run: npm ci
+      
+      # UCS Build Step (REQUIRED)
+      - name: Build UCS templates
+        run: npm run ucs:build:prod
+      
+      # Verify build
+      - name: Verify UCS build
+        run: |
+          if [ ! -f build-report.json ]; then
+            echo "Build report not found"
+            exit 1
+          fi
+          
+          ERROR_COUNT=$(cat build-report.json | jq '.pages.errors')
+          if [ "$ERROR_COUNT" != "0" ]; then
+            echo "UCS build has $ERROR_COUNT errors"
+            exit 1
+          fi
+      
+      # Deploy to Firebase
+      - uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: '${{ secrets.GITHUB_TOKEN }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}'
+          channelId: live
+          projectId: assiduous-prod
+```
+
+### Troubleshooting UCS Builds
+
+#### Build Fails
+```bash
+# Check for syntax errors in templates
+npm run ucs:verify
+
+# Common issues:
+# - Missing closing tags in component directives
+# - Invalid prop values
+# - Component not found in registry
+```
+
+#### Generated Files Missing
+```bash
+# Ensure templates have .template.html extension
+find public/ -name "*template.html" | grep -v ".template.html"
+
+# Check build patterns in assiduous.config.js
+grep "patterns" public/assiduous.config.js
+```
+
+#### Paths Not Resolving
+```bash
+# Verify token replacement
+grep "{{BASE_PATH}}" public/**/*.html
+# Should return no results (all tokens replaced)
+
+# Check generated HTML
+head -50 public/docs/ucs-test.html
+# Paths should be relative (../ or ../../)
+```
+
+---
 
 # CI/CD Pipeline Setup Guide
 
