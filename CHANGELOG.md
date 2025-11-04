@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.85.0] - 2025-11-04
+
+### Added
+- feat(client): add editable fields and document upload to tax records page
+
+
 ## [0.84.0] - 2025-11-03
 
 ### Added
@@ -2763,7 +2769,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.84.0...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.85.0...HEAD
+
+
+## [0.85.0] - 2025-11-04
+
+### Added
+- feat(client): add editable fields and document upload to tax records page
 
 
 ## [0.84.0] - 2025-11-03
@@ -3947,3 +3959,4 @@ To generate changelog entries:
 [0.83.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.82.0...v0.83.0
 [0.83.1]: https://github.com/SirsiMaster/Assiduous/compare/v0.83.0...v0.83.1
 [0.84.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.83.1...v0.84.0
+[0.85.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.84.0...v0.85.0
