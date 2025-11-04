@@ -504,15 +504,99 @@
             color: var(--text-secondary);
         }
         
-        .loading-state,
-        .error-state {
-            text-align: center;
+        /* Universal Header Styling */
+        .universal-header {
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            padding: var(--space-lg) var(--space-xl);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            min-height: 64px;
+        }
+        
+        .header-left .page-title {
+            font-family: 'DM Serif Display', serif;
+            font-size: 24px;
+            color: var(--navy);
+            margin: 0;
+        }
+        
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+        }
+        
+        .user-menu-trigger {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: var(--space-sm) var(--space-md);
+            background: var(--gray-50);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        
+        .user-menu-trigger:hover {
+            background: var(--gray-100);
+        }
+        
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--sky);
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .user-name {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+        
+        /* Page Content */
+        .page-content {
+            flex: 1;
+            overflow-y: auto;
             padding: var(--space-xl);
+        }
+        
+        .loading-state,
+        .error-state,
+        .empty-state {
+            text-align: center;
+            padding: var(--space-2xl);
             color: var(--text-secondary);
         }
         
         .error-state {
-            color: var(--error);
+            color: var(--danger);
+        }
+        
+        .empty-state {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            border: 2px dashed var(--border);
+            padding: var(--space-2xl);
+        }
+        
+        .empty-state h3 {
+            color: var(--text-primary);
+            margin-bottom: var(--space-md);
+        }
+        
+        .empty-state p {
+            color: var(--text-secondary);
+            margin-bottom: var(--space-lg);
         }
         
         @media (max-width: 768px) {
@@ -610,7 +694,15 @@
                 </div>
 
                 <div id="error-state" class="error-state" style="display: none;">
-                    <p>Error loading tax records. Please try again.</p>
+                    <h3>Property Not Found</h3>
+                    <p>The property you're looking for doesn't exist in our records.</p>
+                    <button class="btn btn-primary" onclick="window.location.href='/client/properties.html'">Browse Properties</button>
+                </div>
+                
+                <div id="empty-state" class="empty-state" style="display: none;">
+                    <h3>No Tax Records Available</h3>
+                    <p>This property doesn't have tax records yet. You can add records by editing the fields below.</p>
+                    <button class="btn btn-primary" onclick="showEmptyRecords()">Add Tax Records</button>
                 </div>
 
                 <div id="records-content" style="display: none;">
@@ -828,16 +920,25 @@
             try {
                 document.getElementById('loading-state').style.display = 'block';
                 document.getElementById('error-state').style.display = 'none';
+                document.getElementById('empty-state').style.display = 'none';
                 document.getElementById('records-content').style.display = 'none';
                 
                 // Fetch complete property data with all sources
                 currentProperty = await propertyService.getCompletePropertyData(propertyId);
                 
                 if (!currentProperty) {
-                    throw new Error('Property not found');
+                    // Property doesn't exist - show error with helpful message
+                    document.getElementById('loading-state').style.display = 'none';
+                    document.getElementById('error-state').style.display = 'block';
+                    return;
                 }
                 
-                // Populate all sections
+                // Check if property has any tax records data
+                const hasRecords = currentProperty.publicRecords && 
+                                  Object.keys(currentProperty.publicRecords).length > 0;
+                
+                // Always show the form, but indicate if it's empty
+                // Populate all sections (will show N/A for missing data)
                 populateHeader(currentProperty);
                 populateQuickStats(currentProperty);
                 populateParcelInfo(currentProperty);
@@ -850,6 +951,14 @@
                 // Show content
                 document.getElementById('loading-state').style.display = 'none';
                 document.getElementById('records-content').style.display = 'block';
+                
+                // If no records, enable edit mode by default and show helpful message
+                if (!hasRecords) {
+                    setTimeout(() => {
+                        alert('This property has no tax records. Edit mode has been enabled so you can add records.');
+                        toggleEditMode();
+                    }, 500);
+                }
                 
             } catch (error) {
                 console.error('Error loading tax records:', error);
@@ -1100,9 +1209,21 @@
         function showError(message) {
             document.getElementById('loading-state').style.display = 'none';
             document.getElementById('error-state').style.display = 'block';
-            document.getElementById('error-state').innerHTML = `<p>${message}</p>`;
+            document.getElementById('empty-state').style.display = 'none';
+            const errorEl = document.getElementById('error-state');
+            errorEl.innerHTML = `
+                <h3>Error Loading Tax Records</h3>
+                <p>${message}</p>
+                <button class="btn btn-primary" onclick="location.reload()">Try Again</button>
+            `;
             document.getElementById('records-content').style.display = 'none';
         }
+        
+        window.showEmptyRecords = function() {
+            document.getElementById('empty-state').style.display = 'none';
+            document.getElementById('records-content').style.display = 'block';
+            setTimeout(() => toggleEditMode(), 100);
+        };
         
         // Utility functions
         function formatCurrency(value) {
