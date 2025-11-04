@@ -14,7 +14,12 @@
     "test:auth:chromium": "playwright test tests/auth.spec.js --project=chromium",
     "test:auth:report": "playwright show-report test-results/html",
     "tw:build": "tailwindcss -i assets/css/tailwind.input.css -o assets/css/generated.css --minify",
-    "tw:watch": "tailwindcss -i assets/css/tailwind.input.css -o assets/css/generated.css --watch"
+    "tw:watch": "tailwindcss -i assets/css/tailwind.input.css -o assets/css/generated.css --watch",
+    "ucs:build": "node scripts/build-pages.js",
+    "ucs:build:dev": "NODE_ENV=dev node scripts/build-pages.js",
+    "ucs:build:staging": "NODE_ENV=staging node scripts/build-pages.js",
+    "ucs:build:prod": "NODE_ENV=prod node scripts/build-pages.js",
+    "ucs:verify": "node scripts/build-pages.js --verify-only"
   },
   "dependencies": {
     "@firebase/auth": "^1.3.0",
