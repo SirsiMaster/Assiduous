@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FEATURE REGISTRY - Assiduous Documentation</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3, h4, h5, h6 {
+            margin-top: 24px;
+            margin-bottom: 16px;
+            font-weight: 600;
+            line-height: 1.25;
+        }
+        h1 { font-size: 2em; border-bottom: 1px solid #e1e4e8; padding-bottom: 0.3em; }
+        h2 { font-size: 1.5em; border-bottom: 1px solid #e1e4e8; padding-bottom: 0.3em; }
+        h3 { font-size: 1.25em; }
+        code {
+            background: #f6f8fa;
+            padding: 0.2em 0.4em;
+            border-radius: 3px;
+            font-size: 85%;
+        }
+        pre {
+            background: #f6f8fa;
+            padding: 16px;
+            overflow: auto;
+            border-radius: 6px;
+            line-height: 1.45;
+        }
+        pre code {
+            background: transparent;
+            padding: 0;
+        }
+        ul, ol {
+            padding-left: 2em;
+            margin-bottom: 16px;
+        }
+        li {
+            margin-bottom: 4px;
+        }
+        a {
+            color: #0366d6;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        blockquote {
+            padding: 0 1em;
+            color: #6a737d;
+            border-left: 0.25em solid #dfe2e5;
+            margin: 0 0 16px 0;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 16px;
+        }
+        table th, table td {
+            padding: 6px 13px;
+            border: 1px solid #dfe2e5;
+        }
+        table tr:nth-child(2n) {
+            background-color: #f6f8fa;
+        }
+        .nav-link {
+            display: inline-block;
+            padding: 8px 16px;
+            background: #0366d6;
+            color: white;
+            border-radius: 6px;
+            margin: 10px 5px;
+            text-decoration: none;
+        }
+        .nav-link:hover {
+            background: #0256c7;
+            text-decoration: none;
+        }
+        .timestamp {
+            color: #6a737d;
+            font-size: 0.85em;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e1e4e8;
+        }
+    </style>
+</head>
+<body>
+<!-- @component:sidebar active="feature_registry" role="admin" -->
+    <div class="container">
+        <nav>
+            <a href="/docs/index.html" class="nav-link">📚 Documentation Hub</a>
+            <a href="/docs/readme.html" class="nav-link">📖 README</a>
+            <a href="/docs/changelog.html" class="nav-link">📝 Changelog</a>
+            <a href="/docs/warp.html" class="nav-link">⚙️ WARP Rules</a>
+        </nav>
+        <h1>FEATURE REGISTRY</h1>
+        <div class="content">
+<h1>Feature Registry &amp; Release Tracking</h1>
+<br>
+<h2>Active Features in Development</h2>
+<br>
+<h3>🚧 In Progress Features</h3>
+<br>
+| Feature ID | Name | Branch | Status | Progress | Ready for Release | Owner | Notes |
+|------------|------|--------|--------|----------|-------------------|-------|-------|
+| FEAT-001 | User Authentication | feature/auth | IN_PROGRESS | 75% | ❌ | Team | Missing: Password reset, 2FA |
+| FEAT-002 | Property Search | feature/search | IN_PROGRESS | 40% | ❌ | Team | Backend API incomplete |
+| FEAT-003 | Payment Integration | feature/payment | IN_PROGRESS | 10% | ❌ | Team | Just started |
+<br>
+<h3>✅ Ready for Release</h3>
+<br>
+| Feature ID | Name | Branch | Staging Tests | Approval | Release Version |
+|------------|------|--------|---------------|----------|-----------------|
+| _None currently ready_ | | | | | |
+<br>
+<h3>🎯 Released to Production</h3>
+<br>
+| Feature ID | Name | Release Version | Date | Notes |
+|------------|------|-----------------|------|-------|
+| FEAT-000 | Initial Setup | v0.48.0 | 2025-10-10 | Base platform |
+<br>
+<hr>
+<br>
+<h2>Feature Readiness Checklist</h2>
+<br>
+Before a feature can be marked "Ready for Release", it must meet ALL criteria:
+<br>
+<h3>Development Complete</h3>
+<li>[ ] All planned functionality implemented</li>
+<li>[ ] Code reviewed and approved</li>
+<li>[ ] Unit tests written and passing</li>
+<li>[ ] Integration tests passing</li>
+<li>[ ] No known critical bugs</li>
+<br>
+<h3>Testing Complete  </h3>
+<li>[ ] Tested locally by developer</li>
+<li>[ ] Deployed to staging successfully</li>
+<li>[ ] QA testing on staging (minimum 24 hours)</li>
+<li>[ ] User acceptance testing passed</li>
+<li>[ ] Performance benchmarks met</li>
+<br>
+<h3>Documentation Complete</h3>
+<li>[ ] User documentation written</li>
+<li>[ ] API documentation updated</li>
+<li>[ ] CHANGELOG entry prepared</li>
+<li>[ ] Migration guide (if needed)</li>
+<li>[ ] Known issues documented</li>
+<br>
+<h3>Business Approval</h3>
+<li>[ ] Product owner review</li>
+<li>[ ] Stakeholder sign-off</li>
+<li>[ ] Release notes approved</li>
+<li>[ ] Marketing notified (if public feature)</li>
+<li>[ ] Support team briefed</li>
+<br>
+<hr>
+<br>
+<h2>Release Approval Process</h2>
+<br>
+<h3>Stage 1: Feature Completion (Developer)</h3>
+<code></code>`bash
+<h1>Developer marks feature complete</h1>
+1. Update this FEATURE_REGISTRY.md
+2. Move feature from "In Progress" to "Ready for Release"
+3. Create PR with title: "RELEASE READY: [Feature Name]"
+<code></code>`
+<br>
+<h3>Stage 2: Pre-Release Review (Tech Lead)</h3>
+<code></code>`bash
+<h1>Tech lead validates readiness</h1>
+1. Review feature in staging
+2. Check all readiness criteria
+3. Add approval comment to PR
+4. Tag with "approved-for-release"
+<code></code>`
+<br>
+<h3>Stage 3: Business Approval (Product Owner)</h3>
+<code></code>`bash
+<h1>Product owner gives final approval</h1>
+1. Review feature demonstration
+2. Validate business requirements met
+3. Approve release timing
+4. Add "release-approved" label
+<code></code>`
+<br>
+<h3>Stage 4: Production Release (Release Manager)</h3>
+<code></code>`bash
+<h1>Only after all approvals</h1>
+1. Verify all approvals in place
+2. Create release tag
+3. Monitor deployment
+4. Update this registry
+<code></code>`
+<br>
+<hr>
+<br>
+<h2>Feature Status Definitions</h2>
+<br>
+| Status | Description | Next Action |
+|--------|-------------|-------------|
+| PLANNED | In backlog, not started | Begin development |
+| IN_PROGRESS | Active development | Complete implementation |
+| IN_REVIEW | Code review phase | Address feedback |
+| IN_TESTING | QA testing on staging | Fix bugs, get approval |
+| READY | All checks passed | Await release window |
+| RELEASED | Live in production | Monitor metrics |
+| BLOCKED | Development halted | Resolve blockers |
+| CANCELLED | Will not be released | Archive branch |
+<br>
+<hr>
+<br>
+<h2>Current Release Train</h2>
+<br>
+<h3>Next Release Window: Friday, October 18, 2025</h3>
+<strong>Eligible Features:</strong> None ready yet
+<br>
+<h3>Release Freeze Dates</h3>
+<li>No releases: December 24-31 (Holidays)</li>
+<li>No releases: During critical business periods</li>
+<br>
+<hr>
+<br>
+<h2>Quick Commands</h2>
+<br>
+<code></code>`bash
+<h1>Check feature status</h1>
+grep "FEAT-" FEATURE_REGISTRY.md
+<br>
+<h1>Update feature progress</h1>
+vim FEATURE_REGISTRY.md
+git add FEATURE_REGISTRY.md
+git commit -m "chore: update feature progress"
+git push
+<br>
+<h1>Mark feature ready</h1>
+<h1>Edit the table above, moving from "In Progress" to "Ready"</h1>
+<code></code>`
+<br>
+<hr>
+<br>
+<h2>Metrics</h2>
+<br>
+<li><strong>Features in Development:</strong> 3</li>
+<li><strong>Features Ready:</strong> 0</li>
+<li><strong>Features Released (This Month):</strong> 1</li>
+<li><strong>Average Time to Release:</strong> TBD</li>
+<li><strong>Release Success Rate:</strong> 100%</li>
+<br>
+<hr>
+<br>
+<em>Last Updated: October 11, 2025</em>
+<em>Next Review: October 14, 2025</em>
+        </div>
+        <div class="timestamp">
+            Last updated: 2025-10-11 11:14:17
+        </div>
+    </div>
+</body>
+</html>

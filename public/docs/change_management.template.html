@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHANGE MANAGEMENT - Assiduous Documentation</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3, h4, h5, h6 {
+            margin-top: 24px;
+            margin-bottom: 16px;
+            font-weight: 600;
+            line-height: 1.25;
+        }
+        h1 { font-size: 2em; border-bottom: 1px solid #e1e4e8; padding-bottom: 0.3em; }
+        h2 { font-size: 1.5em; border-bottom: 1px solid #e1e4e8; padding-bottom: 0.3em; }
+        h3 { font-size: 1.25em; }
+        code {
+            background: #f6f8fa;
+            padding: 0.2em 0.4em;
+            border-radius: 3px;
+            font-size: 85%;
+        }
+        pre {
+            background: #f6f8fa;
+            padding: 16px;
+            overflow: auto;
+            border-radius: 6px;
+            line-height: 1.45;
+        }
+        pre code {
+            background: transparent;
+            padding: 0;
+        }
+        ul, ol {
+            padding-left: 2em;
+            margin-bottom: 16px;
+        }
+        li {
+            margin-bottom: 4px;
+        }
+        a {
+            color: #0366d6;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        blockquote {
+            padding: 0 1em;
+            color: #6a737d;
+            border-left: 0.25em solid #dfe2e5;
+            margin: 0 0 16px 0;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 16px;
+        }
+        table th, table td {
+            padding: 6px 13px;
+            border: 1px solid #dfe2e5;
+        }
+        table tr:nth-child(2n) {
+            background-color: #f6f8fa;
+        }
+        .nav-link {
+            display: inline-block;
+            padding: 8px 16px;
+            background: #0366d6;
+            color: white;
+            border-radius: 6px;
+            margin: 10px 5px;
+            text-decoration: none;
+        }
+        .nav-link:hover {
+            background: #0256c7;
+            text-decoration: none;
+        }
+        .timestamp {
+            color: #6a737d;
+            font-size: 0.85em;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e1e4e8;
+        }
+    </style>
+</head>
+<body>
+<aside class="sidebar"><div class="sidebar-header">
+  <a href="../dashboard.html" class="sidebar-logo">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+      <polyline points="9 22 9 12 15 12 15 22"></polyline>
+    </svg>
+    <span class="sidebar-logo-text">Admin Portal</span>
+  </a>
+</div>
+
+<nav class="sidebar-nav">
+  <div class="nav-section">
+    <div class="nav-section-title">Main</div>
+    <a href="../dashboard.html" class="nav-item" data-key="dashboard">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="3" y="3" width="7" height="7"></rect>
+        <rect x="14" y="3" width="7" height="7"></rect>
+        <rect x="14" y="14" width="7" height="7"></rect>
+        <rect x="3" y="14" width="7" height="7"></rect>
+      </svg>
+      Dashboard
+    </a>
+    <a href="../analytics.html" class="nav-item" data-key="analytics">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="12" y1="20" x2="12" y2="10"></line>
+        <line x1="18" y1="20" x2="18" y2="4"></line>
+        <line x1="6" y1="20" x2="6" y2="16"></line>
+      </svg>
+      Realty Analytics
+    </a>
+    <a href="../market.html" class="nav-item" data-key="market">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+      </svg>
+      Market Analysis
+    </a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">Management</div>
+    <a href="../properties.html" class="nav-item" data-key="properties">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+      </svg>
+      Properties
+    </a>
+    <a href="../agents.html" class="nav-item" data-key="agents">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+        <circle cx="9" cy="7" r="4"></circle>
+      </svg>
+      Agents
+    </a>
+    <a href="../clients.html" class="nav-item" data-key="clients">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+        <circle cx="12" cy="7" r="4"></circle>
+      </svg>
+      Clients
+    </a>
+    <a href="../transactions.html" class="nav-item" data-key="transactions">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="12" y1="1" x2="12" y2="23"></line>
+        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+      </svg>
+      Transactions
+    </a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">Development</div>
+    <a href="../development/dashboard.html" class="nav-item" data-key="dev-dashboard">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="16 18 22 12 16 6"></polyline>
+        <polyline points="8 6 2 12 8 18"></polyline>
+      </svg>
+      Dev Dashboard
+    </a>
+    <a href="../development/costs.html" class="nav-item" data-key="dev-costs">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="12" y1="1" x2="12" y2="23"></line>
+        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+      </svg>
+      Dev Costs
+    </a>
+    <a href="../development/analytics.html" class="nav-item" data-key="dev-analytics">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M22 2L11 13"></path>
+        <path d="M22 2L15 22L11 13L2 9L22 2Z"></path>
+      </svg>
+      Dev Analytics
+    </a>
+    <a href="../development/reports.html" class="nav-item" data-key="dev-reports">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+        <polyline points="14 2 14 8 20 8"></polyline>
+        <line x1="16" y1="13" x2="8" y2="13"></line>
+        <line x1="16" y1="17" x2="8" y2="17"></line>
+      </svg>
+      Dev Reports
+    </a>
+    <a href="../development/docs.html" class="nav-item" data-key="dev-docs">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+      </svg>
+      Dev Docs
+    </a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">Tools</div>
+    <a href="/client/micro-flip-calculator.html" class="nav-item" data-key="calculator">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect>
+        <line x1="8" y1="6" x2="16" y2="6"></line>
+        <line x1="8" y1="10" x2="16" y2="10"></line>
+        <line x1="8" y1="14" x2="16" y2="14"></line>
+      </svg>
+      Micro-Flip Calculator
+    </a>
+    <a href="/client/deal-analyzer.html" class="nav-item" data-key="analyzer">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="12" y1="1" x2="12" y2="23"></line>
+        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+      </svg>
+      Deal Analyzer
+    </a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">System</div>
+    <a href="../knowledge-base.html" class="nav-item" data-key="knowledge">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+      </svg>
+      Knowledge Base
+    </a>
+    <a href="../contracts/index.html" class="nav-item" data-key="contracts">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+        <polyline points="14 2 14 8 20 8"></polyline>
+      </svg>
+      Contracts
+    </a>
+    <a href="../settings.html" class="nav-item" data-key="settings">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="3"></circle>
+        <path d="M12 1v6m0 6v6m4.22-13.22l4.24 4.24M1.54 1.54l4.24 4.24M18.46 18.46l4.24 4.24M1.54 18.46l4.24-4.24"></path>
+      </svg>
+      Settings
+    </a>
+  </div>
+</nav></aside>
+<aside class="sidebar"><div class="sidebar-header">
+  <a href="../dashboard.html" class="sidebar-logo">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+      <polyline points="9 22 9 12 15 12 15 22"></polyline>
+    </svg>
+    <span class="sidebar-logo-text">Admin Portal</span>
+  </a>
+</div>
+
+<nav class="sidebar-nav">
+  <div class="nav-section">
+    <div class="nav-section-title">Main</div>
+    <a href="../dashboard.html" class="nav-item" data-key="dashboard">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="3" y="3" width="7" height="7"></rect>
+        <rect x="14" y="3" width="7" height="7"></rect>
+        <rect x="14" y="14" width="7" height="7"></rect>
+        <rect x="3" y="14" width="7" height="7"></rect>
+      </svg>
+      Dashboard
+    </a>
+    <a href="../analytics.html" class="nav-item" data-key="analytics">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="12" y1="20" x2="12" y2="10"></line>
+        <line x1="18" y1="20" x2="18" y2="4"></line>
+        <line x1="6" y1="20" x2="6" y2="16"></line>
+      </svg>
+      Realty Analytics
+    </a>
+    <a href="../market.html" class="nav-item" data-key="market">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+      </svg>
+      Market Analysis
+    </a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">Management</div>
+    <a href="../properties.html" class="nav-item" data-key="properties">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+      </svg>
+      Properties
+    </a>
+    <a href="../agents.html" class="nav-item" data-key="agents">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+        <circle cx="9" cy="7" r="4"></circle>
+      </svg>
+      Agents
+    </a>
+    <a href="../clients.html" class="nav-item" data-key="clients">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+        <circle cx="12" cy="7" r="4"></circle>
+      </svg>
+      Clients
+    </a>
+    <a href="../transactions.html" class="nav-item" data-key="transactions">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="12" y1="1" x2="12" y2="23"></line>
+        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+      </svg>
+      Transactions
+    </a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">Development</div>
+    <a href="../development/dashboard.html" class="nav-item" data-key="dev-dashboard">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="16 18 22 12 16 6"></polyline>
+        <polyline points="8 6 2 12 8 18"></polyline>
+      </svg>
+      Dev Dashboard
+    </a>
+    <a href="../development/costs.html" class="nav-item" data-key="dev-costs">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="12" y1="1" x2="12" y2="23"></line>
+        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+      </svg>
+      Dev Costs
+    </a>
+    <a href="../development/analytics.html" class="nav-item" data-key="dev-analytics">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M22 2L11 13"></path>
+        <path d="M22 2L15 22L11 13L2 9L22 2Z"></path>
+      </svg>
+      Dev Analytics
+    </a>
+    <a href="../development/reports.html" class="nav-item" data-key="dev-reports">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+        <polyline points="14 2 14 8 20 8"></polyline>
+        <line x1="16" y1="13" x2="8" y2="13"></line>
+        <line x1="16" y1="17" x2="8" y2="17"></line>
+      </svg>
+      Dev Reports
+    </a>
+    <a href="../development/docs.html" class="nav-item" data-key="dev-docs">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+      </svg>
+      Dev Docs
+    </a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">Tools</div>
+    <a href="/client/micro-flip-calculator.html" class="nav-item" data-key="calculator">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect>
+        <line x1="8" y1="6" x2="16" y2="6"></line>
+        <line x1="8" y1="10" x2="16" y2="10"></line>
+        <line x1="8" y1="14" x2="16" y2="14"></line>
+      </svg>
+      Micro-Flip Calculator
+    </a>
+    <a href="/client/deal-analyzer.html" class="nav-item" data-key="analyzer">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="12" y1="1" x2="12" y2="23"></line>
+        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+      </svg>
+      Deal Analyzer
+    </a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">System</div>
+    <a href="../knowledge-base.html" class="nav-item" data-key="knowledge">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+      </svg>
+      Knowledge Base
+    </a>
+    <a href="../contracts/index.html" class="nav-item" data-key="contracts">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+        <polyline points="14 2 14 8 20 8"></polyline>
+      </svg>
+      Contracts
+    </a>
+    <a href="../settings.html" class="nav-item" data-key="settings">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="3"></circle>
+        <path d="M12 1v6m0 6v6m4.22-13.22l4.24 4.24M1.54 1.54l4.24 4.24M18.46 18.46l4.24 4.24M1.54 18.46l4.24-4.24"></path>
+      </svg>
+      Settings
+    </a>
+  </div>
+</nav></aside>
+    <div class="container">
+        <nav>
+            <a href="/docs/index.html" class="nav-link">📚 Documentation Hub</a>
+            <a href="/docs/readme.html" class="nav-link">📖 README</a>
+            <a href="/docs/changelog.html" class="nav-link">📝 Changelog</a>
+            <a href="/docs/warp.html" class="nav-link">⚙️ WARP Rules</a>
+        </nav>
+        <h1>CHANGE MANAGEMENT</h1>
+        <div class="content">
+<h1>CHANGE MANAGEMENT PLAN</h1>
+<h2>Change Control Procedures</h2>
+<br>
+<strong>Document Type:</strong> Change Management  
+<strong>Version:</strong> 2.0.0  
+<strong>Last Updated:</strong> October 9, 2025  
+<strong>Status:</strong> Authoritative Change Document
+<strong>Consolidation Note:</strong> Merged from rollback_registry.md and CANONICAL_DOCS.md
+<br>
+<hr>
+<br>
+<br>
+<br>
+<hr>
+<h1>Change Control Process</h1>
+<hr>
+<br>
+<h1>Rollback Registry</h1>
+<br>
+This document maintains a record of all production releases and their rollback procedures for the Assiduous AI-Powered Real Estate Platform.
+<br>
+<h2>Purpose</h2>
+<br>
+The rollback registry provides:
+<li>Quick reference for reverting to previous stable versions</li>
+<li>Historical record of all production deployments</li>
+<li>Standardized rollback procedures</li>
+<li>Risk assessment for version changes</li>
+<br>
+<h2>Rollback Procedures</h2>
+<br>
+<h3>Standard Rollback Process</h3>
+<br>
+1. <strong>Assess the Situation</strong>
+   - Identify the issue requiring rollback
+   - Document the problem for post-mortem
+   - Notify stakeholders
+<br>
+2. <strong>Pre-Rollback Checks</strong>
+   <code></code>`bash
+   # Check current version
+   git describe --tags --always
+   
+   # Check for uncommitted changes
+   git status
+   
+   # Backup current state
+   git stash save "Pre-rollback backup $(date +%Y%m%d_%H%M%S)"
+   <code></code>`
+<br>
+3. <strong>Execute Rollback</strong>
+   <code></code>`bash
+   # Use the rollback script
+   ./scripts/rollback/rollback_to_tag.sh &lt;target-version&gt;
+   
+   # Or manually:
+   git checkout tags/v&lt;version&gt;
+   <code></code>`
+<br>
+4. <strong>Post-Rollback Verification</strong>
+   - Run smoke tests
+   - Verify critical functionality
+   - Monitor error rates
+   - Check user reports
+<br>
+5. <strong>Documentation</strong>
+   - Update this registry
+   - Create incident report
+   - Schedule post-mortem
+<br>
+<h2>Version History</h2>
+<br>
+<h3>v0.1.1 - Design System Enhancement</h3>
+<strong>Date:</strong> 2025-08-29  
+<strong>Commit:</strong> <code>e3dceec</code>  
+<strong>Branch:</strong> <code>main</code>  
+<strong>Status:</strong> Stable  
+<br>
+<strong>Features:</strong>
+<li>Enhanced landing page design</li>
+<li>CSS variable aliases for compatibility</li>
+<li>Extended spacing system</li>
+<li>Unified dashboard design system</li>
+<li>Improved animation performance</li>
+<br>
+<strong>Changes from v0.1.0:</strong>
+<li>Consolidated 4 dashboard variants into single unified dashboard</li>
+<li>Removed 5,234 lines of redundant code</li>
+<li>Improved navigation visual styling</li>
+<li>Fixed knowledge base page consistency</li>
+<br>
+<strong>Dependencies:</strong>
+<li>None (static HTML/CSS/JS)</li>
+<br>
+<strong>Rollback Steps:</strong>
+<code></code>`bash
+git checkout tags/v0.1.1
+<h1>No database migrations required</h1>
+<h1>No dependency updates required</h1>
+<code></code>`
+<br>
+<strong>Rollback Risks:</strong> Minimal - UI/UX changes only
+<br>
+<strong>Recovery Time:</strong> &lt; 5 minutes
+<br>
+<hr>
+<br>
+<h3>v0.1.0 - Foundation Release</h3>
+<strong>Date:</strong> 2025-08-22  
+<strong>Commit:</strong> <code>aeaf19b</code>  
+<strong>Branch:</strong> <code>main</code>  
+<strong>Status:</strong> Stable  
+<br>
+<strong>Features:</strong>
+<li>Core web application</li>
+<li>Basic property search</li>
+<li>Multi-language support (EN/ES)</li>
+<li>Responsive design</li>
+<li>AI matching engine foundation</li>
+<br>
+<strong>Dependencies:</strong>
+<li>None (static HTML/CSS/JS)</li>
+<br>
+<strong>Rollback Steps:</strong>
+<code></code>`bash
+git checkout tags/v0.1.0
+<h1>No database migrations required</h1>
+<h1>No dependency updates required</h1>
+<code></code>`
+<br>
+<strong>Rollback Risks:</strong> None - Initial release
+<br>
+<strong>Recovery Time:</strong> &lt; 5 minutes
+<br>
+<hr>
+<br>
+<h3>v0.0.1 - Initial Scaffold</h3>
+<strong>Date:</strong> 2025-08-10  
+<strong>Commit:</strong> <code>837f068</code>  
+<strong>Branch:</strong> <code>main</code>  
+<strong>Status:</strong> Deprecated  
+<br>
+<strong>Features:</strong>
+<li>Project initialization</li>
+<li>Basic directory structure</li>
+<br>
+<strong>Rollback Steps:</strong>
+<code></code>`bash
+git checkout tags/v0.0.1
+<code></code>`
+<br>
+<strong>Rollback Risks:</strong> Loss of all application functionality
+<br>
+<strong>Recovery Time:</strong> &lt; 2 minutes
+<br>
+<hr>
+<br>
+<h2>Rollback Decision Matrix</h2>
+<br>
+| Severity | Issue Type | Rollback Decision | Approval Required |
+|----------|------------|-------------------|-------------------|
+| Critical | Data corruption | Immediate | On-call Engineer |
+| Critical | Security breach | Immediate | Security Team |
+| High | Feature breaking | Within 1 hour | Team Lead |
+| Medium | Performance degradation | Within 4 hours | Product Owner |
+| Low | UI/UX issues | Next maintenance window | Product Owner |
+<br>
+<h2>Emergency Contacts</h2>
+<br>
+| Role | Name | Contact | Availability |
+|------|------|---------|--------------|
+| Technical Lead | [TBD] | [TBD] | 24/7 |
+| DevOps Lead | [TBD] | [TBD] | 24/7 |
+| Product Owner | [TBD] | [TBD] | Business hours |
+| Security Team | [TBD] | [TBD] | 24/7 |
+<br>
+<h2>Rollback Scripts</h2>
+<br>
+<h3>Available Scripts</h3>
+<br>
+1. <strong>create_tag.sh</strong> - Create a new version tag with validation
+2. <strong>rollback_to_tag.sh</strong> - Rollback to a specific version
+3. <strong>emergency_rollback.sh</strong> - Fast rollback for critical situations
+<br>
+<h3>Usage Examples</h3>
+<br>
+<code></code>`bash
+<h1>Create a new release tag</h1>
+./scripts/rollback/create_tag.sh 0.2.0 "AI integration release"
+<br>
+<h1>Rollback to previous version</h1>
+./scripts/rollback/rollback_to_tag.sh v0.1.0
+<br>
+<h1>Emergency rollback (skips checks)</h1>
+./scripts/rollback/emergency_rollback.sh v0.1.0
+<code></code>`
+<br>
+<h2>Best Practices</h2>
+<br>
+1. <strong>Always Tag Releases</strong>
+   - Use semantic versioning
+   - Include detailed release notes
+   - Test rollback procedure
+<br>
+2. <strong>Database Considerations</strong>
+   - Maintain backward-compatible migrations
+   - Test rollback with production data copy
+   - Have database backup before major releases
+<br>
+3. <strong>Configuration Management</strong>
+   - Version control all configuration
+   - Document environment variables
+   - Maintain configuration compatibility
+<br>
+4. <strong>Communication</strong>
+   - Notify team before rollback
+   - Update status page
+   - Inform affected users
+<br>
+<h2>Rollback Metrics</h2>
+<br>
+Track these metrics for each rollback:
+<br>
+<li>Time to detect issue</li>
+<li>Time to decision</li>
+<li>Time to execute rollback</li>
+<li>Time to verify success</li>
+<li>Total downtime</li>
+<li>Users affected</li>
+<li>Root cause category</li>
+<br>
+<h2>Appendix: Rollback Checklist</h2>
+<br>
+<li>[ ] Issue identified and documented</li>
+<li>[ ] Stakeholders notified</li>
+<li>[ ] Current state backed up</li>
+<li>[ ] Rollback target version confirmed</li>
+<li>[ ] Dependencies checked</li>
+<li>[ ] Database compatibility verified</li>
+<li>[ ] Rollback executed</li>
+<li>[ ] Smoke tests passed</li>
+<li>[ ] Monitoring verified</li>
+<li>[ ] Users notified</li>
+<li>[ ] Incident report created</li>
+<li>[ ] Post-mortem scheduled</li>
+<li>[ ] Registry updated</li>
+<br>
+<hr>
+<br>
+<strong>Last Updated:</strong> 2025-08-29  
+<strong>Maintained By:</strong> DevOps Team  
+<strong>Review Schedule:</strong> After each rollback incident
+<h2>🔄 Update Workflow</h2>
+<br>
+<h3>When Completing a Phase:</h3>
+1. ✅ Mark phase complete in <strong>10_DAY_MVP_PLAN.md</strong>
+2. ✅ Add entry to <strong>CHANGELOG.md</strong> with version bump
+3. ✅ Update <strong>README.md</strong> if major features added
+4. ✅ Commit with proper conventional commit message
+<br>
+<h3>When Starting a New Phase:</h3>
+1. ✅ Review <strong>10_DAY_MVP_PLAN.md</strong> for current phase details
+2. ✅ Check <strong>WARP.md</strong> for rules and guidelines
+3. ✅ Reference <strong>Technical Blueprint</strong> for feature specs
+4. ✅ Follow RULE 4 QA/QC before claiming complete
+<br>
+<h3>When Adding New Features:</h3>
+1. ✅ Add to <strong>Technical Blueprint</strong> (product vision)
+2. ✅ Add tasks to <strong>10_DAY_MVP_PLAN.md</strong> (implementation)
+3. ✅ After completion, log in <strong>CHANGELOG.md</strong>
+<br>
+<hr>
+<br>
+<h2>🎯 Current State (October 9, 2025)</h2>
+<br>
+<h3>Project Reality Check (Recalibration)</h3>
+<li><strong>Project Started</strong>: August 10, 2025 (verified via Git)</li>
+<li><strong>Active Development</strong>: 61 days, 429 commits</li>
+<li><strong>Overall Completion</strong>: 35% (not 70-100% as previously claimed)</li>
+<br>
+<h3>Phase Status (Corrected):</h3>
+<li><strong>Phase 1-2</strong>: PARTIALLY COMPLETE (~60%)</li>
+  - HTML pages created but many features not functional
+  - No real backend integration
+  
+<li><strong>Phase 3</strong>: NOT STARTED ❌</li>
+  - Agent portal does not exist (only 12-line redirect stub)
+  - Marked as complete in docs but verification failed
+  
+<li><strong>Phase 4-9</strong>: PLANNED 📋</li>
+  - Authentication, Backend API, and enhanced features pending
+<br>
+<hr>
+<br>
+<h2>⚖️ Document Hierarchy</h2>
+<br>
+<code></code>`
+WARP.md                           (HOW we develop)
+    ↓
+Technical Blueprint               (WHAT we're building)
+    ↓
+10_DAY_MVP_PLAN.md               (WHEN/HOW we build it)
+    ↓
+        </div>
+        <div class="timestamp">
+            Last updated: 2025-10-11 11:14:17
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API SPECIFICATION - Assiduous Documentation</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3, h4, h5, h6 {
+            margin-top: 24px;
+            margin-bottom: 16px;
+            font-weight: 600;
+            line-height: 1.25;
+        }
+        h1 { font-size: 2em; border-bottom: 1px solid #e1e4e8; padding-bottom: 0.3em; }
+        h2 { font-size: 1.5em; border-bottom: 1px solid #e1e4e8; padding-bottom: 0.3em; }
+        h3 { font-size: 1.25em; }
+        code {
+            background: #f6f8fa;
+            padding: 0.2em 0.4em;
+            border-radius: 3px;
+            font-size: 85%;
+        }
+        pre {
+            background: #f6f8fa;
+            padding: 16px;
+            overflow: auto;
+            border-radius: 6px;
+            line-height: 1.45;
+        }
+        pre code {
+            background: transparent;
+            padding: 0;
+        }
+        ul, ol {
+            padding-left: 2em;
+            margin-bottom: 16px;
+        }
+        li {
+            margin-bottom: 4px;
+        }
+        a {
+            color: #0366d6;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        blockquote {
+            padding: 0 1em;
+            color: #6a737d;
+            border-left: 0.25em solid #dfe2e5;
+            margin: 0 0 16px 0;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 16px;
+        }
+        table th, table td {
+            padding: 6px 13px;
+            border: 1px solid #dfe2e5;
+        }
+        table tr:nth-child(2n) {
+            background-color: #f6f8fa;
+        }
+        .nav-link {
+            display: inline-block;
+            padding: 8px 16px;
+            background: #0366d6;
+            color: white;
+            border-radius: 6px;
+            margin: 10px 5px;
+            text-decoration: none;
+        }
+        .nav-link:hover {
+            background: #0256c7;
+            text-decoration: none;
+        }
+        .timestamp {
+            color: #6a737d;
+            font-size: 0.85em;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e1e4e8;
+        }
+    </style>
+</head>
+<body>
+<!-- @component:sidebar active="api_specification.template" role="admin" -->
+<!-- @component:sidebar active="api_specification" role="admin" -->
+    <div class="container">
+        <nav>
+            <a href="/docs/index.html" class="nav-link">📚 Documentation Hub</a>
+            <a href="/docs/readme.html" class="nav-link">📖 README</a>
+            <a href="/docs/changelog.html" class="nav-link">📝 Changelog</a>
+            <a href="/docs/warp.html" class="nav-link">⚙️ WARP Rules</a>
+        </nav>
+        <h1>API SPECIFICATION</h1>
+        <div class="content">
+<h1>API SPECIFICATION DOCUMENT</h1>
+<h2>RESTful API Endpoints and Contracts</h2>
+<br>
+<strong>Document Type:</strong> API Specification
+<strong>Version:</strong> 2.0.0
+<strong>Last Updated:</strong> October 9, 2025
+<strong>Status:</strong> Authoritative API Document
+<strong>Consolidation Note:</strong> Renamed from api_docs.md
+<br>
+<hr>
+<h1>Assiduous Realty API Documentation</h1>
+<br>
+<h2>Overview</h2>
+<br>
+The Assiduous Realty API provides programmatic access to the platform's functionality, enabling integration with the unified client portal and agent dashboard. This RESTful API uses JWT authentication and returns JSON responses.
+<br>
+<h2>Authentication</h2>
+<br>
+<h3>Token-based Authentication</h3>
+<br>
+All API requests must include a valid JWT token in the Authorization header:
+<br>
+<code></code>`http
+Authorization: Bearer &lt;jwt_token&gt;
+<code></code>`
+<br>
+<h3>Obtaining Tokens</h3>
+<br>
+<code></code>`http
+POST /api/v1/auth/login
+Content-Type: application/json
+<br>
+{
+  "email": "user@example.com",
+  "password": "secure_password"
+}
+<br>
+Response:
+{
+  "access_token": "jwt_token",
+  "refresh_token": "refresh_token",
+  "expires_in": 3600
+}
+<code></code>`
+<br>
+<h2>API Endpoints</h2>
+<br>
+<h3>Client Management</h3>
+<br>
+#### Create Client Account
+<code></code>`http
+POST /api/v1/clients
+Content-Type: application/json
+<br>
+{
+  "email": "client@example.com",
+  "name": "John Doe",
+  "phone": "+1234567890",
+  "preferences": {
+    "preferred_locations": ["San Francisco", "Oakland"],
+    "property_types": ["single_family", "condo"],
+    "price_range": {
+      "min": 500000,
+      "max": 1000000
+    }
+  }
+}
+<br>
+Response: 201 Created
+{
+  "id": "client_uuid",
+  "email": "client@example.com",
+  "name": "John Doe",
+  "created_at": "2024-01-01T00:00:00Z"
+}
+<code></code>`
+<br>
+#### Update Client Profile
+<code></code>`http
+PUT /api/v1/clients/{client_id}
+Content-Type: application/json
+<br>
+{
+  "phone": "+1987654321",
+  "preferences": {
+    "preferred_locations": ["San Jose", "Mountain View"],
+    "price_range": {
+      "min": 600000,
+      "max": 1200000
+    }
+  }
+}
+<br>
+Response: 200 OK
+{
+  "id": "client_uuid",
+  "updated_at": "2024-01-02T00:00:00Z"
+}
+<code></code>`
+<br>
+<h3>Property Management</h3>
+<br>
+#### List Properties
+<code></code>`http
+GET /api/v1/properties?status=active&amp;type=single_family&amp;min_price=500000&amp;max_price=1000000
+<br>
+Response: 200 OK
+{
+  "properties": [
+    {
+      "id": "property_uuid",
+      "address": "123 Main St, San Francisco, CA",
+      "price": 750000,
+      "status": "active",
+      "features": {
+        "bedrooms": 3,
+        "bathrooms": 2,
+        "square_feet": 1500
+      }
+    }
+  ],
+  "total": 45,
+  "page": 1,
+  "per_page": 20
+}
+<code></code>`
+<br>
+#### Create Property Listing
+<code></code>`http
+POST /api/v1/properties
+Content-Type: application/json
+<br>
+{
+  "address": "456 Oak St, San Francisco, CA",
+  "price": 850000,
+  "property_type": "single_family",
+  "features": {
+    "bedrooms": 4,
+    "bathrooms": 3,
+    "square_feet": 2000,
+    "lot_size": 5000,
+    "year_built": 1990
+  },
+  "description": "Beautiful renovated home..."
+}
+<br>
+Response: 201 Created
+{
+  "id": "property_uuid",
+  "created_at": "2024-01-03T00:00:00Z"
+}
+<code></code>`
+<br>
+<h3>Transaction Management</h3>
+<br>
+#### Start Transaction
+<code></code>`http
+POST /api/v1/transactions
+Content-Type: application/json
+<br>
+{
+  "property_id": "property_uuid",
+  "client_id": "client_uuid",
+  "type": "purchase",  // or "sale"
+  "offer_price": 745000
+}
+<br>
+Response: 201 Created
+{
+  "id": "transaction_uuid",
+  "status": "pending",
+  "created_at": "2024-01-04T00:00:00Z"
+}
+<code></code>`
+<br>
+#### Update Transaction Status
+<code></code>`http
+PUT /api/v1/transactions/{transaction_id}/status
+Content-Type: application/json
+<br>
+{
+  "status": "accepted",
+  "notes": "Offer accepted by seller"
+}
+<br>
+Response: 200 OK
+{
+  "id": "transaction_uuid",
+  "status": "accepted",
+  "updated_at": "2024-01-05T00:00:00Z"
+}
+<code></code>`
+<br>
+<h3>Agent Management</h3>
+<br>
+#### List Agents
+<code></code>`http
+GET /api/v1/agents?specialty=luxury&amp;location=san_francisco
+<br>
+Response: 200 OK
+{
+  "agents": [
+    {
+      "id": "agent_uuid",
+      "name": "Jane Smith",
+      "specialty": "luxury",
+      "location": "San Francisco",
+      "ratings": 4.9,
+      "transactions_completed": 50
+    }
+  ],
+  "total": 10,
+  "page": 1,
+  "per_page": 20
+}
+<code></code>`
+<br>
+<h3>Market Analytics</h3>
+<br>
+#### Get Market Insights
+<code></code>`http
+GET /api/v1/analytics/market?location=san_francisco&amp;property_type=single_family
+<br>
+Response: 200 OK
+{
+  "median_price": 1200000,
+  "price_trend": {
+    "1_month": 2.5,
+    "3_month": 5.8,
+    "12_month": 12.3
+  },
+  "inventory_levels": {
+    "current": 450,
+    "trend": "decreasing"
+  },
+  "days_on_market": {
+    "average": 25,
+    "trend": "stable"
+  }
+}
+<code></code>`
+<br>
+<h2>Error Handling</h2>
+<br>
+The API uses standard HTTP status codes and returns detailed error messages:
+<br>
+<code></code>`json
+{
+  "error": {
+    "code": "validation_error",
+    "message": "Invalid property type specified",
+    "details": {
+      "field": "property_type",
+      "allowed_values": ["single_family", "condo", "townhouse", "multi_family"]
+    }
+  }
+}
+<code></code>`
+<br>
+Common status codes:
+<li>200: Success</li>
+<li>201: Created</li>
+<li>400: Bad Request</li>
+<li>401: Unauthorized</li>
+<li>403: Forbidden</li>
+<li>404: Not Found</li>
+<li>422: Unprocessable Entity</li>
+<li>500: Internal Server Error</li>
+<br>
+<h2>Rate Limiting</h2>
+<br>
+API requests are limited to:
+<li>100 requests per minute for authenticated clients</li>
+<li>30 requests per minute for unauthenticated requests</li>
+<br>
+Rate limit headers are included in all responses:
+<code></code>`http
+X-RateLimit-Limit: 100
+X-RateLimit-Remaining: 95
+X-RateLimit-Reset: 1640995200
+<code></code>`
+<br>
+<h2>Webhooks</h2>
+<br>
+The API supports webhooks for real-time notifications:
+<br>
+<code></code>`http
+POST /api/v1/webhooks
+Content-Type: application/json
+<br>
+{
+  "url": "https://your-domain.com/webhook",
+  "events": [
+    "transaction.status_changed",
+    "property.price_updated",
+    "client.preference_updated"
+  ]
+}
+<br>
+Response: 201 Created
+{
+  "id": "webhook_uuid",
+  "status": "active"
+}
+<code></code>`
+<br>
+<h2>SDK Support</h2>
+<br>
+Official SDKs are available for:
+<li>JavaScript</li>
+<li>Python</li>
+<li>Ruby</li>
+<li>PHP</li>
+<br>
+Example using JavaScript SDK:
+<code></code>`javascript
+const AssidiousAPI = require('assiduous-sdk');
+<br>
+const client = new AssidiousAPI({
+  apiKey: 'your_api_key',
+  environment: 'production'
+});
+<br>
+// Get client profile
+const profile = await client.clients.get('client_id');
+<br>
+// List properties
+const properties = await client.properties.list({
+  status: 'active',
+  type: 'single_family',
+  minPrice: 500000,
+  maxPrice: 1000000
+});
+<code></code>`
+<br>
+<h2>Changelog</h2>
+<br>
+<h3>v1.0.0 (2024-01-01)</h3>
+<li>Initial API release</li>
+<li>Basic CRUD operations for properties, clients, and transactions</li>
+<li>Authentication and authorization system</li>
+<br>
+<h3>v1.1.0 (2024-01-15)</h3>
+<li>Added market analytics endpoints</li>
+<li>Enhanced property search capabilities</li>
+<li>Improved error handling and validation</li>
+<br>
+<h3>v1.2.0 (2024-02-01)</h3>
+<li>Unified client role implementation</li>
+<li>Enhanced transaction management</li>
+<li>Added webhook support</li>
+<li>Improved rate limiting</li>
+        </div>
+        <div class="timestamp">
+            Last updated: 2025-10-11 11:14:17
+        </div>
+    </div>
+</body>
+</html>

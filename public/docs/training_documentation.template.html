@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TRAINING DOCUMENTATION - Assiduous Documentation</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3, h4, h5, h6 {
+            margin-top: 24px;
+            margin-bottom: 16px;
+            font-weight: 600;
+            line-height: 1.25;
+        }
+        h1 { font-size: 2em; border-bottom: 1px solid #e1e4e8; padding-bottom: 0.3em; }
+        h2 { font-size: 1.5em; border-bottom: 1px solid #e1e4e8; padding-bottom: 0.3em; }
+        h3 { font-size: 1.25em; }
+        code {
+            background: #f6f8fa;
+            padding: 0.2em 0.4em;
+            border-radius: 3px;
+            font-size: 85%;
+        }
+        pre {
+            background: #f6f8fa;
+            padding: 16px;
+            overflow: auto;
+            border-radius: 6px;
+            line-height: 1.45;
+        }
+        pre code {
+            background: transparent;
+            padding: 0;
+        }
+        ul, ol {
+            padding-left: 2em;
+            margin-bottom: 16px;
+        }
+        li {
+            margin-bottom: 4px;
+        }
+        a {
+            color: #0366d6;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        blockquote {
+            padding: 0 1em;
+            color: #6a737d;
+            border-left: 0.25em solid #dfe2e5;
+            margin: 0 0 16px 0;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 16px;
+        }
+        table th, table td {
+            padding: 6px 13px;
+            border: 1px solid #dfe2e5;
+        }
+        table tr:nth-child(2n) {
+            background-color: #f6f8fa;
+        }
+        .nav-link {
+            display: inline-block;
+            padding: 8px 16px;
+            background: #0366d6;
+            color: white;
+            border-radius: 6px;
+            margin: 10px 5px;
+            text-decoration: none;
+        }
+        .nav-link:hover {
+            background: #0256c7;
+            text-decoration: none;
+        }
+        .timestamp {
+            color: #6a737d;
+            font-size: 0.85em;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e1e4e8;
+        }
+    </style>
+</head>
+<body>
+<!-- @component:sidebar active="training_documentation" role="admin" -->
+    <div class="container">
+        <nav>
+            <a href="/docs/index.html" class="nav-link">📚 Documentation Hub</a>
+            <a href="/docs/readme.html" class="nav-link">📖 README</a>
+            <a href="/docs/changelog.html" class="nav-link">📝 Changelog</a>
+            <a href="/docs/warp.html" class="nav-link">⚙️ WARP Rules</a>
+        </nav>
+        <h1>TRAINING DOCUMENTATION</h1>
+        <div class="content">
+<h1>TRAINING AND USER DOCUMENTATION</h1>
+<h2>Training Materials and User Guides</h2>
+<br>
+<strong>Document Type:</strong> Training Documentation  
+<strong>Version:</strong> 2.0.0  
+<strong>Last Updated:</strong> October 9, 2025  
+<strong>Status:</strong> Authoritative Training Document
+<strong>Consolidation Note:</strong> Merged from CLAUDE.md and user guides
+<br>
+<hr>
+<br>
+<br>
+<br>
+<hr>
+<h1>GitHub Contributing Guide</h1>
+<hr>
+<br>
+<h1>CLAUDE.md</h1>
+<br>
+This file provides mandatory development rules for Claude AI when working with this repository.
+<br>
+<strong>CRITICAL: These rules are synchronized with WARP.md and must remain identical.</strong>
+<br>
+<hr>
+<br>
+<h2>🚨 ABSOLUTE DEVELOPMENT RULES (NEVER VIOLATE)</h2>
+<br>
+<h3><strong>RULE 0: CHECK SIRSIMASTER COMPONENT LIBRARY FIRST</strong></h3>
+<strong>Before creating ANY UI component, utility, or shared functionality:</strong>
+<li><strong>ALWAYS</strong> check the SirsiMaster Component Library at <code>/Users/thekryptodragon/Development/sirsimaster-component-library</code></li>
+<li><strong>USE</strong> existing library components instead of creating new ones</li>
+<li><strong>REFERENCE</strong> the library's WARP.md for component usage guidelines</li>
+<li><strong>CONTRIBUTE</strong> new generic components to the library, not this project</li>
+<li><strong>Library GitHub</strong>: https://github.com/SirsiMaster/sirsimaster-component-library</li>
+<br>
+<h3><strong>RULE 1: ALWAYS CHECK EXISTING DOCUMENTATION FIRST</strong></h3>
+<strong>Before starting ANY task, you MUST:</strong>
+<li>Read and understand ALL existing project documentation</li>
+<li>Verify what functionality already exists and is working</li>
+<li>Check against established project plans and architecture</li>
+<li>Ensure you're not duplicating work or breaking existing functionality</li>
+<li>Review similar implementations that already exist in the project</li>
+<li><strong>NEVER modify or break existing working files without explicit instruction</strong></li>
+<li><strong>NEVER recreate or simplify existing code</strong></li>
+<li><strong>ALWAYS build on top of existing UI/content</strong></li>
+<br>
+<h3><strong>RULE 2: MANDATORY COMPLETION VERIFICATION</strong></h3>
+<strong>Before reporting ANY task as complete, you MUST:</strong>
+<li>Run the completion verification script: <code>./scripts/verify_completion.sh</code></li>
+<li>Test all functionality you claim to have implemented</li>
+<li>Verify that claimed changes actually exist in the files</li>
+<li>Confirm that all components/pages work as specified</li>
+<li>Check that nothing existing was broken by your changes</li>
+<li><strong>NEVER report completion without running verification</strong></li>
+<br>
+<h3><strong>RULE 3: VALIDATE GROUND TRUTH</strong></h3>
+<strong>After completing ANY development work, you MUST:</strong>
+<li>Test all implemented functionality against the project requirements</li>
+<li>Update development documentation to reflect current reality</li>
+<li>Ensure analytics and dashboards show accurate current status</li>
+<li>Report the true development status, not assumptions</li>
+<li>Validate that the project state matches what you report</li>
+<li><strong>The documentation and dashboards must reflect ground truth, always</strong></li>
+<br>
+<h3><strong>RULE 4: MANDATORY HARSH QA/QC ASSESSMENT BEFORE COMPLETION CLAIMS</strong></h3>
+<strong>Before claiming ANY feature/task is complete, you MUST perform this severe assessment:</strong>
+<br>
+#### <strong>A. Browser-Based End-to-End Testing (CRITICAL)</strong>
+1. <strong>NEVER claim completion without actual browser testing</strong>
+2. <strong>Open every page in a real browser</strong> (not just HTTP status checks)
+3. <strong>Open browser DevTools Console</strong> and check for JavaScript errors
+4. <strong>Click through EVERY user flow</strong> from start to finish
+5. <strong>Test on mobile device or responsive view</strong>
+6. <strong>Verify data actually loads</strong> (not just loading spinners)
+7. <strong>Check that all buttons and links work</strong>
+8. <strong>Confirm all API calls succeed</strong> (check Network tab)
+<br>
+#### <strong>B. Method/Function Verification</strong>
+1. <strong>Verify ALL called methods exist</strong> before using them
+2. <strong>Verify ALL imports are correct</strong> and files exist at specified paths
+3. <strong>Check ALL event handlers</strong> are properly bound
+4. <strong>Validate ALL data transformations</strong> work with real data
+<br>
+#### <strong>C. Complete User Workflow Validation</strong>
+For EVERY user role (client, agent, admin), verify:
+1. User can access their dashboard - loads without errors
+2. User can view list pages - data displays correctly
+3. User can view detail pages - all fields populate
+4. User can perform CRUD operations - create, read, update, delete all work
+5. User can navigate between pages - all links work
+6. User workflows are end-to-end complete
+<br>
+#### <strong>D. Critical Self-Assessment Questions</strong>
+Before claiming completion, answer these questions HONESTLY:
+<br>
+1. ❓ <strong>Did I test this in an actual browser?</strong> - If NO → NOT COMPLETE
+2. ❓ <strong>Did I check the browser console for errors?</strong> - If NO → NOT COMPLETE
+3. ❓ <strong>Did I click through the entire user workflow?</strong> - If NO → NOT COMPLETE
+4. ❓ <strong>Did I verify all methods/functions exist?</strong> - If NO → NOT COMPLETE
+5. ❓ <strong>Can a real user actually accomplish the intended task?</strong> - If NO or UNSURE → NOT COMPLETE
+6. ❓ <strong>Would this work if deployed to production right now?</strong> - If NO or UNSURE → NOT COMPLETE
+7. ❓ <strong>Have I verified backend AND frontend work together?</strong> - If NO → NOT COMPLETE
+8. ❓ <strong>Are there any assumptions I haven't verified?</strong> - If YES → NOT COMPLETE until verified
+<br>
+#### <strong>E. Completion Criteria Checklist</strong>
+A task is ONLY complete when ALL of these are TRUE:
+<br>
+<li>[ ] ✅ All code written and committed</li>
+<li>[ ] ✅ All files deployed to appropriate environment</li>
+<li>[ ] ✅ Tested in actual browser with DevTools open</li>
+<li>[ ] ✅ Zero JavaScript console errors</li>
+<li>[ ] ✅ All user workflows tested end-to-end</li>
+<li>[ ] ✅ All methods/functions verified to exist</li>
+<li>[ ] ✅ All API calls return expected data</li>
+<li>[ ] ✅ All database operations work correctly</li>
+<li>[ ] ✅ All UI elements visible and functional</li>
+<li>[ ] ✅ All navigation links work correctly</li>
+<li>[ ] ✅ Can confidently demo to stakeholder right now</li>
+<li>[ ] ✅ Would recommend deploying to real users</li>
+<br>
+<hr>
+<br>
+<h3><strong>RULE 5: MANDATORY DEVELOPMENT PIPELINE (NEVER SKIP)</strong></h3>
+<strong>ALL code changes MUST flow through this pipeline. NO EXCEPTIONS.</strong>
+<br>
+#### <strong>A. Pipeline Flow (STRICT ORDER)</strong>
+<code></code>`
+DEV → TEST → STAGING → GITHUB → FIREBASE PRODUCTION
+<code></code>`
+<br>
+<strong>Each stage is a mandatory checkpoint. You CANNOT skip stages.</strong>
+<br>
+#### <strong>B. Environment Specifications</strong>
+<br>
+| Environment | Port | Directory | Purpose | Server URL |
+|-------------|------|-----------|---------|------------|
+| <strong>DEV</strong> | 8081 | <code>environments/dev/</code> | Active development, frequent changes | http://localhost:8081 |
+| <strong>TEST</strong> | 8082 | <code>environments/test/</code> | Testing and validation | http://localhost:8082 |
+| <strong>STAGING</strong> | 8083 | <code>environments/staging/</code> | Final verification before production | http://localhost:8083 |
+| <strong>PROD</strong> | N/A | <code>firebase-migration-package/assiduous-build/</code> | Live production site | https://assiduous-prod.web.app |
+<br>
+#### <strong>C. Development Workflow (MANDATORY STEPS)</strong>
+<br>
+<strong>Step 1: DEV Environment</strong>
+1. Make ALL changes in <code>environments/dev/</code> directory ONLY
+2. Start dev server: <code>./scripts/dev-server.sh start</code>
+3. Test changes at http://localhost:8081
+4. Run RULE 4 QA/QC assessment (full browser testing)
+5. Fix ALL bugs found
+6. Document changes
+<br>
+<strong>Step 2: Promote DEV → TEST</strong>
+1. Run: <code>./scripts/promote.sh dev-to-test</code>
+2. Review changes to be promoted
+3. Type <code>yes</code> to confirm
+4. Test at http://localhost:8082
+5. Run RULE 4 QA/QC assessment again
+6. Verify no regressions
+<br>
+<strong>Step 3: Promote TEST → STAGING</strong>
+1. Run: <code>./scripts/promote.sh test-to-staging</code>
+2. Review changes
+3. Type <code>yes</code> to confirm
+4. Test at http://localhost:8083
+5. Run RULE 4 QA/QC final assessment
+6. Verify production-ready
+<br>
+<strong>Step 4: Promote STAGING → PROD</strong>
+1. Run: <code>./scripts/promote.sh staging-to-prod</code>
+2. Review changes
+3. Type <code>yes</code> to confirm
+4. Changes copied to <code>firebase-migration-package/assiduous-build/</code>
+5. Commit to GitHub: <code>git add . &amp;&amp; git commit -m "..." &amp;&amp; git push</code>
+<br>
+<strong>Step 5: Deploy PROD → Firebase</strong>
+1. Run: <code>./scripts/promote.sh deploy</code>
+2. Complete pre-deployment checklist
+3. Type <code>DEPLOY TO PRODUCTION</code> (exact text)
+4. Firebase deploys automatically
+5. Verify at https://assiduous-prod.web.app
+6. Run post-deployment smoke tests
+<br>
+#### <strong>D. Pipeline Rules (ABSOLUTE)</strong>
+<br>
+<strong>NEVER:</strong>
+<li>❌ Edit files directly in <code>test/</code>, <code>staging/</code>, or <code>assiduous-build/</code></li>
+<li>❌ Skip environments (DEV → PROD is FORBIDDEN)</li>
+<li>❌ Deploy without testing in all environments</li>
+<li>❌ Promote with known bugs</li>
+<li>❌ Deploy without Git commit</li>
+<li>❌ Make changes directly in production</li>
+<li>❌ Bypass approval gates</li>
+<li>❌ Create a <code>public/</code> directory (unauthorized architecture change)</li>
+<li>❌ Recreate existing files from scratch</li>
+<li>❌ Simplify or remove existing functionality</li>
+<br>
+<strong>ALWAYS:</strong>
+<li>✅ Start in DEV environment</li>
+<li>✅ Test in each environment before promoting</li>
+<li>✅ Run QA/QC at each stage</li>
+<li>✅ Document what changed</li>
+<li>✅ Get approval before promoting</li>
+<li>✅ Commit to GitHub before Firebase deploy</li>
+<li>✅ Verify deployment succeeded</li>
+<li>✅ Build on existing UI/content/structure</li>
+<li>✅ Preserve all existing functionality</li>
+<br>
+#### <strong>E. Validation Requirements Per Stage</strong>
+<br>
+<strong>DEV Stage Validation:</strong>
+<li>✅ Code compiles/runs without errors</li>
+<li>✅ All new features work as expected</li>
+<li>✅ No console errors in browser DevTools</li>
+<li>✅ All links and navigation work</li>
+<li>✅ Mobile responsive design works</li>
+<li>✅ Builds on existing structure (no recreations)</li>
+<br>
+<strong>TEST Stage Validation:</strong>
+<li>✅ All DEV features still work</li>
+<li>✅ No regressions in existing features</li>
+<li>✅ Integration with existing code works</li>
+<li>✅ API calls succeed</li>
+<li>✅ Data persists correctly</li>
+<br>
+<strong>STAGING Stage Validation:</strong>
+<li>✅ Production-ready quality</li>
+<li>✅ All user workflows complete end-to-end</li>
+<li>✅ Performance acceptable (page load &lt; 3s)</li>
+<li>✅ No known bugs</li>
+<li>✅ Ready to show stakeholders</li>
+<br>
+<strong>PROD Stage Validation:</strong>
+<li>✅ Deployed successfully to Firebase</li>
+<li>✅ All pages accessible at production URL</li>
+<li>✅ All functionality works in production</li>
+<li>✅ No errors in production logs</li>
+<li>✅ Analytics tracking works</li>
+<br>
+#### <strong>F. Server Management Commands</strong>
+<br>
+<code></code>`bash
+<h1>Start all servers</h1>
+./scripts/dev-server.sh start
+<br>
+<h1>Check server status</h1>
+./scripts/dev-server.sh status
+<br>
+<h1>Stop all servers</h1>
+./scripts/dev-server.sh stop
+<br>
+<h1>Restart servers</h1>
+./scripts/dev-server.sh restart
+<code></code>`
+<br>
+#### <strong>G. GitHub as Source of Truth</strong>
+<br>
+<strong>CRITICAL: GitHub is the single source of truth</strong>
+<br>
+<li>All code in <code>environments/dev/</code> is work-in-progress</li>
+<li>All code in <code>firebase-migration-package/assiduous-build/</code> is committed to GitHub</li>
+<li>GitHub main branch = what's in production</li>
+<li>Never deploy to Firebase without pushing to GitHub first</li>
+<br>
+<strong>Deployment flow:</strong>
+<code></code>`
+DEV → TEST → STAGING → assiduous-build → GitHub → Firebase
+<code></code>`
+<br>
+<hr>
+<br>
+<h2>📋 DEVELOPMENT BEST PRACTICES</h2>
+<br>
+<h3><strong>When Making Changes:</strong></h3>
+1. <strong>Read existing code first</strong> - understand what's already there
+2. <strong>Build incrementally</strong> - add to existing structure, don't replace
+3. <strong>Preserve existing patterns</strong> - follow established conventions
+4. <strong>Test frequently</strong> - don't write large amounts of untested code
+5. <strong>Document as you go</strong> - update docs when changing functionality
+<br>
+<h3><strong>When Creating New Features:</strong></h3>
+1. <strong>Check if similar feature exists</strong> - learn from existing implementations
+2. <strong>Use existing components</strong> - especially from SirsiMaster Component Library
+3. <strong>Follow existing UI patterns</strong> - maintain consistency
+4. <strong>Use existing services</strong> - don't duplicate API calls or data handling
+5. <strong>Add to existing pages</strong> - don't create parallel structures
+<br>
+<h3><strong>When Fixing Bugs:</strong></h3>
+1. <strong>Understand the root cause</strong> - don't just patch symptoms
+2. <strong>Test the fix thoroughly</strong> - ensure it actually resolves the issue
+3. <strong>Check for regressions</strong> - make sure fix doesn't break other things
+4. <strong>Update tests if applicable</strong> - prevent regression in future
+5. <strong>Document the fix</strong> - explain what was wrong and how it's fixed
+<br>
+<h3><strong>When Working with UI:</strong></h3>
+1. <strong>Never use emojis as icons</strong> - use proper SVG icons
+2. <strong>Never use inline styles</strong> - use CSS classes and variables
+3. <strong>Always use existing CSS variables</strong> - maintain design consistency
+4. <strong>Always test mobile responsive</strong> - ensure works on all screen sizes
+5. <strong>Always check browser console</strong> - verify no JavaScript errors
+<br>
+<hr>
+<br>
+<h2>🎯 HONESTY AND TRANSPARENCY</h2>
+<br>
+<h3><strong>When Reporting Status:</strong></h3>
+<br>
+<strong>NEVER say:</strong>
+<li>❌ "100% complete" without browser testing</li>
+<li>❌ "Everything works" without clicking through workflows</li>
+<li>❌ "Ready for production" without end-to-end testing</li>
+<li>❌ "Feature implemented" if only code is written but not tested</li>
+<br>
+<strong>ALWAYS say:</strong>
+<li>✅ "Tested in browser, all workflows verified working"</li>
+<li>✅ "End-to-end testing complete, found and fixed X bugs"</li>
+<li>✅ "Browser console clean, no JavaScript errors"</li>
+<li>✅ "Can confidently demo all features to stakeholder"</li>
+<li>✅ "Ready for production deployment" (only after ALL checks pass)</li>
+<br>
+<h3><strong>When Issues Are Found:</strong></h3>
+1. <strong>Report immediately</strong> - don't hide problems
+2. <strong>Assess severity</strong> - critical vs. minor issues
+3. <strong>Provide honest timeline</strong> - for fixing issues
+4. <strong>Update status</strong> - reflect true completion percentage
+5. <strong>Document lessons learned</strong> - prevent repeat issues
+<br>
+<hr>
+<br>
+<h2>📚 REFERENCE</h2>
+<br>
+<h3><strong>Key Documentation Files:</strong></h3>
+<li><code>WARP.md</code> - This file's twin (must stay synchronized)</li>
+<li><code>docs/DEVELOPMENT_PIPELINE.md</code> - Detailed pipeline documentation</li>
+<li><code>docs/AGENT_PORTAL_QA_FAILURE_REPORT.md</code> - Example of what NOT to do</li>
+<li><code>PROJECT_STATUS.md</code> - Current project status</li>
+<li><code>changelog.md</code> - Version history</li>
+<br>
+<h3><strong>Critical Scripts:</strong></h3>
+<li><code>./scripts/dev-server.sh</code> - Server management</li>
+<li><code>./scripts/promote.sh</code> - Environment promotion</li>
+<li><code>./scripts/verify_completion.sh</code> - Completion verification</li>
+<br>
+<h3><strong>Production URLs:</strong></h3>
+<li>Dev: http://localhost:8081</li>
+<li>Test: http://localhost:8082</li>
+<li>Staging: http://localhost:8083</li>
+<li>Production: https://assiduous-prod.web.app</li>
+<br>
+<hr>
+<br>
+<h2>🔄 RULE SYNCHRONIZATION</h2>
+<br>
+<strong>CRITICAL: WARP.md and CLAUDE.md must remain synchronized</strong>
+<br>
+When updating rules:
+1. Update BOTH files identically
+2. Verify both have same rule numbers
+3. Verify both have same content
+4. Commit both files together
+5. Document what changed in commit message
+<br>
+<strong>If rules differ between files:</strong>
+1. Identify which is newer
+2. Update older file to match
+3. Commit synchronization
+4. Add note explaining discrepancy
+<br>
+<hr>
+<br>
+<h2>✅ FINAL REMINDERS</h2>
+<br>
+<strong>Every time you work on this project:</strong>
+1. ✅ Read these rules before starting
+2. ✅ Work in DEV environment first
+3. ✅ Test thoroughly at each stage
+4. ✅ Use the promotion scripts
+5. ✅ Never skip the pipeline
+6. ✅ Run QA/QC before claiming completion
+7. ✅ Be honest about status
+8. ✅ Build on existing code, never recreate
+9. ✅ Commit to GitHub before deploying
+10. ✅ Verify production works after deployment
+<br>
+<strong>These rules exist to:</strong>
+<li>Prevent production breaks</li>
+<li>Ensure code quality</li>
+<li>Maintain stakeholder trust</li>
+<li>Create reliable deployments</li>
+<li>Build sustainable development practices</li>
+<br>
+<strong>Follow them without exception.</strong>
+<br>
+<hr>
+<br>
+<strong>Last Updated</strong>: 2025-10-06  
+<strong>Version</strong>: 1.0.0  
+<strong>Status</strong>: Active - Mandatory Compliance
+<h1>Contributing to Assiduous</h1>
+<br>
+Thank you for your interest in contributing to the Assiduous AI-Powered Real Estate Platform! This document provides guidelines and instructions for contributing to the project.
+<br>
+<h2>Table of Contents</h2>
+<br>
+<li>[Code of Conduct](#code-of-conduct)</li>
+<li>[Getting Started](#getting-started)</li>
+<li>[Development Workflow](#development-workflow)</li>
+<li>[Branching Strategy](#branching-strategy)</li>
+<li>[Commit Guidelines](#commit-guidelines)</li>
+<li>[Pull Request Process](#pull-request-process)</li>
+<li>[Development Setup](#development-setup)</li>
+<li>[Testing Guidelines](#testing-guidelines)</li>
+<li>[Documentation](#documentation)</li>
+<li>[Community](#community)</li>
+<br>
+<h2>Code of Conduct</h2>
+<br>
+We are committed to providing a welcoming and inclusive environment. Please:
+<br>
+<li>Be respectful and considerate</li>
+<li>Welcome newcomers and help them get started</li>
+<li>Focus on constructive criticism</li>
+<li>Respect differing viewpoints and experiences</li>
+<li>Accept responsibility for mistakes</li>
+<br>
+<h2>Getting Started</h2>
+<br>
+1. <strong>Fork the Repository</strong>
+   <code></code>`bash
+   # Fork via GitHub UI, then:
+   git clone https://github.com/YOUR_USERNAME/Assiduous.git
+   cd assiduous
+   git remote add upstream https://github.com/SirsiMaster/Assiduous.git
+   <code></code>`
+<br>
+2. <strong>Install Git Hooks</strong>
+   <code></code>`bash
+   ./scripts/hooks/install.sh
+   <code></code>`
+<br>
+3. <strong>Create a Branch</strong>
+   <code></code>`bash
+   git checkout -b feature/your-feature-name
+   <code></code>`
+<br>
+<h2>Development Workflow</h2>
+<br>
+We follow the GitFlow branching model with some modifications:
+<br>
+<h3>Main Branches</h3>
+<br>
+<li><strong><code>main</code></strong> - Production-ready code</li>
+<li><strong><code>develop</code></strong> - Integration branch for features</li>
+<li><strong><code>staging</code></strong> - Pre-production testing</li>
+<br>
+<h3>Supporting Branches</h3>
+<br>
+<li><em></em><code>feature/<em></code></em>* - New features</li>
+<li><em></em><code>bugfix/<em></code></em>* - Bug fixes for develop</li>
+<li><em></em><code>hotfix/<em></code></em>* - Emergency fixes for production</li>
+<li><em></em><code>release/<em></code></em>* - Release preparation</li>
+<li><em></em><code>docs/<em></code></em>* - Documentation updates</li>
+<br>
+<h3>Branch Naming Convention</h3>
+<br>
+<code></code>`
+&lt;type&gt;/&lt;issue-number&gt;-&lt;short-description&gt;
+<br>
+Examples:
+feature/123-property-search
+bugfix/456-auth-token-expiry
+hotfix/789-critical-security-fix
+docs/321-api-documentation
+<code></code>`
+<br>
+<h2>Branching Strategy</h2>
+<br>
+<h3>Feature Development</h3>
+<br>
+<code></code>`bash
+<h1>Start from develop</h1>
+git checkout develop
+git pull upstream develop
+git checkout -b feature/123-new-feature
+<br>
+<h1>Work on your feature</h1>
+git add .
+git commit -m "feat(component): add new functionality"
+<br>
+<h1>Keep up to date with develop</h1>
+git fetch upstream
+git rebase upstream/develop
+<br>
+<h1>Push to your fork</h1>
+git push origin feature/123-new-feature
+<code></code>`
+<br>
+<h3>Bug Fixes</h3>
+<br>
+<code></code>`bash
+<h1>For development bugs</h1>
+git checkout -b bugfix/456-fix-issue develop
+<br>
+<h1>For production bugs (hotfix)</h1>
+git checkout -b hotfix/789-critical-fix main
+<code></code>`
+<br>
+<h3>Release Process</h3>
+<br>
+<code></code>`bash
+<h1>Create release branch</h1>
+git checkout -b release/1.0.0 develop
+<br>
+<h1>Finish release</h1>
+git checkout main
+git merge --no-ff release/1.0.0
+git tag -a v1.0.0 -m "Release version 1.0.0"
+git checkout develop
+git merge --no-ff release/1.0.0
+<code></code>`
+<br>
+<h2>Commit Guidelines</h2>
+<br>
+We follow [Conventional Commits](https://www.conventionalcommits.org/) specification.
+<br>
+<h3>Commit Message Format</h3>
+<br>
+<code></code>`
+&lt;type&gt;(&lt;scope&gt;): &lt;subject&gt;
+<br>
+&lt;body&gt;
+<br>
+&lt;footer&gt;
+<code></code>`
+<br>
+<h3>Types</h3>
+<br>
+<li><strong>feat</strong>: New feature</li>
+<li><strong>fix</strong>: Bug fix</li>
+<li><strong>docs</strong>: Documentation changes</li>
+<li><strong>style</strong>: Code style changes (formatting, etc.)</li>
+<li><strong>refactor</strong>: Code refactoring</li>
+<li><strong>perf</strong>: Performance improvements</li>
+<li><strong>test</strong>: Adding or updating tests</li>
+<li><strong>build</strong>: Build system changes</li>
+<li><strong>ci</strong>: CI/CD changes</li>
+<li><strong>chore</strong>: Maintenance tasks</li>
+<li><strong>revert</strong>: Reverting a previous commit</li>
+<br>
+<h3>Examples</h3>
+<br>
+<code></code>`bash
+<h1>Feature</h1>
+git commit -m "feat(search): add advanced property filters"
+<br>
+<h1>Bug fix with issue reference</h1>
+git commit -m "fix(auth): resolve token refresh issue
+<br>
+Fixes #123"
+<br>
+<h1>Breaking change</h1>
+git commit -m "feat(api): change response format
+<br>
+BREAKING CHANGE: API response structure has changed.
+Migration guide: docs/migration/v2.md"
+<code></code>`
+<br>
+<h3>Commit Message Rules</h3>
+<br>
+1. Use imperative mood ("add" not "added")
+2. Capitalize the first letter of the subject
+3. Don't end the subject with a period
+4. Limit subject to 50 characters
+5. Wrap body at 72 characters
+6. Reference issues and PRs in the footer
+<br>
+<h2>Pull Request Process</h2>
+<br>
+<h3>Before Creating a PR</h3>
+<br>
+1. <strong>Update your branch</strong>
+   <code></code>`bash
+   git fetch upstream
+   git rebase upstream/develop
+   <code></code>`
+<br>
+2. <strong>Run tests</strong>
+   <code></code>`bash
+   npm test
+   npm run lint
+   <code></code>`
+<br>
+3. <strong>Update documentation</strong>
+   - Update README if needed
+   - Add/update code comments
+   - Update API documentation
+<br>
+4. <strong>Update CHANGELOG</strong>
+   <code></code>`bash
+   ./scripts/changelog/update_changelog.sh
+   <code></code>`
+<br>
+<h3>Creating a Pull Request</h3>
+<br>
+1. Push your branch to your fork
+2. Create PR via GitHub UI
+3. Fill out the PR template completely
+4. Link related issues
+5. Request reviewers
+<br>
+<h3>PR Requirements</h3>
+<br>
+<li>[ ] All tests pass</li>
+<li>[ ] Code follows style guidelines</li>
+<li>[ ] Commit messages follow conventions</li>
+<li>[ ] Documentation updated</li>
+<li>[ ] CHANGELOG updated</li>
+<li>[ ] No merge conflicts</li>
+<li>[ ] Approved by at least 2 reviewers</li>
+<br>
+<h3>After PR Approval</h3>
+<br>
+1. Squash commits if requested
+2. Ensure branch is up to date
+3. Merge will be performed by maintainers
+<br>
+<h2>Development Setup</h2>
+<br>
+<h3>Prerequisites</h3>
+<br>
+<li>Git 2.x+</li>
+<li>Node.js 18+ (for future backend)</li>
+<li>Python 3.x (for local server)</li>
+<li>Modern web browser</li>
+<br>
+<h3>Local Development</h3>
+<br>
+<code></code>`bash
+<h1>Install dependencies (when package.json exists)</h1>
+npm install
+<br>
+<h1>Start development server</h1>
+python -m http.server 8080
+<br>
+<h1>Or use the npm script (when configured)</h1>
+npm run dev
+<code></code>`
+<br>
+<h3>Environment Variables</h3>
+<br>
+Create <code>.env.local</code> for local development:
+<br>
+<code></code>`env
+<h1>API Configuration</h1>
+API_URL=http://localhost:3000
+API_KEY=development-key
+<br>
+<h1>Feature Flags</h1>
+ENABLE_AI_FEATURES=true
+ENABLE_ANALYTICS=false
+<code></code>`
+<br>
+<h2>Testing Guidelines</h2>
+<br>
+<h3>Test Structure</h3>
+<br>
+<code></code>`
+tests/
+├── unit/           # Unit tests
+├── integration/    # Integration tests
+├── e2e/           # End-to-end tests
+└── fixtures/      # Test data
+<code></code>`
+<br>
+<h3>Writing Tests</h3>
+<br>
+<code></code>`javascript
+// Example test
+describe('PropertySearch', () =&gt; {
+  it('should return filtered properties', () =&gt; {
+    const result = searchProperties({ city: 'San Francisco' });
+    expect(result).toHaveLength(10);
+    expect(result[0]).toHaveProperty('city', 'San Francisco');
+  });
+});
+<code></code>`
+<br>
+<h3>Running Tests</h3>
+<br>
+<code></code>`bash
+<h1>Run all tests</h1>
+npm test
+<br>
+<h1>Run specific test suite</h1>
+npm test -- --grep "PropertySearch"
+<br>
+<h1>Run with coverage</h1>
+npm run test:coverage
+<br>
+<h1>Run E2E tests</h1>
+npm run test:e2e
+<code></code>`
+<br>
+<h2>Documentation</h2>
+<br>
+<h3>Code Documentation</h3>
+<br>
+<li>Use JSDoc for JavaScript functions</li>
+<li>Include examples in complex functions</li>
+<li>Document all public APIs</li>
+<li>Keep README up to date</li>
+<br>
+<h3>API Documentation</h3>
+<br>
+<code></code>`javascript
+/<em></em>
+ * Search for properties based on criteria
+ * @param {Object} criteria - Search criteria
+ * @param {string} criteria.city - City name
+ * @param {number} criteria.minPrice - Minimum price
+ * @param {number} criteria.maxPrice - Maximum price
+ * @returns {Promise&lt;Property[]&gt;} Array of matching properties
+ * @example
+ * const properties = await searchProperties({
+ *   city: 'San Francisco',
+ *   minPrice: 500000,
+ *   maxPrice: 1000000
+ * });
+ */
+async function searchProperties(criteria) {
+  // Implementation
+}
+<code></code>`
+<br>
+<h3>Documentation Updates</h3>
+<br>
+When adding new features:
+<br>
+1. Update relevant README sections
+2. Add inline code comments
+3. Update API documentation
+4. Create user guides if needed
+5. Update the PRD if applicable
+<br>
+<h2>Version Control Best Practices</h2>
+<br>
+<h3>DO</h3>
+<br>
+<li>Keep commits atomic and focused</li>
+<li>Write descriptive commit messages</li>
+<li>Rebase feature branches on develop</li>
+<li>Tag releases with semantic versioning</li>
+<li>Keep branch history clean</li>
+<li>Update changelog for notable changes</li>
+<br>
+<h3>DON'T</h3>
+<br>
+<li>Commit directly to main or develop</li>
+<li>Force push to shared branches</li>
+<li>Mix feature and fix commits</li>
+<li>Leave commented-out code</li>
+<li>Commit sensitive information</li>
+<li>Create huge pull requests</li>
+<br>
+<h2>Review Process</h2>
+<br>
+<h3>As a Reviewer</h3>
+<br>
+<li>Test the changes locally</li>
+<li>Check for code quality</li>
+<li>Verify tests are adequate</li>
+<li>Ensure documentation is updated</li>
+<li>Provide constructive feedback</li>
+<li>Approve only when satisfied</li>
+<br>
+<h3>Review Checklist</h3>
+<br>
+<li>[ ] Code follows project style</li>
+<li>[ ] Tests cover new functionality</li>
+<li>[ ] No security vulnerabilities</li>
+<li>[ ] Performance impact considered</li>
+<li>[ ] Documentation updated</li>
+<li>[ ] Commits are well-structured</li>
+<br>
+<h2>Release Process</h2>
+<br>
+<h3>Creating a Release</h3>
+<br>
+1. <strong>Update version</strong>
+   <code></code>`bash
+   npm version minor  # or major, patch
+   <code></code>`
+<br>
+2. <strong>Update CHANGELOG</strong>
+   <code></code>`bash
+   ./scripts/changelog/update_changelog.sh 1.1.0
+   <code></code>`
+<br>
+3. <strong>Create release tag</strong>
+   <code></code>`bash
+   ./scripts/rollback/create_tag.sh 1.1.0 "Feature release"
+   <code></code>`
+<br>
+4. <strong>Push to repository</strong>
+   <code></code>`bash
+   git push origin main --tags
+   <code></code>`
+<br>
+<h3>Release Checklist</h3>
+<br>
+<li>[ ] All tests pass</li>
+<li>[ ] CHANGELOG updated</li>
+<li>[ ] Version bumped</li>
+<li>[ ] Tag created</li>
+<li>[ ] Documentation updated</li>
+<li>[ ] Release notes written</li>
+<li>[ ] Rollback plan documented</li>
+<br>
+<h2>Community</h2>
+<br>
+<h3>Getting Help</h3>
+<br>
+<li>Check existing issues</li>
+<li>Read the documentation</li>
+<li>Ask in discussions</li>
+<li>Join our Discord/Slack</li>
+<br>
+<h3>Reporting Issues</h3>
+<br>
+Use issue templates for:
+<li>Bug reports</li>
+<li>Feature requests</li>
+<li>Documentation improvements</li>
+<br>
+<h3>Communication Channels</h3>
+<br>
+<li>GitHub Issues - Bug reports and features</li>
+<li>GitHub Discussions - General discussions</li>
+<li>Email - security@assiduous.ai</li>
+<li>Discord - Real-time chat</li>
+<br>
+<h2>Recognition</h2>
+<br>
+Contributors will be recognized in:
+<li>changelog.md</li>
+<li>Contributors section in README</li>
+<li>Release notes</li>
+<li>Annual contributor report</li>
+<br>
+<h2>Questions?</h2>
+<br>
+Feel free to:
+<li>Open an issue</li>
+<li>Start a discussion</li>
+<li>Contact maintainers</li>
+<li>Check the FAQ</li>
+<br>
+<hr>
+<br>
+Thank you for contributing to Assiduous! Your efforts help make real estate technology more accessible to everyone. 🏠🚀
+        </div>
+        <div class="timestamp">
+            Last updated: 2025-10-11 11:14:19
+        </div>
+    </div>
+</body>
+</html>
