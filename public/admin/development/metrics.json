@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-11-04T05:24:20.912Z",
+  "lastUpdated": "2025-11-04T05:46:39.778Z",
   "summary": {
     "health": "Good",
     "score": 46,
@@ -104,41 +104,41 @@
     }
   },
   "project": {
-    "totalHours": "252",
-    "avgHoursPerDay": "8.7",
-    "totalCost": 39636,
-    "laborCost": 37800,
+    "totalHours": "255",
+    "avgHoursPerDay": "8.8",
+    "totalCost": 40086,
+    "laborCost": 38250,
     "toolsCost": 1836,
     "monthsElapsed": "2.8",
-    "totalCommits": 765,
+    "totalCommits": 773,
     "totalFiles": 669,
     "activeDays": 29,
     "totalDays": 86,
     "projectAgeDays": 86,
-    "linesAdded": 9660608,
-    "linesDeleted": 9373666,
-    "netLines": 286942,
-    "velocity": "26.4",
+    "linesAdded": 9661442,
+    "linesDeleted": 9374677,
+    "netLines": 286765,
+    "velocity": "26.7",
     "completionPercentage": 46,
     "actualStartDate": "2025-08-10"
   },
   "today": {
     "date": "2025-11-04",
-    "hours": "8.3",
-    "cost": 1238,
-    "commits": 25,
+    "hours": "9.6",
+    "cost": 1436,
+    "commits": 29,
     "deployments": 0
   },
   "thisWeek": {
-    "hours": "65.7",
-    "cost": 9851,
-    "commits": 199,
+    "hours": "68.3",
+    "cost": 10247,
+    "commits": 207,
     "days": 7
   },
   "thisMonth": {
-    "hours": "142.2",
-    "cost": 21335,
-    "commits": 431
+    "hours": "144.9",
+    "cost": 21731,
+    "commits": 439
   },
   "quality": {
     "testCoverage": {
@@ -172,7 +172,7 @@
       "critical": 0,
       "total": 0
     },
-    "lastAudit": "2025-11-04T05:23:50.365Z",
+    "lastAudit": "2025-11-04T05:46:16.080Z",
     "dependencies": {
       "total": {
         "prod": 256,
@@ -267,16 +267,16 @@
     "changelog": true,
     "contributing": false,
     "license": false,
-    "lastUpdate": "2025-11-04 05:19:03 +0000"
+    "lastUpdate": "2025-11-04 05:27:27 +0000"
   },
   "productivity": {
     "velocityTrend": "increasing",
-    "weeklyCommits": 199,
+    "weeklyCommits": 207,
     "contributors": {
       "total": 0,
       "active": 0
     },
-    "averageCommitSize": 112,
+    "averageCommitSize": 111,
     "pullRequests": {
       "open": 0,
       "merged": 0,
@@ -349,6 +349,54 @@
   },
   "recentActivity": [
     {
+      "hash": "7d41a1a53ab7768feb7f638956bbad671e95106d",
+      "message": "refactor(client): migrate property-detail and onboarding to design system",
+      "author": "SirsiMaster",
+      "date": "2025-11-04 00:45:41 -0500"
+    },
+    {
+      "hash": "8576882907bc1c75143110f09f164c09a65afddc",
+      "message": "refactor(client): migrate messages.html to Assiduous design system",
+      "author": "SirsiMaster",
+      "date": "2025-11-04 00:44:23 -0500"
+    },
+    {
+      "hash": "c042d6544bebdd3fc391771f2a9bc8455cd2b257",
+      "message": "refactor(client): migrate viewings.html to Assiduous design system",
+      "author": "SirsiMaster",
+      "date": "2025-11-04 00:43:00 -0500"
+    },
+    {
+      "hash": "968561865e42e375a4e49807cad856d6cf8af30f",
+      "message": "refactor(client): migrate saved.html to Assiduous design system",
+      "author": "SirsiMaster",
+      "date": "2025-11-04 00:34:57 -0500"
+    },
+    {
+      "hash": "67341bdd6d2053227ec6097618655acfd35be9af",
+      "message": "chore(release): Bump version to 0.85.5 [skip ci]",
+      "author": "github-actions[bot]",
+      "date": "2025-11-04 05:27:27 +0000"
+    },
+    {
+      "hash": "29b48f185b2c812028476301d80c04d16c96bbbd",
+      "message": "chore: metrics",
+      "author": "SirsiMaster",
+      "date": "2025-11-04 00:27:13 -0500"
+    },
+    {
+      "hash": "5f7ea63152278e05a0471c646fa281ee2cd4ddf9",
+      "message": "fix(client): eliminate Firebase initialization race condition in PropertyService",
+      "author": "SirsiMaster",
+      "date": "2025-11-04 00:26:52 -0500"
+    },
+    {
+      "hash": "4b7204585f50d5f008c988a3e1cffdcc08f56e84",
+      "message": "chore(release): Bump version to 0.85.4 [skip ci]",
+      "author": "github-actions[bot]",
+      "date": "2025-11-04 05:23:44 +0000"
+    },
+    {
       "hash": "291c689a108982cab7f3937e434beb06011d5cd8",
       "message": "chore: merge metrics",
       "author": "SirsiMaster",
@@ -359,58 +407,10 @@
       "message": "fix(client): resolve Firebase initialization race condition with auth guard",
       "author": "SirsiMaster",
       "date": "2025-11-04 00:23:18 -0500"
-    },
-    {
-      "hash": "d6bedaee60be7229cd2a3b95715cc5df028c8720",
-      "message": "chore(release): Bump version to 0.85.3 [skip ci]",
-      "author": "github-actions[bot]",
-      "date": "2025-11-04 05:19:03 +0000"
-    },
-    {
-      "hash": "acc1b442cfcb98f4d9aa027a73739e9275b9ba86",
-      "message": "chore: metrics",
-      "author": "SirsiMaster",
-      "date": "2025-11-04 00:18:52 -0500"
-    },
-    {
-      "hash": "21212b183a0f59729b42e7833aa2ed42ba054c4e",
-      "message": "fix(client): correct Firebase config and auth guard paths on tax records page",
-      "author": "SirsiMaster",
-      "date": "2025-11-04 00:18:31 -0500"
-    },
-    {
-      "hash": "316bb59339a229a2c1c6b2dbc03c84c360e9a338",
-      "message": "chore(release): Bump version to 0.85.2 [skip ci]",
-      "author": "github-actions[bot]",
-      "date": "2025-11-04 05:13:45 +0000"
-    },
-    {
-      "hash": "d515622cb841cdcbebd81daa9e357bf38e144632",
-      "message": "chore: update metrics",
-      "author": "SirsiMaster",
-      "date": "2025-11-04 00:13:32 -0500"
-    },
-    {
-      "hash": "da03d40ca4a57334160b2d5d500c7ad4cdbe2f5d",
-      "message": "fix(client): replace simple header with universal-header component on tax records page",
-      "author": "SirsiMaster",
-      "date": "2025-11-04 00:13:06 -0500"
-    },
-    {
-      "hash": "63b91905dc0c819ce7d4aa635d36735059329b07",
-      "message": "chore(release): Bump version to 0.85.1 [skip ci]",
-      "author": "github-actions[bot]",
-      "date": "2025-11-04 05:09:09 +0000"
-    },
-    {
-      "hash": "bea27c8489011ac104097edd13a00b01f2900664",
-      "message": "fix(client): add universal header styling, empty state, and better error handling for tax records",
-      "author": "SirsiMaster",
-      "date": "2025-11-04 00:08:29 -0500"
     }
   ],
   "automation": {
-    "lastRun": "2025-11-04T05:24:20.912Z",
+    "lastRun": "2025-11-04T05:46:39.778Z",
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",

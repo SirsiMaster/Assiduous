@@ -226,7 +226,7 @@
     <!-- Admin Layout Wrapper -->
     <div class="admin-wrapper">
         <!-- Sidebar (auto-loaded by admin-layout.css) -->
-        <nav id="sidebar-root" data-active="saved"></nav>
+        <aside id="sidebar-root" data-active="saved"></aside>
         
         <!-- Main Content -->
         <main class="main-content">
@@ -305,9 +305,17 @@
             
             // Load auth guard after header
             headerScript.onload = function() {
-                const authScript = document.createElement('script');
-                authScript.src = '../components/auth-guard-simple.js';
-                document.head.appendChild(authScript);
+                // Load sidebar first
+                const sidebarScript = document.createElement('script');
+                sidebarScript.src = '../components/sidebar.js';
+                document.head.appendChild(sidebarScript);
+                
+                // Then auth guard
+                sidebarScript.onload = function() {
+                    const authScript = document.createElement('script');
+                    authScript.src = '../components/auth-guard-simple.js';
+                    document.head.appendChild(authScript);
+                };
             };
         });
     </script>

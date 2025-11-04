@@ -442,7 +442,7 @@
     <!-- Admin Layout Wrapper -->
     <div class="admin-wrapper">
         <!-- Sidebar -->
-        <nav id="sidebar-root" data-active="properties"></nav>
+        <aside id="sidebar-root" data-active="properties"></aside>
         
         <!-- Main Content -->
         <main class="main-content">
@@ -654,9 +654,17 @@
             document.head.appendChild(headerScript);
             
             headerScript.onload = function() {
-                const authScript = document.createElement('script');
-                authScript.src = '../components/auth-guard-simple.js';
-                document.head.appendChild(authScript);
+                // Load sidebar first
+                const sidebarScript = document.createElement('script');
+                sidebarScript.src = '../components/sidebar.js';
+                document.head.appendChild(sidebarScript);
+                
+                // Then auth guard
+                sidebarScript.onload = function() {
+                    const authScript = document.createElement('script');
+                    authScript.src = '../components/auth-guard-simple.js';
+                    document.head.appendChild(authScript);
+                };
             };
         });
     </script>

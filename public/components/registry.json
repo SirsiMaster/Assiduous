@@ -1,0 +1,252 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "version": "1.0.0",
+  "description": "Assiduous Universal Component System (UCS) Registry - Single source of truth for all reusable components",
+  
+  "components": {
+    "header": {
+      "name": "Universal Header",
+      "description": "Role-aware header component based on admin design standard",
+      "template": "universal-header.html",
+      "roleVariants": {
+        "admin": "universal-header.html",
+        "client": "universal-header.html",
+        "agent": "universal-header.html",
+        "public": "header-public.html"
+      },
+      "css": [],
+      "js": [],
+      "propsSchema": {
+        "type": "object",
+        "properties": {
+          "role": {
+            "type": "string",
+            "enum": ["admin", "client", "agent", "public"],
+            "default": "admin",
+            "description": "User role for role-specific header rendering"
+          },
+          "title": {
+            "type": "string",
+            "default": "Dashboard",
+            "description": "Page title displayed in header"
+          },
+          "subtitle": {
+            "type": "string",
+            "default": "Welcome back",
+            "description": "Page subtitle/description"
+          },
+          "searchPlaceholder": {
+            "type": "string",
+            "default": "Search...",
+            "description": "Placeholder text for global search input"
+          },
+          "userName": {
+            "type": "string",
+            "default": "User",
+            "description": "Display name of logged-in user"
+          },
+          "userEmail": {
+            "type": "string",
+            "default": "",
+            "description": "Email of logged-in user"
+          },
+          "userRole": {
+            "type": "string",
+            "description": "Display version of user role (e.g., 'Administrator')"
+          },
+          "actions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "label": {
+                  "type": "string"
+                },
+                "href": {
+                  "type": "string"
+                },
+                "onclick": {
+                  "type": "string"
+                },
+                "icon": {
+                  "type": "string"
+                },
+                "primary": {
+                  "type": "boolean",
+                  "default": false
+                }
+              },
+              "required": ["label"]
+            },
+            "description": "Action buttons to display in header toolbar"
+          }
+        },
+        "required": ["role"]
+      },
+      "slots": [],
+      "meta": {
+        "exportable": true,
+        "version": "1.0.0",
+        "lastModified": "2025-01-04",
+        "author": "Assiduous Team"
+      }
+    },
+    
+    "sidebar": {
+      "name": "Universal Sidebar",
+      "description": "Role-aware navigation sidebar based on admin design standard",
+      "template": "sidebar.html",
+      "roleVariants": {
+        "admin": "sidebar.html",
+        "client": "sidebar-client.html",
+        "agent": "sidebar-agent.html"
+      },
+      "css": [],
+      "js": [],
+      "propsSchema": {
+        "type": "object",
+        "properties": {
+          "active": {
+            "type": "string",
+            "default": "dashboard",
+            "description": "Key of the currently active navigation item"
+          },
+          "role": {
+            "type": "string",
+            "enum": ["admin", "client", "agent"],
+            "default": "admin",
+            "description": "User role for role-specific navigation"
+          },
+          "collapsed": {
+            "type": "boolean",
+            "default": false,
+            "description": "Whether sidebar starts collapsed (mobile)"
+          }
+        },
+        "required": ["active", "role"]
+      },
+      "slots": [],
+      "meta": {
+        "exportable": true,
+        "version": "1.0.0",
+        "lastModified": "2025-01-04",
+        "author": "Assiduous Team"
+      }
+    },
+    
+    "footer": {
+      "name": "Universal Footer",
+      "description": "Site footer component",
+      "template": "footer.html",
+      "roleVariants": {},
+      "css": [],
+      "js": [],
+      "propsSchema": {
+        "type": "object",
+        "properties": {
+          "year": {
+            "type": "number",
+            "default": 2025,
+            "description": "Copyright year"
+          },
+          "links": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "label": {
+                  "type": "string"
+                },
+                "href": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "Footer navigation links"
+          }
+        }
+      },
+      "slots": [],
+      "meta": {
+        "exportable": true,
+        "version": "1.0.0",
+        "lastModified": "2025-01-04",
+        "author": "Assiduous Team"
+      }
+    }
+  },
+  
+  "bundles": {
+    "core": {
+      "description": "Core CSS and JS for all pages",
+      "css": [
+        "assiduous.css",
+        "components/admin-layout.css",
+        "assets/css/button-override.css"
+      ],
+      "js": [
+        "assets/js/main.js"
+      ]
+    },
+    
+    "charts": {
+      "description": "Chart.js for analytics and dashboards",
+      "css": [],
+      "js": [
+        "https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"
+      ]
+    },
+    
+    "forms": {
+      "description": "Form validation and utilities",
+      "css": [],
+      "js": [
+        "assets/js/form-validation.js"
+      ]
+    },
+    
+    "firebase": {
+      "description": "Firebase SDK for auth and database",
+      "css": [],
+      "js": [
+        "https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js",
+        "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js",
+        "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js",
+        "firebase-config.js"
+      ]
+    }
+  },
+  
+  "partials": {
+    "nav-icons": {
+      "description": "SVG icons for navigation items",
+      "template": "partials/nav-icons.html"
+    }
+  },
+  
+  "templates": {
+    "admin-page": {
+      "description": "Standard admin page template with sidebar and header",
+      "baseTemplate": "templates/admin-page.template.html",
+      "components": ["header", "sidebar"],
+      "bundles": ["core", "firebase"],
+      "layout": "sidebar-header"
+    },
+    
+    "client-page": {
+      "description": "Standard client portal page",
+      "baseTemplate": "templates/client-page.template.html",
+      "components": ["header", "sidebar"],
+      "bundles": ["core", "firebase"],
+      "layout": "sidebar-header"
+    },
+    
+    "public-page": {
+      "description": "Public marketing page",
+      "baseTemplate": "templates/public-page.template.html",
+      "components": ["header", "footer"],
+      "bundles": ["core"],
+      "layout": "header-footer"
+    }
+  }
+}

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UCS Test Page — Assiduous</title>
+    
+    <!-- Design System CSS -->
+    <link rel="stylesheet" href="../assiduous.css">
+    <link rel="stylesheet" href="../components/admin-layout.css">
+    
+    <style>
+        .test-content {
+            padding: var(--space-xl);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .test-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: var(--space-lg);
+            margin-bottom: var(--space-lg);
+        }
+        
+        .test-success {
+            color: var(--success);
+            font-weight: 600;
+        }
+        
+        .test-instruction {
+            background: var(--gray-50);
+            padding: var(--space-md);
+            border-radius: var(--radius);
+            border-left: 4px solid var(--sky);
+            margin: var(--space-md) 0;
+        }
+        
+        code {
+            background: var(--gray-100);
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-wrapper">
+        
+        <!-- This directive will be replaced with actual sidebar HTML -->
+        <!-- @component:sidebar active="test" role="admin" -->
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="test-content">
+                <h1>🎉 UCS Test Page</h1>
+                <p class="test-success">If you can see the sidebar on the left, the UCS build system is working!</p>
+                
+                <div class="test-card">
+                    <h2>What Should Happen</h2>
+                    <ul>
+                        <li>✅ Admin sidebar appears on the left</li>
+                        <li>✅ All sidebar links use correct relative paths (<code>../dashboard.html</code>)</li>
+                        <li>✅ "System" section has a link to Knowledge Base</li>
+                        <li>✅ No broken links or 404s when clicking sidebar items</li>
+                    </ul>
+                </div>
+                
+                <div class="test-card">
+                    <h2>How It Works</h2>
+                    <p>The UCS build system:</p>
+                    <ol>
+                        <li>Found this file: <code>public/docs/ucs-test.template.html</code></li>
+                        <li>Detected the <code>@component:sidebar</code> directive</li>
+                        <li>Loaded <code>public/components/sidebar.html</code></li>
+                        <li>Calculated paths: Since we're at <code>docs/</code>, <code>{{BASE_PATH}}</code> = <code>../</code></li>
+                        <li>Replaced all <code>{{BASE_PATH}}</code> tokens with <code>../</code></li>
+                        <li>Injected the processed sidebar HTML</li>
+                        <li>Wrote output: <code>public/docs/ucs-test.html</code> (this file!)</li>
+                    </ol>
+                </div>
+                
+                <div class="test-instruction">
+                    <h3>📝 To Build This Page</h3>
+                    <p>Run from project root:</p>
+                    <pre><code>node scripts/build-pages.js</code></pre>
+                    <p>Or with npm (once package.json is updated):</p>
+                    <pre><code>npm run build</code></pre>
+                </div>
+                
+                <div class="test-card">
+                    <h2>Next Steps</h2>
+                    <p>Now that UCS works:</p>
+                    <ul>
+                        <li>Convert client portal pages to templates</li>
+                        <li>Add header component support</li>
+                        <li>Deploy to staging for visual QA</li>
+                        <li>Gradually migrate more pages</li>
+                    </ul>
+                </div>
+                
+                <div class="test-card" style="background: var(--gray-50);">
+                    <h3>🔍 Inspect the Source</h3>
+                    <p>View source of this page to see the injected sidebar HTML with correct paths!</p>
+                    <p>Compare to <code>public/docs/ucs-test.template.html</code> to see the difference.</p>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>
