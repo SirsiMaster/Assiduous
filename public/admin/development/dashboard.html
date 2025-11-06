@@ -920,75 +920,29 @@
             // Initialize Firebase metrics service
             metricsService = new DevelopmentMetricsService();
             
-            try {
-                await metricsService.initialize();
-                console.log('✅ Metrics service initialized');
+            await metricsService.initialize();
+            console.log('✅ Firebase metrics service initialized');
+            
+            // Subscribe to real-time updates
+            unsubscribe = metricsService.subscribeToMetrics((metrics) => {
+                console.log('🔥 Real-time update from Firebase');
+                updateDashboardMetrics(metrics);
                 
-                // Subscribe to real-time updates
-                unsubscribe = metricsService.subscribeToMetrics((metrics) => {
-                    console.log('🔥 Real-time metrics update:', metrics);
-                    updateDashboardMetrics(metrics);
-                    
-                    // Update activity list
-                    if (metrics.recentActivity && metrics.recentActivity.length > 0) {
-                        displayActivity(metrics.recentActivity.slice(0, 8));
-                    }
-                    
-                    // Update chart with new data
-                    if (chart) {
-                        updateChart(metrics);
-                    }
-                });
+                // Update activity list
+                if (metrics.recentActivity && metrics.recentActivity.length > 0) {
+                    displayActivity(metrics.recentActivity.slice(0, 8));
+                }
                 
-                // Show live indicator
-                showLiveIndicator();
-                
-            } catch (error) {
-                console.error('❌ Failed to initialize real-time metrics:', error);
-                // Fallback to metrics.json
-                await loadMetricsFallback();
-            }
+                // Update chart with new data
+                if (chart) {
+                    updateChart(metrics);
+                }
+            });
             
             // Create chart
             createChart();
         }
 
-        async function loadMetricsFallback() {
-            try {
-                // Load metrics from FALLBACK: metrics.json
-                const response = await fetch('./metrics.json');
-                if (!response.ok) throw new Error('Metrics file not found');
-                
-                const metrics = await response.json();
-                console.log('✅ Loaded metrics from fallback cache:', metrics);
-                
-                updateDashboardMetrics(metrics);
-                
-                // Display recent activity from metrics file
-                const activity = metrics.recentActivity || [];
-                if (activity.length > 0) {
-                    displayActivity(activity.slice(0, 8)); // Show top 8
-                } else {
-                    console.warn('No recent activity in metrics file');
-                }
-            } catch (error) {
-                console.error('❌ Error loading fallback metrics:', error);
-                document.getElementById('commits').innerHTML = `
-                    <div style="padding: 20px; text-align: center; color: var(--error);">
-                        ⚠️ Unable to load metrics. Connecting to Firebase...
-                    </div>
-                `;
-            }
-        }
-        
-        function showLiveIndicator() {
-            const statusPill = document.querySelector('.status-pill');
-            if (statusPill) {
-                statusPill.innerHTML = '<div class="status-dot"></div>Live Data (Firebase)';
-                statusPill.style.background = 'rgba(34, 197, 94, 0.1)';
-                statusPill.style.color = '#16a34a';
-            }
-        }
 
         function updateDashboardMetrics(metrics) {
             // Update date display
