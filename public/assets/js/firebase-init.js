@@ -35,7 +35,9 @@ import {
   limit,
   onSnapshot,
   serverTimestamp,
-  enableIndexedDbPersistence,
+  initializeFirestore,
+  persistentLocalCache,
+  persistentMultipleTabManager,
 } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js';
 import {
   getFunctions,
@@ -68,24 +70,32 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-const db = getFirestore(app);
+
+// Initialize Firestore with modern persistence API
+const db = initializeFirestore(app, {
+  localCache: persistentLocalCache({
+    tabManager: persistentMultipleTabManager()
+  })
+});
+
 const functions = getFunctions(app, 'us-central1');
 const storage = getStorage(app);
 let analytics = null;
 
 // Only initialize analytics if not in localhost
 if (typeof window !== 'undefined' && !window.location.hostname.includes('localhost')) {
-  analytics = getAnalytics(app);
+  try {
+    analytics = getAnalytics(app);
+    console.log('✅ Firebase Analytics initialized');
+  } catch (error) {
+    // Analytics may not be enabled in Firebase Console
+    // This is non-critical and can be safely ignored
+    console.info('ℹ️  Firebase Analytics not available:', error.message);
+  }
 }
 
-// Enable offline persistence
-enableIndexedDbPersistence(db).catch(err => {
-  if (err.code === 'failed-precondition') {
-    console.warn('Multiple tabs open, persistence enabled in first tab only');
-  } else if (err.code === 'unimplemented') {
-    console.warn("Browser doesn't support offline persistence");
-  }
-});
+// Persistence is now configured during initialization (see initializeFirestore above)
+console.log('✅ Firestore persistence enabled with multi-tab support');
 
 // Set authentication persistence
 setPersistence(auth, browserLocalPersistence).catch(error => {
