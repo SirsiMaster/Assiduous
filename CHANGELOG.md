@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.92.4] - 2025-11-06
+
+### Fixed
+- fix(dev-portal): add missing sidebar.js to all development pages
+
+
 ## [0.92.3] - 2025-11-06
 
 ### Fixed
@@ -2937,7 +2943,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.92.3...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.92.4...HEAD
+
+
+## [0.92.4] - 2025-11-06
+
+### Fixed
+- fix(dev-portal): add missing sidebar.js to all development pages
 
 
 ## [0.92.3] - 2025-11-06
@@ -4279,3 +4291,4 @@ To generate changelog entries:
 [0.92.1]: https://github.com/SirsiMaster/Assiduous/compare/v0.92.0...v0.92.1
 [0.92.2]: https://github.com/SirsiMaster/Assiduous/compare/v0.92.1...v0.92.2
 [0.92.3]: https://github.com/SirsiMaster/Assiduous/compare/v0.92.2...v0.92.3
+[0.92.4]: https://github.com/SirsiMaster/Assiduous/compare/v0.92.3...v0.92.4
