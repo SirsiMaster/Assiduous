@@ -433,9 +433,10 @@
 </head>
 <body>
     <div class="admin-wrapper">
-        
         <!-- Sidebar Component -->
-        <aside class="sidebar" id="sidebar-root" data-active="settings">
+        <div id="sidebar-root" data-active="settings"></div>
+
+        <!-- Main Content -->
 <div class="sidebar-header">
   <a href="dashboard.html" class="sidebar-logo">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -573,12 +574,8 @@
 </nav>
 </aside>
         <main class="main-content">
-            <!-- Standardized Admin Header -->
-            <header id="universal-header-root" 
-                    data-title="System Settings" 
-                    data-subtitle="Configure your system preferences and account settings"
-                    data-search-placeholder="Search settings..."
-                    data-actions='[{"label":"Save All Changes","icon":"<path d=\"M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z\"></path><polyline points=\"17 21 17 13 7 13 7 21\"></polyline><polyline points=\"7 3 7 8 15 8\"></polyline>","primary":true,"onclick":"saveAllSettings()"}]'></header>
+            <!-- Header -->
+            <div id="header-root"></div>
 
             <!-- Page Content -->
             <div class="page-content">
