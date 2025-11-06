@@ -934,6 +934,253 @@ For issues or questions:
 
 ---
 
-**Document Version:** 1.0.0  
-**Last Reviewed:** October 8, 2025  
-**Next Review:** Monthly or as needed
+## Development Portal Architecture
+**Added:** November 6, 2025
+**Status:** Operational
+**Live URL:** https://assiduous-prod.web.app/admin/development/
+
+### Overview
+
+The Development Portal is an internal monitoring and analytics system providing real-time visibility into project metrics, costs, and development progress. It operates as part of the Admin Portal but with specialized functionality for development team use.
+
+### Portal Structure
+
+```
+public/admin/development/
+├── dashboard.html          # Main metrics dashboard
+├── analytics.html          # Comprehensive analytics with charts
+├── costs.html             # Cost tracking and forecasting
+├── reports.html           # Generated reports and exports
+├── docs.html              # Technical documentation hub
+└── metrics.json           # Real-time metrics data
+```
+
+### Component Architecture
+
+#### 1. Metrics Collection Layer
+```
+Git Hooks (pre-commit, post-commit)
+    ↓
+Local Metrics Calculation
+    ↓
+metrics.json Update
+    ↓
+Firebase Sync (optional)
+```
+
+#### 2. Data Sources
+- **Git Metadata:** Commits, authors, file changes
+- **File System:** File counts, sizes, types
+- **Firebase:** Service usage, quotas, performance
+- **GitHub API:** Repository statistics
+- **Manual Config:** Cost rates, project metadata
+
+#### 3. Visualization Layer
+- **Chart.js v4.4.0:** Line charts, doughnut charts
+- **CSS Grid:** Responsive multi-column layouts
+- **Progress Bars:** Visual progress indicators
+- **Stat Cards:** Fixed-width metric displays
+
+### Key Features
+
+#### Real-Time Metrics Dashboard
+- Project totals (hours, cost, commits, files)
+- Live activity feed (recent commits, deployments)
+- Progress tracking (75% overall development)
+- Cost breakdown by category
+- GitHub integration
+- Firebase resource usage
+
+#### Comprehensive Analytics
+- **8 Major Sections:**
+  1. System Performance Overview (4 KPIs)
+  2. Development Velocity Chart (30-day trend)
+  3. Code Quality Score (doughnut gauge)
+  4. Repository Statistics (5 metrics)
+  5. Code Quality & Testing (detailed breakdowns)
+  6. Deployment Analytics (success rates, frequency)
+  7. Performance Benchmarks (Lighthouse, Web Vitals)
+  8. Firebase Resource Usage (4 donut charts)
+  9. Error Tracking & Monitoring (4 metrics)
+
+#### Exhaustive Cost Tracking
+- **7 Major Sections:**
+  1. Project Cost Overview (4 KPIs)
+  2. Time & Velocity Metrics (5-column grid)
+  3. Billing Rate Configuration (4 roles)
+  4. Cost Breakdown by Category (4 categories)
+  5. Detailed Tool Costs (5 services)
+  6. Spending Trends (3 timeframes)
+  7. Recent Activity Timeline
+
+### Data Flow Architecture
+
+```
+┌─────────────────────────────────────────────────────────┐
+│ DEVELOPMENT ACTIVITY                                    │
+├─────────────────────────────────────────────────────────┤
+│ • Code changes committed                                │
+│ • Files created/modified                                │
+│ • Development time tracked                              │
+└─────────────────────────────────────────────────────────┘
+                        ↓
+┌─────────────────────────────────────────────────────────┐
+│ GIT HOOKS TRIGGER                                       │
+├─────────────────────────────────────────────────────────┤
+│ • Pre-commit: Validates commit message                  │
+│ • Post-commit: Updates metrics                          │
+└─────────────────────────────────────────────────────────┘
+                        ↓
+┌─────────────────────────────────────────────────────────┐
+│ METRICS CALCULATION                                     │
+├─────────────────────────────────────────────────────────┤
+│ • Count commits, files, lines changed                   │
+│ • Calculate costs (hours × rates)                       │
+│ • Aggregate statistics                                  │
+│ • Generate timestamps                                   │
+└─────────────────────────────────────────────────────────┘
+                        ↓
+┌─────────────────────────────────────────────────────────┐
+│ METRICS STORAGE                                         │
+├─────────────────────────────────────────────────────────┤
+│ • Update metrics.json (local)                           │
+│ • Commit to GitHub (source of truth)                    │
+│ • Deploy to Firebase Hosting                            │
+└─────────────────────────────────────────────────────────┘
+                        ↓
+┌─────────────────────────────────────────────────────────┐
+│ DASHBOARD DISPLAY                                       │
+├─────────────────────────────────────────────────────────┤
+│ • Fetch metrics.json via HTTP                           │
+│ • Render charts with Chart.js                           │
+│ • Display stat cards                                    │
+│ • Update progress bars                                  │
+└─────────────────────────────────────────────────────────┘
+```
+
+### Chart Implementation
+
+#### Line Charts (Development Velocity)
+```javascript
+new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: ['Nov 1', 'Nov 2', ...],
+        datasets: [{
+            data: [5, 12, 8, ...],
+            borderColor: '#60A3D9',
+            backgroundColor: 'rgba(96, 163, 217, 0.1)'
+        }]
+    }
+});
+```
+
+#### Doughnut Charts (Resource Usage)
+```javascript
+new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+        datasets: [{
+            data: [2.4, 97.6],  // Used vs Available
+            backgroundColor: ['#60A3D9', '#E5E7EB']
+        }]
+    },
+    options: {
+        cutout: '75%'  // Donut hole size
+    }
+});
+```
+
+### Design System
+
+#### Color Palette
+- **Blue (#60A3D9):** Hosting, primary metrics
+- **Green (#059669):** Firestore, success states
+- **Yellow (#F59E0B):** Storage, warnings
+- **Purple (#8B5CF6):** Functions, special features
+- **Red (#DC2626):** Errors, critical issues
+
+#### Layout Patterns
+- **Stats Grid:** 4-column responsive (200-280px per card)
+- **Content Grid:** 2-column (2fr 1fr ratio)
+- **Compact Cards:** Reduced padding for dense info
+- **Section Headers:** Clear hierarchy with descriptions
+
+### Integration Points
+
+#### 1. Git Hooks
+```bash
+# .git/hooks/post-commit
+#!/bin/bash
+node scripts/update_metrics.js
+```
+
+#### 2. Firebase Hosting
+- Static metrics.json served via CDN
+- Fast global distribution
+- Automatic cache invalidation on deploy
+
+#### 3. GitHub Actions (Future)
+- Automated metrics calculation
+- Scheduled report generation
+- Alert notifications
+
+### Performance Characteristics
+
+#### Load Times
+- **First Contentful Paint:** < 1s
+- **Time to Interactive:** < 2s
+- **Chart Rendering:** < 500ms
+- **Total Page Size:** < 200KB
+
+#### Optimization Techniques
+- Chart.js loaded from CDN (cached)
+- Metrics.json is ~10KB (minimal)
+- CSS/JS minified in production
+- Images lazy-loaded
+
+### Security Considerations
+
+#### Access Control
+- Portal requires Firebase Auth
+- Admin + Developer roles only
+- No sensitive data exposed (API keys, credentials)
+
+#### Data Privacy
+- Only aggregated metrics stored
+- No personally identifiable information
+- Cost data is estimated, not actual billing
+
+### Future Enhancements
+
+#### Planned Features (Q1 2026)
+1. **Real-Time GitHub Webhooks**
+   - Instant commit notifications
+   - PR status updates
+   - Automated deployment triggers
+
+2. **Firebase Firestore Integration**
+   - Store historical metrics
+   - Query trends over time
+   - Generate comparative reports
+
+3. **ML-Based Forecasting**
+   - Predict project completion dates
+   - Estimate future costs
+   - Identify velocity trends
+
+4. **Automated Reporting**
+   - Weekly email summaries
+   - Monthly performance reports
+   - Stakeholder dashboards
+
+### Related Documentation
+- [DEVELOPMENT_PORTAL_STATUS.md](DEVELOPMENT_PORTAL_STATUS.md) - Detailed portal documentation
+- [METRICS_WORKFLOW.md](METRICS_WORKFLOW.md) - Metrics automation workflow
+- [PROJECT_MANAGEMENT.md](PROJECT_MANAGEMENT.md) - Project tracking methodologies
+
+---
+
+**Document Version:** 2.1.0  
+**Last Reviewed:** November 6, 2025  
+**Next Review:** December 6, 2025 or as needed

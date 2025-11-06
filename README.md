@@ -1,15 +1,15 @@
 # Assiduous AI-Powered Real Estate Platform
-## Documentation Index - 19 Canonical Documents
+## Documentation Index - 20 Canonical Documents
 
-**Version:** 2.0.0-canonical  
-**Last Updated:** November 2, 2025  
-**Documentation Status:** CONSOLIDATED ✅ (19 canonical docs, 51 archived)  
-**Implementation Status:** Infrastructure 70% | Business Features 25%  
-**Project Completion:** 35% Overall (Infrastructure mostly complete, business features early stage)
+**Version:** 2.1.0-canonical  
+**Last Updated:** November 6, 2025  
+**Documentation Status:** CONSOLIDATED ✅ (20 canonical docs, 51 archived)  
+**Implementation Status:** Infrastructure 75% | Business Features 25%  
+**Project Completion:** 37.5% Overall (Infrastructure mostly complete, development portal operational)
 
 ---
 
-## 📚 THE 19 CANONICAL DOCUMENTS
+## 📚 THE 20 CANONICAL DOCUMENTS
 
 ### Core Documents (Root Directory)
 1. **[CHANGELOG.md](CHANGELOG.md)** - Version history and release notes
@@ -44,6 +44,9 @@
 #### Review & Assessment (1 document)
 19. **[POST_IMPLEMENTATION_REVIEW.md](docs/POST_IMPLEMENTATION_REVIEW.md)** - Lessons learned and review
 
+#### Development & Monitoring (1 document) **NEW**
+20. **[DEVELOPMENT_PORTAL_STATUS.md](docs/DEVELOPMENT_PORTAL_STATUS.md)** - Development dashboard, analytics, and cost tracking portal status
+
 ---
 
 ## 🎯 Quick Reference
@@ -52,11 +55,13 @@
 - Start with: [TECHNICAL_DESIGN.md](docs/TECHNICAL_DESIGN.md)
 - API Reference: [API_SPECIFICATION.md](docs/API_SPECIFICATION.md)
 - Deployment: [DEPLOYMENT_GUIDE.md](docs/DEPLOYMENT_GUIDE.md)
+- Dev Portal: [DEVELOPMENT_PORTAL_STATUS.md](docs/DEVELOPMENT_PORTAL_STATUS.md)
 
 ### For Project Managers
 - Project Status: [PROJECT_MANAGEMENT.md](docs/PROJECT_MANAGEMENT.md)
 - Risk Register: [RISK_MANAGEMENT.md](docs/RISK_MANAGEMENT.md)
 - Change Log: [CHANGELOG.md](CHANGELOG.md)
+- Development Metrics: [DEVELOPMENT_PORTAL_STATUS.md](docs/DEVELOPMENT_PORTAL_STATUS.md)
 
 ### For QA/Testing
 - Test Cases: [TEST_PLAN.md](docs/TEST_PLAN.md)
