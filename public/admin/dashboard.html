@@ -33,19 +33,18 @@
             background: var(--gray-50);
         }
 
-        /* Stats Grid */
+        /* Stats Grid - Fixed 4 columns with reasonable width */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 280px));
+            grid-template-columns: repeat(4, minmax(200px, 280px));
             gap: var(--space-lg);
             margin-bottom: var(--space-2xl);
-            justify-content: start;
         }
         
         /* Responsive breakpoints for stats grid */
         @media (max-width: 1200px) {
             .stats-grid {
-                grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+                grid-template-columns: repeat(2, 1fr);
             }
         }
         
