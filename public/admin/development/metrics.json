@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-11-06T14:59:02.778Z",
+  "lastUpdated": "2025-11-06T15:12:47.991Z",
   "summary": {
     "health": "Good",
     "score": 46,
@@ -104,41 +104,41 @@
     }
   },
   "project": {
-    "totalHours": "266",
+    "totalHours": "267",
     "avgHoursPerDay": "8.6",
-    "totalCost": 41779,
-    "laborCost": 39900,
+    "totalCost": 41929,
+    "laborCost": 40050,
     "toolsCost": 1879,
     "monthsElapsed": "2.9",
-    "totalCommits": 805,
-    "totalFiles": 769,
+    "totalCommits": 809,
+    "totalFiles": 770,
     "activeDays": 31,
     "totalDays": 88,
     "projectAgeDays": 88,
-    "linesAdded": 9746221,
-    "linesDeleted": 9377791,
-    "netLines": 368430,
-    "velocity": "26.0",
+    "linesAdded": 9746363,
+    "linesDeleted": 9378035,
+    "netLines": 368328,
+    "velocity": "26.1",
     "completionPercentage": 46,
     "actualStartDate": "2025-08-10"
   },
   "today": {
     "date": "2025-11-06",
-    "hours": "5.3",
-    "cost": 792,
-    "commits": 16,
+    "hours": "6.6",
+    "cost": 990,
+    "commits": 20,
     "deployments": 0
   },
   "thisWeek": {
-    "hours": "78.9",
-    "cost": 11831,
-    "commits": 239,
+    "hours": "80.2",
+    "cost": 12029,
+    "commits": 243,
     "days": 7
   },
   "thisMonth": {
-    "hours": "135.3",
-    "cost": 20295,
-    "commits": 410
+    "hours": "136.6",
+    "cost": 20493,
+    "commits": 414
   },
   "quality": {
     "testCoverage": {
@@ -172,7 +172,7 @@
       "critical": 0,
       "total": 0
     },
-    "lastAudit": "2025-11-06T14:58:32.787Z",
+    "lastAudit": "2025-11-06T15:12:17.381Z",
     "dependencies": {
       "total": {
         "prod": 256,
@@ -267,16 +267,16 @@
     "changelog": true,
     "contributing": false,
     "license": false,
-    "lastUpdate": "2025-11-06 04:23:10 +0000"
+    "lastUpdate": "2025-11-06 14:52:32 +0000"
   },
   "productivity": {
     "velocityTrend": "increasing",
-    "weeklyCommits": 239,
+    "weeklyCommits": 243,
     "contributors": {
       "total": 0,
       "active": 0
     },
-    "averageCommitSize": 107,
+    "averageCommitSize": 106,
     "pullRequests": {
       "open": 0,
       "merged": 0,
@@ -349,10 +349,34 @@
   },
   "recentActivity": [
     {
-      "hash": "71a78cf13ccbf5f9384f4db2e1e8e021676ad4c1",
+      "hash": "1ddfd9478aea38c5e6cafa37670ee7bc1921859d",
+      "message": "fix(admin): clean up 5 supporting pages with component references",
+      "author": "SirsiMaster",
+      "date": "2025-11-06 10:11:53 -0500"
+    },
+    {
+      "hash": "39b0dcdd8074147694a111eb36582deadad998b0",
+      "message": "chore: add cleanup script and update metrics",
+      "author": "SirsiMaster",
+      "date": "2025-11-06 10:01:46 -0500"
+    },
+    {
+      "hash": "09c8df66dc5551d5ae7ca041aeb4b263dcd8d8f5",
+      "message": "fix(admin): remove embedded sidebars from agents, clients, transactions",
+      "author": "SirsiMaster",
+      "date": "2025-11-06 10:01:17 -0500"
+    },
+    {
+      "hash": "90c3a54e390f3c491ff05888fe738eb36138cecb",
       "message": "fix(admin-properties): remove embedded sidebar and duplicate CSS",
       "author": "SirsiMaster",
       "date": "2025-11-06 09:58:08 -0500"
+    },
+    {
+      "hash": "321a2611dc9c5e72e03dbfc8d3de33d09834c257",
+      "message": "chore(release): Bump version to 0.92.0 [skip ci]",
+      "author": "github-actions[bot]",
+      "date": "2025-11-06 14:52:32 +0000"
     },
     {
       "hash": "6ef73d2f22b38c1693b8ceeeefd0b73e7141c0c7",
@@ -383,34 +407,10 @@
       "message": "fix(admin-dashboard): force 4 explicit columns with max-width constraint",
       "author": "SirsiMaster",
       "date": "2025-11-05 23:14:09 -0500"
-    },
-    {
-      "hash": "f20e62ccd3dbc287cfe5d14275030e3efce78f93",
-      "message": "chore(release): Bump version to 0.90.5 [skip ci]",
-      "author": "github-actions[bot]",
-      "date": "2025-11-06 04:11:12 +0000"
-    },
-    {
-      "hash": "a229f2a47681b6f049ad0dc4af0f6f067badafc4",
-      "message": "fix(admin-dashboard): constrain stat card width to reasonable size",
-      "author": "SirsiMaster",
-      "date": "2025-11-05 23:10:35 -0500"
-    },
-    {
-      "hash": "1d4b5738975d9ccadbbc526633fe09e3cbedf59b",
-      "message": "chore(release): Bump version to 0.90.4 [skip ci]",
-      "author": "github-actions[bot]",
-      "date": "2025-11-06 04:07:52 +0000"
-    },
-    {
-      "hash": "f93fb9da0248057c504b24db96d1647bf3231a5d",
-      "message": "fix(design): replace purple gradient buttons with Assiduous line-art style",
-      "author": "SirsiMaster",
-      "date": "2025-11-05 23:07:25 -0500"
     }
   ],
   "automation": {
-    "lastRun": "2025-11-06T14:59:02.778Z",
+    "lastRun": "2025-11-06T15:12:47.991Z",
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",
