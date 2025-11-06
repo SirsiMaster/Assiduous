@@ -1,110 +1,107 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-auth-protect="admin">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
-    <title>Real Estate Analytics - Assiduous Realty Admin</title>
+    <title>Analytics Dashboard — Assiduous</title>
     
     <!-- Assiduous Design System -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SirsiMaster/ui-components@latest/dist/sirsimaster-ui.css">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fontsource/geist-sans@5.0.6/latin.css" rel="stylesheet">
     <link rel="stylesheet" href="../assiduous.css">
     <link rel="stylesheet" href="../components/admin-layout.css">
-    <!-- Removed old Sirsi UI -->
+    <link rel="stylesheet" href="../assets/css/button-override.css">
     
     <style>
-        /* Analytics-specific styles only */
-        .page-content {
+        .analytics-content {
             padding: var(--space-xl);
             overflow-y: auto;
             background: var(--gray-50);
         }
 
-        .date-range-selector {
-            display: flex;
-            align-items: center;
-            gap: var(--space-sm);
-            background: var(--gray-50);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: var(--space-sm) var(--space-md);
+        /* Section Headers */
+        .section-header {
+            margin: var(--space-2xl) 0 var(--space-lg) 0;
+            padding-bottom: var(--space-md);
+            border-bottom: 1px solid var(--border);
         }
 
-        .date-select {
-            border: none;
-            background: none;
+        .section-header:first-child {
+            margin-top: 0;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--navy);
+            margin-bottom: var(--space-xs);
+        }
+
+        .section-subtitle {
             font-size: 14px;
-            outline: none;
-            color: var(--text-primary);
+            color: var(--text-secondary);
         }
 
-        .btn-secondary {
-            padding: var(--space-sm) var(--space-md);
-            background: var(--white);
-            color: var(--sky);
-            border: 1px solid var(--sky);
-            border-radius: var(--radius);
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.15s;
-            display: flex;
-            align-items: center;
-            gap: var(--space-xs);
-        }
-
-        .btn-secondary:hover {
-            background: var(--sky);
-            color: var(--white);
-        }
-
-        /* KPI Cards */
-        .kpi-grid {
+        /* Stats Grid - Matching Dashboard */
+        .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: var(--space-md);
+            grid-template-columns: repeat(4, minmax(200px, 280px));
+            gap: var(--space-lg);
             margin-bottom: var(--space-xl);
         }
+        
+        @media (max-width: 1200px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
 
-        .kpi-card {
+        .stat-card {
             background: var(--white);
             border: 1px solid var(--border);
             border-radius: var(--radius-md);
             padding: var(--space-lg);
+            transition: all 0.2s;
         }
 
-        .kpi-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: var(--space-sm);
+        .stat-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
         }
 
-        .kpi-icon {
+        .stat-icon {
             width: 40px;
             height: 40px;
             border-radius: var(--radius);
             display: flex;
             align-items: center;
             justify-content: center;
+            margin-bottom: var(--space-md);
         }
 
-        .kpi-icon.green { background: rgba(5, 150, 105, 0.1); color: var(--success); }
-        .kpi-icon.blue { background: rgba(96, 163, 217, 0.1); color: var(--sky); }
-        .kpi-icon.yellow { background: rgba(255, 217, 64, 0.1); color: var(--warning); }
-        .kpi-icon.purple { background: rgba(139, 92, 246, 0.1); color: #8B5CF6; }
+        .stat-icon.blue { background: rgba(96, 163, 217, 0.1); color: var(--sky); }
+        .stat-icon.green { background: rgba(5, 150, 105, 0.1); color: var(--success); }
+        .stat-icon.yellow { background: rgba(255, 217, 64, 0.1); color: var(--warning); }
+        .stat-icon.purple { background: rgba(139, 92, 246, 0.1); color: #8B5CF6; }
 
-        .kpi-value {
+        .stat-value {
             font-size: 28px;
             font-weight: 700;
             color: var(--dark);
             margin-bottom: var(--space-xs);
         }
 
-        .kpi-label {
+        .stat-label {
             font-size: 12px;
             color: var(--text-secondary);
             text-transform: uppercase;
@@ -112,7 +109,7 @@
             margin-bottom: var(--space-sm);
         }
 
-        .kpi-change {
+        .stat-change {
             font-size: 12px;
             font-weight: 600;
             display: flex;
@@ -120,26 +117,29 @@
             gap: 4px;
         }
 
-        .kpi-change.positive { color: var(--success); }
-        .kpi-change.negative { color: var(--danger); }
+        .stat-change.positive { color: var(--success); }
+        .stat-change.negative { color: var(--danger); }
 
-        /* Charts Section */
-        .analytics-grid {
+        /* Content Grid */
+        .content-grid {
             display: grid;
             grid-template-columns: 2fr 1fr;
-            gap: var(--space-lg);
+            gap: var(--space-xl);
             margin-bottom: var(--space-xl);
         }
 
+        @media (max-width: 1024px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Chart Card */
         .chart-card {
             background: var(--white);
             border: 1px solid var(--border);
             border-radius: var(--radius-md);
             padding: var(--space-lg);
-        }
-
-        .chart-card.full-width {
-            grid-column: span 2;
         }
 
         .chart-header {
@@ -160,20 +160,8 @@
             position: relative;
         }
 
-        .chart-placeholder {
-            width: 100%;
-            height: 100%;
-            background: var(--gray-50);
-            border-radius: var(--radius);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-secondary);
-            font-size: 14px;
-        }
-
-        /* Performance Table */
-        .performance-table {
+        /* Tables */
+        .data-table {
             background: var(--white);
             border: 1px solid var(--border);
             border-radius: var(--radius-md);
@@ -236,7 +224,7 @@
             width: 28px;
             height: 28px;
             border-radius: 50%;
-            background: var(--gradient);
+            background: linear-gradient(135deg, var(--sky), var(--navy));
             display: flex;
             align-items: center;
             justify-content: center;
@@ -246,7 +234,7 @@
         }
 
         .performance-bar {
-            width: 100px;
+            width: 80px;
             height: 8px;
             background: var(--gray-100);
             border-radius: 4px;
@@ -256,150 +244,12 @@
         .performance-fill {
             height: 100%;
             background: var(--sky);
-        }
-
-        /* Funnel Chart */
-        .funnel-stage {
-            padding: var(--space-md) 0;
-            border-bottom: 1px solid var(--gray-100);
-        }
-
-        .funnel-stage:last-child {
-            border-bottom: none;
-        }
-
-        .funnel-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: var(--space-sm);
-        }
-
-        .funnel-label {
-            font-size: 14px;
-            font-weight: 500;
-            color: var(--text-primary);
-        }
-
-        .funnel-value {
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--dark);
-        }
-
-        .funnel-bar {
-            height: 24px;
-            background: var(--gray-100);
-            border-radius: 4px;
-            overflow: hidden;
-        }
-
-        .funnel-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--sky), #4A8BC2);
-            display: flex;
-            align-items: center;
-            padding: 0 var(--space-sm);
-            color: var(--white);
-            font-size: 11px;
-            font-weight: 600;
-        }
-
-        /* User Activity List */
-        .activity-list {
-            max-height: 400px;
-            overflow-y: auto;
-        }
-
-        .activity-item {
-            padding: var(--space-md);
-            border-bottom: 1px solid var(--gray-100);
-            display: flex;
-            gap: var(--space-sm);
-        }
-
-        .activity-item:last-child {
-            border-bottom: none;
-        }
-
-        .activity-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            margin-top: 6px;
-            flex-shrink: 0;
-        }
-
-        .activity-dot.new { background: var(--success); }
-        .activity-dot.view { background: var(--sky); }
-        .activity-dot.contact { background: var(--warning); }
-
-        .activity-content {
-            flex: 1;
-        }
-
-        .activity-text {
-            font-size: 13px;
-            color: var(--text-primary);
-            margin-bottom: 2px;
-        }
-
-        .activity-time {
-            font-size: 11px;
-            color: var(--text-secondary);
-        }
-
-        /* Responsive */
-        @media (max-width: 1024px) {
-            .analytics-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .chart-card.full-width {
-                grid-column: span 1;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .sidebar {
-                display: none;
-            }
-            
-            .kpi-grid {
-                grid-template-columns: 1fr;
-            }
+            transition: width 0.3s;
         }
     </style>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SirsiMaster/ui-components@latest/dist/sirsimaster-ui.css">
-    <link rel="stylesheet" href="/assets/css/button-override.css">
-    
-    <script>
-        // Ensure button styles are loaded
-        (function() {
-            const checkButtons = function() {
-                const testBtn = document.querySelector('button');
-                if (testBtn) {
-                    const styles = window.getComputedStyle(testBtn);
-                    if (styles.borderStyle === 'outset' || styles.backgroundColor.includes('192')) {
-                        // Force reload override styles
-                        const link = document.querySelector('link[href*="button-override"]');
-                        if (link) {
-                            link.href = link.href.split('?')[0] + '?v=' + Date.now();
-                        }
-                    }
-                }
-            };
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', checkButtons);
-            } else {
-                checkButtons();
-            }
-        })();
-    </script>
 </head>
 <body>
     <div class="admin-wrapper">
-        
         <!-- Sidebar Component -->
         <aside class="sidebar" id="sidebar-root" data-active="analytics">
 <div class="sidebar-header">
@@ -424,7 +274,7 @@
       </svg>
       Dashboard
     </a>
-    <a href="analytics.html" class="nav-item" data-key="analytics" class="nav-item active">
+    <a href="analytics.html" class="nav-item active" data-key="analytics">
       <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <line x1="12" y1="20" x2="12" y2="10"></line>
         <line x1="18" y1="20" x2="18" y2="4"></line>
@@ -538,65 +388,33 @@
   </div>
 </nav>
 </aside>
+
         <main class="main-content">
-            <!-- Standardized Admin Header -->
+            <!-- Header -->
             <header id="universal-header-root" 
                     data-title="Analytics Dashboard" 
-                    data-subtitle="Comprehensive insights into platform performance, sales, and user engagement"
-                    data-search-placeholder="Search analytics data..."
-                    data-actions='[{"label":"Export Report","icon":"<path d=\"M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4\"></path><polyline points=\"7 10 12 15 17 10\"></polyline><line x1=\"12\" y1=\"15\" x2=\"12\" y2=\"3\"></line>","onclick":"HeaderActions.exportData()"}]'></header>
+                    data-subtitle="Comprehensive insights into platform performance and sales"
+                    data-search-placeholder="Search analytics data..."></header>
 
-            <!-- Page Content -->
-            <div class="page-content">
+            <!-- Content -->
+            <div class="analytics-content">
+                <!-- Key Metrics Section -->
+                <div class="section-header">
+                    <h2 class="section-title">Key Performance Indicators</h2>
+                    <p class="section-subtitle">Current period highlights and performance metrics</p>
+                </div>
 
-                <!-- Analytics Tabs -->
-                <sirsi-tabs id="analytics-tabs" style="margin-bottom: var(--space-lg);">
-                    <sirsi-tab slot="tab" selected>Overview</sirsi-tab>
-                    <sirsi-tab slot="tab">Trends</sirsi-tab>
-                    <sirsi-tab slot="tab">Performance</sirsi-tab>
-
-                    <div slot="panel">
-                        <p class="text-sm" style="color: var(--text-secondary); margin-bottom: var(--space-sm);">
-                            Quick snapshot of KPIs and current period highlights.
-                        </p>
-                        <button class="sm-btn sm-btn-primary sm-btn-sm">
-                            Jump to Overview
-                        </button>
-                    </div>
-                    <div slot="panel">
-                        <p class="text-sm" style="color: var(--text-secondary); margin-bottom: var(--space-sm);">
-                            Explore sales volume trends and recent user activity.
-                        </p>
-                        <button class="sm-btn sm-btn-primary sm-btn-sm">
-                            Jump to Trends
-                        </button>
-                    </div>
-                    <div slot="panel">
-                        <p class="text-sm" style="color: var(--text-secondary); margin-bottom: var(--space-sm);">
-                            Review agent performance, property type performance, ROI and commissions.
-                        </p>
-                        <button class="sm-btn sm-btn-primary sm-btn-sm">
-                            Jump to Performance
-                        </button>
-                    </div>
-                </sirsi-tabs>
-
-                <div id="overview"></div>
-
-                <!-- KPI Cards -->
-                <div class="kpi-grid">
-                    <div class="kpi-sm-sm-card">
-                        <div class="kpi-header">
-                            <div class="kpi-icon green">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <line x1="12" y1="1" x2="12" y2="23"></line>
-                                    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
-                                </svg>
-                            </div>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon green">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="12" y1="1" x2="12" y2="23"></line>
+                                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                            </svg>
                         </div>
-                        <div class="kpi-value">$48.6M</div>
-                        <div class="kpi-label">Total Sales Volume</div>
-                        <div class="kpi-change positive">
+                        <div class="stat-value">$48.6M</div>
+                        <div class="stat-label">Total Sales Volume</div>
+                        <div class="stat-change positive">
                             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <polyline points="18 15 12 9 6 15"></polyline>
                             </svg>
@@ -604,17 +422,15 @@
                         </div>
                     </div>
 
-                    <div class="kpi-sm-sm-card">
-                        <div class="kpi-header">
-                            <div class="kpi-icon blue">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                                </svg>
-                            </div>
+                    <div class="stat-card">
+                        <div class="stat-icon blue">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                            </svg>
                         </div>
-                        <div class="kpi-value">342</div>
-                        <div class="kpi-label">Properties Sold</div>
-                        <div class="kpi-change positive">
+                        <div class="stat-value">342</div>
+                        <div class="stat-label">Properties Sold</div>
+                        <div class="stat-change positive">
                             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <polyline points="18 15 12 9 6 15"></polyline>
                             </svg>
@@ -622,18 +438,16 @@
                         </div>
                     </div>
 
-                    <div class="kpi-sm-sm-card">
-                        <div class="kpi-header">
-                            <div class="kpi-icon yellow">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                                    <circle cx="12" cy="7" r="4"></circle>
-                                </svg>
-                            </div>
+                    <div class="stat-card">
+                        <div class="stat-icon yellow">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
                         </div>
-                        <div class="kpi-value">12,384</div>
-                        <div class="kpi-label">Active Users</div>
-                        <div class="kpi-change positive">
+                        <div class="stat-value">12,384</div>
+                        <div class="stat-label">Active Users</div>
+                        <div class="stat-change positive">
                             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <polyline points="18 15 12 9 6 15"></polyline>
                             </svg>
@@ -641,189 +455,48 @@
                         </div>
                     </div>
 
-                    <div class="kpi-sm-sm-card">
-                        <div class="kpi-header">
-                            <div class="kpi-icon purple">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
-                                </svg>
-                            </div>
+                    <div class="stat-card">
+                        <div class="stat-icon purple">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                            </svg>
                         </div>
-                        <div class="kpi-value">4.2%</div>
-                        <div class="kpi-label">Conversion Rate</div>
-                        <div class="kpi-change positive">
+                        <div class="stat-value">4.2%</div>
+                        <div class="stat-label">Conversion Rate</div>
+                        <div class="stat-change positive">
                             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <polyline points="18 15 12 9 6 15"></polyline>
                             </svg>
                             +0.8% improvement
                         </div>
                     </div>
-
-                    <div class="kpi-sm-sm-card">
-                        <div class="kpi-header">
-                            <div class="kpi-icon green">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <circle cx="12" cy="12" r="10"></circle>
-                                    <polyline points="12 6 12 12 16 14"></polyline>
-                                </svg>
-                            </div>
-                        </div>
-                        <div class="kpi-value">28 days</div>
-                        <div class="kpi-label">Avg Time to Close</div>
-                        <div class="kpi-change positive">
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <polyline points="18 15 12 9 6 15"></polyline>
-                            </svg>
-                            -3 days faster
-                        </div>
-                    </div>
-
-                    <div class="kpi-sm-sm-card">
-                        <div class="kpi-header">
-                            <div class="kpi-icon blue">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
-                                </svg>
-                            </div>
-                        </div>
-                        <div class="kpi-value">4.8</div>
-                        <div class="kpi-label">Client Satisfaction</div>
-                        <div class="kpi-change positive">
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <polyline points="18 15 12 9 6 15"></polyline>
-                            </svg>
-                            +0.2 points
-                        </div>
-                    </div>
                 </div>
 
-                <div id="trends"></div>
-                <!-- Sales & Revenue Chart -->
-                <div class="chart-sm-sm-card full-width" style="margin-bottom: var(--space-xl);">
+                <!-- Sales Trends Section -->
+                <div class="section-header">
+                    <h2 class="section-title">Sales & Revenue Trends</h2>
+                    <p class="section-subtitle">Monthly sales volume and transaction activity</p>
+                </div>
+
+                <div class="chart-card" style="margin-bottom: var(--space-xl);">
                     <div class="chart-header">
-                        <h3 class="chart-title">Sales Volume & Transaction Trends</h3>
-                        <select style="border: 1px solid var(--border); border-radius: var(--radius); padding: 4px 8px; font-size: 12px;">
-                            <option>Monthly View</option>
-                            <option>Weekly View</option>
-                            <option>Daily View</option>
-                        </select>
+                        <h3 class="chart-title">Sales Volume Over Time</h3>
+                        <button class="sm-btn sm-btn-outline sm-btn-sm">Export Data</button>
                     </div>
                     <div class="chart-container">
                         <canvas id="salesChart"></canvas>
                     </div>
                 </div>
 
-                <!-- Analytics Grid -->
-                <div class="analytics-grid">
-                    <!-- Sales Funnel -->
-                    <div class="chart-sm-sm-card">
-                        <div class="chart-header">
-                            <h3 class="chart-title">Sales Funnel</h3>
-                        </div>
-                        <div class="funnel-stage">
-                            <div class="funnel-header">
-                                <span class="funnel-label">Website Visitors</span>
-                                <span class="funnel-value">48,392</span>
-                            </div>
-                            <div class="funnel-bar">
-                                <div class="funnel-fill" style="width: 100%">100%</div>
-                            </div>
-                        </div>
-                        <div class="funnel-stage">
-                            <div class="funnel-header">
-                                <span class="funnel-label">Property Inquiries</span>
-                                <span class="funnel-value">12,458</span>
-                            </div>
-                            <div class="funnel-bar">
-                                <div class="funnel-fill" style="width: 25.7%">25.7%</div>
-                            </div>
-                        </div>
-                        <div class="funnel-stage">
-                            <div class="funnel-header">
-                                <span class="funnel-label">Property Viewings</span>
-                                <span class="funnel-value">3,842</span>
-                            </div>
-                            <div class="funnel-bar">
-                                <div class="funnel-fill" style="width: 7.9%">7.9%</div>
-                            </div>
-                        </div>
-                        <div class="funnel-stage">
-                            <div class="funnel-header">
-                                <span class="funnel-label">Offers Made</span>
-                                <span class="funnel-value">1,256</span>
-                            </div>
-                            <div class="funnel-bar">
-                                <div class="funnel-fill" style="width: 2.6%">2.6%</div>
-                            </div>
-                        </div>
-                        <div class="funnel-stage">
-                            <div class="funnel-header">
-                                <span class="funnel-label">Deals Closed</span>
-                                <span class="funnel-value">342</span>
-                            </div>
-                            <div class="funnel-bar">
-                                <div class="funnel-fill" style="width: 0.7%">0.7%</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- User Activity -->
-                    <div class="chart-sm-sm-card">
-                        <div class="chart-header">
-                            <h3 class="chart-title">Recent User Activity</h3>
-                        </div>
-                        <div class="activity-list">
-                            <div class="activity-item">
-                                <div class="activity-dot new"></div>
-                                <div class="activity-content">
-                                    <div class="activity-text">New user registration: <strong>Emily Chen</strong></div>
-                                    <div class="activity-time">5 minutes ago</div>
-                                </div>
-                            </div>
-                            <div class="activity-item">
-                                <div class="activity-dot view"></div>
-                                <div class="activity-content">
-                                    <div class="activity-text">Property viewed: 123 Main St by 3 users</div>
-                                    <div class="activity-time">12 minutes ago</div>
-                                </div>
-                            </div>
-                            <div class="activity-item">
-                                <div class="activity-dot contact"></div>
-                                <div class="activity-content">
-                                    <div class="activity-text">Agent contacted: Sarah Johnson received inquiry</div>
-                                    <div class="activity-time">28 minutes ago</div>
-                                </div>
-                            </div>
-                            <div class="activity-item">
-                                <div class="activity-dot new"></div>
-                                <div class="activity-content">
-                                    <div class="activity-text">New listing added: 789 Oak Ave</div>
-                                    <div class="activity-time">45 minutes ago</div>
-                                </div>
-                            </div>
-                            <div class="activity-item">
-                                <div class="activity-dot view"></div>
-                                <div class="activity-content">
-                                    <div class="activity-text">Virtual tour started: 456 Pine Rd</div>
-                                    <div class="activity-time">1 hour ago</div>
-                                </div>
-                            </div>
-                            <div class="activity-item">
-                                <div class="activity-dot contact"></div>
-                                <div class="activity-content">
-                                    <div class="activity-text">Offer submitted: $425,000 for 321 Elm St</div>
-                                    <div class="activity-time">2 hours ago</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <!-- Performance Section -->
+                <div class="section-header">
+                    <h2 class="section-title">Agent & Property Performance</h2>
+                    <p class="section-subtitle">Top performing agents and property insights</p>
                 </div>
 
-                <div id="performance"></div>
-                <!-- Performance Tables -->
-                <div class="analytics-grid">
-                    <!-- Top Performing Agents -->
-                    <div class="performance-table">
+                <div class="content-grid">
+                    <!-- Top Agents -->
+                    <div class="data-table">
                         <div class="table-header">
                             <h3 class="table-title">Top Performing Agents</h3>
                         </div>
@@ -833,8 +506,7 @@
                                     <th>Agent</th>
                                     <th>Sales</th>
                                     <th>Volume</th>
-                                    <th>Commission</th>
-                                    <th>Conversion</th>
+                                    <th>Performance</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -847,7 +519,6 @@
                                     </td>
                                     <td>42</td>
                                     <td>$8.2M</td>
-                                    <td>$246K</td>
                                     <td>
                                         <div class="performance-bar">
                                             <div class="performance-fill" style="width: 92%"></div>
@@ -863,7 +534,6 @@
                                     </td>
                                     <td>38</td>
                                     <td>$7.1M</td>
-                                    <td>$213K</td>
                                     <td>
                                         <div class="performance-bar">
                                             <div class="performance-fill" style="width: 88%"></div>
@@ -879,7 +549,6 @@
                                     </td>
                                     <td>35</td>
                                     <td>$6.8M</td>
-                                    <td>$204K</td>
                                     <td>
                                         <div class="performance-bar">
                                             <div class="performance-fill" style="width: 85%"></div>
@@ -895,7 +564,6 @@
                                     </td>
                                     <td>31</td>
                                     <td>$5.9M</td>
-                                    <td>$177K</td>
                                     <td>
                                         <div class="performance-bar">
                                             <div class="performance-fill" style="width: 78%"></div>
@@ -906,73 +574,42 @@
                         </table>
                     </div>
 
-                    <!-- Property Performance -->
-                    <div class="performance-table">
+                    <!-- Property Types -->
+                    <div class="data-table">
                         <div class="table-header">
-                            <h3 class="table-title">Property Type Performance</h3>
+                            <h3 class="table-title">Property Performance</h3>
                         </div>
                         <table>
                             <thead>
                                 <tr>
                                     <th>Type</th>
-                                    <th>Listed</th>
                                     <th>Sold</th>
                                     <th>Avg Price</th>
-                                    <th>Avg DOM</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
                                     <td>Single Family</td>
-                                    <td>642</td>
                                     <td>198</td>
                                     <td>$485K</td>
-                                    <td>24 days</td>
                                 </tr>
                                 <tr>
                                     <td>Condos</td>
-                                    <td>384</td>
                                     <td>142</td>
                                     <td>$325K</td>
-                                    <td>18 days</td>
                                 </tr>
                                 <tr>
                                     <td>Townhouses</td>
-                                    <td>256</td>
                                     <td>89</td>
                                     <td>$415K</td>
-                                    <td>21 days</td>
                                 </tr>
                                 <tr>
                                     <td>Multi-Family</td>
-                                    <td>124</td>
                                     <td>38</td>
                                     <td>$725K</td>
-                                    <td>35 days</td>
                                 </tr>
                             </tbody>
                         </table>
-                    </div>
-                </div>
-
-                <!-- ROI & Commission Analytics -->
-                <div class="analytics-grid" style="margin-top: var(--space-xl);">
-                    <div class="chart-sm-sm-card">
-                        <div class="chart-header">
-                            <h3 class="chart-title">Commission Distribution</h3>
-                        </div>
-                        <div class="chart-container">
-                            <canvas id="commissionChart"></canvas>
-                        </div>
-                    </div>
-
-                    <div class="chart-sm-sm-card">
-                        <div class="chart-header">
-                            <h3 class="chart-title">Marketing ROI by Channel</h3>
-                        </div>
-                        <div class="chart-container">
-                            <canvas id="roiChart"></canvas>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -982,176 +619,24 @@
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
-    <!-- Firebase Integration -->
-    <script type="module" src="../assets/js/firebase-init.js"></script>
-    <script type="module" src="assets/analytics-data-loader.js"></script>
-    
-    <script type="module">
-        // Import Firebase services
-        import { DatabaseService } from '../assets/js/firebase-init.js';
-        import { AnalyticsDataLoader } from './assets/analytics-data-loader.js';
+    <!-- Header Component -->
+    <script src="../components/universal-header.js"></script>
 
-        // Global charts for updates
-        let salesChart, commissionChart, roiChart;
-
-        // Load and display analytics data
-        async function loadAnalyticsData() {
-            try {
-                // Show loading state
-                showLoadingState();
-
-                // Fetch all data from Firestore
-                const data = await AnalyticsDataLoader.fetchAllData();
-                const kpis = AnalyticsDataLoader.calculateKPIs(
-                    data.properties,
-                    data.transactions,
-                    data.users,
-                    data.leads
-                );
-
-                // Update KPI cards
-                updateKPICards(kpis);
-
-                // Update charts with real data
-                updateSalesChart(data.transactions);
-                updateCommissionChart(data.transactions);
-                updateROIChart();
-
-                // Update performance tables
-                updateAgentPerformance(data.users, data.transactions);
-                updatePropertyPerformance(data.properties);
-
-                // Hide loading state
-                hideLoadingState();
-
-                console.log('✅ Analytics data loaded successfully');
-            } catch (error) {
-                console.error('❌ Error loading analytics data:', error);
-                showErrorState(error.message);
-            }
-        }
-
-        // Update KPI cards with real data
-        function updateKPICards(kpis) {
-            // Total Sales Volume
-            document.querySelector('.kpi-card:nth-child(1) .kpi-value').textContent = 
-                '$' + (kpis.totalSalesVolume / 1000000).toFixed(1) + 'M';
-
-            // Properties Sold
-            document.querySelector('.kpi-card:nth-child(2) .kpi-value').textContent = 
-                kpis.propertiesSold;
-
-            // Active Agents
-            document.querySelector('.kpi-card:nth-child(3) .kpi-value').textContent = 
-                kpis.activeAgents;
-
-            // Avg Deal Time
-            document.querySelector('.kpi-card:nth-child(4) .kpi-value').textContent = 
-                kpis.avgDealTime + ' days';
-        }
-
-        // Update sales volume chart with transaction data
-        function updateSalesChart(transactions) {
-            // Group transactions by month
-            const monthlyData = groupTransactionsByMonth(transactions);
-            
-            const salesCtx = document.getElementById('salesChart').getContext('2d');
-            salesChart = new Chart(salesCtx, {
+    <script>
+        // Initialize Chart
+        document.addEventListener('DOMContentLoaded', function() {
+            const ctx = document.getElementById('salesChart').getContext('2d');
+            new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: monthlyData.labels,
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
                     datasets: [{
                         label: 'Sales Volume ($M)',
-                        data: monthlyData.volumes,
+                        data: [3.2, 3.8, 4.1, 4.5, 4.2, 4.8, 4.6, 5.1, 4.9, 5.3, 4.7, 5.2],
                         borderColor: '#60A3D9',
                         backgroundColor: 'rgba(96, 163, 217, 0.1)',
                         tension: 0.4,
                         fill: true
-                    }, {
-                        label: 'Transactions',
-                        data: monthlyData.counts,
-                        borderColor: '#FFD940',
-                        backgroundColor: 'rgba(255, 217, 64, 0.1)',
-                        tension: 0.4,
-                        fill: true,
-                        yAxisID: 'y1'
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: true,
-                            position: 'top'
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            position: 'left',
-                            title: {
-                                display: true,
-                                text: 'Sales Volume ($M)'
-                            }
-                        },
-                        y1: {
-                            beginAtZero: true,
-                            position: 'right',
-                            grid: {
-                                drawOnChartArea: false
-                            },
-                            title: {
-                                display: true,
-                                text: 'Number of Transactions'
-                            }
-                        }
-                    }
-                }
-            });
-        }
-
-        // Update commission distribution chart
-        function updateCommissionChart(transactions) {
-            const commissionCtx = document.getElementById('commissionChart').getContext('2d');
-            commissionChart = new Chart(commissionCtx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['Buyer Agent', 'Seller Agent', 'Brokerage', 'Referral Fees', 'Marketing'],
-                    datasets: [{
-                        data: [35, 35, 20, 5, 5],
-                        backgroundColor: [
-                            '#60A3D9',
-                            '#0B1F41',
-                            '#FFD940',
-                            '#059669',
-                            '#DC2626'
-                        ]
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'bottom'
-                        }
-                    }
-                }
-            });
-        }
-
-        // Update ROI chart
-        function updateROIChart() {
-            const roiCtx = document.getElementById('roiChart').getContext('2d');
-            roiChart = new Chart(roiCtx, {
-                type: 'bar',
-                data: {
-                    labels: ['Google Ads', 'Facebook', 'Email', 'SEO', 'Referrals', 'Direct Mail'],
-                    datasets: [{
-                        label: 'ROI %',
-                        data: [245, 189, 312, 428, 520, 142],
-                        backgroundColor: '#60A3D9'
                     }]
                 },
                 options: {
@@ -1167,166 +652,14 @@
                             beginAtZero: true,
                             ticks: {
                                 callback: function(value) {
-                                    return value + '%';
+                                    return '$' + value + 'M';
                                 }
                             }
                         }
                     }
                 }
             });
-        }
-
-        // Group transactions by month
-        function groupTransactionsByMonth(transactions) {
-            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-            const monthlyVolumes = new Array(12).fill(0);
-            const monthlyCounts = new Array(12).fill(0);
-
-            transactions.forEach(txn => {
-                if (txn.status === 'completed' && txn.closedAt) {
-                    const date = txn.closedAt.toDate ? txn.closedAt.toDate() : new Date(txn.closedAt);
-                    const month = date.getMonth();
-                    monthlyVolumes[month] += (txn.amount || txn.financial?.purchasePrice || 0) / 1000000;
-                    monthlyCounts[month]++;
-                }
-            });
-
-            return {
-                labels: months,
-                volumes: monthlyVolumes.map(v => v.toFixed(1)),
-                counts: monthlyCounts
-            };
-        }
-
-        // Update agent performance table
-        function updateAgentPerformance(users, transactions) {
-            const agents = users.filter(u => u.role === 'agent');
-            const agentStats = agents.map(agent => {
-                const agentTxns = transactions.filter(t => t.agentId === agent.id && t.status === 'completed');
-                const totalVolume = agentTxns.reduce((sum, t) => sum + (t.amount || t.financial?.purchasePrice || 0), 0);
-                const avgCommission = totalVolume * 0.03; // 3% average commission
-
-                return {
-                    name: agent.displayName || `${agent.profile?.firstName || ''} ${agent.profile?.lastName || ''}`.trim() || 'Unknown',
-                    initials: getInitials(agent.displayName || agent.email),
-                    deals: agentTxns.length,
-                    volume: totalVolume,
-                    commission: avgCommission,
-                    performance: Math.min(100, (agentTxns.length / 50) * 100)
-                };
-            }).sort((a, b) => b.volume - a.volume).slice(0, 5);
-
-            // Update table rows
-            const tbody = document.querySelector('.performance-table tbody');
-            if (tbody && agentStats.length > 0) {
-                tbody.innerHTML = agentStats.map(agent => `
-                    <tr>
-                        <td>
-                            <div class="agent-name">
-                                <div class="agent-avatar">${agent.initials}</div>
-                                <span>${agent.name}</span>
-                            </div>
-                        </td>
-                        <td>${agent.deals}</td>
-                        <td>$${(agent.volume / 1000000).toFixed(1)}M</td>
-                        <td>$${(agent.commission / 1000).toFixed(0)}K</td>
-                        <td>
-                            <div class="performance-bar">
-                                <div class="performance-fill" style="width: ${agent.performance}%"></div>
-                            </div>
-                        </td>
-                    </tr>
-                `).join('');
-            }
-        }
-
-        // Update property performance table
-        function updatePropertyPerformance(properties) {
-            const types = ['house', 'condo', 'townhouse', 'multi-family'];
-            const typeStats = types.map(type => {
-                const typeProps = properties.filter(p => p.type === type || p.details?.type === type);
-                const sold = typeProps.filter(p => p.status === 'sold');
-                const avgPrice = sold.length > 0 
-                    ? sold.reduce((sum, p) => sum + (p.price?.amount || p.price?.list || 0), 0) / sold.length
-                    : 0;
-                const avgDOM = sold.length > 0
-                    ? sold.reduce((sum, p) => sum + (p.daysOnMarket || 30), 0) / sold.length
-                    : 0;
-
-                return {
-                    type: type.charAt(0).toUpperCase() + type.slice(1).replace('-', ' '),
-                    listed: typeProps.length,
-                    sold: sold.length,
-                    avgPrice,
-                    avgDOM: Math.round(avgDOM)
-                };
-            });
-
-            // Update property performance table if exists
-            const propTbody = document.querySelectorAll('.performance-table')[1]?.querySelector('tbody');
-            if (propTbody && typeStats.length > 0) {
-                propTbody.innerHTML = typeStats.map(stat => `
-                    <tr>
-                        <td>${stat.type}</td>
-                        <td>${stat.listed}</td>
-                        <td>${stat.sold}</td>
-                        <td>$${(stat.avgPrice / 1000).toFixed(0)}K</td>
-                        <td>${stat.avgDOM} days</td>
-                    </tr>
-                `).join('');
-            }
-        }
-
-        // Helper functions
-        function getInitials(name) {
-            if (!name) return '?';
-            const parts = name.split(' ');
-            if (parts.length >= 2) {
-                return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
-            }
-            return name.substring(0, 2).toUpperCase();
-        }
-
-        function showLoadingState() {
-            document.querySelectorAll('.kpi-value').forEach(el => {
-                el.textContent = '...';
-            });
-        }
-
-        function hideLoadingState() {
-            // Loading complete
-        }
-
-        function showErrorState(message) {
-            console.error('Failed to load analytics:', message);
-            // Could show error banner here
-        }
-
-        // Header Actions for Analytics
-        const HeaderActions = {
-            exportData: function() {
-                console.log('Exporting analytics data...');
-                alert('Analytics data export functionality will be implemented in the next phase.');
-            }
-        };
-
-        // Initialize analytics on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            // Highlight active page in sidebar
-            const currentPath = window.location.pathname;
-            document.querySelectorAll('.nav-item').forEach(item => {
-                if (item.getAttribute('href') === currentPath) {
-                    item.classList.add('active');
-                } else {
-                    item.classList.remove('active');
-                }
-            });
-
-            // Load analytics data from Firestore
-            loadAnalyticsData();
         });
     </script>
-    <!-- Sidebar pre-rendered, no JS needed -->
-    <script src="../components/universal-header.js"></script>
 </body>
 </html>
