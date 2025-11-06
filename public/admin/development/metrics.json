@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-11-06T15:12:47.991Z",
+  "lastUpdated": "2025-11-06T15:27:37.126Z",
   "summary": {
     "health": "Good",
     "score": 46,
@@ -104,41 +104,41 @@
     }
   },
   "project": {
-    "totalHours": "267",
-    "avgHoursPerDay": "8.6",
-    "totalCost": 41929,
-    "laborCost": 40050,
+    "totalHours": "269",
+    "avgHoursPerDay": "8.7",
+    "totalCost": 42229,
+    "laborCost": 40350,
     "toolsCost": 1879,
     "monthsElapsed": "2.9",
-    "totalCommits": 809,
-    "totalFiles": 770,
+    "totalCommits": 814,
+    "totalFiles": 771,
     "activeDays": 31,
     "totalDays": 88,
     "projectAgeDays": 88,
-    "linesAdded": 9746363,
-    "linesDeleted": 9378035,
-    "netLines": 368328,
-    "velocity": "26.1",
+    "linesAdded": 9747348,
+    "linesDeleted": 9379197,
+    "netLines": 368151,
+    "velocity": "26.3",
     "completionPercentage": 46,
     "actualStartDate": "2025-08-10"
   },
   "today": {
     "date": "2025-11-06",
-    "hours": "6.6",
-    "cost": 990,
-    "commits": 20,
+    "hours": "8.3",
+    "cost": 1238,
+    "commits": 25,
     "deployments": 0
   },
   "thisWeek": {
-    "hours": "80.2",
-    "cost": 12029,
-    "commits": 243,
+    "hours": "81.8",
+    "cost": 12276,
+    "commits": 248,
     "days": 7
   },
   "thisMonth": {
-    "hours": "136.6",
-    "cost": 20493,
-    "commits": 414
+    "hours": "138.3",
+    "cost": 20741,
+    "commits": 419
   },
   "quality": {
     "testCoverage": {
@@ -172,7 +172,7 @@
       "critical": 0,
       "total": 0
     },
-    "lastAudit": "2025-11-06T15:12:17.381Z",
+    "lastAudit": "2025-11-06T15:27:14.459Z",
     "dependencies": {
       "total": {
         "prod": 256,
@@ -251,7 +251,7 @@
     }
   },
   "documentation": {
-    "markdownFiles": 2508,
+    "markdownFiles": 2509,
     "jsFilesTotal": 23932,
     "jsFilesDocumented": 23932,
     "coverage": 427,
@@ -267,11 +267,11 @@
     "changelog": true,
     "contributing": false,
     "license": false,
-    "lastUpdate": "2025-11-06 14:52:32 +0000"
+    "lastUpdate": "2025-11-06 10:26:23 -0500"
   },
   "productivity": {
     "velocityTrend": "increasing",
-    "weeklyCommits": 243,
+    "weeklyCommits": 248,
     "contributors": {
       "total": 0,
       "active": 0
@@ -349,10 +349,40 @@
   },
   "recentActivity": [
     {
-      "hash": "1ddfd9478aea38c5e6cafa37670ee7bc1921859d",
+      "hash": "6b46e3266ab316d289180504306bbdf5c597f956",
+      "message": "docs: add comprehensive UCS templates documentation",
+      "author": "SirsiMaster",
+      "date": "2025-11-06 10:26:23 -0500"
+    },
+    {
+      "hash": "dcdedd48585b0ccb18abffba1288251782902208",
+      "message": "chore(release): Bump version to 0.92.2 [skip ci]",
+      "author": "github-actions[bot]",
+      "date": "2025-11-06 15:19:31 +0000"
+    },
+    {
+      "hash": "0f0ed2eb2877285b845cbcae11d0d278976118bd",
+      "message": "fix: update metrics",
+      "author": "SirsiMaster",
+      "date": "2025-11-06 10:19:16 -0500"
+    },
+    {
+      "hash": "6e48a832a4d5be165f587b43aa21fc84d8636508",
+      "message": "fix(admin): cleanup dev and contracts pages - remove embedded sidebars",
+      "author": "SirsiMaster",
+      "date": "2025-11-06 10:18:50 -0500"
+    },
+    {
+      "hash": "91362c5fcf8c9f970edddaa17f1fa6dbb8da102c",
       "message": "fix(admin): clean up 5 supporting pages with component references",
       "author": "SirsiMaster",
       "date": "2025-11-06 10:11:53 -0500"
+    },
+    {
+      "hash": "15d5cb60f28c5a1e0139b6a67b32cf006986377b",
+      "message": "chore(release): Bump version to 0.92.1 [skip ci]",
+      "author": "github-actions[bot]",
+      "date": "2025-11-06 15:02:03 +0000"
     },
     {
       "hash": "39b0dcdd8074147694a111eb36582deadad998b0",
@@ -377,40 +407,10 @@
       "message": "chore(release): Bump version to 0.92.0 [skip ci]",
       "author": "github-actions[bot]",
       "date": "2025-11-06 14:52:32 +0000"
-    },
-    {
-      "hash": "6ef73d2f22b38c1693b8ceeeefd0b73e7141c0c7",
-      "message": "feat(admin): rebuild market.html with clean design pattern",
-      "author": "SirsiMaster",
-      "date": "2025-11-06 09:51:59 -0500"
-    },
-    {
-      "hash": "3ca0828113d647d0c9f570e426801065517ffb4e",
-      "message": "chore(release): Bump version to 0.91.0 [skip ci]",
-      "author": "github-actions[bot]",
-      "date": "2025-11-06 04:23:10 +0000"
-    },
-    {
-      "hash": "8429b3d652e85f7854d07b3f81d5b57c24f1c31f",
-      "message": "feat(analytics): complete rebuild with clean professional design",
-      "author": "SirsiMaster",
-      "date": "2025-11-05 23:22:32 -0500"
-    },
-    {
-      "hash": "7388e63cb8abc088acf90151bfc55549063e3afb",
-      "message": "chore(release): Bump version to 0.90.6 [skip ci]",
-      "author": "github-actions[bot]",
-      "date": "2025-11-06 04:14:38 +0000"
-    },
-    {
-      "hash": "304e87d59666f2b1ba489f3cbb1c24fe8f94a022",
-      "message": "fix(admin-dashboard): force 4 explicit columns with max-width constraint",
-      "author": "SirsiMaster",
-      "date": "2025-11-05 23:14:09 -0500"
     }
   ],
   "automation": {
-    "lastRun": "2025-11-06T15:12:47.991Z",
+    "lastRun": "2025-11-06T15:27:37.126Z",
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",
