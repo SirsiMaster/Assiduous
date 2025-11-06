@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Development Costs - Assiduous Admin</title>
+    
+    <!-- Assiduous Design System -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SirsiMaster/ui-components@latest/dist/sirsimaster-ui.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <link rel="stylesheet" href="../../assiduous.css">
+    
+    <style>
+        /* Admin Layout */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: "Geist Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+            background: var(--white);
+        }
+
+        .admin-wrapper {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 240px;
+            background: var(--navy);
+            color: var(--white);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-header {
+            padding: var(--space-lg);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .sidebar-logo {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            color: var(--white);
+            text-decoration: none;
+        }
+
+        .sidebar-logo svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .sidebar-logo-text {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: var(--space-md) 0;
+        }
+
+        .nav-section {
+            margin-bottom: var(--space-lg);
+        }
+
+        .nav-section-title {
+            padding: 0 var(--space-lg);
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            opacity: 0.6;
+            margin-bottom: var(--space-sm);
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: var(--space-sm) var(--space-lg);
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.15s;
+        }
+
+        .nav-item:hover {
+            background: rgba(255,255,255,0.05);
+            color: var(--white);
+        }
+
+        .nav-item.active {
+            background: var(--sky);
+            color: var(--white);
+        }
+
+        .nav-icon {
+            width: 18px;
+            height: 18px;
+            opacity: 0.8;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Top Bar */
+        .topbar {
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            padding: var(--space-md) var(--space-xl);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .topbar-actions {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-weight: 600;
+            font-size: 12px;
+        }
+
+        /* Page Content */
+        .page-content {
+            flex: 1;
+            padding: var(--space-xl);
+            overflow-y: auto;
+            background: var(--gray-50);
+        }
+
+        .header {
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            font-size: 16px;
+            color: var(--gray-600);
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 40px;
+            border-bottom: 1px solid var(--gray-200);
+            padding-bottom: 0;
+        }
+
+        .nav-tab {
+            padding: 12px 0;
+            color: var(--gray-600);
+            text-decoration: none;
+            font-weight: 500;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            transition: all 0.15s;
+        }
+
+        .nav-tab:hover {
+            color: var(--sky);
+        }
+
+        .nav-tab.active {
+            color: var(--sky);
+            border-bottom-color: var(--sky);
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .metric-card {
+            background: var(--white);
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 24px;
+            transition: all 0.2s;
+        }
+
+        .metric-card:hover {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+            transform: translateY(-2px);
+            border-color: var(--sky);
+        }
+
+        .metric-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--gray-500);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 8px;
+        }
+
+        .metric-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 8px;
+        }
+
+        .metric-change {
+            font-size: 14px;
+            color: var(--gray-600);
+        }
+
+        .metric-change.positive {
+            color: var(--success);
+        }
+
+        .metric-change.negative {
+            color: var(--danger);
+        }
+
+        .card {
+            background: var(--white);
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            margin-bottom: 24px;
+        }
+
+        .card-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--gray-200);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--navy);
+        }
+
+        .card-body {
+            padding: 24px;
+        }
+
+        /* Modern button styles handled by sirsi-button component */
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table th {
+            text-align: left;
+            padding: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--gray-500);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .table td {
+            padding: 16px 12px;
+            border-bottom: 1px solid var(--gray-100);
+            color: var(--gray-700);
+        }
+
+        .table tr:hover {
+            background: var(--gray-50);
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--sky);
+            text-decoration: none;
+            font-weight: 500;
+            margin-bottom: 20px;
+            transition: all 0.15s;
+        }
+
+        .back-link:hover {
+            gap: 12px;
+        }
+    </style>
+    <!-- Removed old Sirsi UI -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SirsiMaster/ui-components@latest/dist/sirsimaster-ui.css">
+    <link rel="stylesheet" href="/assets/css/button-override.css">
+    
+    <script>
+        // Ensure button styles are loaded
+        (function() {
+            const checkButtons = function() {
+                const testBtn = document.querySelector('button');
+                if (testBtn) {
+                    const styles = window.getComputedStyle(testBtn);
+                    if (styles.borderStyle === 'outset' || styles.backgroundColor.includes('192')) {
+                        // Force reload override styles
+                        const link = document.querySelector('link[href*="button-override"]');
+                        if (link) {
+                            link.href = link.href.split('?')[0] + '?v=' + Date.now();
+                        }
+                    }
+                }
+            };
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', checkButtons);
+            } else {
+                checkButtons();
+            }
+        })();
+    </script>
+</head>
+<body>
+    <div class="admin-wrapper">
+        
+        <!-- Sidebar Component -->
+        <div id="sidebar-root" data-active="dev-costs"></div>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Standardized Admin Header -->
+            <header id="universal-header-root" 
+                    data-title="Development Costs" 
+                    data-subtitle="Track development expenses and budget allocation"
+                    data-search-placeholder="Search cost data..."
+                    data-actions='[{"label":"Export Report","icon":"<path d=\"M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4\"></path><polyline points=\"7 10 12 15 17 10\"></polyline><line x1=\"12\" y1=\"15\" x2=\"12\" y2=\"3\"></line>","onclick":"HeaderActions.exportData()"}]'></header>
+
+            <!-- Page Content -->
+            <div class="page-content">
+
+        <!-- Cost Metrics Grid -->
+        <div class="metrics-grid">
+            <div class="metric-sm-sm-card">
+                <div class="metric-label">📅 Today's Cost</div>
+                <div class="metric-value">$1,200</div>
+                <div class="metric-change positive">4h 00m worked</div>
+            </div>
+            
+            <div class="metric-sm-sm-card">
+                <div class="metric-label">📈 This Week</div>
+                <div class="metric-value">$1,200</div>
+                <div class="metric-change">4h 00m • 1 day</div>
+            </div>
+            
+            <div class="metric-sm-sm-card">
+                <div class="metric-label">📆 This Month</div>
+                <div class="metric-value">$6,789</div>
+                <div class="metric-change">September 2025</div>
+            </div>
+            
+            <div class="metric-sm-sm-card">
+                <div class="metric-label">🏆 Project Total</div>
+                <div class="metric-value">$7,989</div>
+                <div class="metric-change">Since Aug 2025</div>
+            </div>
+        </div>
+
+        <!-- Hourly Rate Card -->
+        <div class="sm-sm-card">
+            <div class="sm-sm-sm-sm-card-header">
+                <div class="sm-sm-card-title">⚙️ Rate Configuration</div>
+                <button class="sm-btn sm-btn-primary">Update Rate</button>
+            </div>
+            <div class="sm-sm-sm-sm-card-body">
+                <div class="metrics-grid">
+                    <div>
+                        <div class="metric-label">Owner Rate</div>
+                        <div style="font-size: 24px; font-weight: 600; color: var(--navy);">$150/hour</div>
+                    </div>
+                    <div>
+                        <div class="metric-label">Monthly Tools</div>
+                        <div style="font-size: 24px; font-weight: 600; color: var(--navy);">$650/month</div>
+                        <div style="font-size: 11px; color: var(--gray-500); margin-top: 4px;">Will be itemized</div>
+                    </div>
+                    <div>
+                        <div class="metric-label">Cloud Services</div>
+                        <div style="font-size: 24px; font-weight: 600; color: var(--navy);">$0/month</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Today's Activities -->
+        <div class="sm-sm-card">
+            <div class="sm-sm-sm-sm-card-header">
+                <div class="sm-sm-card-title">📋 Recent Activity</div>
+                <button class="sm-btn sm-btn-primary">Add Entry</button>
+            </div>
+            <div class="sm-sm-sm-sm-card-body">
+                <table class="sm-table">
+                    <thead>
+                        <tr>
+                            <th>Commit</th>
+                            <th>Message</th>
+                            <th>Author</th>
+                            <th>Time</th>
+                        </tr>
+                    </thead>
+                    <tbody id="activity-table">
+                        <tr>
+                            <td colspan="4" style="text-align: center; padding: 20px; color: var(--gray-400);">Loading...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Cost Breakdown -->
+        <div class="sm-sm-card">
+            <div class="sm-sm-sm-sm-card-header">
+                <div class="sm-sm-card-title">💵 Cost Breakdown</div>
+            </div>
+            <div class="sm-sm-sm-sm-card-body">
+                <div class="metrics-grid">
+                    <div>
+                        <div class="metric-label">Labor Cost</div>
+                        <div id="labor-cost" style="font-size: 24px; font-weight: 600; color: var(--navy);">--</div>
+                        <div style="margin-top: 8px; height: 8px; background: var(--gray-200); border-radius: 4px; overflow: hidden;">
+                            <div id="labor-bar" style="width: 0%; height: 100%; background: var(--sky);"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="metric-label">Tools & Services</div>
+                        <div id="tools-cost" style="font-size: 24px; font-weight: 600; color: var(--success);">--</div>
+                        <div style="margin-top: 8px; height: 8px; background: var(--gray-200); border-radius: 4px; overflow: hidden;">
+                            <div id="tools-bar" style="width: 0%; height: 100%; background: var(--success);"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="metric-label">Cloud Infrastructure</div>
+                        <div id="cloud-cost" style="font-size: 24px; font-weight: 600; color: var(--gray-400);">$0</div>
+                        <div style="margin-top: 8px; height: 8px; background: var(--gray-200); border-radius: 4px; overflow: hidden;">
+                            <div id="cloud-bar" style="width: 0%; height: 100%; background: var(--gray-400);"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Export Options -->
+        <div class="sm-sm-card">
+            <div class="sm-sm-sm-sm-card-header">
+                <div class="sm-sm-card-title">📊 Export & Reports</div>
+            </div>
+            <div class="sm-sm-sm-sm-card-body">
+                <div style="display: flex; gap: 12px;">
+                    <button class="sm-btn sm-btn-primary">Export CSV</button>
+                    <button class="sm-btn sm-btn-secondary">Generate PDF Report</button>
+                    <button class="sm-btn sm-btn-ghost">Print Summary</button>
+                </div>
+            </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Load REAL metrics from cache -->
+    <script>
+        function getTimeAgo(date) {
+            const seconds = Math.floor((new Date() - date) / 1000);
+            if (seconds < 3600) return `${Math.floor(seconds / 60)}m ago`;
+            if (seconds < 86400) return `${Math.floor(seconds / 3600)}h ago`;
+            if (seconds < 2592000) return `${Math.floor(seconds / 86400)}d ago`;
+            return new Date(date).toLocaleDateString();
+        }
+        
+        document.addEventListener('DOMContentLoaded', async function() {
+            console.log('Development Costs page loaded');
+            
+            // Load real metrics from SINGLE SOURCE OF TRUTH
+            try {
+                const response = await fetch('./metrics.json');
+                if (response.ok) {
+                    const metrics = await response.json();
+                    console.log('Loaded real cost metrics:', metrics);
+                    
+                    // Update all metric values with REAL data
+                    const metricValues = document.querySelectorAll('.metric-value');
+                    if (metricValues[0]) metricValues[0].textContent = `$${parseInt(metrics.today?.cost || 0).toLocaleString()}`;
+                    if (metricValues[1]) metricValues[1].textContent = `$${parseInt(metrics.thisWeek?.cost || 0).toLocaleString()}`;
+                    if (metricValues[2]) metricValues[2].textContent = `$${parseInt(metrics.thisMonth?.cost || 0).toLocaleString()}`;
+                    if (metricValues[3]) metricValues[3].textContent = `$${parseInt(metrics.project?.totalCost || 0).toLocaleString()}`;
+                    
+                    // Update metric changes with hours
+                    const metricChanges = document.querySelectorAll('.metric-change');
+                    if (metricChanges[0]) metricChanges[0].textContent = `${metrics.today?.hours || 0}h worked`;
+                    if (metricChanges[1]) metricChanges[1].textContent = `${metrics.thisWeek?.hours || 0}h • ${metrics.thisWeek?.days || 0} days`;
+                    if (metricChanges[3]) metricChanges[3].textContent = `Since Aug 2025 • ${metrics.project?.totalHours || 0}h`;
+                    
+                    // Update Recent Activity Table
+                    const activityTable = document.getElementById('activity-table');
+                    const recentActivity = metrics.recentActivity || [];
+                    if (recentActivity.length > 0) {
+                        activityTable.innerHTML = recentActivity.slice(0, 8).map(activity => `
+                            <tr>
+                                <td><code style="font-size: 11px; background: var(--gray-100); padding: 2px 6px; border-radius: 4px;">${activity.hash ? activity.hash.substring(0, 7) : 'N/A'}</code></td>
+                                <td>${activity.message || 'No message'}</td>
+                                <td>${activity.author || 'Unknown'}</td>
+                                <td style="white-space: nowrap;">${activity.date ? getTimeAgo(new Date(activity.date)) : 'Recently'}</td>
+                            </tr>
+                        `).join('');
+                    } else {
+                        activityTable.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 20px;">No recent activity</td></tr>';
+                    }
+                    
+                    // Update Cost Breakdown
+                    const laborCost = metrics.project?.laborCost || 0;
+                    const toolsCost = metrics.project?.toolsCost || 0;
+                    const totalCost = metrics.project?.totalCost || 1;
+                    
+                    document.getElementById('labor-cost').textContent = `$${laborCost.toLocaleString()}`;
+                    document.getElementById('tools-cost').textContent = `$${toolsCost.toLocaleString()}`;
+                    
+                    const laborPct = Math.round((laborCost / totalCost) * 100);
+                    const toolsPct = Math.round((toolsCost / totalCost) * 100);
+                    
+                    document.getElementById('labor-bar').style.width = `${laborPct}%`;
+                    document.getElementById('tools-bar').style.width = `${toolsPct}%`;
+                    
+                    // Update labels with percentages
+                    const labels = document.querySelectorAll('.metric-label');
+                    labels.forEach(label => {
+                        if (label.textContent.includes('Labor')) label.textContent = `Labor Cost (${laborPct}%)`;
+                        if (label.textContent.includes('Tools')) label.textContent = `Tools & Services (${toolsPct}%)`;
+                    });
+                    
+                    console.log('Cost page updated with real metrics');
+                } else {
+                    console.warn('Metrics cache not available');
+                }
+            } catch (error) {
+                console.error('Error loading metrics:', error);
+            }
+            
+            // Add click handlers for buttons
+            document.querySelectorAll('sirsi-button, button').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    const buttonText = this.textContent.trim();
+                    if (buttonText === 'Export CSV') {
+                        alert('CSV export would download development_costs_' + new Date().toISOString().split('T')[0] + '.csv');
+                    } else if (buttonText === 'Generate PDF Report') {
+                        alert('PDF report generation would open in new window');
+                    } else if (buttonText === 'Print Summary') {
+                        window.print();
+                    } else if (buttonText === 'Add Entry') {
+                        alert('Time entry form would open here');
+                    } else if (buttonText === 'Update Rate') {
+                        alert('Rate configuration dialog would open here');
+                    }
+                });
+            });
+        });
+    </script>
+    
+    <!-- Load Component Scripts -->
+    <script src="../../components/sidebar.js"></script>
+    <script src="../../components/universal-header.js"></script>
+</body>
+</html>

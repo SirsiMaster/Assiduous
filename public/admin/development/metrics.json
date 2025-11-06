@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-11-06T16:13:04.504Z",
+  "lastUpdated": "2025-11-06T16:19:39.656Z",
   "summary": {
     "health": "Good",
     "score": 46,
@@ -104,41 +104,41 @@
     }
   },
   "project": {
-    "totalHours": "274",
-    "avgHoursPerDay": "8.8",
-    "totalCost": 42979,
-    "laborCost": 41100,
+    "totalHours": "275",
+    "avgHoursPerDay": "8.9",
+    "totalCost": 43129,
+    "laborCost": 41250,
     "toolsCost": 1879,
     "monthsElapsed": "2.9",
-    "totalCommits": 829,
-    "totalFiles": 772,
+    "totalCommits": 832,
+    "totalFiles": 773,
     "activeDays": 31,
     "totalDays": 88,
     "projectAgeDays": 88,
-    "linesAdded": 9749669,
-    "linesDeleted": 9381277,
-    "netLines": 368392,
-    "velocity": "26.7",
+    "linesAdded": 9750377,
+    "linesDeleted": 9381334,
+    "netLines": 369043,
+    "velocity": "26.8",
     "completionPercentage": 46,
     "actualStartDate": "2025-08-10"
   },
   "today": {
     "date": "2025-11-06",
-    "hours": "13.2",
-    "cost": 1980,
-    "commits": 40,
+    "hours": "14.2",
+    "cost": 2129,
+    "commits": 43,
     "deployments": 0
   },
   "thisWeek": {
-    "hours": "86.8",
-    "cost": 13019,
-    "commits": 263,
+    "hours": "87.8",
+    "cost": 13167,
+    "commits": 266,
     "days": 7
   },
   "thisMonth": {
-    "hours": "143.2",
-    "cost": 21483,
-    "commits": 434
+    "hours": "144.2",
+    "cost": 21632,
+    "commits": 437
   },
   "quality": {
     "testCoverage": {
@@ -172,7 +172,7 @@
       "critical": 0,
       "total": 0
     },
-    "lastAudit": "2025-11-06T16:12:42.057Z",
+    "lastAudit": "2025-11-06T16:19:15.633Z",
     "dependencies": {
       "total": {
         "prod": 256,
@@ -251,7 +251,7 @@
     }
   },
   "documentation": {
-    "markdownFiles": 2510,
+    "markdownFiles": 2511,
     "jsFilesTotal": 23932,
     "jsFilesDocumented": 23932,
     "coverage": 427,
@@ -267,16 +267,16 @@
     "changelog": true,
     "contributing": false,
     "license": false,
-    "lastUpdate": "2025-11-06 16:04:51 +0000"
+    "lastUpdate": "2025-11-06 11:18:21 -0500"
   },
   "productivity": {
     "velocityTrend": "increasing",
-    "weeklyCommits": 263,
+    "weeklyCommits": 266,
     "contributors": {
       "total": 0,
       "active": 0
     },
-    "averageCommitSize": 104,
+    "averageCommitSize": 103,
     "pullRequests": {
       "open": 0,
       "merged": 0,
@@ -349,6 +349,24 @@
   },
   "recentActivity": [
     {
+      "hash": "e6cb59b5231a9bdedcfce6eeea7f4cf2ef061e41",
+      "message": "chore: update cache and metrics after documentation updates",
+      "author": "SirsiMaster",
+      "date": "2025-11-06 11:18:55 -0500"
+    },
+    {
+      "hash": "9ba1dee247701bf552828e719598a3b073fb2acd",
+      "message": "docs: Update canonical documentation with development portal status",
+      "author": "SirsiMaster",
+      "date": "2025-11-06 11:18:21 -0500"
+    },
+    {
+      "hash": "7fbb4c504942df756111b210b457d752147454b0",
+      "message": "chore(release): Bump version to 0.96.0 [skip ci]",
+      "author": "github-actions[bot]",
+      "date": "2025-11-06 16:12:38 +0000"
+    },
+    {
       "hash": "e8ba1e033b977f0648ec637b09dc990415aade91",
       "message": "chore: update Firebase cache and metrics after analytics chart restoration",
       "author": "SirsiMaster",
@@ -389,28 +407,10 @@
       "message": "chore(release): Bump version to 0.93.0 [skip ci]",
       "author": "github-actions[bot]",
       "date": "2025-11-06 15:51:09 +0000"
-    },
-    {
-      "hash": "f618daa02cfd87d2e604969d848a9a246357126c",
-      "message": "feat(dev-costs): rebuild page with clean analytics-style design",
-      "author": "SirsiMaster",
-      "date": "2025-11-06 10:50:32 -0500"
-    },
-    {
-      "hash": "d3c9964d124a22dbc0ac34d1d30eafa271825c66",
-      "message": "chore(release): Bump version to 0.92.4 [skip ci]",
-      "author": "github-actions[bot]",
-      "date": "2025-11-06 15:45:29 +0000"
-    },
-    {
-      "hash": "1858f1ed5741fd8b528d740debb1853859807d1f",
-      "message": "fix(dev-portal): add missing sidebar.js to all development pages",
-      "author": "SirsiMaster",
-      "date": "2025-11-06 10:45:14 -0500"
     }
   ],
   "automation": {
-    "lastRun": "2025-11-06T16:13:04.504Z",
+    "lastRun": "2025-11-06T16:19:39.656Z",
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",

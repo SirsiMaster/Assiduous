@@ -900,28 +900,67 @@
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
+    <!-- Firebase SDK (Compat for existing code) -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    
+    <!-- Firebase Config -->
+    <script src="../../firebase-config.js"></script>
+    
+    <!-- Development Metrics Service -->
+    <script src="../../assets/js/services/developmentmetricsservice.js"></script>
+    
     <script>
-        // Dashboard Data - Simple metrics.json loader
+        // Dashboard with Real-time Firebase Updates
         let chart = null;
+        let metricsService = null;
+        let unsubscribe = null;
 
         async function init() {
-            await loadMetrics();
-            createChart();
+            // Initialize Firebase metrics service
+            metricsService = new DevelopmentMetricsService();
             
-            // Auto-refresh every 60 seconds
-            setInterval(() => {
-                loadMetrics();
-            }, 60 * 1000);
+            try {
+                await metricsService.initialize();
+                console.log('✅ Metrics service initialized');
+                
+                // Subscribe to real-time updates
+                unsubscribe = metricsService.subscribeToMetrics((metrics) => {
+                    console.log('🔥 Real-time metrics update:', metrics);
+                    updateDashboardMetrics(metrics);
+                    
+                    // Update activity list
+                    if (metrics.recentActivity && metrics.recentActivity.length > 0) {
+                        displayActivity(metrics.recentActivity.slice(0, 8));
+                    }
+                    
+                    // Update chart with new data
+                    if (chart) {
+                        updateChart(metrics);
+                    }
+                });
+                
+                // Show live indicator
+                showLiveIndicator();
+                
+            } catch (error) {
+                console.error('❌ Failed to initialize real-time metrics:', error);
+                // Fallback to metrics.json
+                await loadMetricsFallback();
+            }
+            
+            // Create chart
+            createChart();
         }
 
-        async function loadMetrics() {
+        async function loadMetricsFallback() {
             try {
-                // Load metrics from SINGLE SOURCE OF TRUTH: metrics.json
+                // Load metrics from FALLBACK: metrics.json
                 const response = await fetch('./metrics.json');
                 if (!response.ok) throw new Error('Metrics file not found');
                 
                 const metrics = await response.json();
-                console.log('✅ Loaded metrics from cache:', metrics);
+                console.log('✅ Loaded metrics from fallback cache:', metrics);
                 
                 updateDashboardMetrics(metrics);
                 
@@ -933,12 +972,21 @@
                     console.warn('No recent activity in metrics file');
                 }
             } catch (error) {
-                console.error('❌ Error loading metrics:', error);
+                console.error('❌ Error loading fallback metrics:', error);
                 document.getElementById('commits').innerHTML = `
                     <div style="padding: 20px; text-align: center; color: var(--error);">
-                        ⚠️ Unable to load metrics. Make sure metrics.json exists.
+                        ⚠️ Unable to load metrics. Connecting to Firebase...
                     </div>
                 `;
+            }
+        }
+        
+        function showLiveIndicator() {
+            const statusPill = document.querySelector('.status-pill');
+            if (statusPill) {
+                statusPill.innerHTML = '<div class="status-dot"></div>Live Data (Firebase)';
+                statusPill.style.background = 'rgba(34, 197, 94, 0.1)';
+                statusPill.style.color = '#16a34a';
             }
         }
 
@@ -1102,6 +1150,15 @@
             `).join('');
         }
 
+        function updateChart(metrics) {
+            if (!chart || !metrics.today) return;
+            
+            // Update last data point with today's commits
+            const todayCommits = metrics.today.commits || 0;
+            chart.data.datasets[0].data[6] = todayCommits;
+            chart.update('none'); // Update without animation for smoother real-time updates
+        }
+        
         function createChart() {
             const ctx = document.getElementById('chart').getContext('2d');
             
@@ -1662,6 +1719,17 @@
 
         // Initialize
         window.addEventListener('DOMContentLoaded', init);
+        
+        // Cleanup on page unload
+        window.addEventListener('beforeunload', () => {
+            if (unsubscribe) {
+                unsubscribe();
+                console.log('📡 Real-time listeners unsubscribed');
+            }
+            if (metricsService) {
+                metricsService.destroy();
+            }
+        });
     </script>
     
     <!-- Load Component Scripts -->
