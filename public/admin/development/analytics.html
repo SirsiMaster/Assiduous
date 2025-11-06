@@ -262,6 +262,7 @@
         .progress-fill.green { background: var(--success); }
         .progress-fill.yellow { background: var(--warning); }
         .progress-fill.red { background: var(--danger); }
+        .progress-fill.purple { background: #8B5CF6; }
 
         /* Badge */
         .badge {
@@ -352,6 +353,35 @@
                         <div class="stat-label">Error Rate</div>
                         <div class="stat-value">0.02%</div>
                         <div class="stat-change positive">Excellent</div>
+                    </div>
+                </div>
+
+                <!-- Development Velocity & Quality Charts -->
+                <div class="content-grid">
+                    <!-- Development Velocity Chart -->
+                    <div class="data-card">
+                        <div class="card-header">
+                            <h3 class="card-title">Development Velocity (Last 30 Days)</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart-container">
+                                <canvas id="velocityChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Code Quality Score -->
+                    <div class="data-card">
+                        <div class="card-header">
+                            <h3 class="card-title">Code Quality Score</h3>
+                        </div>
+                        <div class="card-body" style="text-align: center;">
+                            <div style="position: relative; height: 200px; margin-bottom: var(--space-md);">
+                                <canvas id="qualityChart"></canvas>
+                            </div>
+                            <div style="font-size: 48px; font-weight: 700; color: var(--success); margin-bottom: var(--space-xs);">100%</div>
+                            <div style="font-size: 13px; color: var(--text-secondary);">No ESLint Errors</div>
+                        </div>
                     </div>
                 </div>
 
@@ -636,62 +666,66 @@
                     </div>
                 </div>
 
-                <!-- Firebase Usage -->
+                <!-- Firebase Usage (Donut Charts) -->
                 <div class="section-header">
                     <h2 class="section-title">Firebase Resource Usage</h2>
                     <p class="section-subtitle">Spark plan quota utilization and service health</p>
                 </div>
 
                 <div class="stats-grid">
-                    <div class="data-card">
-                        <div class="card-header">
-                            <h3 class="card-title">Hosting</h3>
+                    <!-- Hosting Chart -->
+                    <div class="stat-card" style="padding: var(--space-lg);">
+                        <div style="text-align: center; margin-bottom: var(--space-sm);">
+                            <div style="font-size: 12px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em;">Hosting</div>
                         </div>
-                        <div class="card-body" style="text-align: center;">
-                            <div style="font-size: 32px; font-weight: 700; color: var(--sky); margin: var(--space-md) 0;">2.4%</div>
-                            <div class="progress-bar">
-                                <div class="progress-fill blue" style="width: 2.4%"></div>
-                            </div>
-                            <div style="font-size: 13px; color: var(--text-secondary); margin-top: var(--space-sm);">2.4 GB / 100 GB</div>
+                        <div style="position: relative; height: 120px;">
+                            <canvas id="hostingChart"></canvas>
                         </div>
-                    </div>
-
-                    <div class="data-card">
-                        <div class="card-header">
-                            <h3 class="card-title">Firestore</h3>
-                        </div>
-                        <div class="card-body" style="text-align: center;">
-                            <div style="font-size: 32px; font-weight: 700; color: var(--success); margin: var(--space-md) 0;">8.4%</div>
-                            <div class="progress-bar">
-                                <div class="progress-fill green" style="width: 8.4%"></div>
-                            </div>
-                            <div style="font-size: 13px; color: var(--text-secondary); margin-top: var(--space-sm);">4.2K / 50K reads</div>
+                        <div style="text-align: center; margin-top: var(--space-sm);">
+                            <div style="font-size: 16px; font-weight: 700; color: #60A3D9;">2.4%</div>
+                            <div style="font-size: 11px; color: var(--text-secondary);">2.4 GB / 100 GB</div>
                         </div>
                     </div>
 
-                    <div class="data-card">
-                        <div class="card-header">
-                            <h3 class="card-title">Storage</h3>
+                    <!-- Firestore Chart -->
+                    <div class="stat-card" style="padding: var(--space-lg);">
+                        <div style="text-align: center; margin-bottom: var(--space-sm);">
+                            <div style="font-size: 12px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em;">Firestore</div>
                         </div>
-                        <div class="card-body" style="text-align: center;">
-                            <div style="font-size: 32px; font-weight: 700; color: var(--warning); margin: var(--space-md) 0;">15%</div>
-                            <div class="progress-bar">
-                                <div class="progress-fill yellow" style="width: 15%"></div>
-                            </div>
-                            <div style="font-size: 13px; color: var(--text-secondary); margin-top: var(--space-sm);">750 MB / 5 GB</div>
+                        <div style="position: relative; height: 120px;">
+                            <canvas id="firestoreChart"></canvas>
+                        </div>
+                        <div style="text-align: center; margin-top: var(--space-sm);">
+                            <div style="font-size: 16px; font-weight: 700; color: #059669;">8.4%</div>
+                            <div style="font-size: 11px; color: var(--text-secondary);">4.2K / 50K reads</div>
                         </div>
                     </div>
 
-                    <div class="data-card">
-                        <div class="card-header">
-                            <h3 class="card-title">Functions</h3>
+                    <!-- Storage Chart -->
+                    <div class="stat-card" style="padding: var(--space-lg);">
+                        <div style="text-align: center; margin-bottom: var(--space-sm);">
+                            <div style="font-size: 12px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em;">Storage</div>
                         </div>
-                        <div class="card-body" style="text-align: center;">
-                            <div style="font-size: 32px; font-weight: 700; color: var(--purple); margin: var(--space-md) 0;">1.4%</div>
-                            <div class="progress-bar">
-                                <div class="progress-fill purple" style="width: 1.4%"></div>
-                            </div>
-                            <div style="font-size: 13px; color: var(--text-secondary); margin-top: var(--space-sm);">1.8K / 125K calls</div>
+                        <div style="position: relative; height: 120px;">
+                            <canvas id="storageChart"></canvas>
+                        </div>
+                        <div style="text-align: center; margin-top: var(--space-sm);">
+                            <div style="font-size: 16px; font-weight: 700; color: #F59E0B;">15%</div>
+                            <div style="font-size: 11px; color: var(--text-secondary);">750 MB / 5 GB</div>
+                        </div>
+                    </div>
+
+                    <!-- Functions Chart -->
+                    <div class="stat-card" style="padding: var(--space-lg);">
+                        <div style="text-align: center; margin-bottom: var(--space-sm);">
+                            <div style="font-size: 12px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em;">Functions</div>
+                        </div>
+                        <div style="position: relative; height: 120px;">
+                            <canvas id="functionsChart"></canvas>
+                        </div>
+                        <div style="text-align: center; margin-top: var(--space-sm);">
+                            <div style="font-size: 16px; font-weight: 700; color: #8B5CF6;">1.4%</div>
+                            <div style="font-size: 11px; color: var(--text-secondary);">1.8K / 125K calls</div>
                         </div>
                     </div>
                 </div>
@@ -754,8 +788,222 @@
     </div>
 
     <script>
+        // Create development velocity chart
+        function createVelocityChart() {
+            const ctx = document.getElementById('velocityChart');
+            if (!ctx) return;
+
+            // Generate 30 days of commit data
+            const days = [];
+            const commits = [];
+            const today = new Date();
+            
+            for (let i = 29; i >= 0; i--) {
+                const date = new Date(today);
+                date.setDate(date.getDate() - i);
+                days.push(date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }));
+                // Simulate commit activity with some variance
+                commits.push(Math.floor(Math.random() * 15) + 5);
+            }
+
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: days,
+                    datasets: [{
+                        label: 'Commits',
+                        data: commits,
+                        borderColor: '#60A3D9',
+                        backgroundColor: 'rgba(96, 163, 217, 0.1)',
+                        tension: 0.4,
+                        fill: true,
+                        pointRadius: 2,
+                        pointHoverRadius: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            padding: 10,
+                            callbacks: {
+                                label: (context) => `${context.parsed.y} commits`
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                precision: 0,
+                                font: { size: 11 }
+                            },
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                maxRotation: 45,
+                                minRotation: 45,
+                                font: { size: 9 }
+                            },
+                            grid: { display: false }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Create code quality gauge chart
+        function createQualityChart() {
+            const ctx = document.getElementById('qualityChart');
+            if (!ctx) return;
+
+            const quality = 100;
+
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    datasets: [{
+                        data: [quality, 100 - quality],
+                        backgroundColor: ['#059669', '#E5E7EB'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    cutout: '80%',
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: { enabled: false }
+                    }
+                }
+            });
+        }
+
+        // Create Firebase usage donut charts
+        function createFirebaseCharts() {
+            // Hosting Chart
+            const hostingCtx = document.getElementById('hostingChart');
+            if (hostingCtx) {
+                new Chart(hostingCtx, {
+                    type: 'doughnut',
+                    data: {
+                        datasets: [{
+                            data: [2.4, 97.6],
+                            backgroundColor: ['#60A3D9', '#E5E7EB'],
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: true,
+                        cutout: '75%',
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: { enabled: false }
+                        }
+                    }
+                });
+            }
+
+            // Firestore Chart
+            const firestoreCtx = document.getElementById('firestoreChart');
+            if (firestoreCtx) {
+                new Chart(firestoreCtx, {
+                    type: 'doughnut',
+                    data: {
+                        datasets: [{
+                            data: [8.4, 91.6],
+                            backgroundColor: ['#059669', '#E5E7EB'],
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: true,
+                        cutout: '75%',
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: { enabled: false }
+                        }
+                    }
+                });
+            }
+
+            // Storage Chart
+            const storageCtx = document.getElementById('storageChart');
+            if (storageCtx) {
+                new Chart(storageCtx, {
+                    type: 'doughnut',
+                    data: {
+                        datasets: [{
+                            data: [15, 85],
+                            backgroundColor: ['#F59E0B', '#E5E7EB'],
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: true,
+                        cutout: '75%',
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: { enabled: false }
+                        }
+                    }
+                });
+            }
+
+            // Functions Chart
+            const functionsCtx = document.getElementById('functionsChart');
+            if (functionsCtx) {
+                new Chart(functionsCtx, {
+                    type: 'doughnut',
+                    data: {
+                        datasets: [{
+                            data: [1.44, 98.56],
+                            backgroundColor: ['#8B5CF6', '#E5E7EB'],
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: true,
+                        cutout: '75%',
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: { enabled: false }
+                        }
+                    }
+                });
+            }
+        }
+
+        // Initialize
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('✅ Development Analytics page loaded');
+            console.log('🚀 Development Analytics page loaded');
+            console.log('📊 Initializing charts...');
+            
+            try {
+                createVelocityChart();
+                console.log('✅ Velocity chart created');
+                
+                createQualityChart();
+                console.log('✅ Quality chart created');
+                
+                createFirebaseCharts();
+                console.log('✅ Firebase charts created');
+                
+                console.log('✅ All charts initialized successfully');
+            } catch (error) {
+                console.error('❌ Error initializing charts:', error);
+            }
         });
     </script>
     
