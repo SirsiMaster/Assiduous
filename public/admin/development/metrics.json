@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-11-06T16:05:21.707Z",
+  "lastUpdated": "2025-11-06T16:13:04.504Z",
   "summary": {
     "health": "Good",
     "score": 46,
@@ -104,41 +104,41 @@
     }
   },
   "project": {
-    "totalHours": "273",
+    "totalHours": "274",
     "avgHoursPerDay": "8.8",
-    "totalCost": 42829,
-    "laborCost": 40950,
+    "totalCost": 42979,
+    "laborCost": 41100,
     "toolsCost": 1879,
     "monthsElapsed": "2.9",
-    "totalCommits": 826,
+    "totalCommits": 829,
     "totalFiles": 772,
     "activeDays": 31,
     "totalDays": 88,
     "projectAgeDays": 88,
-    "linesAdded": 9749294,
-    "linesDeleted": 9381166,
-    "netLines": 368128,
-    "velocity": "26.6",
+    "linesAdded": 9749669,
+    "linesDeleted": 9381277,
+    "netLines": 368392,
+    "velocity": "26.7",
     "completionPercentage": 46,
     "actualStartDate": "2025-08-10"
   },
   "today": {
     "date": "2025-11-06",
-    "hours": "12.2",
-    "cost": 1832,
-    "commits": 37,
+    "hours": "13.2",
+    "cost": 1980,
+    "commits": 40,
     "deployments": 0
   },
   "thisWeek": {
-    "hours": "85.8",
-    "cost": 12870,
-    "commits": 260,
+    "hours": "86.8",
+    "cost": 13019,
+    "commits": 263,
     "days": 7
   },
   "thisMonth": {
-    "hours": "142.2",
-    "cost": 21335,
-    "commits": 431
+    "hours": "143.2",
+    "cost": 21483,
+    "commits": 434
   },
   "quality": {
     "testCoverage": {
@@ -172,7 +172,7 @@
       "critical": 0,
       "total": 0
     },
-    "lastAudit": "2025-11-06T16:04:58.812Z",
+    "lastAudit": "2025-11-06T16:12:42.057Z",
     "dependencies": {
       "total": {
         "prod": 256,
@@ -267,11 +267,11 @@
     "changelog": true,
     "contributing": false,
     "license": false,
-    "lastUpdate": "2025-11-06 15:57:21 +0000"
+    "lastUpdate": "2025-11-06 16:04:51 +0000"
   },
   "productivity": {
     "velocityTrend": "increasing",
-    "weeklyCommits": 260,
+    "weeklyCommits": 263,
     "contributors": {
       "total": 0,
       "active": 0
@@ -349,6 +349,24 @@
   },
   "recentActivity": [
     {
+      "hash": "e8ba1e033b977f0648ec637b09dc990415aade91",
+      "message": "chore: update Firebase cache and metrics after analytics chart restoration",
+      "author": "SirsiMaster",
+      "date": "2025-11-06 11:12:11 -0500"
+    },
+    {
+      "hash": "cea73440b91b9378c0b1d77d4f9ccd426aba3026",
+      "message": "feat(analytics): restore charts - velocity line chart, quality donut, Firebase usage donuts",
+      "author": "SirsiMaster",
+      "date": "2025-11-06 11:11:40 -0500"
+    },
+    {
+      "hash": "dd01c764fba490d51253d56d561737dd5ae6924b",
+      "message": "chore(release): Bump version to 0.95.0 [skip ci]",
+      "author": "github-actions[bot]",
+      "date": "2025-11-06 16:04:51 +0000"
+    },
+    {
       "hash": "c53ebb77833b8a8b7af3592024a2d69c7162489f",
       "message": "feat(dev-analytics): comprehensive rebuild with exhaustive metrics",
       "author": "SirsiMaster",
@@ -389,28 +407,10 @@
       "message": "fix(dev-portal): add missing sidebar.js to all development pages",
       "author": "SirsiMaster",
       "date": "2025-11-06 10:45:14 -0500"
-    },
-    {
-      "hash": "cfa6c66538f8b3d510e9305378b00416cb95c8c6",
-      "message": "chore: update metrics post-critical-fix deployment",
-      "author": "SirsiMaster",
-      "date": "2025-11-06 10:40:15 -0500"
-    },
-    {
-      "hash": "d4c223a8e2bf7fbc6a80e5085dbe6abf056a82c2",
-      "message": "chore(release): Bump version to 0.92.3 [skip ci]",
-      "author": "github-actions[bot]",
-      "date": "2025-11-06 15:40:05 +0000"
-    },
-    {
-      "hash": "805f6157f6dcf6fdef720df442e0bffdc4d048b8",
-      "message": "fix(critical): fix sidebar template tokens and remove broken HTML comments",
-      "author": "SirsiMaster",
-      "date": "2025-11-06 10:39:52 -0500"
     }
   ],
   "automation": {
-    "lastRun": "2025-11-06T16:05:21.707Z",
+    "lastRun": "2025-11-06T16:13:04.504Z",
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",
