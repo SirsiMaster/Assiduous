@@ -8,6 +8,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.92.1] - 2025-11-06
+
+### Fixed
+- fix(admin): remove embedded sidebars from agents, clients, transactions
+- fix(admin-properties): remove embedded sidebar and duplicate CSS
+
+
 ## [0.92.0] - 2025-11-06
 
 ### Added
@@ -2916,7 +2923,14 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.92.0...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.92.1...HEAD
+
+
+## [0.92.1] - 2025-11-06
+
+### Fixed
+- fix(admin): remove embedded sidebars from agents, clients, transactions
+- fix(admin-properties): remove embedded sidebar and duplicate CSS
 
 
 ## [0.92.0] - 2025-11-06
@@ -4234,3 +4248,4 @@ To generate changelog entries:
 [0.90.6]: https://github.com/SirsiMaster/Assiduous/compare/v0.90.5...v0.90.6
 [0.91.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.90.6...v0.91.0
 [0.92.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.91.0...v0.92.0
+[0.92.1]: https://github.com/SirsiMaster/Assiduous/compare/v0.92.0...v0.92.1
