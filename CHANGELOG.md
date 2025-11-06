@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.99.0] - 2025-11-06
+
+### Added
+- feat: add agent property management API
+
+
 ## [0.98.0] - 2025-11-06
 
 ### Added
@@ -2979,7 +2985,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.98.0...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.99.0...HEAD
+
+
+## [0.99.0] - 2025-11-06
+
+### Added
+- feat: add agent property management API
 
 
 ## [0.98.0] - 2025-11-06
@@ -4370,3 +4382,4 @@ To generate changelog entries:
 [0.96.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.95.0...v0.96.0
 [0.97.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.96.0...v0.97.0
 [0.98.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.97.0...v0.98.0
+[0.99.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.98.0...v0.99.0
