@@ -1,5 +1,5 @@
-/* Button Override CSS - Fix Windows 3.1 Style Regression */
-/* This file forces modern button styles across all admin pages */
+/* Button Override CSS - Assiduous Design Language */
+/* Clean, minimal button styles matching the line-art aesthetic */
 
 /* Universal button reset and modern style */
 button,
@@ -19,74 +19,68 @@ a.btn,
     -moz-appearance: none !important;
     appearance: none !important;
     
-    /* Remove Windows 3.1 style borders */
-    border: none !important;
+    /* Clean border style (line-art aesthetic) */
+    border: 1px solid var(--sky, #60A3D9) !important;
     border-style: solid !important;
-    border-width: 0 !important;
     outline: none !important;
     
-    /* Modern gradient background */
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-    background-image: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    /* Transparent background with sky blue text */
+    background: transparent !important;
+    background-image: none !important;
     
-    /* Text styling */
-    color: white !important;
-    font-family: 'Geist Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif !important;
-    font-weight: 600 !important;
+    /* Text styling - Assiduous colors */
+    color: var(--sky, #60A3D9) !important;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif !important;
+    font-weight: 500 !important;
     font-size: 14px !important;
     line-height: 1.5 !important;
-    letter-spacing: 0.5px !important;
     text-transform: none !important;
     text-decoration: none !important;
     text-align: center !important;
     
     /* Spacing and layout */
-    padding: 12px 24px !important;
-    margin: 4px !important;
+    padding: 8px 16px !important;
+    margin: 0 !important;
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
-    gap: 8px !important;
+    gap: 6px !important;
     
-    /* Modern styling */
-    border-radius: 8px !important;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+    /* Clean modern styling */
+    border-radius: 6px !important;
+    box-shadow: none !important;
     cursor: pointer !important;
     user-select: none !important;
     position: relative !important;
-    overflow: hidden !important;
     
     /* Smooth transitions */
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-    transform: translateZ(0) !important;
-    backface-visibility: hidden !important;
+    transition: all 0.2s ease !important;
 }
 
-/* Hover state */
+/* Hover state - subtle fill */
 button:hover:not(:disabled),
 .btn:hover:not(:disabled),
 [class*="btn-"]:hover:not(:disabled),
 input[type="button"]:hover:not(:disabled),
 input[type="submit"]:hover:not(:disabled) {
-    transform: translateY(-2px) !important;
-    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15) !important;
-    filter: brightness(1.1) !important;
+    background: rgba(96, 163, 217, 0.08) !important;
+    border-color: var(--navy, #0B1F41) !important;
+    color: var(--navy, #0B1F41) !important;
 }
 
 /* Active/pressed state */
 button:active:not(:disabled),
 .btn:active:not(:disabled),
 [class*="btn-"]:active:not(:disabled) {
+    background: rgba(96, 163, 217, 0.12) !important;
     transform: translateY(0) !important;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
-    filter: brightness(0.95) !important;
 }
 
 /* Focus state for accessibility */
 button:focus-visible,
 .btn:focus-visible,
 [class*="btn-"]:focus-visible {
-    outline: 3px solid rgba(102, 126, 234, 0.5) !important;
+    outline: 2px solid var(--sky, #60A3D9) !important;
     outline-offset: 2px !important;
 }
 
@@ -96,48 +90,88 @@ button:disabled,
 [class*="btn-"]:disabled,
 button[disabled],
 .btn[disabled] {
-    opacity: 0.5 !important;
+    opacity: 0.4 !important;
     cursor: not-allowed !important;
-    transform: none !important;
-    filter: grayscale(0.3) !important;
+    border-color: var(--gray-300, #D1D5DB) !important;
+    color: var(--gray-400, #9CA3AF) !important;
 }
 
-/* Button variants with stronger specificity */
+/* Primary button - filled with sky blue */
 .btn-primary,
 button.btn-primary,
-input.btn-primary {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+input.btn-primary,
+.sm-btn-primary {
+    background: var(--sky, #60A3D9) !important;
+    border-color: var(--sky, #60A3D9) !important;
+    color: white !important;
 }
 
+.btn-primary:hover,
+button.btn-primary:hover {
+    background: var(--navy, #0B1F41) !important;
+    border-color: var(--navy, #0B1F41) !important;
+    color: white !important;
+}
+
+/* Secondary/Outline - default style (already set above) */
 .btn-secondary,
+.btn-outline,
 button.btn-secondary {
-    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%) !important;
+    background: transparent !important;
+    border-color: var(--sky, #60A3D9) !important;
+    color: var(--sky, #60A3D9) !important;
 }
 
+/* Success variant */
 .btn-success,
 button.btn-success {
-    background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%) !important;
+    background: transparent !important;
+    border-color: var(--success, #059669) !important;
+    color: var(--success, #059669) !important;
 }
 
+.btn-success:hover {
+    background: rgba(5, 150, 105, 0.08) !important;
+}
+
+/* Danger variant */
 .btn-danger,
 button.btn-danger {
-    background: linear-gradient(135deg, #f857a6 0%, #ff5858 100%) !important;
+    background: transparent !important;
+    border-color: var(--danger, #DC2626) !important;
+    color: var(--danger, #DC2626) !important;
 }
 
+.btn-danger:hover {
+    background: rgba(220, 38, 38, 0.08) !important;
+}
+
+/* Warning variant */
 .btn-warning,
 button.btn-warning {
-    background: linear-gradient(135deg, #ffa751 0%, #ffe259 100%) !important;
-    color: #333 !important;
+    background: transparent !important;
+    border-color: var(--warning, #D97706) !important;
+    color: var(--warning, #D97706) !important;
 }
 
+.btn-warning:hover {
+    background: rgba(217, 119, 6, 0.08) !important;
+}
+
+/* Info variant - same as primary */
 .btn-info,
 button.btn-info {
-    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%) !important;
+    background: transparent !important;
+    border-color: var(--sky, #60A3D9) !important;
+    color: var(--sky, #60A3D9) !important;
 }
 
+/* Dark/Navy variant */
 .btn-dark,
 button.btn-dark {
-    background: linear-gradient(135deg, #30303b 0%, #1a1a2e 100%) !important;
+    background: var(--navy, #0B1F41) !important;
+    border-color: var(--navy, #0B1F41) !important;
+    color: white !important;
 }
 
 /* Small buttons */
@@ -167,19 +201,17 @@ button.btn-lg {
     height: 40px !important;
 }
 
-/* Ghost/outline buttons */
-.btn-outline,
+/* Ghost buttons - same as outline */
 .btn-ghost {
     background: transparent !important;
-    border: 2px solid #667eea !important;
-    color: #667eea !important;
+    border: 1px solid var(--gray-300, #D1D5DB) !important;
+    color: var(--gray-600, #4B5563) !important;
 }
 
-.btn-outline:hover,
 .btn-ghost:hover {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-    color: white !important;
-    border-color: transparent !important;
+    background: var(--gray-50, #FAFBFC) !important;
+    border-color: var(--gray-400, #9CA3AF) !important;
+    color: var(--navy, #0B1F41) !important;
 }
 
 /* Link styled as button */
@@ -212,46 +244,7 @@ a[class*="btn-"] {
     border-radius: 0 8px 8px 0 !important;
 }
 
-/* Ripple effect for material design feel */
-@keyframes ripple {
-    to {
-        transform: scale(4);
-        opacity: 0;
-    }
-}
-
-button::after,
-.btn::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 5px;
-    height: 5px;
-    background: rgba(255, 255, 255, 0.5);
-    border-radius: 50%;
-    transform: translate(-50%, -50%) scale(0);
-    animation: ripple 0.6s ease-out;
-}
-
-/* Fix for specific admin page buttons */
-.admin-header button,
-.admin-sidebar button,
-.admin-content button,
-#admin-header button,
-#sidebar button,
-main button {
-    /* Double ensure no Windows 3.1 style */
-    border-style: none !important;
-    background-image: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-}
-
-/* Override any inline styles */
-button[style],
-.btn[style] {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-    border: none !important;
-}
+/* Remove ripple effect - keep it clean */
 
 /* Mobile responsive adjustments */
 @media (max-width: 768px) {
@@ -293,16 +286,9 @@ button[style],
     }
 }
 
-/* CRITICAL: Override any Bootstrap or other framework defaults */
-.btn:not(.btn-link):not(.btn-outline):not(.btn-ghost) {
-    background-image: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-    border: none !important;
-    color: white !important;
-}
-
-/* Final insurance against Windows 3.1 style */
-button:not([class*="no-override"]) {
+/* Clean finish - ensure no legacy styles leak through */
+button:not([class*="no-override"]),
+.btn:not([class*="no-override"]) {
     -webkit-appearance: none !important;
-    border-width: 0px !important;
-    border-style: none !important;
+    -moz-appearance: none !important;
 }
