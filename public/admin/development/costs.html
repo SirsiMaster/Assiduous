@@ -53,6 +53,20 @@
             gap: var(--space-lg);
             margin-bottom: var(--space-xl);
         }
+
+        .stats-grid-5 {
+            display: grid;
+            grid-template-columns: repeat(5, minmax(180px, 240px));
+            gap: var(--space-md);
+            margin-bottom: var(--space-xl);
+        }
+
+        .stats-grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(200px, 1fr));
+            gap: var(--space-lg);
+            margin-bottom: var(--space-xl);
+        }
         
         @media (max-width: 1200px) {
             .stats-grid {
@@ -152,7 +166,11 @@
         }
 
         .card-body {
-            padding: var(--space-lg);
+            padding: var(--space-md);
+        }
+
+        .card-body.compact {
+            padding: var(--space-sm) var(--space-md);
         }
 
         /* Tables */
@@ -205,7 +223,33 @@
 
         .progress-fill.blue { background: var(--sky); }
         .progress-fill.green { background: var(--success); }
+        .progress-fill.yellow { background: var(--warning); }
+        .progress-fill.purple { background: #8B5CF6; }
         .progress-fill.gray { background: var(--gray-400); }
+
+        /* Mini Stat */
+        .mini-stat {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--space-sm) 0;
+            border-bottom: 1px solid var(--gray-100);
+        }
+
+        .mini-stat:last-child {
+            border-bottom: none;
+        }
+
+        .mini-stat-label {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .mini-stat-value {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--dark);
+        }
 
         /* Responsive */
         @media (max-width: 768px) {
@@ -287,39 +331,178 @@
                     </div>
                 </div>
 
-                <!-- Rate Configuration -->
+                <!-- Time & Velocity Metrics -->
                 <div class="section-header">
-                    <h2 class="section-title">Rate Configuration</h2>
-                    <p class="section-subtitle">Hourly rates and recurring costs</p>
+                    <h2 class="section-title">Time & Velocity Metrics</h2>
+                    <p class="section-subtitle">Development hours, productivity, and efficiency tracking</p>
+                </div>
+
+                <div class="stats-grid-5">
+                    <div class="stat-card">
+                        <div class="stat-label">Total Hours</div>
+                        <div class="stat-value" id="totalHoursMetric">233.5</div>
+                        <div class="stat-change">Project lifetime</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Avg Hours/Day</div>
+                        <div class="stat-value" id="avgHoursDay">8.3</div>
+                        <div class="stat-change">28 active days</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Commits/Hour</div>
+                        <div class="stat-value" id="commitsPerHour">2.95</div>
+                        <div class="stat-change">689 total commits</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Cost/Commit</div>
+                        <div class="stat-value" id="costPerCommit">$11.59</div>
+                        <div class="stat-change">Efficiency metric</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Cost/Hour</div>
+                        <div class="stat-value">$150</div>
+                        <div class="stat-change">Current rate</div>
+                    </div>
+                </div>
+
+                <!-- Cost Breakdown Details -->
+                <div class="section-header">
+                    <h2 class="section-title">Cost Breakdown & Analysis</h2>
+                    <p class="section-subtitle">Detailed expense categorization and spending patterns</p>
                 </div>
 
                 <div class="content-grid">
                     <div class="data-card">
                         <div class="card-header">
-                            <h3 class="card-title">Billing Rates</h3>
+                            <h3 class="card-title">Cost by Category</h3>
                         </div>
-                        <div class="card-body">
-                            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-xl);">
-                                <div>
-                                    <div class="stat-label">Owner Rate</div>
-                                    <div style="font-size: 24px; font-weight: 600; color: var(--navy);">$150/hour</div>
+                        <div class="card-body compact">
+
+                    <div class="data-card">
+                        <div class="card-header">
+                            <h3 class="card-title">Tool & Service Costs</h3>
+                        </div>
+                        <div class="card-body compact">
+                            <div class="mini-stat">
+                                <span class="mini-stat-label">Firebase (Spark Plan)</span>
+                                <span class="mini-stat-value">$0/mo</span>
+                            </div>
+                            <div class="mini-stat">
+                                <span class="mini-stat-label">GitHub (Free Tier)</span>
+                                <span class="mini-stat-value">$0/mo</span>
+                            </div>
+                            <div class="mini-stat">
+                                <span class="mini-stat-label">Warp AI Credits</span>
+                                <span class="mini-stat-value">$650/mo</span>
+                            </div>
+                            <div class="mini-stat">
+                                <span class="mini-stat-label">CDN (jsDelivr)</span>
+                                <span class="mini-stat-value">$0/mo</span>
+                            </div>
+                            <div class="mini-stat">
+                                <span class="mini-stat-label">Domain & SSL</span>
+                                <span class="mini-stat-value">$0/mo</span>
+                            </div>
+                            <div style="margin-top: var(--space-md); padding-top: var(--space-md); border-top: 2px solid var(--border);">
+                                <div class="mini-stat">
+                                    <span style="font-weight: 600; color: var(--navy);">Total Monthly Tools</span>
+                                    <span style="font-size: 18px; font-weight: 700; color: var(--navy);">$650</span>
                                 </div>
-                                <div>
-                                    <div class="stat-label">Monthly Tools</div>
-                                    <div style="font-size: 24px; font-weight: 600; color: var(--navy);">$650/month</div>
-                                    <div style="font-size: 11px; color: var(--text-secondary); margin-top: 4px;">Will be itemized</div>
-                                </div>
-                                <div>
-                                    <div class="stat-label">Cloud Services</div>
-                                    <div style="font-size: 24px; font-weight: 600; color: var(--navy);">$0/month</div>
-                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Weekly/Monthly Trends -->
+                <div class="section-header">
+                    <h2 class="section-title">Spending Trends</h2>
+                    <p class="section-subtitle">Historical cost patterns and projections</p>
+                </div>
+
+                <div class="stats-grid-3">
+                    <div class="data-card">
+                        <div class="card-header">
+                            <h3 class="card-title">Last 7 Days</h3>
+                        </div>
+                        <div class="card-body compact">
+                            <div class="mini-stat">
+                                <span class="mini-stat-label">Labor Cost</span>
+                                <span class="mini-stat-value" id="week7Labor">$1,200</span>
+                            </div>
+                            <div class="mini-stat">
+                                <span class="mini-stat-label">Hours Worked</span>
+                                <span class="mini-stat-value" id="week7Hours">8.0h</span>
+                            </div>
+                            <div class="mini-stat">
+                                <span class="mini-stat-label">Commits</span>
+                                <span class="mini-stat-value" id="week7Commits">24</span>
+                            </div>
+                            <div class="mini-stat">
+                                <span class="mini-stat-label">Avg Cost/Day</span>
+                                <span class="mini-stat-value" id="week7AvgDay">$171</span>
                             </div>
                         </div>
                     </div>
 
                     <div class="data-card">
                         <div class="card-header">
-                            <h3 class="card-title">Cost Breakdown</h3>
+                            <h3 class="card-title">Last 30 Days</h3>
+                        </div>
+                        <div class="card-body compact">
+                            <div class="mini-stat">
+                                <span class="mini-stat-label">Labor Cost</span>
+                                <span class="mini-stat-value" id="month30Labor">$6,789</span>
+                            </div>
+                            <div class="mini-stat">
+                                <span class="mini-stat-label">Hours Worked</span>
+                                <span class="mini-stat-value" id="month30Hours">45.3h</span>
+                            </div>
+                            <div class="mini-stat">
+                                <span class="mini-stat-label">Commits</span>
+                                <span class="mini-stat-value" id="month30Commits">134</span>
+                            </div>
+                            <div class="mini-stat">
+                                <span class="mini-stat-label">Avg Cost/Day</span>
+                                <span class="mini-stat-value" id="month30AvgDay">$226</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="data-card">
+                        <div class="card-header">
+                            <h3 class="card-title">Projected</h3>
+                        </div>
+                        <div class="card-body compact">
+                            <div class="mini-stat">
+                                <span class="mini-stat-label">Month End Total</span>
+                                <span class="mini-stat-value" id="projectedMonth">$8,500</span>
+                            </div>
+                            <div class="mini-stat">
+                                <span class="mini-stat-label">Burn Rate/Week</span>
+                                <span class="mini-stat-value" id="burnRate">$1,697</span>
+                            </div>
+                            <div class="mini-stat">
+                                <span class="mini-stat-label">Days to $10K</span>
+                                <span class="mini-stat-value" id="daysTo10k">9 days</span>
+                            </div>
+                            <div class="mini-stat">
+                                <span class="mini-stat-label">Est. Completion</span>
+                                <span class="mini-stat-value" id="estCompletion">$12K</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Distribution Breakdown -->
+                <div class="section-header">
+                    <h2 class="section-title">Cost Distribution</h2>
+                    <p class="section-subtitle">How development budget is allocated</p>
+                </div>
+
+                <div class="content-grid">
+                    <div class="data-card">
+                        <div class="card-header">
+                            <h3 class="card-title">Expense Categories</h3>
                         </div>
                         <div class="card-body">
                             <div style="margin-bottom: var(--space-lg);">
