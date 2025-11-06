@@ -1,12 +1,12 @@
 {
-  "lastUpdated": "2025-11-04T09:03:56.245Z",
+  "lastUpdated": "2025-11-06T04:23:38.929Z",
   "summary": {
     "health": "Good",
     "score": 46,
     "trend": "increasing",
     "alerts": [
       "⚠️ Test coverage is very low",
-      "⏰ Timeline warning - 27 days until launch"
+      "⏰ Timeline warning - 25 days until launch"
     ]
   },
   "features": {
@@ -104,41 +104,41 @@
     }
   },
   "project": {
-    "totalHours": "259",
-    "avgHoursPerDay": "8.9",
-    "totalCost": 40686,
-    "laborCost": 38850,
-    "toolsCost": 1836,
-    "monthsElapsed": "2.8",
-    "totalCommits": 786,
-    "totalFiles": 703,
-    "activeDays": 29,
-    "totalDays": 86,
-    "projectAgeDays": 86,
-    "linesAdded": 9690009,
-    "linesDeleted": 9375605,
-    "netLines": 314404,
-    "velocity": "27.1",
+    "totalHours": "265",
+    "avgHoursPerDay": "8.5",
+    "totalCost": 41629,
+    "laborCost": 39750,
+    "toolsCost": 1879,
+    "monthsElapsed": "2.9",
+    "totalCommits": 802,
+    "totalFiles": 758,
+    "activeDays": 31,
+    "totalDays": 88,
+    "projectAgeDays": 88,
+    "linesAdded": 9737165,
+    "linesDeleted": 9376621,
+    "netLines": 360544,
+    "velocity": "25.9",
     "completionPercentage": 46,
     "actualStartDate": "2025-08-10"
   },
   "today": {
-    "date": "2025-11-04",
-    "hours": "12.9",
-    "cost": 1931,
-    "commits": 39,
+    "date": "2025-11-06",
+    "hours": "4.3",
+    "cost": 644,
+    "commits": 13,
     "deployments": 0
   },
   "thisWeek": {
-    "hours": "72.6",
-    "cost": 10890,
-    "commits": 220,
+    "hours": "77.9",
+    "cost": 11682,
+    "commits": 236,
     "days": 7
   },
   "thisMonth": {
-    "hours": "149.2",
-    "cost": 22374,
-    "commits": 452
+    "hours": "134.3",
+    "cost": 20147,
+    "commits": 407
   },
   "quality": {
     "testCoverage": {
@@ -172,7 +172,7 @@
       "critical": 0,
       "total": 0
     },
-    "lastAudit": "2025-11-04T09:03:33.382Z",
+    "lastAudit": "2025-11-06T04:23:15.413Z",
     "dependencies": {
       "total": {
         "prod": 256,
@@ -218,14 +218,14 @@
     }
   },
   "deployment": {
-    "lastDeployment": "2025-11-04 01:56:08 -0500",
-    "totalDeployments": 126,
+    "lastDeployment": "2025-11-04 04:04:11 -0500",
+    "totalDeployments": 127,
     "deploymentFrequency": "Weekly",
     "environments": {
       "production": {
         "url": "https://assiduous-prod.web.app",
         "status": "Active",
-        "lastDeploy": "2025-11-04 01:56:08 -0500"
+        "lastDeploy": "2025-11-04 04:04:11 -0500"
       },
       "staging": {
         "url": "https://assiduous-staging.web.app",
@@ -267,16 +267,16 @@
     "changelog": true,
     "contributing": false,
     "license": false,
-    "lastUpdate": "2025-11-04 08:47:54 +0000"
+    "lastUpdate": "2025-11-06 04:14:38 +0000"
   },
   "productivity": {
     "velocityTrend": "increasing",
-    "weeklyCommits": 220,
+    "weeklyCommits": 236,
     "contributors": {
       "total": 0,
       "active": 0
     },
-    "averageCommitSize": 109,
+    "averageCommitSize": 107,
     "pullRequests": {
       "open": 0,
       "merged": 0,
@@ -304,7 +304,7 @@
       "projectStart": "2025-08-10",
       "originalLaunch": "2025-11-01",
       "plannedLaunch": "2025-12-01",
-      "daysRemaining": 27,
+      "daysRemaining": 25,
       "onTrack": false,
       "adjustmentReason": "Timeline adjusted for realistic completion based on current velocity"
     },
@@ -349,68 +349,68 @@
   },
   "recentActivity": [
     {
-      "hash": "6ff78d927284bf8b63fe687a1db19296ee481bb7",
-      "message": "feat(ucs-phase2): migrate agent portal to UCS",
+      "hash": "8429b3d652e85f7854d07b3f81d5b57c24f1c31f",
+      "message": "feat(analytics): complete rebuild with clean professional design",
       "author": "SirsiMaster",
-      "date": "2025-11-04 04:03:05 -0500"
+      "date": "2025-11-05 23:22:32 -0500"
     },
     {
-      "hash": "59fe89877fdd822f45fc99fb219a3a9df55ee0b0",
-      "message": "chore(release): Bump version to 0.88.0 [skip ci]",
+      "hash": "7388e63cb8abc088acf90151bfc55549063e3afb",
+      "message": "chore(release): Bump version to 0.90.6 [skip ci]",
       "author": "github-actions[bot]",
-      "date": "2025-11-04 08:47:54 +0000"
+      "date": "2025-11-06 04:14:38 +0000"
     },
     {
-      "hash": "1776b6dee71682ca2d12b6f16ac76a177e5ba722",
-      "message": "feat(ucs-phase1): migrate all 12 client portal pages to UCS",
+      "hash": "304e87d59666f2b1ba489f3cbb1c24fe8f94a022",
+      "message": "fix(admin-dashboard): force 4 explicit columns with max-width constraint",
       "author": "SirsiMaster",
-      "date": "2025-11-04 03:47:30 -0500"
+      "date": "2025-11-05 23:14:09 -0500"
     },
     {
-      "hash": "6320e93b2fff612109c8d59f5f7c92d4671099a7",
-      "message": "chore(release): Bump version to 0.87.0 [skip ci]",
+      "hash": "f20e62ccd3dbc287cfe5d14275030e3efce78f93",
+      "message": "chore(release): Bump version to 0.90.5 [skip ci]",
       "author": "github-actions[bot]",
-      "date": "2025-11-04 08:21:38 +0000"
+      "date": "2025-11-06 04:11:12 +0000"
     },
     {
-      "hash": "89b46811df5de758e5dfce2067853c5b484c1a59",
-      "message": "chore: update metrics.json",
+      "hash": "a229f2a47681b6f049ad0dc4af0f6f067badafc4",
+      "message": "fix(admin-dashboard): constrain stat card width to reasonable size",
       "author": "SirsiMaster",
-      "date": "2025-11-04 03:21:24 -0500"
+      "date": "2025-11-05 23:10:35 -0500"
     },
     {
-      "hash": "907b773b68b9cab1d64af3fa8c353d9f7003d728",
-      "message": "feat(ucs-phase1): migrate client dashboard to UCS",
-      "author": "SirsiMaster",
-      "date": "2025-11-04 03:20:59 -0500"
-    },
-    {
-      "hash": "4cd9bc28595e58f6fb88f20d2795e150759fdd63",
-      "message": "chore(release): Bump version to 0.86.0 [skip ci]",
+      "hash": "1d4b5738975d9ccadbbc526633fe09e3cbedf59b",
+      "message": "chore(release): Bump version to 0.90.4 [skip ci]",
       "author": "github-actions[bot]",
-      "date": "2025-11-04 08:19:14 +0000"
+      "date": "2025-11-06 04:07:52 +0000"
     },
     {
-      "hash": "8dab582c3108a6dca66e25b7dcd2628233146ada",
-      "message": "docs(ucs): update final 5 canonical files with UCS details",
+      "hash": "f93fb9da0248057c504b24db96d1647bf3231a5d",
+      "message": "fix(design): replace purple gradient buttons with Assiduous line-art style",
       "author": "SirsiMaster",
-      "date": "2025-11-04 03:18:38 -0500"
+      "date": "2025-11-05 23:07:25 -0500"
     },
     {
-      "hash": "978b96b8ac21c83cd2aa0c75995fb17a03084a8f",
-      "message": "docs(ucs): update DEPLOYMENT_GUIDE with UCS build pipeline integration",
-      "author": "SirsiMaster",
-      "date": "2025-11-04 01:56:08 -0500"
+      "hash": "9b125c21d4e626be084d6734116c77bc5f9da5b1",
+      "message": "chore(release): Bump version to 0.90.3 [skip ci]",
+      "author": "github-actions[bot]",
+      "date": "2025-11-06 04:02:32 +0000"
     },
     {
-      "hash": "6a1086e3480ea806b74d0276d13046239d5bb4d3",
-      "message": "docs(ucs): update TECHNICAL_DESIGN and ARCHITECTURE_DESIGN with UCS",
+      "hash": "2b46c7e9969a2f8a4237f7b18417b2647d275399",
+      "message": "fix(admin-dashboard): ensure stats cards stay on same line",
       "author": "SirsiMaster",
-      "date": "2025-11-04 01:55:17 -0500"
+      "date": "2025-11-05 23:01:58 -0500"
+    },
+    {
+      "hash": "43f864e786a2a5de8f5ad4028a792fe7d7aaf242",
+      "message": "chore(release): Bump version to 0.90.2 [skip ci]",
+      "author": "github-actions[bot]",
+      "date": "2025-11-06 03:59:04 +0000"
     }
   ],
   "automation": {
-    "lastRun": "2025-11-04T09:03:56.245Z",
+    "lastRun": "2025-11-06T04:23:38.929Z",
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",
