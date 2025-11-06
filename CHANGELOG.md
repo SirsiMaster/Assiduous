@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.94.0] - 2025-11-06
+
+### Added
+- feat(dev-costs): add comprehensive metrics and tighter layout
+
+
 ## [0.93.0] - 2025-11-06
 
 ### Added
@@ -2949,7 +2955,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.93.0...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.94.0...HEAD
+
+
+## [0.94.0] - 2025-11-06
+
+### Added
+- feat(dev-costs): add comprehensive metrics and tighter layout
 
 
 ## [0.93.0] - 2025-11-06
@@ -4305,3 +4317,4 @@ To generate changelog entries:
 [0.92.3]: https://github.com/SirsiMaster/Assiduous/compare/v0.92.2...v0.92.3
 [0.92.4]: https://github.com/SirsiMaster/Assiduous/compare/v0.92.3...v0.92.4
 [0.93.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.92.4...v0.93.0
+[0.94.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.93.0...v0.94.0
