@@ -36,15 +36,16 @@
         /* Stats Grid */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(240px, 280px));
             gap: var(--space-lg);
             margin-bottom: var(--space-2xl);
+            justify-content: start;
         }
         
         /* Responsive breakpoints for stats grid */
-        @media (max-width: 1400px) {
+        @media (max-width: 1200px) {
             .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
+                grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
             }
         }
         
