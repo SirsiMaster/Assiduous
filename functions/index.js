@@ -200,3 +200,177 @@ exports.refreshBusinessMetrics = functions.https.onCall(async (data, context) =>
     const metrics = await updateBusinessMetrics();
     return { success: true, metrics };
 });
+
+// ============================================================================
+// AGENT PROPERTY MANAGEMENT API
+// ============================================================================
+
+/**
+ * Create a new property listing
+ * Callable by agents only
+ */
+exports.createProperty = functions.https.onCall(async (data, context) => {
+    // Check authentication
+    if (!context.auth) {
+        throw new functions.https.HttpsError('unauthenticated', 'User must be authenticated');
+    }
+
+    // Check if user is an agent
+    const userDoc = await db.collection('users').doc(context.auth.uid).get();
+    if (!userDoc.exists || userDoc.data().role !== 'agent') {
+        throw new functions.https.HttpsError('permission-denied', 'Only agents can create properties');
+    }
+
+    try {
+        const propertyData = {
+            ...data,
+            agentId: context.auth.uid,
+            agentName: userDoc.data().displayName || userDoc.data().email,
+            status: data.status || 'active',
+            createdAt: admin.firestore.FieldValue.serverTimestamp(),
+            updatedAt: admin.firestore.FieldValue.serverTimestamp()
+        };
+
+        const docRef = await db.collection('properties').add(propertyData);
+        
+        console.log(`✅ Property created by agent ${context.auth.uid}:`, docRef.id);
+        return { success: true, propertyId: docRef.id };
+        
+    } catch (error) {
+        console.error('❌ Error creating property:', error);
+        throw new functions.https.HttpsError('internal', error.message);
+    }
+});
+
+/**
+ * Update an existing property
+ * Agent can only update their own properties
+ */
+exports.updateProperty = functions.https.onCall(async (data, context) => {
+    if (!context.auth) {
+        throw new functions.https.HttpsError('unauthenticated', 'User must be authenticated');
+    }
+
+    const { propertyId, updates } = data;
+
+    if (!propertyId) {
+        throw new functions.https.HttpsError('invalid-argument', 'propertyId is required');
+    }
+
+    try {
+        const propertyRef = db.collection('properties').doc(propertyId);
+        const propertyDoc = await propertyRef.get();
+
+        if (!propertyDoc.exists) {
+            throw new functions.https.HttpsError('not-found', 'Property not found');
+        }
+
+        const propertyData = propertyDoc.data();
+
+        // Check if user is agent who owns this property OR an admin
+        const userDoc = await db.collection('users').doc(context.auth.uid).get();
+        const userRole = userDoc.data()?.role;
+        
+        if (propertyData.agentId !== context.auth.uid && userRole !== 'admin') {
+            throw new functions.https.HttpsError('permission-denied', 'You can only update your own properties');
+        }
+
+        await propertyRef.update({
+            ...updates,
+            updatedAt: admin.firestore.FieldValue.serverTimestamp()
+        });
+
+        console.log(`✅ Property ${propertyId} updated by ${context.auth.uid}`);
+        return { success: true };
+        
+    } catch (error) {
+        console.error('❌ Error updating property:', error);
+        throw new functions.https.HttpsError('internal', error.message);
+    }
+});
+
+/**
+ * Delete a property
+ * Agent can only delete their own properties
+ */
+exports.deleteProperty = functions.https.onCall(async (data, context) => {
+    if (!context.auth) {
+        throw new functions.https.HttpsError('unauthenticated', 'User must be authenticated');
+    }
+
+    const { propertyId } = data;
+
+    if (!propertyId) {
+        throw new functions.https.HttpsError('invalid-argument', 'propertyId is required');
+    }
+
+    try {
+        const propertyRef = db.collection('properties').doc(propertyId);
+        const propertyDoc = await propertyRef.get();
+
+        if (!propertyDoc.exists) {
+            throw new functions.https.HttpsError('not-found', 'Property not found');
+        }
+
+        const propertyData = propertyDoc.data();
+
+        // Check if user is agent who owns this property OR an admin
+        const userDoc = await db.collection('users').doc(context.auth.uid).get();
+        const userRole = userDoc.data()?.role;
+        
+        if (propertyData.agentId !== context.auth.uid && userRole !== 'admin') {
+            throw new functions.https.HttpsError('permission-denied', 'You can only delete your own properties');
+        }
+
+        await propertyRef.delete();
+
+        console.log(`✅ Property ${propertyId} deleted by ${context.auth.uid}`);
+        return { success: true };
+        
+    } catch (error) {
+        console.error('❌ Error deleting property:', error);
+        throw new functions.https.HttpsError('internal', error.message);
+    }
+});
+
+/**
+ * Get agent's properties
+ * Returns all properties owned by the authenticated agent
+ */
+exports.getAgentProperties = functions.https.onCall(async (data, context) => {
+    if (!context.auth) {
+        throw new functions.https.HttpsError('unauthenticated', 'User must be authenticated');
+    }
+
+    try {
+        const { status, limit } = data;
+        
+        let query = db.collection('properties').where('agentId', '==', context.auth.uid);
+        
+        if (status) {
+            query = query.where('status', '==', status);
+        }
+        
+        query = query.orderBy('createdAt', 'desc');
+        
+        if (limit) {
+            query = query.limit(limit);
+        }
+
+        const snapshot = await query.get();
+        const properties = [];
+        
+        snapshot.forEach(doc => {
+            properties.push({
+                id: doc.id,
+                ...doc.data()
+            });
+        });
+
+        return { success: true, properties };
+        
+    } catch (error) {
+        console.error('❌ Error getting agent properties:', error);
+        throw new functions.https.HttpsError('internal', error.message);
+    }
+});
