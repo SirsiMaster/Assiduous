@@ -804,27 +804,6 @@
             }, 5000);
         }
         
-        // Add logout button to header
-        document.addEventListener('DOMContentLoaded', () => {
-            // Wait a bit for header to load
-            setTimeout(() => {
-                const header = document.querySelector('header');
-                if (header) {
-                    const logoutBtn = document.createElement('button');
-                    logoutBtn.id = 'logout-btn';
-                    logoutBtn.className = 'sm-btn sm-btn-outline';
-                    logoutBtn.innerHTML = '<i class="fas fa-sign-out-alt"></i> Logout';
-                    logoutBtn.style.cssText = 'position: absolute; top: 20px; right: 20px;';
-                    logoutBtn.addEventListener('click', async () => {
-                        if (confirm('Are you sure you want to logout?')) {
-                            await authGuard.signOut();
-                        }
-                    });
-                    header.style.position = 'relative';
-                    header.appendChild(logoutBtn);
-                }
-            }, 500);
-        });
     </script>
 </body>
 </html>
