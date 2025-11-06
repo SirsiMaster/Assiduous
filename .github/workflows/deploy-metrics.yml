@@ -1,54 +1,35 @@
-name: Deploy Metrics to Firebase
+name: Update Firebase Metrics
 
 on:
   push:
     branches: [ main ]
-    paths:
-      - '**.js'
-      - '**.html'
-      - '**.json'
-      - 'public/**'
 
 jobs:
-  deploy:
+  update-metrics:
     runs-on: ubuntu-latest
     
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Get full git history for metrics
+          fetch-depth: 0  # Get full git history
       
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '18'
       
-      - name: Install Firebase CLI
-        run: npm install -g firebase-tools
+      - name: Install dependencies
+        run: npm install firebase-admin
       
-      - name: Update metrics from git
+      - name: Create Firebase service account
         run: |
-          cd ${{ github.workspace }}
-          node scripts/update-metrics-enhanced.js
+          echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}' > firebase-admin-key.json
       
-      - name: Display metrics summary
-        run: |
-          cat public/admin/development/metrics_cache.json | jq '{
-            commits: .project.totalCommits,
-            totalDays: .project.totalDays,
-            activeDays: .project.activeDays,
-            cost: .project.totalCost
-          }'
+      - name: Update Firebase metrics
+        run: node scripts/update-firebase-metrics.js
       
-      - name: Deploy to Firebase
+      - name: Verify update
         run: |
-          firebase deploy --only hosting --token ${{ secrets.FIREBASE_TOKEN }} --non-interactive --project assiduous-prod
-        env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-      
-      - name: Verify deployment
-        run: |
-          echo "✅ Deployment complete!"
-          echo "🌐 Dashboard: https://assiduous-prod.web.app/admin/development/dashboard.html"
-          echo "📊 Metrics API: https://assiduous-prod.web.app/admin/development/metrics_cache.json"
+          echo "✅ Firebase metrics updated!"
+          echo "🔥 Real-time dashboard: https://assiduous-prod.web.app/admin/development/dashboard.html"

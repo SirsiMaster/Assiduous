@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-11-06T16:31:45.382Z",
+  "lastUpdated": "2025-11-06T16:39:36.257Z",
   "summary": {
     "health": "Good",
     "score": 46,
@@ -110,35 +110,35 @@
     "laborCost": 41400,
     "toolsCost": 1879,
     "monthsElapsed": "2.9",
-    "totalCommits": 835,
-    "totalFiles": 779,
+    "totalCommits": 837,
+    "totalFiles": 782,
     "activeDays": 31,
     "totalDays": 88,
     "projectAgeDays": 88,
-    "linesAdded": 9754188,
-    "linesDeleted": 9381423,
-    "netLines": 372765,
-    "velocity": "26.9",
+    "linesAdded": 9754706,
+    "linesDeleted": 9381522,
+    "netLines": 373184,
+    "velocity": "27.0",
     "completionPercentage": 46,
     "actualStartDate": "2025-08-10"
   },
   "today": {
     "date": "2025-11-06",
-    "hours": "15.2",
-    "cost": 2277,
-    "commits": 46,
+    "hours": "15.8",
+    "cost": 2376,
+    "commits": 48,
     "deployments": 0
   },
   "thisWeek": {
-    "hours": "88.8",
-    "cost": 13316,
-    "commits": 269,
+    "hours": "89.4",
+    "cost": 13415,
+    "commits": 271,
     "days": 7
   },
   "thisMonth": {
-    "hours": "145.2",
-    "cost": 21780,
-    "commits": 440
+    "hours": "145.9",
+    "cost": 21879,
+    "commits": 442
   },
   "quality": {
     "testCoverage": {
@@ -172,7 +172,7 @@
       "critical": 0,
       "total": 0
     },
-    "lastAudit": "2025-11-06T16:31:23.376Z",
+    "lastAudit": "2025-11-06T16:39:03.150Z",
     "dependencies": {
       "total": {
         "prod": 256,
@@ -251,9 +251,9 @@
     }
   },
   "documentation": {
-    "markdownFiles": 2512,
-    "jsFilesTotal": 23934,
-    "jsFilesDocumented": 23934,
+    "markdownFiles": 2514,
+    "jsFilesTotal": 23935,
+    "jsFilesDocumented": 23935,
     "coverage": 427,
     "apiEndpoints": {
       "total": 0,
@@ -267,11 +267,11 @@
     "changelog": true,
     "contributing": false,
     "license": false,
-    "lastUpdate": "2025-11-06 11:30:45 -0500"
+    "lastUpdate": "2025-11-06 11:38:30 -0500"
   },
   "productivity": {
     "velocityTrend": "increasing",
-    "weeklyCommits": 269,
+    "weeklyCommits": 271,
     "contributors": {
       "total": 0,
       "active": 0
@@ -349,6 +349,18 @@
   },
   "recentActivity": [
     {
+      "hash": "791eab58d351f78fb499d3e2b97923e68f17ede3",
+      "message": "docs: add Firebase setup guide for real-time metrics",
+      "author": "SirsiMaster",
+      "date": "2025-11-06 11:38:30 -0500"
+    },
+    {
+      "hash": "b1045d8aaa865a6b2bd078a17677dfaf69c1cf58",
+      "message": "refactor: unified Firebase-only metrics (simplified end-to-end)",
+      "author": "SirsiMaster",
+      "date": "2025-11-06 11:37:26 -0500"
+    },
+    {
       "hash": "f43db326cb55022152644f47adf789231936ab27",
       "message": "docs(metrics): add Firebase migration script and alignment documentation",
       "author": "SirsiMaster",
@@ -395,22 +407,10 @@
       "message": "feat(analytics): restore charts - velocity line chart, quality donut, Firebase usage donuts",
       "author": "SirsiMaster",
       "date": "2025-11-06 11:11:40 -0500"
-    },
-    {
-      "hash": "dd01c764fba490d51253d56d561737dd5ae6924b",
-      "message": "chore(release): Bump version to 0.95.0 [skip ci]",
-      "author": "github-actions[bot]",
-      "date": "2025-11-06 16:04:51 +0000"
-    },
-    {
-      "hash": "c53ebb77833b8a8b7af3592024a2d69c7162489f",
-      "message": "feat(dev-analytics): comprehensive rebuild with exhaustive metrics",
-      "author": "SirsiMaster",
-      "date": "2025-11-06 11:04:22 -0500"
     }
   ],
   "automation": {
-    "lastRun": "2025-11-06T16:31:45.382Z",
+    "lastRun": "2025-11-06T16:39:36.257Z",
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",

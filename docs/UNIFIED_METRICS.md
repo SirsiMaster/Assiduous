@@ -3,23 +3,25 @@
 ## Simple Architecture
 
 ```
-Git Commit → Firebase → Dashboard (Real-Time)
+Local → GitHub → GitHub Actions → Firebase → Dashboard (Real-Time)
 ```
 
-**Single Source of Truth**: Firebase Firestore
+**Single Source of Truth**: Firebase Firestore  
+**No local setup required**: GitHub Actions handles everything
 
 ## How It Works
 
-### 1. You Make a Commit
+### 1. You Commit & Push
 ```bash
 git commit -m "feat: add new feature"
+git push origin main
 ```
 
-### 2. Git Hook Runs Automatically
-Post-commit hook calls `/scripts/update-firebase-metrics.js`
+### 2. GitHub Actions Triggers
+Workflow `.github/workflows/deploy-metrics.yml` runs automatically
 
 ### 3. Script Updates Firebase
-Writes to 3 Firestore collections:
+GitHub Actions runs `update-firebase-metrics.js` which writes to:
 - `git_commits` - This commit's details
 - `development_metrics` - Today's aggregated stats
 - `project_metadata` - Overall project totals
@@ -27,41 +29,14 @@ Writes to 3 Firestore collections:
 ### 4. Dashboard Updates Instantly
 Real-time listeners detect changes and update UI automatically
 
-## Setup (One-Time)
+## Setup (Already Done! ✅)
 
-### 1. Get Firebase Admin Key
-```bash
-# Visit Firebase Console
-open https://console.firebase.google.com/project/assiduous-prod/settings/serviceaccounts/adminsdk
+No local setup needed! The GitHub repository already has:
+- ✅ `FIREBASE_SERVICE_ACCOUNT` secret configured
+- ✅ GitHub Actions workflow ready
+- ✅ Service account with Firestore write permissions
 
-# Click "Generate new private key"
-# Save as: firebase-admin-key.json
-# Move to project root
-```
-
-### 2. Install Dependencies
-```bash
-npm install firebase-admin
-```
-
-### 3. Test the Script
-```bash
-node scripts/update-firebase-metrics.js
-```
-
-You should see:
-```
-🚀 Updating Firebase metrics...
-📝 Adding commit to Firebase...
-📊 Updating daily metrics...
-📋 Updating project metadata...
-✅ Firebase metrics updated successfully!
-```
-
-### 4. Verify Dashboard
-Open: https://assiduous-prod.web.app/admin/development/dashboard.html
-
-Should show "Live Data" indicator and real-time updates.
+Just commit and push - metrics update automatically!
 
 ## Collections Schema
 
