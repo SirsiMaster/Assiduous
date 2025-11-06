@@ -385,9 +385,10 @@
 </head>
 <body>
     <div class="admin-wrapper">
-        
         <!-- Sidebar Component -->
-        <aside class="sidebar" id="sidebar-root" data-active="transactions">
+        <div id="sidebar-root" data-active="transactions"></div>
+
+        <!-- Main Content
 <div class="sidebar-header">
   <a href="dashboard.html" class="sidebar-logo">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -769,7 +770,8 @@
         document.addEventListener('DOMContentLoaded', loadTransactionsData);
     </script>
     
-    <!-- Sidebar pre-rendered, no JS needed -->
-    <script src="../components/universal-header.js"></script>
+    <!-- Components -->
+    <script src="../components/sidebar.js"></script>
+    <script src="../components/admin-header.js"></script>
 </body>
 </html>
