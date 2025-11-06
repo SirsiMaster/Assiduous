@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.90.4] - 2025-11-06
+
+### Fixed
+- fix(design): replace purple gradient buttons with Assiduous line-art style
+
+
 ## [0.90.3] - 2025-11-06
 
 ### Fixed
@@ -2886,7 +2892,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.90.3...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.90.4...HEAD
+
+
+## [0.90.4] - 2025-11-06
+
+### Fixed
+- fix(design): replace purple gradient buttons with Assiduous line-art style
 
 
 ## [0.90.3] - 2025-11-06
@@ -4169,3 +4181,4 @@ To generate changelog entries:
 [0.90.1]: https://github.com/SirsiMaster/Assiduous/compare/v0.90.0...v0.90.1
 [0.90.2]: https://github.com/SirsiMaster/Assiduous/compare/v0.90.1...v0.90.2
 [0.90.3]: https://github.com/SirsiMaster/Assiduous/compare/v0.90.2...v0.90.3
+[0.90.4]: https://github.com/SirsiMaster/Assiduous/compare/v0.90.3...v0.90.4
