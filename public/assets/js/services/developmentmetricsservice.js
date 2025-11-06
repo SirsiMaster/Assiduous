@@ -72,7 +72,8 @@ class DevelopmentMetricsService {
             features: {},
             recentActivity: [],
             automation: {},
-            deployment: {}
+            deployment: {},
+            business: {}  // NEW: Business/operational metrics
         };
 
         // Subscribe to development_metrics collection (daily aggregates)
@@ -150,11 +151,23 @@ class DevelopmentMetricsService {
                 console.error('Error in features subscription:', error);
             });
 
+        // Subscribe to business metrics (users, properties, transactions)
+        const businessUnsubscribe = this.db.collection('business_metrics').doc('current')
+            .onSnapshot((doc) => {
+                if (doc.exists) {
+                    metricsData.business = doc.data();
+                    callback(metricsData);
+                }
+            }, (error) => {
+                console.error('Error in business metrics subscription:', error);
+            });
+
         // Store unsubscribe functions
         this.listeners.set('metrics', metricsUnsubscribe);
         this.listeners.set('commits', commitsUnsubscribe);
         this.listeners.set('sessions', sessionsUnsubscribe);
         this.listeners.set('features', featuresUnsubscribe);
+        this.listeners.set('business', businessUnsubscribe);
 
         // Return combined unsubscribe function
         return () => {

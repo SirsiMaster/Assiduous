@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-11-06T16:39:36.257Z",
+  "lastUpdated": "2025-11-06T21:52:55.830Z",
   "summary": {
     "health": "Good",
     "score": 46,
@@ -104,41 +104,41 @@
     }
   },
   "project": {
-    "totalHours": "276",
+    "totalHours": "277",
     "avgHoursPerDay": "8.9",
-    "totalCost": 43279,
-    "laborCost": 41400,
-    "toolsCost": 1879,
+    "totalCost": 43450,
+    "laborCost": 41550,
+    "toolsCost": 1900,
     "monthsElapsed": "2.9",
-    "totalCommits": 837,
-    "totalFiles": 782,
+    "totalCommits": 838,
+    "totalFiles": 781,
     "activeDays": 31,
-    "totalDays": 88,
-    "projectAgeDays": 88,
-    "linesAdded": 9754706,
-    "linesDeleted": 9381522,
-    "netLines": 373184,
+    "totalDays": 89,
+    "projectAgeDays": 89,
+    "linesAdded": 9754771,
+    "linesDeleted": 9381735,
+    "netLines": 373036,
     "velocity": "27.0",
     "completionPercentage": 46,
     "actualStartDate": "2025-08-10"
   },
   "today": {
     "date": "2025-11-06",
-    "hours": "15.8",
-    "cost": 2376,
-    "commits": 48,
+    "hours": "16.2",
+    "cost": 2426,
+    "commits": 49,
     "deployments": 0
   },
   "thisWeek": {
-    "hours": "89.4",
-    "cost": 13415,
-    "commits": 271,
+    "hours": "89.8",
+    "cost": 13464,
+    "commits": 272,
     "days": 7
   },
   "thisMonth": {
-    "hours": "145.9",
-    "cost": 21879,
-    "commits": 442
+    "hours": "146.2",
+    "cost": 21929,
+    "commits": 443
   },
   "quality": {
     "testCoverage": {
@@ -172,7 +172,7 @@
       "critical": 0,
       "total": 0
     },
-    "lastAudit": "2025-11-06T16:39:03.150Z",
+    "lastAudit": "2025-11-06T21:52:22.852Z",
     "dependencies": {
       "total": {
         "prod": 256,
@@ -218,14 +218,14 @@
     }
   },
   "deployment": {
-    "lastDeployment": "2025-11-06 11:04:22 -0500",
-    "totalDeployments": 130,
+    "lastDeployment": "2025-11-06 16:51:52 -0500",
+    "totalDeployments": 131,
     "deploymentFrequency": "Weekly",
     "environments": {
       "production": {
         "url": "https://assiduous-prod.web.app",
         "status": "Active",
-        "lastDeploy": "2025-11-06 11:04:22 -0500"
+        "lastDeploy": "2025-11-06 16:51:52 -0500"
       },
       "staging": {
         "url": "https://assiduous-staging.web.app",
@@ -251,7 +251,7 @@
     }
   },
   "documentation": {
-    "markdownFiles": 2514,
+    "markdownFiles": 2513,
     "jsFilesTotal": 23935,
     "jsFilesDocumented": 23935,
     "coverage": 427,
@@ -267,11 +267,11 @@
     "changelog": true,
     "contributing": false,
     "license": false,
-    "lastUpdate": "2025-11-06 11:38:30 -0500"
+    "lastUpdate": "2025-11-06 16:51:52 -0500"
   },
   "productivity": {
     "velocityTrend": "increasing",
-    "weeklyCommits": 271,
+    "weeklyCommits": 272,
     "contributors": {
       "total": 0,
       "active": 0
@@ -349,6 +349,12 @@
   },
   "recentActivity": [
     {
+      "hash": "ee53b50196ab82948605b756501acd44d810d4bc",
+      "message": "refactor: use GitHub Actions for Firebase metrics (no local setup needed)",
+      "author": "SirsiMaster",
+      "date": "2025-11-06 16:51:52 -0500"
+    },
+    {
       "hash": "791eab58d351f78fb499d3e2b97923e68f17ede3",
       "message": "docs: add Firebase setup guide for real-time metrics",
       "author": "SirsiMaster",
@@ -401,16 +407,10 @@
       "message": "chore: update Firebase cache and metrics after analytics chart restoration",
       "author": "SirsiMaster",
       "date": "2025-11-06 11:12:11 -0500"
-    },
-    {
-      "hash": "cea73440b91b9378c0b1d77d4f9ccd426aba3026",
-      "message": "feat(analytics): restore charts - velocity line chart, quality donut, Firebase usage donuts",
-      "author": "SirsiMaster",
-      "date": "2025-11-06 11:11:40 -0500"
     }
   ],
   "automation": {
-    "lastRun": "2025-11-06T16:39:36.257Z",
+    "lastRun": "2025-11-06T21:52:55.830Z",
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",
