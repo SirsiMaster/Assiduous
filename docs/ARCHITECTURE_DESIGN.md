@@ -1184,3 +1184,299 @@ node scripts/update_metrics.js
 **Document Version:** 2.1.0  
 **Last Reviewed:** November 6, 2025  
 **Next Review:** December 6, 2025 or as needed
+
+---
+
+# Real-Time Metrics & Business Operations Architecture
+**Added:** November 6, 2025  
+**Status:** Production - Fully Deployed
+
+## Unified Metrics System
+
+### Two-Track Architecture
+
+```
+CODE CHANGES                              DATA CHANGES
+────────────────────────────────────────────────────────────────────
+                                                                     
+git push                                  User Signup / Property Add
+    ↓                                            ↓                  
+GitHub Actions                            Firestore onCreate/Update  
+    ↓                                            ↓                  
+update-firebase-metrics.js                Cloud Functions           
+    ↓                                            ↓                  
+Firestore Collections:                    Firestore Collections:    
+- git_commits                             - business_metrics        
+- development_metrics                     - business_activity       
+- project_metadata                                                  
+    ↓                                            ↓                  
+    └────────────────┬───────────────────────────┘                  
+                     ↓                                              
+            DevelopmentMetricsService                               
+              (Real-time listeners)                                 
+                     ↓                                              
+              Dashboard Updates                                     
+              (Instant, < 1s)                                       
+```
+
+### Development Metrics (Code)
+
+**Trigger**: Code push to GitHub  
+**Handler**: GitHub Actions workflow  
+**Script**: `scripts/update-firebase-metrics.js`
+
+**Collections Written**:
+1. **`git_commits/{hash}`**
+   - Individual commit tracking
+   - Hash, message, author, timestamp
+   - Files changed, lines added/deleted
+
+2. **`development_metrics/{YYYY-MM-DD}`**
+   - Daily aggregated stats
+   - Commits, hours, cost, deployments
+   - Updated on each commit
+
+3. **`project_metadata/current`**
+   - Overall project statistics
+   - Total commits, files, velocity
+   - Start date, active days
+
+### Business Metrics (Data)
+
+**Trigger**: Firestore data changes  
+**Handler**: Cloud Functions (Firestore triggers)  
+**Script**: `functions/index.js`
+
+**Cloud Functions Deployed**:
+- `onUserCreated` - New user registration
+- `onPropertyCreated` - New property listing
+- `onPropertyUpdated` - Property status changes
+- `onTransactionCreated` - New transaction
+- `onTransactionUpdated` - Transaction status changes
+- `scheduledMetricsUpdate` - Hourly backup aggregation
+
+**Collections Written**:
+1. **`business_metrics/current`**
+   - Users: total, clients, agents, admins
+   - Properties: total, active, pending, sold
+   - Transactions: total, pending, completed, totalValue
+   - Auto-updated on any data change
+
+2. **`business_activity`**
+   - Activity log of all business events
+   - Type, entityId, metadata, timestamp
+   - Used for audit trail and analytics
+
+### Real-Time Dashboard Integration
+
+**Service**: `DevelopmentMetricsService`  
+**Location**: `public/assets/js/services/developmentmetricsservice.js`
+
+**Features**:
+- Single subscription for all metrics
+- WebSocket-based real-time updates
+- Automatic reconnection
+- Efficient batching
+
+**Usage**:
+```javascript
+const service = new DevelopmentMetricsService();
+await service.initialize();
+
+service.subscribeToMetrics((metrics) => {
+    // Development metrics
+    console.log(metrics.project.totalCommits);
+    console.log(metrics.today.commits);
+    
+    // Business metrics
+    console.log(metrics.business.users.total);
+    console.log(metrics.business.properties.total);
+    console.log(metrics.business.transactions.totalValue);
+});
+```
+
+---
+
+## Agent Property Management API
+
+**Added:** November 6, 2025  
+**Status:** Production - Fully Deployed
+
+### Architecture Overview
+
+```
+AGENT PORTAL              CLOUD FUNCTIONS           FIRESTORE
+──────────────────────────────────────────────────────────────
+                                                              
+Agent Form/UI             createProperty()        properties/
+     ↓                          ↓                      ↓    
+AgentPropertyService      - Authentication        {agentId}  
+     ↓                    - Role verification         ↓    
+Firebase Callable         - Ownership check      onCreate   
+     ↓                    - Save to DB           Trigger    
+Cloud Function                  ↓                      ↓    
+     ↓                    Return success         business_  
+Result                                            metrics++ 
+```
+
+### Cloud Functions API
+
+**Service**: `AgentPropertyService`  
+**Location**: `public/assets/js/services/agent-property-service.js`
+
+**Endpoints Deployed**:
+
+1. **`createProperty(propertyData)`**
+   - Agents create new listings
+   - Auto-assigns agentId and agentName
+   - Validates authentication and role
+   - Triggers business metrics update
+   - Returns: `{success, propertyId}`
+
+2. **`updateProperty(propertyId, updates)`**
+   - Agents update their properties
+   - Verifies ownership (agent can only update own)
+   - Admin override allowed
+   - Triggers metrics update if status changed
+   - Returns: `{success}`
+
+3. **`deleteProperty(propertyId)`**
+   - Agents delete their listings
+   - Verifies ownership
+   - Decrements business metrics
+   - Returns: `{success}`
+
+4. **`getAgentProperties({status, limit})`**
+   - Fetch agent's property list
+   - Supports filtering by status
+   - Supports pagination
+   - Returns: `{success, properties[]}`
+
+### Security Model
+
+**Multi-Layer Security**:
+1. **Firebase Authentication** - Must be logged in
+2. **Role Verification** - Must have 'agent' role
+3. **Ownership Validation** - Can only modify own properties
+4. **Admin Override** - Admins can manage any property
+5. **Server-Side Enforcement** - Client cannot fake agentId
+
+**Automatic Fields**:
+```javascript
+// Server automatically adds:
+propertyData.agentId = currentUser.uid;
+propertyData.agentName = currentUser.displayName;
+propertyData.createdAt = serverTimestamp();
+propertyData.updatedAt = serverTimestamp();
+```
+
+### Integration Points
+
+**Agent Portal Pages**:
+- `/agent/listings.html` - Property management UI
+- Uses AgentPropertyService for all CRUD operations
+- Real-time updates via Firestore listeners
+- File upload via Firebase Storage
+
+**Admin Panel**:
+- Full access to all properties
+- Can override agent restrictions
+- Same API endpoints with admin privileges
+
+**Business Metrics**:
+- Automatic tracking on create/update/delete
+- No manual metric updates needed
+- Real-time dashboard reflection
+
+### Real-Time Capabilities
+
+**Firestore Listeners**:
+```javascript
+// Subscribe to agent's properties
+const unsubscribe = propertyService.subscribeToMyProperties((properties) => {
+    // UI updates automatically
+    displayProperties(properties);
+});
+```
+
+**Benefits**:
+- Changes appear instantly across devices
+- No polling required
+- Efficient WebSocket connections
+- Automatic reconnection
+
+---
+
+## Firebase Project Configuration
+
+**Current Environment**: Production  
+**Project ID**: `assiduous-prod`  
+**Project Number**: 9355377564
+
+**Services Active**:
+- ✅ Firestore Database - Primary data store
+- ✅ Firebase Authentication - User management
+- ✅ Cloud Functions (2nd Gen) - 19 functions deployed
+- ✅ Firebase Hosting - Static site hosting
+- ✅ Cloud Storage - File uploads
+- ✅ Real-time Database - Legacy support
+
+**Cloud Functions Count**: 19
+- 10 Application functions (API, auth, Stripe)
+- 9 Metrics/trigger functions (added Nov 6, 2025)
+
+---
+
+## Deployment Architecture
+
+**Current Flow**:
+```
+Local Development
+    ↓
+git commit & push
+    ↓
+GitHub Actions
+    ├─ update-firebase-metrics.js (development metrics)
+    └─ (optional) firebase deploy
+         ↓
+Firebase Cloud Functions
+    ├─ Firestore Triggers (business metrics)
+    └─ Agent API Endpoints (property management)
+         ↓
+Firebase Hosting
+    └─ Static files + Real-time updates
+```
+
+**GitHub Actions Workflows**:
+- `deploy-metrics.yml` - Updates Firebase metrics on push
+- `deploy-production.yml` - Full deployment workflow
+- All workflows use `FIREBASE_SERVICE_ACCOUNT` secret
+
+**No Local Setup Required**:
+- No firebase-admin-key.json needed locally
+- GitHub Actions handles all Firebase writes
+- Agents use browser-based Firebase SDK
+- Secure, automated, zero-config
+
+---
+
+## Documentation References
+
+**Canonical Documents**:
+- `COMPLETE_METRICS_SYSTEM.md` - Full metrics architecture
+- `AGENT_PROPERTY_API.md` - Agent API documentation
+- `UNIFIED_METRICS.md` - Simplified metrics guide
+- `ARCHITECTURE_DESIGN.md` - This document
+
+**Code Locations**:
+- `functions/index.js` - All Cloud Functions
+- `scripts/update-firebase-metrics.js` - Development metrics
+- `public/assets/js/services/developmentmetricsservice.js` - Client service
+- `public/assets/js/services/agent-property-service.js` - Agent API client
+- `.github/workflows/deploy-metrics.yml` - GitHub Actions workflow
+
+---
+
+**Version:** 2.2.0  
+**Last Updated:** November 6, 2025  
+**Status:** Production - All Systems Operational
