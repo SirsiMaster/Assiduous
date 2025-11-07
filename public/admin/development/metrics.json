@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-11-07T18:11:23.606Z",
+  "lastUpdated": "2025-11-07T18:17:58.381Z",
   "summary": {
     "health": "Good",
     "score": 46,
@@ -110,35 +110,35 @@
     "laborCost": 42450,
     "toolsCost": 1900,
     "monthsElapsed": "2.9",
-    "totalCommits": 857,
+    "totalCommits": 859,
     "totalFiles": 785,
     "activeDays": 32,
     "totalDays": 89,
     "projectAgeDays": 89,
-    "linesAdded": 9757679,
-    "linesDeleted": 9381912,
-    "netLines": 375767,
+    "linesAdded": 9757810,
+    "linesDeleted": 9382029,
+    "netLines": 375781,
     "velocity": "26.8",
     "completionPercentage": 46,
     "actualStartDate": "2025-08-10"
   },
   "today": {
     "date": "2025-11-07",
-    "hours": "6.6",
-    "cost": 990,
-    "commits": 20,
+    "hours": "7.3",
+    "cost": 1089,
+    "commits": 22,
     "deployments": 0
   },
   "thisWeek": {
-    "hours": "96.0",
-    "cost": 14405,
-    "commits": 291,
+    "hours": "96.7",
+    "cost": 14504,
+    "commits": 293,
     "days": 7
   },
   "thisMonth": {
-    "hours": "149.8",
-    "cost": 22473,
-    "commits": 454
+    "hours": "150.5",
+    "cost": 22572,
+    "commits": 456
   },
   "quality": {
     "testCoverage": {
@@ -172,7 +172,7 @@
       "critical": 0,
       "total": 0
     },
-    "lastAudit": "2025-11-07T18:10:50.652Z",
+    "lastAudit": "2025-11-07T18:17:26.661Z",
     "dependencies": {
       "total": {
         "prod": 256,
@@ -267,11 +267,11 @@
     "changelog": true,
     "contributing": false,
     "license": false,
-    "lastUpdate": "2025-11-07 18:08:07 +0000"
+    "lastUpdate": "2025-11-07 18:10:39 +0000"
   },
   "productivity": {
     "velocityTrend": "increasing",
-    "weeklyCommits": 291,
+    "weeklyCommits": 293,
     "contributors": {
       "total": 0,
       "active": 0
@@ -349,6 +349,18 @@
   },
   "recentActivity": [
     {
+      "hash": "607f5ba6423cc8b8e0c7f5c030b9e8446839549f",
+      "message": "fix(paths): replace all {{BASE_PATH}} tokens with correct relative paths",
+      "author": "SirsiMaster",
+      "date": "2025-11-07 13:16:35 -0500"
+    },
+    {
+      "hash": "19a84aa62ad2e3c17ff0f715cbe3bba353544e14",
+      "message": "chore(release): Bump version to 0.99.7 [skip ci]",
+      "author": "github-actions[bot]",
+      "date": "2025-11-07 18:10:39 +0000"
+    },
+    {
       "hash": "5ed25e2379f295303ea334b34dd726882b976ee0",
       "message": "fix(js): Prevent db redeclaration errors in agent and client pages",
       "author": "SirsiMaster",
@@ -395,22 +407,10 @@
       "message": "chore(release): Bump version to 0.99.3 [skip ci]",
       "author": "github-actions[bot]",
       "date": "2025-11-07 17:52:40 +0000"
-    },
-    {
-      "hash": "3c9f1f4b3a5b0724764197c2ab11fe18ad3cda65",
-      "message": "fix(tools): Replace broken local CSS path with working CDN links",
-      "author": "SirsiMaster",
-      "date": "2025-11-07 12:52:01 -0500"
-    },
-    {
-      "hash": "0c4ae04edbe9f4543863aa6980e268e7275eb582",
-      "message": "chore(release): Bump version to 0.99.2 [skip ci]",
-      "author": "github-actions[bot]",
-      "date": "2025-11-07 17:44:18 +0000"
     }
   ],
   "automation": {
-    "lastRun": "2025-11-07T18:11:23.606Z",
+    "lastRun": "2025-11-07T18:17:58.381Z",
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",
