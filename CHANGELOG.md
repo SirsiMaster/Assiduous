@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.99.4] - 2025-11-07
+
+### Fixed
+- fix(dashboards): Remove duplicate sidebars from agent and client dashboards
+
+
 ## [0.99.3] - 2025-11-07
 
 ### Fixed
@@ -3003,7 +3009,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.99.3...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.99.4...HEAD
+
+
+## [0.99.4] - 2025-11-07
+
+### Fixed
+- fix(dashboards): Remove duplicate sidebars from agent and client dashboards
 
 
 ## [0.99.3] - 2025-11-07
@@ -4422,3 +4434,4 @@ To generate changelog entries:
 [0.99.1]: https://github.com/SirsiMaster/Assiduous/compare/v0.99.0...v0.99.1
 [0.99.2]: https://github.com/SirsiMaster/Assiduous/compare/v0.99.1...v0.99.2
 [0.99.3]: https://github.com/SirsiMaster/Assiduous/compare/v0.99.2...v0.99.3
+[0.99.4]: https://github.com/SirsiMaster/Assiduous/compare/v0.99.3...v0.99.4
