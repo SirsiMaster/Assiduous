@@ -720,24 +720,12 @@
     <script src="../components/universal-header.js"></script>
 
     <script>
-        // Initialize services
+        // Initialize services (after Firebase is loaded via firebase-config.js)
         const microFlipEngine = new MicroFlipEngine();
         const propertyService = new PropertyService();
         
-        // Initialize Firebase
-        const firebaseConfig = {
-            apiKey: "AIzaSyCzPcEJ0TPKnJtcVT2qymgJrII1p0vAJxs",
-            authDomain: "assiduous-prod.firebaseapp.com",
-            projectId: "assiduous-prod",
-            storageBucket: "assiduous-prod.appspot.com",
-            messagingSenderId: "594472642287",
-            appId: "1:594472642287:web:adf723a456b123c4567890"
-        };
-        
-        if (!firebase.apps.length) {
-            firebase.initializeApp(firebaseConfig);
-        }
-        const db = firebase.firestore();
+        // Use existing Firebase instance from firebase-config.js
+        const db = window.firebaseDb || firebase.firestore();
         
         // State
         let selectedProperty = null;

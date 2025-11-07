@@ -57,15 +57,19 @@ function initializeFirebase() {
         // Initialize services
         auth = firebase.auth();
         db = firebase.firestore();
-        storage = firebase.storage();
+        
+        // Initialize storage only if SDK is loaded
+        if (firebase.storage) {
+            storage = firebase.storage();
+            window.firebaseStorage = storage;
+        }
         
         // Export to window immediately
         window.firebaseApp = app;
         window.firebaseAuth = auth;
         window.firebaseDb = db;
-        window.firebaseStorage = storage;
         
-        console.log('[Firebase] ✓ Services initialized (auth, db, storage)');
+        console.log('[Firebase] ✓ Services initialized (auth, db' + (storage ? ', storage' : '') + ')');
         
         // Initialize Analytics if available
         if (firebase.analytics) {

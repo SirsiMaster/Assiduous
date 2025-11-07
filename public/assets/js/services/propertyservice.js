@@ -6,7 +6,7 @@
 
 const API_BASE_URL = 'https://us-central1-assiduous-prod.cloudfunctions.net/api';
 
-export class PropertyService {
+class PropertyService {
   constructor() {
     this.apiUrl = API_BASE_URL;
     this.db = firebase.firestore();
