@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.99.7] - 2025-11-07
+
+### Fixed
+- fix(js): Prevent db redeclaration errors in agent and client pages
+
+
 ## [0.99.6] - 2025-11-07
 
 ### Fixed
@@ -3021,7 +3027,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.99.6...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.99.7...HEAD
+
+
+## [0.99.7] - 2025-11-07
+
+### Fixed
+- fix(js): Prevent db redeclaration errors in agent and client pages
 
 
 ## [0.99.6] - 2025-11-07
@@ -4461,3 +4473,4 @@ To generate changelog entries:
 [0.99.4]: https://github.com/SirsiMaster/Assiduous/compare/v0.99.3...v0.99.4
 [0.99.5]: https://github.com/SirsiMaster/Assiduous/compare/v0.99.4...v0.99.5
 [0.99.6]: https://github.com/SirsiMaster/Assiduous/compare/v0.99.5...v0.99.6
+[0.99.7]: https://github.com/SirsiMaster/Assiduous/compare/v0.99.6...v0.99.7
