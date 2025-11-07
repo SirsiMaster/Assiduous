@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.99.1] - 2025-11-07
+
+### Fixed
+- fix(tools): replace BASE_PATH tokens with relative paths in client tools
+
+
 ## [0.99.0] - 2025-11-06
 
 ### Added
@@ -2985,7 +2991,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.99.0...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.99.1...HEAD
+
+
+## [0.99.1] - 2025-11-07
+
+### Fixed
+- fix(tools): replace BASE_PATH tokens with relative paths in client tools
 
 
 ## [0.99.0] - 2025-11-06
@@ -4383,3 +4395,4 @@ To generate changelog entries:
 [0.97.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.96.0...v0.97.0
 [0.98.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.97.0...v0.98.0
 [0.99.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.98.0...v0.99.0
+[0.99.1]: https://github.com/SirsiMaster/Assiduous/compare/v0.99.0...v0.99.1
