@@ -1571,7 +1571,7 @@
                 });
                 
                 // Update Firestore
-                const db = firebase.firestore();
+                const db = window.firebaseDb || firebase.firestore();
                 await db.collection('properties').doc(propertyId).update({
                     'publicRecords': {
                         ...currentProperty.publicRecords,
@@ -1617,7 +1617,7 @@
             if (!files || files.length === 0) return;
             
             const storage = firebase.storage();
-            const db = firebase.firestore();
+            const db = window.firebaseDb || firebase.firestore();
             const user = firebase.auth().currentUser;
             
             if (!user) {
