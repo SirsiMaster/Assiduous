@@ -405,6 +405,3 @@ class PropertyService {
     };
   }
 }
-
-// Export singleton instance
-export const propertyService = new PropertyService();

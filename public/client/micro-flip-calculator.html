@@ -720,12 +720,14 @@
     <script src="../components/universal-header.js"></script>
 
     <script>
+        // Wait for Firebase to be ready, then initialize
+        window.addEventListener('firebase-ready', () => {
+            console.log('[Calculator] Firebase ready, initializing...');
+        });
+        
         // Initialize services (after Firebase is loaded via firebase-config.js)
         const microFlipEngine = new MicroFlipEngine();
         const propertyService = new PropertyService();
-        
-        // Use existing Firebase instance from firebase-config.js
-        const db = window.firebaseDb || firebase.firestore();
         
         // State
         let selectedProperty = null;
