@@ -1,12 +1,12 @@
 {
-  "lastUpdated": "2025-11-06T23:08:26.543Z",
+  "lastUpdated": "2025-11-07T18:11:23.606Z",
   "summary": {
     "health": "Good",
     "score": 46,
     "trend": "increasing",
     "alerts": [
       "⚠️ Test coverage is very low",
-      "⏰ Timeline warning - 25 days until launch"
+      "⏰ Timeline warning - 24 days until launch"
     ]
   },
   "features": {
@@ -104,41 +104,41 @@
     }
   },
   "project": {
-    "totalHours": "278",
-    "avgHoursPerDay": "9.0",
-    "totalCost": 43600,
-    "laborCost": 41700,
+    "totalHours": "283",
+    "avgHoursPerDay": "8.8",
+    "totalCost": 44350,
+    "laborCost": 42450,
     "toolsCost": 1900,
     "monthsElapsed": "2.9",
-    "totalCommits": 841,
+    "totalCommits": 857,
     "totalFiles": 785,
-    "activeDays": 31,
+    "activeDays": 32,
     "totalDays": 89,
     "projectAgeDays": 89,
-    "linesAdded": 9756101,
-    "linesDeleted": 9381803,
-    "netLines": 374298,
-    "velocity": "27.1",
+    "linesAdded": 9757679,
+    "linesDeleted": 9381912,
+    "netLines": 375767,
+    "velocity": "26.8",
     "completionPercentage": 46,
     "actualStartDate": "2025-08-10"
   },
   "today": {
-    "date": "2025-11-06",
-    "hours": "17.2",
-    "cost": 2574,
-    "commits": 52,
+    "date": "2025-11-07",
+    "hours": "6.6",
+    "cost": 990,
+    "commits": 20,
     "deployments": 0
   },
   "thisWeek": {
-    "hours": "90.8",
-    "cost": 13613,
-    "commits": 275,
+    "hours": "96.0",
+    "cost": 14405,
+    "commits": 291,
     "days": 7
   },
   "thisMonth": {
-    "hours": "147.2",
-    "cost": 22077,
-    "commits": 446
+    "hours": "149.8",
+    "cost": 22473,
+    "commits": 454
   },
   "quality": {
     "testCoverage": {
@@ -172,7 +172,7 @@
       "critical": 0,
       "total": 0
     },
-    "lastAudit": "2025-11-06T23:07:54.933Z",
+    "lastAudit": "2025-11-07T18:10:50.652Z",
     "dependencies": {
       "total": {
         "prod": 256,
@@ -267,16 +267,16 @@
     "changelog": true,
     "contributing": false,
     "license": false,
-    "lastUpdate": "2025-11-06 18:07:17 -0500"
+    "lastUpdate": "2025-11-07 18:08:07 +0000"
   },
   "productivity": {
     "velocityTrend": "increasing",
-    "weeklyCommits": 275,
+    "weeklyCommits": 291,
     "contributors": {
       "total": 0,
       "active": 0
     },
-    "averageCommitSize": 102,
+    "averageCommitSize": 100,
     "pullRequests": {
       "open": 0,
       "merged": 0,
@@ -304,7 +304,7 @@
       "projectStart": "2025-08-10",
       "originalLaunch": "2025-11-01",
       "plannedLaunch": "2025-12-01",
-      "daysRemaining": 25,
+      "daysRemaining": 24,
       "onTrack": false,
       "adjustmentReason": "Timeline adjusted for realistic completion based on current velocity"
     },
@@ -349,68 +349,68 @@
   },
   "recentActivity": [
     {
-      "hash": "b3781448b80301b2dea0a502c19deb93acc31e21",
-      "message": "feat: add agent property management API",
+      "hash": "5ed25e2379f295303ea334b34dd726882b976ee0",
+      "message": "fix(js): Prevent db redeclaration errors in agent and client pages",
       "author": "SirsiMaster",
-      "date": "2025-11-06 18:07:17 -0500"
+      "date": "2025-11-07 13:09:54 -0500"
     },
     {
-      "hash": "805378fb3d811434d8a3317f91a942282eec401d",
-      "message": "chore(release): Bump version to 0.98.0 [skip ci]",
+      "hash": "f9ca87c058677777743da65c2a410c99aac39c70",
+      "message": "chore(release): Bump version to 0.99.6 [skip ci]",
       "author": "github-actions[bot]",
-      "date": "2025-11-06 23:00:54 +0000"
+      "date": "2025-11-07 18:08:07 +0000"
     },
     {
-      "hash": "516a5ef067537453a378185bc8ada6326b804a81",
-      "message": "feat: add business metrics tracking with Cloud Functions",
+      "hash": "3e2cfd12aa55a1b56f9bed522097a7eb26b6c640",
+      "message": "fix(js): Remove remaining export statement and db redeclaration",
       "author": "SirsiMaster",
-      "date": "2025-11-06 18:00:35 -0500"
+      "date": "2025-11-07 13:07:24 -0500"
     },
     {
-      "hash": "ee53b50196ab82948605b756501acd44d810d4bc",
-      "message": "refactor: use GitHub Actions for Firebase metrics (no local setup needed)",
-      "author": "SirsiMaster",
-      "date": "2025-11-06 16:51:52 -0500"
-    },
-    {
-      "hash": "791eab58d351f78fb499d3e2b97923e68f17ede3",
-      "message": "docs: add Firebase setup guide for real-time metrics",
-      "author": "SirsiMaster",
-      "date": "2025-11-06 11:38:30 -0500"
-    },
-    {
-      "hash": "b1045d8aaa865a6b2bd078a17677dfaf69c1cf58",
-      "message": "refactor: unified Firebase-only metrics (simplified end-to-end)",
-      "author": "SirsiMaster",
-      "date": "2025-11-06 11:37:26 -0500"
-    },
-    {
-      "hash": "f43db326cb55022152644f47adf789231936ab27",
-      "message": "docs(metrics): add Firebase migration script and alignment documentation",
-      "author": "SirsiMaster",
-      "date": "2025-11-06 11:30:45 -0500"
-    },
-    {
-      "hash": "c70ab1beaa1c2d85c00033a1602316e4ba95a577",
-      "message": "chore(release): Bump version to 0.97.0 [skip ci]",
+      "hash": "a7154aad529e5e5c668ad9ef0e4f3fc79d234886",
+      "message": "chore(release): Bump version to 0.99.5 [skip ci]",
       "author": "github-actions[bot]",
-      "date": "2025-11-06 16:27:22 +0000"
+      "date": "2025-11-07 18:03:52 +0000"
     },
     {
-      "hash": "e7530966ee660539fba2cf1a819a60fc82c7b0f8",
-      "message": "feat(dashboard): implement real-time Firebase metrics updates",
+      "hash": "6f1a3dbfdfc9c0216385b581a84fe230427eac61",
+      "message": "fix(js): Resolve JavaScript errors across all tool pages",
       "author": "SirsiMaster",
-      "date": "2025-11-06 11:27:01 -0500"
+      "date": "2025-11-07 13:03:17 -0500"
     },
     {
-      "hash": "e6cb59b5231a9bdedcfce6eeea7f4cf2ef061e41",
-      "message": "chore: update cache and metrics after documentation updates",
+      "hash": "0778c75e51a9efe7978dceb1f7d7adb284cec865",
+      "message": "chore(release): Bump version to 0.99.4 [skip ci]",
+      "author": "github-actions[bot]",
+      "date": "2025-11-07 17:59:52 +0000"
+    },
+    {
+      "hash": "6f5476cc3eb41e55a801421f81ec5bdf670e5583",
+      "message": "fix(dashboards): Remove duplicate sidebars from agent and client dashboards",
       "author": "SirsiMaster",
-      "date": "2025-11-06 11:18:55 -0500"
+      "date": "2025-11-07 12:59:20 -0500"
+    },
+    {
+      "hash": "429fd7ba4d30ea75419f9f4fe590cc6f842d399b",
+      "message": "chore(release): Bump version to 0.99.3 [skip ci]",
+      "author": "github-actions[bot]",
+      "date": "2025-11-07 17:52:40 +0000"
+    },
+    {
+      "hash": "3c9f1f4b3a5b0724764197c2ab11fe18ad3cda65",
+      "message": "fix(tools): Replace broken local CSS path with working CDN links",
+      "author": "SirsiMaster",
+      "date": "2025-11-07 12:52:01 -0500"
+    },
+    {
+      "hash": "0c4ae04edbe9f4543863aa6980e268e7275eb582",
+      "message": "chore(release): Bump version to 0.99.2 [skip ci]",
+      "author": "github-actions[bot]",
+      "date": "2025-11-07 17:44:18 +0000"
     }
   ],
   "automation": {
-    "lastRun": "2025-11-06T23:08:26.543Z",
+    "lastRun": "2025-11-07T18:11:23.606Z",
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",
