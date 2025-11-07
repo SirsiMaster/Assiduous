@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.99.3] - 2025-11-07
+
+### Fixed
+- fix(tools): Replace broken local CSS path with working CDN links
+
+
 ## [0.99.2] - 2025-11-07
 
 ### Fixed
@@ -2997,7 +3003,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.99.2...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.99.3...HEAD
+
+
+## [0.99.3] - 2025-11-07
+
+### Fixed
+- fix(tools): Replace broken local CSS path with working CDN links
 
 
 ## [0.99.2] - 2025-11-07
@@ -4409,3 +4421,4 @@ To generate changelog entries:
 [0.99.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.98.0...v0.99.0
 [0.99.1]: https://github.com/SirsiMaster/Assiduous/compare/v0.99.0...v0.99.1
 [0.99.2]: https://github.com/SirsiMaster/Assiduous/compare/v0.99.1...v0.99.2
+[0.99.3]: https://github.com/SirsiMaster/Assiduous/compare/v0.99.2...v0.99.3
