@@ -618,48 +618,112 @@ Semantic versioning: `vMAJOR.MINOR.PATCH[-PRERELEASE]`
 - Include release notes
 - Update rollback_registry.md
 
-## Component System (UPDATED - Using SirsiMaster Component Library)
+## Universal Component System (UCS) - PRODUCTION READY ✅
 
-### 🚨 IMPORTANT: Use SirsiMaster Component Library
-Assiduous now uses components from the **SirsiMaster Component Library** for all UI elements:
-- **Library Location**: `/Users/thekryptodragon/Development/sirsimaster-component-library`
-- **NPM Package**: `@sirsimaster/component-library` (once published)
-- **GitHub**: https://github.com/SirsiMaster/sirsimaster-component-library
+### Overview
+Assiduous uses a **Universal Component System (UCS)** that provides role-based component rendering.
+Write component HTML/CSS once, use everywhere with automatic role-based filtering.
 
-### Using Library Components
-```javascript
-// Import from library (once installed)
-import { Header, Sidebar, Card, Form } from '@sirsimaster/component-library';
+### UCS Core Files
+- **`public/components/ucs-core.js`** - Role detection, filtering, mounting engine
+- **`public/components/component-registry.js`** - Component registration and configuration
+- **`public/components/sidebar-root.html`** - Universal sidebar template with data-roles
+- **`public/components/universal-header.html`** - Universal header template
+- **`public/components/admin-layout.css`** - Shared styling (dark navy sidebar, professional header)
 
-// Or during development
-import Header from '../sirsimaster-component-library/src/components/layout/Header';
+### How UCS Works
+1. **Role Detection**: Automatically detects user role from URL path (`/admin/`, `/agent/`, `/client/`)
+2. **Component Loading**: Fetches universal templates from root files
+3. **Role Filtering**: Hides/shows elements based on `data-roles="admin,agent,client"` attributes
+4. **Token Replacement**: Replaces `[[BASE]]` and `[[USER_*]]` tokens with actual values
+5. **Event Binding**: Executes component-specific onLoad callbacks
+
+### Using UCS in Pages
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Your Page</title>
+    <link rel="stylesheet" href="../assiduous.css">
+    <link rel="stylesheet" href="../components/admin-layout.css">
+</head>
+<body class="admin-wrapper" data-active="page-key">
+    <!-- UCS Sidebar Component -->
+    <aside class="sidebar" data-component="sidebar"></aside>
+    
+    <!-- Main Content Area -->
+    <div class="main-content">
+        <!-- UCS Header Component -->
+        <header data-component="header"></header>
+        
+        <!-- Your Page Content -->
+        <div class="dashboard-content">
+            <h1>Your Page Content</h1>
+        </div>
+    </div>
+    
+    <!-- UCS Core Scripts -->
+    <script src="../components/ucs-core.js"></script>
+    <script src="../components/component-registry.js"></script>
+</body>
+</html>
 ```
 
-### Legacy Components (To Be Migrated)
-These local components should be migrated to the library:
-- `public/components/admin-header.html` - Migrate to library `Header`
-- `public/components/admin-header.js` - Migrate to library `Header`
-- `public/components/admin-layout.css` - Migrate to library theme system
-- `public/components/sidebar.html` - Migrate to library `Sidebar`
-- `public/components/sidebar.js` - Migrate to library `Sidebar`
+### Adding Navigation Items to Sidebar
+Edit `public/components/sidebar-root.html` and add `data-roles` attribute:
 
-### Migration Plan
-1. Use library components for all new features
-2. Gradually replace legacy components with library versions
-3. Contribute Assiduous-specific improvements back to the library
+```html
+<!-- Visible to all roles -->
+<a href="dashboard.html" class="nav-item" data-key="dashboard" data-roles="admin,agent,client">
+  <svg class="nav-icon">...</svg>
+  Dashboard
+</a>
+
+<!-- Visible to admin only -->
+<a href="analytics.html" class="nav-item" data-key="analytics" data-roles="admin">
+  <svg class="nav-icon">...</svg>
+  Realty Analytics
+</a>
+
+<!-- Visible to agents and clients -->
+<a href="market.html" class="nav-item" data-key="market" data-roles="agent,client">
+  <svg class="nav-icon">...</svg>
+  Market Analysis
+</a>
+```
+
+### Current Role-Based Navigation Structure
+
+**Admin Sidebar:**
+- Main: Dashboard, Realty Analytics, Market Analysis
+- Management: Properties, Off-Market, Agents, Clients, Transactions
+- Development: Dev Dashboard, Dev Costs, Dev Analytics, Dev Reports, Dev Docs
+- System: Knowledge Base, Contracts, Settings
+
+**Agent Sidebar:**
+- Main: Dashboard, Realty Analytics, Market Analysis
+- Management: Properties, Off-Market, Clients, Transactions
+- My Business: Listings, Clients, Leads, Viewings, Offers, Schedule, Commissions, Off-Market
+- Tools: Micro-Flip Calculator, Deal Analyzer
+- System: Help Center, Settings
+
+**Client Sidebar:**
+- Main: Dashboard, Market Analysis
+- My Portal: Browse Properties, Off-Market, Saved Properties, Offers, Viewings
+- Tools: Micro-Flip Calculator, Deal Analyzer
+- System: Help Center, Settings
+
+### Converted Pages (All Use UCS)
+**Client Pages:** dashboard-ucs.html, deal-analyzer.html, documents.html, messages.html, micro-flip-calculator.html, onboarding.html, properties.html, property-detail.html, property-tax-records.html, saved.html, viewings.html
+
+**Agent Pages:** dashboard-ucs.html, clients.html, commissions.html, leads.html, listings.html, schedule.html
 
 ### Benefits
-- **90% reduction** in code duplication
-- **Consistent UX** across all pages
-- **Easy maintenance** - update once, apply everywhere
-- **Automatic path resolution** for any directory depth
-- **Mobile responsive** design built-in
-
-### Usage Guidelines
-- **ALL NEW PAGES** must use standardized components
-- Use `[[BASE]]` token for path references in components
-- Configure via data attributes, not custom code
-- Follow naming convention: `page-identifier` for data-active
+- **5,000+ lines of code removed** - No hardcoded sidebar/header HTML
+- **ONE source of truth** - Edit sidebar-root.html once, updates everywhere
+- **Automatic role filtering** - No manual role checks needed
+- **Consistent design** - Same dark navy sidebar across all roles
+- **Easy maintenance** - Add new nav items in one place
 
 ## Directory Structure
 
