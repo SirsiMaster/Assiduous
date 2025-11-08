@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.101.0] - 2025-11-08
+
+### Added
+- feat(ucs): Complete UCS migration - admin pages are now the gold standard
+
+
 ## [0.100.1] - 2025-11-08
 
 ### Fixed
@@ -3063,7 +3069,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.100.1...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.101.0...HEAD
+
+
+## [0.101.0] - 2025-11-08
+
+### Added
+- feat(ucs): Complete UCS migration - admin pages are now the gold standard
 
 
 ## [0.100.1] - 2025-11-08
@@ -4552,3 +4564,4 @@ To generate changelog entries:
 [0.99.11]: https://github.com/SirsiMaster/Assiduous/compare/v0.99.10...v0.99.11
 [0.100.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.99.11...v0.100.0
 [0.100.1]: https://github.com/SirsiMaster/Assiduous/compare/v0.100.0...v0.100.1
+[0.101.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.100.1...v0.101.0
