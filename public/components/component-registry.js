@@ -53,6 +53,29 @@
     'header': {
       get root() { return getComponentPath('universal-header.html'); },
       onLoad: async (container, role, base) => {
+        // Replace [[USER_*]] tokens
+        const userName = 'John Smith'; // TODO: Get from Firebase Auth
+        const userEmail = 'john@example.com'; // TODO: Get from Firebase Auth
+        const userInitials = userName.split(' ').map(n => n[0]).join('').toUpperCase();
+        
+        const roleNames = {
+          'admin': 'Administrator',
+          'agent': 'Real Estate Agent',
+          'client': 'Client'
+        };
+        const roleDisplay = roleNames[role] || 'User';
+        
+        // Replace all tokens in innerHTML
+        container.innerHTML = container.innerHTML
+          .replace(/\[\[USER_NAME\]\]/g, userName)
+          .replace(/\[\[USER_EMAIL\]\]/g, userEmail)
+          .replace(/\[\[USER_ROLE_DISPLAY\]\]/g, roleDisplay)
+          .replace(/\[\[USER_INITIALS\]\]/g, userInitials)
+          .replace(/\[\[USER_AVATAR_CONTENT\]\]/g, userInitials)
+          .replace(/\[\[SETTINGS_URL\]\]/g, 'settings.html')
+          .replace(/\[\[HELP_URL\]\]/g, 'help.html')
+          .replace(/\[\[LOGOUT_URL\]\]/g, '/');
+        
         // Initialize header dropdown toggles
         const userAvatar = container.querySelector('[data-user-avatar]');
         const dropdown = container.querySelector('#userDropdown');
@@ -67,17 +90,6 @@
           document.addEventListener('click', () => {
             dropdown.style.display = 'none';
           });
-        }
-        
-        // Set role display
-        const roleDisplay = container.querySelector('[data-user-role-display]');
-        if (roleDisplay) {
-          const roleNames = {
-            'admin': 'Administrator',
-            'agent': 'Real Estate Agent',
-            'client': 'Client'
-          };
-          roleDisplay.textContent = roleNames[role] || 'User';
         }
       }
     },
