@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Market Analysis - Assiduous Admin</title>
+    
+    <!-- Design System -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="../assiduous.css">
+    <link rel="stylesheet" href="../components/admin-layout.css">
+    <link rel="stylesheet" href="/assets/css/button-override.css">
+    
+    <style>
+        /* Market Stats Grid */
+        .market-stats {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(200px, 280px));
+            gap: var(--space-lg);
+            margin-bottom: var(--space-xl);
+        }
+
+        /* Section Headers */
+        .section-header {
+            margin-bottom: var(--space-lg);
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: var(--space-xs);
+        }
+
+        .section-subtitle {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        /* Chart Container */
+        .chart-container {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: var(--space-lg);
+            margin-bottom: var(--space-xl);
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-lg);
+        }
+
+        .chart-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--navy);
+        }
+
+        /* Market Segments */
+        .segment-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .segment-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--space-md) 0;
+            border-bottom: 1px solid var(--gray-100);
+        }
+
+        .segment-item:last-child {
+            border-bottom: none;
+        }
+
+        .segment-name {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: var(--space-xs);
+        }
+
+        .segment-bar {
+            width: 200px;
+            height: 8px;
+            background: var(--gray-100);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .segment-fill {
+            height: 100%;
+            background: var(--sky);
+        }
+
+        .segment-value {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--navy);
+        }
+
+        /* Areas Table */
+        .data-table {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            margin-bottom: var(--space-xl);
+        }
+
+        .table-header {
+            padding: var(--space-lg);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .table-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--navy);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            padding: var(--space-sm) var(--space-lg);
+            text-align: left;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            background: var(--gray-50);
+            border-bottom: 1px solid var(--border);
+        }
+
+        td {
+            padding: var(--space-md) var(--space-lg);
+            font-size: 14px;
+            color: var(--text-primary);
+            border-bottom: 1px solid var(--gray-100);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background: var(--gray-50);
+        }
+
+        .trend-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .trend-up { color: var(--success); }
+        .trend-down { color: var(--danger); }
+        .trend-stable { color: var(--text-secondary); }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .market-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .market-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-wrapper">
+        <!-- Sidebar Component -->
+                <!-- @component:sidebar active="market" role="admin" -->
+
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <div id="header-root"></div>
+
+            <!-- Page Content -->
+            <div class="page-content">
+                <!-- Page Header -->
+                <div class="page-header">
+                    <h1 class="page-title">Market Analysis</h1>
+                    <p class="page-description">
+                        Real-time market trends, pricing analysis, and regional performance metrics
+                    </p>
+                </div>
+
+                <!-- Market Overview Stats -->
+                <div class="section-header">
+                    <h2 class="section-title">Market Overview</h2>
+                    <p class="section-subtitle">Current market conditions and key indicators</p>
+                </div>
+
+                <div class="market-stats">
+                    <div class="kpi-card">
+                        <div class="kpi-label">Median Price</div>
+                        <div class="kpi-value">$485,000</div>
+                        <div class="kpi-change positive">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="18 15 12 9 6 15"></polyline>
+                            </svg>
+                            +8.2% vs last quarter
+                        </div>
+                    </div>
+
+                    <div class="kpi-card">
+                        <div class="kpi-label">Average DOM</div>
+                        <div class="kpi-value">42 days</div>
+                        <div class="kpi-change negative">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                            +5 days vs last quarter
+                        </div>
+                    </div>
+
+                    <div class="kpi-card">
+                        <div class="kpi-label">Active Listings</div>
+                        <div class="kpi-value">3,542</div>
+                        <div class="kpi-change positive">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="18 15 12 9 6 15"></polyline>
+                            </svg>
+                            +12.3% inventory growth
+                        </div>
+                    </div>
+
+                    <div class="kpi-card">
+                        <div class="kpi-label">Price per SqFt</div>
+                        <div class="kpi-value">$385</div>
+                        <div class="kpi-change positive">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="18 15 12 9 6 15"></polyline>
+                            </svg>
+                            +6.5% appreciation
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Price Trends Chart -->
+                <div class="section-header">
+                    <h2 class="section-title">Price Trends</h2>
+                    <p class="section-subtitle">12-month median price movement across all property types</p>
+                </div>
+
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <div class="chart-title">Median Price Trends</div>
+                        <select class="form-select" style="width: auto;">
+                            <option>Last 12 Months</option>
+                            <option>Last 6 Months</option>
+                            <option>Last 3 Months</option>
+                        </select>
+                    </div>
+                    <canvas id="priceChart" height="80"></canvas>
+                </div>
+
+                <!-- Market Segments -->
+                <div class="section-header">
+                    <h2 class="section-title">Property Type Distribution</h2>
+                    <p class="section-subtitle">Market share by property category</p>
+                </div>
+
+                <div class="chart-container">
+                    <ul class="segment-list">
+                        <li class="segment-item">
+                            <div style="flex: 1;">
+                                <div class="segment-name">Single-Family Homes</div>
+                                <div class="segment-bar">
+                                    <div class="segment-fill" style="width: 58%"></div>
+                                </div>
+                            </div>
+                            <span class="segment-value">58%</span>
+                        </li>
+                        <li class="segment-item">
+                            <div style="flex: 1;">
+                                <div class="segment-name">Condominiums</div>
+                                <div class="segment-bar">
+                                    <div class="segment-fill" style="width: 22%"></div>
+                                </div>
+                            </div>
+                            <span class="segment-value">22%</span>
+                        </li>
+                        <li class="segment-item">
+                            <div style="flex: 1;">
+                                <div class="segment-name">Townhouses</div>
+                                <div class="segment-bar">
+                                    <div class="segment-fill" style="width: 12%"></div>
+                                </div>
+                            </div>
+                            <span class="segment-value">12%</span>
+                        </li>
+                        <li class="segment-item">
+                            <div style="flex: 1;">
+                                <div class="segment-name">Multi-Family</div>
+                                <div class="segment-bar">
+                                    <div class="segment-fill" style="width: 8%"></div>
+                                </div>
+                            </div>
+                            <span class="segment-value">8%</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Top Performing Areas -->
+                <div class="section-header">
+                    <h2 class="section-title">Top Performing Areas</h2>
+                    <p class="section-subtitle">Regional market performance ranked by activity and price growth</p>
+                </div>
+
+                <div class="data-table">
+                    <div class="table-header">
+                        <h3 class="table-title">Regional Performance Metrics</h3>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Area</th>
+                                <th>Median Price</th>
+                                <th>Listings</th>
+                                <th>Avg DOM</th>
+                                <th>Price/SqFt</th>
+                                <th>YoY Change</th>
+                                <th>Trend</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Downtown</strong></td>
+                                <td>$625,000</td>
+                                <td>342</td>
+                                <td>28 days</td>
+                                <td>$420</td>
+                                <td>+12.5%</td>
+                                <td>
+                                    <span class="trend-indicator trend-up">
+                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polyline points="18 15 12 9 6 15"></polyline>
+                                        </svg>
+                                        Rising
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Westside</strong></td>
+                                <td>$485,000</td>
+                                <td>256</td>
+                                <td>35 days</td>
+                                <td>$385</td>
+                                <td>+8.2%</td>
+                                <td>
+                                    <span class="trend-indicator trend-up">
+                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polyline points="18 15 12 9 6 15"></polyline>
+                                        </svg>
+                                        Rising
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Northside</strong></td>
+                                <td>$545,000</td>
+                                <td>189</td>
+                                <td>42 days</td>
+                                <td>$402</td>
+                                <td>+6.8%</td>
+                                <td>
+                                    <span class="trend-indicator trend-stable">
+                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                                        </svg>
+                                        Stable
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Riverside</strong></td>
+                                <td>$425,000</td>
+                                <td>278</td>
+                                <td>38 days</td>
+                                <td>$365</td>
+                                <td>+5.2%</td>
+                                <td>
+                                    <span class="trend-indicator trend-stable">
+                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                                        </svg>
+                                        Stable
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Eastside</strong></td>
+                                <td>$395,000</td>
+                                <td>312</td>
+                                <td>48 days</td>
+                                <td>$342</td>
+                                <td>-2.1%</td>
+                                <td>
+                                    <span class="trend-indicator trend-down">
+                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polyline points="6 9 12 15 18 9"></polyline>
+                                        </svg>
+                                        Cooling
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Hills District</strong></td>
+                                <td>$875,000</td>
+                                <td>124</td>
+                                <td>55 days</td>
+                                <td>$485</td>
+                                <td>+15.3%</td>
+                                <td>
+                                    <span class="trend-indicator trend-up">
+                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polyline points="18 15 12 9 6 15"></polyline>
+                                        </svg>
+                                        Hot
+                                    </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    
+    <!-- Components -->
+    <script src="../components/admin-header.js"></script>
+
+    <script>
+        // Price Trends Chart
+        const ctx = document.getElementById('priceChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                datasets: [{
+                    label: 'Median Price',
+                    data: [425000, 432000, 438000, 445000, 452000, 465000, 472000, 478000, 485000, 490000, 492000, 485000],
+                    borderColor: '#60A3D9',
+                    backgroundColor: 'rgba(96, 163, 217, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        ticks: {
+                            callback: function(value) {
+                                return '$' + (value / 1000) + 'K';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

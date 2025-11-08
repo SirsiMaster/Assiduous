@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en" data-auth-protect="admin">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Analytics Dashboard — Assiduous</title>
+    
+    <!-- Assiduous Design System -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SirsiMaster/ui-components@latest/dist/sirsimaster-ui.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fontsource/geist-sans@5.0.6/latin.css" rel="stylesheet">
+    <link rel="stylesheet" href="../assiduous.css">
+    <link rel="stylesheet" href="../components/admin-layout.css">
+    <link rel="stylesheet" href="../assets/css/button-override.css">
+    
+    <style>
+        .analytics-content {
+            padding: var(--space-xl);
+            overflow-y: auto;
+            background: var(--gray-50);
+        }
+
+        /* Section Headers */
+        .section-header {
+            margin: var(--space-2xl) 0 var(--space-lg) 0;
+            padding-bottom: var(--space-md);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .section-header:first-child {
+            margin-top: 0;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--navy);
+            margin-bottom: var(--space-xs);
+        }
+
+        .section-subtitle {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        /* Stats Grid - Matching Dashboard */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(200px, 280px));
+            gap: var(--space-lg);
+            margin-bottom: var(--space-xl);
+        }
+        
+        @media (max-width: 1200px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .stat-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: var(--space-lg);
+            transition: all 0.2s;
+        }
+
+        .stat-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .stat-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: var(--space-md);
+        }
+
+        .stat-icon.blue { background: rgba(96, 163, 217, 0.1); color: var(--sky); }
+        .stat-icon.green { background: rgba(5, 150, 105, 0.1); color: var(--success); }
+        .stat-icon.yellow { background: rgba(255, 217, 64, 0.1); color: var(--warning); }
+        .stat-icon.purple { background: rgba(139, 92, 246, 0.1); color: #8B5CF6; }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: var(--space-xs);
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+            margin-bottom: var(--space-sm);
+        }
+
+        .stat-change {
+            font-size: 12px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .stat-change.positive { color: var(--success); }
+        .stat-change.negative { color: var(--danger); }
+
+        /* Content Grid */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: var(--space-xl);
+            margin-bottom: var(--space-xl);
+        }
+
+        @media (max-width: 1024px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Chart Card */
+        .chart-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: var(--space-lg);
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-lg);
+        }
+
+        .chart-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .chart-container {
+            height: 300px;
+            position: relative;
+        }
+
+        /* Tables */
+        .data-table {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+        }
+
+        .table-header {
+            padding: var(--space-md) var(--space-lg);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .table-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            padding: var(--space-sm) var(--space-lg);
+            text-align: left;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            background: var(--gray-50);
+            border-bottom: 1px solid var(--border);
+        }
+
+        td {
+            padding: var(--space-md) var(--space-lg);
+            font-size: 14px;
+            color: var(--text-primary);
+            border-bottom: 1px solid var(--gray-100);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background: var(--gray-50);
+        }
+
+        .agent-name {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+
+        .agent-avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--sky), var(--navy));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .performance-bar {
+            width: 80px;
+            height: 8px;
+            background: var(--gray-100);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .performance-fill {
+            height: 100%;
+            background: var(--sky);
+            transition: width 0.3s;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-wrapper">
+        <!-- Sidebar Component -->
+                <!-- @component:sidebar active="analytics" role="admin" -->
+
+
+        <main class="main-content">
+            <!-- Header -->
+            <header id="universal-header-root" 
+                    data-title="Analytics Dashboard" 
+                    data-subtitle="Comprehensive insights into platform performance and sales"
+                    data-search-placeholder="Search analytics data..."></header>
+
+            <!-- Content -->
+            <div class="analytics-content">
+                <!-- Key Metrics Section -->
+                <div class="section-header">
+                    <h2 class="section-title">Key Performance Indicators</h2>
+                    <p class="section-subtitle">Current period highlights and performance metrics</p>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon green">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="12" y1="1" x2="12" y2="23"></line>
+                                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                            </svg>
+                        </div>
+                        <div class="stat-value">$48.6M</div>
+                        <div class="stat-label">Total Sales Volume</div>
+                        <div class="stat-change positive">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="18 15 12 9 6 15"></polyline>
+                            </svg>
+                            +23.5% vs last period
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon blue">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                            </svg>
+                        </div>
+                        <div class="stat-value">342</div>
+                        <div class="stat-label">Properties Sold</div>
+                        <div class="stat-change positive">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="18 15 12 9 6 15"></polyline>
+                            </svg>
+                            +18 this month
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon yellow">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                        </div>
+                        <div class="stat-value">12,384</div>
+                        <div class="stat-label">Active Users</div>
+                        <div class="stat-change positive">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="18 15 12 9 6 15"></polyline>
+                            </svg>
+                            +892 new this month
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon purple">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                            </svg>
+                        </div>
+                        <div class="stat-value">4.2%</div>
+                        <div class="stat-label">Conversion Rate</div>
+                        <div class="stat-change positive">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="18 15 12 9 6 15"></polyline>
+                            </svg>
+                            +0.8% improvement
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sales Trends Section -->
+                <div class="section-header">
+                    <h2 class="section-title">Sales & Revenue Trends</h2>
+                    <p class="section-subtitle">Monthly sales volume and transaction activity</p>
+                </div>
+
+                <div class="chart-card" style="margin-bottom: var(--space-xl);">
+                    <div class="chart-header">
+                        <h3 class="chart-title">Sales Volume Over Time</h3>
+                        <button class="sm-btn sm-btn-outline sm-btn-sm">Export Data</button>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="salesChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Performance Section -->
+                <div class="section-header">
+                    <h2 class="section-title">Agent & Property Performance</h2>
+                    <p class="section-subtitle">Top performing agents and property insights</p>
+                </div>
+
+                <div class="content-grid">
+                    <!-- Top Agents -->
+                    <div class="data-table">
+                        <div class="table-header">
+                            <h3 class="table-title">Top Performing Agents</h3>
+                        </div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Agent</th>
+                                    <th>Sales</th>
+                                    <th>Volume</th>
+                                    <th>Performance</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="agent-name">
+                                            <div class="agent-avatar">LA</div>
+                                            <span>Lisa Anderson</span>
+                                        </div>
+                                    </td>
+                                    <td>42</td>
+                                    <td>$8.2M</td>
+                                    <td>
+                                        <div class="performance-bar">
+                                            <div class="performance-fill" style="width: 92%"></div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="agent-name">
+                                            <div class="agent-avatar">MW</div>
+                                            <span>Mike Wilson</span>
+                                        </div>
+                                    </td>
+                                    <td>38</td>
+                                    <td>$7.1M</td>
+                                    <td>
+                                        <div class="performance-bar">
+                                            <div class="performance-fill" style="width: 88%"></div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="agent-name">
+                                            <div class="agent-avatar">SJ</div>
+                                            <span>Sarah Johnson</span>
+                                        </div>
+                                    </td>
+                                    <td>35</td>
+                                    <td>$6.8M</td>
+                                    <td>
+                                        <div class="performance-bar">
+                                            <div class="performance-fill" style="width: 85%"></div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="agent-name">
+                                            <div class="agent-avatar">TM</div>
+                                            <span>Tom Martinez</span>
+                                        </div>
+                                    </td>
+                                    <td>31</td>
+                                    <td>$5.9M</td>
+                                    <td>
+                                        <div class="performance-bar">
+                                            <div class="performance-fill" style="width: 78%"></div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Property Types -->
+                    <div class="data-table">
+                        <div class="table-header">
+                            <h3 class="table-title">Property Performance</h3>
+                        </div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Sold</th>
+                                    <th>Avg Price</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Single Family</td>
+                                    <td>198</td>
+                                    <td>$485K</td>
+                                </tr>
+                                <tr>
+                                    <td>Condos</td>
+                                    <td>142</td>
+                                    <td>$325K</td>
+                                </tr>
+                                <tr>
+                                    <td>Townhouses</td>
+                                    <td>89</td>
+                                    <td>$415K</td>
+                                </tr>
+                                <tr>
+                                    <td>Multi-Family</td>
+                                    <td>38</td>
+                                    <td>$725K</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Header Component -->
+    <script src="../components/universal-header.js"></script>
+
+    <script>
+        // Initialize Chart
+        document.addEventListener('DOMContentLoaded', function() {
+            const ctx = document.getElementById('salesChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                    datasets: [{
+                        label: 'Sales Volume ($M)',
+                        data: [3.2, 3.8, 4.1, 4.5, 4.2, 4.8, 4.6, 5.1, 4.9, 5.3, 4.7, 5.2],
+                        borderColor: '#60A3D9',
+                        backgroundColor: 'rgba(96, 163, 217, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return '$' + value + 'M';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

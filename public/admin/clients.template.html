@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Clients Management - Assiduous Realty Admin</title>
+    
+    <!-- Assiduous Design System -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SirsiMaster/ui-components@latest/dist/sirsimaster-ui.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <link rel="stylesheet" href="../assiduous.css">
+    <link rel="stylesheet" href="../components/admin-layout.css">
+    
+    <style>
+        /* Admin Layout - Consistent across all admin pages */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: "Geist Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+            background: var(--white);
+        }
+
+        .admin-wrapper {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 240px;
+            background: var(--navy);
+            color: var(--white);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-header {
+            padding: var(--space-lg);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .sidebar-logo {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            color: var(--white);
+            text-decoration: none;
+        }
+
+        .sidebar-logo svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .sidebar-logo-text {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: var(--space-md) 0;
+            overflow-y: auto;
+        }
+
+        .nav-section {
+            margin-bottom: var(--space-lg);
+        }
+
+        .nav-section-title {
+            padding: 0 var(--space-lg);
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            opacity: 0.6;
+            margin-bottom: var(--space-sm);
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: var(--space-sm) var(--space-lg);
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.15s;
+        }
+
+        .nav-item:hover {
+            background: rgba(255,255,255,0.05);
+            color: var(--white);
+        }
+
+        .nav-item.active {
+            background: var(--sky);
+            color: var(--white);
+        }
+
+        .nav-icon {
+            width: 18px;
+            height: 18px;
+            opacity: 0.8;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Top Bar */
+        .topbar {
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            padding: var(--space-md) var(--space-xl);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .topbar-left {
+            display: flex;
+            align-items: center;
+            gap: var(--space-lg);
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            background: var(--gray-50);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: var(--space-sm) var(--space-md);
+            min-width: 300px;
+        }
+
+        .search-input {
+            flex: 1;
+            border: none;
+            background: none;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .topbar-actions {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+        }
+
+        
+
+        
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-weight: 600;
+            font-size: 12px;
+        }
+
+        /* Page Content */
+        .page-content {
+            flex: 1;
+            padding: var(--space-xl);
+            overflow-y: auto;
+            background: var(--gray-50);
+        }
+
+        .page-header {
+            margin-bottom: var(--space-xl);
+        }
+
+        .page-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: var(--space-xs);
+        }
+
+        .page-subtitle {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--space-md);
+            margin-bottom: var(--space-xl);
+        }
+
+        .stat-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: var(--space-lg);
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: var(--space-xs);
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+        }
+
+        /* Clients Table */
+        .data-table {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+        }
+
+        .table-header {
+            padding: var(--space-md) var(--space-lg);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .table-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        
+
+        
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            padding: var(--space-sm) var(--space-lg);
+            text-align: left;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            background: var(--gray-50);
+            border-bottom: 1px solid var(--border);
+        }
+
+        td {
+            padding: var(--space-md) var(--space-lg);
+            font-size: 14px;
+            color: var(--text-primary);
+            border-bottom: 1px solid var(--gray-100);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background: var(--gray-50);
+        }
+
+        .client-info {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+
+        .client-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .client-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .client-name {
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        .client-email {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .status-active {
+            background: rgba(5, 150, 105, 0.1);
+            color: var(--success);
+        }
+
+        .status-lead {
+            background: rgba(96, 163, 217, 0.1);
+            color: var(--sky);
+        }
+
+        .status-inactive {
+            background: rgba(107, 114, 128, 0.1);
+            color: var(--text-secondary);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <!-- Removed old Sirsi UI -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SirsiMaster/ui-components@latest/dist/sirsimaster-ui.css">
+    <link rel="stylesheet" href="/assets/css/button-override.css">
+    
+    <script>
+        // Ensure button styles are loaded
+        (function() {
+            const checkButtons = function() {
+                const testBtn = document.querySelector('button');
+                if (testBtn) {
+                    const styles = window.getComputedStyle(testBtn);
+                    if (styles.borderStyle === 'outset' || styles.backgroundColor.includes('192')) {
+                        // Force reload override styles
+                        const link = document.querySelector('link[href*="button-override"]');
+                        if (link) {
+                            link.href = link.href.split('?')[0] + '?v=' + Date.now();
+                        }
+                    }
+                }
+            };
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', checkButtons);
+            } else {
+                checkButtons();
+            }
+        })();
+    </script>
+</head>
+<body>
+    <div class="admin-wrapper">
+        <!-- Sidebar Component -->
+                <!-- @component:sidebar active="clients" role="admin" -->
+
+
+                <main class="main-content">
+            <!-- Standardized Admin Header -->
+            <header id="universal-header-root" 
+                    data-title="Clients Management" 
+                    data-subtitle="Manage all client information and relationships"
+                    data-search-placeholder="Search clients..."
+                    data-actions='[{"label":"Add Client","icon":"<line x1=\"12\" y1=\"5\" x2=\"12\" y2=\"19\"></line><line x1=\"5\" y1=\"12\" x2=\"19\" y2=\"12\"></line>","primary":true,"onclick":"HeaderActions.handleAction(\"addClient\")"}]'></header>
+
+            <!-- Page Content -->
+            <div class="page-content">
+
+                <!-- Stats Cards - Loaded dynamically from Firestore -->
+                <div class="stats-grid">
+                    <div class="stat-card sirsi-card sirsi-sm-sm-card--elevated">
+                        <div class="stat-value">...</div>
+                        <div class="stat-label">Total Clients</div>
+                    </div>
+                    <div class="stat-card sirsi-card sirsi-sm-sm-card--elevated">
+                        <div class="stat-value">...</div>
+                        <div class="stat-label">Active Clients</div>
+                    </div>
+                    <div class="stat-card sirsi-card sirsi-sm-sm-card--elevated">
+                        <div class="stat-value">...</div>
+                        <div class="stat-label">Satisfaction Rate</div>
+                    </div>
+                </div>
+
+                <!-- Clients Table -->
+                <div class="data-table sirsi-sm-sm-card">
+                    <div class="table-header">
+                        <h3 class="table-title">Client Directory</h3>
+                        <button class="sm-btn sm-btn-secondary">Export List</button>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Client</th>
+                                <th>Phone</th>
+                                <th>Location</th>
+                                <th>Agent</th>
+                                <th>Properties</th>
+                                <th>Total Value</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody class="clients-table">
+                            <!-- Clients will be loaded dynamically from Firestore -->
+                            <tr>
+                                <td colspan="7" style="text-align: center; padding: 40px; color: var(--text-secondary);">
+                                    Loading clients data...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Header Actions for Clients
+        const HeaderActions = {
+            handleAction: function(action) {
+                switch(action) {
+                    case 'addClient':
+                        // In production, this would open a modal or navigate to add client form
+                        console.log('Opening add client form...');
+                        alert('Add client functionality will be implemented in the next phase.');
+                        break;
+                    default:
+                        console.log('Unknown action:', action);
+                }
+            }
+        };
+
+        // Highlight active page in sidebar
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentPath = window.location.pathname;
+            document.querySelectorAll('.nav-item').forEach(item => {
+                if (item.getAttribute('href') === currentPath) {
+                    item.classList.add('active');
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+        });
+    </script>
+    
+    <!-- Firebase SDK v8 -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    
+    <!-- Firebase Configuration and Data Loading -->
+    <script>
+        // Initialize Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyCY6OjxgMHPF0omVVqO1eCTTJRux2x23gE",
+            authDomain: "assiduous-prod.firebaseapp.com",
+            projectId: "assiduous-prod",
+            storageBucket: "assiduous-prod.appspot.com",
+            messagingSenderId: "1039432328034",
+            appId: "1:1039432328034:web:f6e8c8b8c8c8c8c8c8c8c8"
+        };
+        
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        
+        const db = firebase.firestore();
+        
+        // Load clients data from Firestore
+        async function loadClientsData() {
+            try {
+                console.log('Loading clients from Firestore...');
+                
+                // Get clients collection (users with role='client')
+                const clientsSnapshot = await db.collection('users')
+                    .where('role', '==', 'client')
+                    .limit(50)
+                    .get();
+                
+                const clients = [];
+                clientsSnapshot.forEach(doc => {
+                    clients.push({ id: doc.id, ...doc.data() });
+                });
+                
+                console.log(`Loaded ${clients.length} clients from Firestore`);
+                
+                // Update stats
+                const totalClients = clients.length;
+                const activeClients = clients.filter(c => c.status === 'active' || !c.status).length;
+                const satisfactionRate = 89; // TODO: Calculate from reviews/feedback
+                
+                // Update stat cards
+                document.querySelectorAll('.stat-value').forEach((el, index) => {
+                    switch(index) {
+                        case 0: el.textContent = totalClients.toLocaleString(); break;
+                        case 1: el.textContent = activeClients.toLocaleString(); break;
+                        case 2: el.textContent = satisfactionRate + '%'; break;
+                    }
+                });
+                
+                // Update table
+                const tbody = document.querySelector('.clients-table tbody');
+                if (tbody && clients.length > 0) {
+                    tbody.innerHTML = clients.map(client => {
+                        const name = client.name || client.displayName || 'Unknown';
+                        const email = client.email || 'N/A';
+                        const phone = client.phone || client.phoneNumber || 'N/A';
+                        const location = client.address?.city || client.location || 'N/A';
+                        const savedProperties = client.favorites?.length || 0;
+                        const status = client.status || 'active';
+                        const statusVariant = status === 'active' ? 'success' : status === 'lead' ? 'warning' : 'danger';
+                        const statusText = status.charAt(0).toUpperCase() + status.slice(1);
+                        
+                        return `
+                            <tr>
+                                <td>
+                                    <div class="client-info">
+                                        <div class="client-avatar">${getInitials(name)}</div>
+                                        <div class="client-details">
+                                            <div class="client-name">${name}</div>
+                                            <div class="client-email">${email}</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>${phone}</td>
+                                <td>${location}</td>
+                                <td>${client.agentName || 'Unassigned'}</td>
+                                <td>${savedProperties}</td>
+                                <td>$${(client.budget || 0).toLocaleString()}</td>
+                                <td><span class="sirsi-badge sirsi-sm-sm-badge--${statusVariant}">${statusText}</span></td>
+                            </tr>
+                        `;
+                    }).join('');
+                }
+                
+                // Show success message
+                console.log('✅ Client dashboard connected to real Firestore data');
+                
+            } catch (error) {
+                console.error('Error loading clients data:', error);
+                // Keep existing demo data if load fails
+            }
+        }
+        
+        function getInitials(name) {
+            if (!name) return '??';
+            const parts = name.split(' ');
+            if (parts.length >= 2) {
+                return parts[0][0] + parts[parts.length - 1][0];
+            }
+            return name.substring(0, 2).toUpperCase();
+        }
+        
+        // Load data when page is ready
+        document.addEventListener('DOMContentLoaded', loadClientsData);
+    </script>
+    
+    <!-- Components -->
+    <script src="../components/admin-header.js"></script>
+</body>
+</html>

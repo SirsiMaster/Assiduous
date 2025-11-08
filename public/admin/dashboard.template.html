@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en" data-auth-protect="admin">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Admin Dashboard — Assiduous</title>
+    <meta property="og:title" content="Admin Dashboard — Assiduous">
+    <meta name="twitter:title" content="Admin Dashboard — Assiduous">
+    
+    <!-- Assiduous Design System -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SirsiMaster/ui-components@latest/dist/sirsimaster-ui.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fontsource/geist-sans@5.0.6/latin.css" rel="stylesheet">
+    <link rel="stylesheet" href="../assiduous.css">
+    <link rel="stylesheet" href="../components/admin-layout.css">
+    <link rel="stylesheet" href="../assets/css/button-override.css">
+    
+    <!-- Firebase Modular SDK -->
+    <script type="module">
+        import { AuthService, DatabaseService } from '../assets/js/firebase-init.js';
+        window.AuthService = AuthService;
+        window.DatabaseService = DatabaseService;
+    </script>
+    
+    <style>
+        /* Minimal dashboard-specific styles only */
+        .dashboard-content {
+            padding: var(--space-xl);
+            overflow-y: auto;
+            background: var(--gray-50);
+        }
+
+        /* Stats Grid - Fixed 4 columns with reasonable width */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(200px, 280px));
+            gap: var(--space-lg);
+            margin-bottom: var(--space-2xl);
+        }
+        
+        /* Responsive breakpoints for stats grid */
+        @media (max-width: 1200px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .stat-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: var(--space-lg);
+            transition: all 0.2s;
+        }
+
+        .stat-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .stat-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: var(--space-md);
+        }
+
+        .stat-icon.blue { background: rgba(96, 163, 217, 0.1); color: var(--sky); }
+        .stat-icon.green { background: rgba(5, 150, 105, 0.1); color: var(--success); }
+        .stat-icon.yellow { background: rgba(255, 217, 64, 0.1); color: var(--warning); }
+        .stat-icon.red { background: rgba(220, 38, 38, 0.1); color: var(--danger); }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: var(--space-xs);
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+            margin-bottom: var(--space-sm);
+        }
+
+        .stat-change {
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .stat-change.up { color: var(--success); }
+        .stat-change.down { color: var(--danger); }
+
+        /* Content Grid */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: var(--space-xl);
+        }
+
+        /* Tables */
+        .data-table {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+        }
+
+        .table-header {
+            padding: var(--space-md) var(--space-lg);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .table-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .table-action {
+            padding: var(--space-xs) var(--space-sm);
+            background: var(--sky);
+            color: var(--white);
+            border: none;
+            border-radius: var(--radius);
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .table-action:hover {
+            background: #4A8BC2;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            padding: var(--space-sm) var(--space-lg);
+            text-align: left;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+            background: var(--gray-50);
+        }
+
+        td {
+            padding: var(--space-md) var(--space-lg);
+            border-top: 1px solid var(--border);
+            font-size: 14px;
+        }
+
+        .status {
+            padding: var(--space-xs) var(--space-sm);
+            border-radius: var(--radius);
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+        }
+
+        .status.active { background: rgba(5, 150, 105, 0.1); color: var(--success); }
+        .status.pending { background: rgba(255, 217, 64, 0.1); color: var(--warning); }
+        .status.inactive { background: rgba(107, 114, 128, 0.1); color: var(--text-secondary); }
+
+        /* Activity Feed */
+        .activity-feed {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+        }
+
+        .activity-item {
+            padding: var(--space-md) var(--space-lg);
+            display: flex;
+            gap: var(--space-md);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--gray-50);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            color: var(--text-secondary);
+        }
+
+        .activity-content {
+            flex: 1;
+        }
+
+        .activity-text {
+            font-size: 14px;
+            color: var(--dark);
+            margin-bottom: var(--space-xs);
+        }
+
+        .activity-time {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+    </style>
+    <!-- Removed old Sirsi UI -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SirsiMaster/ui-components@latest/dist/sirsimaster-ui.css">
+    <link rel="stylesheet" href="/assets/css/button-override.css">
+    
+    <script>
+        // Ensure button styles are loaded
+        (function() {
+            const checkButtons = function() {
+                const testBtn = document.querySelector('button');
+                if (testBtn) {
+                    const styles = window.getComputedStyle(testBtn);
+                    if (styles.borderStyle === 'outset' || styles.backgroundColor.includes('192')) {
+                        // Force reload override styles
+                        const link = document.querySelector('link[href*="button-override"]');
+                        if (link) {
+                            link.href = link.href.split('?')[0] + '?v=' + Date.now();
+                        }
+                    }
+                }
+            };
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', checkButtons);
+            } else {
+                checkButtons();
+            }
+        })();
+    </script>
+</head>
+<body>
+    <div class="admin-wrapper">
+        
+        <!-- Sidebar Component -->
+                <!-- @component:sidebar active="dashboard" role="admin" -->
+
+        <main class="main-content">
+            <!-- Standardized Header -->
+            <header id="universal-header-root" 
+                    data-title="Admin Dashboard" 
+                    data-subtitle="Welcome back! Here's what's happening with your platform today."
+                    data-search-placeholder="Search properties, agents, transactions..."></header>
+
+            <!-- Dashboard Content -->
+            <div class="dashboard-content">
+                <!-- Stats Grid -->
+                <div class="stats-grid">
+                    <div class="stat-card sirsi-card sirsi-sm-sm-card--elevated">
+                        <div class="stat-icon blue">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                            </svg>
+                        </div>
+                        <div class="stat-value" id="total-properties">...</div>
+                        <div class="stat-label">Total Properties</div>
+                        <div class="stat-change" id="properties-change">Loading...</div>
+                    </div>
+
+                    <div class="stat-card sirsi-card sirsi-sm-sm-card--elevated">
+                        <div class="stat-icon green">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="12" y1="1" x2="12" y2="23"></line>
+                                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                            </svg>
+                        </div>
+                        <div class="stat-value" id="monthly-revenue">...</div>
+                        <div class="stat-label">Monthly Revenue (Sample)</div>
+                        <div class="stat-change" id="revenue-change">Loading...</div>
+                    </div>
+
+                    <div class="stat-card sirsi-card sirsi-sm-sm-card--elevated">
+                        <div class="stat-icon yellow">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                        </div>
+                        <div class="stat-value" id="active-agents">...</div>
+                        <div class="stat-label">Active Agents</div>
+                        <div class="stat-change" id="agents-change">Loading...</div>
+                    </div>
+
+                    <div class="stat-card sirsi-card sirsi-sm-sm-card--elevated">
+                        <div class="stat-icon red">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="12" y1="20" x2="12" y2="10"></line>
+                                <line x1="18" y1="20" x2="18" y2="4"></line>
+                                <line x1="6" y1="20" x2="6" y2="16"></line>
+                            </svg>
+                        </div>
+                        <div class="stat-value" id="pending-transactions">...</div>
+                        <div class="stat-label">Available Properties</div>
+                        <div class="stat-change" id="transactions-change">Loading...</div>
+                    </div>
+                </div>
+
+                <!-- Content Grid -->
+                <div class="content-grid">
+                    <!-- Recent Properties Table -->
+                    <div class="data-table sirsi-sm-sm-card">
+                        <div class="table-header">
+                            <h3 class="table-title">Recent Properties</h3>
+                            <button class="sm-btn sm-btn-primary">View All</button>
+                        </div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Property</th>
+                                    <th>Agent</th>
+                                    <th>Price</th>
+                                    <th>Status</th>
+                                    <th>Listed</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recent-properties-table">
+                                <tr>
+                                    <td colspan="5" style="text-align: center; padding: var(--space-xl);">
+                                        <div style="color: var(--text-secondary);">Loading properties...</div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Activity Feed -->
+                    <div>
+                        <div class="activity-feed sirsi-sm-sm-card">
+                            <div class="table-header">
+                                <h3 class="table-title">Recent Activity</h3>
+                            </div>
+                            
+                            <div class="activity-item">
+                                <div class="activity-icon">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                    </svg>
+                                </div>
+                                <div class="activity-content">
+                                    <div class="activity-text">New property listed: 789 Sunset Blvd</div>
+                                    <div class="activity-time">2 hours ago</div>
+                                </div>
+                            </div>
+                            
+                            <div class="activity-item">
+                                <div class="activity-icon">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="12" cy="7" r="4"></circle>
+                                    </svg>
+                                </div>
+                                <div class="activity-content">
+                                    <div class="activity-text">New agent registered: Alex Thompson</div>
+                                    <div class="activity-time">3 hours ago</div>
+                                </div>
+                            </div>
+                            
+                            <div class="activity-item">
+                                <div class="activity-icon">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <line x1="12" y1="1" x2="12" y2="23"></line>
+                                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                                    </svg>
+                                </div>
+                                <div class="activity-content">
+                                    <div class="activity-text">Transaction completed: 123 Main St - $450,000</div>
+                                    <div class="activity-time">5 hours ago</div>
+                                </div>
+                            </div>
+                            
+                            <div class="activity-item">
+                                <div class="activity-icon">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                        <polyline points="14 2 14 8 20 8"></polyline>
+                                    </svg>
+                                </div>
+                                <div class="activity-content">
+                                    <div class="activity-text">Contract signed for 456 Oak Ave</div>
+                                    <div class="activity-time">6 hours ago</div>
+                                </div>
+                            </div>
+                            
+                            <div class="activity-item">
+                                <div class="activity-icon">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="11" cy="11" r="8"></circle>
+                                        <path d="m21 21-4.35-4.35"></path>
+                                    </svg>
+                                </div>
+                                <div class="activity-content">
+                                    <div class="activity-text">Property inquiry: 321 Elm St</div>
+                                    <div class="activity-time">8 hours ago</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Load Component Scripts -->
+    <!-- Sidebar pre-rendered, no JS needed -->
+    <script src="../components/universal-header.js"></script>
+    
+    <!-- Dashboard Firestore Integration -->
+    <script type="module">
+        import { AuthService, DatabaseService } from '../assets/js/firebase-init.js';
+        
+        // Wait for authentication before loading dashboard
+        async function checkAuthAndLoadDashboard() {
+            console.log('🔥 Checking authentication...');
+            
+            return new Promise((resolve, reject) => {
+                // Set a timeout in case auth never resolves
+                const timeout = setTimeout(() => {
+                    console.log('❌ Auth check timeout');
+                    reject(new Error('Authentication timeout'));
+                }, 5000);
+                
+                const unsubscribe = AuthService.onAuthStateChanged(async (user) => {
+                    clearTimeout(timeout);
+                    unsubscribe(); // Unsubscribe immediately after first call
+                    
+                    if (!user) {
+                        console.log('❌ No user signed in');
+                        reject(new Error('Not authenticated'));
+                        return;
+                    }
+                    
+                    console.log('✅ User authenticated:', user.email);
+                    
+                    try {
+                        // Get user role from Firestore
+                        const userData = await AuthService.getUserData(user.uid);
+                        if (!userData.success || userData.data.role !== 'admin') {
+                            console.log('❌ User is not admin, role:', userData.data?.role);
+                            reject(new Error('Not authorized'));
+                            return;
+                        }
+                        
+                        console.log('✅ User is admin, loading dashboard...');
+                        resolve(user);
+                    } catch (error) {
+                        console.error('❌ Error getting user data:', error);
+                        reject(error);
+                    }
+                });
+            });
+        }
+        
+        // Load dashboard data when DOM is ready
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                // Wait for auth check to complete
+                await checkAuthAndLoadDashboard();
+                
+                // Load Dashboard Stats using DatabaseService
+                await loadDashboardStats();
+                
+                // Load Recent Properties
+                await loadRecentProperties();
+                
+                console.log('✅ Admin dashboard loaded successfully');
+            } catch (error) {
+                console.error('❌ Auth failed:', error.message);
+                // Redirect immediately on auth failure
+                window.location.href = '/';
+            }
+        });
+        
+        // Load Dashboard Statistics
+        async function loadDashboardStats() {
+            // Get total properties count
+            const properties = await DatabaseService.getDocuments('properties');
+            const totalProperties = properties.length;
+            document.getElementById('total-properties').textContent = totalProperties.toLocaleString();
+            document.getElementById('properties-change').textContent = 'Sample data for demo';
+            document.getElementById('properties-change').className = 'stat-change';
+            
+            // Get available properties count
+            const availableProperties = await DatabaseService.getDocuments('properties', [
+                { field: 'status', operator: '==', value: 'available' }
+            ]);
+            const availableCount = availableProperties.length;
+            document.getElementById('pending-transactions').textContent = availableCount.toLocaleString();
+            document.getElementById('transactions-change').textContent = `${availableCount} available now`;
+            document.getElementById('transactions-change').className = 'stat-change';
+            
+            // Calculate estimated monthly revenue (based on property prices)
+            let totalValue = 0;
+            properties.forEach(property => {
+                if (property.price && property.price.list) {
+                    totalValue += property.price.list;
+                }
+            });
+            const avgValue = totalProperties > 0 ? totalValue / totalProperties : 0;
+            const monthlyRevenue = avgValue * 2; // Assume 2 properties per month
+            const revenueFormatted = '$' + (monthlyRevenue / 1000).toFixed(0) + 'K';
+            document.getElementById('monthly-revenue').textContent = revenueFormatted;
+            document.getElementById('revenue-change').textContent = 'Sample calculation';
+            document.getElementById('revenue-change').className = 'stat-change';
+            
+            // Get active agents count (approved agents)
+            const agents = await DatabaseService.getDocuments('users', [
+                { field: 'role', operator: '==', value: 'agent' }
+            ]);
+            
+            let approvedAgents = 0;
+            agents.forEach(agent => {
+                if (agent.agentInfo && agent.agentInfo.status === 'approved') {
+                    approvedAgents++;
+                }
+            });
+            
+            document.getElementById('active-agents').textContent = approvedAgents.toLocaleString();
+            document.getElementById('agents-change').textContent = `${agents.length} total agents`;
+            document.getElementById('agents-change').className = 'stat-change';
+        }
+        
+        // Load Recent Properties Table
+        async function loadRecentProperties() {
+            // Get recent properties ordered by createdAt
+            const recentProperties = await DatabaseService.getDocuments('properties', [], 5, 'createdAt', 'desc');
+            
+            const tableBody = document.getElementById('recent-properties-table');
+            tableBody.innerHTML = '';
+            
+            if (!recentProperties || recentProperties.length === 0) {
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="5" style="text-align: center; padding: var(--space-xl);">
+                            <div style="color: var(--text-secondary);">No properties found</div>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            recentProperties.forEach(property => {
+                const row = createPropertyRow(property.id, property);
+                tableBody.appendChild(row);
+            });
+        }
+        
+        // Create Property Table Row
+        function createPropertyRow(id, data) {
+            const row = document.createElement('tr');
+            
+            // Format address
+            const street = data.address?.street || 'N/A';
+            const city = data.address?.city || 'Philadelphia';
+            const state = data.address?.state || 'PA';
+            const zip = data.address?.zip || '';
+            
+            // Format price
+            const price = data.price?.list || 0;
+            const priceFormatted = '$' + price.toLocaleString();
+            
+            // Format status
+            const status = data.status || 'available';
+            let badgeClass = 'sirsi-badge sirsi-sm-sm-badge--success';
+            if (status === 'pending') badgeClass = 'sirsi-badge sirsi-sm-sm-badge--warning';
+            if (status === 'sold') badgeClass = 'sirsi-badge sirsi-sm-sm-badge--info';
+            
+            // Format date
+            let listedDate = 'Recently';
+            if (data.createdAt) {
+                try {
+                    // Handle both Firestore timestamp and regular date
+                    let date;
+                    if (data.createdAt.toDate) {
+                        date = data.createdAt.toDate();
+                    } else if (data.createdAt.seconds) {
+                        date = new Date(data.createdAt.seconds * 1000);
+                    } else {
+                        date = new Date(data.createdAt);
+                    }
+                    
+                    const daysAgo = Math.floor((Date.now() - date.getTime()) / (1000 * 60 * 60 * 24));
+                    if (daysAgo === 0) listedDate = 'Today';
+                    else if (daysAgo === 1) listedDate = '1 day ago';
+                    else if (daysAgo < 7) listedDate = `${daysAgo} days ago`;
+                    else if (daysAgo < 30) listedDate = `${Math.floor(daysAgo / 7)} weeks ago`;
+                    else listedDate = `${Math.floor(daysAgo / 30)} months ago`;
+                } catch (e) {
+                    console.warn('Date parsing failed:', e);
+                    // If date parsing fails, use default
+                }
+            }
+            
+            row.innerHTML = `
+                <td>
+                    <div style="font-weight: 600;">${street}</div>
+                    <div style="font-size: 12px; color: var(--text-secondary);">${city}, ${state} ${zip}</div>
+                </td>
+                <td>Admin</td>
+                <td>${priceFormatted}</td>
+                <td><span class="${badgeClass}">${status.charAt(0).toUpperCase() + status.slice(1)}</span></td>
+                <td>${listedDate}</td>
+            `;
+            
+            // Make row clickable
+            row.style.cursor = 'pointer';
+            row.addEventListener('click', () => {
+                window.location.href = `properties.html?id=${id}`;
+            });
+            
+            return row;
+        }
+        
+        // Show Error Message
+        function showError(message) {
+            const errorDiv = document.createElement('div');
+            errorDiv.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: var(--danger);
+                color: white;
+                padding: var(--space-md) var(--space-lg);
+                border-radius: var(--radius-md);
+                box-shadow: var(--shadow-lg);
+                z-index: 9999;
+            `;
+            errorDiv.textContent = message;
+            document.body.appendChild(errorDiv);
+            
+            setTimeout(() => {
+                errorDiv.remove();
+            }, 5000);
+        }
+        
+    </script>
+</body>
+</html>
