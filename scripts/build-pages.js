@@ -240,6 +240,12 @@ function processTemplate(templatePath) {
       buildReport.pages.warnings++;
     }
     
+    // Replace BASE_PATH tokens in the entire page (including <head>)
+    const basePath = calculateBasePath(templatePath);
+    content = content.replace(/\{\{BASE_PATH\}\}/g, basePath);
+    content = content.replace(/\{\{ASSETS_PATH\}\}/g, calculateAssetsPath(templatePath));
+    content = content.replace(/\{\{COMPONENTS_PATH\}\}/g, basePath + 'components/');
+    
     // Write output file
     if (!VERIFY_ONLY) {
       const outputPath = templatePath.replace('.template.html', '.html');
