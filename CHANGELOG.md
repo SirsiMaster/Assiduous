@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.104.0] - 2025-11-08
+
+### Added
+- feat(ucs): replace sidebar-root.html with exact admin sidebar HTML structure
+
+
 ## [0.103.2] - 2025-11-08
 
 ### Fixed
@@ -3105,7 +3111,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.103.2...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.104.0...HEAD
+
+
+## [0.104.0] - 2025-11-08
+
+### Added
+- feat(ucs): replace sidebar-root.html with exact admin sidebar HTML structure
 
 
 ## [0.103.2] - 2025-11-08
@@ -4643,3 +4655,4 @@ To generate changelog entries:
 [0.103.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.102.0...v0.103.0
 [0.103.1]: https://github.com/SirsiMaster/Assiduous/compare/v0.103.0...v0.103.1
 [0.103.2]: https://github.com/SirsiMaster/Assiduous/compare/v0.103.1...v0.103.2
+[0.104.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.103.2...v0.104.0
