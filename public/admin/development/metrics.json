@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-11-07T18:26:15.367Z",
+  "lastUpdated": "2025-11-07T18:33:42.951Z",
   "summary": {
     "health": "Good",
     "score": 46,
@@ -110,35 +110,35 @@
     "laborCost": 42750,
     "toolsCost": 1900,
     "monthsElapsed": "2.9",
-    "totalCommits": 863,
+    "totalCommits": 865,
     "totalFiles": 785,
     "activeDays": 32,
     "totalDays": 89,
     "projectAgeDays": 89,
-    "linesAdded": 9758015,
-    "linesDeleted": 9382518,
-    "netLines": 375497,
+    "linesAdded": 9758085,
+    "linesDeleted": 9383926,
+    "netLines": 374159,
     "velocity": "27.0",
     "completionPercentage": 46,
     "actualStartDate": "2025-08-10"
   },
   "today": {
     "date": "2025-11-07",
-    "hours": "8.6",
-    "cost": 1287,
-    "commits": 26,
+    "hours": "9.2",
+    "cost": 1386,
+    "commits": 28,
     "deployments": 0
   },
   "thisWeek": {
-    "hours": "98.0",
-    "cost": 14702,
-    "commits": 297,
+    "hours": "98.7",
+    "cost": 14801,
+    "commits": 299,
     "days": 7
   },
   "thisMonth": {
-    "hours": "151.8",
-    "cost": 22770,
-    "commits": 460
+    "hours": "152.5",
+    "cost": 22869,
+    "commits": 462
   },
   "quality": {
     "testCoverage": {
@@ -172,7 +172,7 @@
       "critical": 0,
       "total": 0
     },
-    "lastAudit": "2025-11-07T18:25:43.393Z",
+    "lastAudit": "2025-11-07T18:33:13.035Z",
     "dependencies": {
       "total": {
         "prod": 256,
@@ -267,11 +267,11 @@
     "changelog": true,
     "contributing": false,
     "license": false,
-    "lastUpdate": "2025-11-07 18:21:38 +0000"
+    "lastUpdate": "2025-11-07 18:25:34 +0000"
   },
   "productivity": {
     "velocityTrend": "increasing",
-    "weeklyCommits": 297,
+    "weeklyCommits": 299,
     "contributors": {
       "total": 0,
       "active": 0
@@ -349,6 +349,18 @@
   },
   "recentActivity": [
     {
+      "hash": "8312338b6f6b56ca6f3c133fe3fe530f7c8868b1",
+      "message": "fix(layout): remove duplicate sidebars from all client pages",
+      "author": "SirsiMaster",
+      "date": "2025-11-07 13:32:24 -0500"
+    },
+    {
+      "hash": "ea75f97b17ac201f0801e9b1a16d4e2dffc9e362",
+      "message": "chore(release): Bump version to 0.99.10 [skip ci]",
+      "author": "github-actions[bot]",
+      "date": "2025-11-07 18:25:34 +0000"
+    },
+    {
       "hash": "79af2812b332e921a389b13fe046e088f08c9409",
       "message": "fix(layout): remove duplicate sidebars breaking client dashboard layout",
       "author": "SirsiMaster",
@@ -395,22 +407,10 @@
       "message": "chore(release): Bump version to 0.99.6 [skip ci]",
       "author": "github-actions[bot]",
       "date": "2025-11-07 18:08:07 +0000"
-    },
-    {
-      "hash": "3e2cfd12aa55a1b56f9bed522097a7eb26b6c640",
-      "message": "fix(js): Remove remaining export statement and db redeclaration",
-      "author": "SirsiMaster",
-      "date": "2025-11-07 13:07:24 -0500"
-    },
-    {
-      "hash": "a7154aad529e5e5c668ad9ef0e4f3fc79d234886",
-      "message": "chore(release): Bump version to 0.99.5 [skip ci]",
-      "author": "github-actions[bot]",
-      "date": "2025-11-07 18:03:52 +0000"
     }
   ],
   "automation": {
-    "lastRun": "2025-11-07T18:26:15.367Z",
+    "lastRun": "2025-11-07T18:33:42.951Z",
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",

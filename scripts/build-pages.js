@@ -130,16 +130,25 @@ function parseDirective(comment) {
 }
 
 /**
- * Load component template
+ * Load component template with role variant support
  */
-function loadComponentTemplate(componentName) {
+function loadComponentTemplate(componentName, role) {
   const component = registry.components[componentName];
   
   if (!component) {
     throw new Error(`Component '${componentName}' not found in registry`);
   }
   
-  const templatePath = path.join(COMPONENTS_DIR, component.template);
+  // Determine which template file to use based on role
+  let templateFile = component.template;
+  
+  // Check if component has role variants and if a role is specified
+  if (role && component.roleVariants && component.roleVariants[role]) {
+    templateFile = component.roleVariants[role];
+    console.log(`    → Using role variant: ${templateFile} (role: ${role})`);
+  }
+  
+  const templatePath = path.join(COMPONENTS_DIR, templateFile);
   
   if (!fs.existsSync(templatePath)) {
     throw new Error(`Component template not found: ${templatePath}`);
@@ -206,8 +215,8 @@ function processTemplate(templatePath) {
     components.forEach(({ fullMatch, componentName, props }) => {
       console.log(`  → Injecting ${componentName} component`);
       
-      // Load component template
-      const componentTemplate = loadComponentTemplate(componentName);
+      // Load component template (with role variant support)
+      const componentTemplate = loadComponentTemplate(componentName, props.role);
       
       // Replace tokens
       let processedComponent = replaceTokens(componentTemplate, templatePath, props);
@@ -221,7 +230,8 @@ function processTemplate(templatePath) {
       content = content.replace(fullMatch, processedComponent);
       
       // Track component usage
-      buildReport.components[componentName] = (buildReport.components[componentName] || 0) + 1;
+      const trackingKey = props.role ? `${componentName}:${props.role}` : componentName;
+      buildReport.components[trackingKey] = (buildReport.components[trackingKey] || 0) + 1;
     });
     
     if (components.length === 0) {

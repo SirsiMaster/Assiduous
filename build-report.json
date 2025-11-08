@@ -1,29 +1,31 @@
 {
-  "timestamp": "2025-11-04T09:03:43.138Z",
+  "timestamp": "2025-11-08T05:42:58.950Z",
   "environment": "dev",
   "pages": {
-    "built": 72,
+    "built": 71,
     "skipped": 0,
     "errors": 0,
     "warnings": 12
   },
   "components": {
-    "sidebar": 72
+    "sidebar:agent": 6,
+    "sidebar:client": 12,
+    "sidebar:admin": 52
   },
   "duration": "0.04s",
   "errors": [],
   "warnings": [
-    "/Users/thekryptodragon/Development/assiduous/public/client/dashboard.template.html: No components found",
-    "/Users/thekryptodragon/Development/assiduous/public/client/deal-analyzer.template.html: No components found",
-    "/Users/thekryptodragon/Development/assiduous/public/client/documents.template.html: No components found",
-    "/Users/thekryptodragon/Development/assiduous/public/client/index.template.html: No components found",
-    "/Users/thekryptodragon/Development/assiduous/public/client/messages.template.html: No components found",
-    "/Users/thekryptodragon/Development/assiduous/public/client/micro-flip-calculator.template.html: No components found",
-    "/Users/thekryptodragon/Development/assiduous/public/client/onboarding.template.html: No components found",
-    "/Users/thekryptodragon/Development/assiduous/public/client/properties.template.html: No components found",
-    "/Users/thekryptodragon/Development/assiduous/public/client/property-detail.template.html: No components found",
-    "/Users/thekryptodragon/Development/assiduous/public/client/property-tax-records.template.html: No components found",
-    "/Users/thekryptodragon/Development/assiduous/public/client/saved.template.html: No components found",
-    "/Users/thekryptodragon/Development/assiduous/public/client/viewings.template.html: No components found"
+    "/Users/thekryptodragon/Development/assiduous/public/docs/100_percent_acceleration_plan.template.html: No components found",
+    "/Users/thekryptodragon/Development/assiduous/public/docs/api_specification.template.html: No components found",
+    "/Users/thekryptodragon/Development/assiduous/public/docs/architecture_design.template.html: No components found",
+    "/Users/thekryptodragon/Development/assiduous/public/docs/change_management.template.html: No components found",
+    "/Users/thekryptodragon/Development/assiduous/public/docs/changelog.template.html: No components found",
+    "/Users/thekryptodragon/Development/assiduous/public/docs/claude.template.html: No components found",
+    "/Users/thekryptodragon/Development/assiduous/public/docs/communication_plan.template.html: No components found",
+    "/Users/thekryptodragon/Development/assiduous/public/docs/consolidation_mapping.template.html: No components found",
+    "/Users/thekryptodragon/Development/assiduous/public/docs/custom_domain_setup.template.html: No components found",
+    "/Users/thekryptodragon/Development/assiduous/public/docs/data_model.template.html: No components found",
+    "/Users/thekryptodragon/Development/assiduous/public/docs/day1_checklist.template.html: No components found",
+    "/Users/thekryptodragon/Development/assiduous/public/docs/ucs-test.template.html: No components found"
   ]
 }
