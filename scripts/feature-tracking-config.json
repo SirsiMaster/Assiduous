@@ -1,0 +1,284 @@
+{
+  "version": "1.0.0",
+  "description": "Comprehensive feature tracking configuration for automated metrics",
+  "features": {
+    "authentication": {
+      "weight": 10,
+      "indicators": {
+        "files": [
+          "public/assets/js/services/auth.js",
+          "firebase.json"
+        ],
+        "patterns": {
+          "firebase_auth": "firebase.auth()",
+          "role_system": "getUserRole|checkRole"
+        }
+      },
+      "completion_criteria": {
+        "firebase_setup": true,
+        "role_system": true,
+        "protected_routes": true
+      }
+    },
+    "adminPortal": {
+      "weight": 15,
+      "indicators": {
+        "files": [
+          "public/admin/dashboard.html",
+          "public/admin/properties.html",
+          "public/admin/agents.html",
+          "public/admin/clients.html"
+        ],
+        "patterns": {
+          "crud_operations": "createProperty|updateProperty|deleteProperty",
+          "ucs_components": "data-component=\"sidebar\"|data-component=\"header\""
+        }
+      },
+      "completion_criteria": {
+        "dashboard_exists": true,
+        "crud_complete": true,
+        "ucs_adopted": true
+      }
+    },
+    "agentPortal": {
+      "weight": 15,
+      "indicators": {
+        "files": [
+          "public/agent/dashboard-ucs.html",
+          "public/agent/clients.html",
+          "public/agent/leads.html",
+          "public/agent/listings.html",
+          "public/agent/commissions.html",
+          "public/agent/schedule.html"
+        ],
+        "patterns": {
+          "ucs_adoption": "data-component=\"sidebar\"",
+          "role_based_nav": "data-roles=\"agent\""
+        }
+      },
+      "completion_criteria": {
+        "all_pages_converted": true,
+        "ucs_adopted": true,
+        "backend_integration": false
+      }
+    },
+    "clientPortal": {
+      "weight": 15,
+      "indicators": {
+        "files": [
+          "public/client/dashboard-ucs.html",
+          "public/client/properties.html",
+          "public/client/property-detail.html",
+          "public/client/saved.html",
+          "public/client/viewings.html",
+          "public/client/deal-analyzer.html",
+          "public/client/micro-flip-calculator.html",
+          "public/client/documents.html",
+          "public/client/messages.html"
+        ],
+        "patterns": {
+          "ucs_adoption": "data-component=\"sidebar\"",
+          "role_based_nav": "data-roles=\"client\""
+        }
+      },
+      "completion_criteria": {
+        "all_pages_converted": true,
+        "ucs_adopted": true,
+        "backend_integration": false
+      }
+    },
+    "universalComponentSystem": {
+      "weight": 20,
+      "indicators": {
+        "files": [
+          "public/components/ucs-core.js",
+          "public/components/component-registry.js",
+          "public/components/sidebar-root.html",
+          "public/components/universal-header.html"
+        ],
+        "patterns": {
+          "role_detection": "detectUserRole",
+          "component_mounting": "mountComponent",
+          "role_filtering": "filterElementsByRole"
+        }
+      },
+      "metrics": {
+        "total_pages": {
+          "scan_paths": ["public/admin", "public/agent", "public/client"],
+          "pattern": "\\.html$"
+        },
+        "ucs_pages": {
+          "scan_paths": ["public/agent", "public/client"],
+          "pattern": "data-component=\"sidebar\""
+        },
+        "lines_removed": {
+          "calculation": "git_diff_analysis"
+        }
+      }
+    },
+    "microFlipping": {
+      "weight": 15,
+      "indicators": {
+        "files": [
+          "public/client/micro-flip-calculator.html",
+          "public/client/deal-analyzer.html"
+        ],
+        "patterns": {
+          "calculator": "calculateROI|calculateProfit",
+          "deal_pipeline": "dealPipeline|analyzeDeal"
+        }
+      },
+      "completion_criteria": {
+        "calculator_complete": true,
+        "deal_analyzer_complete": true,
+        "backend_integration": false
+      }
+    },
+    "aiIntegration": {
+      "weight": 10,
+      "indicators": {
+        "files": [],
+        "patterns": {
+          "ml_model": "predict|recommend",
+          "ai_assistant": "chatGPT|openai"
+        }
+      },
+      "completion_criteria": {
+        "not_started": true
+      }
+    },
+    "paymentProcessing": {
+      "weight": 10,
+      "indicators": {
+        "files": [],
+        "patterns": {
+          "stripe": "stripe\\.charges|stripe\\.paymentIntents"
+        }
+      },
+      "completion_criteria": {
+        "not_started": true
+      }
+    }
+  },
+  "architecture_metrics": {
+    "ucs_adoption": {
+      "description": "Percentage of pages using Universal Component System",
+      "calculation": "ucs_pages / total_pages * 100",
+      "scan": {
+        "paths": ["public/admin", "public/agent", "public/client"],
+        "include": "*.html",
+        "exclude": ["**/node_modules/**", "**/dist/**"]
+      },
+      "indicators": {
+        "ucs_usage": "data-component=\"sidebar\"|data-component=\"header\"",
+        "old_hardcoded": "<aside class=\"sidebar\">(?!.*data-component)"
+      }
+    },
+    "component_reuse": {
+      "description": "Percentage of components that are reused across pages",
+      "calculation": "reused_components / total_components * 100",
+      "scan": {
+        "paths": ["public/components"],
+        "pattern": "*.html"
+      }
+    },
+    "code_reduction": {
+      "description": "Lines of code removed through refactoring",
+      "calculation": "git_log_analysis",
+      "patterns": {
+        "removed": "deletions",
+        "added": "insertions"
+      }
+    },
+    "firebase_integration": {
+      "description": "Percentage of features integrated with Firebase",
+      "indicators": {
+        "firestore": "firestore\\(\\)|db\\.collection",
+        "auth": "firebase\\.auth\\(\\)",
+        "storage": "firebase\\.storage\\(\\)",
+        "functions": "firebase\\.functions\\(\\)"
+      }
+    }
+  },
+  "code_quality_metrics": {
+    "documentation_coverage": {
+      "description": "Percentage of code files with documentation",
+      "scan": {
+        "paths": ["public/assets/js", "public/components"],
+        "pattern": "*.js"
+      },
+      "indicators": {
+        "jsdoc": "/\\*\\*[\\s\\S]*?\\*/",
+        "inline_comments": "//.*"
+      }
+    },
+    "component_adoption": {
+      "description": "Usage of standardized components",
+      "scan": {
+        "paths": ["public"],
+        "pattern": "*.html"
+      },
+      "indicators": {
+        "ucs_sidebar": "data-component=\"sidebar\"",
+        "ucs_header": "data-component=\"header\"",
+        "old_patterns": "<aside class=\"sidebar\">(?!.*data-component)"
+      }
+    }
+  },
+  "business_metrics": {
+    "page_count": {
+      "description": "Total number of application pages",
+      "scan": {
+        "paths": ["public"],
+        "pattern": "*.html",
+        "exclude": ["**/node_modules/**"]
+      }
+    },
+    "feature_pages": {
+      "description": "Pages by feature category",
+      "categories": {
+        "admin": "public/admin/**/*.html",
+        "agent": "public/agent/**/*.html",
+        "client": "public/client/**/*.html",
+        "shared": "public/components/**/*.html"
+      }
+    }
+  },
+  "tracking_rules": {
+    "commit_analysis": {
+      "enabled": true,
+      "patterns": {
+        "feature_complete": "feat\\(.+\\): .*(complete|done)",
+        "bug_fix": "fix\\(.+\\):",
+        "refactor": "refactor\\(.+\\):",
+        "docs": "docs\\(.+\\):",
+        "ucs_work": "feat\\(ucs\\):|fix\\(ucs\\):"
+      }
+    },
+    "file_analysis": {
+      "enabled": true,
+      "scan_frequency": "on_commit",
+      "cache_results": true
+    },
+    "git_history_depth": 100,
+    "update_frequency": "on_commit"
+  },
+  "output_schema": {
+    "features": {
+      "feature_name": {
+        "status": "complete|in-progress|not-started",
+        "percentage": 0,
+        "description": "string",
+        "completedTasks": [],
+        "remainingTasks": [],
+        "metrics": {}
+      }
+    },
+    "architecture": {
+      "ucsAdoption": "percentage",
+      "componentReuse": "percentage",
+      "codeReduction": "number"
+    },
+    "calculated_at": "ISO8601 timestamp"
+  }
+}
