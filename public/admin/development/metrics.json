@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-11-08T15:55:19.645Z",
+  "lastUpdated": "2025-11-08T15:59:32.011Z",
   "summary": {
     "health": "Good",
     "score": 46,
@@ -104,41 +104,41 @@
     }
   },
   "project": {
-    "totalHours": "290",
+    "totalHours": "291",
     "avgHoursPerDay": "8.8",
-    "totalCost": 45422,
-    "laborCost": 43500,
+    "totalCost": 45572,
+    "laborCost": 43650,
     "toolsCost": 1922,
     "monthsElapsed": "3.0",
-    "totalCommits": 880,
+    "totalCommits": 882,
     "totalFiles": 792,
     "activeDays": 33,
     "totalDays": 90,
     "projectAgeDays": 90,
-    "linesAdded": 9794735,
-    "linesDeleted": 9414290,
-    "netLines": 380445,
+    "linesAdded": 9794954,
+    "linesDeleted": 9414903,
+    "netLines": 380051,
     "velocity": "26.7",
     "completionPercentage": 46,
     "actualStartDate": "2025-08-10"
   },
   "today": {
     "date": "2025-11-08",
-    "hours": "11.9",
-    "cost": 1782,
-    "commits": 36,
+    "hours": "12.5",
+    "cost": 1881,
+    "commits": 38,
     "deployments": 0
   },
   "thisWeek": {
-    "hours": "102.6",
-    "cost": 15395,
-    "commits": 311,
+    "hours": "103.3",
+    "cost": 15494,
+    "commits": 313,
     "days": 7
   },
   "thisMonth": {
-    "hours": "153.1",
-    "cost": 22968,
-    "commits": 464
+    "hours": "153.8",
+    "cost": 23067,
+    "commits": 466
   },
   "quality": {
     "testCoverage": {
@@ -172,7 +172,7 @@
       "critical": 0,
       "total": 0
     },
-    "lastAudit": "2025-11-08T15:54:57.239Z",
+    "lastAudit": "2025-11-08T15:59:10.387Z",
     "dependencies": {
       "total": {
         "prod": 256,
@@ -267,11 +267,11 @@
     "changelog": true,
     "contributing": false,
     "license": false,
-    "lastUpdate": "2025-11-08 15:50:22 +0000"
+    "lastUpdate": "2025-11-08 15:54:45 +0000"
   },
   "productivity": {
     "velocityTrend": "increasing",
-    "weeklyCommits": 311,
+    "weeklyCommits": 313,
     "contributors": {
       "total": 0,
       "active": 0
@@ -349,6 +349,18 @@
   },
   "recentActivity": [
     {
+      "hash": "f4050225111fccf4174367b926f72d856fdabbc7",
+      "message": "fix(ucs): dynamic component paths based on page location",
+      "author": "SirsiMaster",
+      "date": "2025-11-08 10:58:42 -0500"
+    },
+    {
+      "hash": "2050b9be84bf0e107d71eec2b00ca21d1391b7c6",
+      "message": "chore(release): Bump version to 0.103.0 [skip ci]",
+      "author": "github-actions[bot]",
+      "date": "2025-11-08 15:54:45 +0000"
+    },
+    {
       "hash": "574a84398f3cf1a050e4a9a617209b19035e54b3",
       "message": "feat(ucs): add clean client dashboard using UCS",
       "author": "SirsiMaster",
@@ -395,22 +407,10 @@
       "message": "fix(ucs): Add missing header components to all pages",
       "author": "SirsiMaster",
       "date": "2025-11-08 09:58:05 -0500"
-    },
-    {
-      "hash": "46a1a72a5791393df6ea73db9663b2837b6ae53f",
-      "message": "chore(release): Bump version to 0.101.0 [skip ci]",
-      "author": "github-actions[bot]",
-      "date": "2025-11-08 14:27:55 +0000"
-    },
-    {
-      "hash": "5a5dc7072753689647993215e520ea34a6a8071b",
-      "message": "feat(ucs): Complete UCS migration - admin pages are now the gold standard",
-      "author": "SirsiMaster",
-      "date": "2025-11-08 09:25:57 -0500"
     }
   ],
   "automation": {
-    "lastRun": "2025-11-08T15:55:19.645Z",
+    "lastRun": "2025-11-08T15:59:32.011Z",
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",

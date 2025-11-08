@@ -131,6 +131,21 @@
   }
   
   function injectHeader(root, base, config) {
+    // Use UCS mounting if available
+    if (window.UCS && window.UCS.mountComponent) {
+      window.UCS.mountComponent({
+        name: 'header',
+        container: root,
+        rootPath: '../components/universal-header.html',
+        onLoad: function(container, role, computedBase) {
+          configureHeader(config);
+          addRoleSpecificMenuItems(role);
+        }
+      });
+      return;
+    }
+    
+    // Fallback to legacy loading
     var xhr = new XMLHttpRequest();
     // Determine the correct path based on current page location
     var path = window.location.pathname;
