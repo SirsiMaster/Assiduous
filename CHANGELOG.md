@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.104.1] - 2025-11-08
+
+### Fixed
+- fix(ucs): add sidebar CSS class to placeholder and data-el attribute
+
+
 ## [0.104.0] - 2025-11-08
 
 ### Added
@@ -3111,7 +3117,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.104.0...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.104.1...HEAD
+
+
+## [0.104.1] - 2025-11-08
+
+### Fixed
+- fix(ucs): add sidebar CSS class to placeholder and data-el attribute
 
 
 ## [0.104.0] - 2025-11-08
@@ -4656,3 +4668,4 @@ To generate changelog entries:
 [0.103.1]: https://github.com/SirsiMaster/Assiduous/compare/v0.103.0...v0.103.1
 [0.103.2]: https://github.com/SirsiMaster/Assiduous/compare/v0.103.1...v0.103.2
 [0.104.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.103.2...v0.104.0
+[0.104.1]: https://github.com/SirsiMaster/Assiduous/compare/v0.104.0...v0.104.1
