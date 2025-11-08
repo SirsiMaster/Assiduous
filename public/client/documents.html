@@ -417,7 +417,13 @@
         
         <main class="main-content">
             <!-- Standardized Header -->
-            <!-- :header role="admin" title="Dashboard" -->
+            <header id="universal-header-root" 
+                    data-title="My Documents" 
+                    data-subtitle="Securely upload and manage your real estate documents"
+                    data-search-placeholder="Search documents..."
+                    data-user-role="client"
+                    data-user-name="John Doe"
+                    data-user-email="john.doe@assiduousrealty.com"></header>
 
             <!-- Page Content -->
             <div class="page-content">
@@ -529,6 +535,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
     <script src="../firebase-config.js"></script>
+    <script src="../components/universal-header.js"></script>
     <script src="../components/auth-guard-simple.js"></script>
     
     <script>

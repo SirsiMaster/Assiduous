@@ -273,7 +273,12 @@
         
         <main class="main-content">
             <!-- Standardized Header -->
-            <!-- :header role="admin" title="Dashboard" -->
+            <header id="universal-header-root" 
+                    data-title="Deal Analyzer" 
+                    data-subtitle="Advanced property investment analysis with financing options"
+                    data-user-role="client"
+                    data-user-name="John Doe"
+                    data-user-email="john.doe@assiduousrealty.com"></header>
 
             <!-- Page Content -->
             <div class="page-content">
@@ -491,6 +496,7 @@
     </div>
     
     <!-- Header Component Script -->
+    <script src="{{BASE_PATH}}components/universal-header.js"></script>
 
     <script>
         // Initialize Micro-Flip Engine

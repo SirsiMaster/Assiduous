@@ -210,6 +210,7 @@ module.exports = {
       templates: ['**/*.template.html'], // Find template files
       pages: ['**/*.html'], // Scan for @component directives
       exclude: [
+        'public/admin/**', // DO NOT TOUCH ADMIN PAGES (protected)
         'node_modules/**',
         '.git/**',
         '.build/**',

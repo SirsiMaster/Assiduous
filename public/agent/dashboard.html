@@ -457,7 +457,14 @@
 </aside>
         <main class="main-content">
             <!-- Dynamic Universal Header -->
-            <!-- :header role="admin" title="Dashboard" -->
+            <header id="universal-header-root" 
+                    data-title="Agent Dashboard"
+                    data-subtitle="Welcome back! Here's an overview of your real estate business."
+                    data-search-placeholder="Search your listings, clients, leads..."
+                    data-user-role="agent"
+                    data-user-name="Sarah Johnson"
+                    data-user-email="sarah.johnson@assiduousrealty.com">
+            </header>
 
             <!-- Dashboard Content -->
             <div class="dashboard-content">
@@ -655,6 +662,7 @@
 
     <!-- Load Component Scripts -->
     <!-- Sidebar pre-rendered, no JS needed -->
+    <script src="../components/universal-header.js"></script>
     
     <!-- Firebase Integration -->
     <script src="../firebase-config.js"></script>

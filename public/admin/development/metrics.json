@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-11-08T14:28:39.678Z",
+  "lastUpdated": "2025-11-08T05:45:51.733Z",
   "summary": {
     "health": "Good",
     "score": 46,
@@ -104,41 +104,41 @@
     }
   },
   "project": {
-    "totalHours": "287",
+    "totalHours": "286",
     "avgHoursPerDay": "8.7",
-    "totalCost": 44972,
-    "laborCost": 43050,
+    "totalCost": 44822,
+    "laborCost": 42900,
     "toolsCost": 1922,
     "monthsElapsed": "3.0",
-    "totalCommits": 871,
-    "totalFiles": 810,
+    "totalCommits": 867,
+    "totalFiles": 788,
     "activeDays": 33,
     "totalDays": 90,
     "projectAgeDays": 90,
-    "linesAdded": 9782606,
-    "linesDeleted": 9392986,
-    "netLines": 389620,
-    "velocity": "26.4",
+    "linesAdded": 9762656,
+    "linesDeleted": 9391141,
+    "netLines": 371515,
+    "velocity": "26.3",
     "completionPercentage": 46,
     "actualStartDate": "2025-08-10"
   },
   "today": {
     "date": "2025-11-08",
-    "hours": "8.9",
-    "cost": 1337,
-    "commits": 27,
+    "hours": "7.6",
+    "cost": 1139,
+    "commits": 23,
     "deployments": 0
   },
   "thisWeek": {
-    "hours": "99.7",
-    "cost": 14949,
-    "commits": 302,
+    "hours": "98.3",
+    "cost": 14751,
+    "commits": 298,
     "days": 7
   },
   "thisMonth": {
-    "hours": "150.2",
-    "cost": 22523,
-    "commits": 455
+    "hours": "148.8",
+    "cost": 22325,
+    "commits": 451
   },
   "quality": {
     "testCoverage": {
@@ -172,7 +172,7 @@
       "critical": 0,
       "total": 0
     },
-    "lastAudit": "2025-11-08T14:28:07.902Z",
+    "lastAudit": "2025-11-08T05:45:30.285Z",
     "dependencies": {
       "total": {
         "prod": 256,
@@ -218,14 +218,14 @@
     }
   },
   "deployment": {
-    "lastDeployment": "2025-11-08 09:25:57 -0500",
-    "totalDeployments": 133,
+    "lastDeployment": "2025-11-06 16:51:52 -0500",
+    "totalDeployments": 131,
     "deploymentFrequency": "Weekly",
     "environments": {
       "production": {
         "url": "https://assiduous-prod.web.app",
         "status": "Active",
-        "lastDeploy": "2025-11-08 09:25:57 -0500"
+        "lastDeploy": "2025-11-06 16:51:52 -0500"
       },
       "staging": {
         "url": "https://assiduous-staging.web.app",
@@ -267,11 +267,11 @@
     "changelog": true,
     "contributing": false,
     "license": false,
-    "lastUpdate": "2025-11-08 05:54:29 +0000"
+    "lastUpdate": "2025-11-08 00:44:25 -0500"
   },
   "productivity": {
     "velocityTrend": "increasing",
-    "weeklyCommits": 302,
+    "weeklyCommits": 298,
     "contributors": {
       "total": 0,
       "active": 0
@@ -349,30 +349,6 @@
   },
   "recentActivity": [
     {
-      "hash": "5a5dc7072753689647993215e520ea34a6a8071b",
-      "message": "feat(ucs): Complete UCS migration - admin pages are now the gold standard",
-      "author": "SirsiMaster",
-      "date": "2025-11-08 09:25:57 -0500"
-    },
-    {
-      "hash": "9c04bcdb72ed9688e79e50f9d48f771f8769c385",
-      "message": "chore(release): Bump version to 0.100.1 [skip ci]",
-      "author": "github-actions[bot]",
-      "date": "2025-11-08 05:54:29 +0000"
-    },
-    {
-      "hash": "85aedd3d974b44d61d652ddc4128aab9dfde7cad",
-      "message": "fix(ucs): Replace BASE_PATH tokens in entire page template, not just components",
-      "author": "SirsiMaster",
-      "date": "2025-11-08 00:53:19 -0500"
-    },
-    {
-      "hash": "5b8de7d566ade54ce995515d698dbea4379605f8",
-      "message": "chore(release): Bump version to 0.100.0 [skip ci]",
-      "author": "github-actions[bot]",
-      "date": "2025-11-08 05:45:19 +0000"
-    },
-    {
       "hash": "badba3dc6ceafffb6049ed8d740c44a9ca3aba2f",
       "message": "feat(ucs): Implement full role-variant support for Universal Component System",
       "author": "SirsiMaster",
@@ -407,10 +383,34 @@
       "message": "chore(release): Bump version to 0.99.9 [skip ci]",
       "author": "github-actions[bot]",
       "date": "2025-11-07 18:21:38 +0000"
+    },
+    {
+      "hash": "1110ca533b842b8b3b61f28a72ec2eb291ace2fe",
+      "message": "fix(paths): replace ALL remaining {{BASE_PATH}} tokens across all pages",
+      "author": "SirsiMaster",
+      "date": "2025-11-07 13:21:03 -0500"
+    },
+    {
+      "hash": "85ab31e106bf6d7a41331da4586c59fc94e69265",
+      "message": "chore(release): Bump version to 0.99.8 [skip ci]",
+      "author": "github-actions[bot]",
+      "date": "2025-11-07 18:17:16 +0000"
+    },
+    {
+      "hash": "607f5ba6423cc8b8e0c7f5c030b9e8446839549f",
+      "message": "fix(paths): replace all {{BASE_PATH}} tokens with correct relative paths",
+      "author": "SirsiMaster",
+      "date": "2025-11-07 13:16:35 -0500"
+    },
+    {
+      "hash": "19a84aa62ad2e3c17ff0f715cbe3bba353544e14",
+      "message": "chore(release): Bump version to 0.99.7 [skip ci]",
+      "author": "github-actions[bot]",
+      "date": "2025-11-07 18:10:39 +0000"
     }
   ],
   "automation": {
-    "lastRun": "2025-11-08T14:28:39.678Z",
+    "lastRun": "2025-11-08T05:45:51.733Z",
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",

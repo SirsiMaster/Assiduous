@@ -398,7 +398,13 @@
         
         <main class="main-content">
             <!-- Standardized Header -->
-            <!-- :header role="admin" title="Dashboard" -->
+            <header id="universal-header-root" 
+                    data-title="Browse Properties" 
+                    data-subtitle="Find your perfect property"
+                    data-search-placeholder="Search properties..."
+                    data-user-role="client"
+                    data-user-name="John Doe"
+                    data-user-email="john.doe@assiduousrealty.com"></header>
 
             <!-- Page Content -->
             <div class="page-content">
@@ -539,6 +545,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
     <script src="{{BASE_PATH}}firebase-config.js"></script>
+    <script src="{{BASE_PATH}}components/universal-header.js"></script>
     <script src="{{BASE_PATH}}components/auth-guard-simple.js"></script>
     
     <script>

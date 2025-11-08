@@ -526,7 +526,13 @@
 </aside>
         <main class="main-content">
             <!-- Standardized Admin Header -->
-            <!-- :header role="admin" title="Dashboard" -->
+            <header id="universal-header-root" 
+                    data-title="Commission Tracker" 
+                    data-subtitle="Track your earnings and commission status"
+                    data-search-placeholder="Search transactions..."
+                    data-user-role="agent"
+                    data-user-name="Sarah Johnson"
+                    data-user-email="sarah.johnson@assiduousrealty.com"></header>
 
             <!-- Page Content -->
             <div class="page-content">
@@ -700,6 +706,7 @@
     </div>
 
     <!-- Load Component Scripts -->
+    <script src="../components/universal-header.js"></script>
     
     <!-- Firebase Integration -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>

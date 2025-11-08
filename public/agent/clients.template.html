@@ -525,7 +525,11 @@
 </aside>
         <main class="main-content">
             <!-- Standardized Admin Header -->
-            <!-- :header role="admin" title="Dashboard" -->
+            <header id="universal-header-root" 
+                    data-title="Clients Management" 
+                    data-subtitle="Manage all client information and relationships"
+                    data-search-placeholder="Search clients..."
+                    data-actions='[{"label":"Add Client","icon":"<line x1=\"12\" y1=\"5\" x2=\"12\" y2=\"19\"></line><line x1=\"5\" y1=\"12\" x2=\"19\" y2=\"12\"></line>","primary":true,"onclick":"HeaderActions.handleAction(\"addClient\")"}]'></header>
 
             <!-- Page Content -->
             <div class="page-content">
@@ -745,5 +749,6 @@
         });
     </script>
     <!-- Sidebar pre-rendered, no JS needed -->
+    <script src="{{BASE_PATH}}components/universal-header.js"></script>
 </body>
 </html>
