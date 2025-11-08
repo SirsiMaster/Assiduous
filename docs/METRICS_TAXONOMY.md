@@ -1,4 +1,12 @@
 # METRICS TAXONOMY
+**Version:** 1.0.0-canonical  
+**Last Updated:** 2025-11-08  
+**Status:** Canonical Document (20 of 20)  
+**Consolidation Date:** November 8, 2025
+
+---
+
+**Document Type:** Metrics Taxonomy  
 **Version:** 1.0.0  
 **Created:** November 8, 2025  
 **Purpose:** Definitive classification and organization of all project metrics  

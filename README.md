@@ -215,7 +215,7 @@ assiduous/
 
 ### What Was Done
 - **Before:** 263 scattered markdown files across multiple directories
-- **After:** 19 canonical documents with clear naming
+- **After:** 20 canonical documents with clear naming
 - **Method:** Systematic consolidation of related content
 - **Result:** Every document now has a clear, descriptive name
 
@@ -227,7 +227,7 @@ All documents use UPPERCASE_WITH_UNDERSCORES.md format for clarity:
 - Auditor-friendly
 
 ### Consolidation Mapping
-Each of the 19 documents contains a "Consolidation Note" header explaining:
+Each of the 20 documents contains a "Consolidation Note" header explaining:
 - Which files were merged into it
 - When the consolidation occurred
 - Current version and status
@@ -303,4 +303,26 @@ npm run ucs:verify
 
 ---
 
-*This README serves as the master index for all project documentation. All 19 canonical documents are the single source of truth for the Assiduous platform.*
+*This README serves as the master index for all project documentation. All 20 canonical documents are the single source of truth for the Assiduous platform.*
+
+### Canonical Documents List (20 Total)
+1. REQUIREMENTS_SPECIFICATION.md
+2. PROJECT_SCOPE.md
+3. USER_STORIES.md
+4. PROJECT_MANAGEMENT.md
+5. RISK_MANAGEMENT.md
+6. ARCHITECTURE_DESIGN.md
+7. TECHNICAL_DESIGN.md
+8. DATA_MODEL.md
+9. API_SPECIFICATION.md
+10. DEPLOYMENT_GUIDE.md
+11. TEST_PLAN.md
+12. QA_PLAN.md
+13. SECURITY_COMPLIANCE.md
+14. MAINTENANCE_SUPPORT.md
+15. CHANGE_MANAGEMENT.md
+16. COMMUNICATION_PLAN.md
+17. TRAINING_DOCUMENTATION.md
+18. POST_IMPLEMENTATION_REVIEW.md
+19. DEVELOPMENT_PORTAL_STATUS.md
+20. **METRICS_TAXONOMY.md** (New - Nov 8, 2025)
