@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.100.0] - 2025-11-08
+
+### Added
+- feat(ucs): Implement full role-variant support for Universal Component System
+
+
 ## [0.99.11] - 2025-11-07
 
 ### Fixed
@@ -3051,7 +3057,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.99.11...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.100.0...HEAD
+
+
+## [0.100.0] - 2025-11-08
+
+### Added
+- feat(ucs): Implement full role-variant support for Universal Component System
 
 
 ## [0.99.11] - 2025-11-07
@@ -4526,3 +4538,4 @@ To generate changelog entries:
 [0.99.9]: https://github.com/SirsiMaster/Assiduous/compare/v0.99.8...v0.99.9
 [0.99.10]: https://github.com/SirsiMaster/Assiduous/compare/v0.99.9...v0.99.10
 [0.99.11]: https://github.com/SirsiMaster/Assiduous/compare/v0.99.10...v0.99.11
+[0.100.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.99.11...v0.100.0
