@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent Dashboard - Assiduous Properties</title>
+    
+    <!-- Assiduous Design System -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SirsiMaster/ui-components@latest/dist/sirsimaster-ui.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fontsource/geist-sans@5.0.6/latin.css" rel="stylesheet">
+    
+    <link rel="stylesheet" href="../assiduous.css">
+    <link rel="stylesheet" href="../components/admin-layout.css">
+    
+    <style>
+        /* Dashboard-specific styles */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(200px, 280px));
+            gap: var(--space-lg);
+            margin-bottom: var(--space-2xl);
+        }
+        
+        @media (max-width: 1200px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .stat-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: var(--space-lg);
+            transition: all 0.2s;
+        }
+
+        .stat-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .stat-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: var(--space-md);
+        }
+
+        .stat-icon.blue { background: rgba(96, 163, 217, 0.1); color: var(--sky); }
+        .stat-icon.green { background: rgba(5, 150, 105, 0.1); color: var(--success); }
+        .stat-icon.yellow { background: rgba(255, 217, 64, 0.1); color: var(--warning); }
+        .stat-icon.red { background: rgba(220, 38, 38, 0.1); color: var(--danger); }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: var(--space-xs);
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+            margin-bottom: var(--space-sm);
+        }
+
+        .stat-change {
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .stat-change.up { color: var(--success); }
+        .stat-change.down { color: var(--danger); }
+    </style>
+</head>
+<body class="admin-wrapper" data-active="dashboard">
+    <!-- UCS Sidebar Component -->
+    <aside class="sidebar" data-component="sidebar" data-active="dashboard"></aside>
+
+    <!-- Main Content Area -->
+    <div class="main-content">
+        <!-- UCS Header Component -->
+        <header data-component="header"></header>
+
+        <!-- Dashboard Content -->
+        <div class="dashboard-content">
+            <h1 class="page-title">Welcome back, Agent!</h1>
+            <p class="page-subtitle">Here's your business overview and performance metrics</p>
+
+            <!-- Stats Overview -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon blue">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                        </svg>
+                    </div>
+                    <div class="stat-value">24</div>
+                    <div class="stat-label">Active Listings</div>
+                    <div class="stat-change up">↑ 3 new this week</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon green">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                    </div>
+                    <div class="stat-value">42</div>
+                    <div class="stat-label">Active Clients</div>
+                    <div class="stat-change up">↑ 5 new clients</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon yellow">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="1" x2="12" y2="23"></line>
+                            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                        </svg>
+                    </div>
+                    <div class="stat-value">$2.4M</div>
+                    <div class="stat-label">Monthly Revenue</div>
+                    <div class="stat-change up">↑ 18% this month</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon red">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 17H2a3 3 0 0 0 3-3V9a7 7 0 0 1 14 0v5a3 3 0 0 0 3 3zm-8.27 4a2 2 0 0 1-3.46 0"></path>
+                        </svg>
+                    </div>
+                    <div class="stat-value">8</div>
+                    <div class="stat-label">New Leads</div>
+                    <div class="stat-change up">↑ 2 today</div>
+                </div>
+            </div>
+
+            <!-- Activity Summary -->
+            <div class="content-grid">
+                <div class="data-table">
+                    <div class="table-header">
+                        <h2 class="table-title">Recent Activity</h2>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Client</th>
+                                <th>Property</th>
+                                <th>Activity</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Sarah Johnson</td>
+                                <td>123 Main St</td>
+                                <td>Viewing Scheduled</td>
+                                <td><span class="status pending">Tomorrow</span></td>
+                            </tr>
+                            <tr>
+                                <td>Mike Chen</td>
+                                <td>456 Oak Ave</td>
+                                <td>Offer Submitted</td>
+                                <td><span class="status active">In Review</span></td>
+                            </tr>
+                            <tr>
+                                <td>Emily Davis</td>
+                                <td>789 Pine Rd</td>
+                                <td>Contract Signed</td>
+                                <td><span class="status success">Closing Soon</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="activity-feed">
+                    <div class="table-header">
+                        <h2 class="table-title">Quick Actions</h2>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                            </svg>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-text">Add New Listing</div>
+                            <div class="activity-time">Create property listing</div>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect>
+                            </svg>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-text">Micro-Flip Calculator</div>
+                            <div class="activity-time">Analyze deals for clients</div>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                            </svg>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-text">View Schedule</div>
+                            <div class="activity-time">Check upcoming appointments</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- UCS Core Scripts -->
+    <script src="../components/ucs-core.js"></script>
+    <script src="../components/component-registry.js"></script>
+</body>
+</html>
