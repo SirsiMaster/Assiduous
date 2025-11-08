@@ -11,6 +11,15 @@
 (function(window) {
   'use strict';
 
+  // Helper to compute component path based on current location
+  function getComponentPath(filename) {
+    const path = window.location.pathname;
+    if (path.includes('/client/') || path.includes('/agent/') || path.includes('/admin/')) {
+      return '../components/' + filename;
+    }
+    return 'components/' + filename;
+  }
+
   // Component Registry
   window.UCS_REGISTRY = {
     
@@ -19,7 +28,7 @@
     // ========================================
     
     'sidebar': {
-      root: '../components/sidebar-root.html',
+      get root() { return getComponentPath('sidebar-root.html'); },
       onLoad: async (container, role, base) => {
         // Update logo text based on role
         const logoText = container.querySelector('[data-el="logo-text"]');
@@ -42,7 +51,7 @@
     },
     
     'header': {
-      root: '../components/universal-header.html',
+      get root() { return getComponentPath('universal-header.html'); },
       onLoad: async (container, role, base) => {
         // Initialize header dropdown toggles
         const userAvatar = container.querySelector('[data-user-avatar]');
