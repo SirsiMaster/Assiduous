@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.107.0] - 2025-11-08
+
+### Added
+- feat(ucs): batch convert all client and agent pages to UCS - 15 pages total
+
+
 ## [0.106.0] - 2025-11-08
 
 ### Added
@@ -3135,7 +3141,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.106.0...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.107.0...HEAD
+
+
+## [0.107.0] - 2025-11-08
+
+### Added
+- feat(ucs): batch convert all client and agent pages to UCS - 15 pages total
 
 
 ## [0.106.0] - 2025-11-08
@@ -4708,3 +4720,4 @@ To generate changelog entries:
 [0.104.2]: https://github.com/SirsiMaster/Assiduous/compare/v0.104.1...v0.104.2
 [0.105.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.104.2...v0.105.0
 [0.106.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.105.0...v0.106.0
+[0.107.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.106.0...v0.107.0
