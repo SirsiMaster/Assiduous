@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.111.0] - 2025-11-08
+
+### Added
+- feat(metrics): create specification compliance dashboard page
+
+
 ## [0.110.0] - 2025-11-08
 
 ### Added
@@ -3159,7 +3165,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.110.0...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.111.0...HEAD
+
+
+## [0.111.0] - 2025-11-08
+
+### Added
+- feat(metrics): create specification compliance dashboard page
 
 
 ## [0.110.0] - 2025-11-08
@@ -4760,3 +4772,4 @@ To generate changelog entries:
 [0.108.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.107.0...v0.108.0
 [0.109.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.108.0...v0.109.0
 [0.110.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.109.0...v0.110.0
+[0.111.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.110.0...v0.111.0
