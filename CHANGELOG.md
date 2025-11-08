@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.103.2] - 2025-11-08
+
+### Fixed
+- fix(ucs): integrate universal-header.js with UCS mounting
+
+
 ## [0.103.1] - 2025-11-08
 
 ### Fixed
@@ -3099,7 +3105,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.103.1...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.103.2...HEAD
+
+
+## [0.103.2] - 2025-11-08
+
+### Fixed
+- fix(ucs): integrate universal-header.js with UCS mounting
 
 
 ## [0.103.1] - 2025-11-08
@@ -4630,3 +4642,4 @@ To generate changelog entries:
 [0.102.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.101.2...v0.102.0
 [0.103.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.102.0...v0.103.0
 [0.103.1]: https://github.com/SirsiMaster/Assiduous/compare/v0.103.0...v0.103.1
+[0.103.2]: https://github.com/SirsiMaster/Assiduous/compare/v0.103.1...v0.103.2
