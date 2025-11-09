@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-11-09T22:40:11.253Z",
+  "lastUpdated": "2025-11-09T22:48:51.203Z",
   "summary": {
     "health": "Good",
     "score": 59,
@@ -152,21 +152,21 @@
     }
   },
   "project": {
-    "totalHours": "302",
+    "totalHours": "303",
     "avgHoursPerDay": "8.9",
-    "totalCost": 47265,
-    "laborCost": 45300,
+    "totalCost": 47415,
+    "laborCost": 45450,
     "toolsCost": 1965,
     "monthsElapsed": "3.0",
-    "totalCommits": 916,
-    "totalFiles": 799,
+    "totalCommits": 918,
+    "totalFiles": 798,
     "activeDays": 34,
     "totalDays": 92,
     "projectAgeDays": 92,
-    "linesAdded": 9799079,
-    "linesDeleted": 9420736,
-    "netLines": 378343,
-    "velocity": "26.9",
+    "linesAdded": 9799141,
+    "linesDeleted": 9421251,
+    "netLines": 377890,
+    "velocity": "27.0",
     "completionPercentage": 59,
     "actualStartDate": "2025-08-10",
     "architecture": {
@@ -177,21 +177,21 @@
   },
   "today": {
     "date": "2025-11-09",
-    "hours": "2.6",
-    "cost": 396,
-    "commits": 8,
+    "hours": "3.3",
+    "cost": 495,
+    "commits": 10,
     "deployments": 0
   },
   "thisWeek": {
-    "hours": "87.5",
-    "cost": 13118,
-    "commits": 265,
+    "hours": "88.1",
+    "cost": 13217,
+    "commits": 267,
     "days": 7
   },
   "thisMonth": {
-    "hours": "152.5",
-    "cost": 22869,
-    "commits": 462
+    "hours": "153.1",
+    "cost": 22968,
+    "commits": 464
   },
   "quality": {
     "testCoverage": {
@@ -225,7 +225,7 @@
       "critical": 0,
       "total": 0
     },
-    "lastAudit": "2025-11-09T22:39:41.487Z",
+    "lastAudit": "2025-11-09T22:48:21.213Z",
     "dependencies": {
       "total": {
         "prod": 256,
@@ -320,11 +320,11 @@
     "changelog": true,
     "contributing": false,
     "license": false,
-    "lastUpdate": "2025-11-09 22:38:23 +0000"
+    "lastUpdate": "2025-11-09 22:39:32 +0000"
   },
   "productivity": {
     "velocityTrend": "increasing",
-    "weeklyCommits": 265,
+    "weeklyCommits": 267,
     "contributors": {
       "total": 0,
       "active": 0
@@ -402,6 +402,18 @@
   },
   "recentActivity": [
     {
+      "hash": "fa175a503af90594d7ec6c50fa802490e06c46e4",
+      "message": "refactor(dev-metrics): remove specifications page, link to docs instead",
+      "author": "SirsiMaster",
+      "date": "2025-11-09 17:47:43 -0500"
+    },
+    {
+      "hash": "285c4fad2bfae50e8eda4655dc6a2991398cd7bd",
+      "message": "chore(release): Bump version to 0.114.0 [skip ci]",
+      "author": "github-actions[bot]",
+      "date": "2025-11-09 22:39:32 +0000"
+    },
+    {
       "hash": "58a6e77ce0f82473179764b2897beab6ce28bfec",
       "message": "chore(metrics): auto-update from git hooks",
       "author": "SirsiMaster",
@@ -448,22 +460,10 @@
       "message": "feat(dev-dashboard): add business readiness summary with spec compliance",
       "author": "SirsiMaster",
       "date": "2025-11-09 09:53:04 -0500"
-    },
-    {
-      "hash": "5364b6b728781ad656528eeb656bceda4d9989a8",
-      "message": "chore(release): Bump version to 0.111.0 [skip ci]",
-      "author": "github-actions[bot]",
-      "date": "2025-11-08 20:39:03 +0000"
-    },
-    {
-      "hash": "493ebd7346535b3d9bf64060b4735bef9951f40a",
-      "message": "feat(metrics): create specification compliance dashboard page",
-      "author": "SirsiMaster",
-      "date": "2025-11-08 15:38:39 -0500"
     }
   ],
   "automation": {
-    "lastRun": "2025-11-09T22:40:11.253Z",
+    "lastRun": "2025-11-09T22:48:51.203Z",
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",
