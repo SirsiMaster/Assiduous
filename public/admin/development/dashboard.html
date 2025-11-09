@@ -626,12 +626,11 @@
 
                 <!-- Quick Actions -->
                 <div class="quick-actions">
-                    <a href="costs.html" class="btn btn-primary">
+                    <a href="specifications.html" class="btn btn-primary">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <line x1="12" y1="1" x2="12" y2="23"></line>
-                            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                            <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
                         </svg>
-                        View Development Costs
+                        View Specifications (Ground Truth)
                     </a>
                     <a href="analytics.html" class="btn btn-secondary">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -641,12 +640,104 @@
                         </svg>
                         Dev Analytics
                     </a>
-                    <a href="reports.html" class="btn btn-secondary">
+                    <a href="costs.html" class="btn btn-secondary">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <line x1="12" y1="1" x2="12" y2="23"></line>
+                            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
                         </svg>
-                        Generate Reports
+                        View Development Costs
                     </a>
+                </div>
+
+                <!-- ========================================== -->
+                <!-- BUSINESS READINESS SUMMARY (GROUND TRUTH) -->
+                <!-- ========================================== -->
+                <div class="sm-sm-card" style="margin-bottom: var(--space-2xl); border: 2px solid var(--sky);">
+                    <div class="sm-sm-sm-sm-card-header" style="background: linear-gradient(135deg, var(--sky), var(--navy)); color: var(--white);">
+                        <div>
+                            <div class="sm-sm-card-title" style="color: var(--white);">🎯 Business Readiness (Specification Compliance)</div>
+                            <div style="font-size: 12px; opacity: 0.9; margin-top: 4px;">Ground truth metrics from canonical documentation</div>
+                        </div>
+                        <a href="specifications.html" class="sm-btn sm-btn-secondary" style="background: white; color: var(--navy);">
+                            View Full Specifications →
+                        </a>
+                    </div>
+                    <div class="sm-sm-sm-sm-card-body">
+                        <!-- Overall Completion -->
+                        <div style="margin-bottom: var(--space-2xl);">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-md);">
+                                <div>
+                                    <div style="font-size: 14px; font-weight: 600; color: var(--navy);">Overall Project Completion</div>
+                                    <div style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">Measured against 27 user stories and 7 core features from canonical specs</div>
+                                </div>
+                                <div style="font-size: 36px; font-weight: 700; color: var(--sky);" id="spec-overall">--</div>
+                            </div>
+                            <div class="progress-bar" style="height: 12px; background: var(--gray-100);">
+                                <div class="progress-fill" id="spec-overall-bar" style="width: 0%; background: linear-gradient(90deg, var(--sky), var(--navy));"></div>
+                            </div>
+                        </div>
+
+                        <!-- Portal Status Grid -->
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--space-lg); margin-bottom: var(--space-xl);">
+                            <!-- Admin Portal -->
+                            <div style="padding: var(--space-md); border-radius: var(--radius); background: var(--gray-50); border: 1px solid var(--border);">
+                                <div style="font-size: 12px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; margin-bottom: var(--space-xs);">Admin Portal</div>
+                                <div style="font-size: 24px; font-weight: 700; color: var(--navy); margin-bottom: var(--space-xs);" id="spec-admin">--</div>
+                                <div class="progress-bar" style="height: 6px;">
+                                    <div class="progress-fill" id="spec-admin-bar" style="width: 0%; background: var(--green);"></div>
+                                </div>
+                            </div>
+
+                            <!-- Client Portal -->
+                            <div style="padding: var(--space-md); border-radius: var(--radius); background: var(--gray-50); border: 1px solid var(--border);">
+                                <div style="font-size: 12px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; margin-bottom: var(--space-xs);">Client Portal</div>
+                                <div style="font-size: 24px; font-weight: 700; color: var(--navy); margin-bottom: var(--space-xs);" id="spec-client">--</div>
+                                <div class="progress-bar" style="height: 6px;">
+                                    <div class="progress-fill" id="spec-client-bar" style="width: 0%; background: var(--green);"></div>
+                                </div>
+                            </div>
+
+                            <!-- Agent Portal -->
+                            <div style="padding: var(--space-md); border-radius: var(--radius); background: var(--gray-50); border: 1px solid var(--border);">
+                                <div style="font-size: 12px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; margin-bottom: var(--space-xs);">Agent Portal</div>
+                                <div style="font-size: 24px; font-weight: 700; color: var(--navy); margin-bottom: var(--space-xs);" id="spec-agent">--</div>
+                                <div class="progress-bar" style="height: 6px;">
+                                    <div class="progress-fill" id="spec-agent-bar" style="width: 0%; background: var(--yellow);"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Critical Gaps Alert -->
+                        <div id="critical-gaps-alert" style="display: none; padding: var(--space-md); background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: var(--radius); margin-bottom: var(--space-lg);">
+                            <div style="font-size: 14px; font-weight: 600; color: #b91c1c; margin-bottom: var(--space-xs);">⚠️ Critical Gaps Identified</div>
+                            <div id="critical-gaps-list" style="font-size: 13px; color: #dc2626;"></div>
+                        </div>
+
+                        <!-- Metrics Summary -->
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: var(--space-md);">
+                            <div style="text-align: center; padding: var(--space-sm); border-radius: var(--radius); background: rgba(59, 130, 246, 0.05);">
+                                <div style="font-size: 20px; font-weight: 700; color: var(--navy);" id="spec-user-stories">--</div>
+                                <div style="font-size: 11px; color: var(--text-secondary); text-transform: uppercase; margin-top: 4px;">User Stories</div>
+                            </div>
+                            <div style="text-align: center; padding: var(--space-sm); border-radius: var(--radius); background: rgba(59, 130, 246, 0.05);">
+                                <div style="font-size: 20px; font-weight: 700; color: var(--navy);" id="spec-features">--</div>
+                                <div style="font-size: 11px; color: var(--text-secondary); text-transform: uppercase; margin-top: 4px;">Core Features</div>
+                            </div>
+                            <div style="text-align: center; padding: var(--space-sm); border-radius: var(--radius); background: rgba(59, 130, 246, 0.05);">
+                                <div style="font-size: 20px; font-weight: 700; color: var(--navy);" id="spec-portals">--</div>
+                                <div style="font-size: 11px; color: var(--text-secondary); text-transform: uppercase; margin-top: 4px;">Portal Avg</div>
+                            </div>
+                        </div>
+
+                        <!-- Last Updated -->
+                        <div style="margin-top: var(--space-lg); padding-top: var(--space-md); border-top: 1px solid var(--border); font-size: 12px; color: var(--text-secondary); text-align: center;">
+                            Calculated from <a href="../../docs/REQUIREMENTS_SPECIFICATION.md" style="color: var(--sky);">REQUIREMENTS_SPECIFICATION.md</a>, 
+                            <a href="../../docs/PROJECT_SCOPE.md" style="color: var(--sky);">PROJECT_SCOPE.md</a>, and 
+                            <a href="../../docs/USER_STORIES.md" style="color: var(--sky);">USER_STORIES.md</a>
+                            <span style="margin-left: var(--space-sm);">•</span>
+                            <span style="margin-left: var(--space-sm);" id="spec-last-updated">Last updated: --</span>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- PROJECT TOTALS - Historical Aggregates (Primary Focus) -->
@@ -923,6 +1014,9 @@
             await metricsService.initialize();
             console.log('✅ Firebase metrics service initialized');
             
+            // Load Business Readiness (spec compliance) data
+            loadSpecificationMetrics();
+            
             // Subscribe to real-time updates
             unsubscribe = metricsService.subscribeToMetrics((metrics) => {
                 console.log('🔥 Real-time update from Firebase');
@@ -941,6 +1035,63 @@
             
             // Create chart
             createChart();
+        }
+        
+        // Load Business Readiness metrics from spec-completion.json
+        async function loadSpecificationMetrics() {
+            try {
+                const response = await fetch('spec-completion.json');
+                if (!response.ok) {
+                    console.warn('spec-completion.json not found - run calculate-spec-completion.js');
+                    return;
+                }
+                
+                const data = await response.json();
+                console.log('📊 Loaded specification metrics:', data);
+                
+                // Update overall completion
+                const overall = data.completion.overall;
+                document.getElementById('spec-overall').textContent = `${overall}%`;
+                document.getElementById('spec-overall-bar').style.width = `${overall}%`;
+                
+                // Update portal completions
+                const adminPct = data.completion.details.admin;
+                document.getElementById('spec-admin').textContent = `${adminPct}%`;
+                document.getElementById('spec-admin-bar').style.width = `${adminPct}%`;
+                
+                const clientPct = data.completion.details.client;
+                document.getElementById('spec-client').textContent = `${clientPct}%`;
+                document.getElementById('spec-client-bar').style.width = `${clientPct}%`;
+                
+                const agentPct = data.completion.details.agent;
+                document.getElementById('spec-agent').textContent = `${agentPct}%`;
+                document.getElementById('spec-agent-bar').style.width = `${agentPct}%`;
+                
+                // Update metric summaries
+                document.getElementById('spec-user-stories').textContent = `${data.completion.userStories}%`;
+                document.getElementById('spec-features').textContent = `${data.completion.features}%`;
+                document.getElementById('spec-portals').textContent = `${data.completion.portals}%`;
+                
+                // Update last calculated timestamp
+                const calculatedAt = new Date(data.calculated_at).toLocaleString('en-US', {
+                    month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit'
+                });
+                document.getElementById('spec-last-updated').textContent = `Last updated: ${calculatedAt}`;
+                
+                // Show critical gaps if present
+                if (data.critical_gaps && data.critical_gaps.length > 0) {
+                    const alert = document.getElementById('critical-gaps-alert');
+                    alert.style.display = 'block';
+                    
+                    const gapsList = document.getElementById('critical-gaps-list');
+                    gapsList.innerHTML = data.critical_gaps.map(gap => 
+                        `<div style="margin-bottom: 4px;">• ${gap}</div>`
+                    ).join('');
+                }
+                
+            } catch (error) {
+                console.error('Failed to load specification metrics:', error);
+            }
         }
 
 
