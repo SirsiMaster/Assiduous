@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-11-09T22:39:06.306Z",
+  "lastUpdated": "2025-11-09T22:40:11.253Z",
   "summary": {
     "health": "Good",
     "score": 59,
@@ -152,20 +152,20 @@
     }
   },
   "project": {
-    "totalHours": "301",
+    "totalHours": "302",
     "avgHoursPerDay": "8.9",
-    "totalCost": 47115,
-    "laborCost": 45150,
+    "totalCost": 47265,
+    "laborCost": 45300,
     "toolsCost": 1965,
     "monthsElapsed": "3.0",
-    "totalCommits": 913,
+    "totalCommits": 916,
     "totalFiles": 799,
     "activeDays": 34,
     "totalDays": 92,
     "projectAgeDays": 92,
-    "linesAdded": 9799012,
-    "linesDeleted": 9420689,
-    "netLines": 378323,
+    "linesAdded": 9799079,
+    "linesDeleted": 9420736,
+    "netLines": 378343,
     "velocity": "26.9",
     "completionPercentage": 59,
     "actualStartDate": "2025-08-10",
@@ -177,21 +177,21 @@
   },
   "today": {
     "date": "2025-11-09",
-    "hours": "1.7",
-    "cost": 248,
-    "commits": 5,
+    "hours": "2.6",
+    "cost": 396,
+    "commits": 8,
     "deployments": 0
   },
   "thisWeek": {
-    "hours": "86.5",
-    "cost": 12969,
-    "commits": 262,
+    "hours": "87.5",
+    "cost": 13118,
+    "commits": 265,
     "days": 7
   },
   "thisMonth": {
-    "hours": "151.5",
-    "cost": 22721,
-    "commits": 459
+    "hours": "152.5",
+    "cost": 22869,
+    "commits": 462
   },
   "quality": {
     "testCoverage": {
@@ -225,7 +225,7 @@
       "critical": 0,
       "total": 0
     },
-    "lastAudit": "2025-11-09T22:38:35.623Z",
+    "lastAudit": "2025-11-09T22:39:41.487Z",
     "dependencies": {
       "total": {
         "prod": 256,
@@ -320,16 +320,16 @@
     "changelog": true,
     "contributing": false,
     "license": false,
-    "lastUpdate": "2025-11-09 14:54:29 +0000"
+    "lastUpdate": "2025-11-09 22:38:23 +0000"
   },
   "productivity": {
     "velocityTrend": "increasing",
-    "weeklyCommits": 262,
+    "weeklyCommits": 265,
     "contributors": {
       "total": 0,
       "active": 0
     },
-    "averageCommitSize": 95,
+    "averageCommitSize": 94,
     "pullRequests": {
       "open": 0,
       "merged": 0,
@@ -402,6 +402,24 @@
   },
   "recentActivity": [
     {
+      "hash": "58a6e77ce0f82473179764b2897beab6ce28bfec",
+      "message": "chore(metrics): auto-update from git hooks",
+      "author": "SirsiMaster",
+      "date": "2025-11-09 17:39:19 -0500"
+    },
+    {
+      "hash": "c69afe402e8e058d2cbe06b2dcc4df452b975d14",
+      "message": "feat(navigation): add specifications link to development section",
+      "author": "SirsiMaster",
+      "date": "2025-11-09 17:39:05 -0500"
+    },
+    {
+      "hash": "62a568007b84c88d8d9514008126123e7e564400",
+      "message": "chore(release): Bump version to 0.113.0 [skip ci]",
+      "author": "github-actions[bot]",
+      "date": "2025-11-09 22:38:23 +0000"
+    },
+    {
       "hash": "f0d03c2d5bb604aba9ac2974514b2e06bfc66d1a",
       "message": "chore(metrics): auto-update metrics.json from git hook",
       "author": "SirsiMaster",
@@ -442,28 +460,10 @@
       "message": "feat(metrics): create specification compliance dashboard page",
       "author": "SirsiMaster",
       "date": "2025-11-08 15:38:39 -0500"
-    },
-    {
-      "hash": "051e76f8b1e71ac2d83d68d2f9bf701f81cc20ee",
-      "message": "docs: add METRICS_TAXONOMY.md as 20th canonical document",
-      "author": "SirsiMaster",
-      "date": "2025-11-08 15:31:25 -0500"
-    },
-    {
-      "hash": "c5d797871c50d9cb443fb461f2544970f72cd5b2",
-      "message": "chore(metrics): update automated metrics after spec calculator commits",
-      "author": "SirsiMaster",
-      "date": "2025-11-08 15:27:44 -0500"
-    },
-    {
-      "hash": "26e75ddc909dd92213c8bc14ea7ee3424a56d1d2",
-      "message": "chore(release): Bump version to 0.110.0 [skip ci]",
-      "author": "github-actions[bot]",
-      "date": "2025-11-08 20:23:15 +0000"
     }
   ],
   "automation": {
-    "lastRun": "2025-11-09T22:39:06.306Z",
+    "lastRun": "2025-11-09T22:40:11.253Z",
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",
