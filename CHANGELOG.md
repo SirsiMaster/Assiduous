@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.114.1] - 2025-11-10
+
+### Fixed
+- fix(portals): add UCS scripts to client/agent index pages
+
+
 ## [0.114.0] - 2025-11-09
 
 ### Added
@@ -3183,7 +3189,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.114.0...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.114.1...HEAD
+
+
+## [0.114.1] - 2025-11-10
+
+### Fixed
+- fix(portals): add UCS scripts to client/agent index pages
 
 
 ## [0.114.0] - 2025-11-09
@@ -4812,3 +4824,4 @@ To generate changelog entries:
 [0.112.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.111.0...v0.112.0
 [0.113.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.112.0...v0.113.0
 [0.114.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.113.0...v0.114.0
+[0.114.1]: https://github.com/SirsiMaster/Assiduous/compare/v0.114.0...v0.114.1
