@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.115.0] - 2025-11-10
+
+### Added
+- feat(portals): create all missing sidebar-linked pages
+
+
 ## [0.114.7] - 2025-11-10
 
 ### Fixed
@@ -3225,7 +3231,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.114.7...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.115.0...HEAD
+
+
+## [0.115.0] - 2025-11-10
+
+### Added
+- feat(portals): create all missing sidebar-linked pages
 
 
 ## [0.114.7] - 2025-11-10
@@ -4903,3 +4915,4 @@ To generate changelog entries:
 [0.114.5]: https://github.com/SirsiMaster/Assiduous/compare/v0.114.4...v0.114.5
 [0.114.6]: https://github.com/SirsiMaster/Assiduous/compare/v0.114.5...v0.114.6
 [0.114.7]: https://github.com/SirsiMaster/Assiduous/compare/v0.114.6...v0.114.7
+[0.115.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.114.7...v0.115.0
