@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.114.3] - 2025-11-10
+
+### Fixed
+- fix(client): add missing sidebar class to aside element
+
+
 ## [0.114.2] - 2025-11-10
 
 ### Fixed
@@ -3195,7 +3201,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.114.2...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.114.3...HEAD
+
+
+## [0.114.3] - 2025-11-10
+
+### Fixed
+- fix(client): add missing sidebar class to aside element
 
 
 ## [0.114.2] - 2025-11-10
@@ -4838,3 +4850,4 @@ To generate changelog entries:
 [0.114.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.113.0...v0.114.0
 [0.114.1]: https://github.com/SirsiMaster/Assiduous/compare/v0.114.0...v0.114.1
 [0.114.2]: https://github.com/SirsiMaster/Assiduous/compare/v0.114.1...v0.114.2
+[0.114.3]: https://github.com/SirsiMaster/Assiduous/compare/v0.114.2...v0.114.3
