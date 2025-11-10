@@ -1,11 +1,11 @@
 {
-  "lastUpdated": "2025-11-10T02:28:22.717Z",
+  "lastUpdated": "2025-11-10T02:35:59.033Z",
   "summary": {
     "health": "Good",
     "score": 59,
     "trend": "increasing",
     "alerts": [
-      "✅ UCS implementation complete - 19 pages converted",
+      "✅ UCS implementation complete - 21 pages converted",
       "⚠️ Test coverage is very low",
       "⏰ Timeline warning - 21 days until launch"
     ]
@@ -100,18 +100,18 @@
         "Universal header template",
         "Role-based filtering",
         "Token replacement system",
-        "19 pages converted",
+        "21 pages converted",
         "5,000+ lines of code removed",
         "Complete documentation"
       ],
       "remainingTasks": [],
       "metrics": {
-        "totalPagesConverted": 19,
-        "clientPages": 12,
-        "agentPages": 7,
+        "totalPagesConverted": 21,
+        "clientPages": 13,
+        "agentPages": 8,
         "linesRemoved": 5000,
         "componentReuse": "100%",
-        "adoptionRate": "49%"
+        "adoptionRate": "54%"
       }
     },
     "microFlipping": {
@@ -158,40 +158,40 @@
     "laborCost": 46050,
     "toolsCost": 1965,
     "monthsElapsed": "3.0",
-    "totalCommits": 929,
-    "totalFiles": 801,
+    "totalCommits": 930,
+    "totalFiles": 802,
     "activeDays": 35,
     "totalDays": 92,
     "projectAgeDays": 92,
-    "linesAdded": 9800376,
-    "linesDeleted": 9423199,
-    "netLines": 377177,
-    "velocity": "26.5",
+    "linesAdded": 9801093,
+    "linesDeleted": 9425819,
+    "netLines": 375274,
+    "velocity": "26.6",
     "completionPercentage": 59,
     "actualStartDate": "2025-08-10",
     "architecture": {
-      "ucsAdoption": "49%",
+      "ucsAdoption": "54%",
       "componentReuse": "100%",
       "codeReduction": 5000
     }
   },
   "today": {
     "date": "2025-11-10",
-    "hours": "6.9",
-    "cost": 1040,
-    "commits": 21,
+    "hours": "7.3",
+    "cost": 1089,
+    "commits": 22,
     "deployments": 0
   },
   "thisWeek": {
-    "hours": "82.8",
-    "cost": 12425,
-    "commits": 251,
+    "hours": "82.5",
+    "cost": 12375,
+    "commits": 250,
     "days": 7
   },
   "thisMonth": {
-    "hours": "156.8",
-    "cost": 23513,
-    "commits": 475
+    "hours": "157.1",
+    "cost": 23562,
+    "commits": 476
   },
   "quality": {
     "testCoverage": {
@@ -225,7 +225,7 @@
       "critical": 0,
       "total": 0
     },
-    "lastAudit": "2025-11-10T02:27:55.480Z",
+    "lastAudit": "2025-11-10T02:35:26.996Z",
     "dependencies": {
       "total": {
         "prod": 256,
@@ -324,7 +324,7 @@
   },
   "productivity": {
     "velocityTrend": "increasing",
-    "weeklyCommits": 251,
+    "weeklyCommits": 250,
     "contributors": {
       "total": 0,
       "active": 0
@@ -402,6 +402,12 @@
   },
   "recentActivity": [
     {
+      "hash": "6d19add14dc1226e70b2df0445a88c4d67fa1780",
+      "message": "fix(portals): completely rebuild all broken pages with correct UCS structure",
+      "author": "SirsiMaster",
+      "date": "2025-11-09 21:34:54 -0500"
+    },
+    {
       "hash": "875c8b16d05dc27b708b7ac85ad9e77103691598",
       "message": "chore(release): Bump version to 0.114.5 [skip ci]",
       "author": "github-actions[bot]",
@@ -454,16 +460,10 @@
       "message": "chore(release): Bump version to 0.114.1 [skip ci]",
       "author": "github-actions[bot]",
       "date": "2025-11-10 02:05:26 +0000"
-    },
-    {
-      "hash": "36b8b28291fa911d9649c795f5ce504577720559",
-      "message": "fix(portals): add UCS scripts to client/agent index pages",
-      "author": "SirsiMaster",
-      "date": "2025-11-09 21:05:05 -0500"
     }
   ],
   "automation": {
-    "lastRun": "2025-11-10T02:28:22.717Z",
+    "lastRun": "2025-11-10T02:35:59.033Z",
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",
