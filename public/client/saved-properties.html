@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Saved Properties - Assiduous Client Portal</title>
     
+    <!-- Assiduous Design System -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SirsiMaster/ui-components@latest/dist/sirsimaster-ui.css">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,23 +14,600 @@
     
     <link rel="stylesheet" href="../assiduous.css">
     <link rel="stylesheet" href="../components/admin-layout.css">
+    
+    <style>
+/* Minimal page-specific styles - design system handles most */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--space-lg);
+            margin-bottom: var(--space-xl);
+        }
+        
+        .stat-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: var(--space-lg);
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: var(--space-xs);
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .filters-bar {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: var(--space-lg);
+            margin-bottom: var(--space-xl);
+            display: flex;
+            gap: var(--space-md);
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .filter-select {
+            padding: var(--space-sm) var(--space-md);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            font-size: 14px;
+            background: var(--white);
+            cursor: pointer;
+        }
+        
+        .properties-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: var(--space-lg);
+        }
+        
+        .property-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            transition: all 0.2s;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .property-card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-4px);
+        }
+        
+        .property-image {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            background: var(--gray-100);
+        }
+        
+        .saved-badge {
+            position: absolute;
+            top: var(--space-md);
+            right: var(--space-md);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: var(--shadow-md);
+            font-size: 18px;
+        }
+        
+        .saved-badge:hover {
+            transform: scale(1.1);
+        }
+        
+        .property-content {
+            padding: var(--space-md);
+        }
+        
+        .property-price {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: var(--space-xs);
+        }
+        
+        .property-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: var(--space-xs);
+        }
+        
+        .property-address {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-md);
+        }
+        
+        .property-details {
+            display: flex;
+            gap: var(--space-md);
+            padding-top: var(--space-md);
+            border-top: 1px solid var(--border);
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        
+        .property-badges {
+            display: flex;
+            gap: var(--space-sm);
+            margin-top: var(--space-md);
+        }
+        
+        .badge {
+            padding: 4px 12px;
+            border-radius: var(--radius);
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .badge-roi {
+            background: rgba(5, 150, 105, 0.1);
+            color: var(--success);
+        }
+        
+        .badge-score {
+            background: rgba(96, 163, 217, 0.1);
+            color: var(--sky);
+        }
+        
+        .saved-date {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: var(--space-sm);
+        }
+        
+        .empty-state {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: var(--space-3xl);
+            text-align: center;
+        }
+        
+        .empty-icon {
+            font-size: 64px;
+            margin-bottom: var(--space-lg);
+        }
+        
+        .empty-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--navy);
+            margin-bottom: var(--space-sm);
+        }
+        
+        .empty-text {
+            font-size: 16px;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-xl);
+        }
+        
+        .loading {
+            text-align: center;
+            padding: var(--space-3xl);
+            font-size: 18px;
+            color: var(--text-secondary);
+        }
+    </style>
 </head>
 <body class="admin-wrapper" data-active="saved-properties">
+    <!-- UCS Sidebar Component -->
     <aside class="sidebar" data-component="sidebar"></aside>
+
+    <!-- Main Content Area -->
     <div class="main-content">
+        <!-- UCS Header Component -->
         <header data-component="header"></header>
+
+        <!-- Dashboard Content -->
         <div class="dashboard-content">
-            <h1 class="page-title">Saved Properties</h1>
-            <p class="page-subtitle">This feature is under development</p>
-            
-            <div style="text-align: center; padding: 60px 20px;">
-                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin: 0 auto; opacity: 0.3;"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
-                <h3 style="margin: 20px 0 10px; color: var(--text-primary);">Saved Properties Coming Soon</h3>
-                <p style="color: var(--text-secondary);">This feature will be available in a future update</p>
-            </div>
+<!-- Statistics Cards -->
+                <div class="stats-grid" id="statsBar">
+                    <div class="stat-card">
+                        <div class="stat-value" id="totalSaved">0</div>
+                        <div class="stat-label">Total Saved</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="totalValue">$0</div>
+                        <div class="stat-label">Combined Value</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="avgROI">0%</div>
+                        <div class="stat-label">Average ROI</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="potentialProfit">$0</div>
+                        <div class="stat-label">Total Potential Profit</div>
+                    </div>
+                </div>
+        
+                <!-- Filters Bar -->
+                <div class="filters-bar">
+                    <select class="filter-select" id="sortBy">
+                        <option value="savedAt">Recently Saved</option>
+                        <option value="price-low">Price: Low to High</option>
+                        <option value="price-high">Price: High to Low</option>
+                        <option value="roi">ROI: High to Low</option>
+                        <option value="neighborhood">Neighborhood</option>
+                    </select>
+                    
+                    <select class="filter-select" id="filterType">
+                        <option value="">All Types</option>
+                        <option value="single_family">Single Family</option>
+                        <option value="townhouse">Townhouse</option>
+                        <option value="condo">Condo</option>
+                        <option value="multi_family">Multi Family</option>
+                    </select>
+                    
+                    <button class="btn btn-secondary" onclick="exportSaved()">📥 Export List</button>
+                    <button class="btn btn-secondary" onclick="clearAll()">🗑️ Clear All</button>
+                </div>
+        
+                <!-- Loading State -->
+                <div id="loading" class="loading" style="display: none;">Loading saved properties...</div>
+                
+                <!-- Properties Grid -->
+                <div id="propertiesGrid" class="properties-grid"></div>
+                
+                <!-- Empty State -->
+                <div id="emptyState" class="empty-state" style="display: none;">
+                    <div class="empty-icon">❤️</div>
+                    <h2 class="empty-title">No Saved Properties Yet</h2>
+                    <p class="empty-text">Start browsing properties and save your favorites to see them here</p>
+                    <button class="btn btn-primary" onclick="window.location.href='/client/properties.html'">
+                        📋 Browse Properties
+                    </button>
+                </div>
         </div>
     </div>
+
+    <!-- UCS Core Scripts -->
     <script src="../components/ucs-core.js"></script>
     <script src="../components/component-registry.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="../firebase-config.js"></script>
+    <script>
+        window.addEventListener('firebase-ready', function() {
+            // Load universal header
+            const headerScript = document.createElement('script');
+            headerScript.src = '../components/universal-header.js';
+            document.head.appendChild(headerScript);
+            
+            // Load auth guard after header
+            headerScript.onload = function() {
+                // Load sidebar first
+                const sidebarScript = document.createElement('script');
+                sidebarScript.src = '../components/sidebar.js';
+                document.head.appendChild(sidebarScript);
+                
+                // Then auth guard
+                sidebarScript.onload = function() {
+                    const authScript = document.createElement('script');
+                    authScript.src = '../components/auth-guard-simple.js';
+                    document.head.appendChild(authScript);
+                };
+            };
+        });
+    </script>
+    <script>
+        // Wait for Firebase to be ready
+        window.addEventListener('firebase-ready', function() {
+            const db = window.db;
+            const auth = window.auth;
+        
+        let savedProperties = [];
+        let displayedProperties = [];
+        
+        // Load saved properties
+        async function loadSavedProperties() {
+            const loading = document.getElementById('loading');
+            const grid = document.getElementById('propertiesGrid');
+            const empty = document.getElementById('emptyState');
+            
+            loading.style.display = 'block';
+            grid.innerHTML = '';
+            empty.style.display = 'none';
+            
+            // First try to load from user's Firebase profile
+            if (auth.currentUser) {
+                try {
+                    const userDoc = await db.collection('users').doc(auth.currentUser.uid).get();
+                    if (userDoc.exists && userDoc.data().savedProperties) {
+                        savedProperties = userDoc.data().savedProperties;
+                    }
+                } catch (error) {
+                    console.log('Could not load from Firebase:', error);
+                }
+            }
+            
+            // Also check localStorage
+            const localSaved = JSON.parse(localStorage.getItem('savedProperties') || '[]');
+            
+            // Merge and deduplicate
+            const allSaved = [...savedProperties, ...localSaved];
+            const uniqueSaved = Array.from(new Map(allSaved.map(p => [p.id, p])).values());
+            savedProperties = uniqueSaved;
+            
+            loading.style.display = 'none';
+            
+            if (savedProperties.length === 0) {
+                empty.style.display = 'block';
+                updateStats();
+                return;
+            }
+            
+            // Load full property details for saved properties
+            await loadPropertyDetails();
+        }
+        
+        // Load full details for saved properties
+        async function loadPropertyDetails() {
+            const detailedProperties = [];
+            
+            for (const saved of savedProperties) {
+                if (saved.id === 'demo-property') {
+                    // Add demo property with full details
+                    detailedProperties.push({
+                        ...saved,
+                        id: 'demo-property',
+                        title: saved.title || '3BR Townhouse in Fishtown',
+                        price: saved.price || 285000,
+                        address: saved.address || '2547 Frankford Avenue',
+                        neighborhood: 'Fishtown',
+                        bedrooms: 3,
+                        bathrooms: 2,
+                        sqft: 1450,
+                        type: 'townhouse',
+                        image: saved.image || 'https://source.unsplash.com/800x600/?townhouse,philadelphia',
+                        microFlipping: {
+                            roi: 25,
+                            investmentScore: 87,
+                            potentialProfit: 65000
+                        }
+                    });
+                } else {
+                    try {
+                        // Try to load from Firebase
+                        const doc = await db.collection('properties').doc(saved.id).get();
+                        if (doc.exists) {
+                            detailedProperties.push({
+                                ...saved,
+                                ...doc.data(),
+                                id: doc.id
+                            });
+                        } else {
+                            // Use saved data as-is
+                            detailedProperties.push(saved);
+                        }
+                    } catch (error) {
+                        // Use saved data as-is
+                        detailedProperties.push(saved);
+                    }
+                }
+            }
+            
+            displayedProperties = detailedProperties;
+            displayProperties(detailedProperties);
+            updateStats();
+        }
+        
+        // Display properties
+        function displayProperties(properties) {
+            const grid = document.getElementById('propertiesGrid');
+            
+            if (properties.length === 0) {
+                document.getElementById('emptyState').style.display = 'block';
+                grid.innerHTML = '';
+                return;
+            }
+            
+            grid.innerHTML = properties.map(property => {
+                const savedDate = property.savedAt ? new Date(property.savedAt) : new Date();
+                const daysAgo = Math.floor((Date.now() - savedDate) / (1000 * 60 * 60 * 24));
+                
+                return `
+                    <div class="property-card" onclick="viewProperty('${property.id}')">
+                        <div class="saved-badge" onclick="event.stopPropagation(); removeSaved('${property.id}')">
+                            ❤️
+                        </div>
+                        <img class="property-image" 
+                             src="${property.image || 'https://source.unsplash.com/800x600/?house,philadelphia'}" 
+                             alt="${property.title}"
+                             onerror="this.src='https://via.placeholder.com/800x600?text=Property+Image'">
+                        <div class="property-content">
+                            <div class="property-price">$${(property.price || 0).toLocaleString()}</div>
+                            <div class="property-title">${property.title || 'Investment Property'}</div>
+                            <div class="property-address">${property.address || 'Philadelphia, PA'}</div>
+                            
+                            <div class="property-details">
+                                ${property.bedrooms ? `
+                                    <div class="detail">🛏️ ${property.bedrooms} bed</div>
+                                ` : ''}
+                                ${property.bathrooms ? `
+                                    <div class="detail">🚿 ${property.bathrooms} bath</div>
+                                ` : ''}
+                                ${property.sqft ? `
+                                    <div class="detail">📏 ${property.sqft.toLocaleString()} sqft</div>
+                                ` : ''}
+                            </div>
+                            
+                            ${property.microFlipping ? `
+                                <div class="property-badges">
+                                    <span class="badge badge-roi">${property.microFlipping.roi}% ROI</span>
+                                    <span class="badge badge-score">Score: ${property.microFlipping.investmentScore}/100</span>
+                                </div>
+                            ` : ''}
+                            
+                            <div class="saved-date">
+                                Saved ${daysAgo === 0 ? 'today' : daysAgo === 1 ? 'yesterday' : `${daysAgo} days ago`}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        // Update statistics
+        function updateStats() {
+            const totalSaved = displayedProperties.length;
+            const totalValue = displayedProperties.reduce((sum, p) => sum + (p.price || 0), 0);
+            const avgROI = displayedProperties.length > 0 ? 
+                displayedProperties.reduce((sum, p) => sum + (p.microFlipping?.roi || 0), 0) / displayedProperties.length : 0;
+            const potentialProfit = displayedProperties.reduce((sum, p) => sum + (p.microFlipping?.potentialProfit || 0), 0);
+            
+            document.getElementById('totalSaved').textContent = totalSaved;
+            document.getElementById('totalValue').textContent = totalValue > 0 ? `$${(totalValue / 1000000).toFixed(1)}M` : '$0';
+            document.getElementById('avgROI').textContent = `${Math.round(avgROI)}%`;
+            document.getElementById('potentialProfit').textContent = potentialProfit > 0 ? `$${(potentialProfit / 1000).toFixed(0)}K` : '$0';
+        }
+        
+        // View property details
+        function viewProperty(propertyId) {
+            if (propertyId === 'demo-property') {
+                window.location.href = '/client/property-detail.html';
+            } else {
+                window.location.href = `/client/property-detail.html?id=${propertyId}`;
+            }
+        }
+        
+        // Remove from saved
+        async function removeSaved(propertyId) {
+            const index = savedProperties.findIndex(p => p.id === propertyId);
+            if (index > -1) {
+                savedProperties.splice(index, 1);
+                
+                // Update localStorage
+                localStorage.setItem('savedProperties', JSON.stringify(savedProperties));
+                
+                // Update Firebase if logged in
+                if (auth.currentUser) {
+                    try {
+                        await db.collection('users').doc(auth.currentUser.uid).update({
+                            savedProperties: savedProperties
+                        });
+                    } catch (error) {
+                        console.log('Could not update Firebase:', error);
+                    }
+                }
+                
+                // Reload display
+                await loadPropertyDetails();
+            }
+        }
+        
+        // Sort properties
+        document.getElementById('sortBy').addEventListener('change', (e) => {
+            const sortBy = e.target.value;
+            let sorted = [...displayedProperties];
+            
+            switch(sortBy) {
+                case 'savedAt':
+                    sorted.sort((a, b) => new Date(b.savedAt || 0) - new Date(a.savedAt || 0));
+                    break;
+                case 'price-low':
+                    sorted.sort((a, b) => (a.price || 0) - (b.price || 0));
+                    break;
+                case 'price-high':
+                    sorted.sort((a, b) => (b.price || 0) - (a.price || 0));
+                    break;
+                case 'roi':
+                    sorted.sort((a, b) => (b.microFlipping?.roi || 0) - (a.microFlipping?.roi || 0));
+                    break;
+                case 'neighborhood':
+                    sorted.sort((a, b) => (a.neighborhood || '').localeCompare(b.neighborhood || ''));
+                    break;
+            }
+            
+            displayProperties(sorted);
+        });
+        
+        // Filter by type
+        document.getElementById('filterType').addEventListener('change', (e) => {
+            const type = e.target.value;
+            
+            if (!type) {
+                displayProperties(displayedProperties);
+            } else {
+                const filtered = displayedProperties.filter(p => p.type === type);
+                displayProperties(filtered);
+            }
+        });
+        
+        // Export saved list
+        function exportSaved() {
+            const csv = [
+                'Title,Address,Price,Bedrooms,Bathrooms,Sqft,ROI,Score',
+                ...displayedProperties.map(p => 
+                    `"${p.title || ''}","${p.address || ''}",${p.price || 0},${p.bedrooms || ''},${p.bathrooms || ''},${p.sqft || ''},${p.microFlipping?.roi || ''}%,${p.microFlipping?.investmentScore || ''}`
+                )
+            ].join('\n');
+            
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `saved-properties-${new Date().toISOString().split('T')[0]}.csv`;
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
+        
+        // Clear all saved
+        function clearAll() {
+            if (confirm('Are you sure you want to clear all saved properties? This cannot be undone.')) {
+                savedProperties = [];
+                displayedProperties = [];
+                localStorage.setItem('savedProperties', '[]');
+                
+                if (auth.currentUser) {
+                    db.collection('users').doc(auth.currentUser.uid).update({
+                        savedProperties: []
+                    }).catch(console.error);
+                }
+                
+                document.getElementById('propertiesGrid').innerHTML = '';
+                document.getElementById('emptyState').style.display = 'block';
+                updateStats();
+            }
+        }
+        
+        // Check auth state
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                console.log('User logged in:', user.email);
+            }
+            loadSavedProperties();
+        });
+        
+            // Load on page load
+            if (!auth.currentUser) {
+                // Still load from localStorage even if not logged in
+                loadSavedProperties();
+            }
+        });
+    </script>
 </body>
 </html>

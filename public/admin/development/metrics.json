@@ -1,11 +1,11 @@
 {
-  "lastUpdated": "2025-11-10T16:58:14.472Z",
+  "lastUpdated": "2025-11-10T17:09:33.835Z",
   "summary": {
     "health": "Good",
     "score": 59,
     "trend": "stable",
     "alerts": [
-      "✅ UCS implementation complete - 21 pages converted",
+      "✅ UCS implementation complete - 32 pages converted",
       "⚠️ Test coverage is very low",
       "⏰ Timeline warning - 21 days until launch"
     ]
@@ -100,18 +100,18 @@
         "Universal header template",
         "Role-based filtering",
         "Token replacement system",
-        "21 pages converted",
+        "32 pages converted",
         "5,000+ lines of code removed",
         "Complete documentation"
       ],
       "remainingTasks": [],
       "metrics": {
-        "totalPagesConverted": 21,
-        "clientPages": 13,
-        "agentPages": 8,
+        "totalPagesConverted": 32,
+        "clientPages": 17,
+        "agentPages": 15,
         "linesRemoved": 5000,
         "componentReuse": "100%",
-        "adoptionRate": "54%"
+        "adoptionRate": "64%"
       }
     },
     "microFlipping": {
@@ -158,40 +158,40 @@
     "laborCost": 46200,
     "toolsCost": 1965,
     "monthsElapsed": "3.0",
-    "totalCommits": 932,
-    "totalFiles": 802,
+    "totalCommits": 934,
+    "totalFiles": 813,
     "activeDays": 35,
     "totalDays": 92,
     "projectAgeDays": 92,
-    "linesAdded": 9801197,
-    "linesDeleted": 9425910,
-    "netLines": 375287,
-    "velocity": "26.6",
+    "linesAdded": 9801668,
+    "linesDeleted": 9425970,
+    "netLines": 375698,
+    "velocity": "26.7",
     "completionPercentage": 59,
     "actualStartDate": "2025-08-10",
     "architecture": {
-      "ucsAdoption": "54%",
+      "ucsAdoption": "64%",
       "componentReuse": "100%",
       "codeReduction": 5000
     }
   },
   "today": {
     "date": "2025-11-10",
-    "hours": "6.9",
-    "cost": 1040,
-    "commits": 21,
+    "hours": "7.6",
+    "cost": 1139,
+    "commits": 23,
     "deployments": 0
   },
   "thisWeek": {
-    "hours": "61.1",
-    "cost": 9158,
-    "commits": 185,
+    "hours": "61.7",
+    "cost": 9257,
+    "commits": 187,
     "days": 7
   },
   "thisMonth": {
-    "hours": "153.8",
-    "cost": 23067,
-    "commits": 466
+    "hours": "154.4",
+    "cost": 23166,
+    "commits": 468
   },
   "quality": {
     "testCoverage": {
@@ -225,7 +225,7 @@
       "critical": 0,
       "total": 0
     },
-    "lastAudit": "2025-11-10T16:57:43.293Z",
+    "lastAudit": "2025-11-10T17:09:02.355Z",
     "dependencies": {
       "total": {
         "prod": 256,
@@ -320,11 +320,11 @@
     "changelog": true,
     "contributing": false,
     "license": false,
-    "lastUpdate": "2025-11-10 02:35:20 +0000"
+    "lastUpdate": "2025-11-10 16:57:33 +0000"
   },
   "productivity": {
     "velocityTrend": "stable",
-    "weeklyCommits": 185,
+    "weeklyCommits": 187,
     "contributors": {
       "total": 0,
       "active": 0
@@ -402,6 +402,18 @@
   },
   "recentActivity": [
     {
+      "hash": "5c5c4faa7be6dd32836fc5f690fc256cd500c506",
+      "message": "feat(portals): create all missing sidebar-linked pages",
+      "author": "SirsiMaster",
+      "date": "2025-11-10 12:08:28 -0500"
+    },
+    {
+      "hash": "7e7bbf2c8b299c8f48ef8b305932268490107618",
+      "message": "chore(release): Bump version to 0.114.7 [skip ci]",
+      "author": "github-actions[bot]",
+      "date": "2025-11-10 16:57:33 +0000"
+    },
+    {
       "hash": "407bdf9238858c8391aab6c214fb9a8e0d6ee981",
       "message": "fix(portals): replace {{BASE_PATH}} template variables with relative paths",
       "author": "SirsiMaster",
@@ -448,22 +460,10 @@
       "message": "chore(release): Bump version to 0.114.3 [skip ci]",
       "author": "github-actions[bot]",
       "date": "2025-11-10 02:19:58 +0000"
-    },
-    {
-      "hash": "80e44d9367bed313a5773a5674aa8af5b42051e1",
-      "message": "fix(client): add missing sidebar class to aside element",
-      "author": "SirsiMaster",
-      "date": "2025-11-09 21:19:31 -0500"
-    },
-    {
-      "hash": "66b0449620cee763908a93191142b1edeb152e49",
-      "message": "chore(release): Bump version to 0.114.2 [skip ci]",
-      "author": "github-actions[bot]",
-      "date": "2025-11-10 02:17:46 +0000"
     }
   ],
   "automation": {
-    "lastRun": "2025-11-10T16:58:14.472Z",
+    "lastRun": "2025-11-10T17:09:33.835Z",
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",

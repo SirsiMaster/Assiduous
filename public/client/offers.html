@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Offers - Assiduous Client Portal</title>
     
+    <!-- Assiduous Design System -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SirsiMaster/ui-components@latest/dist/sirsimaster-ui.css">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,23 +14,858 @@
     
     <link rel="stylesheet" href="../assiduous.css">
     <link rel="stylesheet" href="../components/admin-layout.css">
+    
+    <style>
+/* Page-specific styles using design system variables */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: var(--space-xl);
+            margin-bottom: var(--space-xl);
+        }
+        
+        .viewings-section {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: var(--space-lg);
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-lg);
+            padding-bottom: var(--space-md);
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--navy);
+        }
+        
+        .tabs {
+            display: flex;
+            gap: var(--space-sm);
+            margin-bottom: var(--space-lg);
+        }
+        
+        .tab {
+            padding: var(--space-sm) var(--space-md);
+            background: var(--gray-50);
+            border: none;
+            border-radius: var(--radius);
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .tab:hover {
+            background: var(--gray-100);
+        }
+        
+        .tab.active {
+            background: var(--sky);
+            color: var(--white);
+        }
+        
+        .viewing-card {
+            background: var(--gray-50);
+            border-radius: var(--radius-md);
+            padding: var(--space-md);
+            margin-bottom: var(--space-md);
+            border-left: 4px solid var(--sky);
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        
+        .viewing-card:hover {
+            transform: translateX(4px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .viewing-card.cancelled {
+            opacity: 0.6;
+            border-left-color: var(--danger);
+        }
+        
+        .viewing-card.completed {
+            border-left-color: var(--success);
+        }
+        
+        .viewing-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: var(--space-md);
+        }
+        
+        .viewing-date {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--navy);
+        }
+        
+        .viewing-time {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+        
+        .viewing-status {
+            padding: 4px 12px;
+            border-radius: var(--radius);
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .status-pending {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--warning);
+        }
+        
+        .status-confirmed {
+            background: rgba(5, 150, 105, 0.1);
+            color: var(--success);
+        }
+        
+        .status-cancelled {
+            background: rgba(220, 38, 38, 0.1);
+            color: var(--danger);
+        }
+        
+        .property-info {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: var(--space-md);
+            margin-bottom: var(--space-md);
+        }
+        
+        .property-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--navy);
+            margin-bottom: 4px;
+        }
+        
+        .property-address {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        
+        .viewing-notes {
+            font-size: 14px;
+            color: var(--text-secondary);
+            background: var(--white);
+            padding: var(--space-sm);
+            border-radius: var(--radius);
+            margin-top: var(--space-sm);
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: var(--space-sm);
+            margin-top: var(--space-md);
+        }
+        
+        .btn {
+            padding: var(--space-xs) var(--space-md);
+            border: none;
+            border-radius: var(--radius);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .btn:hover {
+            transform: translateY(-1px);
+        }
+        
+        .btn-primary {
+            background: var(--sky);
+            color: var(--white);
+        }
+        
+        .btn-primary:hover {
+            background: var(--sky-dark);
+        }
+        
+        .btn-secondary {
+            background: var(--white);
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+        }
+        
+        .btn-secondary:hover {
+            background: var(--gray-50);
+        }
+        
+        .btn-danger {
+            background: var(--danger);
+            color: var(--white);
+        }
+        
+        .btn-danger:hover {
+            background: #b91c1c;
+        }
+        
+        
+        
+        .calendar-widget, .quick-stats {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: var(--space-lg);
+        }
+        
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-md);
+        }
+        
+        .month-year {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--navy);
+        }
+        
+        .calendar-nav {
+            display: flex;
+            gap: var(--space-sm);
+        }
+        
+        .nav-btn {
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: var(--gray-50);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .nav-btn:hover {
+            background: var(--gray-100);
+        }
+        
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+        }
+        
+        .day-header {
+            text-align: center;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            padding: var(--space-sm) 0;
+        }
+        
+        .calendar-day {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--radius);
+            font-size: 14px;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.2s;
+        }
+        
+        .calendar-day:hover {
+            background: var(--gray-50);
+        }
+        
+        .calendar-day.other-month {
+            color: var(--text-tertiary);
+        }
+        
+        .calendar-day.today {
+            background: rgba(96, 163, 217, 0.1);
+            color: var(--sky);
+            font-weight: 600;
+        }
+        
+        .calendar-day.has-viewing {
+            background: var(--sky);
+            color: var(--white);
+        }
+        
+        .viewing-dot {
+            position: absolute;
+            bottom: 4px;
+            width: 6px;
+            height: 6px;
+            background: var(--danger);
+            border-radius: 50%;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--space-md);
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 4px;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        
+        .empty-state {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: var(--space-3xl);
+            text-align: center;
+        }
+        
+        .empty-icon {
+            font-size: 64px;
+            margin-bottom: var(--space-lg);
+        }
+        
+        .empty-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--navy);
+            margin-bottom: var(--space-sm);
+        }
+        
+        .empty-text {
+            font-size: 16px;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-xl);
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: var(--white);
+            border-radius: var(--radius-md);
+            padding: var(--space-xl);
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        @media (max-width: 768px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body class="admin-wrapper" data-active="offers">
+    <!-- UCS Sidebar Component -->
     <aside class="sidebar" data-component="sidebar"></aside>
+
+    <!-- Main Content Area -->
     <div class="main-content">
+        <!-- UCS Header Component -->
         <header data-component="header"></header>
+
+        <!-- Dashboard Content -->
         <div class="dashboard-content">
-            <h1 class="page-title">My Offers</h1>
-            <p class="page-subtitle">This feature is under development</p>
-            
-            <div style="text-align: center; padding: 60px 20px;">
-                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin: 0 auto; opacity: 0.3;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path></svg>
-                <h3 style="margin: 20px 0 10px; color: var(--text-primary);">My Offers Coming Soon</h3>
-                <p style="color: var(--text-secondary);">This feature will be available in a future update</p>
-            </div>
+<div class="content-grid">
+                    <div class="viewings-section">
+                        <div class="tabs">
+                            <button class="tab active" onclick="filterViewings('upcoming')">Upcoming</button>
+                            <button class="tab" onclick="filterViewings('past')">Past</button>
+                            <button class="tab" onclick="filterViewings('cancelled')">Cancelled</button>
+                            <button class="tab" onclick="filterViewings('all')">All</button>
+                        </div>
+                        
+                        <div id="viewingsList">
+                            <!-- Viewings will be loaded here -->
+                        </div>
+                        
+                        <div id="emptyState" class="empty-state" style="display: none;">
+                            <div class="empty-icon">📅</div>
+                            <h2 class="empty-title">No Scheduled Viewings</h2>
+                            <p class="empty-text">Browse properties and schedule viewings to see them here</p>
+                            <button class="btn btn-primary" onclick="window.location.href='/client/properties.html'">
+                                Browse Properties
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="sidebar">
+                        <div class="calendar-widget">
+                            <div class="calendar-nav">
+                                    <button class="nav-btn" onclick="previousMonth()">‹</button>
+                                    <button class="nav-btn" onclick="nextMonth()">›</button>
+                                </div>
+                            </div>
+                            <div class="calendar-grid" id="calendar">
+                                <!-- Calendar will be generated here -->
+                            </div>
+                        </div>
+                        
+                        <div class="quick-stats">
+                            <h3 class="section-title">Quick Stats</h3>
+                            <div class="stats-grid">
+                                <div class="stat-item">
+                                    <div class="stat-value" id="totalViewings">0</div>
+                                    <div class="stat-label">Total Viewings</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value" id="upcomingCount">0</div>
+                                    <div class="stat-label">Upcoming</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value" id="thisWeek">0</div>
+                                    <div class="stat-label">This Week</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value" id="confirmedCount">0</div>
+                                    <div class="stat-label">Confirmed</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
         </div>
     </div>
+
+    <!-- UCS Core Scripts -->
     <script src="../components/ucs-core.js"></script>
     <script src="../components/component-registry.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="../firebase-config.js"></script>
+    <script>
+        window.addEventListener('firebase-ready', function() {
+            const headerScript = document.createElement('script');
+            headerScript.src = '../components/universal-header.js';
+            document.head.appendChild(headerScript);
+            
+            headerScript.onload = function() {
+                // Load sidebar first
+                const sidebarScript = document.createElement('script');
+                sidebarScript.src = '../components/sidebar.js';
+                document.head.appendChild(sidebarScript);
+                
+                // Then auth guard
+                sidebarScript.onload = function() {
+                    const authScript = document.createElement('script');
+                    authScript.src = '../components/auth-guard-simple.js';
+                    document.head.appendChild(authScript);
+                };
+            };
+        });
+    </script>
+    <script>
+        window.addEventListener('firebase-ready', function() {
+            const db = window.db;
+            const auth = window.auth;
+
+        
+        let allViewings = [];
+        let currentFilter = 'upcoming';
+        let currentMonthDate = new Date();
+        let selectedViewingId = null;
+        
+        // Load viewings
+        async function loadViewings() {
+            try {
+                // Try to load from Firebase
+                if (auth.currentUser) {
+                    const snapshot = await db.collection('viewings')
+                        .where('userId', '==', auth.currentUser.uid)
+                        .orderBy('date', 'desc')
+                        .get();
+                    
+                    allViewings = [];
+                    snapshot.forEach(doc => {
+                        allViewings.push({ id: doc.id, ...doc.data() });
+                    });
+                }
+            } catch (error) {
+                console.log('Loading from localStorage:', error);
+            }
+            
+            // Also check localStorage
+            const localViewings = JSON.parse(localStorage.getItem('viewings') || '[]');
+            
+            // Merge and deduplicate
+            const mergedViewings = [...allViewings, ...localViewings];
+            allViewings = Array.from(new Map(mergedViewings.map(v => [v.id || v.createdAt, v])).values());
+            
+            // Add demo viewings if none exist
+            if (allViewings.length === 0) {
+                allViewings = getDemoViewings();
+            }
+            
+            filterViewings(currentFilter);
+            updateStats();
+            generateCalendar();
+        }
+        
+        // Get demo viewings
+        function getDemoViewings() {
+            const today = new Date();
+            const tomorrow = new Date(today);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            const nextWeek = new Date(today);
+            nextWeek.setDate(nextWeek.getDate() + 7);
+            
+            return [
+                {
+                    id: 'demo-1',
+                    propertyTitle: '3BR Townhouse in Fishtown',
+                    propertyAddress: '2547 Frankford Avenue, Philadelphia, PA',
+                    date: tomorrow.toISOString().split('T')[0],
+                    time: '2:00 PM',
+                    status: 'confirmed',
+                    notes: 'Looking forward to seeing the property',
+                    createdAt: new Date().toISOString()
+                },
+                {
+                    id: 'demo-2',
+                    propertyTitle: '2BR Condo in Center City',
+                    propertyAddress: '1500 Market Street, Philadelphia, PA',
+                    date: nextWeek.toISOString().split('T')[0],
+                    time: '10:00 AM',
+                    status: 'pending',
+                    notes: 'Interested in investment potential',
+                    createdAt: new Date().toISOString()
+                }
+            ];
+        }
+        
+        // Filter viewings
+        function filterViewings(filter) {
+            currentFilter = filter;
+            const today = new Date().toISOString().split('T')[0];
+            let filtered = [];
+            
+            switch(filter) {
+                case 'upcoming':
+                    filtered = allViewings.filter(v => 
+                        v.date >= today && v.status !== 'cancelled'
+                    );
+                    break;
+                case 'past':
+                    filtered = allViewings.filter(v => 
+                        v.date < today && v.status !== 'cancelled'
+                    );
+                    break;
+                case 'cancelled':
+                    filtered = allViewings.filter(v => v.status === 'cancelled');
+                    break;
+                default:
+                    filtered = allViewings;
+            }
+            
+            // Update tabs
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+                if (tab.textContent.toLowerCase().includes(filter)) {
+                    tab.classList.add('active');
+                }
+            });
+            
+            displayViewings(filtered);
+        }
+        
+        // Display viewings
+        function displayViewings(viewings) {
+            const container = document.getElementById('viewingsList');
+            const emptyState = document.getElementById('emptyState');
+            
+            if (viewings.length === 0) {
+                container.innerHTML = '';
+                emptyState.style.display = 'block';
+                return;
+            }
+            
+            emptyState.style.display = 'none';
+            container.innerHTML = viewings.map(viewing => {
+                const date = new Date(viewing.date + 'T00:00:00');
+                const isUpcoming = viewing.date >= new Date().toISOString().split('T')[0];
+                const statusClass = viewing.status === 'cancelled' ? 'cancelled' : 
+                                   viewing.status === 'confirmed' ? 'completed' : '';
+                
+                return `
+                    <div class="viewing-card ${statusClass}">
+                        <header data-component="header"></header>
+                                <div class="viewing-time">${viewing.time}</div>
+                            </div>
+                            <div class="viewing-status status-${viewing.status || 'pending'}">
+                                ${viewing.status || 'Pending'}
+                            </div>
+                        </div>
+                        
+                        <div class="property-info">
+                            <div class="property-title">${viewing.propertyTitle}</div>
+                            <div class="property-address">${viewing.propertyAddress || viewing.address || 'Philadelphia, PA'}</div>
+                        </div>
+                        
+                        ${viewing.notes ? `
+                            <div class="viewing-notes">
+                                📝 ${viewing.notes}
+                            </div>
+                        ` : ''}
+                        
+                        ${isUpcoming && viewing.status !== 'cancelled' ? `
+                            <div class="action-buttons">
+                                <button class="btn btn-secondary" onclick="rescheduleViewing('${viewing.id}')">
+                                    Reschedule
+                                </button>
+                                <button class="btn btn-danger" onclick="cancelViewing('${viewing.id}')">
+                                    Cancel
+                                </button>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        // Update statistics
+        function updateStats() {
+            const today = new Date().toISOString().split('T')[0];
+            const weekFromNow = new Date();
+            weekFromNow.setDate(weekFromNow.getDate() + 7);
+            const weekDate = weekFromNow.toISOString().split('T')[0];
+            
+            const upcoming = allViewings.filter(v => v.date >= today && v.status !== 'cancelled');
+            const thisWeek = upcoming.filter(v => v.date <= weekDate);
+            const confirmed = allViewings.filter(v => v.status === 'confirmed');
+            
+            document.getElementById('totalViewings').textContent = allViewings.length;
+            document.getElementById('upcomingCount').textContent = upcoming.length;
+            document.getElementById('thisWeek').textContent = thisWeek.length;
+            document.getElementById('confirmedCount').textContent = confirmed.length;
+        }
+        
+        // Generate calendar
+        function generateCalendar() {
+            const year = currentMonthDate.getFullYear();
+            const month = currentMonthDate.getMonth();
+            
+            // Update month/year display
+            document.getElementById('currentMonth').textContent = 
+                currentMonthDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+            
+            const firstDay = new Date(year, month, 1);
+            const lastDay = new Date(year, month + 1, 0);
+            const prevLastDay = new Date(year, month, 0);
+            
+            const firstDayIndex = firstDay.getDay();
+            const lastDayDate = lastDay.getDate();
+            const prevLastDayDate = prevLastDay.getDate();
+            
+            const calendar = document.getElementById('calendar');
+            calendar.innerHTML = '';
+            
+            // Day headers
+            const dayHeaders = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            dayHeaders.forEach(day => {
+                const header = document.createElement('div');
+                header.className = 'day-header';
+                header.textContent = day;
+                calendar.appendChild(header);
+            });
+            
+            // Previous month days
+            for (let i = firstDayIndex; i > 0; i--) {
+                const day = document.createElement('div');
+                day.className = 'calendar-day other-month';
+                day.textContent = prevLastDayDate - i + 1;
+                calendar.appendChild(day);
+            }
+            
+            // Current month days
+            const today = new Date();
+            for (let i = 1; i <= lastDayDate; i++) {
+                const day = document.createElement('div');
+                day.className = 'calendar-day';
+                day.textContent = i;
+                
+                const currentDate = new Date(year, month, i);
+                const dateString = currentDate.toISOString().split('T')[0];
+                
+                // Check if today
+                if (currentDate.toDateString() === today.toDateString()) {
+                    day.classList.add('today');
+                }
+                
+                // Check for viewings
+                const hasViewing = allViewings.some(v => 
+                    v.date === dateString && v.status !== 'cancelled'
+                );
+                if (hasViewing) {
+                    day.classList.add('has-viewing');
+                    const dot = document.createElement('div');
+                    dot.className = 'viewing-dot';
+                    day.appendChild(dot);
+                }
+                
+                calendar.appendChild(day);
+            }
+            
+            // Next month days
+            const remainingDays = 42 - (firstDayIndex + lastDayDate);
+            for (let i = 1; i <= remainingDays; i++) {
+                const day = document.createElement('div');
+                day.className = 'calendar-day other-month';
+                day.textContent = i;
+                calendar.appendChild(day);
+            }
+        }
+        
+        // Calendar navigation
+        function previousMonth() {
+            currentMonthDate.setMonth(currentMonthDate.getMonth() - 1);
+            generateCalendar();
+        }
+        
+        function nextMonth() {
+            currentMonthDate.setMonth(currentMonthDate.getMonth() + 1);
+            generateCalendar();
+        }
+        
+        // Cancel viewing
+        async function cancelViewing(viewingId) {
+            if (!confirm('Are you sure you want to cancel this viewing?')) return;
+            
+            const viewing = allViewings.find(v => v.id === viewingId);
+            if (viewing) {
+                viewing.status = 'cancelled';
+                
+                // Update Firebase if logged in
+                if (auth.currentUser && !viewingId.startsWith('demo')) {
+                    try {
+                        await db.collection('viewings').doc(viewingId).update({
+                            status: 'cancelled',
+                            cancelledAt: new Date().toISOString()
+                        });
+                    } catch (error) {
+                        console.error('Error cancelling in Firebase:', error);
+                    }
+                }
+                
+                // Update localStorage
+                localStorage.setItem('viewings', JSON.stringify(allViewings));
+                
+                filterViewings(currentFilter);
+                updateStats();
+                generateCalendar();
+            }
+        }
+        
+        // Reschedule viewing
+        function rescheduleViewing(viewingId) {
+            selectedViewingId = viewingId;
+            document.getElementById('rescheduleModal').classList.add('active');
+        }
+        
+        // Handle reschedule form
+        document.getElementById('rescheduleForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const newDate = document.getElementById('newDate').value;
+            const newTime = document.getElementById('newTime').value;
+            
+            const viewing = allViewings.find(v => v.id === selectedViewingId);
+            if (viewing) {
+                viewing.date = newDate;
+                viewing.time = newTime;
+                viewing.status = 'pending';
+                
+                // Update Firebase if logged in
+                if (auth.currentUser && !selectedViewingId.startsWith('demo')) {
+                    try {
+                        await db.collection('viewings').doc(selectedViewingId).update({
+                            date: newDate,
+                            time: newTime,
+                            status: 'pending',
+                            rescheduledAt: new Date().toISOString()
+                        });
+                    } catch (error) {
+                        console.error('Error rescheduling in Firebase:', error);
+                    }
+                }
+                
+                // Update localStorage
+                localStorage.setItem('viewings', JSON.stringify(allViewings));
+                
+                closeModal();
+                filterViewings(currentFilter);
+                updateStats();
+                generateCalendar();
+                
+                alert('Viewing rescheduled successfully! You will receive a confirmation.');
+            }
+        });
+        
+        // Close modal
+        function closeModal() {
+            document.getElementById('rescheduleModal').classList.remove('active');
+            selectedViewingId = null;
+            document.getElementById('rescheduleForm').reset();
+        }
+        
+        // Close modal on outside click
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.classList.remove('active');
+            }
+        };
+        
+        // Check auth state
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                console.log('User logged in:', user.email);
+            }
+            loadViewings();
+        });
+        
+        // Load on page load
+        window.addEventListener('load', () => {
+            if (!auth.currentUser) {
+                loadViewings();
+            }
+        });
+        });
+    </script>
 </body>
 </html>
