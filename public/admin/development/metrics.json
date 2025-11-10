@@ -1,13 +1,13 @@
 {
-  "lastUpdated": "2025-11-09T22:48:51.203Z",
+  "lastUpdated": "2025-11-10T02:06:11.164Z",
   "summary": {
     "health": "Good",
     "score": 59,
     "trend": "increasing",
     "alerts": [
-      "✅ UCS implementation complete - 18 pages converted",
+      "✅ UCS implementation complete - 19 pages converted",
       "⚠️ Test coverage is very low",
-      "⏰ Timeline warning - 22 days until launch"
+      "⏰ Timeline warning - 21 days until launch"
     ]
   },
   "features": {
@@ -100,18 +100,18 @@
         "Universal header template",
         "Role-based filtering",
         "Token replacement system",
-        "18 pages converted",
+        "19 pages converted",
         "5,000+ lines of code removed",
         "Complete documentation"
       ],
       "remainingTasks": [],
       "metrics": {
-        "totalPagesConverted": 18,
+        "totalPagesConverted": 19,
         "clientPages": 12,
-        "agentPages": 6,
+        "agentPages": 7,
         "linesRemoved": 5000,
         "componentReuse": "100%",
-        "adoptionRate": "47%"
+        "adoptionRate": "49%"
       }
     },
     "microFlipping": {
@@ -152,46 +152,46 @@
     }
   },
   "project": {
-    "totalHours": "303",
+    "totalHours": "304",
     "avgHoursPerDay": "8.9",
-    "totalCost": 47415,
-    "laborCost": 45450,
+    "totalCost": 47565,
+    "laborCost": 45600,
     "toolsCost": 1965,
     "monthsElapsed": "3.0",
-    "totalCommits": 918,
-    "totalFiles": 798,
+    "totalCommits": 920,
+    "totalFiles": 799,
     "activeDays": 34,
     "totalDays": 92,
     "projectAgeDays": 92,
-    "linesAdded": 9799141,
-    "linesDeleted": 9421251,
-    "netLines": 377890,
-    "velocity": "27.0",
+    "linesAdded": 9799639,
+    "linesDeleted": 9422328,
+    "netLines": 377311,
+    "velocity": "27.1",
     "completionPercentage": 59,
     "actualStartDate": "2025-08-10",
     "architecture": {
-      "ucsAdoption": "47%",
+      "ucsAdoption": "49%",
       "componentReuse": "100%",
       "codeReduction": 5000
     }
   },
   "today": {
-    "date": "2025-11-09",
-    "hours": "3.3",
-    "cost": 495,
-    "commits": 10,
+    "date": "2025-11-10",
+    "hours": "4.0",
+    "cost": 594,
+    "commits": 12,
     "deployments": 0
   },
   "thisWeek": {
-    "hours": "88.1",
-    "cost": 13217,
-    "commits": 267,
+    "hours": "82.5",
+    "cost": 12375,
+    "commits": 250,
     "days": 7
   },
   "thisMonth": {
-    "hours": "153.1",
-    "cost": 22968,
-    "commits": 464
+    "hours": "153.8",
+    "cost": 23067,
+    "commits": 466
   },
   "quality": {
     "testCoverage": {
@@ -225,7 +225,7 @@
       "critical": 0,
       "total": 0
     },
-    "lastAudit": "2025-11-09T22:48:21.213Z",
+    "lastAudit": "2025-11-10T02:05:38.702Z",
     "dependencies": {
       "total": {
         "prod": 256,
@@ -320,11 +320,11 @@
     "changelog": true,
     "contributing": false,
     "license": false,
-    "lastUpdate": "2025-11-09 22:39:32 +0000"
+    "lastUpdate": "2025-11-09 18:23:19 -0500"
   },
   "productivity": {
     "velocityTrend": "increasing",
-    "weeklyCommits": 267,
+    "weeklyCommits": 248,
     "contributors": {
       "total": 0,
       "active": 0
@@ -357,7 +357,7 @@
       "projectStart": "2025-08-10",
       "originalLaunch": "2025-11-01",
       "plannedLaunch": "2025-12-01",
-      "daysRemaining": 22,
+      "daysRemaining": 21,
       "onTrack": false,
       "adjustmentReason": "Timeline adjusted for realistic completion based on current velocity"
     },
@@ -401,6 +401,18 @@
     "projectedAnnualCost": 12
   },
   "recentActivity": [
+    {
+      "hash": "36b8b28291fa911d9649c795f5ce504577720559",
+      "message": "fix(portals): add UCS scripts to client/agent index pages",
+      "author": "SirsiMaster",
+      "date": "2025-11-09 21:05:05 -0500"
+    },
+    {
+      "hash": "65ea96289380bae4f91c5a31c11302cf26e15d78",
+      "message": "docs(warp): Streamline rules to pithy mini-prompts with Sirsi virtuous cycle",
+      "author": "SirsiMaster",
+      "date": "2025-11-09 18:23:19 -0500"
+    },
     {
       "hash": "fa175a503af90594d7ec6c50fa802490e06c46e4",
       "message": "refactor(dev-metrics): remove specifications page, link to docs instead",
@@ -448,22 +460,10 @@
       "message": "chore(release): Bump version to 0.112.0 [skip ci]",
       "author": "github-actions[bot]",
       "date": "2025-11-09 14:54:29 +0000"
-    },
-    {
-      "hash": "9f88b3ea34917f2729c91d589d8c12e4fc6a2710",
-      "message": "chore(metrics): auto-update metrics.json from git hook",
-      "author": "SirsiMaster",
-      "date": "2025-11-09 09:53:53 -0500"
-    },
-    {
-      "hash": "61a690ddd167c97f82d31487867af4e3ce0964f2",
-      "message": "feat(dev-dashboard): add business readiness summary with spec compliance",
-      "author": "SirsiMaster",
-      "date": "2025-11-09 09:53:04 -0500"
     }
   ],
   "automation": {
-    "lastRun": "2025-11-09T22:48:51.203Z",
+    "lastRun": "2025-11-10T02:06:11.164Z",
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",
