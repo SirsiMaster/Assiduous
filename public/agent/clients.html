@@ -10,169 +10,62 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SirsiMaster/ui-components@latest/dist/sirsimaster-ui.css">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fontsource/geist-sans@5.0.6/latin.css" rel="stylesheet">
     
-    <link rel="stylesheet" href="{{BASE_PATH}}assiduous.css">
-    <link rel="stylesheet" href="{{BASE_PATH}}components/admin-layout.css">
+    <link rel="stylesheet" href="../assiduous.css">
+    <link rel="stylesheet" href="../components/admin-layout.css">
     
     <style>
-        /* Admin Layout - Consistent across all admin pages */
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: "Geist Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
-            background: var(--white);
-        }
+        
+        
 
-        .admin-wrapper {
-            display: flex;
-            height: 100vh;
-        }
+        
 
         /* Sidebar */
-        .sidebar {
-            width: 240px;
-            background: var(--navy);
-            color: var(--white);
-            display: flex;
-            flex-direction: column;
-        }
+        
 
-        .sidebar-header {
-            padding: var(--space-lg);
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
+        
 
-        .sidebar-logo {
-            display: flex;
-            align-items: center;
-            gap: var(--space-sm);
-            color: var(--white);
-            text-decoration: none;
-        }
+        
 
-        .sidebar-logo svg {
-            width: 24px;
-            height: 24px;
-        }
+        
 
-        .sidebar-logo-text {
-            font-size: 18px;
-            font-weight: 700;
-        }
+        
 
-        .sidebar-nav {
-            flex: 1;
-            padding: var(--space-md) 0;
-            overflow-y: auto;
-        }
+        
 
-        .nav-section {
-            margin-bottom: var(--space-lg);
-        }
+        
 
-        .nav-section-title {
-            padding: 0 var(--space-lg);
-            font-size: 11px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            opacity: 0.6;
-            margin-bottom: var(--space-sm);
-        }
+        
 
-        .nav-item {
-            display: flex;
-            align-items: center;
-            gap: var(--space-sm);
-            padding: var(--space-sm) var(--space-lg);
-            color: rgba(255,255,255,0.8);
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            transition: all 0.15s;
-        }
+        
 
-        .nav-item:hover {
-            background: rgba(255,255,255,0.05);
-            color: var(--white);
-        }
+        
 
-        .nav-item.active {
-            background: var(--sky);
-            color: var(--white);
-        }
+        
 
-        .nav-icon {
-            width: 18px;
-            height: 18px;
-            opacity: 0.8;
-        }
+        
 
         /* Main Content */
-        .main-content {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
+        
 
         /* Top Bar */
-        .topbar {
-            background: var(--white);
-            border-bottom: 1px solid var(--border);
-            padding: var(--space-md) var(--space-xl);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+        
 
-        .topbar-left {
-            display: flex;
-            align-items: center;
-            gap: var(--space-lg);
-        }
-
-        .search-bar {
-            display: flex;
-            align-items: center;
-            gap: var(--space-sm);
-            background: var(--gray-50);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: var(--space-sm) var(--space-md);
-            min-width: 300px;
-        }
-
-        .search-input {
-            flex: 1;
-            border: none;
-            background: none;
-            font-size: 14px;
-            outline: none;
-        }
-
-        .topbar-actions {
-            display: flex;
-            align-items: center;
-            gap: var(--space-md);
-        }
+        
 
         
 
         
 
-        .user-avatar {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: var(--gradient);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--white);
-            font-weight: 600;
-            font-size: 12px;
-        }
+        
+
+        
+
+        
+
+        
 
         /* Page Content */
         .page-content {
@@ -344,9 +237,7 @@
 
         /* Responsive */
         @media (max-width: 768px) {
-            .sidebar {
-                display: none;
-            }
+            
             
             .stats-grid {
                 grid-template-columns: 1fr;
@@ -597,10 +488,7 @@
         // Highlight active page in sidebar
         document.addEventListener('DOMContentLoaded', function() {
             const currentPath = window.location.pathname;
-            document.querySelectorAll('.nav-item').forEach(item => {
-                if (item.getAttribute('href') === currentPath) {
-                    item.classList.add('active');
-                } else {
+            document.querySelectorAll(' else {
                     item.classList.remove('active');
                 }
             });

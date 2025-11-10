@@ -8,11 +8,13 @@
     
     <!-- Assiduous Design System -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="stylesheet" href="{{BASE_PATH}}assets/vendor/sirsimaster-ui/sirsimaster-ui.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SirsiMaster/ui-components@latest/dist/sirsimaster-ui.css">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fontsource/geist-sans@5.0.6/latin.css" rel="stylesheet">
     
-    <link rel="stylesheet" href="{{BASE_PATH}}assiduous.css">
-    <link rel="stylesheet" href="{{BASE_PATH}}components/admin-layout.css">
+    <link rel="stylesheet" href="../assiduous.css">
+    <link rel="stylesheet" href="../components/admin-layout.css">
     
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -21,105 +23,38 @@
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
     
     <style>
-        /* Admin Layout - Consistent across all admin pages */
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: "Geist Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
-            background: var(--white);
-        }
+        
+        
 
-        .admin-wrapper {
-            display: flex;
-            height: 100vh;
-        }
+        
 
         /* Sidebar */
-        .sidebar {
-            width: 240px;
-            background: var(--navy);
-            color: var(--white);
-            display: flex;
-            flex-direction: column;
-        }
+        
 
-        .sidebar-header {
-            padding: var(--space-lg);
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
+        
 
-        .sidebar-logo {
-            display: flex;
-            align-items: center;
-            gap: var(--space-sm);
-            color: var(--white);
-            text-decoration: none;
-        }
+        
 
-        .sidebar-logo svg {
-            width: 24px;
-            height: 24px;
-        }
+        
 
-        .sidebar-logo-text {
-            font-size: 18px;
-            font-weight: 700;
-        }
+        
 
-        .sidebar-nav {
-            flex: 1;
-            padding: var(--space-md) 0;
-        }
+        
 
-        .nav-section {
-            margin-bottom: var(--space-lg);
-        }
+        
 
-        .nav-section-title {
-            padding: 0 var(--space-lg);
-            font-size: 11px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            opacity: 0.6;
-            margin-bottom: var(--space-sm);
-        }
+        
 
-        .nav-item {
-            display: flex;
-            align-items: center;
-            gap: var(--space-sm);
-            padding: var(--space-sm) var(--space-lg);
-            color: rgba(255,255,255,0.8);
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            transition: all 0.15s;
-        }
+        
 
-        .nav-item:hover {
-            background: rgba(255,255,255,0.05);
-            color: var(--white);
-        }
+        
 
-        .nav-item.active {
-            background: var(--sky);
-            color: var(--white);
-        }
+        
 
-        .nav-icon {
-            width: 18px;
-            height: 18px;
-            opacity: 0.8;
-        }
+        
 
         /* Main Content */
-        .main-content {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
+        
 
         /* Page Content */
         .page-content {
