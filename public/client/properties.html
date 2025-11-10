@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" data-auth-protect="client,investor">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="robots" content="noindex, nofollow">
-    <title>Browse Properties — Assiduous Client Portal</title>
+    <title>Properties - Assiduous Client Portal</title>
     
     <!-- Assiduous Design System -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,11 +11,12 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@fontsource/geist-sans@5.0.6/latin.css" rel="stylesheet">
+    
     <link rel="stylesheet" href="../assiduous.css">
     <link rel="stylesheet" href="../components/admin-layout.css">
     
     <style>
-        /* Search & Filter Section */
+/* Search & Filter Section */
         .search-section {
             background: var(--white);
             border-radius: var(--radius-md);
@@ -379,22 +379,18 @@
         }
     </style>
 </head>
-<body>
-    <div class="admin-wrapper">
-        
-        <!-- Client Sidebar -->
-        <!-- UCS Sidebar Component -->
+<body class="admin-wrapper" data-active="properties">
+    <!-- UCS Sidebar Component -->
     <aside class="sidebar" data-component="sidebar"></aside>
-        </aside>
-        
-        <main class="main-content">
-            <!-- Standardized Header -->
-            <header data-component="header"></header>
 
-            <!-- Page Content -->
-            <div class="page-content">
-                
-                <!-- Search & Filters -->
+    <!-- Main Content Area -->
+    <div class="main-content">
+        <!-- UCS Header Component -->
+        <header data-component="header"></header>
+
+        <!-- Dashboard Content -->
+        <div class="dashboard-content">
+<!-- Search & Filters -->
                 <div class="search-section">
                     <div class="search-bar">
                         <div class="search-input-wrapper">
@@ -469,8 +465,7 @@
                 </div>
                 
                 <!-- Results Header -->
-                <header data-component="header"></header>
-                    <div class="view-toggle">
+                <div class="view-toggle">
                         <button class="view-btn active" data-view="grid" onclick="switchView('grid')">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <rect x="3" y="3" width="7" height="7"></rect>
@@ -517,19 +512,18 @@
                 
                 <!-- Pagination -->
                 <div id="pagination" class="pagination" style="display: none;"></div>
-                
-            </div>
-        </main>
+        </div>
     </div>
 
-    <!-- Firebase Integration -->
+    <!-- UCS Core Scripts -->
+    <script src="../components/ucs-core.js"></script>
+    <script src="../components/component-registry.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
     <script src="{{BASE_PATH}}firebase-config.js"></script>
     <script src="{{BASE_PATH}}components/universal-header.js"></script>
     <script src="{{BASE_PATH}}components/auth-guard-simple.js"></script>
-    
     <script>
         // ==========================================
         // PROPERTY SEARCH SERVICE
@@ -1092,9 +1086,5 @@
             });
         });
     </script>
-
-    <!-- UCS Core Scripts -->
-    <script src="../components/ucs-core.js"></script>
-    <script src="../components/component-registry.js"></script>
 </body>
 </html>

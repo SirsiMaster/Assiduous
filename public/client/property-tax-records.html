@@ -3,21 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>County Tax Records - Assiduous</title>
+    <title>Property Tax Records - Assiduous Client Portal</title>
     
     <!-- Assiduous Design System -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SirsiMaster/ui-components@latest/dist/sirsimaster-ui.css">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SirsiMaster/sirsi-ui@v0.1.1/dist/sirsi-ui.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SirsiMaster/sirsimaster-component-library@latest/dist/sirsimaster-ui.css">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fontsource/geist-sans@5.0.6/latin.css" rel="stylesheet">
     
     <link rel="stylesheet" href="../assiduous.css">
     <link rel="stylesheet" href="../components/admin-layout.css">
     
     <style>
-        /* Tax Records Specific Styles */
+/* Tax Records Specific Styles */
         .records-header {
             background: var(--white);
             border-radius: var(--radius-lg);
@@ -556,21 +555,18 @@
         }
     </style>
 </head>
-<body>
-    <div class="admin-wrapper">
-        <!-- Sidebar -->
-        <!-- UCS Sidebar Component -->
+<body class="admin-wrapper" data-active="property-tax-records">
+    <!-- UCS Sidebar Component -->
     <aside class="sidebar" data-component="sidebar"></aside>
-        </aside>
 
-        <!-- Main Content -->
-        <div class="main-content">
-            <!-- Universal Header Component -->
-            <header data-component="header"></header>
+    <!-- Main Content Area -->
+    <div class="main-content">
+        <!-- UCS Header Component -->
+        <header data-component="header"></header>
 
-            <!-- Page Content -->
-            <div class="page-content">
-                <div id="loading-state" class="loading-state">
+        <!-- Dashboard Content -->
+        <div class="dashboard-content">
+<div id="loading-state" class="loading-state">
                     <p>Loading tax records...</p>
                 </div>
 
@@ -588,8 +584,7 @@
 
                 <div id="records-content" style="display: none;">
                     <!-- Property Header -->
-                    <header data-component="header"></header>
-                            <div class="property-actions">
+                    <div class="property-actions">
                                 <button class="btn" id="edit-mode-btn" onclick="toggleEditMode()">
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                         <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
@@ -631,129 +626,18 @@
                             </div>
                             <div class="stat-card">
                                 <div class="stat-label">Tax Rate</div>
-                                <div class="stat-value" id="stat-tax-rate">0%</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Records Grid -->
-                    <div class="records-grid">
-                        <!-- Parcel Information -->
-                        <section class="record-section">
-                            <header data-component="header"></header>
-                            <div class="info-grid" id="parcel-info-grid">
-                                <!-- Dynamically populated -->
-                            </div>
-                        </section>
-
-                        <!-- Property Characteristics -->
-                        <section class="record-section">
-                            <header data-component="header"></header>
-                            <div class="info-grid" id="property-characteristics-grid">
-                                <!-- Dynamically populated -->
-                            </div>
-                        </section>
-
-                        <!-- Assessment Details -->
-                        <section class="record-section">
-                            <header data-component="header"></header>
-                            <div class="info-grid" id="assessment-details-grid">
-                                <!-- Dynamically populated -->
-                            </div>
-                        </section>
-
-                        <!-- Tax Payment History -->
-                        <section class="record-section">
-                            <header data-component="header"></header>
-                            <table class="tax-history-table">
-                                <thead>
-                                    <tr>
-                                        <th>Tax Year</th>
-                                        <th>Bill Amount</th>
-                                        <th>Amount Paid</th>
-                                        <th>Payment Date</th>
-                                        <th>Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="tax-history-tbody">
-                                    <!-- Dynamically populated -->
-                                </tbody>
-                            </table>
-                        </section>
-
-                        <!-- Property Location -->
-                        <section class="record-section">
-                            <header data-component="header"></header>
-                            <div class="info-grid" id="location-info-grid">
-                                <!-- Dynamically populated -->
-                            </div>
-                            <div class="map-container" id="property-map">
-                                <p>Interactive map placeholder - Integration with mapping service required</p>
-                            </div>
-                        </section>
-
-                        <!-- Related Documents -->
-                        <section class="record-section">
-                            <header data-component="header"></header>
-                            <div class="documents-list" id="documents-list">
-                                <!-- Dynamically populated -->
-                            </div>
-                            
-                            <!-- Upload Section -->
-                            <div class="upload-section">
-                                <h3>Upload Tax Documents</h3>
-                                <p>Upload scanned documents, PDFs, or images of tax records, deeds, and other property documents</p>
-                                <div class="upload-buttons">
-                                    <button class="upload-btn primary" onclick="document.getElementById('file-input').click()">
-                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                                            <polyline points="17 8 12 3 7 8"></polyline>
-                                            <line x1="12" y1="3" x2="12" y2="15"></line>
-                                        </svg>
-                                        Upload Files
-                                    </button>
-                                    <button class="upload-btn" onclick="document.getElementById('scan-input').click()">
-                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
-                                            <circle cx="12" cy="13" r="4"></circle>
-                                        </svg>
-                                        Scan Document
-                                    </button>
-                                </div>
-                                <input type="file" id="file-input" multiple accept=".pdf,.jpg,.jpeg,.png,.doc,.docx" onchange="handleFileUpload(event)">
-                                <input type="file" id="scan-input" accept="image/*" capture="environment" onchange="handleFileUpload(event)">
-                                
-                                <div class="upload-progress" id="upload-progress">
-                                    <div class="progress-bar">
-                                        <div class="progress-fill" id="progress-fill"></div>
-                                    </div>
-                                    <div class="progress-text" id="progress-text">Uploading...</div>
-                                </div>
-                            </div>
-                        </section>
-                    </div>
-                </div>
-            </div>
+                                <div class="stat-value" id="stat-tax-rate">0%
         </div>
     </div>
 
-    <!-- Save Changes Bar -->
-    <div class="save-changes-bar" id="save-changes-bar">
-        <div class="message">You have unsaved changes</div>
-        <div class="actions">
-            <button onclick="cancelChanges()">Cancel</button>
-            <button class="primary" onclick="saveChanges()">Save Changes</button>
-        </div>
-    </div>
-
-    <!-- Firebase SDK -->
+    <!-- UCS Core Scripts -->
+    <script src="../components/ucs-core.js"></script>
+    <script src="../components/component-registry.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
     <script src="{{BASE_PATH}}firebase-config.js"></script>
-    
-    <!-- Wait for Firebase to be ready before loading components that need it -->
     <script>
         // Wait for firebase-ready event before loading auth-dependent scripts
         window.addEventListener('firebase-ready', function() {
@@ -772,8 +656,6 @@
             };
         });
     </script>
-    
-    <!-- Property Service -->
     <script type="module">
         // Wait for Firebase to be ready before initializing PropertyService
         window.addEventListener('firebase-ready', async function() {
@@ -1308,9 +1190,5 @@
         
         }); // End firebase-ready event listener
     </script>
-
-    <!-- UCS Core Scripts -->
-    <script src="../components/ucs-core.js"></script>
-    <script src="../components/component-registry.js"></script>
 </body>
 </html>

@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="robots" content="noindex, nofollow">
-    <title>Commission Tracker - Assiduous Agent Portal</title>
+    <title>Commissions - Assiduous Agent Portal</title>
     
     <!-- Assiduous Design System -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -17,12 +16,7 @@
     <link rel="stylesheet" href="../components/admin-layout.css">
     
     <style>
-        
-        
-
-        
-
-        /* Sidebar */
+/* Sidebar */
         
 
         
@@ -267,21 +261,18 @@
         }
     </style>
 </head>
-<body>
-    <div class="admin-wrapper">
-        
-        <!-- Sidebar Component -->
-        <!-- UCS Sidebar Component -->
+<body class="admin-wrapper" data-active="commissions">
+    <!-- UCS Sidebar Component -->
     <aside class="sidebar" data-component="sidebar"></aside>
-</aside>
-        <main class="main-content">
-            <!-- Standardized Admin Header -->
-            <header data-component="header"></header>
 
-            <!-- Page Content -->
-            <div class="page-content">
-                
-                <!-- Commission Statistics -->
+    <!-- Main Content Area -->
+    <div class="main-content">
+        <!-- UCS Header Component -->
+        <header data-component="header"></header>
+
+        <!-- Dashboard Content -->
+        <div class="dashboard-content">
+<!-- Commission Statistics -->
                 <div class="commission-stats">
                     <div class="stat-card featured">
                         <div class="stat-icon">
@@ -347,7 +338,6 @@
                 
                 <!-- Recent Commissions Table -->
                 <div class="commission-table-container">
-                    <header data-component="header"></header>
                     </div>
                     
                     <table class="commission-table">
@@ -418,36 +408,29 @@
                 <!-- Charts Section -->
                 <div class="charts-grid">
                     <div class="chart-container">
-                        <header data-component="header"></header>
                         <div style="height: 250px; position: relative;">
                             <canvas id="monthlyTrendChart"></canvas>
                         </div>
                     </div>
                     
                     <div class="chart-container">
-                        <header data-component="header"></header>
                         <div style="height: 250px; position: relative;">
                             <canvas id="propertyTypeChart"></canvas>
                         </div>
                     </div>
                 </div>
-            </div>
-        </main>
+        </div>
     </div>
 
-    <!-- Load Component Scripts -->
+    <!-- UCS Core Scripts -->
+    <script src="../components/ucs-core.js"></script>
+    <script src="../components/component-registry.js"></script>
     <script src="{{BASE_PATH}}components/universal-header.js"></script>
-    
-    <!-- Firebase Integration -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
     <script src="{{BASE_PATH}}firebase-config.js"></script>
-    
-    <!-- Chart.js for visualizations -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-    
-    <!-- Page-specific functionality -->
     <script>
         // ==========================================
         // FIREBASE COMMISSION TRACKING SERVICE
@@ -956,9 +939,5 @@
             });
         });
     </script>
-
-    <!-- UCS Core Scripts -->
-    <script src="../components/ucs-core.js"></script>
-    <script src="../components/component-registry.js"></script>
 </body>
 </html>

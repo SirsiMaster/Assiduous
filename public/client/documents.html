@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" data-auth-protect="client,investor">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="robots" content="noindex, nofollow">
-    <title>My Documents — Assiduous Client Portal</title>
+    <title>Documents - Assiduous Client Portal</title>
     
     <!-- Assiduous Design System -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,11 +11,12 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@fontsource/geist-sans@5.0.6/latin.css" rel="stylesheet">
+    
     <link rel="stylesheet" href="../assiduous.css">
     <link rel="stylesheet" href="../components/admin-layout.css">
     
     <style>
-        /* Document Management Styles */
+/* Document Management Styles */
         .upload-section {
             background: var(--white);
             border: 1px solid var(--border);
@@ -299,22 +299,18 @@
         }
     </style>
 </head>
-<body>
-    <div class="admin-wrapper">
-        
-        <!-- Client Sidebar -->
-        <!-- UCS Sidebar Component -->
+<body class="admin-wrapper" data-active="documents">
+    <!-- UCS Sidebar Component -->
     <aside class="sidebar" data-component="sidebar"></aside>
-        </aside>
-        
-        <main class="main-content">
-            <!-- Standardized Header -->
-            <header data-component="header"></header>
 
-            <!-- Page Content -->
-            <div class="page-content">
-                
-                <!-- Document Stats -->
+    <!-- Main Content Area -->
+    <div class="main-content">
+        <!-- UCS Header Component -->
+        <header data-component="header"></header>
+
+        <!-- Dashboard Content -->
+        <div class="dashboard-content">
+<!-- Document Stats -->
                 <div class="document-stats">
                     <div class="stat-card">
                         <div class="stat-value" id="totalDocuments">0</div>
@@ -365,7 +361,6 @@
                 
                 <!-- Documents List -->
                 <div class="documents-container">
-                    <header data-component="header"></header>
                     </div>
                     
                     <div id="documentsGrid" class="documents-grid">
@@ -381,26 +376,12 @@
                         <p class="empty-state-message">Upload your first document to get started</p>
                     </div>
                 </div>
-                
-            </div>
-        </main>
-    </div>
-
-    <!-- Upload Progress Indicator -->
-    <div id="uploadProgress" class="upload-progress" style="display: none;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-sm);">
-            <strong>Uploading...</strong>
-            <button onclick="closeUploadProgress()" style="background: none; border: none; cursor: pointer;">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <line x1="18" y1="6" x2="6" y2="18"></line>
-                    <line x1="6" y1="6" x2="18" y2="18"></line>
-                </svg>
-            </button>
         </div>
-        <div id="progressItems"></div>
     </div>
 
-    <!-- Firebase Integration -->
+    <!-- UCS Core Scripts -->
+    <script src="../components/ucs-core.js"></script>
+    <script src="../components/component-registry.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
@@ -408,7 +389,6 @@
     <script src="{{BASE_PATH}}firebase-config.js"></script>
     <script src="{{BASE_PATH}}components/universal-header.js"></script>
     <script src="{{BASE_PATH}}components/auth-guard-simple.js"></script>
-    
     <script>
         // ==========================================
         // FIREBASE DOCUMENT MANAGEMENT SERVICE
@@ -872,9 +852,5 @@
             });
         });
     </script>
-
-    <!-- UCS Core Scripts -->
-    <script src="../components/ucs-core.js"></script>
-    <script src="../components/component-registry.js"></script>
 </body>
 </html>

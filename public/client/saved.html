@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" data-auth-protect="client,investor">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="robots" content="noindex, nofollow">
-    <title>Saved Properties — Assiduous Client Portal</title>
+    <title>Saved - Assiduous Client Portal</title>
     
     <!-- Assiduous Design System -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,16 +11,12 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@fontsource/geist-sans@5.0.6/latin.css" rel="stylesheet">
+    
     <link rel="stylesheet" href="../assiduous.css">
     <link rel="stylesheet" href="../components/admin-layout.css">
     
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-    
     <style>
-        /* Minimal page-specific styles - design system handles most */
+/* Minimal page-specific styles - design system handles most */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -217,20 +212,18 @@
         }
     </style>
 </head>
-<body>
-    <!-- Universal Header -->
-    <header data-component="header"></header>
-    
-    <!-- Admin Layout Wrapper -->
-    <div class="admin-wrapper">
-        <!-- Sidebar (auto-loaded by admin-layout.css) -->
-        <!-- UCS Sidebar Component -->
+<body class="admin-wrapper" data-active="saved">
+    <!-- UCS Sidebar Component -->
     <aside class="sidebar" data-component="sidebar"></aside>
-        
-        <!-- Main Content -->
-        <main class="main-content">
-            <div class="page-content">
-                <!-- Statistics Cards -->
+
+    <!-- Main Content Area -->
+    <div class="main-content">
+        <!-- UCS Header Component -->
+        <header data-component="header"></header>
+
+        <!-- Dashboard Content -->
+        <div class="dashboard-content">
+<!-- Statistics Cards -->
                 <div class="stats-grid" id="statsBar">
                     <div class="stat-card">
                         <div class="stat-value" id="totalSaved">0</div>
@@ -287,14 +280,16 @@
                         📋 Browse Properties
                     </button>
                 </div>
-            </div>
-        </main>
+        </div>
     </div>
-    
-    <!-- Firebase Configuration -->
+
+    <!-- UCS Core Scripts -->
+    <script src="../components/ucs-core.js"></script>
+    <script src="../components/component-registry.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="{{BASE_PATH}}firebase-config.js"></script>
-    
-    <!-- Load Header and Auth after Firebase Ready -->
     <script>
         window.addEventListener('firebase-ready', function() {
             // Load universal header
@@ -318,7 +313,6 @@
             };
         });
     </script>
-    
     <script>
         // Wait for Firebase to be ready
         window.addEventListener('firebase-ready', function() {
@@ -615,9 +609,5 @@
             }
         });
     </script>
-
-    <!-- UCS Core Scripts -->
-    <script src="../components/ucs-core.js"></script>
-    <script src="../components/component-registry.js"></script>
 </body>
 </html>

@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="robots" content="noindex, nofollow">
-    <title>My Leads - Assiduous Agent Portal</title>
+    <title>Leads - Assiduous Agent Portal</title>
     
     <!-- Assiduous Design System -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,19 +15,8 @@
     <link rel="stylesheet" href="../assiduous.css">
     <link rel="stylesheet" href="../components/admin-layout.css">
     
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
-    
     <style>
-        
-        
-
-        
-
-        /* Sidebar */
+/* Sidebar */
         
 
         
@@ -261,21 +249,18 @@
         }
     </style>
 </head>
-<body>
-    <div class="admin-wrapper">
-        
-        <!-- Sidebar Component -->
-        <!-- UCS Sidebar Component -->
+<body class="admin-wrapper" data-active="leads">
+    <!-- UCS Sidebar Component -->
     <aside class="sidebar" data-component="sidebar"></aside>
-</aside>
-        <main class="main-content">
-            <!-- Standardized Admin Header -->
-            <header data-component="header"></header>
 
-            <!-- Page Content -->
-            <div class="page-content">
+    <!-- Main Content Area -->
+    <div class="main-content">
+        <!-- UCS Header Component -->
+        <header data-component="header"></header>
 
-                <!-- Stats Cards -->
+        <!-- Dashboard Content -->
+        <div class="dashboard-content">
+<!-- Stats Cards -->
                 <div class="stats-grid">
                     <div class="stat-card">
                         <div class="stat-value" id="totalLeads">42</div>
@@ -340,7 +325,6 @@
 
                 <!-- Leads Table -->
                 <div class="leads-table-container">
-                    <header data-component="header"></header>
                     <table class="leads-table">
                         <thead>
                             <tr>
@@ -485,17 +469,21 @@
                         </tbody>
                     </table>
                 </div>
-            </div>
-        </main>
+        </div>
     </div>
 
-    <!-- Firebase Integration -->
+    <!-- UCS Core Scripts -->
+    <script src="../components/ucs-core.js"></script>
+    <script src="../components/component-registry.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
     <script src="{{BASE_PATH}}firebase-config.js"></script>
     <script src="{{BASE_PATH}}components/universal-header.js"></script>
-    
     <script>
         // ==========================================
         // FIREBASE LEAD MANAGEMENT SERVICE
@@ -929,9 +917,5 @@
             });
         });
     </script>
-
-    <!-- UCS Core Scripts -->
-    <script src="../components/ucs-core.js"></script>
-    <script src="../components/component-registry.js"></script>
 </body>
 </html>

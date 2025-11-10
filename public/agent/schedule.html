@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="robots" content="noindex, nofollow">
-    <title>My Schedule - Assiduous Agent Portal</title>
+    <title>Schedule - Assiduous Agent Portal</title>
     
     <!-- Assiduous Design System -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -17,12 +16,7 @@
     <link rel="stylesheet" href="../components/admin-layout.css">
     
     <style>
-        
-        
-
-        
-
-        /* Sidebar */
+/* Sidebar */
         
 
         
@@ -268,35 +262,23 @@
         }
     </style>
 </head>
-<body>
-    <div class="admin-wrapper">
-        
-        <!-- Sidebar Component -->
-        <!-- UCS Sidebar Component -->
+<body class="admin-wrapper" data-active="schedule">
+    <!-- UCS Sidebar Component -->
     <aside class="sidebar" data-component="sidebar"></aside>
-</aside>
-        <main class="main-content">
-            <!-- Standardized Admin Header -->
-            <header data-component="header"></header>
 
-            <!-- Page Content -->
-            <div class="page-content">
-                
-                <!-- Calendar View -->
+    <!-- Main Content Area -->
+    <div class="main-content">
+        <!-- UCS Header Component -->
+        <header data-component="header"></header>
+
+        <!-- Dashboard Content -->
+        <div class="dashboard-content">
+<!-- Calendar View -->
                 <div class="calendar-container">
-                    <header data-component="header"></header>
                     </div>
                     
                     <div class="calendar-grid">
                         <!-- Day Headers -->
-                        <header data-component="header"></header>
-                        <header data-component="header"></header>
-                        <header data-component="header"></header>
-                        <header data-component="header"></header>
-                        <header data-component="header"></header>
-                        <header data-component="header"></header>
-                        <header data-component="header"></header>
-                        
                         <!-- Calendar Days (simplified for demo) -->
                         <div class="calendar-day other-month">
                             <div class="calendar-day-number">29</div>
@@ -355,8 +337,6 @@
                 
                 <!-- Today's Schedule -->
                 <div class="schedule-list">
-                    <header data-component="header"></header>
-                    
                     <div class="schedule-item">
                         <div class="schedule-time">
                             <div class="schedule-time-value">9:00</div>
@@ -411,14 +391,13 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        </main>
+        </div>
     </div>
 
-    <!-- Load Component Scripts -->
+    <!-- UCS Core Scripts -->
+    <script src="../components/ucs-core.js"></script>
+    <script src="../components/component-registry.js"></script>
     <script src="{{BASE_PATH}}components/universal-header.js"></script>
-    
-    <!-- Page-specific functionality -->
     <script src="{{BASE_PATH}}firebase-config.js"></script>
     <script>
         // Initialize Firebase connection for schedule
@@ -505,9 +484,5 @@
             loadScheduleData();
         });
     </script>
-
-    <!-- UCS Core Scripts -->
-    <script src="../components/ucs-core.js"></script>
-    <script src="../components/component-registry.js"></script>
 </body>
 </html>

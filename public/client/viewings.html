@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" data-auth-protect="client,investor">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="robots" content="noindex, nofollow">
-    <title>Scheduled Viewings — Assiduous Client Portal</title>
+    <title>Viewings - Assiduous Client Portal</title>
     
     <!-- Assiduous Design System -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,16 +11,12 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@fontsource/geist-sans@5.0.6/latin.css" rel="stylesheet">
+    
     <link rel="stylesheet" href="../assiduous.css">
     <link rel="stylesheet" href="../components/admin-layout.css">
     
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-    
     <style>
-        /* Page-specific styles using design system variables */
+/* Page-specific styles using design system variables */
         .content-grid {
             display: grid;
             grid-template-columns: 1fr 350px;
@@ -396,23 +391,19 @@
         }
     </style>
 </head>
-<body>
-    <!-- Universal Header -->
-    <header data-component="header"></header>
-    
-    <!-- Admin Layout Wrapper -->
-    <div class="admin-wrapper">
-        <!-- Sidebar -->
-        <!-- UCS Sidebar Component -->
+<body class="admin-wrapper" data-active="viewings">
+    <!-- UCS Sidebar Component -->
     <aside class="sidebar" data-component="sidebar"></aside>
-        
-        <!-- Main Content -->
-        <main class="main-content">
-            <div class="page-content">
-                <div class="content-grid">
+
+    <!-- Main Content Area -->
+    <div class="main-content">
+        <!-- UCS Header Component -->
+        <header data-component="header"></header>
+
+        <!-- Dashboard Content -->
+        <div class="dashboard-content">
+<div class="content-grid">
                     <div class="viewings-section">
-                        <header data-component="header"></header>
-                        
                         <div class="tabs">
                             <button class="tab active" onclick="filterViewings('upcoming')">Upcoming</button>
                             <button class="tab" onclick="filterViewings('past')">Past</button>
@@ -436,8 +427,7 @@
                     
                     <div class="sidebar">
                         <div class="calendar-widget">
-                            <header data-component="header"></header>
-                                <div class="calendar-nav">
+                            <div class="calendar-nav">
                                     <button class="nav-btn" onclick="previousMonth()">‹</button>
                                     <button class="nav-btn" onclick="nextMonth()">›</button>
                                 </div>
@@ -470,46 +460,16 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        </main>
-    </div>
-    
-    <!-- Reschedule Modal -->
-    <div class="modal" id="rescheduleModal">
-        <div class="modal-content">
-            <h2 style="margin-bottom: 20px;">Reschedule Viewing</h2>
-            <form id="rescheduleForm">
-                <div style="margin-bottom: 20px;">
-                    <label style="display: block; margin-bottom: 8px; font-weight: 500;">New Date</label>
-                    <input type="date" id="newDate" required style="width: 100%; padding: 10px; border: 2px solid #e0e0e0; border-radius: 8px;">
-                </div>
-                <div style="margin-bottom: 20px;">
-                    <label style="display: block; margin-bottom: 8px; font-weight: 500;">New Time</label>
-                    <select id="newTime" required style="width: 100%; padding: 10px; border: 2px solid #e0e0e0; border-radius: 8px;">
-                        <option value="">Select time</option>
-                        <option value="9:00 AM">9:00 AM</option>
-                        <option value="10:00 AM">10:00 AM</option>
-                        <option value="11:00 AM">11:00 AM</option>
-                        <option value="12:00 PM">12:00 PM</option>
-                        <option value="1:00 PM">1:00 PM</option>
-                        <option value="2:00 PM">2:00 PM</option>
-                        <option value="3:00 PM">3:00 PM</option>
-                        <option value="4:00 PM">4:00 PM</option>
-                        <option value="5:00 PM">5:00 PM</option>
-                    </select>
-                </div>
-                <div style="display: flex; gap: 10px;">
-                    <button type="submit" class="btn btn-primary" style="flex: 1;">Confirm</button>
-                    <button type="button" class="btn btn-secondary" onclick="closeModal()" style="flex: 1;">Cancel</button>
-                </div>
-            </form>
         </div>
     </div>
-    
-    <!-- Firebase Configuration -->
+
+    <!-- UCS Core Scripts -->
+    <script src="../components/ucs-core.js"></script>
+    <script src="../components/component-registry.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="{{BASE_PATH}}firebase-config.js"></script>
-    
-    <!-- Load Header and Auth after Firebase Ready -->
     <script>
         window.addEventListener('firebase-ready', function() {
             const headerScript = document.createElement('script');
@@ -531,7 +491,6 @@
             };
         });
     </script>
-    
     <script>
         window.addEventListener('firebase-ready', function() {
             const db = window.db;
@@ -908,9 +867,5 @@
         });
         });
     </script>
-
-    <!-- UCS Core Scripts -->
-    <script src="../components/ucs-core.js"></script>
-    <script src="../components/component-registry.js"></script>
 </body>
 </html>

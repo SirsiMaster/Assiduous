@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" data-auth-protect="client,investor">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="robots" content="noindex, nofollow">
-    <title>Messages — Assiduous Client Portal</title>
+    <title>Messages - Assiduous Client Portal</title>
     
     <!-- Assiduous Design System -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,16 +11,12 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@fontsource/geist-sans@5.0.6/latin.css" rel="stylesheet">
+    
     <link rel="stylesheet" href="../assiduous.css">
     <link rel="stylesheet" href="../components/admin-layout.css">
     
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-    
     <style>
-        /* Chat-specific styles using design system */
+/* Chat-specific styles using design system */
         .messages-container {
             display: grid;
             grid-template-columns: 320px 1fr;
@@ -334,22 +329,19 @@
         }
     </style>
 </head>
-<body>
-    <!-- Universal Header -->
-    <header data-component="header"></header>
-    
-    <!-- Admin Layout Wrapper -->
-    <div class="admin-wrapper">
-        <!-- Sidebar -->
-        <!-- UCS Sidebar Component -->
+<body class="admin-wrapper" data-active="messages">
+    <!-- UCS Sidebar Component -->
     <aside class="sidebar" data-component="sidebar"></aside>
-        
-        <!-- Main Content -->
-        <main class="main-content">
-            <div class="page-content">
-                <div class="messages-container">
+
+    <!-- Main Content Area -->
+    <div class="main-content">
+        <!-- UCS Header Component -->
+        <header data-component="header"></header>
+
+        <!-- Dashboard Content -->
+        <div class="dashboard-content">
+<div class="messages-container">
                     <div class="conversations-sidebar">
-                        <header data-component="header"></header>
                         </div>
                         <div class="conversations-list" id="conversationsList">
                             <!-- Conversations loaded here -->
@@ -357,12 +349,8 @@
                     </div>
                     
                     <div class="chat-area" id="chatArea">
-                        <header data-component="header"></header>
-                            <header data-component="header"></header>
-                                <header data-component="header"></header>
-                            </div>
-                            <header data-component="header"></header>
                         </div>
+                            </div>
                         
                         <div class="messages-area" id="messagesArea">
                             <!-- Messages loaded here -->
@@ -380,14 +368,16 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        </main>
+        </div>
     </div>
-    
-    <!-- Firebase Configuration -->
+
+    <!-- UCS Core Scripts -->
+    <script src="../components/ucs-core.js"></script>
+    <script src="../components/component-registry.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="{{BASE_PATH}}firebase-config.js"></script>
-    
-    <!-- Load Header and Auth after Firebase Ready -->
     <script>
         window.addEventListener('firebase-ready', function() {
             const headerScript = document.createElement('script');
@@ -409,7 +399,6 @@
             };
         });
     </script>
-    
     <script>
         window.addEventListener('firebase-ready', function() {
             const db = window.db;
@@ -869,9 +858,5 @@
         });
         });
     </script>
-
-    <!-- UCS Core Scripts -->
-    <script src="../components/ucs-core.js"></script>
-    <script src="../components/component-registry.js"></script>
 </body>
 </html>

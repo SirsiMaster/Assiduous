@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="robots" content="noindex, nofollow">
-    <title>Clients Management - Assiduous Realty Admin</title>
+    <title>Clients - Assiduous Agent Portal</title>
     
     <!-- Assiduous Design System -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -17,12 +16,7 @@
     <link rel="stylesheet" href="../components/admin-layout.css">
     
     <style>
-        
-        
-
-        
-
-        /* Sidebar */
+/* Sidebar */
         
 
         
@@ -244,49 +238,19 @@
             }
         }
     </style>
-    <!-- Removed old Sirsi UI -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SirsiMaster/ui-components@latest/dist/sirsimaster-ui.css">
-    <link rel="stylesheet" href="/assets/css/button-override.css">
-    
-    <script>
-        // Ensure button styles are loaded
-        (function() {
-            const checkButtons = function() {
-                const testBtn = document.querySelector('button');
-                if (testBtn) {
-                    const styles = window.getComputedStyle(testBtn);
-                    if (styles.borderStyle === 'outset' || styles.backgroundColor.includes('192')) {
-                        // Force reload override styles
-                        const link = document.querySelector('link[href*="button-override"]');
-                        if (link) {
-                            link.href = link.href.split('?')[0] + '?v=' + Date.now();
-                        }
-                    }
-                }
-            };
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', checkButtons);
-            } else {
-                checkButtons();
-            }
-        })();
-    </script>
 </head>
-<body>
-    <div class="admin-wrapper">
-        
-        <!-- Sidebar Component -->
-        <!-- UCS Sidebar Component -->
+<body class="admin-wrapper" data-active="clients">
+    <!-- UCS Sidebar Component -->
     <aside class="sidebar" data-component="sidebar"></aside>
-</aside>
-        <main class="main-content">
-            <!-- Standardized Admin Header -->
-            <header data-component="header"></header>
 
-            <!-- Page Content -->
-            <div class="page-content">
+    <!-- Main Content Area -->
+    <div class="main-content">
+        <!-- UCS Header Component -->
+        <header data-component="header"></header>
 
-                <!-- Stats Cards -->
+        <!-- Dashboard Content -->
+        <div class="dashboard-content">
+<!-- Stats Cards -->
                 <div class="stats-grid">
                     <div class="stat-card sirsi-card sirsi-sm-sm-card--elevated">
                         <div class="stat-value">3,842</div>
@@ -312,7 +276,6 @@
 
                 <!-- Clients Table -->
                 <div class="data-table sirsi-sm-sm-card">
-                    <header data-component="header"></header>
                     <table>
                         <thead>
                             <tr>
@@ -465,10 +428,35 @@
                         </tbody>
                     </table>
                 </div>
-            </div>
-        </main>
+        </div>
     </div>
 
+    <!-- UCS Core Scripts -->
+    <script src="../components/ucs-core.js"></script>
+    <script src="../components/component-registry.js"></script>
+    <script>
+        // Ensure button styles are loaded
+        (function() {
+            const checkButtons = function() {
+                const testBtn = document.querySelector('button');
+                if (testBtn) {
+                    const styles = window.getComputedStyle(testBtn);
+                    if (styles.borderStyle === 'outset' || styles.backgroundColor.includes('192')) {
+                        // Force reload override styles
+                        const link = document.querySelector('link[href*="button-override"]');
+                        if (link) {
+                            link.href = link.href.split('?')[0] + '?v=' + Date.now();
+                        }
+                    }
+                }
+            };
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', checkButtons);
+            } else {
+                checkButtons();
+            }
+        })();
+    </script>
     <script>
         // Header Actions for Clients
         const HeaderActions = {
@@ -494,11 +482,6 @@
             });
         });
     </script>
-    <!-- Sidebar pre-rendered, no JS needed -->
     <script src="{{BASE_PATH}}components/universal-header.js"></script>
-
-    <!-- UCS Core Scripts -->
-    <script src="../components/ucs-core.js"></script>
-    <script src="../components/component-registry.js"></script>
 </body>
 </html>

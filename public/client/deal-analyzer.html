@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="robots" content="noindex, nofollow">
-    <title>Deal Analyzer — Assiduous Client Portal</title>
+    <title>Deal Analyzer - Assiduous Client Portal</title>
     
     <!-- Assiduous Design System -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,21 +11,12 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@fontsource/geist-sans@5.0.6/latin.css" rel="stylesheet">
+    
     <link rel="stylesheet" href="../assiduous.css">
     <link rel="stylesheet" href="../components/admin-layout.css">
     
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-    <script src="{{BASE_PATH}}firebase-config.js"></script>
-    <script src="{{BASE_PATH}}components/auth-guard-simple.js"></script>
-    
-    <!-- Micro-Flipping Engine Service -->
-    <script src="{{BASE_PATH}}assets/js/services/microflip-engine.js"></script>
-    
     <style>
-        /* Deal Analyzer Specific Styles */
+/* Deal Analyzer Specific Styles */
         .calculator-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -264,22 +254,18 @@
         }
     </style>
 </head>
-<body>
-    <div class="admin-wrapper">
-        
-        <!-- Client Sidebar -->
-        <!-- UCS Sidebar Component -->
+<body class="admin-wrapper" data-active="deal-analyzer">
+    <!-- UCS Sidebar Component -->
     <aside class="sidebar" data-component="sidebar"></aside>
-        </aside>
-        
-        <main class="main-content">
-            <!-- Standardized Header -->
-            <header data-component="header"></header>
 
-            <!-- Page Content -->
-            <div class="page-content">
-                
-                <div class="calculator-grid">
+    <!-- Main Content Area -->
+    <div class="main-content">
+        <!-- UCS Header Component -->
+        <header data-component="header"></header>
+
+        <!-- Dashboard Content -->
+        <div class="dashboard-content">
+<div class="calculator-grid">
             <!-- Property Details -->
             <div class="calc-section">
                 <h2 class="section-title">
@@ -486,14 +472,19 @@
                         <!-- Warnings will be dynamically added here -->
                     </p>
                 </div>
-                
-            </div>
-        </main>
+        </div>
     </div>
-    
-    <!-- Header Component Script -->
-    <script src="{{BASE_PATH}}components/universal-header.js"></script>
 
+    <!-- UCS Core Scripts -->
+    <script src="../components/ucs-core.js"></script>
+    <script src="../components/component-registry.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="{{BASE_PATH}}firebase-config.js"></script>
+    <script src="{{BASE_PATH}}components/auth-guard-simple.js"></script>
+    <script src="{{BASE_PATH}}assets/js/services/microflip-engine.js"></script>
+    <script src="{{BASE_PATH}}components/universal-header.js"></script>
     <script>
         // Initialize Micro-Flip Engine
         const microFlipEngine = new MicroFlipEngine();
@@ -614,9 +605,5 @@
             calculateDeal();
         });
     </script>
-
-    <!-- UCS Core Scripts -->
-    <script src="../components/ucs-core.js"></script>
-    <script src="../components/component-registry.js"></script>
 </body>
 </html>

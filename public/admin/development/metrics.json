@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-11-10T02:23:37.013Z",
+  "lastUpdated": "2025-11-10T02:28:22.717Z",
   "summary": {
     "health": "Good",
     "score": 59,
@@ -152,20 +152,20 @@
     }
   },
   "project": {
-    "totalHours": "306",
-    "avgHoursPerDay": "8.7",
-    "totalCost": 47865,
-    "laborCost": 45900,
+    "totalHours": "307",
+    "avgHoursPerDay": "8.8",
+    "totalCost": 48015,
+    "laborCost": 46050,
     "toolsCost": 1965,
     "monthsElapsed": "3.0",
-    "totalCommits": 926,
-    "totalFiles": 800,
+    "totalCommits": 929,
+    "totalFiles": 801,
     "activeDays": 35,
     "totalDays": 92,
     "projectAgeDays": 92,
-    "linesAdded": 9799978,
-    "linesDeleted": 9422534,
-    "netLines": 377444,
+    "linesAdded": 9800376,
+    "linesDeleted": 9423199,
+    "netLines": 377177,
     "velocity": "26.5",
     "completionPercentage": 59,
     "actualStartDate": "2025-08-10",
@@ -177,21 +177,21 @@
   },
   "today": {
     "date": "2025-11-10",
-    "hours": "5.9",
-    "cost": 891,
-    "commits": 18,
+    "hours": "6.9",
+    "cost": 1040,
+    "commits": 21,
     "deployments": 0
   },
   "thisWeek": {
-    "hours": "82.2",
-    "cost": 12326,
-    "commits": 249,
+    "hours": "82.8",
+    "cost": 12425,
+    "commits": 251,
     "days": 7
   },
   "thisMonth": {
-    "hours": "155.8",
-    "cost": 23364,
-    "commits": 472
+    "hours": "156.8",
+    "cost": 23513,
+    "commits": 475
   },
   "quality": {
     "testCoverage": {
@@ -225,7 +225,7 @@
       "critical": 0,
       "total": 0
     },
-    "lastAudit": "2025-11-10T02:23:15.644Z",
+    "lastAudit": "2025-11-10T02:27:55.480Z",
     "dependencies": {
       "total": {
         "prod": 256,
@@ -320,11 +320,11 @@
     "changelog": true,
     "contributing": false,
     "license": false,
-    "lastUpdate": "2025-11-10 02:19:58 +0000"
+    "lastUpdate": "2025-11-10 02:27:11 +0000"
   },
   "productivity": {
     "velocityTrend": "increasing",
-    "weeklyCommits": 249,
+    "weeklyCommits": 251,
     "contributors": {
       "total": 0,
       "active": 0
@@ -402,6 +402,24 @@
   },
   "recentActivity": [
     {
+      "hash": "875c8b16d05dc27b708b7ac85ad9e77103691598",
+      "message": "chore(release): Bump version to 0.114.5 [skip ci]",
+      "author": "github-actions[bot]",
+      "date": "2025-11-10 02:27:11 +0000"
+    },
+    {
+      "hash": "ea2d8f1df27ed064b3ef2c7d5377ed3a46fefa5f",
+      "message": "fix(portals): replace template vars and remove duplicate CSS in all pages",
+      "author": "SirsiMaster",
+      "date": "2025-11-09 21:26:50 -0500"
+    },
+    {
+      "hash": "b39b52b38abc94cb9abdafcc7b930e86b934648c",
+      "message": "chore(release): Bump version to 0.114.4 [skip ci]",
+      "author": "github-actions[bot]",
+      "date": "2025-11-10 02:23:06 +0000"
+    },
+    {
       "hash": "d37f472d2e8c015b9ad66ecd98ee1025b92e3b87",
       "message": "fix(portals): repair malformed HTML in all client/agent pages",
       "author": "SirsiMaster",
@@ -442,28 +460,10 @@
       "message": "fix(portals): add UCS scripts to client/agent index pages",
       "author": "SirsiMaster",
       "date": "2025-11-09 21:05:05 -0500"
-    },
-    {
-      "hash": "65ea96289380bae4f91c5a31c11302cf26e15d78",
-      "message": "docs(warp): Streamline rules to pithy mini-prompts with Sirsi virtuous cycle",
-      "author": "SirsiMaster",
-      "date": "2025-11-09 18:23:19 -0500"
-    },
-    {
-      "hash": "fa175a503af90594d7ec6c50fa802490e06c46e4",
-      "message": "refactor(dev-metrics): remove specifications page, link to docs instead",
-      "author": "SirsiMaster",
-      "date": "2025-11-09 17:47:43 -0500"
-    },
-    {
-      "hash": "285c4fad2bfae50e8eda4655dc6a2991398cd7bd",
-      "message": "chore(release): Bump version to 0.114.0 [skip ci]",
-      "author": "github-actions[bot]",
-      "date": "2025-11-09 22:39:32 +0000"
     }
   ],
   "automation": {
-    "lastRun": "2025-11-10T02:23:37.013Z",
+    "lastRun": "2025-11-10T02:28:22.717Z",
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",

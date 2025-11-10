@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="robots" content="noindex, nofollow">
-    <title>Micro-Flip Calculator — Assiduous Client Portal</title>
+    <title>Micro Flip Calculator - Assiduous Client Portal</title>
     
     <!-- Assiduous Design System -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,22 +11,12 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@fontsource/geist-sans@5.0.6/latin.css" rel="stylesheet">
+    
     <link rel="stylesheet" href="../assiduous.css">
     <link rel="stylesheet" href="../components/admin-layout.css">
     
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-    <script src="{{BASE_PATH}}firebase-config.js"></script>
-    <script src="{{BASE_PATH}}components/auth-guard-simple.js"></script>
-    
-    <!-- Services -->
-    <script src="{{BASE_PATH}}assets/js/services/propertyservice.js"></script>
-    <script src="{{BASE_PATH}}assets/js/services/microflipengine.js"></script>
-    
     <style>
-        /* Property Selector Modal */
+/* Property Selector Modal */
         .property-selector-modal {
             display: none;
             position: fixed;
@@ -409,22 +398,18 @@
         }
     </style>
 </head>
-<body>
-    <div class="admin-wrapper">
-        
-        <!-- Client Sidebar -->
-        <!-- UCS Sidebar Component -->
+<body class="admin-wrapper" data-active="micro-flip-calculator">
+    <!-- UCS Sidebar Component -->
     <aside class="sidebar" data-component="sidebar"></aside>
-        </aside>
-        
-        <main class="main-content">
-            <!-- Standardized Header -->
-            <header data-component="header"></header>
 
-            <!-- Page Content -->
-            <div class="page-content">
-                
-                <!-- Property Selector Button -->
+    <!-- Main Content Area -->
+    <div class="main-content">
+        <!-- UCS Header Component -->
+        <header data-component="header"></header>
+
+        <!-- Dashboard Content -->
+        <div class="dashboard-content">
+<!-- Property Selector Button -->
                 <div style="margin-bottom: var(--space-xl);">
                     <button onclick="openPropertySelector()" class="sm-btn sm-btn-primary" style="padding: var(--space-md) var(--space-xl);">
                         <svg style="width: 18px; height: 18px; margin-right: var(--space-xs);" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -592,42 +577,20 @@
                         </table>
                     </div>
                 </div>
-                
-            </div>
-        </main>
-    </div>
-    
-    <!-- Property Selector Modal -->
-    <div id="propertySelectorModal" class="property-selector-modal">
-        <div class="modal-content">
-            <header data-component="header"></header>
-            
-            <div id="propertyGridContainer">
-                <div class="property-grid" id="propertyGrid">
-                    <!-- Properties will be loaded here -->
-                </div>
-                
-                <div id="emptyState" class="empty-state" style="display: none;">
-                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-bottom: var(--space-md);">
-                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                    </svg>
-                    <h3>No Saved Properties</h3>
-                    <p>Browse properties and save them to analyze deals here.</p>
-                    <a href="properties.html" class="sm-btn sm-btn-primary" style="margin-top: var(--space-md);">Browse Properties</a>
-                </div>
-            </div>
-            
-            <div style="text-align: center;">
-                <button id="selectPropertyBtn" class="btn-select-property" onclick="confirmPropertySelection()" disabled>
-                    Analyze Selected Property
-                </button>
-            </div>
         </div>
     </div>
 
-    <!-- Header Component Script -->
+    <!-- UCS Core Scripts -->
+    <script src="../components/ucs-core.js"></script>
+    <script src="../components/component-registry.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="{{BASE_PATH}}firebase-config.js"></script>
+    <script src="{{BASE_PATH}}components/auth-guard-simple.js"></script>
+    <script src="{{BASE_PATH}}assets/js/services/propertyservice.js"></script>
+    <script src="{{BASE_PATH}}assets/js/services/microflipengine.js"></script>
     <script src="{{BASE_PATH}}components/universal-header.js"></script>
-
     <script>
         // Initialize services
         const microFlipEngine = new MicroFlipEngine();
@@ -907,9 +870,5 @@
             calculateROI();
         });
     </script>
-
-    <!-- UCS Core Scripts -->
-    <script src="../components/ucs-core.js"></script>
-    <script src="../components/component-registry.js"></script>
 </body>
 </html>
