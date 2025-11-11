@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.119.0] - 2025-11-11
+
+### Added
+- feat: Add MLS properties CRUD management page with Firestore rules
+
+
 ## [0.118.0] - 2025-11-11
 
 ### Added
@@ -3279,7 +3285,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.118.0...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.119.0...HEAD
+
+
+## [0.119.0] - 2025-11-11
+
+### Added
+- feat: Add MLS properties CRUD management page with Firestore rules
 
 
 ## [0.118.0] - 2025-11-11
@@ -5020,3 +5032,4 @@ To generate changelog entries:
 [0.116.5]: https://github.com/SirsiMaster/Assiduous/compare/v0.116.4...v0.116.5
 [0.117.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.116.5...v0.117.0
 [0.118.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.117.0...v0.118.0
+[0.119.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.118.0...v0.119.0
