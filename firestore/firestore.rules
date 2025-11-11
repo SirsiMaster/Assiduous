@@ -361,6 +361,25 @@ service cloud.firestore {
       allow delete: if isAdmin();
     }
     
+    match /clients/{clientId} {
+      // Read: Agents can read their own clients, admins can read all
+      allow read: if (isAgent() && resource.data.agentId == getUserId()) ||
+                     isAdmin();
+      
+      // Create: Agents can create clients assigned to them
+      allow create: if isAgent() && 
+                       request.resource.data.agentId == getUserId() &&
+                       request.resource.data.keys().hasAll(['firstName', 'lastName', 'email', 'agentId']);
+      
+      // Update: Agents can update their own clients
+      allow update: if (isAgent() && resource.data.agentId == getUserId()) ||
+                       isAdmin();
+      
+      // Delete: Agents can delete their own clients, admins can delete all
+      allow delete: if (isAgent() && resource.data.agentId == getUserId()) ||
+                       isAdmin();
+    }
+    
     match /agent_performance/{agentId} {
       // Read: Agent can read own performance, admins can read all
       allow read: if (isAgent() && agentId == getUserId()) || isAdmin();
