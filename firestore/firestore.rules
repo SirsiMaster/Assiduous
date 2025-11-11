@@ -361,6 +361,15 @@ service cloud.firestore {
       allow delete: if isAdmin();
     }
     
+    
+    match /agent_performance/{agentId} {
+      // Read: Agent can read own performance, admins can read all
+      allow read: if (isAgent() && agentId == getUserId()) || isAdmin();
+      
+      // Write: Server-only (calculated by Cloud Functions)
+      allow write: if false;
+    }
+    
     match /clients/{clientId} {
       // Read: Agents can read their own clients, admins can read all
       allow read: if (isAgent() && resource.data.agentId == getUserId()) ||
@@ -380,12 +389,23 @@ service cloud.firestore {
                        isAdmin();
     }
     
-    match /agent_performance/{agentId} {
-      // Read: Agent can read own performance, admins can read all
-      allow read: if (isAgent() && agentId == getUserId()) || isAdmin();
+    match /offmarket_properties/{propertyId} {
+      // Read: Agents can read their own properties, admins can read all
+      allow read: if (isAgent() && resource.data.agentId == getUserId()) ||
+                     isAdmin();
       
-      // Write: Server-only (calculated by Cloud Functions)
-      allow write: if false;
+      // Create: Agents can create properties assigned to them
+      allow create: if isAgent() && 
+                       request.resource.data.agentId == getUserId() &&
+                       request.resource.data.keys().hasAll(['street', 'city', 'state', 'zip', 'price', 'agentId']);
+      
+      // Update: Agents can update their own properties
+      allow update: if (isAgent() && resource.data.agentId == getUserId()) ||
+                       isAdmin();
+      
+      // Delete: Agents can delete their own properties, admins can delete all
+      allow delete: if (isAgent() && resource.data.agentId == getUserId()) ||
+                       isAdmin();
     }
     
     // ============================================================================

@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Off-Market Properties - Assiduous Agent Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fontsource/geist-sans@5.0.6/latin.css" rel="stylesheet">
+    <link rel="stylesheet" href="../assiduous.css">
+    <link rel="stylesheet" href="../components/admin-layout.css">
+    <style>
+        .dashboard-content { padding: var(--space-xl); background: var(--gray-50); }
+        .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-xl); }
+        
+        button.add-btn,
+        button.add-btn:hover {
+            padding: 12px 24px !important;
+            background: #60A3D9 !important;
+            color: #ffffff !important;
+            border: none !important;
+            border-radius: 8px !important;
+            font-weight: 600 !important;
+            cursor: pointer !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+        button.add-btn:hover { background: #4a8cc7 !important; transform: translateY(-1px) !important; }
+        
+        button.btn-save,
+        button.btn-save:hover {
+            padding: 10px 24px !important;
+            background: #60A3D9 !important;
+            color: #ffffff !important;
+            border: none !important;
+            border-radius: 8px !important;
+            font-weight: 600 !important;
+            cursor: pointer !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+        button.btn-save:hover { background: #4a8cc7 !important; }
+        
+        button.btn-cancel,
+        button.btn-cancel:hover {
+            padding: 10px 24px !important;
+            background: #ffffff !important;
+            color: #1f2937 !important;
+            border: 1px solid #d1d5db !important;
+            border-radius: 8px !important;
+            cursor: pointer !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+        button.btn-cancel:hover { background: #f9fafb !important; }
+        
+        .data-table { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-md); overflow: hidden; }
+        table { width: 100%; border-collapse: collapse; }
+        th { padding: var(--space-md); text-align: left; font-size: 12px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; background: var(--gray-50); border-bottom: 1px solid var(--border); }
+        td { padding: var(--space-md); font-size: 14px; border-bottom: 1px solid var(--gray-100); }
+        tr:hover { background: var(--gray-50); }
+        
+        .status-badge { padding: 4px 12px; border-radius: var(--radius); font-size: 12px; font-weight: 600; }
+        .status-available { background: rgba(5, 150, 105, 0.1); color: var(--success); }
+        .status-under-contract { background: rgba(245, 158, 11, 0.1); color: #f59e0b; }
+        .status-sold { background: rgba(107, 114, 128, 0.1); color: var(--text-secondary); }
+        
+        button.action-btn { padding: 6px 12px !important; margin-right: 8px !important; border: 1px solid var(--border) !important; background: var(--white) !important; border-radius: var(--radius) !important; cursor: pointer !important; font-size: 12px !important; opacity: 1 !important; visibility: visible !important; }
+        button.action-btn:hover { background: var(--gray-50) !important; }
+        button.action-btn.delete { color: var(--danger) !important; border-color: var(--danger) !important; }
+        button.action-btn.delete:hover { background: var(--danger) !important; color: var(--white) !important; }
+        
+        .modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 9999; align-items: center; justify-content: center; }
+        .modal.show { display: flex !important; }
+        .modal-content { background: var(--white); border-radius: var(--radius-md); width: 90%; max-width: 700px; max-height: 90vh; overflow-y: auto; }
+        .modal-header { padding: var(--space-lg); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+        .modal-title { font-size: 20px; font-weight: 600; }
+        .modal-close { background: none !important; border: none !important; font-size: 24px; cursor: pointer; color: var(--text-secondary); }
+        .modal-body { padding: var(--space-lg); }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-md); margin-bottom: var(--space-md); }
+        .form-group { margin-bottom: var(--space-md); }
+        .form-group.full-width { grid-column: 1 / -1; }
+        .form-label { display: block; font-size: 14px; font-weight: 600; margin-bottom: var(--space-xs); color: var(--dark); }
+        .form-input, .form-select, .form-textarea { width: 100%; padding: var(--space-sm) var(--space-md); border: 1px solid var(--border); border-radius: var(--radius); font-size: 14px; }
+        .form-textarea { resize: vertical; min-height: 80px; }
+        .modal-footer { padding: var(--space-lg); border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: var(--space-sm); }
+        .empty-state { text-align: center; padding: var(--space-3xl); color: var(--text-secondary); }
+    </style>
+</head>
+<body class="admin-wrapper" data-active="offmarket">
+    <aside class="sidebar" data-component="sidebar"></aside>
+    <div class="main-content">
+        <header data-component="header"></header>
+        <div class="dashboard-content">
+            <div class="page-header">
+                <div>
+                    <h1 style="font-size: 32px; font-weight: 700; margin-bottom: 8px;">Off-Market Properties</h1>
+                    <p style="color: var(--text-secondary);">Manage your off-market deals and pocket listings</p>
+                </div>
+                <button class="add-btn" onclick="openAddModal()">+ Add Property</button>
+            </div>
+
+            <div class="data-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Address</th>
+                            <th>Price</th>
+                            <th>Details</th>
+                            <th>Deal Type</th>
+                            <th>Status</th>
+                            <th>Added</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="propertiesTableBody">
+                        <tr><td colspan="7" class="empty-state">Loading properties...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Property Modal -->
+    <div id="propertyModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalTitle">Add Property</h2>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="propertyForm">
+                    <input type="hidden" id="propertyId">
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Street Address *</label>
+                            <input type="text" class="form-input" id="street" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">City *</label>
+                            <input type="text" class="form-input" id="city" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">State *</label>
+                            <input type="text" class="form-input" id="state" value="PA" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">ZIP Code *</label>
+                            <input type="text" class="form-input" id="zip" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Asking Price *</label>
+                            <input type="number" class="form-input" id="price" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Deal Type *</label>
+                            <select class="form-select" id="dealType" required>
+                                <option value="">Select type</option>
+                                <option value="wholesale">Wholesale</option>
+                                <option value="assignment">Assignment</option>
+                                <option value="pocket-listing">Pocket Listing</option>
+                                <option value="pre-foreclosure">Pre-Foreclosure</option>
+                                <option value="probate">Probate</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Beds</label>
+                            <input type="number" class="form-input" id="beds" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Baths</label>
+                            <input type="number" class="form-input" id="baths" min="0" step="0.5">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Square Feet</label>
+                            <input type="number" class="form-input" id="sqft" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Status *</label>
+                            <select class="form-select" id="status" required>
+                                <option value="available">Available</option>
+                                <option value="under-contract">Under Contract</option>
+                                <option value="sold">Sold</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Acquisition Price</label>
+                            <input type="number" class="form-input" id="acquisitionPrice">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Assignment Fee</label>
+                            <input type="number" class="form-input" id="assignmentFee">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group full-width">
+                        <label class="form-label">Seller Contact</label>
+                        <input type="text" class="form-input" id="sellerContact" placeholder="Name, phone, email">
+                    </div>
+                    
+                    <div class="form-group full-width">
+                        <label class="form-label">Notes</label>
+                        <textarea class="form-textarea" id="notes" placeholder="Property details, condition, repairs needed..."></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+                <button class="btn-save" onclick="saveProperty()">Save Property</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../components/ucs-core.js"></script>
+    <script src="../components/component-registry.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="../firebase-config.js"></script>
+    <script>
+        let currentUser = null;
+        let properties = [];
+        let authReady = false;
+
+        console.log('Setting up auth listener...');
+        
+        function initAuth() {
+            try {
+                if (!window.firebase || !firebase.auth) {
+                    console.log('Firebase not ready, waiting...');
+                    setTimeout(initAuth, 100);
+                    return;
+                }
+                
+                console.log('Firebase ready, setting up auth listener');
+                firebase.auth().onAuthStateChanged(user => {
+                    console.log('Auth state changed. User:', user ? user.email : 'null');
+                    if (user) {
+                        currentUser = user;
+                        authReady = true;
+                        console.log('Auth ready set to true');
+                        loadProperties();
+                    } else {
+                        console.log('No user, redirecting to login...');
+                        window.location.href = '/#login';
+                    }
+                });
+            } catch (error) {
+                console.log('Firebase not ready (error), retrying...', error.message);
+                setTimeout(initAuth, 100);
+            }
+        }
+        
+        initAuth();
+
+        async function loadProperties() {
+            try {
+                const db = firebase.firestore();
+                const snapshot = await db.collection('offmarket_properties')
+                    .where('agentId', '==', currentUser.uid)
+                    .get();
+
+                properties = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                properties.sort((a, b) => {
+                    if (!a.createdAt || !b.createdAt) return 0;
+                    return b.createdAt.toMillis() - a.createdAt.toMillis();
+                });
+                renderProperties();
+            } catch (error) {
+                console.error('Error loading properties:', error);
+                document.getElementById('propertiesTableBody').innerHTML = 
+                    '<tr><td colspan="7" class="empty-state">Error loading properties</td></tr>';
+            }
+        }
+
+        function renderProperties() {
+            const tbody = document.getElementById('propertiesTableBody');
+            if (properties.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" class="empty-state">No properties yet. Click "Add Property" to get started.</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = properties.map(prop => {
+                const address = `${prop.street}, ${prop.city}, ${prop.state} ${prop.zip}`;
+                const details = `${prop.beds || '-'} bd, ${prop.baths || '-'} ba${prop.sqft ? ', ' + prop.sqft + ' sqft' : ''}`;
+                return `
+                <tr>
+                    <td><strong>${address}</strong></td>
+                    <td>$${Number(prop.price).toLocaleString()}</td>
+                    <td>${details}</td>
+                    <td style="text-transform: capitalize;">${(prop.dealType || 'N/A').replace('-', ' ')}</td>
+                    <td><span class="status-badge status-${prop.status}">${prop.status.replace('-', ' ')}</span></td>
+                    <td>${formatDate(prop.createdAt)}</td>
+                    <td>
+                        <button class="action-btn" onclick="editProperty('${prop.id}')">Edit</button>
+                        <button class="action-btn delete" onclick="deleteProperty('${prop.id}')">Delete</button>
+                    </td>
+                </tr>
+            `}).join('');
+        }
+
+        function openAddModal() {
+            document.getElementById('modalTitle').textContent = 'Add Property';
+            document.getElementById('propertyForm').reset();
+            document.getElementById('propertyId').value = '';
+            document.getElementById('propertyModal').classList.add('show');
+        }
+
+        function editProperty(propertyId) {
+            const prop = properties.find(p => p.id === propertyId);
+            if (!prop) return;
+
+            document.getElementById('modalTitle').textContent = 'Edit Property';
+            document.getElementById('propertyId').value = prop.id;
+            document.getElementById('street').value = prop.street;
+            document.getElementById('city').value = prop.city;
+            document.getElementById('state').value = prop.state;
+            document.getElementById('zip').value = prop.zip;
+            document.getElementById('price').value = prop.price;
+            document.getElementById('dealType').value = prop.dealType || '';
+            document.getElementById('beds').value = prop.beds || '';
+            document.getElementById('baths').value = prop.baths || '';
+            document.getElementById('sqft').value = prop.sqft || '';
+            document.getElementById('status').value = prop.status;
+            document.getElementById('acquisitionPrice').value = prop.acquisitionPrice || '';
+            document.getElementById('assignmentFee').value = prop.assignmentFee || '';
+            document.getElementById('sellerContact').value = prop.sellerContact || '';
+            document.getElementById('notes').value = prop.notes || '';
+            document.getElementById('propertyModal').classList.add('show');
+        }
+
+        async function saveProperty() {
+            console.log('Save property clicked. Auth ready:', authReady);
+            
+            if (!authReady) {
+                console.log('Waiting for auth...');
+                await new Promise((resolve, reject) => {
+                    let attempts = 0;
+                    const checkAuth = setInterval(() => {
+                        attempts++;
+                        if (authReady) {
+                            clearInterval(checkAuth);
+                            resolve();
+                        }
+                        if (attempts > 60) {
+                            clearInterval(checkAuth);
+                            reject(new Error('Auth timeout'));
+                        }
+                    }, 50);
+                });
+            }
+
+            const propertyId = document.getElementById('propertyId').value;
+            const propertyData = {
+                street: document.getElementById('street').value,
+                city: document.getElementById('city').value,
+                state: document.getElementById('state').value,
+                zip: document.getElementById('zip').value,
+                price: Number(document.getElementById('price').value),
+                dealType: document.getElementById('dealType').value,
+                beds: Number(document.getElementById('beds').value) || null,
+                baths: Number(document.getElementById('baths').value) || null,
+                sqft: Number(document.getElementById('sqft').value) || null,
+                status: document.getElementById('status').value,
+                acquisitionPrice: Number(document.getElementById('acquisitionPrice').value) || null,
+                assignmentFee: Number(document.getElementById('assignmentFee').value) || null,
+                sellerContact: document.getElementById('sellerContact').value,
+                notes: document.getElementById('notes').value,
+                agentId: currentUser.uid,
+                agentEmail: currentUser.email,
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            };
+
+            try {
+                const db = firebase.firestore();
+                if (propertyId) {
+                    await db.collection('offmarket_properties').doc(propertyId).update(propertyData);
+                } else {
+                    propertyData.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+                    await db.collection('offmarket_properties').add(propertyData);
+                }
+                closeModal();
+                loadProperties();
+            } catch (error) {
+                console.error('Error saving property:', error);
+                alert('Error saving property. Please try again.');
+            }
+        }
+
+        async function deleteProperty(propertyId) {
+            if (!confirm('Are you sure you want to delete this property?')) return;
+
+            try {
+                const db = firebase.firestore();
+                await db.collection('offmarket_properties').doc(propertyId).delete();
+                loadProperties();
+            } catch (error) {
+                console.error('Error deleting property:', error);
+                alert('Error deleting property. Please try again.');
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('propertyModal').classList.remove('show');
+        }
+
+        function formatDate(timestamp) {
+            if (!timestamp) return '-';
+            const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
+            return date.toLocaleDateString();
+        }
+    </script>
+</body>
+</html>
