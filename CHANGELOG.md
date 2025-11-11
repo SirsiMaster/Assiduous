@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.116.5] - 2025-11-11
+
+### Fixed
+- fix: Add try-catch to auth initialization retry logic
+
+
 ## [0.116.4] - 2025-11-11
 
 ### Fixed
@@ -3261,7 +3267,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.116.4...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.116.5...HEAD
+
+
+## [0.116.5] - 2025-11-11
+
+### Fixed
+- fix: Add try-catch to auth initialization retry logic
 
 
 ## [0.116.4] - 2025-11-11
@@ -4981,3 +4993,4 @@ To generate changelog entries:
 [0.116.2]: https://github.com/SirsiMaster/Assiduous/compare/v0.116.1...v0.116.2
 [0.116.3]: https://github.com/SirsiMaster/Assiduous/compare/v0.116.2...v0.116.3
 [0.116.4]: https://github.com/SirsiMaster/Assiduous/compare/v0.116.3...v0.116.4
+[0.116.5]: https://github.com/SirsiMaster/Assiduous/compare/v0.116.4...v0.116.5
