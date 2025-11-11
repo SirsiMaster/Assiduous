@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.116.4] - 2025-11-11
+
+### Fixed
+- fix: Wait for Firebase initialization before setting up auth listener in clients.html
+
+
 ## [0.116.3] - 2025-11-11
 
 ### Fixed
@@ -3255,7 +3261,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.116.3...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.116.4...HEAD
+
+
+## [0.116.4] - 2025-11-11
+
+### Fixed
+- fix: Wait for Firebase initialization before setting up auth listener in clients.html
 
 
 ## [0.116.3] - 2025-11-11
@@ -4968,3 +4980,4 @@ To generate changelog entries:
 [0.116.1]: https://github.com/SirsiMaster/Assiduous/compare/v0.116.0...v0.116.1
 [0.116.2]: https://github.com/SirsiMaster/Assiduous/compare/v0.116.1...v0.116.2
 [0.116.3]: https://github.com/SirsiMaster/Assiduous/compare/v0.116.2...v0.116.3
+[0.116.4]: https://github.com/SirsiMaster/Assiduous/compare/v0.116.3...v0.116.4
