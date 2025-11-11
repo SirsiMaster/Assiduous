@@ -38,6 +38,7 @@ import {
   initializeFirestore,
   persistentLocalCache,
   persistentMultipleTabManager,
+  memoryLocalCache,
 } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js';
 import {
   getFunctions,
@@ -54,6 +55,7 @@ import {
 import {
   getAnalytics,
   logEvent,
+  isSupported as analyticsIsSupported,
 } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-analytics.js';
 
 // Firebase configuration
@@ -71,12 +73,22 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-// Initialize Firestore with modern persistence API
-const db = initializeFirestore(app, {
-  localCache: persistentLocalCache({
-    tabManager: persistentMultipleTabManager()
-  })
-});
+// Initialize Firestore with fallback to memory cache if IndexedDB is unavailable
+let db;
+try {
+  db = initializeFirestore(app, {
+    localCache: persistentLocalCache({
+      tabManager: persistentMultipleTabManager()
+    })
+  });
+  console.log('✅ Firestore persistence enabled with multi-tab support');
+} catch (error) {
+  console.warn('⚠️  IndexedDB unavailable, using memory-only cache:', error.message);
+  db = initializeFirestore(app, {
+    localCache: memoryLocalCache()
+  });
+  console.log('✅ Firestore initialized with memory cache');
+}
 
 const functions = getFunctions(app, 'us-central1');
 const storage = getStorage(app);
@@ -85,12 +97,18 @@ let analytics = null;
 // Only initialize analytics if not in localhost
 if (typeof window !== 'undefined' && !window.location.hostname.includes('localhost')) {
   try {
-    analytics = getAnalytics(app);
-    console.log('✅ Firebase Analytics initialized');
+    analyticsIsSupported().then((supported) => {
+      if (supported) {
+        analytics = getAnalytics(app);
+        console.log('✅ Firebase Analytics initialized');
+      } else {
+        console.info('ℹ️ Firebase Analytics not supported in this environment');
+      }
+    }).catch((error) => {
+      console.info('ℹ️ Firebase Analytics not available:', error.message);
+    });
   } catch (error) {
-    // Analytics may not be enabled in Firebase Console
-    // This is non-critical and can be safely ignored
-    console.info('ℹ️  Firebase Analytics not available:', error.message);
+    console.info('ℹ️ Firebase Analytics initialization skipped:', error.message);
   }
 }
 

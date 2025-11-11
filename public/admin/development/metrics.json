@@ -1,13 +1,13 @@
 {
-  "lastUpdated": "2025-11-10T17:12:38.394Z",
+  "lastUpdated": "2025-11-11T23:03:53.466Z",
   "summary": {
     "health": "Good",
     "score": 59,
-    "trend": "stable",
+    "trend": "decreasing",
     "alerts": [
-      "✅ UCS implementation complete - 32 pages converted",
+      "✅ UCS implementation complete - 36 pages converted",
       "⚠️ Test coverage is very low",
-      "⏰ Timeline warning - 21 days until launch"
+      "⏰ Timeline warning - 20 days until launch"
     ]
   },
   "features": {
@@ -100,18 +100,18 @@
         "Universal header template",
         "Role-based filtering",
         "Token replacement system",
-        "32 pages converted",
+        "36 pages converted",
         "5,000+ lines of code removed",
         "Complete documentation"
       ],
       "remainingTasks": [],
       "metrics": {
-        "totalPagesConverted": 32,
-        "clientPages": 17,
-        "agentPages": 15,
+        "totalPagesConverted": 36,
+        "clientPages": 19,
+        "agentPages": 17,
         "linesRemoved": 5000,
         "componentReuse": "100%",
-        "adoptionRate": "64%"
+        "adoptionRate": "67%"
       }
     },
     "microFlipping": {
@@ -152,46 +152,46 @@
     }
   },
   "project": {
-    "totalHours": "309",
-    "avgHoursPerDay": "8.8",
-    "totalCost": 48315,
-    "laborCost": 46350,
-    "toolsCost": 1965,
-    "monthsElapsed": "3.0",
-    "totalCommits": 936,
-    "totalFiles": 813,
-    "activeDays": 35,
-    "totalDays": 92,
-    "projectAgeDays": 92,
-    "linesAdded": 9809651,
-    "linesDeleted": 9426149,
-    "netLines": 383502,
-    "velocity": "26.7",
+    "totalHours": "310",
+    "avgHoursPerDay": "8.6",
+    "totalCost": 48507,
+    "laborCost": 46500,
+    "toolsCost": 2007,
+    "monthsElapsed": "3.1",
+    "totalCommits": 938,
+    "totalFiles": 817,
+    "activeDays": 36,
+    "totalDays": 94,
+    "projectAgeDays": 94,
+    "linesAdded": 9811403,
+    "linesDeleted": 9427831,
+    "netLines": 383572,
+    "velocity": "26.1",
     "completionPercentage": 59,
     "actualStartDate": "2025-08-10",
     "architecture": {
-      "ucsAdoption": "64%",
+      "ucsAdoption": "67%",
       "componentReuse": "100%",
       "codeReduction": 5000
     }
   },
   "today": {
-    "date": "2025-11-10",
-    "hours": "8.3",
-    "cost": 1238,
-    "commits": 25,
+    "date": "2025-11-11",
+    "hours": "0.3",
+    "cost": 50,
+    "commits": 1,
     "deployments": 0
   },
   "thisWeek": {
-    "hours": "62.4",
-    "cost": 9356,
-    "commits": 189,
+    "hours": "49.2",
+    "cost": 7376,
+    "commits": 149,
     "days": 7
   },
   "thisMonth": {
-    "hours": "155.1",
-    "cost": 23265,
-    "commits": 470
+    "hours": "138.3",
+    "cost": 20741,
+    "commits": 419
   },
   "quality": {
     "testCoverage": {
@@ -225,7 +225,7 @@
       "critical": 0,
       "total": 0
     },
-    "lastAudit": "2025-11-10T17:12:05.809Z",
+    "lastAudit": "2025-11-11T23:03:21.556Z",
     "dependencies": {
       "total": {
         "prod": 256,
@@ -304,9 +304,9 @@
     }
   },
   "documentation": {
-    "markdownFiles": 2517,
-    "jsFilesTotal": 23940,
-    "jsFilesDocumented": 23940,
+    "markdownFiles": 2518,
+    "jsFilesTotal": 23942,
+    "jsFilesDocumented": 23942,
     "coverage": 427,
     "apiEndpoints": {
       "total": 0,
@@ -320,16 +320,16 @@
     "changelog": true,
     "contributing": false,
     "license": false,
-    "lastUpdate": "2025-11-10 17:08:54 +0000"
+    "lastUpdate": "2025-11-11 18:02:34 -0500"
   },
   "productivity": {
-    "velocityTrend": "stable",
-    "weeklyCommits": 189,
+    "velocityTrend": "decreasing",
+    "weeklyCommits": 149,
     "contributors": {
       "total": 0,
       "active": 0
     },
-    "averageCommitSize": 93,
+    "averageCommitSize": 92,
     "pullRequests": {
       "open": 0,
       "merged": 0,
@@ -357,7 +357,7 @@
       "projectStart": "2025-08-10",
       "originalLaunch": "2025-11-01",
       "plannedLaunch": "2025-12-01",
-      "daysRemaining": 21,
+      "daysRemaining": 20,
       "onTrack": false,
       "adjustmentReason": "Timeline adjusted for realistic completion based on current velocity"
     },
@@ -401,6 +401,18 @@
     "projectedAnnualCost": 12
   },
   "recentActivity": [
+    {
+      "hash": "b15ee5a17f69e516544535f1b4aad106420e58a9",
+      "message": "fix: Remove standalone login pages, enforce index.html modal only",
+      "author": "SirsiMaster",
+      "date": "2025-11-11 18:02:34 -0500"
+    },
+    {
+      "hash": "86340db9e17362a71795c08a6ecd2fc5e172811b",
+      "message": "chore(release): Bump version to 0.116.0 [skip ci]",
+      "author": "github-actions[bot]",
+      "date": "2025-11-10 17:11:59 +0000"
+    },
     {
       "hash": "5f34830849b04dc326ef272eaea8457c5e7d8015",
       "message": "feat(portals): build complete functional pages for all sidebar links",
@@ -448,22 +460,10 @@
       "message": "chore(release): Bump version to 0.114.5 [skip ci]",
       "author": "github-actions[bot]",
       "date": "2025-11-10 02:27:11 +0000"
-    },
-    {
-      "hash": "ea2d8f1df27ed064b3ef2c7d5377ed3a46fefa5f",
-      "message": "fix(portals): replace template vars and remove duplicate CSS in all pages",
-      "author": "SirsiMaster",
-      "date": "2025-11-09 21:26:50 -0500"
-    },
-    {
-      "hash": "b39b52b38abc94cb9abdafcc7b930e86b934648c",
-      "message": "chore(release): Bump version to 0.114.4 [skip ci]",
-      "author": "github-actions[bot]",
-      "date": "2025-11-10 02:23:06 +0000"
     }
   ],
   "automation": {
-    "lastRun": "2025-11-10T17:12:38.394Z",
+    "lastRun": "2025-11-11T23:03:53.466Z",
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",
