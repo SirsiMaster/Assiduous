@@ -7,7 +7,6 @@
     
     <!-- Assiduous Design System -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SirsiMaster/ui-components@latest/dist/sirsimaster-ui.css">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@fontsource/geist-sans@5.0.6/latin.css" rel="stylesheet">
@@ -265,9 +264,37 @@
                                 <line x1="6" y1="20" x2="6" y2="16"></line>
                             </svg>
                         </div>
-                        <div class="stat-value" id="newLeadsCount">7</div>
-                        <div class="stat-label">New Leads</div>
-                        <div class="stat-change up">+2 today
+                    <div class="stat-value" id="newLeadsCount">7</div>
+                    <div class="stat-label">New Leads</div>
+                    <div class="stat-change up">+2 today</div>
+                </div>
+            </div>
+            
+            <!-- Recent Listings Table -->
+            <div style="background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-md); margin-top: var(--space-xl);">
+                <div style="padding: var(--space-md) var(--space-lg); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+                    <h2 style="font-size: 16px; font-weight: 600; color: var(--dark);">Recent Listings</h2>
+                    <a href="listings.html" style="color: var(--sky); text-decoration: none; font-size: 14px;">View All →</a>
+                </div>
+                <div class="data-table" style="border: none;">
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <thead style="background: var(--gray-50);">
+                            <tr>
+                                <th style="padding: var(--space-md); text-align: left; font-size: 12px; font-weight: 600; color: var(--text-secondary);">Property</th>
+                                <th style="padding: var(--space-md); text-align: left; font-size: 12px; font-weight: 600; color: var(--text-secondary);">Type</th>
+                                <th style="padding: var(--space-md); text-align: left; font-size: 12px; font-weight: 600; color: var(--text-secondary);">Price</th>
+                                <th style="padding: var(--space-md); text-align: left; font-size: 12px; font-weight: 600; color: var(--text-secondary);">Status</th>
+                                <th style="padding: var(--space-md); text-align: left; font-size: 12px; font-weight: 600; color: var(--text-secondary);">Views</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="5" style="text-align: center; padding: var(--space-xl); color: var(--text-secondary);">Loading listings...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 

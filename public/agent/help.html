@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help Center - Assiduous Agent Portal</title>
+    
+    <!-- Assiduous Design System -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fontsource/geist-sans@5.0.6/latin.css" rel="stylesheet">
+    
+    <link rel="stylesheet" href="../assiduous.css">
+    <link rel="stylesheet" href="../components/admin-layout.css">
+    
+    <style>
+        .dashboard-content {
+            padding: var(--space-xl);
+            overflow-y: auto;
+            background: var(--gray-50);
+        }
+
+        .help-search {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: var(--space-2xl);
+            margin-bottom: var(--space-xl);
+            text-align: center;
+        }
+
+        .search-box {
+            max-width: 600px;
+            margin: var(--space-lg) auto 0;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: var(--space-md) var(--space-lg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            font-size: 16px;
+        }
+
+        .help-categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--space-lg);
+            margin-bottom: var(--space-xl);
+        }
+
+        .category-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: var(--space-lg);
+            transition: all 0.2s;
+        }
+
+        .category-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .category-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--gradient);
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            margin-bottom: var(--space-md);
+        }
+
+        .category-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: var(--space-sm);
+        }
+
+        .category-articles {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .category-articles li {
+            padding: var(--space-sm) 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .category-articles li:last-child {
+            border-bottom: none;
+        }
+
+        .category-articles a {
+            color: var(--sky);
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .category-articles a:hover {
+            text-decoration: underline;
+        }
+
+        .contact-support {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: var(--space-xl);
+            text-align: center;
+        }
+
+        .support-button {
+            display: inline-block;
+            padding: var(--space-md) var(--space-xl);
+            background: var(--sky);
+            color: var(--white);
+            border-radius: var(--radius-md);
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: var(--space-md);
+            transition: all 0.2s;
+        }
+
+        .support-button:hover {
+            background: var(--sky-dark);
+            transform: translateY(-1px);
+        }
+    </style>
+</head>
+<body class="admin-wrapper" data-active="help">
+    <!-- UCS Sidebar Component -->
+    <aside class="sidebar" data-component="sidebar"></aside>
+
+    <!-- Main Content Area -->
+    <div class="main-content">
+        <!-- UCS Header Component -->
+        <header data-component="header"></header>
+
+        <!-- Help Center Content -->
+        <div class="dashboard-content">
+            <h1 style="font-size: 32px; font-weight: 700; color: var(--dark); margin-bottom: var(--space-xs);">Help Center</h1>
+            <p style="color: var(--text-secondary); font-size: 16px; margin-bottom: var(--space-2xl);">Find answers to common questions and learn how to use the platform</p>
+
+            <!-- Search Box -->
+            <div class="help-search">
+                <h2 style="font-size: 24px; font-weight: 600; margin-bottom: var(--space-md);">How can we help you?</h2>
+                <div class="search-box">
+                    <input type="text" class="search-input" placeholder="Search for help articles...">
+                </div>
+            </div>
+
+            <!-- Help Categories -->
+            <div class="help-categories">
+                <div class="category-card">
+                    <div class="category-icon">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                        </svg>
+                    </div>
+                    <h3 class="category-title">Getting Started</h3>
+                    <ul class="category-articles">
+                        <li><a href="#">Creating your account</a></li>
+                        <li><a href="#">Setting up your profile</a></li>
+                        <li><a href="#">Understanding the dashboard</a></li>
+                        <li><a href="#">Navigating the platform</a></li>
+                    </ul>
+                </div>
+
+                <div class="category-card">
+                    <div class="category-icon">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                        </svg>
+                    </div>
+                    <h3 class="category-title">Property Search</h3>
+                    <ul class="category-articles">
+                        <li><a href="#">How to search for properties</a></li>
+                        <li><a href="#">Using filters and criteria</a></li>
+                        <li><a href="#">Saving favorite properties</a></li>
+                        <li><a href="#">Setting up property alerts</a></li>
+                    </ul>
+                </div>
+
+                <div class="category-card">
+                    <div class="category-icon">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                        </svg>
+                    </div>
+                    <h3 class="category-title">Deal Analysis Tools</h3>
+                    <ul class="category-articles">
+                        <li><a href="#">Using the Micro-Flip Calculator</a></li>
+                        <li><a href="#">Understanding deal metrics</a></li>
+                        <li><a href="#">Analyzing property investments</a></li>
+                        <li><a href="#">Estimating renovation costs</a></li>
+                    </ul>
+                </div>
+
+                <div class="category-card">
+                    <div class="category-icon">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                        </svg>
+                    </div>
+                    <h3 class="category-title">Viewings & Offers</h3>
+                    <ul class="category-articles">
+                        <li><a href="#">Scheduling property viewings</a></li>
+                        <li><a href="#">Submitting offers</a></li>
+                        <li><a href="#">Tracking offer status</a></li>
+                        <li><a href="#">Communicating with agents</a></li>
+                    </ul>
+                </div>
+
+                <div class="category-card">
+                    <div class="category-icon">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                        </svg>
+                    </div>
+                    <h3 class="category-title">Account & Settings</h3>
+                    <ul class="category-articles">
+                        <li><a href="#">Managing your profile</a></li>
+                        <li><a href="#">Notification preferences</a></li>
+                        <li><a href="#">Privacy and security</a></li>
+                        <li><a href="#">Billing and subscriptions</a></li>
+                    </ul>
+                </div>
+
+                <div class="category-card">
+                    <div class="category-icon">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+                            <line x1="12" y1="17" x2="12" y2="17"/>
+                        </svg>
+                    </div>
+                    <h3 class="category-title">FAQ</h3>
+                    <ul class="category-articles">
+                        <li><a href="#">What is micro-flipping?</a></li>
+                        <li><a href="#">How do I get approved?</a></li>
+                        <li><a href="#">What are the fees?</a></li>
+                        <li><a href="#">How long does closing take?</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Contact Support -->
+            <div class="contact-support">
+                <svg width="64" height="64" fill="none" stroke="currentColor" stroke-width="2" style="margin: 0 auto var(--space-md); color: var(--sky);">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                </svg>
+                <h2 style="font-size: 24px; font-weight: 600; margin-bottom: var(--space-sm);">Still need help?</h2>
+                <p style="color: var(--text-secondary); margin-bottom: var(--space-md);">Our support team is here to assist you</p>
+                <a href="messages.html" class="support-button">Contact Support</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- UCS Core Scripts -->
+    <script src="../components/ucs-core.js"></script>
+    <script src="../components/component-registry.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="../firebase-config.js"></script>
+    <script src="../components/auth-guard-simple.js"></script>
+</body>
+</html>

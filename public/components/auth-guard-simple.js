@@ -23,7 +23,7 @@
             
             // Default options
             const opts = {
-                loginUrl: '/login.html',
+                loginUrl: '/#login',
                 requireEmailVerification: false,
                 onUnauthorized: null,
                 onSuccess: null,

@@ -7,7 +7,6 @@
     
     <!-- Assiduous Design System -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SirsiMaster/ui-components@latest/dist/sirsimaster-ui.css">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@fontsource/geist-sans@5.0.6/latin.css" rel="stylesheet">
@@ -241,8 +240,128 @@
 
         <!-- Dashboard Content -->
         <div class="dashboard-content">
-            <h1 class="page-title">Page Content</h1>
-            <p>Content extraction failed - manual fix needed</p>
+            <!-- Header Section -->
+            <div style="margin-bottom: var(--space-2xl);">
+                <h1 style="font-size: 32px; font-weight: 700; color: var(--dark); margin-bottom: var(--space-xs);">Welcome Back!</h1>
+                <p style="color: var(--text-secondary); font-size: 16px;">Here's what's happening with your property search</p>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon blue">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                        </svg>
+                    </div>
+                    <div class="stat-value" id="stat-properties">--</div>
+                    <div class="stat-label">Saved Properties</div>
+                    <div class="stat-change up">+3 this week</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon green">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                        </svg>
+                    </div>
+                    <div class="stat-value" id="stat-viewings">--</div>
+                    <div class="stat-label">Scheduled Viewings</div>
+                    <div class="stat-change up">+2 upcoming</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon yellow">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                        </svg>
+                    </div>
+                    <div class="stat-value" id="stat-messages">--</div>
+                    <div class="stat-label">Unread Messages</div>
+                    <div class="stat-change up">+1 new</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon purple">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                        </svg>
+                    </div>
+                    <div class="stat-value">$125K</div>
+                    <div class="stat-label">Est. Monthly Budget</div>
+                    <div class="stat-change">Based on profile</div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <h2 style="font-size: 20px; font-weight: 600; margin-bottom: var(--space-lg); color: var(--dark);">Quick Actions</h2>
+            <div class="quick-actions">
+                <a href="properties.html" class="action-card">
+                    <div class="action-icon">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                        </svg>
+                    </div>
+                    <div>Search Properties</div>
+                </a>
+
+                <a href="viewings.html" class="action-card">
+                    <div class="action-icon">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                        </svg>
+                    </div>
+                    <div>Schedule Viewing</div>
+                </a>
+
+                <a href="micro-flip-calculator.html" class="action-card">
+                    <div class="action-icon">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                        </svg>
+                    </div>
+                    <div>Flip Calculator</div>
+                </a>
+
+                <a href="messages.html" class="action-card">
+                    <div class="action-icon">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                        </svg>
+                    </div>
+                    <div>Messages</div>
+                </a>
+            </div>
+
+            <!-- Recently Viewed Properties -->
+            <div class="data-table">
+                <div class="table-header">
+                    <h2 class="table-title">Recently Viewed Properties</h2>
+                    <a href="properties.html" style="color: var(--sky); text-decoration: none; font-size: 14px;">View All →</a>
+                </div>
+                <div class="properties-grid" id="recent-properties">
+                    <div class="empty-state">
+                        <div class="empty-icon">🏠</div>
+                        <p>No recently viewed properties</p>
+                        <a href="properties.html" style="color: var(--sky); margin-top: var(--space-md); display: inline-block;">Start browsing →</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Saved Properties -->
+            <div class="data-table">
+                <div class="table-header">
+                    <h2 class="table-title">Saved Properties</h2>
+                    <a href="saved.html" style="color: var(--sky); text-decoration: none; font-size: 14px;">View All →</a>
+                </div>
+                <div class="properties-grid" id="saved-properties">
+                    <div class="empty-state">
+                        <div class="empty-icon">❤️</div>
+                        <p>No saved properties yet</p>
+                        <a href="properties.html" style="color: var(--sky); margin-top: var(--space-md); display: inline-block;">Browse properties →</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 

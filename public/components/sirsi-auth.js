@@ -17,8 +17,8 @@ class SirsiAuth {
                 client: '/client/dashboard.html',
                 investor: '/investor/dashboard.html',
                 pending: '/agent-pending.html',
-                login: '/login.html',
-                signup: '/signup.html',
+                login: '/#login',
+                signup: '/#signup',
                 ...config.redirects
             },
             styles: {
