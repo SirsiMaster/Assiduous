@@ -1,11 +1,11 @@
 {
-  "lastUpdated": "2025-11-11T23:46:03.667Z",
+  "lastUpdated": "2025-11-11T23:54:45.763Z",
   "summary": {
     "health": "Good",
     "score": 59,
     "trend": "decreasing",
     "alerts": [
-      "✅ UCS implementation complete - 36 pages converted",
+      "✅ UCS implementation complete - 37 pages converted",
       "⚠️ Test coverage is very low",
       "⏰ Timeline warning - 20 days until launch"
     ]
@@ -100,15 +100,15 @@
         "Universal header template",
         "Role-based filtering",
         "Token replacement system",
-        "36 pages converted",
+        "37 pages converted",
         "5,000+ lines of code removed",
         "Complete documentation"
       ],
       "remainingTasks": [],
       "metrics": {
-        "totalPagesConverted": 36,
+        "totalPagesConverted": 37,
         "clientPages": 19,
-        "agentPages": 17,
+        "agentPages": 18,
         "linesRemoved": 5000,
         "componentReuse": "100%",
         "adoptionRate": "67%"
@@ -152,21 +152,21 @@
     }
   },
   "project": {
-    "totalHours": "313",
+    "totalHours": "314",
     "avgHoursPerDay": "8.7",
-    "totalCost": 48957,
-    "laborCost": 46950,
+    "totalCost": 49107,
+    "laborCost": 47100,
     "toolsCost": 2007,
     "monthsElapsed": "3.1",
-    "totalCommits": 948,
-    "totalFiles": 817,
+    "totalCommits": 950,
+    "totalFiles": 818,
     "activeDays": 36,
     "totalDays": 94,
     "projectAgeDays": 94,
-    "linesAdded": 9811922,
-    "linesDeleted": 9428237,
-    "netLines": 383685,
-    "velocity": "26.3",
+    "linesAdded": 9812426,
+    "linesDeleted": 9428279,
+    "netLines": 384147,
+    "velocity": "26.4",
     "completionPercentage": 59,
     "actualStartDate": "2025-08-10",
     "architecture": {
@@ -177,21 +177,21 @@
   },
   "today": {
     "date": "2025-11-11",
-    "hours": "3.6",
-    "cost": 545,
-    "commits": 11,
+    "hours": "4.3",
+    "cost": 644,
+    "commits": 13,
     "deployments": 0
   },
   "thisWeek": {
-    "hours": "52.5",
-    "cost": 7871,
-    "commits": 159,
+    "hours": "53.1",
+    "cost": 7970,
+    "commits": 161,
     "days": 7
   },
   "thisMonth": {
-    "hours": "141.6",
-    "cost": 21236,
-    "commits": 429
+    "hours": "142.2",
+    "cost": 21335,
+    "commits": 431
   },
   "quality": {
     "testCoverage": {
@@ -225,7 +225,7 @@
       "critical": 0,
       "total": 0
     },
-    "lastAudit": "2025-11-11T23:45:33.890Z",
+    "lastAudit": "2025-11-11T23:54:18.847Z",
     "dependencies": {
       "total": {
         "prod": 256,
@@ -320,11 +320,11 @@
     "changelog": true,
     "contributing": false,
     "license": false,
-    "lastUpdate": "2025-11-11 23:38:16 +0000"
+    "lastUpdate": "2025-11-11 23:45:23 +0000"
   },
   "productivity": {
     "velocityTrend": "decreasing",
-    "weeklyCommits": 159,
+    "weeklyCommits": 161,
     "contributors": {
       "total": 0,
       "active": 0
@@ -402,6 +402,18 @@
   },
   "recentActivity": [
     {
+      "hash": "5708e1ea1287924c5f7cacc3fae081f9eb60711f",
+      "message": "feat: Add off-market properties CRUD management page with Firestore rules",
+      "author": "SirsiMaster",
+      "date": "2025-11-11 18:53:36 -0500"
+    },
+    {
+      "hash": "ea35fe2444497f5be69d92b7c69ee6ea020b2911",
+      "message": "chore(release): Bump version to 0.117.0 [skip ci]",
+      "author": "github-actions[bot]",
+      "date": "2025-11-11 23:45:23 +0000"
+    },
+    {
       "hash": "d852512cdbbc71cbf84b15b19889e756d9660979",
       "message": "feat: Add Firestore security rules for clients collection",
       "author": "SirsiMaster",
@@ -448,22 +460,10 @@
       "message": "chore(release): Bump version to 0.116.2 [skip ci]",
       "author": "github-actions[bot]",
       "date": "2025-11-11 23:15:28 +0000"
-    },
-    {
-      "hash": "d064619ae25ab420e64ef418aa221c0dd2761d21",
-      "message": "fix: Handle IndexedDB unavailability with memory cache fallback",
-      "author": "SirsiMaster",
-      "date": "2025-11-11 18:14:58 -0500"
-    },
-    {
-      "hash": "f52473ed724ab0f491635a952aab009fc2fe0c09",
-      "message": "chore(release): Bump version to 0.116.1 [skip ci]",
-      "author": "github-actions[bot]",
-      "date": "2025-11-11 23:03:10 +0000"
     }
   ],
   "automation": {
-    "lastRun": "2025-11-11T23:46:03.667Z",
+    "lastRun": "2025-11-11T23:54:45.763Z",
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",

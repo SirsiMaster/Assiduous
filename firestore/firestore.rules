@@ -408,6 +408,25 @@ service cloud.firestore {
                        isAdmin();
     }
     
+    match /mls_properties/{propertyId} {
+      // Read: Agents can read their own properties, admins can read all
+      allow read: if (isAgent() && resource.data.agentId == getUserId()) ||
+                     isAdmin();
+      
+      // Create: Agents can create properties assigned to them
+      allow create: if isAgent() && 
+                       request.resource.data.agentId == getUserId() &&
+                       request.resource.data.keys().hasAll(['street', 'city', 'state', 'zip', 'price', 'mlsNumber', 'agentId']);
+      
+      // Update: Agents can update their own properties
+      allow update: if (isAgent() && resource.data.agentId == getUserId()) ||
+                       isAdmin();
+      
+      // Delete: Agents can delete their own properties, admins can delete all
+      allow delete: if (isAgent() && resource.data.agentId == getUserId()) ||
+                       isAdmin();
+    }
+    
     // ============================================================================
     // ADMIN-ONLY COLLECTIONS
     // ============================================================================
