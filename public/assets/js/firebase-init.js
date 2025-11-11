@@ -35,10 +35,7 @@ import {
   limit,
   onSnapshot,
   serverTimestamp,
-  initializeFirestore,
-  persistentLocalCache,
-  persistentMultipleTabManager,
-  memoryLocalCache,
+  enableIndexedDbPersistence,
 } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js';
 import {
   getFunctions,
@@ -72,24 +69,7 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-
-// Initialize Firestore with fallback to memory cache if IndexedDB is unavailable
-let db;
-try {
-  db = initializeFirestore(app, {
-    localCache: persistentLocalCache({
-      tabManager: persistentMultipleTabManager()
-    })
-  });
-  console.log('✅ Firestore persistence enabled with multi-tab support');
-} catch (error) {
-  console.warn('⚠️  IndexedDB unavailable, using memory-only cache:', error.message);
-  db = initializeFirestore(app, {
-    localCache: memoryLocalCache()
-  });
-  console.log('✅ Firestore initialized with memory cache');
-}
-
+const db = getFirestore(app);
 const functions = getFunctions(app, 'us-central1');
 const storage = getStorage(app);
 let analytics = null;
@@ -112,8 +92,14 @@ if (typeof window !== 'undefined' && !window.location.hostname.includes('localho
   }
 }
 
-// Persistence is now configured during initialization (see initializeFirestore above)
-console.log('✅ Firestore persistence enabled with multi-tab support');
+// Enable offline persistence with the simpler API
+enableIndexedDbPersistence(db).catch(err => {
+  if (err.code === 'failed-precondition') {
+    console.warn('Multiple tabs open, persistence enabled in first tab only');
+  } else if (err.code === 'unimplemented') {
+    console.warn("Browser doesn't support offline persistence");
+  }
+});
 
 // Set authentication persistence
 setPersistence(auth, browserLocalPersistence).catch(error => {
