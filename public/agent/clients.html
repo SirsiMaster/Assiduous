@@ -212,20 +212,34 @@
         let clients = [];
         let authReady = false;
 
-        // Auth loads in background (async)
+        // Wait for Firebase to be ready before setting up auth listener
         console.log('Setting up auth listener...');
-        firebase.auth().onAuthStateChanged(user => {
-            console.log('Auth state changed. User:', user ? user.email : 'null');
-            if (user) {
-                currentUser = user;
-                authReady = true;
-                console.log('Auth ready set to true');
-                loadClients();
-            } else {
-                console.log('No user, redirecting to login...');
-                window.location.href = '../index.html';
+        
+        // Use a function to set up auth once Firebase is ready
+        function initAuth() {
+            if (!window.firebase || !firebase.auth) {
+                console.log('Firebase not ready, waiting...');
+                setTimeout(initAuth, 100);
+                return;
             }
-        });
+            
+            console.log('Firebase ready, setting up auth listener');
+            firebase.auth().onAuthStateChanged(user => {
+                console.log('Auth state changed. User:', user ? user.email : 'null');
+                if (user) {
+                    currentUser = user;
+                    authReady = true;
+                    console.log('Auth ready set to true');
+                    loadClients();
+                } else {
+                    console.log('No user, redirecting to login...');
+                    window.location.href = '/#login';
+                }
+            });
+        }
+        
+        // Start init process
+        initAuth();
 
         // Load clients from Firestore
         async function loadClients() {
