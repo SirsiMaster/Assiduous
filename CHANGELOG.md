@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.116.2] - 2025-11-11
+
+### Fixed
+- fix: Handle IndexedDB unavailability with memory cache fallback
+
+
 ## [0.116.1] - 2025-11-11
 
 ### Fixed
@@ -3243,7 +3249,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.116.1...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.116.2...HEAD
+
+
+## [0.116.2] - 2025-11-11
+
+### Fixed
+- fix: Handle IndexedDB unavailability with memory cache fallback
 
 
 ## [0.116.1] - 2025-11-11
@@ -4942,3 +4954,4 @@ To generate changelog entries:
 [0.115.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.114.7...v0.115.0
 [0.116.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.115.0...v0.116.0
 [0.116.1]: https://github.com/SirsiMaster/Assiduous/compare/v0.116.0...v0.116.1
+[0.116.2]: https://github.com/SirsiMaster/Assiduous/compare/v0.116.1...v0.116.2
