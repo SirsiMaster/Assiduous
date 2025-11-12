@@ -451,6 +451,15 @@ service cloud.firestore {
       allow create, update, delete: if false;
     }
     
+    match /property_shares/{shareId} {
+      // Read: Users can read shares they created, admins can read all
+      allow read: if (isAuthenticated() && resource.data.sharedBy == getUserId()) ||
+                     isAdmin();
+      
+      // Create/Update/Delete: Server-only (Cloud Functions)
+      allow create, update, delete: if false;
+    }
+    
     // ============================================================================
     // ADMIN-ONLY COLLECTIONS
     // ============================================================================
