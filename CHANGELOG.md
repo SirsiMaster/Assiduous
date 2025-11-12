@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.120.0] - 2025-11-12
+
+### Added
+- feat: Add QR code referral system with Cloud Functions
+
+
 ## [0.119.0] - 2025-11-11
 
 ### Added
@@ -3285,7 +3291,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.119.0...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.120.0...HEAD
+
+
+## [0.120.0] - 2025-11-12
+
+### Added
+- feat: Add QR code referral system with Cloud Functions
 
 
 ## [0.119.0] - 2025-11-11
@@ -5033,3 +5045,4 @@ To generate changelog entries:
 [0.117.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.116.5...v0.117.0
 [0.118.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.117.0...v0.118.0
 [0.119.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.118.0...v0.119.0
+[0.120.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.119.0...v0.120.0
