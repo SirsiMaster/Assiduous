@@ -444,6 +444,25 @@
         </div>
     </div>
     
+    <!-- Firebase SDK for QR Widget -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-functions-compat.js"></script>
+    
+    <script>
+        // Initialize Firebase for QR widget
+        if (!firebase.apps.length) {
+            firebase.initializeApp({
+                apiKey: 'AIzaSyCnQajchoBwP_VMEvc9mKH-vO0xlZjGCRE',
+                authDomain: 'assiduous-prod.firebaseapp.com',
+                projectId: 'assiduous-prod',
+                storageBucket: 'assiduous-prod.firebasestorage.app',
+                messagingSenderId: '9355377564',
+                appId: '1:9355377564:web:84bd6fa0e7c8a2e7c3f56b',
+            });
+        }
+    </script>
+    
     <!-- Load property QR widget -->
     <script>
         // Load property QR widget HTML
