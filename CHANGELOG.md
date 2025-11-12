@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.126.0] - 2025-11-12
+
+### Added
+- feat(qr): Add QR code quick access buttons to property list cards
+
+
 ## [0.125.0] - 2025-11-12
 
 ### Added
@@ -3356,7 +3362,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.125.0...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.126.0...HEAD
+
+
+## [0.126.0] - 2025-11-12
+
+### Added
+- feat(qr): Add QR code quick access buttons to property list cards
 
 
 ## [0.125.0] - 2025-11-12
@@ -5160,3 +5172,4 @@ To generate changelog entries:
 [0.123.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.122.0...v0.123.0
 [0.124.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.123.0...v0.124.0
 [0.125.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.124.0...v0.125.0
+[0.126.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.125.0...v0.126.0
