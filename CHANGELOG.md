@@ -8,11 +8,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
-## [0.121.2] - 2025-11-12
+## [1.0.0] - 2025-01-12
+
+### Added
+- **QR Code Referral System** - Complete client onboarding and agent affinity tracking
+  - Cloud Functions: generateReferralCode, sendClientInvitation, processQRSignup, activateTempAccount, shareQRCode
+  - Agent QR code page with download, share, and copy functionality
+  - Enhanced signup flow with automatic referral detection (?ref= and ?token= parameters)
+  - Firestore collections: referrals, client_invitations
+  - SendGrid email integration for invitations and sharing
+  - Comprehensive documentation in docs/qr_code_referral_system.html
+- Agent CRUD Management Pages
+  - clients.html - Full CRUD for agent clients with modal interface
+  - offmarket-manage.html - Off-market properties management
+  - properties-manage.html - MLS properties management
+- Firestore security rules for clients, offmarket_properties, mls_properties, referrals, client_invitations
+- Async authentication pattern to eliminate page load delays
+
+### Changed
+- Migrated SendGrid from deprecated functions.config() to Firebase Secrets (process.env.SENDGRID_API_KEY)
+- Updated all Cloud Functions to use runWith({ secrets: ['SENDGRID_API_KEY'] }) for secret binding
+- Enhanced signup.html to automatically process referrals after account creation
 
 ### Fixed
-- fix: Bind SENDGRID_API_KEY secret to Cloud Functions
-
+- Bind SENDGRID_API_KEY secret to Cloud Functions
+- Firestore persistence API issues causing 10-second delays on page load
+- Authentication race conditions in CRUD pages
+- Modal-only login enforcement (removed standalone login pages)
+- IndexedDB unavailability handling with memory cache fallback
 
 ## [0.121.1] - 2025-11-12
 

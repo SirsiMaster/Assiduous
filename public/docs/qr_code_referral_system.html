@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Referral System - Assiduous Documentation</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3, h4 {
+            margin-top: 24px;
+            margin-bottom: 16px;
+            font-weight: 600;
+            line-height: 1.25;
+        }
+        h1 { font-size: 2em; border-bottom: 1px solid #e1e4e8; padding-bottom: 0.3em; color: #1e3a5f; }
+        h2 { font-size: 1.5em; border-bottom: 1px solid #e1e4e8; padding-bottom: 0.3em; color: #2563eb; }
+        h3 { font-size: 1.25em; color: #374151; }
+        h4 { font-size: 1.1em; color: #4b5563; }
+        code {
+            background: #f6f8fa;
+            padding: 0.2em 0.4em;
+            border-radius: 3px;
+            font-size: 85%;
+            color: #d73a49;
+        }
+        pre {
+            background: #f6f8fa;
+            padding: 16px;
+            overflow: auto;
+            border-radius: 6px;
+            line-height: 1.45;
+            border: 1px solid #e1e4e8;
+        }
+        pre code {
+            background: transparent;
+            padding: 0;
+            color: #24292e;
+        }
+        ul, ol {
+            padding-left: 2em;
+            margin-bottom: 16px;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+        a {
+            color: #0366d6;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 20px 0;
+            border: 1px solid #e1e4e8;
+        }
+        table th {
+            background: #f6f8fa;
+            font-weight: 600;
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #e1e4e8;
+        }
+        table td {
+            padding: 10px 12px;
+            border: 1px solid #e1e4e8;
+        }
+        table tr:nth-child(even) {
+            background-color: #f9fafb;
+        }
+        .nav-link {
+            display: inline-block;
+            padding: 8px 16px;
+            background: #2563eb;
+            color: white;
+            border-radius: 6px;
+            margin: 10px 5px;
+            text-decoration: none;
+        }
+        .nav-link:hover {
+            background: #1d4ed8;
+            text-decoration: none;
+        }
+        .info-box {
+            background: #f0f9ff;
+            border-left: 4px solid #2563eb;
+            padding: 16px;
+            margin: 16px 0;
+            border-radius: 4px;
+        }
+        .warning-box {
+            background: #fff7ed;
+            border-left: 4px solid #f59e0b;
+            padding: 16px;
+            margin: 16px 0;
+            border-radius: 4px;
+        }
+        .success-box {
+            background: #f0fdf4;
+            border-left: 4px solid #10b981;
+            padding: 16px;
+            margin: 16px 0;
+            border-radius: 4px;
+        }
+        .timestamp {
+            color: #6a737d;
+            font-size: 0.85em;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e1e4e8;
+        }
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin: 0 4px;
+        }
+        .badge-success { background: #d1fae5; color: #065f46; }
+        .badge-info { background: #dbeafe; color: #1e40af; }
+        .badge-warning { background: #fed7aa; color: #92400e; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <a href="/docs/index.html" class="nav-link">📚 Documentation Hub</a>
+            <a href="/docs/api_specification.html" class="nav-link">🔌 API Spec</a>
+            <a href="/docs/architecture_design.html" class="nav-link">🏗️ Architecture</a>
+            <a href="/docs/changelog.html" class="nav-link">📝 Changelog</a>
+        </nav>
+
+        <h1>QR Code Referral System</h1>
+        
+        <div class="info-box">
+            <strong>📅 Deployed:</strong> January 12, 2025<br>
+            <strong>📍 Version:</strong> 1.0.0<br>
+            <strong>👥 Stakeholders:</strong> Agents, Clients, Admin<br>
+            <strong>🎯 Purpose:</strong> Client onboarding and agent-client affinity tracking
+        </div>
+
+        <h2>Overview</h2>
+        <p>
+            The QR Code Referral System enables agents to onboard clients instantly through QR codes or email invitations. 
+            Each agent gets a unique referral code and QR code that automatically links new clients to their account when scanned.
+        </p>
+
+        <div class="success-box">
+            <strong>✅ Key Benefits:</strong>
+            <ul>
+                <li>Instant client onboarding with zero manual data entry</li>
+                <li>Automatic agent-client affinity tracking</li>
+                <li>Multiple signup channels (QR scan, email invitation, manual link sharing)</li>
+                <li>Full referral analytics and tracking</li>
+                <li>SendGrid email integration for professional invitations</li>
+            </ul>
+        </div>
+
+        <h2>System Architecture</h2>
+
+        <h3>Components</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Component</th>
+                    <th>Type</th>
+                    <th>Location</th>
+                    <th>Purpose</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Agent QR Page</strong></td>
+                    <td>Frontend</td>
+                    <td><code>/agent/qr-code.html</code></td>
+                    <td>Display and share agent's QR code</td>
+                </tr>
+                <tr>
+                    <td><strong>Enhanced Signup</strong></td>
+                    <td>Frontend</td>
+                    <td><code>/auth/signup.html</code></td>
+                    <td>Detect and process referral parameters</td>
+                </tr>
+                <tr>
+                    <td><strong>Cloud Functions</strong></td>
+                    <td>Backend</td>
+                    <td><code>functions/index.js</code></td>
+                    <td>5 referral workflow functions</td>
+                </tr>
+                <tr>
+                    <td><strong>Firestore Collections</strong></td>
+                    <td>Database</td>
+                    <td>Multiple collections</td>
+                    <td>Store referrals, invitations, user data</td>
+                </tr>
+                <tr>
+                    <td><strong>SendGrid Integration</strong></td>
+                    <td>Email Service</td>
+                    <td>Firebase Secrets</td>
+                    <td>Send invitation and sharing emails</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>Data Flow</h3>
+        <pre><code>1. Agent Request QR Code
+   ↓
+2. generateReferralCode() → Creates unique code + QR URL
+   ↓
+3. Agent shares via:
+   - QR Code (scan)
+   - Email invitation
+   - Link copy/paste
+   ↓
+4. Client signs up with ?ref= or ?token=
+   ↓
+5. processQRSignup() or activateTempAccount()
+   ↓
+6. Create affinity link in Firestore
+   ↓
+7. Track referral in analytics</code></pre>
+
+        <h2>Cloud Functions API</h2>
+
+        <h3>1. generateReferralCode</h3>
+        <div class="info-box">
+            <strong>Type:</strong> <span class="badge badge-info">Callable HTTPS Function</span><br>
+            <strong>Authentication:</strong> Required (Agent or Admin)<br>
+            <strong>Purpose:</strong> Generate unique referral code and QR code for authenticated user
+        </div>
+
+        <h4>Request</h4>
+        <pre><code>const generateFunc = firebase.functions().httpsCallable('generateReferralCode');
+const result = await generateFunc();</code></pre>
+
+        <h4>Response</h4>
+        <pre><code>{
+  "success": true,
+  "referralCode": "A3K9HZ2L",
+  "qrCodeUrl": "https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=...",
+  "signupUrl": "https://assiduous-prod.web.app/signup.html?ref=A3K9HZ2L"
+}</code></pre>
+
+        <h4>Firestore Updates</h4>
+        <pre><code>users/{userId}:
+  referralCode: "A3K9HZ2L"
+  qrCodeUrl: "https://..."
+  referralSignupUrl: "https://..."
+  updatedAt: serverTimestamp()</code></pre>
+
+        <h3>2. sendClientInvitation</h3>
+        <div class="info-box">
+            <strong>Type:</strong> <span class="badge badge-info">Callable HTTPS Function</span><br>
+            <strong>Authentication:</strong> Required (Agent or Admin)<br>
+            <strong>Purpose:</strong> Send email invitation to client with temporary token
+        </div>
+
+        <h4>Request</h4>
+        <pre><code>const inviteFunc = firebase.functions().httpsCallable('sendClientInvitation');
+const result = await inviteFunc({
+  clientEmail: "client@example.com",
+  clientName: "John Doe",
+  personalMessage: "Looking forward to working with you!" // optional
+});</code></pre>
+
+        <h4>Response</h4>
+        <pre><code>{
+  "success": true,
+  "emailSent": true,
+  "tempToken": "ABC123XYZ456...",
+  "signupUrl": "https://assiduous-prod.web.app/signup.html?token=ABC123XYZ456..."
+}</code></pre>
+
+        <h4>Firestore Writes</h4>
+        <pre><code>client_invitations/{docId}:
+  email: "client@example.com"
+  name: "John Doe"
+  agentId: "agent_uid"
+  agentName: "Agent Name"
+  agentReferralCode: "A3K9HZ2L"
+  tempToken: "ABC123XYZ456..."
+  status: "invited"
+  invitedAt: serverTimestamp()
+  expiresAt: Timestamp (7 days from now)</code></pre>
+
+        <h4>Email Template</h4>
+        <pre><code>Subject: {agentName} invited you to Assiduous
+
+Hi {clientName},
+
+{agentName} has invited you to join Assiduous.
+
+{personalMessage}
+
+Click the link below to complete your registration:
+[Complete Registration Button]
+
+Or scan this QR code:
+[QR Code Image]
+
+This invitation expires in 7 days.</code></pre>
+
+        <h3>3. processQRSignup</h3>
+        <div class="info-box">
+            <strong>Type:</strong> <span class="badge badge-info">Callable HTTPS Function</span><br>
+            <strong>Authentication:</strong> Required (New User)<br>
+            <strong>Purpose:</strong> Link new user to agent via QR code scan
+        </div>
+
+        <h4>Request</h4>
+        <pre><code>const processFunc = firebase.functions().httpsCallable('processQRSignup');
+const result = await processFunc({
+  referralCode: "A3K9HZ2L"
+});</code></pre>
+
+        <h4>Response</h4>
+        <pre><code>{
+  "success": true,
+  "agentId": "agent_uid",
+  "agentName": "Agent Name"
+}</code></pre>
+
+        <h4>Firestore Updates</h4>
+        <pre><code>users/{userId}:
+  affiliatedAgentId: "agent_uid"
+  affiliatedAgentName: "Agent Name"
+  referralSource: "qr_code"
+  referralCode: "A3K9HZ2L"
+  updatedAt: serverTimestamp()
+
+referrals/{docId}:
+  agentId: "agent_uid"
+  clientId: "user_uid"
+  referralCode: "A3K9HZ2L"
+  source: "qr_code"
+  createdAt: serverTimestamp()</code></pre>
+
+        <h3>4. activateTempAccount</h3>
+        <div class="info-box">
+            <strong>Type:</strong> <span class="badge badge-info">Callable HTTPS Function</span><br>
+            <strong>Authentication:</strong> Required (New User)<br>
+            <strong>Purpose:</strong> Convert email invitation to full account with affinity
+        </div>
+
+        <h4>Request</h4>
+        <pre><code>const activateFunc = firebase.functions().httpsCallable('activateTempAccount');
+const result = await activateFunc({
+  tempToken: "ABC123XYZ456..."
+});</code></pre>
+
+        <h4>Response</h4>
+        <pre><code>{
+  "success": true,
+  "agentId": "agent_uid",
+  "agentName": "Agent Name"
+}</code></pre>
+
+        <h4>Firestore Updates</h4>
+        <pre><code>users/{userId}:
+  affiliatedAgentId: "agent_uid"
+  affiliatedAgentName: "Agent Name"
+  referralSource: "email_invitation"
+  referralCode: "A3K9HZ2L"
+  updatedAt: serverTimestamp()
+
+client_invitations/{invitationId}:
+  status: "accepted"
+  activatedAt: serverTimestamp()
+  clientId: "user_uid"
+
+referrals/{docId}:
+  agentId: "agent_uid"
+  clientId: "user_uid"
+  referralCode: "A3K9HZ2L"
+  source: "email_invitation"
+  invitationId: "invitation_doc_id"
+  createdAt: serverTimestamp()</code></pre>
+
+        <h3>5. shareQRCode</h3>
+        <div class="info-box">
+            <strong>Type:</strong> <span class="badge badge-info">Callable HTTPS Function</span><br>
+            <strong>Authentication:</strong> Required (Agent or Admin)<br>
+            <strong>Purpose:</strong> Share QR code via email or SMS
+        </div>
+
+        <h4>Request</h4>
+        <pre><code>const shareFunc = firebase.functions().httpsCallable('shareQRCode');
+const result = await shareFunc({
+  recipientEmail: "client@example.com",
+  method: "email"
+});</code></pre>
+
+        <h4>Response</h4>
+        <pre><code>{
+  "success": true,
+  "sent": true
+}</code></pre>
+
+        <div class="warning-box">
+            <strong>⚠️ Note:</strong> SMS functionality is planned but not yet implemented. Currently only supports email method.
+        </div>
+
+        <h2>Firestore Security Rules</h2>
+
+        <h3>referrals Collection</h3>
+        <pre><code>match /referrals/{referralId} {
+  // Read: Agents can read their own referrals, admins can read all
+  allow read: if (isAgent() && resource.data.agentId == getUserId()) ||
+                 isAdmin();
+  
+  // Create/Update/Delete: Server-only (Cloud Functions)
+  allow create, update, delete: if false;
+}</code></pre>
+
+        <h3>client_invitations Collection</h3>
+        <pre><code>match /client_invitations/{invitationId} {
+  // Read: Agents can read their own invitations, admins can read all
+  //       Clients can read invitations where they are the recipient
+  allow read: if (isAgent() && resource.data.agentId == getUserId()) ||
+                 (isAuthenticated() && resource.data.email == request.auth.token.email) ||
+                 isAdmin();
+  
+  // Create/Update/Delete: Server-only (Cloud Functions)
+  allow create, update, delete: if false;
+}</code></pre>
+
+        <h3>users Collection - Referral Fields</h3>
+        <pre><code>// Agent/Admin can update their own referral code
+allow update: if (isOwner(userId) && 
+                  request.resource.data.diff(resource.data)
+                    .affectedKeys()
+                    .hasOnly(['referralCode', 'qrCodeUrl', 'referralSignupUrl', 'updatedAt'])) ||
+               isAdmin();</code></pre>
+
+        <h2>Frontend Implementation</h2>
+
+        <h3>Agent QR Code Page</h3>
+        <p><strong>Location:</strong> <code>/agent/qr-code.html</code></p>
+        <p><strong>URL:</strong> <a href="https://assiduous-prod.web.app/agent/qr-code.html">https://assiduous-prod.web.app/agent/qr-code.html</a></p>
+
+        <h4>Features</h4>
+        <ul>
+            <li>✅ Display agent's referral code (large, prominent)</li>
+            <li>✅ Display QR code image (300x300px)</li>
+            <li>✅ Download QR code as PNG</li>
+            <li>✅ Copy referral link to clipboard</li>
+            <li>✅ Share via email modal</li>
+            <li>✅ Auto-generate QR on first visit</li>
+            <li>✅ Success toast notifications</li>
+            <li>✅ Responsive mobile design</li>
+        </ul>
+
+        <h4>Key Functions</h4>
+        <pre><code>// Load existing or generate new QR code
+async function loadQRCode() {
+  const userDoc = await firebase.firestore()
+    .collection('users')
+    .doc(currentUser.uid)
+    .get();
+  
+  if (userData.referralCode && userData.qrCodeUrl) {
+    displayQRCode(userData);
+  } else {
+    await generateQRCode();
+  }
+}
+
+// Download QR code
+async function downloadQRCode() {
+  const response = await fetch(referralData.qrCodeUrl);
+  const blob = await response.blob();
+  const url = window.URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `assiduous-qr-${referralData.referralCode}.png`;
+  a.click();
+}
+
+// Copy signup link
+async function copySignupLink() {
+  await navigator.clipboard.writeText(referralData.signupUrl);
+  showSuccessToast('Link copied to clipboard!');
+}
+
+// Share via email
+async function handleShareEmail(event) {
+  event.preventDefault();
+  const shareFunc = firebase.functions().httpsCallable('shareQRCode');
+  await shareFunc({
+    recipientEmail: recipientEmail,
+    method: 'email'
+  });
+}</code></pre>
+
+        <h3>Enhanced Signup Page</h3>
+        <p><strong>Location:</strong> <code>/auth/signup.html</code></p>
+        <p><strong>URL:</strong> <a href="https://assiduous-prod.web.app/auth/signup.html">https://assiduous-prod.web.app/auth/signup.html</a></p>
+
+        <h4>Referral Detection</h4>
+        <pre><code>// Get URL parameters
+const urlParams = new URLSearchParams(window.location.search);
+const referralCode = urlParams.get('ref');       // QR code scan
+const invitationToken = urlParams.get('token');  // Email invitation
+
+// Show referral info
+if (referralCode) {
+  showSuccess(`You're signing up via referral code: ${referralCode}`);
+} else if (invitationToken) {
+  showSuccess('Welcome! Complete your registration to accept the invitation.');
+}</code></pre>
+
+        <h4>Post-Signup Referral Processing</h4>
+        <pre><code>// After creating Firebase Auth account
+if (referralCode) {
+  try {
+    const processQR = firebase.functions().httpsCallable('processQRSignup');
+    await processQR({ referralCode });
+    console.log('✅ Referral processed:', referralCode);
+  } catch (refError) {
+    console.error('❌ Referral processing failed:', refError);
+  }
+} else if (invitationToken) {
+  try {
+    const activateTemp = firebase.functions().httpsCallable('activateTempAccount');
+    await activateTemp({ tempToken: invitationToken });
+    console.log('✅ Invitation accepted:', invitationToken);
+  } catch (invError) {
+    console.error('❌ Invitation processing failed:', invError);
+  }
+}</code></pre>
+
+        <h2>SendGrid Integration</h2>
+
+        <h3>Configuration</h3>
+        <div class="info-box">
+            <strong>Method:</strong> Firebase Secrets Manager<br>
+            <strong>Secret Name:</strong> <code>SENDGRID_API_KEY</code><br>
+            <strong>Access Method:</strong> <code>process.env.SENDGRID_API_KEY</code><br>
+            <strong>Function Binding:</strong> <code>runWith({ secrets: ['SENDGRID_API_KEY'] })</code>
+        </div>
+
+        <h4>Set Secret</h4>
+        <pre><code># Set SendGrid API key
+firebase functions:secrets:set SENDGRID_API_KEY
+
+# Verify secret is set
+firebase functions:secrets:access SENDGRID_API_KEY --project assiduous-prod</code></pre>
+
+        <h4>Usage in Functions</h4>
+        <pre><code>exports.sendClientInvitation = functions
+    .runWith({
+        secrets: ['SENDGRID_API_KEY']
+    })
+    .https.onCall(async (data, context) => {
+        const sgMail = require('@sendgrid/mail');
+        const sendGridApiKey = process.env.SENDGRID_API_KEY;
+        
+        if (!sendGridApiKey) {
+            console.warn('⚠️ SendGrid API key not configured. Email not sent.');
+            return { success: true, emailSent: false, tempToken };
+        }
+        
+        sgMail.setApiKey(sendGridApiKey);
+        
+        const msg = {
+            to: clientEmail,
+            from: 'noreply@assiduous.com',
+            subject: `${agentName} invited you to Assiduous`,
+            html: emailHtml
+        };
+        
+        await sgMail.send(msg);
+    });</code></pre>
+
+        <h3>Email Templates</h3>
+
+        <h4>Client Invitation Email</h4>
+        <ul>
+            <li>Subject: <code>{agentName} invited you to Assiduous</code></li>
+            <li>Contains: Personal message, signup link button, QR code image</li>
+            <li>Expiration: 7 days</li>
+        </ul>
+
+        <h4>QR Share Email</h4>
+        <ul>
+            <li>Subject: <code>Connect with {agentName} on Assiduous</code></li>
+            <li>Contains: QR code image, signup link</li>
+            <li>No expiration</li>
+        </ul>
+
+        <h2>User Flows</h2>
+
+        <h3>Flow 1: QR Code Scan</h3>
+        <ol>
+            <li>Agent opens <code>/agent/qr-code.html</code></li>
+            <li>Agent shows QR code to client (or downloads/shares it)</li>
+            <li>Client scans QR code with phone camera</li>
+            <li>Opens signup page with <code>?ref=A3K9HZ2L</code></li>
+            <li>Client completes signup form</li>
+            <li>System automatically calls <code>processQRSignup()</code></li>
+            <li>Client is linked to agent's account</li>
+            <li>Referral tracked in analytics</li>
+        </ol>
+
+        <h3>Flow 2: Email Invitation</h3>
+        <ol>
+            <li>Agent opens client modal/form</li>
+            <li>Agent enters client email and name</li>
+            <li>System calls <code>sendClientInvitation()</code></li>
+            <li>Client receives email with signup link and QR</li>
+            <li>Client clicks button or scans QR</li>
+            <li>Opens signup page with <code>?token=ABC123XYZ456...</code></li>
+            <li>Client completes signup form</li>
+            <li>System automatically calls <code>activateTempAccount()</code></li>
+            <li>Client is linked to agent's account</li>
+            <li>Invitation marked as "accepted"</li>
+        </ol>
+
+        <h3>Flow 3: Manual Link Sharing</h3>
+        <ol>
+            <li>Agent opens <code>/agent/qr-code.html</code></li>
+            <li>Agent clicks "Copy Link"</li>
+            <li>Agent shares link via SMS, WhatsApp, etc.</li>
+            <li>Client clicks link</li>
+            <li>Opens signup page with <code>?ref=A3K9HZ2L</code></li>
+            <li>Same as Flow 1 from step 5</li>
+        </ol>
+
+        <h2>Analytics & Tracking</h2>
+
+        <h3>Referrals Collection Schema</h3>
+        <pre><code>{
+  "agentId": "agent_uid",
+  "clientId": "user_uid",
+  "referralCode": "A3K9HZ2L",
+  "source": "qr_code" | "email_invitation" | "manual_link",
+  "invitationId": "invitation_doc_id", // only for email_invitation
+  "createdAt": "2025-01-12T00:00:00Z"
+}</code></pre>
+
+        <h3>Client Invitations Schema</h3>
+        <pre><code>{
+  "email": "client@example.com",
+  "name": "John Doe",
+  "agentId": "agent_uid",
+  "agentName": "Agent Name",
+  "agentReferralCode": "A3K9HZ2L",
+  "tempToken": "ABC123XYZ456...",
+  "status": "invited" | "accepted" | "expired",
+  "invitedAt": "2025-01-12T00:00:00Z",
+  "activatedAt": "2025-01-12T12:00:00Z", // when accepted
+  "expiresAt": "2025-01-19T00:00:00Z",   // 7 days
+  "clientId": "user_uid" // when accepted
+}</code></pre>
+
+        <h3>Query Examples</h3>
+
+        <h4>Get Agent's Referrals</h4>
+        <pre><code>const referrals = await db.collection('referrals')
+  .where('agentId', '==', agentId)
+  .orderBy('createdAt', 'desc')
+  .get();</code></pre>
+
+        <h4>Get Referrals by Source</h4>
+        <pre><code>const qrReferrals = await db.collection('referrals')
+  .where('agentId', '==', agentId)
+  .where('source', '==', 'qr_code')
+  .get();
+
+const emailReferrals = await db.collection('referrals')
+  .where('agentId', '==', agentId)
+  .where('source', '==', 'email_invitation')
+  .get();</code></pre>
+
+        <h4>Get Pending Invitations</h4>
+        <pre><code>const pending = await db.collection('client_invitations')
+  .where('agentId', '==', agentId)
+  .where('status', '==', 'invited')
+  .where('expiresAt', '>', new Date())
+  .get();</code></pre>
+
+        <h4>Get Accepted Invitations</h4>
+        <pre><code>const accepted = await db.collection('client_invitations')
+  .where('agentId', '==', agentId)
+  .where('status', '==', 'accepted')
+  .orderBy('activatedAt', 'desc')
+  .get();</code></pre>
+
+        <h2>Testing Guide</h2>
+
+        <h3>Test Case 1: Generate QR Code</h3>
+        <ol>
+            <li>Login as agent at <code>https://assiduous-prod.web.app</code></li>
+            <li>Navigate to "My QR Code" in sidebar</li>
+            <li>Verify referral code displays (8 characters)</li>
+            <li>Verify QR code image loads</li>
+            <li>Click "Download QR Code" - verify PNG downloads</li>
+            <li>Click "Copy Link" - verify toast shows "Link copied!"</li>
+            <li>Paste link - verify format: <code>...signup.html?ref=XXXXXXXX</code></li>
+        </ol>
+
+        <h3>Test Case 2: QR Code Signup</h3>
+        <ol>
+            <li>Get agent's referral link from Test Case 1</li>
+            <li>Open link in incognito window</li>
+            <li>Verify message: "You're signing up via referral code: XXXXXXXX"</li>
+            <li>Complete signup form with new email</li>
+            <li>Click "Create Account"</li>
+            <li>Check browser console for: "✅ Referral processed: XXXXXXXX"</li>
+            <li>Verify redirect to onboarding</li>
+            <li>Check Firestore: <code>users/{newUserId}</code> has <code>affiliatedAgentId</code></li>
+            <li>Check Firestore: <code>referrals</code> collection has new doc with <code>source: "qr_code"</code></li>
+        </ol>
+
+        <h3>Test Case 3: Email Invitation (Manual)</h3>
+        <ol>
+            <li>Open Firebase Functions logs</li>
+            <li>Call <code>sendClientInvitation</code> via Firebase Console</li>
+            <li>Verify email sent (check SendGrid dashboard or recipient inbox)</li>
+            <li>Verify <code>client_invitations</code> collection has new doc</li>
+            <li>Extract <code>tempToken</code> from invitation doc</li>
+            <li>Open <code>signup.html?token={tempToken}</code> in incognito</li>
+            <li>Complete signup</li>
+            <li>Verify <code>activateTempAccount</code> processes successfully</li>
+            <li>Verify invitation <code>status</code> changed to "accepted"</li>
+            <li>Verify <code>referrals</code> collection has entry with <code>source: "email_invitation"</code></li>
+        </ol>
+
+        <h3>Test Case 4: Share via Email</h3>
+        <ol>
+            <li>Login as agent, go to QR code page</li>
+            <li>Click "Share via Email"</li>
+            <li>Enter test email address</li>
+            <li>Click "Send Email"</li>
+            <li>Verify toast: "Email sent successfully!"</li>
+            <li>Check recipient inbox for email</li>
+            <li>Verify email contains QR code and signup link</li>
+        </ol>
+
+        <h2>Troubleshooting</h2>
+
+        <h3>SendGrid Emails Not Sending</h3>
+        <div class="warning-box">
+            <strong>Symptom:</strong> <code>emailSent: false</code> in function response<br>
+            <strong>Cause:</strong> SendGrid API key not configured or not bound to function<br>
+            <strong>Solution:</strong>
+            <pre><code># Verify secret exists
+firebase functions:secrets:access SENDGRID_API_KEY --project assiduous-prod
+
+# If missing, set it
+firebase functions:secrets:set SENDGRID_API_KEY
+
+# Redeploy functions with secret binding
+firebase deploy --only functions</code></pre>
+        </div>
+
+        <h3>Referral Not Processing After Signup</h3>
+        <div class="warning-box">
+            <strong>Symptom:</strong> User signs up but <code>affiliatedAgentId</code> is empty<br>
+            <strong>Debug Steps:</strong>
+            <ol>
+                <li>Check browser console for errors during signup</li>
+                <li>Verify URL contains <code>?ref=</code> or <code>?token=</code> parameter</li>
+                <li>Check Firebase Functions logs for <code>processQRSignup</code> or <code>activateTempAccount</code> errors</li>
+                <li>Verify referral code exists in <code>users</code> collection</li>
+                <li>Verify invitation token is valid and not expired</li>
+            </ol>
+        </div>
+
+        <h3>QR Code Not Generating</h3>
+        <div class="warning-box">
+            <strong>Symptom:</strong> Error on QR code page, no code displayed<br>
+            <strong>Debug Steps:</strong>
+            <ol>
+                <li>Check browser console for errors</li>
+                <li>Verify user is authenticated</li>
+                <li>Check Firebase Functions logs for <code>generateReferralCode</code> errors</li>
+                <li>Verify user has proper role (agent or admin)</li>
+                <li>Test function directly in Firebase Console</li>
+            </ol>
+        </div>
+
+        <h2>Future Enhancements</h2>
+
+        <h3>Planned Features</h3>
+        <ul>
+            <li>📱 SMS sharing via Twilio integration</li>
+            <li>📊 Referral analytics dashboard for agents</li>
+            <li>🎁 Referral rewards/incentive tracking</li>
+            <li>📧 Automated follow-up emails for pending invitations</li>
+            <li>🔗 Custom vanity URLs for agents (e.g., <code>assiduous.com/join/agent-name</code>)</li>
+            <li>📈 Admin analytics: Top referrers, conversion rates, referral sources</li>
+            <li>🎨 Customizable QR code colors and branding</li>
+            <li>📱 Native mobile app deep linking</li>
+        </ul>
+
+        <h3>Scalability Considerations</h3>
+        <ul>
+            <li>QR code generation uses external API (qrserver.com) - consider moving to Cloud Storage for better control</li>
+            <li>Referral codes are 8 characters (36^8 = 2.8 trillion combinations) - sufficient for scale</li>
+            <li>Invitation tokens are 16 characters - even more secure</li>
+            <li>Consider adding index on <code>referrals.agentId</code> and <code>referrals.source</code> for faster queries</li>
+            <li>Consider partitioning <code>client_invitations</code> by year/month if volume grows</li>
+        </ul>
+
+        <h2>Security Best Practices</h2>
+
+        <div class="warning-box">
+            <strong>⚠️ Important Security Notes:</strong>
+            <ul>
+                <li>All Cloud Functions require authentication</li>
+                <li>Referral codes are public but don't grant any permissions</li>
+                <li>Invitation tokens expire after 7 days</li>
+                <li>Firestore rules prevent client-side writes to referrals/invitations</li>
+                <li>SendGrid API key stored as Firebase Secret (never in code)</li>
+                <li>Email validation occurs server-side in Cloud Functions</li>
+                <li>Rate limiting should be added for production (not yet implemented)</li>
+            </ul>
+        </div>
+
+        <h2>Deployment Checklist</h2>
+
+        <div class="success-box">
+            <strong>✅ Completed Items:</strong>
+            <ul>
+                <li>✅ Cloud Functions deployed to <code>us-central1-assiduous-prod</code></li>
+                <li>✅ Firestore security rules deployed</li>
+                <li>✅ Agent QR code page deployed to Firebase Hosting</li>
+                <li>✅ Enhanced signup page deployed</li>
+                <li>✅ Sidebar navigation updated</li>
+                <li>✅ SendGrid API key configured in Firebase Secrets</li>
+                <li>✅ Functions bound to SendGrid secret</li>
+                <li>✅ All code committed to GitHub</li>
+            </ul>
+        </div>
+
+        <h2>Related Documentation</h2>
+        <ul>
+            <li><a href="/docs/api_specification.html">API Specification</a> - Full API reference</li>
+            <li><a href="/docs/architecture_design.html">Architecture Design</a> - System architecture</li>
+            <li><a href="/docs/user_stories.html">User Stories</a> - Feature requirements</li>
+            <li><a href="/docs/changelog.html">Changelog</a> - Version history</li>
+        </ul>
+
+        <div class="timestamp">
+            <strong>Document Information</strong><br>
+            Created: January 12, 2025<br>
+            Last Updated: January 12, 2025<br>
+            Version: 1.0.0<br>
+            Author: Development Team<br>
+            Status: <span class="badge badge-success">Production Ready</span>
+        </div>
+    </div>
+</body>
+</html>

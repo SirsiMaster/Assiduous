@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-11-12T00:06:23.173Z",
+  "lastUpdated": "2025-11-12T00:35:21.299Z",
   "summary": {
     "health": "Good",
     "score": 59,
@@ -152,21 +152,21 @@
     }
   },
   "project": {
-    "totalHours": "315",
-    "avgHoursPerDay": "8.5",
-    "totalCost": 49257,
-    "laborCost": 47250,
+    "totalHours": "317",
+    "avgHoursPerDay": "8.6",
+    "totalCost": 49557,
+    "laborCost": 47550,
     "toolsCost": 2007,
     "monthsElapsed": "3.1",
-    "totalCommits": 956,
+    "totalCommits": 960,
     "totalFiles": 820,
     "activeDays": 37,
     "totalDays": 94,
     "projectAgeDays": 94,
-    "linesAdded": 9813944,
-    "linesDeleted": 9428415,
-    "netLines": 385529,
-    "velocity": "25.8",
+    "linesAdded": 9814025,
+    "linesDeleted": 9428462,
+    "netLines": 385563,
+    "velocity": "25.9",
     "completionPercentage": 59,
     "actualStartDate": "2025-08-10",
     "architecture": {
@@ -177,21 +177,21 @@
   },
   "today": {
     "date": "2025-11-12",
-    "hours": "6.3",
-    "cost": 941,
-    "commits": 19,
+    "hours": "7.6",
+    "cost": 1139,
+    "commits": 23,
     "deployments": 0
   },
   "thisWeek": {
-    "hours": "55.1",
-    "cost": 8267,
-    "commits": 167,
+    "hours": "56.4",
+    "cost": 8465,
+    "commits": 171,
     "days": 7
   },
   "thisMonth": {
-    "hours": "144.2",
-    "cost": 21632,
-    "commits": 437
+    "hours": "145.5",
+    "cost": 21830,
+    "commits": 441
   },
   "quality": {
     "testCoverage": {
@@ -225,7 +225,7 @@
       "critical": 0,
       "total": 0
     },
-    "lastAudit": "2025-11-12T00:05:52.308Z",
+    "lastAudit": "2025-11-12T00:34:56.269Z",
     "dependencies": {
       "total": {
         "prod": 256,
@@ -320,16 +320,16 @@
     "changelog": true,
     "contributing": false,
     "license": false,
-    "lastUpdate": "2025-11-12 00:02:38 +0000"
+    "lastUpdate": "2025-11-12 00:33:37 +0000"
   },
   "productivity": {
     "velocityTrend": "decreasing",
-    "weeklyCommits": 167,
+    "weeklyCommits": 171,
     "contributors": {
       "total": 0,
       "active": 0
     },
-    "averageCommitSize": 91,
+    "averageCommitSize": 90,
     "pullRequests": {
       "open": 0,
       "merged": 0,
@@ -402,6 +402,30 @@
   },
   "recentActivity": [
     {
+      "hash": "33305d691026cdef6c853a872be2da81d6717dac",
+      "message": "fix: Bind SENDGRID_API_KEY secret to Cloud Functions",
+      "author": "SirsiMaster",
+      "date": "2025-11-11 19:34:04 -0500"
+    },
+    {
+      "hash": "54eae08170d69ae5988a15b4056a572d3dfe762e",
+      "message": "chore(release): Bump version to 0.121.1 [skip ci]",
+      "author": "github-actions[bot]",
+      "date": "2025-11-12 00:33:37 +0000"
+    },
+    {
+      "hash": "94feb547254b550bc3ef92f7055b91cfa3ee42e8",
+      "message": "fix: Update SendGrid to use environment variables instead of deprecated functions.config()",
+      "author": "SirsiMaster",
+      "date": "2025-11-11 19:33:08 -0500"
+    },
+    {
+      "hash": "3a58beabf3edf5404a6c56f7265a2684ceffd09d",
+      "message": "chore(release): Bump version to 0.121.0 [skip ci]",
+      "author": "github-actions[bot]",
+      "date": "2025-11-12 00:05:43 +0000"
+    },
+    {
       "hash": "11792f950f7cebf0c37c08c995cb7cb6b776687a",
       "message": "feat: Add referral tracking to signup page",
       "author": "SirsiMaster",
@@ -436,34 +460,10 @@
       "message": "chore(release): Bump version to 0.118.0 [skip ci]",
       "author": "github-actions[bot]",
       "date": "2025-11-11 23:54:08 +0000"
-    },
-    {
-      "hash": "5708e1ea1287924c5f7cacc3fae081f9eb60711f",
-      "message": "feat: Add off-market properties CRUD management page with Firestore rules",
-      "author": "SirsiMaster",
-      "date": "2025-11-11 18:53:36 -0500"
-    },
-    {
-      "hash": "ea35fe2444497f5be69d92b7c69ee6ea020b2911",
-      "message": "chore(release): Bump version to 0.117.0 [skip ci]",
-      "author": "github-actions[bot]",
-      "date": "2025-11-11 23:45:23 +0000"
-    },
-    {
-      "hash": "d852512cdbbc71cbf84b15b19889e756d9660979",
-      "message": "feat: Add Firestore security rules for clients collection",
-      "author": "SirsiMaster",
-      "date": "2025-11-11 18:44:52 -0500"
-    },
-    {
-      "hash": "86c178f8365dec2cf88ad27d42f517ae81f3cc29",
-      "message": "chore(release): Bump version to 0.116.5 [skip ci]",
-      "author": "github-actions[bot]",
-      "date": "2025-11-11 23:38:16 +0000"
     }
   ],
   "automation": {
-    "lastRun": "2025-11-12T00:06:23.173Z",
+    "lastRun": "2025-11-12T00:35:21.299Z",
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",
