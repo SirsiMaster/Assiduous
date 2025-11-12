@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.127.0] - 2025-11-12
+
+### Added
+- feat(qr): Integrate sequential ID Generator into QR system
+
+
 ## [0.126.0] - 2025-11-12
 
 ### Added
@@ -3362,7 +3368,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.126.0...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.127.0...HEAD
+
+
+## [0.127.0] - 2025-11-12
+
+### Added
+- feat(qr): Integrate sequential ID Generator into QR system
 
 
 ## [0.126.0] - 2025-11-12
@@ -5173,3 +5185,4 @@ To generate changelog entries:
 [0.124.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.123.0...v0.124.0
 [0.125.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.124.0...v0.125.0
 [0.126.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.125.0...v0.126.0
+[0.127.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.126.0...v0.127.0
