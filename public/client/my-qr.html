@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>My QR Code - Client - Assiduous</title>
+    
+    <!-- Assiduous Design System -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <link rel="stylesheet" href="../assiduous.css">
+    <link rel="stylesheet" href="../components/admin-layout.css">
+    
+    <style>
+        .page-header {
+            margin-bottom: var(--space-xl);
+        }
+        
+        .page-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--navy);
+            margin: 0 0 8px 0;
+        }
+        
+        .page-description {
+            font-size: 16px;
+            color: var(--text-secondary);
+            margin: 0;
+        }
+        
+        .qr-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: var(--space-xl);
+            margin-bottom: var(--space-lg);
+        }
+        
+        .qr-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-lg);
+            padding-bottom: var(--space-md);
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .qr-card-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--navy);
+            margin: 0;
+        }
+        
+        .profile-url {
+            font-family: monospace;
+            font-size: 12px;
+            padding: 4px 8px;
+            background: var(--gray-50);
+            border-radius: var(--radius);
+            color: var(--text-secondary);
+        }
+        
+        .qr-display-section {
+            text-align: center;
+            padding: var(--space-xl);
+            background: var(--gray-50);
+            border-radius: var(--radius-md);
+            margin-bottom: var(--space-lg);
+        }
+        
+        .qr-display-section img {
+            max-width: 400px;
+            width: 100%;
+            height: auto;
+            margin-bottom: var(--space-md);
+        }
+        
+        .qr-loading {
+            color: var(--text-secondary);
+            padding: var(--space-xl);
+            font-size: 16px;
+        }
+        
+        .qr-actions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--space-md);
+            margin-bottom: var(--space-lg);
+        }
+        
+        .info-section {
+            background: var(--sky-50);
+            border: 1px solid var(--sky-200);
+            border-radius: var(--radius-md);
+            padding: var(--space-md);
+            margin-top: var(--space-lg);
+        }
+        
+        .info-section-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            color: var(--navy);
+            margin: 0 0 8px 0;
+        }
+        
+        .info-section-text {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin: 0;
+        }
+        
+        .usage-examples {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: var(--space-xl);
+        }
+        
+        .usage-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--navy);
+            margin: 0 0 var(--space-md) 0;
+        }
+        
+        .usage-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .usage-item {
+            display: flex;
+            align-items: start;
+            gap: 12px;
+            padding: var(--space-md) 0;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .usage-item:last-child {
+            border-bottom: none;
+        }
+        
+        .usage-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--sky-50);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 4px;
+        }
+        
+        .usage-content h4 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--navy);
+            margin: 0 0 4px 0;
+        }
+        
+        .usage-content p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin: 0;
+        }
+    </style>
+</head>
+<body class="admin-wrapper" data-active="my-qr">
+    <!-- UCS Sidebar Component -->
+    <aside class="sidebar" data-component="sidebar"></aside>
+    
+    <!-- Main Content Area -->
+    <div class="main-content">
+        <!-- UCS Header Component -->
+        <header data-component="header"></header>
+        
+        <!-- Dashboard Content -->
+        <div class="dashboard-content">
+            <div class="page-header">
+                <h1 class="page-title">My Profile QR Code</h1>
+                <p class="page-description">Share your contact information instantly with a scannable QR code</p>
+            </div>
+            
+            <div class="qr-card">
+                <div class="qr-card-header">
+                    <h2 class="qr-card-title">Your Personal QR Code</h2>
+                    <span class="profile-url" id="profileUrl">Loading...</span>
+                </div>
+                
+                <div class="qr-display-section" id="qrDisplay">
+                    <div class="qr-loading">Generating your QR code...</div>
+                </div>
+                
+                <div class="qr-actions-grid">
+                    <sirsi-button variant="primary" size="md" onclick="downloadQR()"
+                        icon-leading="<svg width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'><path d='M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4'></path><polyline points='7 10 12 15 17 10'></polyline><line x1='12' y1='15' x2='12' y2='3'></line></svg>">
+                        Download QR Code
+                    </sirsi-button>
+                    
+                    <sirsi-button variant="secondary" size="md" onclick="copyProfileLink()"
+                        icon-leading="<svg width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'><path d='M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71'></path><path d='M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71'></path></svg>">
+                        Copy Profile Link
+                    </sirsi-button>
+                    
+                    <sirsi-button variant="secondary" size="md" onclick="shareQR()"
+                        icon-leading="<svg width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'><circle cx='18' cy='5' r='3'></circle><circle cx='6' cy='12' r='3'></circle><circle cx='18' cy='19' r='3'></circle><line x1='8.59' y1='13.51' x2='15.42' y2='17.49'></line><line x1='15.41' y1='6.51' x2='8.59' y2='10.49'></line></svg>">
+                        Share QR Code
+                    </sirsi-button>
+                    
+                    <sirsi-button variant="outline" size="md" onclick="regenerateQR()"
+                        icon-leading="<svg width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'><polyline points='23 4 23 10 17 10'></polyline><path d='M20.49 15a9 9 0 1 1-2.12-9.36L23 10'></path></svg>">
+                        Regenerate QR
+                    </sirsi-button>
+                </div>
+                
+                <div class="info-section">
+                    <h3 class="info-section-title">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="16" x2="12" y2="12"></line>
+                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                        </svg>
+                        What's included in your QR code?
+                    </h3>
+                    <p class="info-section-text">
+                        When someone scans your QR code, they'll be directed to your Assiduous profile page with your contact information, 
+                        properties you're interested in, and an easy way to connect with you.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="usage-examples">
+                <h2 class="usage-title">How to Use Your QR Code</h2>
+                <ul class="usage-list">
+                    <li class="usage-item">
+                        <div class="usage-icon">📧</div>
+                        <div class="usage-content">
+                            <h4>Email Signature</h4>
+                            <p>Add your QR code to your email signature for easy contact sharing</p>
+                        </div>
+                    </li>
+                    <li class="usage-item">
+                        <div class="usage-icon">💼</div>
+                        <div class="usage-content">
+                            <h4>Business Cards</h4>
+                            <p>Print your QR code on business cards for instant digital connections</p>
+                        </div>
+                    </li>
+                    <li class="usage-item">
+                        <div class="usage-icon">📱</div>
+                        <div class="usage-content">
+                            <h4>Social Media</h4>
+                            <p>Share on social platforms to make it easy for people to reach you</p>
+                        </div>
+                    </li>
+                    <li class="usage-item">
+                        <div class="usage-icon">🤝</div>
+                        <div class="usage-content">
+                            <h4>Networking Events</h4>
+                            <p>Show your QR code at events for quick contact exchange</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <!-- UCS Core Scripts -->
+    <script src="../components/ucs-core.js"></script>
+    <script src="../components/component-registry.js"></script>
+    
+    <!-- Firebase & Services -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-functions-compat.js"></script>
+    
+    <script>
+        let currentUser = null;
+        let currentQRData = null;
+        
+        // Initialize Firebase
+        const firebaseConfig = {
+            apiKey: 'AIzaSyCnQajchoBwP_VMEvc9mKH-vO0xlZjGCRE',
+            authDomain: 'assiduous-prod.firebaseapp.com',
+            projectId: 'assiduous-prod',
+            storageBucket: 'assiduous-prod.firebasestorage.app',
+            messagingSenderId: '9355377564',
+            appId: '1:9355377564:web:84bd6fa0e7c8a2e7c3f56b',
+        };
+        
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        
+        // Check authentication
+        firebase.auth().onAuthStateChanged(async (user) => {
+            if (!user) {
+                window.location.href = '../index.html';
+                return;
+            }
+            
+            currentUser = user;
+            await loadUserQR();
+        });
+        
+        // Load user QR code
+        async function loadUserQR() {
+            const qrDisplay = document.getElementById('qrDisplay');
+            
+            try {
+                const generateUserQR = firebase.functions().httpsCallable('generateUserQR');
+                const result = await generateUserQR({ regenerate: false });
+                
+                currentQRData = result.data;
+                
+                // Update UI
+                document.getElementById('profileUrl').textContent = currentQRData.profileUrl;
+                
+                qrDisplay.innerHTML = `
+                    <img src="${currentQRData.qrCodeUrl}" alt="Profile QR Code" />
+                    <p style="color: var(--text-secondary); font-size: 14px; margin: 0;">
+                        Scan this code to view my profile
+                    </p>
+                `;
+                
+                console.log('✅ Profile QR loaded:', currentQRData);
+                
+            } catch (error) {
+                console.error('❌ Error loading profile QR:', error);
+                qrDisplay.innerHTML = `
+                    <div class="qr-loading" style="color: var(--danger);">
+                        Error loading QR code: ${error.message}
+                    </div>
+                `;
+            }
+        }
+        
+        // Download QR code
+        function downloadQR() {
+            if (!currentQRData) return;
+            
+            const link = document.createElement('a');
+            link.href = currentQRData.qrCodeUrl;
+            link.download = `${currentUser.displayName || 'My'}-Profile-QR.png`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            showToast('QR code downloaded!');
+        }
+        
+        // Copy profile link
+        function copyProfileLink() {
+            if (!currentQRData) return;
+            
+            navigator.clipboard.writeText(currentQRData.profileUrl).then(() => {
+                showToast('Profile link copied to clipboard!');
+            }).catch(err => {
+                console.error('Error copying link:', err);
+                showToast('Failed to copy link', 'error');
+            });
+        }
+        
+        // Share QR code
+        function shareQR() {
+            if (!currentQRData) return;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: 'My Assiduous Profile',
+                    text: 'Connect with me on Assiduous',
+                    url: currentQRData.profileUrl
+                }).catch(err => console.log('Share cancelled:', err));
+            } else {
+                copyProfileLink();
+            }
+        }
+        
+        // Regenerate QR code
+        async function regenerateQR() {
+            if (!confirm('Are you sure you want to regenerate your QR code? The old QR code will no longer work.')) {
+                return;
+            }
+            
+            const qrDisplay = document.getElementById('qrDisplay');
+            qrDisplay.innerHTML = '<div class="qr-loading">Regenerating your QR code...</div>';
+            
+            try {
+                const generateUserQR = firebase.functions().httpsCallable('generateUserQR');
+                const result = await generateUserQR({ regenerate: true });
+                
+                currentQRData = result.data;
+                
+                // Update UI
+                document.getElementById('profileUrl').textContent = currentQRData.profileUrl;
+                qrDisplay.innerHTML = `
+                    <img src="${currentQRData.qrCodeUrl}" alt="Profile QR Code" />
+                    <p style="color: var(--text-secondary); font-size: 14px; margin: 0;">
+                        Scan this code to view my profile
+                    </p>
+                `;
+                
+                showToast('QR code regenerated successfully!');
+                
+            } catch (error) {
+                console.error('Error regenerating QR:', error);
+                showToast('Failed to regenerate QR code', 'error');
+                await loadUserQR(); // Reload original QR
+            }
+        }
+        
+        // Toast notification
+        function showToast(message, type = 'success') {
+            const toast = document.createElement('div');
+            toast.textContent = message;
+            toast.style.cssText = `
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                background: ${type === 'success' ? '#22c55e' : '#ef4444'};
+                color: white;
+                padding: 16px 24px;
+                border-radius: 8px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                z-index: 10001;
+                animation: slideIn 0.3s ease;
+            `;
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+        
+        // Add slide animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(400px); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(400px); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
