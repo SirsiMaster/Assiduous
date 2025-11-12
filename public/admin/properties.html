@@ -476,6 +476,20 @@
                             <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
                                 <div style="font-size: 12px; color: var(--text-secondary);">ROI: <strong style="color: var(--success);">${property.flipEstimate?.roi}%</strong></div>
                                 <div style="font-size: 12px; color: var(--text-secondary);">Profit: <strong>${formatted.profitFormatted}</strong></div>
+                                <button 
+                                    onclick="event.stopPropagation(); openPropertyQR('${property.id}')" 
+                                    style="background: var(--sky); color: white; border: none; border-radius: 4px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s;"
+                                    title="Property QR Code"
+                                    onmouseover="this.style.background='#4A8BC2'"
+                                    onmouseout="this.style.background='var(--sky)'">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="3" y="3" width="7" height="7"></rect>
+                                        <rect x="14" y="3" width="7" height="7"></rect>
+                                        <rect x="3" y="14" width="7" height="7"></rect>
+                                        <rect x="14" y="14" width="4" height="4"></rect>
+                                        <path d="M18 21h3v-3"></path>
+                                    </svg>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -527,6 +541,11 @@
         // View property detail
         window.viewProperty = function(propertyId) {
             window.location.href = `property-detail.html?id=${propertyId}`;
+        };
+        
+        // Open property QR code section
+        window.openPropertyQR = function(propertyId) {
+            window.location.href = `property-detail.html?id=${propertyId}#qr`;
         };
 
         // Show error

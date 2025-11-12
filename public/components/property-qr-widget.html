@@ -522,17 +522,33 @@ function showToast(message, type = 'success') {
     }, 3000);
 }
 
-// Add slide animations
-const style = document.createElement('style');
-style.textContent = `
-    @keyframes slideIn {
-        from { transform: translateX(400px); opacity: 0; }
-        to { transform: translateX(0); opacity: 1; }
-    }
-    @keyframes slideOut {
-        from { transform: translateX(0); opacity: 1; }
-        to { transform: translateX(400px); opacity: 0; }
-    }
-`;
-document.head.appendChild(style);
-</script>
+        // Add slide animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(400px); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(400px); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // Scroll to QR section if hash is present
+        if (window.location.hash === '#qr') {
+            setTimeout(() => {
+                const qrContainer = document.getElementById('propertyQRContainer');
+                if (qrContainer) {
+                    qrContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    // Add highlight effect
+                    qrContainer.style.transition = 'all 0.3s';
+                    qrContainer.style.boxShadow = '0 0 0 4px rgba(91, 165, 217, 0.3)';
+                    setTimeout(() => {
+                        qrContainer.style.boxShadow = '';
+                    }, 2000);
+                }
+            }, 500);
+        }
+    </script>
