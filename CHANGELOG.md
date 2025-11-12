@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.121.2] - 2025-11-12
+
+### Fixed
+- fix: Bind SENDGRID_API_KEY secret to Cloud Functions
+
+
 ## [0.121.1] - 2025-11-12
 
 ### Fixed
@@ -3303,7 +3309,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.121.1...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.121.2...HEAD
+
+
+## [0.121.2] - 2025-11-12
+
+### Fixed
+- fix: Bind SENDGRID_API_KEY secret to Cloud Functions
 
 
 ## [0.121.1] - 2025-11-12
@@ -5072,3 +5084,4 @@ To generate changelog entries:
 [0.120.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.119.0...v0.120.0
 [0.121.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.120.0...v0.121.0
 [0.121.1]: https://github.com/SirsiMaster/Assiduous/compare/v0.121.0...v0.121.1
+[0.121.2]: https://github.com/SirsiMaster/Assiduous/compare/v0.121.1...v0.121.2
