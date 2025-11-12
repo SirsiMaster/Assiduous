@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-11-12T00:56:48.684Z",
+  "lastUpdated": "2025-11-12T19:58:05.482Z",
   "summary": {
     "health": "Good",
     "score": 59,
@@ -152,21 +152,21 @@
     }
   },
   "project": {
-    "totalHours": "318",
+    "totalHours": "319",
     "avgHoursPerDay": "8.6",
-    "totalCost": 49707,
-    "laborCost": 47700,
-    "toolsCost": 2007,
+    "totalCost": 49879,
+    "laborCost": 47850,
+    "toolsCost": 2029,
     "monthsElapsed": "3.1",
-    "totalCommits": 963,
+    "totalCommits": 966,
     "totalFiles": 823,
     "activeDays": 37,
-    "totalDays": 94,
-    "projectAgeDays": 94,
-    "linesAdded": 9816520,
-    "linesDeleted": 9428576,
-    "netLines": 387944,
-    "velocity": "26.0",
+    "totalDays": 95,
+    "projectAgeDays": 95,
+    "linesAdded": 9816910,
+    "linesDeleted": 9428614,
+    "netLines": 388296,
+    "velocity": "26.1",
     "completionPercentage": 59,
     "actualStartDate": "2025-08-10",
     "architecture": {
@@ -177,21 +177,21 @@
   },
   "today": {
     "date": "2025-11-12",
-    "hours": "8.6",
-    "cost": 1287,
-    "commits": 26,
+    "hours": "9.6",
+    "cost": 1436,
+    "commits": 29,
     "deployments": 0
   },
   "thisWeek": {
-    "hours": "57.4",
-    "cost": 8613,
-    "commits": 174,
+    "hours": "58.4",
+    "cost": 8762,
+    "commits": 177,
     "days": 7
   },
   "thisMonth": {
-    "hours": "146.5",
-    "cost": 21978,
-    "commits": 444
+    "hours": "146.2",
+    "cost": 21929,
+    "commits": 443
   },
   "quality": {
     "testCoverage": {
@@ -225,7 +225,7 @@
       "critical": 0,
       "total": 0
     },
-    "lastAudit": "2025-11-12T00:56:23.898Z",
+    "lastAudit": "2025-11-12T19:57:34.710Z",
     "dependencies": {
       "total": {
         "prod": 256,
@@ -320,11 +320,11 @@
     "changelog": true,
     "contributing": false,
     "license": false,
-    "lastUpdate": "2025-11-11 19:50:20 -0500"
+    "lastUpdate": "2025-11-12 00:56:14 +0000"
   },
   "productivity": {
     "velocityTrend": "decreasing",
-    "weeklyCommits": 174,
+    "weeklyCommits": 177,
     "contributors": {
       "total": 0,
       "active": 0
@@ -402,6 +402,24 @@
   },
   "recentActivity": [
     {
+      "hash": "d7fbf59bc4d8f656c652b5a2043f13b5eb9be11e",
+      "message": "chore: sync firestore rules path and metrics cache",
+      "author": "SirsiMaster",
+      "date": "2025-11-12 14:57:09 -0500"
+    },
+    {
+      "hash": "7bd76bcf0cb6d1fcea1ada6413f8d31449dbc90b",
+      "message": "feat(qr): Add comprehensive property QR code system with tracking",
+      "author": "SirsiMaster",
+      "date": "2025-11-12 14:56:03 -0500"
+    },
+    {
+      "hash": "5ce9150d3db87008e362afb291f7998f8ed1c399",
+      "message": "chore(release): Bump version to 0.122.0 [skip ci]",
+      "author": "github-actions[bot]",
+      "date": "2025-11-12 00:56:14 +0000"
+    },
+    {
       "hash": "c03dc51a3b7159283cfd9aafc275513b45aee776",
       "message": "feat: Add SMS support and in-app QR scanner",
       "author": "SirsiMaster",
@@ -442,28 +460,10 @@
       "message": "chore(release): Bump version to 0.121.0 [skip ci]",
       "author": "github-actions[bot]",
       "date": "2025-11-12 00:05:43 +0000"
-    },
-    {
-      "hash": "11792f950f7cebf0c37c08c995cb7cb6b776687a",
-      "message": "feat: Add referral tracking to signup page",
-      "author": "SirsiMaster",
-      "date": "2025-11-11 19:05:15 -0500"
-    },
-    {
-      "hash": "33d86195e74d81aa318a29791623d9520fd0bc7f",
-      "message": "chore(release): Bump version to 0.120.0 [skip ci]",
-      "author": "github-actions[bot]",
-      "date": "2025-11-12 00:02:38 +0000"
-    },
-    {
-      "hash": "4a4b18a83e17698b19b0b5144056745244c05b14",
-      "message": "feat: Add QR code referral system with Cloud Functions",
-      "author": "SirsiMaster",
-      "date": "2025-11-11 19:02:07 -0500"
     }
   ],
   "automation": {
-    "lastRun": "2025-11-12T00:56:48.684Z",
+    "lastRun": "2025-11-12T19:58:05.482Z",
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",

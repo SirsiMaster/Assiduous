@@ -1,0 +1,538 @@
+<!-- Property QR Code Widget Component -->
+<!-- Usage: Include this file and call initPropertyQR(propertyId) -->
+
+<style>
+.property-qr-widget {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: var(--space-xl);
+    margin: var(--space-lg) 0;
+}
+
+.property-qr-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-lg);
+}
+
+.property-qr-header h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.assiduous-id {
+    font-family: monospace;
+    font-size: 14px;
+    padding: 4px 12px;
+    background: var(--gray-50);
+    border-radius: var(--radius);
+    color: var(--text-secondary);
+}
+
+.qr-display {
+    text-align: center;
+    padding: var(--space-lg);
+    background: var(--gray-50);
+    border-radius: var(--radius);
+    margin-bottom: var(--space-lg);
+}
+
+.qr-display img {
+    max-width: 300px;
+    width: 100%;
+    height: auto;
+}
+
+.qr-loading {
+    color: var(--text-secondary);
+    padding: var(--space-xl);
+}
+
+.qr-actions {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: var(--space-md);
+}
+
+.qr-btn {
+    padding: var(--space-sm) var(--space-md);
+    border: 1px solid var(--border);
+    background: var(--white);
+    color: var(--text-primary);
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.qr-btn:hover {
+    background: var(--gray-50);
+    border-color: var(--sky);
+}
+
+.qr-btn.primary {
+    background: var(--sky);
+    color: var(--white);
+    border-color: var(--sky);
+}
+
+.qr-btn.primary:hover {
+    background: #4A8BC2;
+}
+
+.qr-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.share-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 10000;
+    align-items: center;
+    justify-content: center;
+}
+
+.share-modal.active {
+    display: flex;
+}
+
+.share-modal-content {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    padding: var(--space-xl);
+    max-width: 500px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.share-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-lg);
+}
+
+.share-modal-header h3 {
+    margin: 0;
+    font-size: 20px;
+}
+
+.close-modal {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--text-secondary);
+    padding: 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.share-tabs {
+    display: flex;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-lg);
+    border-bottom: 1px solid var(--border);
+}
+
+.share-tab {
+    padding: var(--space-sm) var(--space-md);
+    border: none;
+    background: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    position: relative;
+}
+
+.share-tab.active {
+    color: var(--sky);
+}
+
+.share-tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--sky);
+}
+
+.share-panel {
+    display: none;
+}
+
+.share-panel.active {
+    display: block;
+}
+
+.form-group {
+    margin-bottom: var(--space-md);
+}
+
+.form-group label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: var(--space-xs);
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: var(--space-sm);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    font-size: 14px;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+</style>
+
+<div class="property-qr-widget" id="propertyQRWidget">
+    <div class="property-qr-header">
+        <h3>Property QR Code</h3>
+        <span class="assiduous-id" id="assiduousId">Loading...</span>
+    </div>
+    
+    <div class="qr-display" id="qrDisplay">
+        <div class="qr-loading">Generating QR code...</div>
+    </div>
+    
+    <div class="qr-actions">
+        <button class="qr-btn primary" onclick="downloadPropertyQR()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            Download QR
+        </button>
+        
+        <button class="qr-btn" onclick="copyPropertyLink()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+            </svg>
+            Copy Link
+        </button>
+        
+        <button class="qr-btn" onclick="openShareModal()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="18" cy="5" r="3"></circle>
+                <circle cx="6" cy="12" r="3"></circle>
+                <circle cx="18" cy="19" r="3"></circle>
+                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+            </svg>
+            Share
+        </button>
+        
+        <button class="qr-btn" onclick="regeneratePropertyQR()" id="regenerateBtn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="23 4 23 10 17 10"></polyline>
+                <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+            </svg>
+            Regenerate
+        </button>
+    </div>
+</div>
+
+<!-- Share Modal -->
+<div class="share-modal" id="shareModal" onclick="closeShareModalOnBackdrop(event)">
+    <div class="share-modal-content" onclick="event.stopPropagation()">
+        <div class="share-modal-header">
+            <h3>Share Property</h3>
+            <button class="close-modal" onclick="closeShareModal()">&times;</button>
+        </div>
+        
+        <div class="share-tabs">
+            <button class="share-tab active" onclick="switchShareTab('email')">Email</button>
+            <button class="share-tab" onclick="switchShareTab('sms')">SMS</button>
+        </div>
+        
+        <!-- Email Share Panel -->
+        <div class="share-panel active" id="emailPanel">
+            <form onsubmit="shareViaEmail(event)">
+                <div class="form-group">
+                    <label>Recipient Email *</label>
+                    <input type="email" id="recipientEmail" required placeholder="client@example.com">
+                </div>
+                <div class="form-group">
+                    <label>Personal Message (Optional)</label>
+                    <textarea id="emailMessage" placeholder="I thought you might be interested in this property..."></textarea>
+                </div>
+                <button type="submit" class="qr-btn primary" style="width: 100%;">Send Email</button>
+            </form>
+        </div>
+        
+        <!-- SMS Share Panel -->
+        <div class="share-panel" id="smsPanel">
+            <form onsubmit="shareViaSMS(event)">
+                <div class="form-group">
+                    <label>Recipient Phone *</label>
+                    <input type="tel" id="recipientPhone" required placeholder="+1 (555) 123-4567">
+                </div>
+                <div class="form-group">
+                    <label>Personal Message (Optional)</label>
+                    <textarea id="smsMessage" placeholder="Check out this property..."></textarea>
+                </div>
+                <button type="submit" class="qr-btn primary" style="width: 100%;">Send SMS</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+// Global variables for property QR widget
+let currentPropertyId = null;
+let currentPropertyQRData = null;
+
+async function initPropertyQR(propertyId) {
+    if (!propertyId) {
+        console.error('Property ID is required');
+        return;
+    }
+    
+    currentPropertyId = propertyId;
+    
+    try {
+        // Call Cloud Function to generate/get QR code
+        const generatePropertyQR = firebase.functions().httpsCallable('generatePropertyQR');
+        const result = await generatePropertyQR({ propertyId: propertyId });
+        
+        currentPropertyQRData = result.data;
+        
+        // Update UI
+        document.getElementById('assiduousId').textContent = currentPropertyQRData.assiduousId;
+        
+        const qrDisplay = document.getElementById('qrDisplay');
+        qrDisplay.innerHTML = `<img src="${currentPropertyQRData.qrCodeUrl}" alt="Property QR Code" />`;
+        
+        console.log('✅ Property QR loaded:', currentPropertyQRData);
+        
+    } catch (error) {
+        console.error('❌ Error loading property QR:', error);
+        const qrDisplay = document.getElementById('qrDisplay');
+        qrDisplay.innerHTML = `<div class="qr-loading" style="color: var(--danger);">Error loading QR code: ${error.message}</div>`;
+    }
+}
+
+function downloadPropertyQR() {
+    if (!currentPropertyQRData) return;
+    
+    const link = document.createElement('a');
+    link.href = currentPropertyQRData.qrCodeUrl;
+    link.download = `${currentPropertyQRData.assiduousId}-QR.png`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    showToast('QR code downloaded!');
+}
+
+function copyPropertyLink() {
+    if (!currentPropertyQRData) return;
+    
+    navigator.clipboard.writeText(currentPropertyQRData.propertyUrl).then(() => {
+        showToast('Property link copied to clipboard!');
+    }).catch(err => {
+        console.error('Error copying link:', err);
+        showToast('Failed to copy link', 'error');
+    });
+}
+
+async function regeneratePropertyQR() {
+    if (!currentPropertyId) return;
+    
+    if (!confirm('Are you sure you want to regenerate the QR code? The old QR code will no longer work.')) {
+        return;
+    }
+    
+    const btn = document.getElementById('regenerateBtn');
+    btn.disabled = true;
+    btn.textContent = 'Regenerating...';
+    
+    try {
+        const generatePropertyQR = firebase.functions().httpsCallable('generatePropertyQR');
+        const result = await generatePropertyQR({ 
+            propertyId: currentPropertyId,
+            regenerate: true
+        });
+        
+        currentPropertyQRData = result.data;
+        
+        // Update UI
+        document.getElementById('assiduousId').textContent = currentPropertyQRData.assiduousId;
+        const qrDisplay = document.getElementById('qrDisplay');
+        qrDisplay.innerHTML = `<img src="${currentPropertyQRData.qrCodeUrl}" alt="Property QR Code" />`;
+        
+        showToast('QR code regenerated successfully!');
+        
+    } catch (error) {
+        console.error('Error regenerating QR:', error);
+        showToast('Failed to regenerate QR code', 'error');
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = `
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="23 4 23 10 17 10"></polyline>
+                <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+            </svg>
+            Regenerate
+        `;
+    }
+}
+
+function openShareModal() {
+    document.getElementById('shareModal').classList.add('active');
+}
+
+function closeShareModal() {
+    document.getElementById('shareModal').classList.remove('active');
+}
+
+function closeShareModalOnBackdrop(event) {
+    if (event.target.id === 'shareModal') {
+        closeShareModal();
+    }
+}
+
+function switchShareTab(tab) {
+    // Update tab buttons
+    document.querySelectorAll('.share-tab').forEach(btn => {
+        btn.classList.toggle('active', btn.textContent.toLowerCase() === tab);
+    });
+    
+    // Update panels
+    document.getElementById('emailPanel').classList.toggle('active', tab === 'email');
+    document.getElementById('smsPanel').classList.toggle('active', tab === 'sms');
+}
+
+async function shareViaEmail(event) {
+    event.preventDefault();
+    
+    const recipientEmail = document.getElementById('recipientEmail').value;
+    const personalMessage = document.getElementById('emailMessage').value;
+    
+    const submitBtn = event.target.querySelector('button[type="submit"]');
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending...';
+    
+    try {
+        const sharePropertyQR = firebase.functions().httpsCallable('sharePropertyQR');
+        await sharePropertyQR({
+            propertyId: currentPropertyId,
+            recipientEmail: recipientEmail,
+            method: 'email',
+            personalMessage: personalMessage
+        });
+        
+        showToast('Property shared via email successfully!');
+        closeShareModal();
+        
+        // Reset form
+        document.getElementById('recipientEmail').value = '';
+        document.getElementById('emailMessage').value = '';
+        
+    } catch (error) {
+        console.error('Error sharing via email:', error);
+        showToast('Failed to share via email: ' + error.message, 'error');
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Send Email';
+    }
+}
+
+async function shareViaSMS(event) {
+    event.preventDefault();
+    
+    const recipientPhone = document.getElementById('recipientPhone').value;
+    const personalMessage = document.getElementById('smsMessage').value;
+    
+    const submitBtn = event.target.querySelector('button[type="submit"]');
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending...';
+    
+    try {
+        const sharePropertyQR = firebase.functions().httpsCallable('sharePropertyQR');
+        await sharePropertyQR({
+            propertyId: currentPropertyId,
+            recipientPhone: recipientPhone,
+            method: 'sms',
+            personalMessage: personalMessage
+        });
+        
+        showToast('Property shared via SMS successfully!');
+        closeShareModal();
+        
+        // Reset form
+        document.getElementById('recipientPhone').value = '';
+        document.getElementById('smsMessage').value = '';
+        
+    } catch (error) {
+        console.error('Error sharing via SMS:', error);
+        showToast('Failed to share via SMS: ' + error.message, 'error');
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Send SMS';
+    }
+}
+
+function showToast(message, type = 'success') {
+    const toast = document.createElement('div');
+    toast.textContent = message;
+    toast.style.cssText = `
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: ${type === 'success' ? '#22c55e' : '#ef4444'};
+        color: white;
+        padding: 16px 24px;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        z-index: 10001;
+        animation: slideIn 0.3s ease;
+    `;
+    document.body.appendChild(toast);
+    setTimeout(() => {
+        toast.style.animation = 'slideOut 0.3s ease';
+        setTimeout(() => toast.remove(), 300);
+    }, 3000);
+}
+
+// Add slide animations
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes slideIn {
+        from { transform: translateX(400px); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+    @keyframes slideOut {
+        from { transform: translateX(0); opacity: 1; }
+        to { transform: translateX(400px); opacity: 0; }
+    }
+`;
+document.head.appendChild(style);
+</script>

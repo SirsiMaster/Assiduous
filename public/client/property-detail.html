@@ -139,6 +139,9 @@
                         </div>
                     </div>
                 </div>
+                
+                <!-- Property QR Code Widget -->
+                <div id="propertyQRContainer"></div>
             </div>
         </div>
     </div>
@@ -213,7 +216,18 @@
     </div>
         </div>
     </div>
-
+    
+    <!-- Load property QR widget -->
+    <script>
+        // Load property QR widget HTML
+        fetch('../components/property-qr-widget.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('propertyQRContainer').innerHTML = html;
+            })
+            .catch(error => console.error('Error loading QR widget:', error));
+    </script>
+    
     <!-- UCS Core Scripts -->
     <script src="../components/ucs-core.js"></script>
     <script src="../components/component-registry.js"></script>
@@ -458,6 +472,11 @@
             
             // Check if saved
             updateSaveButton();
+            
+            // Initialize property QR widget
+            if (typeof initPropertyQR === 'function') {
+                initPropertyQR(property.id);
+            }
         }
         
         // Change main image

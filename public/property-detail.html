@@ -435,11 +435,25 @@
                             <button class="btn btn-secondary" onclick="shareProperty()">Share</button>
                         </div>
                     </div>
+                    
+                    <!-- Property QR Code Widget -->
+                    <div id="propertyQRContainer"></div>
                 </div>
             </div>
 
         </div>
     </div>
+    
+    <!-- Load property QR widget -->
+    <script>
+        // Load property QR widget HTML
+        fetch('components/property-qr-widget.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('propertyQRContainer').innerHTML = html;
+            })
+            .catch(error => console.error('Error loading QR widget:', error));
+    </script>
 
     <script type="module">
         import { PropertyService } from './assets/js/services/propertyservice.js';
@@ -487,6 +501,11 @@
                 
                 loadingEl.style.display = 'none';
                 contentEl.style.display = 'block';
+                
+                // Initialize property QR widget
+                if (typeof initPropertyQR === 'function') {
+                    initPropertyQR(id);
+                }
             } catch (error) {
                 loadingEl.style.display = 'none';
                 throw error;

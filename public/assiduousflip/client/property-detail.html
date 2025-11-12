@@ -575,12 +575,26 @@
                         <div class="investment-section">
                             <h2 class="section-title">Investment Metrics</h2>
                             <div id="metrics"></div>
+                            
+                            <!-- Property QR Code Widget -->
+                            <div id="propertyQRContainer"></div>
                         </div>
                     </div>
                 </div>
             </div>
         </main>
     </div>
+    
+    <!-- Load property QR widget -->
+    <script>
+        // Load property QR widget HTML
+        fetch('../../components/property-qr-widget.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('propertyQRContainer').innerHTML = html;
+            })
+            .catch(error => console.error('Error loading QR widget:', error));
+    </script>
 
     <!-- Schedule Viewing Modal -->
     <div id="viewingModal" class="modal">
@@ -675,6 +689,11 @@
                 
                 document.getElementById('loading').style.display = 'none';
                 document.getElementById('content').style.display = 'block';
+                
+                // Initialize property QR widget
+                if (typeof initPropertyQR === 'function') {
+                    initPropertyQR(propertyId);
+                }
             } catch (error) {
                 alert('Failed to load property: ' + error.message);
                 window.location.href = '/client/properties.html';
