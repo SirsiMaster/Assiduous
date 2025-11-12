@@ -503,6 +503,18 @@
         const auth = firebase.auth();
         const db = firebase.firestore();
         
+        // Get URL parameters for referral tracking
+        const urlParams = new URLSearchParams(window.location.search);
+        const referralCode = urlParams.get('ref');
+        const invitationToken = urlParams.get('token');
+        
+        // Show referral info if present
+        if (referralCode) {
+            showSuccess(`You're signing up via referral code: ${referralCode}`);
+        } else if (invitationToken) {
+            showSuccess('Welcome! Complete your registration to accept the invitation.');
+        }
+        
         // Toggle password visibility
         function togglePassword(fieldId) {
             const passwordInput = document.getElementById(fieldId);
@@ -652,6 +664,25 @@
                 
                 // Send verification email
                 await user.sendEmailVerification();
+                
+                // Process referral/invitation if present
+                if (referralCode) {
+                    try {
+                        const processQR = firebase.functions().httpsCallable('processQRSignup');
+                        await processQR({ referralCode });
+                        console.log('✅ Referral processed:', referralCode);
+                    } catch (refError) {
+                        console.error('❌ Referral processing failed:', refError);
+                    }
+                } else if (invitationToken) {
+                    try {
+                        const activateTemp = firebase.functions().httpsCallable('activateTempAccount');
+                        await activateTemp({ tempToken: invitationToken });
+                        console.log('✅ Invitation accepted:', invitationToken);
+                    } catch (invError) {
+                        console.error('❌ Invitation processing failed:', invError);
+                    }
+                }
                 
                 // Store auth state in localStorage
                 localStorage.setItem('isLoggedIn', 'true');
