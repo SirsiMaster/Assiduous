@@ -434,7 +434,11 @@ exports.generateReferralCode = functions.https.onCall(async (data, context) => {
  * Send client invitation via email
  * Creates temp user account and sends invitation with QR code
  */
-exports.sendClientInvitation = functions.https.onCall(async (data, context) => {
+exports.sendClientInvitation = functions
+    .runWith({
+        secrets: ['SENDGRID_API_KEY']
+    })
+    .https.onCall(async (data, context) => {
     if (!context.auth) {
         throw new functions.https.HttpsError('unauthenticated', 'User must be authenticated');
     }
@@ -673,7 +677,11 @@ exports.activateTempAccount = functions.https.onCall(async (data, context) => {
  * Share QR code via email or SMS
  * Agent shares their referral QR with clients
  */
-exports.shareQRCode = functions.https.onCall(async (data, context) => {
+exports.shareQRCode = functions
+    .runWith({
+        secrets: ['SENDGRID_API_KEY']
+    })
+    .https.onCall(async (data, context) => {
     if (!context.auth) {
         throw new functions.https.HttpsError('unauthenticated', 'User must be authenticated');
     }
