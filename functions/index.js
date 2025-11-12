@@ -786,3 +786,332 @@ function generateUniqueCode(length) {
     }
     return code;
 }
+
+// ============================================================================
+// PROPERTY QR CODE SYSTEM
+// ============================================================================
+
+/**
+ * Generate or regenerate QR code for a property
+ * Creates unique Assiduous ID and QR code for property sharing with tracking
+ */
+exports.generatePropertyQR = functions.https.onCall(async (data, context) => {
+    if (!context.auth) {
+        throw new functions.https.HttpsError('unauthenticated', 'User must be authenticated');
+    }
+
+    const { propertyId, regenerate } = data;
+
+    if (!propertyId) {
+        throw new functions.https.HttpsError('invalid-argument', 'propertyId is required');
+    }
+
+    try {
+        const propertyRef = db.collection('properties').doc(propertyId);
+        const propertyDoc = await propertyRef.get();
+        
+        if (!propertyDoc.exists) {
+            throw new functions.https.HttpsError('not-found', 'Property not found');
+        }
+
+        const propertyData = propertyDoc.data();
+        
+        // Check if property already has Assiduous ID and QR (unless regenerating)
+        if (propertyData.assiduousId && propertyData.qrCodeUrl && !regenerate) {
+            return {
+                success: true,
+                assiduousId: propertyData.assiduousId,
+                qrCodeUrl: propertyData.qrCodeUrl,
+                propertyUrl: propertyData.propertyUrl,
+                regenerated: false
+            };
+        }
+        
+        // Generate unique Assiduous ID for property
+        const assiduousId = 'PROP-' + generateUniqueCode(8);
+        
+        // Create property detail URL
+        const propertyUrl = `https://assiduous-prod.web.app/property-detail.html?id=${propertyId}`;
+        
+        // Generate QR code URL
+        const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=${encodeURIComponent(propertyUrl)}`;
+        
+        // Update property with QR data
+        await propertyRef.update({
+            assiduousId: assiduousId,
+            qrCodeUrl: qrCodeUrl,
+            propertyUrl: propertyUrl,
+            qrGeneratedAt: admin.firestore.FieldValue.serverTimestamp(),
+            qrGeneratedBy: context.auth.uid,
+            updatedAt: admin.firestore.FieldValue.serverTimestamp()
+        });
+
+        console.log(`✅ Generated property QR for ${propertyId}: ${assiduousId}`);
+        
+        return { 
+            success: true, 
+            assiduousId,
+            qrCodeUrl,
+            propertyUrl,
+            regenerated: regenerate || false
+        };
+        
+    } catch (error) {
+        console.error('❌ Error generating property QR:', error);
+        throw new functions.https.HttpsError('internal', error.message);
+    }
+});
+
+/**
+ * Share property via QR code with tracking
+ * Sends property details + QR via email or SMS
+ */
+exports.sharePropertyQR = functions
+    .runWith({
+        secrets: ['SENDGRID_API_KEY', 'TWILIO_ACCOUNT_SID', 'TWILIO_AUTH_TOKEN', 'TWILIO_PHONE_NUMBER']
+    })
+    .https.onCall(async (data, context) => {
+    if (!context.auth) {
+        throw new functions.https.HttpsError('unauthenticated', 'User must be authenticated');
+    }
+
+    const { propertyId, recipientEmail, recipientPhone, method, personalMessage } = data;
+
+    if (!propertyId) {
+        throw new functions.https.HttpsError('invalid-argument', 'propertyId is required');
+    }
+    
+    if (!recipientEmail && !recipientPhone) {
+        throw new functions.https.HttpsError('invalid-argument', 'recipientEmail or recipientPhone is required');
+    }
+
+    try {
+        const sharerId = context.auth.uid;
+        
+        // Get property details
+        const propertyDoc = await db.collection('properties').doc(propertyId).get();
+        if (!propertyDoc.exists) {
+            throw new functions.https.HttpsError('not-found', 'Property not found');
+        }
+        
+        const property = propertyDoc.data();
+        const qrCodeUrl = property.qrCodeUrl;
+        const assiduousId = property.assiduousId;
+        
+        if (!qrCodeUrl || !assiduousId) {
+            throw new functions.https.HttpsError('failed-precondition', 'Property does not have QR code. Generate it first.');
+        }
+        
+        // Get sharer details
+        const sharerDoc = await db.collection('users').doc(sharerId).get();
+        const sharerName = sharerDoc.exists ? (sharerDoc.data().displayName || sharerDoc.data().email) : 'Someone';
+        
+        // Create tracked URL with sharer ID
+        const trackedUrl = `${property.propertyUrl}&shared_by=${sharerId}`;
+        
+        // Track the share
+        await db.collection('property_shares').add({
+            propertyId: propertyId,
+            assiduousId: assiduousId,
+            sharedBy: sharerId,
+            sharerName: sharerName,
+            method: method,
+            recipientEmail: recipientEmail || null,
+            recipientPhone: recipientPhone || null,
+            sharedAt: admin.firestore.FieldValue.serverTimestamp(),
+            viewed: false
+        });
+        
+        // Send via email
+        if (method === 'email' && recipientEmail) {
+            const sgMail = require('@sendgrid/mail');
+            const sendGridApiKey = process.env.SENDGRID_API_KEY;
+            
+            if (!sendGridApiKey) {
+                console.warn('⚠️ SendGrid API key not configured');
+                return { success: true, sent: false };
+            }
+
+            sgMail.setApiKey(sendGridApiKey);
+            
+            const address = property.address || 'Property';
+            const price = property.price ? `$${property.price.toLocaleString()}` : 'Price available upon request';
+            
+            const emailHtml = `
+                <h2>${sharerName} shared a property with you</h2>
+                <div style="border:1px solid #e5e7eb;border-radius:8px;padding:20px;margin:20px 0;">
+                    <h3 style="margin-top:0;">${address}</h3>
+                    <p style="font-size:24px;font-weight:bold;color:#60A3D9;">${price}</p>
+                    ${personalMessage ? `<p style="font-style:italic;">${personalMessage}</p>` : ''}
+                    <img src="${qrCodeUrl}" alt="Property QR Code" style="max-width:250px;margin:20px 0;" />
+                    <p><a href="${trackedUrl}" style="background:#60A3D9;color:white;padding:12px 24px;text-decoration:none;border-radius:6px;display:inline-block;">View Property</a></p>
+                    <p style="color:#6b7280;font-size:12px;margin-top:20px;">Property ID: ${assiduousId}</p>
+                </div>
+            `;
+
+            const msg = {
+                to: recipientEmail,
+                from: 'noreply@assiduous.com',
+                subject: `${sharerName} shared ${address} with you`,
+                html: emailHtml
+            };
+
+            await sgMail.send(msg);
+            console.log(`✅ Property ${propertyId} shared via email to ${recipientEmail}`);
+        }
+        
+        // Send via SMS
+        if (method === 'sms' && recipientPhone) {
+            const twilioAccountSid = process.env.TWILIO_ACCOUNT_SID;
+            const twilioAuthToken = process.env.TWILIO_AUTH_TOKEN;
+            const twilioPhoneNumber = process.env.TWILIO_PHONE_NUMBER;
+            
+            if (!twilioAccountSid || !twilioAuthToken || !twilioPhoneNumber) {
+                console.warn('⚠️ Twilio not configured');
+                return { success: true, sent: false, method: 'sms' };
+            }
+            
+            const twilio = require('twilio')(twilioAccountSid, twilioAuthToken);
+            
+            const address = property.address || 'a property';
+            const smsBody = `${sharerName} shared ${address} with you on Assiduous. View it here: ${trackedUrl}`;
+            
+            await twilio.messages.create({
+                body: smsBody,
+                from: twilioPhoneNumber,
+                to: recipientPhone
+            });
+            
+            console.log(`✅ Property ${propertyId} shared via SMS to ${recipientPhone}`);
+        }
+        
+        return { success: true, sent: true, assiduousId };
+        
+    } catch (error) {
+        console.error('❌ Error sharing property QR:', error);
+        throw new functions.https.HttpsError('internal', error.message);
+    }
+});
+
+/**
+ * Track property view from QR code
+ * Records when someone views a property via shared link
+ */
+exports.trackPropertyView = functions.https.onCall(async (data, context) => {
+    const { propertyId, sharedBy, viewerEmail } = data;
+
+    if (!propertyId) {
+        throw new functions.https.HttpsError('invalid-argument', 'propertyId is required');
+    }
+
+    try {
+        const viewData = {
+            propertyId: propertyId,
+            viewedAt: admin.firestore.FieldValue.serverTimestamp(),
+            viewerEmail: viewerEmail || null,
+            viewerId: context.auth ? context.auth.uid : null,
+            sharedBy: sharedBy || null,
+            authenticated: !!context.auth
+        };
+        
+        // Add to property views subcollection
+        await db.collection('properties').doc(propertyId)
+            .collection('views').add(viewData);
+        
+        // If this was a shared link, mark the share as viewed
+        if (sharedBy) {
+            const sharesSnapshot = await db.collection('property_shares')
+                .where('propertyId', '==', propertyId)
+                .where('sharedBy', '==', sharedBy)
+                .where('viewed', '==', false)
+                .limit(1)
+                .get();
+            
+            if (!sharesSnapshot.empty) {
+                const shareDoc = sharesSnapshot.docs[0];
+                await shareDoc.ref.update({
+                    viewed: true,
+                    viewedAt: admin.firestore.FieldValue.serverTimestamp(),
+                    viewerId: context.auth ? context.auth.uid : null
+                });
+            }
+        }
+        
+        console.log(`✅ Property view tracked: ${propertyId}`);
+        return { success: true };
+        
+    } catch (error) {
+        console.error('❌ Error tracking property view:', error);
+        throw new functions.https.HttpsError('internal', error.message);
+    }
+});
+
+/**
+ * Generate user profile QR code
+ * Creates QR for admin/agent/client profiles
+ */
+exports.generateUserQR = functions.https.onCall(async (data, context) => {
+    if (!context.auth) {
+        throw new functions.https.HttpsError('unauthenticated', 'User must be authenticated');
+    }
+
+    const { userId, regenerate } = data;
+    const targetUserId = userId || context.auth.uid; // Allow specifying user ID or use current user
+
+    try {
+        const userRef = db.collection('users').doc(targetUserId);
+        const userDoc = await userRef.get();
+        
+        if (!userDoc.exists) {
+            throw new functions.https.HttpsError('not-found', 'User not found');
+        }
+
+        const userData = userDoc.data();
+        
+        // Check if user already has profile QR (unless regenerating)
+        if (userData.profileQRCode && !regenerate) {
+            return {
+                success: true,
+                qrCodeUrl: userData.profileQRCode,
+                profileUrl: userData.profileUrl,
+                regenerated: false
+            };
+        }
+        
+        // Create profile URL based on role
+        let profileUrl;
+        const role = userData.role || 'client';
+        
+        if (role === 'admin') {
+            profileUrl = `https://assiduous-prod.web.app/admin/profile.html?id=${targetUserId}`;
+        } else if (role === 'agent') {
+            profileUrl = `https://assiduous-prod.web.app/agent/profile.html?id=${targetUserId}`;
+        } else {
+            profileUrl = `https://assiduous-prod.web.app/client/profile.html?id=${targetUserId}`;
+        }
+        
+        // Generate QR code URL
+        const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(profileUrl)}`;
+        
+        // Update user with profile QR
+        await userRef.update({
+            profileQRCode: qrCodeUrl,
+            profileUrl: profileUrl,
+            profileQRGeneratedAt: admin.firestore.FieldValue.serverTimestamp(),
+            updatedAt: admin.firestore.FieldValue.serverTimestamp()
+        });
+
+        console.log(`✅ Generated profile QR for user ${targetUserId}`);
+        
+        return { 
+            success: true, 
+            qrCodeUrl,
+            profileUrl,
+            regenerated: regenerate || false
+        };
+        
+    } catch (error) {
+        console.error('❌ Error generating user QR:', error);
+        throw new functions.https.HttpsError('internal', error.message);
+    }
+});
