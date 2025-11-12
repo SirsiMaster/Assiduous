@@ -209,8 +209,11 @@
                         <button class="btn btn-secondary" onclick="copySignupLink()">
                             🔗 Copy Link
                         </button>
-                        <button class="btn btn-secondary" onclick="openShareModal()">
+                        <button class="btn btn-secondary" onclick="openShareModal('email')">
                             📧 Share via Email
+                        </button>
+                        <button class="btn btn-secondary" onclick="openShareModal('sms')">
+                            📱 Share via SMS
                         </button>
                     </div>
                     
@@ -231,18 +234,22 @@
     <!-- Share Modal -->
     <div id="shareModal" class="share-modal">
         <div class="share-modal-content">
-            <h2>Share QR Code via Email</h2>
-            <form id="shareForm" onsubmit="handleShareEmail(event)">
-                <div class="form-group">
+            <h2 id="shareModalTitle">Share QR Code</h2>
+            <form id="shareForm" onsubmit="handleShare(event)">
+                <div class="form-group" id="emailField">
                     <label for="recipientEmail">Recipient Email</label>
-                    <input type="email" id="recipientEmail" required placeholder="client@example.com">
+                    <input type="email" id="recipientEmail" placeholder="client@example.com">
+                </div>
+                <div class="form-group" id="smsField" style="display: none;">
+                    <label for="recipientPhone">Recipient Phone</label>
+                    <input type="tel" id="recipientPhone" placeholder="+1 (555) 123-4567">
                 </div>
                 <div class="action-buttons" style="justify-content: flex-end;">
                     <button type="button" class="btn btn-secondary" onclick="closeShareModal()">
                         Cancel
                     </button>
-                    <button type="submit" class="btn btn-primary">
-                        Send Email
+                    <button type="submit" class="btn btn-primary" id="shareSubmitButton">
+                        Send
                     </button>
                 </div>
             </form>
@@ -378,8 +385,32 @@
             }
         }
         
-        function openShareModal() {
-            document.getElementById('shareModal').style.display = 'flex';
+        let currentShareMethod = 'email';
+        
+        function openShareModal(method) {
+            currentShareMethod = method;
+            const modal = document.getElementById('shareModal');
+            const emailField = document.getElementById('emailField');
+            const smsField = document.getElementById('smsField');
+            const title = document.getElementById('shareModalTitle');
+            const emailInput = document.getElementById('recipientEmail');
+            const phoneInput = document.getElementById('recipientPhone');
+            
+            if (method === 'email') {
+                title.textContent = 'Share QR Code via Email';
+                emailField.style.display = 'block';
+                smsField.style.display = 'none';
+                emailInput.required = true;
+                phoneInput.required = false;
+            } else if (method === 'sms') {
+                title.textContent = 'Share QR Code via SMS';
+                emailField.style.display = 'none';
+                smsField.style.display = 'block';
+                emailInput.required = false;
+                phoneInput.required = true;
+            }
+            
+            modal.style.display = 'flex';
         }
         
         function closeShareModal() {
@@ -387,27 +418,38 @@
             document.getElementById('shareForm').reset();
         }
         
-        async function handleShareEmail(event) {
+        async function handleShare(event) {
             event.preventDefault();
             
-            const recipientEmail = document.getElementById('recipientEmail').value;
+            const submitButton = document.getElementById('shareSubmitButton');
+            submitButton.disabled = true;
+            submitButton.textContent = 'Sending...';
             
             try {
                 const shareFunc = firebase.functions().httpsCallable('shareQRCode');
-                const result = await shareFunc({
-                    recipientEmail: recipientEmail,
-                    method: 'email'
-                });
+                const payload = { method: currentShareMethod };
+                
+                if (currentShareMethod === 'email') {
+                    payload.recipientEmail = document.getElementById('recipientEmail').value;
+                } else if (currentShareMethod === 'sms') {
+                    payload.recipientPhone = document.getElementById('recipientPhone').value;
+                }
+                
+                const result = await shareFunc(payload);
                 
                 if (result.data.success) {
-                    showSuccessToast('Email sent successfully!');
+                    const message = currentShareMethod === 'email' ? 'Email sent successfully!' : 'SMS sent successfully!';
+                    showSuccessToast(message);
                     closeShareModal();
                 } else {
-                    alert('Failed to send email');
+                    alert(`Failed to send ${currentShareMethod}`);
                 }
             } catch (error) {
                 console.error('Share error:', error);
-                alert('Failed to send email: ' + error.message);
+                alert(`Failed to send ${currentShareMethod}: ` + error.message);
+            } finally {
+                submitButton.disabled = false;
+                submitButton.textContent = 'Send';
             }
         }
         

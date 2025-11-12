@@ -679,7 +679,7 @@ exports.activateTempAccount = functions.https.onCall(async (data, context) => {
  */
 exports.shareQRCode = functions
     .runWith({
-        secrets: ['SENDGRID_API_KEY']
+        secrets: ['SENDGRID_API_KEY', 'TWILIO_ACCOUNT_SID', 'TWILIO_AUTH_TOKEN', 'TWILIO_PHONE_NUMBER']
     })
     .https.onCall(async (data, context) => {
     if (!context.auth) {
@@ -739,9 +739,28 @@ exports.shareQRCode = functions
             console.log(`✅ QR code shared via email to ${recipientEmail} by agent ${agentId}`);
         }
 
-        // TODO: Implement SMS via Twilio if needed
+        // Send SMS via Twilio
         if (method === 'sms' && recipientPhone) {
-            console.log(`⚠️ SMS not yet implemented. Would send to: ${recipientPhone}`);
+            const twilioAccountSid = process.env.TWILIO_ACCOUNT_SID;
+            const twilioAuthToken = process.env.TWILIO_AUTH_TOKEN;
+            const twilioPhoneNumber = process.env.TWILIO_PHONE_NUMBER;
+            
+            if (!twilioAccountSid || !twilioAuthToken || !twilioPhoneNumber) {
+                console.warn('⚠️ Twilio credentials not configured. SMS not sent.');
+                return { success: true, sent: false, method: 'sms' };
+            }
+            
+            const twilio = require('twilio')(twilioAccountSid, twilioAuthToken);
+            
+            const smsBody = `${agentName} invited you to Assiduous! Sign up here: ${signupUrl}`;
+            
+            await twilio.messages.create({
+                body: smsBody,
+                from: twilioPhoneNumber,
+                to: recipientPhone
+            });
+            
+            console.log(`✅ QR code shared via SMS to ${recipientPhone} by agent ${agentId}`);
         }
         
         return { success: true, sent: true };
