@@ -776,7 +776,7 @@ exports.shareQRCode = functions
 // ============================================================================
 
 /**
- * Generate unique alphanumeric code
+ * Generate unique alphanumeric code (deprecated - use generateSequentialId instead)
  */
 function generateUniqueCode(length) {
     const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // Removed ambiguous chars
@@ -785,6 +785,43 @@ function generateUniqueCode(length) {
         code += chars.charAt(Math.floor(Math.random() * chars.length));
     }
     return code;
+}
+
+/**
+ * Generate sequential ID using atomic counter
+ * Format: TYPE-YEAR-SEQUENCE (e.g., PROP-2024-001234)
+ */
+async function generateSequentialId(type) {
+    const year = new Date().getFullYear();
+    const counterKey = `${type.toUpperCase()}_${year}`;
+    const counterRef = db.collection('_id_counters').doc(counterKey);
+    
+    return db.runTransaction(async transaction => {
+        const doc = await transaction.get(counterRef);
+        
+        let nextSequence = 1;
+        if (doc.exists) {
+            const data = doc.data();
+            nextSequence = (data.current || 0) + 1;
+            transaction.update(counterRef, {
+                current: nextSequence,
+                lastUpdated: admin.firestore.FieldValue.serverTimestamp()
+            });
+        } else {
+            // First time for this type+year combo
+            transaction.set(counterRef, {
+                type: type.toUpperCase(),
+                year: year,
+                current: 1,
+                created: admin.firestore.FieldValue.serverTimestamp(),
+                lastUpdated: admin.firestore.FieldValue.serverTimestamp()
+            });
+        }
+        
+        // Format: TYPE-YEAR-SEQUENCE (padded to 6 digits)
+        const paddedSequence = String(nextSequence).padStart(6, '0');
+        return `${type.toUpperCase()}-${year}-${paddedSequence}`;
+    });
 }
 
 // ============================================================================
@@ -827,8 +864,8 @@ exports.generatePropertyQR = functions.https.onCall(async (data, context) => {
             };
         }
         
-        // Generate unique Assiduous ID for property
-        const assiduousId = 'PROP-' + generateUniqueCode(8);
+        // Generate sequential Assiduous ID for property using ID Generator
+        const assiduousId = await generateSequentialId('PROP');
         
         // Create property detail URL
         const propertyUrl = `https://assiduous-prod.web.app/property-detail.html?id=${propertyId}`;
