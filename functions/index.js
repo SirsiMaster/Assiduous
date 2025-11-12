@@ -374,3 +374,388 @@ exports.getAgentProperties = functions.https.onCall(async (data, context) => {
         throw new functions.https.HttpsError('internal', error.message);
     }
 });
+
+// ============================================================================
+// QR CODE & INVITATION SYSTEM
+// ============================================================================
+
+/**
+ * Generate unique referral code and QR code URL for user
+ * Triggered when user profile is created or when manually requested
+ */
+exports.generateReferralCode = functions.https.onCall(async (data, context) => {
+    if (!context.auth) {
+        throw new functions.https.HttpsError('unauthenticated', 'User must be authenticated');
+    }
+
+    try {
+        const userId = context.auth.uid;
+        const userRef = db.collection('users').doc(userId);
+        const userDoc = await userRef.get();
+
+        if (!userDoc.exists) {
+            throw new functions.https.HttpsError('not-found', 'User not found');
+        }
+
+        const userData = userDoc.data();
+        
+        // Generate unique referral code (8 char alphanumeric)
+        const referralCode = generateUniqueCode(8);
+        
+        // QR code URL using QR Server API (free, no API key needed)
+        const baseUrl = 'https://assiduous-prod.web.app';
+        const signupUrl = `${baseUrl}/signup.html?ref=${referralCode}`;
+        const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(signupUrl)}`;
+        
+        // Update user profile with referral code and QR code URL
+        await userRef.update({
+            referralCode: referralCode,
+            qrCodeUrl: qrCodeUrl,
+            referralSignupUrl: signupUrl,
+            updatedAt: admin.firestore.FieldValue.serverTimestamp()
+        });
+
+        console.log(`✅ Generated referral code for user ${userId}: ${referralCode}`);
+        
+        return { 
+            success: true, 
+            referralCode, 
+            qrCodeUrl,
+            signupUrl 
+        };
+        
+    } catch (error) {
+        console.error('❌ Error generating referral code:', error);
+        throw new functions.https.HttpsError('internal', error.message);
+    }
+});
+
+/**
+ * Send client invitation via email
+ * Creates temp user account and sends invitation with QR code
+ */
+exports.sendClientInvitation = functions.https.onCall(async (data, context) => {
+    if (!context.auth) {
+        throw new functions.https.HttpsError('unauthenticated', 'User must be authenticated');
+    }
+
+    const { clientEmail, clientName, personalMessage } = data;
+
+    if (!clientEmail || !clientName) {
+        throw new functions.https.HttpsError('invalid-argument', 'clientEmail and clientName are required');
+    }
+
+    try {
+        const agentId = context.auth.uid;
+        const agentDoc = await db.collection('users').doc(agentId).get();
+        
+        if (!agentDoc.exists) {
+            throw new functions.https.HttpsError('not-found', 'Agent not found');
+        }
+
+        const agentData = agentDoc.data();
+        const agentName = agentData.displayName || agentData.email;
+        const agentReferralCode = agentData.referralCode;
+
+        if (!agentReferralCode) {
+            throw new functions.https.HttpsError('failed-precondition', 'Agent must have referral code. Call generateReferralCode first.');
+        }
+
+        // Create temporary client record
+        const tempToken = generateUniqueCode(16);
+        const invitationData = {
+            email: clientEmail,
+            name: clientName,
+            agentId: agentId,
+            agentName: agentName,
+            agentReferralCode: agentReferralCode,
+            tempToken: tempToken,
+            status: 'invited',
+            invitedAt: admin.firestore.FieldValue.serverTimestamp(),
+            expiresAt: admin.firestore.Timestamp.fromDate(new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)) // 7 days
+        };
+
+        await db.collection('client_invitations').add(invitationData);
+
+        // Send email via SendGrid
+        const sgMail = require('@sendgrid/mail');
+        const sendGridApiKey = functions.config().sendgrid?.key;
+        
+        if (!sendGridApiKey) {
+            console.warn('⚠️ SendGrid API key not configured. Email not sent.');
+            return { success: true, emailSent: false, tempToken };
+        }
+
+        sgMail.setApiKey(sendGridApiKey);
+
+        const signupUrl = `https://assiduous-prod.web.app/signup.html?token=${tempToken}`;
+        const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(signupUrl)}`;
+
+        const emailHtml = `
+            <h2>Welcome to Assiduous Real Estate</h2>
+            <p>Hi ${clientName},</p>
+            <p>${agentName} has invited you to join Assiduous.</p>
+            ${personalMessage ? `<p><em>${personalMessage}</em></p>` : ''}
+            <p>Click the link below to complete your registration:</p>
+            <p><a href="${signupUrl}" style="background:#2563eb;color:white;padding:12px 24px;text-decoration:none;border-radius:6px;display:inline-block;">Complete Registration</a></p>
+            <p>Or scan this QR code:</p>
+            <img src="${qrCodeUrl}" alt="Registration QR Code" style="max-width:200px;" />
+            <p style="color:#666;font-size:12px;margin-top:24px;">This invitation expires in 7 days.</p>
+        `;
+
+        const msg = {
+            to: clientEmail,
+            from: 'noreply@assiduous.com', // TODO: Configure verified sender
+            subject: `${agentName} invited you to Assiduous`,
+            html: emailHtml
+        };
+
+        await sgMail.send(msg);
+
+        console.log(`✅ Invitation sent to ${clientEmail} from agent ${agentId}`);
+        
+        return { 
+            success: true, 
+            emailSent: true, 
+            tempToken,
+            signupUrl
+        };
+        
+    } catch (error) {
+        console.error('❌ Error sending client invitation:', error);
+        throw new functions.https.HttpsError('internal', error.message);
+    }
+});
+
+/**
+ * Process QR code signup
+ * Links new user to agent via referral code
+ */
+exports.processQRSignup = functions.https.onCall(async (data, context) => {
+    if (!context.auth) {
+        throw new functions.https.HttpsError('unauthenticated', 'User must be authenticated');
+    }
+
+    const { referralCode } = data;
+
+    if (!referralCode) {
+        throw new functions.https.HttpsError('invalid-argument', 'referralCode is required');
+    }
+
+    try {
+        const userId = context.auth.uid;
+        
+        // Find agent with this referral code
+        const agentQuery = await db.collection('users')
+            .where('referralCode', '==', referralCode)
+            .limit(1)
+            .get();
+
+        if (agentQuery.empty) {
+            throw new functions.https.HttpsError('not-found', 'Invalid referral code');
+        }
+
+        const agentDoc = agentQuery.docs[0];
+        const agentId = agentDoc.id;
+        const agentData = agentDoc.data();
+
+        // Update user with affinity
+        await db.collection('users').doc(userId).update({
+            affiliatedAgentId: agentId,
+            affiliatedAgentName: agentData.displayName || agentData.email,
+            referralSource: 'qr_code',
+            referralCode: referralCode,
+            updatedAt: admin.firestore.FieldValue.serverTimestamp()
+        });
+
+        // Track referral
+        await db.collection('referrals').add({
+            agentId: agentId,
+            clientId: userId,
+            referralCode: referralCode,
+            source: 'qr_code',
+            createdAt: admin.firestore.FieldValue.serverTimestamp()
+        });
+
+        console.log(`✅ QR signup processed: User ${userId} linked to agent ${agentId}`);
+        
+        return { 
+            success: true, 
+            agentId,
+            agentName: agentData.displayName || agentData.email
+        };
+        
+    } catch (error) {
+        console.error('❌ Error processing QR signup:', error);
+        throw new functions.https.HttpsError('internal', error.message);
+    }
+});
+
+/**
+ * Activate temp account from invitation token
+ * Converts invitation to full user account with affinity
+ */
+exports.activateTempAccount = functions.https.onCall(async (data, context) => {
+    if (!context.auth) {
+        throw new functions.https.HttpsError('unauthenticated', 'User must be authenticated');
+    }
+
+    const { tempToken } = data;
+
+    if (!tempToken) {
+        throw new functions.https.HttpsError('invalid-argument', 'tempToken is required');
+    }
+
+    try {
+        const userId = context.auth.uid;
+        
+        // Find invitation
+        const invitationQuery = await db.collection('client_invitations')
+            .where('tempToken', '==', tempToken)
+            .where('status', '==', 'invited')
+            .limit(1)
+            .get();
+
+        if (invitationQuery.empty) {
+            throw new functions.https.HttpsError('not-found', 'Invalid or expired invitation token');
+        }
+
+        const invitationDoc = invitationQuery.docs[0];
+        const invitationData = invitationDoc.data();
+
+        // Check expiration
+        if (invitationData.expiresAt.toDate() < new Date()) {
+            await invitationDoc.ref.update({ status: 'expired' });
+            throw new functions.https.HttpsError('failed-precondition', 'Invitation has expired');
+        }
+
+        // Update user with affinity
+        await db.collection('users').doc(userId).update({
+            affiliatedAgentId: invitationData.agentId,
+            affiliatedAgentName: invitationData.agentName,
+            referralSource: 'email_invitation',
+            referralCode: invitationData.agentReferralCode,
+            updatedAt: admin.firestore.FieldValue.serverTimestamp()
+        });
+
+        // Mark invitation as accepted
+        await invitationDoc.ref.update({
+            status: 'accepted',
+            activatedAt: admin.firestore.FieldValue.serverTimestamp(),
+            clientId: userId
+        });
+
+        // Track referral
+        await db.collection('referrals').add({
+            agentId: invitationData.agentId,
+            clientId: userId,
+            referralCode: invitationData.agentReferralCode,
+            source: 'email_invitation',
+            invitationId: invitationDoc.id,
+            createdAt: admin.firestore.FieldValue.serverTimestamp()
+        });
+
+        console.log(`✅ Temp account activated: User ${userId} linked to agent ${invitationData.agentId}`);
+        
+        return { 
+            success: true, 
+            agentId: invitationData.agentId,
+            agentName: invitationData.agentName
+        };
+        
+    } catch (error) {
+        console.error('❌ Error activating temp account:', error);
+        throw new functions.https.HttpsError('internal', error.message);
+    }
+});
+
+/**
+ * Share QR code via email or SMS
+ * Agent shares their referral QR with clients
+ */
+exports.shareQRCode = functions.https.onCall(async (data, context) => {
+    if (!context.auth) {
+        throw new functions.https.HttpsError('unauthenticated', 'User must be authenticated');
+    }
+
+    const { recipientEmail, recipientPhone, method } = data;
+
+    if (!recipientEmail && !recipientPhone) {
+        throw new functions.https.HttpsError('invalid-argument', 'recipientEmail or recipientPhone is required');
+    }
+
+    try {
+        const agentId = context.auth.uid;
+        const agentDoc = await db.collection('users').doc(agentId).get();
+        
+        if (!agentDoc.exists) {
+            throw new functions.https.HttpsError('not-found', 'Agent not found');
+        }
+
+        const agentData = agentDoc.data();
+        const agentName = agentData.displayName || agentData.email;
+        const qrCodeUrl = agentData.qrCodeUrl;
+        const signupUrl = agentData.referralSignupUrl;
+
+        if (!qrCodeUrl || !signupUrl) {
+            throw new functions.https.HttpsError('failed-precondition', 'Agent must have QR code. Call generateReferralCode first.');
+        }
+
+        if (method === 'email' && recipientEmail) {
+            const sgMail = require('@sendgrid/mail');
+            const sendGridApiKey = functions.config().sendgrid?.key;
+            
+            if (!sendGridApiKey) {
+                console.warn('⚠️ SendGrid API key not configured. Email not sent.');
+                return { success: true, sent: false };
+            }
+
+            sgMail.setApiKey(sendGridApiKey);
+
+            const emailHtml = `
+                <h2>Join ${agentName} on Assiduous</h2>
+                <p>Scan this QR code to get started:</p>
+                <img src="${qrCodeUrl}" alt="QR Code" style="max-width:250px;" />
+                <p>Or click here: <a href="${signupUrl}">${signupUrl}</a></p>
+            `;
+
+            const msg = {
+                to: recipientEmail,
+                from: 'noreply@assiduous.com',
+                subject: `Connect with ${agentName} on Assiduous`,
+                html: emailHtml
+            };
+
+            await sgMail.send(msg);
+            
+            console.log(`✅ QR code shared via email to ${recipientEmail} by agent ${agentId}`);
+        }
+
+        // TODO: Implement SMS via Twilio if needed
+        if (method === 'sms' && recipientPhone) {
+            console.log(`⚠️ SMS not yet implemented. Would send to: ${recipientPhone}`);
+        }
+        
+        return { success: true, sent: true };
+        
+    } catch (error) {
+        console.error('❌ Error sharing QR code:', error);
+        throw new functions.https.HttpsError('internal', error.message);
+    }
+});
+
+// ============================================================================
+// UTILITY FUNCTIONS
+// ============================================================================
+
+/**
+ * Generate unique alphanumeric code
+ */
+function generateUniqueCode(length) {
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // Removed ambiguous chars
+    let code = '';
+    for (let i = 0; i < length; i++) {
+        code += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return code;
+}

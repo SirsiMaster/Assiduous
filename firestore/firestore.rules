@@ -428,6 +428,30 @@ service cloud.firestore {
     }
     
     // ============================================================================
+    // REFERRAL & INVITATION SYSTEM
+    // ============================================================================
+    
+    match /referrals/{referralId} {
+      // Read: Agents can read their own referrals, admins can read all
+      allow read: if (isAgent() && resource.data.agentId == getUserId()) ||
+                     isAdmin();
+      
+      // Create/Update/Delete: Server-only (Cloud Functions)
+      allow create, update, delete: if false;
+    }
+    
+    match /client_invitations/{invitationId} {
+      // Read: Agents can read their own invitations, admins can read all
+      //       Clients can read invitations where they are the recipient
+      allow read: if (isAgent() && resource.data.agentId == getUserId()) ||
+                     (isAuthenticated() && resource.data.email == request.auth.token.email) ||
+                     isAdmin();
+      
+      // Create/Update/Delete: Server-only (Cloud Functions)
+      allow create, update, delete: if false;
+    }
+    
+    // ============================================================================
     // ADMIN-ONLY COLLECTIONS
     // ============================================================================
     

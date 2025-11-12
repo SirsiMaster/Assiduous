@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My QR Code - Assiduous</title>
+    <link rel="stylesheet" href="../assiduous.css">
+    <link rel="stylesheet" href="../components/admin-layout.css">
+    <style>
+        .qr-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+        
+        .qr-card {
+            background: white;
+            border-radius: 12px;
+            padding: 32px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .qr-code-display {
+            margin: 24px 0;
+            padding: 24px;
+            background: #f9fafb;
+            border-radius: 8px;
+            display: inline-block;
+        }
+        
+        .qr-code-display img {
+            max-width: 300px;
+            height: auto;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+        }
+        
+        .referral-code-box {
+            background: #f0f9ff;
+            border: 2px dashed #3b82f6;
+            border-radius: 8px;
+            padding: 16px;
+            margin: 24px 0;
+            font-family: monospace;
+            font-size: 24px;
+            font-weight: bold;
+            color: #1e40af;
+            letter-spacing: 2px;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 24px;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border-radius: 8px;
+            border: none;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-primary {
+            background: #2563eb;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #1d4ed8;
+        }
+        
+        .btn-secondary {
+            background: #f3f4f6;
+            color: #374151;
+        }
+        
+        .btn-secondary:hover {
+            background: #e5e7eb;
+        }
+        
+        .info-text {
+            color: #6b7280;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-top: 16px;
+        }
+        
+        .loading-state {
+            text-align: center;
+            padding: 48px;
+            color: #6b7280;
+        }
+        
+        .error-state {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            border-radius: 8px;
+            padding: 16px;
+            color: #991b1b;
+            text-align: center;
+        }
+        
+        .success-toast {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            background: #10b981;
+            color: white;
+            padding: 16px 24px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            display: none;
+            z-index: 1000;
+        }
+        
+        .share-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .share-modal-content {
+            background: white;
+            border-radius: 12px;
+            padding: 32px;
+            max-width: 500px;
+            width: 90%;
+        }
+        
+        .form-group {
+            margin-bottom: 16px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #374151;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body class="admin-wrapper" data-active="qr-code">
+    <!-- UCS Sidebar -->
+    <aside class="sidebar" data-component="sidebar"></aside>
+    
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- UCS Header -->
+        <header data-component="header"></header>
+        
+        <!-- Page Content -->
+        <div class="dashboard-content">
+            <div class="qr-container">
+                <h1>My QR Code</h1>
+                <p style="color: #6b7280; margin-bottom: 24px;">
+                    Share this QR code with clients to onboard them instantly
+                </p>
+                
+                <div id="loadingState" class="loading-state">
+                    <p>Loading your QR code...</p>
+                </div>
+                
+                <div id="errorState" class="error-state" style="display: none;">
+                    <p id="errorMessage"></p>
+                    <button class="btn btn-primary" onclick="generateQRCode()" style="margin-top: 16px;">
+                        Generate QR Code
+                    </button>
+                </div>
+                
+                <div id="qrDisplay" class="qr-card" style="display: none;">
+                    <h2>Your Referral Code</h2>
+                    <div class="referral-code-box" id="referralCodeDisplay">
+                        LOADING...
+                    </div>
+                    
+                    <div class="qr-code-display">
+                        <img id="qrCodeImage" src="" alt="Your QR Code">
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button class="btn btn-primary" onclick="downloadQRCode()">
+                            📥 Download QR Code
+                        </button>
+                        <button class="btn btn-secondary" onclick="copySignupLink()">
+                            🔗 Copy Link
+                        </button>
+                        <button class="btn btn-secondary" onclick="openShareModal()">
+                            📧 Share via Email
+                        </button>
+                    </div>
+                    
+                    <p class="info-text">
+                        When clients scan this QR code or use your referral link, they'll be automatically connected to you.
+                        You can track all referrals in your dashboard.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Success Toast -->
+    <div id="successToast" class="success-toast">
+        Copied to clipboard!
+    </div>
+    
+    <!-- Share Modal -->
+    <div id="shareModal" class="share-modal">
+        <div class="share-modal-content">
+            <h2>Share QR Code via Email</h2>
+            <form id="shareForm" onsubmit="handleShareEmail(event)">
+                <div class="form-group">
+                    <label for="recipientEmail">Recipient Email</label>
+                    <input type="email" id="recipientEmail" required placeholder="client@example.com">
+                </div>
+                <div class="action-buttons" style="justify-content: flex-end;">
+                    <button type="button" class="btn btn-secondary" onclick="closeShareModal()">
+                        Cancel
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        Send Email
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Firebase & UCS -->
+    <script src="../assets/js/firebase-init.js"></script>
+    <script src="../components/ucs-core.js"></script>
+    <script src="../components/component-registry.js"></script>
+    
+    <script>
+        let currentUser = null;
+        let referralData = null;
+        let authReady = false;
+        
+        // Async auth initialization
+        async function initAuth() {
+            try {
+                firebase.auth().onAuthStateChanged(async (user) => {
+                    if (user) {
+                        currentUser = user;
+                        authReady = true;
+                        await loadQRCode();
+                    } else {
+                        window.location.href = '/#login';
+                    }
+                });
+            } catch (error) {
+                console.error('Auth error:', error);
+                setTimeout(initAuth, 100);
+            }
+        }
+        
+        async function loadQRCode() {
+            try {
+                const userDoc = await firebase.firestore()
+                    .collection('users')
+                    .doc(currentUser.uid)
+                    .get();
+                
+                if (!userDoc.exists) {
+                    throw new Error('User profile not found');
+                }
+                
+                const userData = userDoc.data();
+                
+                // Check if user has QR code
+                if (userData.referralCode && userData.qrCodeUrl) {
+                    displayQRCode({
+                        referralCode: userData.referralCode,
+                        qrCodeUrl: userData.qrCodeUrl,
+                        signupUrl: userData.referralSignupUrl
+                    });
+                } else {
+                    // Generate QR code
+                    await generateQRCode();
+                }
+            } catch (error) {
+                console.error('Error loading QR code:', error);
+                showError('Failed to load QR code. Please try again.');
+            }
+        }
+        
+        async function generateQRCode() {
+            try {
+                document.getElementById('loadingState').style.display = 'block';
+                document.getElementById('errorState').style.display = 'none';
+                document.getElementById('qrDisplay').style.display = 'none';
+                
+                const generateFunc = firebase.functions().httpsCallable('generateReferralCode');
+                const result = await generateFunc();
+                
+                if (result.data.success) {
+                    displayQRCode(result.data);
+                } else {
+                    throw new Error('Failed to generate QR code');
+                }
+            } catch (error) {
+                console.error('Error generating QR code:', error);
+                showError('Failed to generate QR code: ' + error.message);
+            }
+        }
+        
+        function displayQRCode(data) {
+            referralData = data;
+            
+            document.getElementById('loadingState').style.display = 'none';
+            document.getElementById('errorState').style.display = 'none';
+            document.getElementById('qrDisplay').style.display = 'block';
+            
+            document.getElementById('referralCodeDisplay').textContent = data.referralCode;
+            document.getElementById('qrCodeImage').src = data.qrCodeUrl;
+        }
+        
+        function showError(message) {
+            document.getElementById('loadingState').style.display = 'none';
+            document.getElementById('errorState').style.display = 'block';
+            document.getElementById('errorMessage').textContent = message;
+        }
+        
+        async function downloadQRCode() {
+            if (!referralData) return;
+            
+            try {
+                const response = await fetch(referralData.qrCodeUrl);
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `assiduous-qr-${referralData.referralCode}.png`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+                
+                showSuccessToast('QR code downloaded!');
+            } catch (error) {
+                console.error('Download error:', error);
+                alert('Failed to download QR code');
+            }
+        }
+        
+        async function copySignupLink() {
+            if (!referralData) return;
+            
+            try {
+                await navigator.clipboard.writeText(referralData.signupUrl);
+                showSuccessToast('Link copied to clipboard!');
+            } catch (error) {
+                console.error('Copy error:', error);
+                alert('Failed to copy link');
+            }
+        }
+        
+        function openShareModal() {
+            document.getElementById('shareModal').style.display = 'flex';
+        }
+        
+        function closeShareModal() {
+            document.getElementById('shareModal').style.display = 'none';
+            document.getElementById('shareForm').reset();
+        }
+        
+        async function handleShareEmail(event) {
+            event.preventDefault();
+            
+            const recipientEmail = document.getElementById('recipientEmail').value;
+            
+            try {
+                const shareFunc = firebase.functions().httpsCallable('shareQRCode');
+                const result = await shareFunc({
+                    recipientEmail: recipientEmail,
+                    method: 'email'
+                });
+                
+                if (result.data.success) {
+                    showSuccessToast('Email sent successfully!');
+                    closeShareModal();
+                } else {
+                    alert('Failed to send email');
+                }
+            } catch (error) {
+                console.error('Share error:', error);
+                alert('Failed to send email: ' + error.message);
+            }
+        }
+        
+        function showSuccessToast(message) {
+            const toast = document.getElementById('successToast');
+            toast.textContent = message;
+            toast.style.display = 'block';
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, 3000);
+        }
+        
+        // Initialize
+        initAuth();
+    </script>
+</body>
+</html>
