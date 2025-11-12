@@ -1,12 +1,464 @@
 # ARCHITECTURE DESIGN
-**Version:** 2.1.0-canonical
-**Last Updated:** 2025-11-04
+**Version:** 2.2.0-canonical
+**Last Updated:** 2025-11-12
 **Status:** Canonical Document (1 of 19)
 **Consolidation Date:** November 2, 2025
+
+**Recent Updates:**
+- November 12, 2025: Added ID Generator System and QR Code Architecture
+- November 4, 2025: Added Universal Component System (UCS) as architectural layer
 
 ---
 
 ## System Architecture and Design Patterns
+
+---
+
+# Universal ID Generator System
+**Added:** October 12, 2025 (Commit: 6a434a0a)  
+**Status:** Production-Ready - In Use Across All Collections
+**Location:** `/public/assets/js/services/id-generator.js`
+
+## Overview
+
+The ID Generator Service provides a **universal, atomic, sequential ID system** for all objects in Assiduous.
+
+## ID Format
+
+**Pattern**: `TYPE-YEAR-SEQUENCE`  
+**Example**: `ACCT-2024-001234`
+
+### Components
+- **TYPE**: 2-6 letter prefix identifying object type
+- **YEAR**: 4-digit current year (resets annually)
+- **SEQUENCE**: 6-digit zero-padded sequential number
+
+## Supported Types
+
+| Type | Prefix | Example | Description |
+|------|--------|---------|-------------|
+| Account | `ACCT` | `ACCT-2024-001234` | User accounts |
+| Property | `PROP` | `PROP-2024-005678` | Real estate properties |
+| Transaction | `TRAN` | `TRAN-2024-000912` | Financial transactions |
+| Message | `MSG` | `MSG-2024-003456` | System messages |
+| Notification | `NOTIF` | `NOTIF-2024-007890` | User notifications |
+
+## Architecture
+
+### Firestore Counter Collection
+
+**Collection**: `_id_counters`  
+**Document Format**: `{TYPE}_{YEAR}`  
+**Example**: `PROP_2024`
+
+```javascript
+{
+  type: "PROP",
+  year: 2024,
+  current: 5678,
+  created: Timestamp,
+  lastUpdated: Timestamp
+}
+```
+
+### Atomic Increment
+
+Uses **Firestore transactions** to ensure atomic increments:
+
+```javascript
+const sequence = await db.runTransaction(async transaction => {
+  const doc = await transaction.get(counterDoc);
+  const nextSequence = (doc.data()?.current || 0) + 1;
+  transaction.update(counterDoc, { current: nextSequence });
+  return nextSequence;
+});
+```
+
+## Usage
+
+### Client-Side
+
+```javascript
+// Initialize (auto-initialized on firebase-ready event)
+import { idGenerator } from './assets/js/services/id-generator.js';
+
+// Generate IDs
+const accountId = await idGenerator.generateAccountId();
+// Returns: "ACCT-2024-001234"
+
+const propertyId = await idGenerator.generatePropertyId();
+// Returns: "PROP-2024-005678"
+
+// Custom type
+const customId = await idGenerator.generateId('CUSTOM');
+// Returns: "CUSTOM-2024-000001"
+
+// Parse ID
+const parsed = idGenerator.parseId('PROP-2024-005678');
+// Returns: { type: 'PROP', year: 2024, sequence: 5678, original: 'PROP-2024-005678' }
+
+// Validate ID
+const isValid = idGenerator.isValidId('PROP-2024-005678');
+// Returns: true
+```
+
+### Server-Side (Cloud Functions)
+
+```javascript
+const admin = require('firebase-admin');
+const db = admin.firestore();
+
+function generateId(type) {
+  const year = new Date().getFullYear();
+  const counterKey = `${type}_${year}`;
+  const counterRef = db.collection('_id_counters').doc(counterKey);
+  
+  return db.runTransaction(async transaction => {
+    const doc = await transaction.get(counterRef);
+    const nextSequence = (doc.data()?.current || 0) + 1;
+    transaction.set(counterRef, { 
+      type, year, current: nextSequence, 
+      lastUpdated: admin.firestore.FieldValue.serverTimestamp() 
+    }, { merge: true });
+    return `${type}-${year}-${String(nextSequence).padStart(6, '0')}`;
+  });
+}
+```
+
+## Benefits
+
+1. **Human-Readable**: Easy to communicate over phone/email
+2. **Sequential**: Track creation order and volume
+3. **Year-Based**: Automatic annual reset for reporting
+4. **Type-Safe**: Prefix identifies object type instantly
+5. **Atomic**: No duplicate IDs possible
+6. **Searchable**: Easy to query by year or type
+7. **Professional**: Better than random UUIDs for customer-facing systems
+
+## Integration Points
+
+### Existing Integrations
+- ✅ Property creation (seeding scripts)
+- ✅ Transaction generation
+- ✅ Account management
+
+### Future Integrations
+- ⏳ QR code system (currently using random IDs)
+- ⏳ Document management
+- ⏳ Contract generation
+- ⏳ Invoice numbering
+
+---
+
+# QR Code System Architecture
+**Added:** November 12, 2025 (Commit: 7bd76bcf, b84ae6fd, dcc2f02d, 69f6542b)  
+**Status:** Production-Ready - Fully Deployed
+**Location:** `/functions/index.js` (Cloud Functions), `/public/components/property-qr-widget.html`
+
+## Overview
+
+Comprehensive QR code generation, sharing, and tracking system for properties and user profiles.
+
+## Architecture Components
+
+### 1. Cloud Functions (Backend)
+
+#### `generatePropertyQR`
+**Purpose**: Generate unique property QR codes  
+**Trigger**: HTTPS Callable  
+**Auth**: Required
+
+```javascript
+// Input
+{ propertyId: string, regenerate?: boolean }
+
+// Output
+{
+  success: true,
+  assiduousId: "PROP-A3K9HZ2L", // Random 8-char ID
+  qrCodeUrl: "https://api.qrserver.com/v1/create-qr-code/?data=...",
+  propertyUrl: "https://assiduous-prod.web.app/property-detail.html?id=abc123",
+  regenerated: boolean
+}
+```
+
+**Firestore Updates**:
+```javascript
+properties/{propertyId} {
+  assiduousId: "PROP-A3K9HZ2L",
+  qrCodeUrl: "https://...",
+  propertyUrl: "https://...",
+  qrGeneratedAt: Timestamp,
+  qrGeneratedBy: userId
+}
+```
+
+#### `sharePropertyQR`
+**Purpose**: Share property via email/SMS with tracking  
+**Trigger**: HTTPS Callable  
+**Auth**: Required
+
+```javascript
+// Input
+{
+  propertyId: string,
+  recipientEmail?: string,
+  recipientPhone?: string,
+  method: "email" | "sms",
+  personalMessage?: string
+}
+
+// Creates tracking document
+property_shares/{shareId} {
+  propertyId: string,
+  assiduousId: string,
+  sharedBy: userId,
+  sharerName: string,
+  method: "email" | "sms",
+  recipientEmail?: string,
+  recipientPhone?: string,
+  sharedAt: Timestamp,
+  viewed: false,
+  viewedAt: null,
+  viewerId: null
+}
+```
+
+#### `trackPropertyView`
+**Purpose**: Record property views from shared links  
+**Trigger**: HTTPS Callable  
+**Auth**: Optional (works for anonymous viewers)
+
+```javascript
+// Input
+{
+  propertyId: string,
+  sharedBy?: string // From URL parameter
+}
+
+// Updates share tracking
+property_shares/{shareId} {
+  viewed: true,
+  viewedAt: Timestamp,
+  viewerId: userId
+}
+
+// Creates view record
+properties/{propertyId}/views/{viewId} {
+  viewedAt: Timestamp,
+  viewerId: userId,
+  sharedBy: userId,
+  attribution: "email" | "sms" | "direct"
+}
+```
+
+#### `generateUserQR`
+**Purpose**: Generate profile QR codes for users  
+**Trigger**: HTTPS Callable  
+**Auth**: Required
+
+```javascript
+// Input
+{ regenerate?: boolean }
+
+// Output
+{
+  success: true,
+  qrCodeUrl: "https://api.qrserver.com/v1/create-qr-code/?data=...",
+  profileUrl: "https://assiduous-prod.web.app/profile?uid=xyz",
+  regenerated: boolean
+}
+
+// Updates user document
+users/{userId} {
+  profileQRCode: "https://...",
+  profileUrl: "https://...",
+  profileQRGeneratedAt: Timestamp
+}
+```
+
+### 2. Frontend Components
+
+#### Property QR Widget (`property-qr-widget.html`)
+**Usage**: Embedded in all property detail pages  
+**Features**:
+- Display Assiduous ID and QR code
+- Download QR as PNG
+- Copy property link
+- Share via email/SMS modal
+- Regenerate QR code
+- Auto-scroll on #qr hash
+
+**Integration**:
+```html
+<!-- Property Detail Page -->
+<div id="propertyQRContainer"></div>
+
+<script>
+  fetch('../components/property-qr-widget.html')
+    .then(response => response.text())
+    .then(html => {
+      document.getElementById('propertyQRContainer').innerHTML = html;
+    });
+    
+  // After property loads
+  if (typeof initPropertyQR === 'function') {
+    initPropertyQR(propertyId);
+  }
+</script>
+```
+
+#### User QR Page (`client/my-qr.html`)
+**Purpose**: Dedicated page for personal QR codes  
+**Features**:
+- View personal QR code
+- Download for business cards
+- Share via social media
+- Regenerate QR code
+- Usage examples
+
+**Navigation**: Added to client sidebar under "My Portal"
+
+#### Quick Access Buttons
+**Location**: Property list cards  
+**Behavior**: Opens property detail page with #qr hash, auto-scrolls to QR section
+
+```html
+<button onclick="event.stopPropagation(); openPropertyQR('{propertyId}')">
+  <!-- QR Icon SVG -->
+</button>
+```
+
+## Data Flow
+
+### Property Sharing Flow
+
+```
+1. Agent opens property detail page
+   ↓
+2. Clicks "Share" button in QR widget
+   ↓
+3. Enters client email/phone + personal message
+   ↓
+4. Cloud Function sharePropertyQR creates tracking doc
+   ↓
+5. SendGrid/Twilio sends email/SMS with tracked link
+   ↓
+6. Client clicks link with ?shared_by={agentId}
+   ↓
+7. Property detail page calls trackPropertyView
+   ↓
+8. View recorded, attribution saved
+```
+
+### Attribution Tracking
+
+**URL Format**: `property-detail.html?id={propertyId}&shared_by={userId}`
+
+**Tracked Data**:
+- Who shared (agent/admin)
+- How shared (email/SMS)
+- When shared
+- Who viewed
+- When viewed
+- Conversion funnel
+
+## Database Schema
+
+### Collections
+
+```
+properties/{propertyId}
+  ├── assiduousId: string ("PROP-XXXXXXXX")
+  ├── qrCodeUrl: string
+  ├── propertyUrl: string
+  ├── qrGeneratedAt: Timestamp
+  ├── qrGeneratedBy: string (userId)
+  └── /views/{viewId}
+      ├── viewedAt: Timestamp
+      ├── viewerId: string
+      ├── sharedBy: string
+      └── attribution: string
+
+property_shares/{shareId}
+  ├── propertyId: string
+  ├── assiduousId: string
+  ├── sharedBy: string (userId)
+  ├── sharerName: string
+  ├── method: "email" | "sms"
+  ├── recipientEmail?: string
+  ├── recipientPhone?: string
+  ├── sharedAt: Timestamp
+  ├── viewed: boolean
+  ├── viewedAt?: Timestamp
+  └── viewerId?: string
+
+users/{userId}
+  ├── profileQRCode: string
+  ├── profileUrl: string
+  └── profileQRGeneratedAt: Timestamp
+```
+
+### Security Rules
+
+```javascript
+// Property shares - users can read their own
+match /property_shares/{shareId} {
+  allow read: if request.auth != null && 
+    (resource.data.sharedBy == request.auth.uid || 
+     request.auth.token.role == 'admin');
+  allow write: if false; // Server-only
+}
+```
+
+## QR Code Generation
+
+**Service**: api.qrserver.com  
+**Format**: PNG  
+**Size**: 
+- Properties: 400x400px
+- User Profiles: 300x300px
+
+**URL Structure**:
+```
+https://api.qrserver.com/v1/create-qr-code/
+  ?size=400x400
+  &data={encoded_url}
+```
+
+## Future Enhancements
+
+### Planned Integrations
+1. **ID Generator Integration**: Replace random `PROP-XXXXXXXX` with sequential `PROP-2024-001234`
+2. **Analytics Dashboard**: View/share metrics per property
+3. **Custom QR Branding**: Add logo to center of QR codes
+4. **Vanity URLs**: Short URLs like `assiduous.io/p/ABC123`
+5. **Admin QR Management**: Bulk generate QR codes
+6. **Agent QR Dashboard**: Track all shared properties
+
+### Integration with ID Generator
+
+**Current**: Random 8-char IDs (`PROP-A3K9HZ2L`)  
+**Planned**: Sequential IDs (`PROP-2024-001234`)
+
+**Migration Path**:
+```javascript
+// In generatePropertyQR function
+// Replace:
+const assiduousId = generatePropertyId(); // Random
+
+// With:
+const idGenerator = require('./id-generator');
+const assiduousId = await idGenerator.generateId('PROP'); // Sequential
+```
+
+**Benefits**:
+- Consistent ID format across system
+- Better tracking and reporting
+- Professional sequential numbering
+- Year-based organization
+
+---
 
 **Document Type:** Architecture Design  
 **Version:** 2.1.0  
