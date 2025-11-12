@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-11-12T00:03:20.370Z",
+  "lastUpdated": "2025-11-12T00:06:23.173Z",
   "summary": {
     "health": "Good",
     "score": 59,
@@ -153,20 +153,20 @@
   },
   "project": {
     "totalHours": "315",
-    "avgHoursPerDay": "8.8",
+    "avgHoursPerDay": "8.5",
     "totalCost": 49257,
     "laborCost": 47250,
     "toolsCost": 2007,
     "monthsElapsed": "3.1",
-    "totalCommits": 954,
+    "totalCommits": 956,
     "totalFiles": 820,
-    "activeDays": 36,
+    "activeDays": 37,
     "totalDays": 94,
     "projectAgeDays": 94,
-    "linesAdded": 9813849,
-    "linesDeleted": 9428365,
-    "netLines": 385484,
-    "velocity": "26.5",
+    "linesAdded": 9813944,
+    "linesDeleted": 9428415,
+    "netLines": 385529,
+    "velocity": "25.8",
     "completionPercentage": 59,
     "actualStartDate": "2025-08-10",
     "architecture": {
@@ -177,21 +177,21 @@
   },
   "today": {
     "date": "2025-11-12",
-    "hours": "5.6",
-    "cost": 842,
-    "commits": 17,
+    "hours": "6.3",
+    "cost": 941,
+    "commits": 19,
     "deployments": 0
   },
   "thisWeek": {
-    "hours": "54.5",
-    "cost": 8168,
-    "commits": 165,
+    "hours": "55.1",
+    "cost": 8267,
+    "commits": 167,
     "days": 7
   },
   "thisMonth": {
-    "hours": "143.6",
-    "cost": 21533,
-    "commits": 435
+    "hours": "144.2",
+    "cost": 21632,
+    "commits": 437
   },
   "quality": {
     "testCoverage": {
@@ -225,7 +225,7 @@
       "critical": 0,
       "total": 0
     },
-    "lastAudit": "2025-11-12T00:02:50.133Z",
+    "lastAudit": "2025-11-12T00:05:52.308Z",
     "dependencies": {
       "total": {
         "prod": 256,
@@ -320,11 +320,11 @@
     "changelog": true,
     "contributing": false,
     "license": false,
-    "lastUpdate": "2025-11-11 23:57:50 +0000"
+    "lastUpdate": "2025-11-12 00:02:38 +0000"
   },
   "productivity": {
     "velocityTrend": "decreasing",
-    "weeklyCommits": 165,
+    "weeklyCommits": 167,
     "contributors": {
       "total": 0,
       "active": 0
@@ -402,6 +402,18 @@
   },
   "recentActivity": [
     {
+      "hash": "11792f950f7cebf0c37c08c995cb7cb6b776687a",
+      "message": "feat: Add referral tracking to signup page",
+      "author": "SirsiMaster",
+      "date": "2025-11-11 19:05:15 -0500"
+    },
+    {
+      "hash": "33d86195e74d81aa318a29791623d9520fd0bc7f",
+      "message": "chore(release): Bump version to 0.120.0 [skip ci]",
+      "author": "github-actions[bot]",
+      "date": "2025-11-12 00:02:38 +0000"
+    },
+    {
       "hash": "4a4b18a83e17698b19b0b5144056745244c05b14",
       "message": "feat: Add QR code referral system with Cloud Functions",
       "author": "SirsiMaster",
@@ -448,22 +460,10 @@
       "message": "chore(release): Bump version to 0.116.5 [skip ci]",
       "author": "github-actions[bot]",
       "date": "2025-11-11 23:38:16 +0000"
-    },
-    {
-      "hash": "d48b7223bcc5c5a98edb8a3de718cbda18a40684",
-      "message": "fix: Add try-catch to auth initialization retry logic",
-      "author": "SirsiMaster",
-      "date": "2025-11-11 18:37:42 -0500"
-    },
-    {
-      "hash": "08b3bbf1c1a0b6f8a5948faba9302c17ecbc3506",
-      "message": "chore(release): Bump version to 0.116.4 [skip ci]",
-      "author": "github-actions[bot]",
-      "date": "2025-11-11 23:34:46 +0000"
     }
   ],
   "automation": {
-    "lastRun": "2025-11-12T00:03:20.370Z",
+    "lastRun": "2025-11-12T00:06:23.173Z",
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",

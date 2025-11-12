@@ -479,7 +479,7 @@ exports.sendClientInvitation = functions.https.onCall(async (data, context) => {
 
         // Send email via SendGrid
         const sgMail = require('@sendgrid/mail');
-        const sendGridApiKey = functions.config().sendgrid?.key;
+        const sendGridApiKey = process.env.SENDGRID_API_KEY;
         
         if (!sendGridApiKey) {
             console.warn('⚠️ SendGrid API key not configured. Email not sent.');
@@ -703,7 +703,7 @@ exports.shareQRCode = functions.https.onCall(async (data, context) => {
 
         if (method === 'email' && recipientEmail) {
             const sgMail = require('@sendgrid/mail');
-            const sendGridApiKey = functions.config().sendgrid?.key;
+            const sendGridApiKey = process.env.SENDGRID_API_KEY;
             
             if (!sendGridApiKey) {
                 console.warn('⚠️ SendGrid API key not configured. Email not sent.');
