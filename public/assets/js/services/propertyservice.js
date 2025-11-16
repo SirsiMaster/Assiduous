@@ -1,28 +1,29 @@
 /**
  * Property Service
- * Handles all property-related API calls to Firebase Cloud Functions
- * NO MOCK DATA - All data from Firestore/MLS/Public Records
+ * Handles all property-related API calls using authenticated Firebase
+ * Uses DatabaseService from firebase-init.js for Firestore access
  */
 
 const API_BASE_URL = 'https://us-central1-assiduous-prod.cloudfunctions.net/api';
 
+// Import DatabaseService from firebase-init.js
+let DatabaseService;
+
 class PropertyService {
   constructor() {
     this.apiUrl = API_BASE_URL;
-    this.db = null;
   }
   
   /**
-   * Lazy-load Firebase database
+   * Initialize DatabaseService on first use
    */
-  getDb() {
-    if (!this.db) {
-      if (!firebase || !firebase.firestore) {
-        throw new Error('Firebase not initialized');
-      }
-      this.db = firebase.firestore();
+  async initDatabaseService() {
+    if (!DatabaseService && window.Firebase?.DatabaseService) {
+      DatabaseService = window.Firebase.DatabaseService;
     }
-    return this.db;
+    if (!DatabaseService) {
+      throw new Error('DatabaseService not initialized. Make sure firebase-init.js is loaded.');
+    }
   }
   
   /**
@@ -191,29 +192,23 @@ class PropertyService {
    */
   async getProperties(filters = {}) {
     try {
-      const queryParams = new URLSearchParams();
-
-      // Add filters to query string
-      Object.entries(filters).forEach(([key, value]) => {
-        if (value !== undefined && value !== null && value !== '') {
-          queryParams.append(key, value);
-        }
-      });
-
-      const url = `${this.apiUrl}/properties${queryParams.toString() ? '?' + queryParams.toString() : ''}`;
-      const response = await fetch(url);
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+      await this.initDatabaseService();
+      
+      // Use authenticated DatabaseService for Firestore access
+      const result = await DatabaseService.getProperties(filters);
+      
+      if (result.success) {
+        return { 
+          properties: result.data || [], 
+          total: result.data?.length || 0, 
+          hasMore: false 
+        };
+      } else {
+        throw new Error(result.error || 'Failed to fetch properties');
       }
-
-      const data = await response.json();
-      return data;
     } catch (error) {
-      console.error('Error fetching from API, trying Firestore REST API:', error);
-      // Fallback: Fetch directly from Firestore REST API
-      // Firestore REST API requires authentication - skip for now
-      console.error('Firestore REST API requires authentication, using graceful fallback');
+      console.error('Error fetching properties from DatabaseService:', error);
+      // Don't try REST API - authentication is required
       return { properties: [], total: 0, hasMore: false };
     }
   }
@@ -226,19 +221,19 @@ class PropertyService {
    */
   async getPropertyById(propertyId) {
     try {
-      const response = await fetch(`${this.apiUrl}/properties/${propertyId}`);
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+      await this.initDatabaseService();
+      
+      // Use authenticated DatabaseService for Firestore access
+      const result = await DatabaseService.getProperty(propertyId);
+      
+      if (result.success) {
+        return result.data;
+      } else {
+        throw new Error(result.error || 'Property not found');
       }
-
-      const data = await response.json();
-      return data.property;
     } catch (error) {
-      console.error('Error fetching from API, trying Firestore REST API:', error);
-      // Fallback: Fetch directly from Firestore REST API
-      // Firestore REST API requires authentication - use secure backend endpoint instead
-      throw new Error('Use authenticated backend endpoint for property retrieval');
+      console.error('Error fetching property:', error);
+      throw error;
     }
   }
 

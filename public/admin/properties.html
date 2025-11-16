@@ -578,6 +578,12 @@
         document.head.appendChild(style);
     </script>
 
+    <!-- Firebase Initialization -->
+    <script type="module">
+      import Firebase from '../assets/js/firebase-init.js';
+      window.Firebase = Firebase;
+    </script>
+
     <!-- Components -->
     <script src="../components/sidebar.js"></script>
     <script src="../components/admin-header.js"></script>
