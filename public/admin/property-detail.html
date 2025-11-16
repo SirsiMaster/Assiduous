@@ -565,14 +565,19 @@
             statusSelect.value = property.status;
             statusSelect.className = `status-select ${property.status}`;
 
-            // Images
-            const mainImage = property.images?.[0]?.url || 'https://via.placeholder.com/800x600?text=No+Image';
+            // Images (filter out external placeholder URLs)
+            const safeImages = (property.images || []).filter(img => {
+                const src = img.url || img.thumbnail || '';
+                return !src.includes('via.placeholder.com');
+            });
+            const fallbackImage = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='600'%3E%3Crect fill='%23e0e0e0' width='800' height='600'/%3E%3Ctext x='50%25' y='50%25' font-size='20' text-anchor='middle' dy='.3em' fill='%23999'%3ENo Image%3C/text%3E%3C/svg%3E`;
+            const mainImage = safeImages[0]?.url || fallbackImage;
             document.getElementById('mainImage').src = mainImage;
             
             const thumbnailGrid = document.getElementById('thumbnailGrid');
-            thumbnailGrid.innerHTML = (property.images || []).map((img, index) => `
-                <img src="${img.thumbnail}" 
-                     alt="${img.caption}" 
+            thumbnailGrid.innerHTML = safeImages.map((img, index) => `
+                <img src="${img.thumbnail || img.url || fallbackImage}" 
+                     alt="${img.caption || 'Property image'}" 
                      class="thumbnail ${index === 0 ? 'active' : ''}"
                      onclick="setMainImage('${img.url}', ${index})">
             `).join('');
