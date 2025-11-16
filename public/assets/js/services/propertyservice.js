@@ -214,11 +214,12 @@ class PropertyService {
       // Fallback: Fetch directly from Firestore REST API
       try {
         const projectId = 'assiduous-prod';
-        let url = `https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/properties`;
+        const apiKey = 'AIzaSyB7kP8z-x5q8vN9wQ0r1sT2uV3wX4yZ5aB';
+        let url = `https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/properties?key=${apiKey}`;
         
         // Add limit parameter
         const limit = filters.limit || 20;
-        url += `?pageSize=${limit}`;
+        url += `&pageSize=${limit}`;
         
         const response = await fetch(url);
         if (!response.ok) {
@@ -286,7 +287,8 @@ class PropertyService {
       // Fallback: Fetch directly from Firestore REST API
       try {
         const projectId = 'assiduous-prod';
-        const url = `https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/properties/${propertyId}`;
+        const apiKey = 'AIzaSyB7kP8z-x5q8vN9wQ0r1sT2uV3wX4yZ5aB';
+        const url = `https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/properties/${propertyId}?key=${apiKey}`;
         
         const response = await fetch(url);
         if (!response.ok) {
