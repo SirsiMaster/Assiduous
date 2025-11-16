@@ -65,13 +65,13 @@ const firebaseConfig = isStaging ? {
   messagingSenderId: '853661742177',
   appId: '1:853661742177:web:cf93349a7f50a2d9f2e620'
 } : {
-  apiKey: 'AIzaSyCnQajchoBwP_VMEvc9mKH-vO0xlZjGCRE',
+  // Use the same production web app config that has historically powered analytics
+  apiKey: 'AIzaSyCY6OjxgMHPF0omVVqO1eCTTJRux2x23gE',
   authDomain: 'assiduous-prod.firebaseapp.com',
   projectId: 'assiduous-prod',
-  storageBucket: 'assiduous-prod.firebasestorage.app',
-  messagingSenderId: '9355377564',
-  appId: '1:9355377564:web:84bd6fa0e7c8a2e7c3f56b',
-  databaseURL: 'https://assiduous-prod-default-rtdb.firebaseio.com',
+  storageBucket: 'assiduous-prod.appspot.com',
+  messagingSenderId: '1039432328034',
+  appId: '1:1039432328034:web:f6e8c8b8c8c8c8c8c8c8c8'
 };
 
 // Initialize Firebase
@@ -94,23 +94,15 @@ if (typeof window !== 'undefined' && !window.location.hostname.includes('localho
 }
 
 // Enable offline persistence with the simpler API
-// Suppress deprecation warning - will use FirestoreSettings.cache in future
-const originalWarn = console.warn;
-const originalError = console.error;
-try {
-  console.warn = () => {};
-  console.error = () => {};
-  enableIndexedDbPersistence(db).catch(err => {
-    if (err.code === 'failed-precondition') {
-      // Multiple tabs open - expected
-    } else if (err.code === 'unimplemented') {
-      // Browser doesn't support offline persistence - ok
-    }
-  });
-} finally {
-  console.warn = originalWarn;
-  console.error = originalError;
-}
+// NOTE: This uses the legacy API and will be migrated to FirestoreSettings.cache,
+// but we keep the warnings visible instead of muting console output.
+enableIndexedDbPersistence(db).catch(err => {
+  if (err.code === 'failed-precondition') {
+    console.warn('[Firestore] Persistence not enabled: multiple tabs open');
+  } else if (err.code === 'unimplemented') {
+    console.warn("[Firestore] Persistence not supported in this browser");
+  }
+});
 
 // Set authentication persistence
 setPersistence(auth, browserLocalPersistence).catch(error => {
