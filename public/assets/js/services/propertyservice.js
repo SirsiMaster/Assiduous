@@ -212,57 +212,9 @@ class PropertyService {
     } catch (error) {
       console.error('Error fetching from API, trying Firestore REST API:', error);
       // Fallback: Fetch directly from Firestore REST API
-      try {
-        const projectId = 'assiduous-prod';
-        const apiKey = 'AIzaSyB7kP8z-x5q8vN9wQ0r1sT2uV3wX4yZ5aB';
-        let url = `https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/properties?key=${apiKey}`;
-        
-        // Add limit parameter
-        const limit = filters.limit || 20;
-        url += `&pageSize=${limit}`;
-        
-        const response = await fetch(url);
-        if (!response.ok) {
-          throw new Error(`Firestore REST error: ${response.status}`);
-        }
-        
-        const data = await response.json();
-        const properties = (data.documents || []).map(doc => {
-          const fields = doc.fields || {};
-          return {
-            id: doc.name.split('/').pop(),
-            address: {
-              street: fields.address?.mapValue?.fields?.street?.stringValue || '',
-              city: fields.address?.mapValue?.fields?.city?.stringValue || '',
-              state: fields.address?.mapValue?.fields?.state?.stringValue || '',
-              zip: fields.address?.mapValue?.fields?.zip?.stringValue || ''
-            },
-            price: {
-              list: parseInt(fields.price?.mapValue?.fields?.list?.integerValue || 0),
-              arv: parseInt(fields.price?.mapValue?.fields?.arv?.integerValue || 0),
-              repair: parseInt(fields.price?.mapValue?.fields?.repair?.integerValue || 0)
-            },
-            details: {
-              bedrooms: parseInt(fields.details?.mapValue?.fields?.bedrooms?.integerValue || 0),
-              bathrooms: parseInt(fields.details?.mapValue?.fields?.bathrooms?.integerValue || 0),
-              sqft: parseInt(fields.details?.mapValue?.fields?.sqft?.integerValue || 0),
-              type: fields.details?.mapValue?.fields?.type?.stringValue || 'single_family'
-            },
-            neighborhood: fields.neighborhood?.stringValue || '',
-            status: fields.status?.stringValue || 'available',
-            flipEstimate: fields.flipEstimate?.mapValue?.fields ? {
-              profit: parseInt(fields.flipEstimate?.mapValue?.fields?.profit?.integerValue || 0),
-              roi: parseInt(fields.flipEstimate?.mapValue?.fields?.roi?.integerValue || 0)
-            } : { profit: 0, roi: 0 },
-            images: []
-          };
-        });
-        
-        return { properties, total: properties.length, hasMore: false };
-      } catch (fsError) {
-        console.error('Firestore REST fallback also failed:', fsError);
-        return { properties: [], total: 0, hasMore: false };
-      }
+      // Firestore REST API requires authentication - skip for now
+      console.error('Firestore REST API requires authentication, using graceful fallback');
+      return { properties: [], total: 0, hasMore: false };
     }
   }
 
@@ -285,49 +237,8 @@ class PropertyService {
     } catch (error) {
       console.error('Error fetching from API, trying Firestore REST API:', error);
       // Fallback: Fetch directly from Firestore REST API
-      try {
-        const projectId = 'assiduous-prod';
-        const apiKey = 'AIzaSyB7kP8z-x5q8vN9wQ0r1sT2uV3wX4yZ5aB';
-        const url = `https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/properties/${propertyId}?key=${apiKey}`;
-        
-        const response = await fetch(url);
-        if (!response.ok) {
-          throw new Error(`Property not found`);
-        }
-        
-        const doc = await response.json();
-        const fields = doc.fields || {};
-        return {
-          id: doc.name.split('/').pop(),
-          address: {
-            street: fields.address?.mapValue?.fields?.street?.stringValue || '',
-            city: fields.address?.mapValue?.fields?.city?.stringValue || '',
-            state: fields.address?.mapValue?.fields?.state?.stringValue || '',
-            zip: fields.address?.mapValue?.fields?.zip?.stringValue || ''
-          },
-          price: {
-            list: parseInt(fields.price?.mapValue?.fields?.list?.integerValue || 0),
-            arv: parseInt(fields.price?.mapValue?.fields?.arv?.integerValue || 0),
-            repair: parseInt(fields.price?.mapValue?.fields?.repair?.integerValue || 0)
-          },
-          details: {
-            bedrooms: parseInt(fields.details?.mapValue?.fields?.bedrooms?.integerValue || 0),
-            bathrooms: parseInt(fields.details?.mapValue?.fields?.bathrooms?.integerValue || 0),
-            sqft: parseInt(fields.details?.mapValue?.fields?.sqft?.integerValue || 0),
-            type: fields.details?.mapValue?.fields?.type?.stringValue || 'single_family'
-          },
-          neighborhood: fields.neighborhood?.stringValue || '',
-          status: fields.status?.stringValue || 'available',
-          flipEstimate: fields.flipEstimate?.mapValue?.fields ? {
-            profit: parseInt(fields.flipEstimate?.mapValue?.fields?.profit?.integerValue || 0),
-            roi: parseInt(fields.flipEstimate?.mapValue?.fields?.roi?.integerValue || 0)
-          } : { profit: 0, roi: 0 },
-          images: []
-        };
-      } catch (fsError) {
-        console.error('Firestore REST fallback failed:', fsError);
-        throw fsError;
-      }
+      // Firestore REST API requires authentication - use secure backend endpoint instead
+      throw new Error('Use authenticated backend endpoint for property retrieval');
     }
   }
 
