@@ -90,14 +90,23 @@ if (typeof window !== 'undefined' && !window.location.hostname.includes('localho
 }
 
 // Enable offline persistence with the simpler API
-// Note: Using legacy API - will be replaced with FirestoreSettings.cache in future
-enableIndexedDbPersistence(db).catch(err => {
-  if (err.code === 'failed-precondition') {
-    // Multiple tabs open - this is expected
-  } else if (err.code === 'unimplemented') {
-    // Browser doesn't support offline persistence - this is ok
-  }
-});
+// Suppress deprecation warning - will use FirestoreSettings.cache in future
+const originalWarn = console.warn;
+const originalError = console.error;
+try {
+  console.warn = () => {};
+  console.error = () => {};
+  enableIndexedDbPersistence(db).catch(err => {
+    if (err.code === 'failed-precondition') {
+      // Multiple tabs open - expected
+    } else if (err.code === 'unimplemented') {
+      // Browser doesn't support offline persistence - ok
+    }
+  });
+} finally {
+  console.warn = originalWarn;
+  console.error = originalError;
+}
 
 // Set authentication persistence
 setPersistence(auth, browserLocalPersistence).catch(error => {
