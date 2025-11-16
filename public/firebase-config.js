@@ -22,7 +22,8 @@ const firebaseConfigs = {
         projectId: "assiduous-prod",
         storageBucket: "assiduous-prod.firebasestorage.app",
         messagingSenderId: "9355377564",
-        appId: "1:9355377564:web:84bd6fa0e7c8a2e7c3f56b",
+        appId: "1:9355377564:web:cee09f952eea43976ee659",
+        measurementId: "G-DVBZP21459",
         databaseURL: "https://assiduous-prod-default-rtdb.firebaseio.com"
     }
 };

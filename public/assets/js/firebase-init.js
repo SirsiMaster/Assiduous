@@ -65,14 +65,14 @@ const firebaseConfig = isStaging ? {
   messagingSenderId: '853661742177',
   appId: '1:853661742177:web:cf93349a7f50a2d9f2e620'
 } : {
-  // NEW production app: aligned with firebase-config.js (your intended primary app)
+  // Canonical production web app with GA4 enabled (from firebase apps:sdkconfig)
   apiKey: 'AIzaSyCnQajchoBwP_VMEvc9mKH-vO0xlZjGCRE',
   authDomain: 'assiduous-prod.firebaseapp.com',
   projectId: 'assiduous-prod',
   storageBucket: 'assiduous-prod.firebasestorage.app',
   messagingSenderId: '9355377564',
-  appId: '1:9355377564:web:84bd6fa0e7c8a2e7c3f56b',
-  databaseURL: 'https://assiduous-prod-default-rtdb.firebaseio.com',
+  appId: '1:9355377564:web:cee09f952eea43976ee659',
+  measurementId: 'G-DVBZP21459'
 };
 
 // Initialize Firebase
