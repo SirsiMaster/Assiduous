@@ -55,8 +55,16 @@ import {
   isSupported as analyticsIsSupported,
 } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-analytics.js';
 
-// Firebase configuration
-const firebaseConfig = {
+// Firebase configuration - auto-detect environment
+const isStaging = window.location.hostname.includes('staging');
+const firebaseConfig = isStaging ? {
+  apiKey: 'AIzaSyDnMkQbhC5kYl5O_07zQ2yfYvGjLRq6E0c',
+  authDomain: 'assiduous-staging.firebaseapp.com',
+  projectId: 'assiduous-staging',
+  storageBucket: 'assiduous-staging.firebasestorage.app',
+  messagingSenderId: '853661742177',
+  appId: '1:853661742177:web:cf93349a7f50a2d9f2e620'
+} : {
   apiKey: 'AIzaSyCnQajchoBwP_VMEvc9mKH-vO0xlZjGCRE',
   authDomain: 'assiduous-prod.firebaseapp.com',
   projectId: 'assiduous-prod',
@@ -74,8 +82,16 @@ const functions = getFunctions(app, 'us-central1');
 const storage = getStorage(app);
 let analytics = null;
 
-// Analytics disabled to avoid configuration errors
-// Can be re-enabled when Firebase project is properly configured
+// Initialize analytics if in production and not localhost
+if (typeof window !== 'undefined' && !window.location.hostname.includes('localhost')) {
+  analyticsIsSupported().then((supported) => {
+    if (supported) {
+      analytics = getAnalytics(app);
+    }
+  }).catch((error) => {
+    console.warn('Analytics not available:', error.message);
+  });
+}
 
 // Enable offline persistence with the simpler API
 // Suppress deprecation warning - will use FirestoreSettings.cache in future
