@@ -213,6 +213,11 @@ class PropertyService {
       console.error('Error fetching from API, trying Firestore directly:', error);
       // Fallback: Fetch directly from Firestore
       try {
+        // Check if Firebase is available
+        if (!firebase || !firebase.firestore) {
+          console.warn('Firebase not available, returning empty results');
+          return { properties: [], total: 0, hasMore: false };
+        }
         let query = this.getDb().collection('properties');
         
         // Apply filters
@@ -276,6 +281,10 @@ class PropertyService {
       console.error('Error fetching from API, trying Firestore directly:', error);
       // Fallback: Fetch directly from Firestore
       try {
+        // Check if Firebase is available
+        if (!firebase || !firebase.firestore) {
+          throw new Error('Firebase not available');
+        }
         const doc = await this.getDb().collection('properties').doc(propertyId).get();
         if (!doc.exists) {
           throw new Error('Property not found');
