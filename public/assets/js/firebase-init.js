@@ -74,20 +74,8 @@ const functions = getFunctions(app, 'us-central1');
 const storage = getStorage(app);
 let analytics = null;
 
-// Only initialize analytics if not in localhost
-if (typeof window !== 'undefined' && !window.location.hostname.includes('localhost')) {
-  try {
-    analyticsIsSupported().then((supported) => {
-      if (supported) {
-        analytics = getAnalytics(app);
-      }
-    }).catch(() => {
-      // Analytics initialization failed - not critical
-    });
-  } catch (error) {
-    // Analytics not available - not critical
-  }
-}
+// Analytics disabled to avoid configuration errors
+// Can be re-enabled when Firebase project is properly configured
 
 // Enable offline persistence with the simpler API
 // Suppress deprecation warning - will use FirestoreSettings.cache in future
