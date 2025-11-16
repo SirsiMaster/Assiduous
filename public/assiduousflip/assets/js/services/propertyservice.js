@@ -237,7 +237,8 @@ export class PropertyService {
   async getNeighborhoods() {
     try {
       const response = await this.getProperties({ limit: 1000 });
-      const neighborhoods = [...new Set(response.properties.map(p => p.neighborhood))];
+      if (!response || !response.properties) return [];
+      const neighborhoods = [...new Set(response.properties.map(p => p.neighborhood).filter(Boolean))];
       return neighborhoods.sort();
     } catch (error) {
       console.error('Error fetching neighborhoods:', error);
