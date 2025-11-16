@@ -441,7 +441,7 @@
                 const statusVariant = property.status === 'available' ? 'success' : 
                                     property.status === 'pending' ? 'warning' : 'danger';
                 const statusText = property.status.charAt(0).toUpperCase() + property.status.slice(1);
-                const imageUrl = property.images?.[0]?.url || 'https://via.placeholder.com/400x300?text=No+Image';
+            const imageUrl = property.images?.[0]?.url || `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%23e0e0e0' width='400' height='300'/%3E%3Ctext x='50%25' y='50%25' font-size='16' text-anchor='middle' dy='.3em' fill='%23999'%3ENo Image%3C/text%3E%3C/svg%3E`;
                 
                 return `
                     <div class="property-card sirsi-card sm-card--elevated" onclick="viewProperty('${property.id}')" style="cursor: pointer;">
@@ -586,5 +586,6 @@
 
     <!-- Components -->
     <script src="../components/sidebar.js"></script>
+    <script src="../components/header.js"></script>
 </body>
 </html>

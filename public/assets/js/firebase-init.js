@@ -80,24 +80,22 @@ if (typeof window !== 'undefined' && !window.location.hostname.includes('localho
     analyticsIsSupported().then((supported) => {
       if (supported) {
         analytics = getAnalytics(app);
-        console.log('✅ Firebase Analytics initialized');
-      } else {
-        console.info('ℹ️ Firebase Analytics not supported in this environment');
       }
-    }).catch((error) => {
-      console.info('ℹ️ Firebase Analytics not available:', error.message);
+    }).catch(() => {
+      // Analytics initialization failed - not critical
     });
   } catch (error) {
-    console.info('ℹ️ Firebase Analytics initialization skipped:', error.message);
+    // Analytics not available - not critical
   }
 }
 
 // Enable offline persistence with the simpler API
+// Note: Using legacy API - will be replaced with FirestoreSettings.cache in future
 enableIndexedDbPersistence(db).catch(err => {
   if (err.code === 'failed-precondition') {
-    console.warn('Multiple tabs open, persistence enabled in first tab only');
+    // Multiple tabs open - this is expected
   } else if (err.code === 'unimplemented') {
-    console.warn("Browser doesn't support offline persistence");
+    // Browser doesn't support offline persistence - this is ok
   }
 });
 
