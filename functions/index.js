@@ -507,9 +507,10 @@ exports.sendClientInvitation = functions
             <p style="color:#666;font-size:12px;margin-top:24px;">This invitation expires in 7 days.</p>
         `;
 
+        const fromEmail = process.env.SENDGRID_FROM_EMAIL || 'noreply@assiduous.com';
         const msg = {
             to: clientEmail,
-            from: 'noreply@assiduous.com', // TODO: Configure verified sender
+            from: fromEmail,
             subject: `${agentName} invited you to Assiduous`,
             html: emailHtml
         };
@@ -986,9 +987,10 @@ exports.sharePropertyQR = functions
                 </div>
             `;
 
+            const fromEmail = process.env.SENDGRID_FROM_EMAIL || 'noreply@assiduous.com';
             const msg = {
                 to: recipientEmail,
-                from: 'noreply@assiduous.com',
+                from: fromEmail,
                 subject: `${sharerName} shared ${address} with you`,
                 html: emailHtml
             };

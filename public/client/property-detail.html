@@ -219,13 +219,29 @@
     
     <!-- Load property QR widget -->
     <script>
-        // Load property QR widget HTML
-        fetch('../components/property-qr-widget.html')
-            .then(response => response.text())
-            .then(html => {
-                document.getElementById('propertyQRContainer').innerHTML = html;
-            })
-            .catch(error => console.error('Error loading QR widget:', error));
+        // Load property QR widget HTML and execute embedded scripts
+        (async function loadQRWidget() {
+            try {
+                const res = await fetch('../components/property-qr-widget.html');
+                const html = await res.text();
+                const container = document.getElementById('propertyQRContainer');
+                container.innerHTML = html;
+                // Execute any embedded <script> tags
+                const scripts = container.querySelectorAll('script');
+                scripts.forEach((oldScript) => {
+                    const s = document.createElement('script');
+                    if (oldScript.src) {
+                        s.src = oldScript.src;
+                    } else {
+                        s.textContent = oldScript.textContent;
+                    }
+                    document.head.appendChild(s);
+                    oldScript.remove();
+                });
+            } catch (error) {
+                console.error('Error loading QR widget:', error);
+            }
+        })();
     </script>
     
     <!-- UCS Core Scripts -->
@@ -234,6 +250,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-functions-compat.js"></script>
     <script src="../firebase-config.js"></script>
     <script>
         window.addEventListener('firebase-ready', function() {

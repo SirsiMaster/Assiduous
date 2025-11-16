@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-11-12T20:27:03.111Z",
+  "lastUpdated": "2025-11-12T20:31:47.264Z",
   "summary": {
     "health": "Good",
     "score": 59,
@@ -158,14 +158,14 @@
     "laborCost": 48300,
     "toolsCost": 2029,
     "monthsElapsed": "3.1",
-    "totalCommits": 975,
+    "totalCommits": 977,
     "totalFiles": 825,
     "activeDays": 37,
     "totalDays": 95,
     "projectAgeDays": 95,
-    "linesAdded": 9818780,
-    "linesDeleted": 9428824,
-    "netLines": 389956,
+    "linesAdded": 9818893,
+    "linesDeleted": 9428867,
+    "netLines": 390026,
     "velocity": "26.4",
     "completionPercentage": 59,
     "actualStartDate": "2025-08-10",
@@ -177,21 +177,21 @@
   },
   "today": {
     "date": "2025-11-12",
-    "hours": "12.5",
-    "cost": 1881,
-    "commits": 38,
+    "hours": "13.2",
+    "cost": 1980,
+    "commits": 40,
     "deployments": 0
   },
   "thisWeek": {
-    "hours": "61.4",
-    "cost": 9207,
-    "commits": 186,
+    "hours": "62.0",
+    "cost": 9306,
+    "commits": 188,
     "days": 7
   },
   "thisMonth": {
-    "hours": "148.8",
-    "cost": 22325,
-    "commits": 451
+    "hours": "149.2",
+    "cost": 22374,
+    "commits": 452
   },
   "quality": {
     "testCoverage": {
@@ -225,7 +225,7 @@
       "critical": 0,
       "total": 0
     },
-    "lastAudit": "2025-11-12T20:26:41.658Z",
+    "lastAudit": "2025-11-12T20:31:25.549Z",
     "dependencies": {
       "total": {
         "prod": 256,
@@ -320,11 +320,11 @@
     "changelog": true,
     "contributing": false,
     "license": false,
-    "lastUpdate": "2025-11-12 15:23:32 -0500"
+    "lastUpdate": "2025-11-12 20:26:30 +0000"
   },
   "productivity": {
     "velocityTrend": "stable",
-    "weeklyCommits": 186,
+    "weeklyCommits": 188,
     "contributors": {
       "total": 0,
       "active": 0
@@ -402,6 +402,18 @@
   },
   "recentActivity": [
     {
+      "hash": "8d5888da956ebfdddfea0c4d1d0603426f6df30e",
+      "message": "fix(qr): Add Firebase SDK to property detail pages for QR widget functionality",
+      "author": "SirsiMaster",
+      "date": "2025-11-12 15:30:44 -0500"
+    },
+    {
+      "hash": "17ee2ff171e6451e17edca9297b65533a7840038",
+      "message": "chore(release): Bump version to 0.127.0 [skip ci]",
+      "author": "github-actions[bot]",
+      "date": "2025-11-12 20:26:30 +0000"
+    },
+    {
       "hash": "8bcb643f4e564d3670191eb771c87d7f2e42dcc9",
       "message": "feat(qr): Integrate sequential ID Generator into QR system",
       "author": "SirsiMaster",
@@ -448,22 +460,10 @@
       "message": "feat(qr): Add property QR widget component to all property detail pages",
       "author": "SirsiMaster",
       "date": "2025-11-12 15:04:56 -0500"
-    },
-    {
-      "hash": "c0e8fa465108a126208fb5ecf7726d9b0586fdc2",
-      "message": "chore(release): Bump version to 0.123.0 [skip ci]",
-      "author": "github-actions[bot]",
-      "date": "2025-11-12 19:57:30 +0000"
-    },
-    {
-      "hash": "d7fbf59bc4d8f656c652b5a2043f13b5eb9be11e",
-      "message": "chore: sync firestore rules path and metrics cache",
-      "author": "SirsiMaster",
-      "date": "2025-11-12 14:57:09 -0500"
     }
   ],
   "automation": {
-    "lastRun": "2025-11-12T20:27:03.111Z",
+    "lastRun": "2025-11-12T20:31:47.264Z",
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",
