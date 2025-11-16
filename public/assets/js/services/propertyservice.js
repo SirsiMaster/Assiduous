@@ -9,7 +9,20 @@ const API_BASE_URL = 'https://us-central1-assiduous-prod.cloudfunctions.net/api'
 class PropertyService {
   constructor() {
     this.apiUrl = API_BASE_URL;
-    this.db = firebase.firestore();
+    this.db = null;
+  }
+  
+  /**
+   * Lazy-load Firebase database
+   */
+  getDb() {
+    if (!this.db) {
+      if (!firebase || !firebase.firestore) {
+        throw new Error('Firebase not initialized');
+      }
+      this.db = firebase.firestore();
+    }
+    return this.db;
   }
   
   /**
@@ -29,7 +42,7 @@ class PropertyService {
       }
       
       // Get user document with saved property IDs
-      const userDoc = await this.db.collection('users').doc(userId).get();
+      const userDoc = await this.getDb().collection('users').doc(userId).get();
       
       if (!userDoc.exists) {
         throw new Error('User profile not found');
@@ -69,7 +82,7 @@ class PropertyService {
    */
   async getCompletePropertyData(propertyId) {
     try {
-      const propertyDoc = await this.db.collection('properties').doc(propertyId).get();
+      const propertyDoc = await this.getDb().collection('properties').doc(propertyId).get();
       
       if (!propertyDoc.exists) {
         console.warn(`Property ${propertyId} not found`);
@@ -106,7 +119,7 @@ class PropertyService {
    */
   async getMLSData(mlsId) {
     try {
-      const mlsDoc = await this.db.collection('mls_data').doc(mlsId).get();
+      const mlsDoc = await this.getDb().collection('mls_data').doc(mlsId).get();
       return mlsDoc.exists ? mlsDoc.data() : {};
     } catch (error) {
       console.error('Error fetching MLS data:', error);
@@ -119,7 +132,7 @@ class PropertyService {
    */
   async getPublicRecords(parcelId) {
     try {
-      const recordDoc = await this.db.collection('public_records').doc(parcelId).get();
+      const recordDoc = await this.getDb().collection('public_records').doc(parcelId).get();
       return recordDoc.exists ? recordDoc.data() : {};
     } catch (error) {
       console.error('Error fetching public records:', error);
@@ -200,7 +213,7 @@ class PropertyService {
       console.error('Error fetching from API, trying Firestore directly:', error);
       // Fallback: Fetch directly from Firestore
       try {
-        let query = this.db.collection('properties');
+        let query = this.getDb().collection('properties');
         
         // Apply filters
         if (filters.status) {
@@ -263,7 +276,7 @@ class PropertyService {
       console.error('Error fetching from API, trying Firestore directly:', error);
       // Fallback: Fetch directly from Firestore
       try {
-        const doc = await this.db.collection('properties').doc(propertyId).get();
+        const doc = await this.getDb().collection('properties').doc(propertyId).get();
         if (!doc.exists) {
           throw new Error('Property not found');
         }
