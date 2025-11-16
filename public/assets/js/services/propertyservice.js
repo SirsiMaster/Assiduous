@@ -461,3 +461,5 @@ class PropertyService {
     };
   }
 }
+
+export { PropertyService };
