@@ -210,57 +210,61 @@ class PropertyService {
       const data = await response.json();
       return data;
     } catch (error) {
-      console.error('Error fetching from API, trying Firestore directly:', error);
-      // Fallback: Fetch directly from Firestore
+      console.error('Error fetching from API, trying Firestore REST API:', error);
+      // Fallback: Fetch directly from Firestore REST API
       try {
-        // Check if Firebase is available
-        if (!firebase || !firebase.firestore) {
-          console.warn('Firebase not available, returning empty results');
-          return { properties: [], total: 0, hasMore: false };
-        }
-        let query = this.getDb().collection('properties');
+        const projectId = 'assiduous-prod';
+        let url = `https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/properties`;
         
-        // Apply filters
-        if (filters.status) {
-          query = query.where('status', '==', filters.status);
-        }
-        if (filters.minPrice) {
-          query = query.where('price.list', '>=', parseInt(filters.minPrice));
-        }
-        if (filters.maxPrice) {
-          query = query.where('price.list', '<=', parseInt(filters.maxPrice));
-        }
-        if (filters.minBedrooms) {
-          query = query.where('details.bedrooms', '>=', parseInt(filters.minBedrooms));
-        }
-        if (filters.neighborhood) {
-          query = query.where('neighborhood', '==', filters.neighborhood);
-        }
-        if (filters.type) {
-          query = query.where('details.type', '==', filters.type);
-        }
-        
-        // Apply limit
+        // Add limit parameter
         const limit = filters.limit || 20;
-        query = query.limit(limit);
+        url += `?pageSize=${limit}`;
         
-        const snapshot = await query.get();
-        const properties = snapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data()
-        }));
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error(`Firestore REST error: ${response.status}`);
+        }
         
-        return {
-          properties: properties,
-          total: properties.length,
-          hasMore: false
-        };
-      } catch (firestoreError) {
-        console.error('Firestore fallback also failed:', firestoreError);
-        throw firestoreError;
+        const data = await response.json();
+        const properties = (data.documents || []).map(doc => {
+          const fields = doc.fields || {};
+          return {
+            id: doc.name.split('/').pop(),
+            address: {
+              street: fields.address?.mapValue?.fields?.street?.stringValue || '',
+              city: fields.address?.mapValue?.fields?.city?.stringValue || '',
+              state: fields.address?.mapValue?.fields?.state?.stringValue || '',
+              zip: fields.address?.mapValue?.fields?.zip?.stringValue || ''
+            },
+            price: {
+              list: parseInt(fields.price?.mapValue?.fields?.list?.integerValue || 0),
+              arv: parseInt(fields.price?.mapValue?.fields?.arv?.integerValue || 0),
+              repair: parseInt(fields.price?.mapValue?.fields?.repair?.integerValue || 0)
+            },
+            details: {
+              bedrooms: parseInt(fields.details?.mapValue?.fields?.bedrooms?.integerValue || 0),
+              bathrooms: parseInt(fields.details?.mapValue?.fields?.bathrooms?.integerValue || 0),
+              sqft: parseInt(fields.details?.mapValue?.fields?.sqft?.integerValue || 0),
+              type: fields.details?.mapValue?.fields?.type?.stringValue || 'single_family'
+            },
+            neighborhood: fields.neighborhood?.stringValue || '',
+            status: fields.status?.stringValue || 'available',
+            flipEstimate: fields.flipEstimate?.mapValue?.fields ? {
+              profit: parseInt(fields.flipEstimate?.mapValue?.fields?.profit?.integerValue || 0),
+              roi: parseInt(fields.flipEstimate?.mapValue?.fields?.roi?.integerValue || 0)
+            } : { profit: 0, roi: 0 },
+            images: []
+          };
+        });
+        
+        return { properties, total: properties.length, hasMore: false };
+      } catch (fsError) {
+        console.error('Firestore REST fallback also failed:', fsError);
+        return { properties: [], total: 0, hasMore: false };
       }
     }
   }
+
 
   /**
    * Get a single property by ID
@@ -278,24 +282,49 @@ class PropertyService {
       const data = await response.json();
       return data.property;
     } catch (error) {
-      console.error('Error fetching from API, trying Firestore directly:', error);
-      // Fallback: Fetch directly from Firestore
+      console.error('Error fetching from API, trying Firestore REST API:', error);
+      // Fallback: Fetch directly from Firestore REST API
       try {
-        // Check if Firebase is available
-        if (!firebase || !firebase.firestore) {
-          throw new Error('Firebase not available');
+        const projectId = 'assiduous-prod';
+        const url = `https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/properties/${propertyId}`;
+        
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error(`Property not found`);
         }
-        const doc = await this.getDb().collection('properties').doc(propertyId).get();
-        if (!doc.exists) {
-          throw new Error('Property not found');
-        }
+        
+        const doc = await response.json();
+        const fields = doc.fields || {};
         return {
-          id: doc.id,
-          ...doc.data()
+          id: doc.name.split('/').pop(),
+          address: {
+            street: fields.address?.mapValue?.fields?.street?.stringValue || '',
+            city: fields.address?.mapValue?.fields?.city?.stringValue || '',
+            state: fields.address?.mapValue?.fields?.state?.stringValue || '',
+            zip: fields.address?.mapValue?.fields?.zip?.stringValue || ''
+          },
+          price: {
+            list: parseInt(fields.price?.mapValue?.fields?.list?.integerValue || 0),
+            arv: parseInt(fields.price?.mapValue?.fields?.arv?.integerValue || 0),
+            repair: parseInt(fields.price?.mapValue?.fields?.repair?.integerValue || 0)
+          },
+          details: {
+            bedrooms: parseInt(fields.details?.mapValue?.fields?.bedrooms?.integerValue || 0),
+            bathrooms: parseInt(fields.details?.mapValue?.fields?.bathrooms?.integerValue || 0),
+            sqft: parseInt(fields.details?.mapValue?.fields?.sqft?.integerValue || 0),
+            type: fields.details?.mapValue?.fields?.type?.stringValue || 'single_family'
+          },
+          neighborhood: fields.neighborhood?.stringValue || '',
+          status: fields.status?.stringValue || 'available',
+          flipEstimate: fields.flipEstimate?.mapValue?.fields ? {
+            profit: parseInt(fields.flipEstimate?.mapValue?.fields?.profit?.integerValue || 0),
+            roi: parseInt(fields.flipEstimate?.mapValue?.fields?.roi?.integerValue || 0)
+          } : { profit: 0, roi: 0 },
+          images: []
         };
-      } catch (firestoreError) {
-        console.error('Firestore fallback also failed:', firestoreError);
-        throw firestoreError;
+      } catch (fsError) {
+        console.error('Firestore REST fallback failed:', fsError);
+        throw fsError;
       }
     }
   }
