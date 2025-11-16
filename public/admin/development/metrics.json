@@ -1,13 +1,13 @@
 {
-  "lastUpdated": "2025-11-12T20:31:47.264Z",
+  "lastUpdated": "2025-11-16T17:48:49.464Z",
   "summary": {
     "health": "Good",
     "score": 59,
-    "trend": "stable",
+    "trend": "decreasing",
     "alerts": [
       "✅ UCS implementation complete - 40 pages converted",
       "⚠️ Test coverage is very low",
-      "⏰ Timeline warning - 19 days until launch"
+      "⏰ Timeline warning - 15 days until launch"
     ]
   },
   "features": {
@@ -152,21 +152,21 @@
     }
   },
   "project": {
-    "totalHours": "322",
-    "avgHoursPerDay": "8.7",
-    "totalCost": 50329,
-    "laborCost": 48300,
-    "toolsCost": 2029,
-    "monthsElapsed": "3.1",
-    "totalCommits": 977,
-    "totalFiles": 825,
-    "activeDays": 37,
-    "totalDays": 95,
-    "projectAgeDays": 95,
-    "linesAdded": 9818893,
-    "linesDeleted": 9428867,
-    "netLines": 390026,
-    "velocity": "26.4",
+    "totalHours": "324",
+    "avgHoursPerDay": "8.5",
+    "totalCost": 50693,
+    "laborCost": 48600,
+    "toolsCost": 2093,
+    "monthsElapsed": "3.2",
+    "totalCommits": 981,
+    "totalFiles": 828,
+    "activeDays": 38,
+    "totalDays": 98,
+    "projectAgeDays": 98,
+    "linesAdded": 9820258,
+    "linesDeleted": 9428937,
+    "netLines": 391321,
+    "velocity": "25.8",
     "completionPercentage": 59,
     "actualStartDate": "2025-08-10",
     "architecture": {
@@ -176,22 +176,22 @@
     }
   },
   "today": {
-    "date": "2025-11-12",
-    "hours": "13.2",
-    "cost": 1980,
-    "commits": 40,
+    "date": "2025-11-16",
+    "hours": "0.7",
+    "cost": 99,
+    "commits": 2,
     "deployments": 0
   },
   "thisWeek": {
-    "hours": "62.0",
-    "cost": 9306,
-    "commits": 188,
+    "hours": "23.1",
+    "cost": 3465,
+    "commits": 70,
     "days": 7
   },
   "thisMonth": {
-    "hours": "149.2",
-    "cost": 22374,
-    "commits": 452
+    "hours": "137.0",
+    "cost": 20543,
+    "commits": 415
   },
   "quality": {
     "testCoverage": {
@@ -211,30 +211,22 @@
       "eslintWarnings": 0,
       "codeComplexity": "N/A",
       "duplicateCode": 0,
-      "technicalDebt": 13715,
+      "technicalDebt": 13714,
       "codeSmells": 0
     },
     "score": 100
   },
   "security": {
     "vulnerabilities": {
-      "info": 0,
-      "low": 0,
-      "moderate": 0,
-      "high": 0,
       "critical": 0,
+      "high": 0,
+      "moderate": 0,
+      "low": 0,
       "total": 0
     },
-    "lastAudit": "2025-11-12T20:31:25.549Z",
+    "lastAudit": "2025-11-16T17:48:26.555Z",
     "dependencies": {
-      "total": {
-        "prod": 256,
-        "dev": 582,
-        "optional": 110,
-        "peer": 0,
-        "peerOptional": 0,
-        "total": 921
-      },
+      "total": 0,
       "outdated": 0,
       "vulnerable": 0
     },
@@ -304,7 +296,7 @@
     }
   },
   "documentation": {
-    "markdownFiles": 2527,
+    "markdownFiles": 2530,
     "jsFilesTotal": 25043,
     "jsFilesDocumented": 25043,
     "coverage": 423,
@@ -320,11 +312,11 @@
     "changelog": true,
     "contributing": false,
     "license": false,
-    "lastUpdate": "2025-11-12 20:26:30 +0000"
+    "lastUpdate": "2025-11-16 12:47:58 -0500"
   },
   "productivity": {
-    "velocityTrend": "stable",
-    "weeklyCommits": 188,
+    "velocityTrend": "decreasing",
+    "weeklyCommits": 70,
     "contributors": {
       "total": 0,
       "active": 0
@@ -357,7 +349,7 @@
       "projectStart": "2025-08-10",
       "originalLaunch": "2025-11-01",
       "plannedLaunch": "2025-12-01",
-      "daysRemaining": 19,
+      "daysRemaining": 15,
       "onTrack": false,
       "adjustmentReason": "Timeline adjusted for realistic completion based on current velocity"
     },
@@ -402,6 +394,30 @@
   },
   "recentActivity": [
     {
+      "hash": "d97c871d6ec2eff725deecc786b171a45355f7fd",
+      "message": "feat(qr): Implement QR widget integration across all property detail pages with SendGrid email support",
+      "author": "SirsiMaster",
+      "date": "2025-11-16 12:47:58 -0500"
+    },
+    {
+      "hash": "055689ea091d1089bcdafcfeb3f62278acce834e",
+      "message": "merge(sync): Reconcile local test plan with origin version bump",
+      "author": "SirsiMaster",
+      "date": "2025-11-16 12:11:51 -0500"
+    },
+    {
+      "hash": "d78c3cb0b58a55bb397d7fa685c29f56b8fb73ac",
+      "message": "docs(testing): Add comprehensive QR system test plan",
+      "author": "SirsiMaster",
+      "date": "2025-11-12 15:50:09 -0500"
+    },
+    {
+      "hash": "133afadd058bdda4a35f22b4e295a59a1ef1ae75",
+      "message": "chore(release): Bump version to 0.127.1 [skip ci]",
+      "author": "github-actions[bot]",
+      "date": "2025-11-12 20:31:19 +0000"
+    },
+    {
       "hash": "8d5888da956ebfdddfea0c4d1d0603426f6df30e",
       "message": "fix(qr): Add Firebase SDK to property detail pages for QR widget functionality",
       "author": "SirsiMaster",
@@ -436,34 +452,10 @@
       "message": "feat(qr): Add QR code quick access buttons to property list cards",
       "author": "SirsiMaster",
       "date": "2025-11-12 15:09:42 -0500"
-    },
-    {
-      "hash": "36cc9b67f4babe4a5e9e038e198fef5f9467cc38",
-      "message": "chore(release): Bump version to 0.125.0 [skip ci]",
-      "author": "github-actions[bot]",
-      "date": "2025-11-12 20:08:05 +0000"
-    },
-    {
-      "hash": "dcc2f02dd7e9bee57b752103fd9ba75c6802b9a9",
-      "message": "feat(qr): Add user profile QR code page for clients",
-      "author": "SirsiMaster",
-      "date": "2025-11-12 15:07:31 -0500"
-    },
-    {
-      "hash": "863b7feb4ff2d3ef1bf5eb095f465e43b9bed235",
-      "message": "chore(release): Bump version to 0.124.0 [skip ci]",
-      "author": "github-actions[bot]",
-      "date": "2025-11-12 20:05:53 +0000"
-    },
-    {
-      "hash": "b84ae6fdd8fb377be179ffa2e05c19221a1c5c40",
-      "message": "feat(qr): Add property QR widget component to all property detail pages",
-      "author": "SirsiMaster",
-      "date": "2025-11-12 15:04:56 -0500"
     }
   ],
   "automation": {
-    "lastRun": "2025-11-12T20:31:47.264Z",
+    "lastRun": "2025-11-16T17:48:49.464Z",
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",

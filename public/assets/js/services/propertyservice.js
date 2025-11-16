@@ -197,8 +197,50 @@ class PropertyService {
       const data = await response.json();
       return data;
     } catch (error) {
-      console.error('Error fetching properties:', error);
-      throw error;
+      console.error('Error fetching from API, trying Firestore directly:', error);
+      // Fallback: Fetch directly from Firestore
+      try {
+        let query = this.db.collection('properties');
+        
+        // Apply filters
+        if (filters.status) {
+          query = query.where('status', '==', filters.status);
+        }
+        if (filters.minPrice) {
+          query = query.where('price.list', '>=', parseInt(filters.minPrice));
+        }
+        if (filters.maxPrice) {
+          query = query.where('price.list', '<=', parseInt(filters.maxPrice));
+        }
+        if (filters.minBedrooms) {
+          query = query.where('details.bedrooms', '>=', parseInt(filters.minBedrooms));
+        }
+        if (filters.neighborhood) {
+          query = query.where('neighborhood', '==', filters.neighborhood);
+        }
+        if (filters.type) {
+          query = query.where('details.type', '==', filters.type);
+        }
+        
+        // Apply limit
+        const limit = filters.limit || 20;
+        query = query.limit(limit);
+        
+        const snapshot = await query.get();
+        const properties = snapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        }));
+        
+        return {
+          properties: properties,
+          total: properties.length,
+          hasMore: false
+        };
+      } catch (firestoreError) {
+        console.error('Firestore fallback also failed:', firestoreError);
+        throw firestoreError;
+      }
     }
   }
 
@@ -218,8 +260,21 @@ class PropertyService {
       const data = await response.json();
       return data.property;
     } catch (error) {
-      console.error('Error fetching property:', error);
-      throw error;
+      console.error('Error fetching from API, trying Firestore directly:', error);
+      // Fallback: Fetch directly from Firestore
+      try {
+        const doc = await this.db.collection('properties').doc(propertyId).get();
+        if (!doc.exists) {
+          throw new Error('Property not found');
+        }
+        return {
+          id: doc.id,
+          ...doc.data()
+        };
+      } catch (firestoreError) {
+        console.error('Firestore fallback also failed:', firestoreError);
+        throw firestoreError;
+      }
     }
   }
 
