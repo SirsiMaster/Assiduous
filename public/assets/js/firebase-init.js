@@ -65,13 +65,14 @@ const firebaseConfig = isStaging ? {
   messagingSenderId: '853661742177',
   appId: '1:853661742177:web:cf93349a7f50a2d9f2e620'
 } : {
-  // Use the same production web app config that has historically powered analytics
-  apiKey: 'AIzaSyCY6OjxgMHPF0omVVqO1eCTTJRux2x23gE',
+  // NEW production app: aligned with firebase-config.js (your intended primary app)
+  apiKey: 'AIzaSyCnQajchoBwP_VMEvc9mKH-vO0xlZjGCRE',
   authDomain: 'assiduous-prod.firebaseapp.com',
   projectId: 'assiduous-prod',
-  storageBucket: 'assiduous-prod.appspot.com',
-  messagingSenderId: '1039432328034',
-  appId: '1:1039432328034:web:f6e8c8b8c8c8c8c8c8c8c8'
+  storageBucket: 'assiduous-prod.firebasestorage.app',
+  messagingSenderId: '9355377564',
+  appId: '1:9355377564:web:84bd6fa0e7c8a2e7c3f56b',
+  databaseURL: 'https://assiduous-prod-default-rtdb.firebaseio.com',
 };
 
 // Initialize Firebase
