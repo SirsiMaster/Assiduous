@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.128.1] - 2025-11-16
+
+### Fixed
+- fix(properties): Add universal Firestore fallback to PropertyService for all portals
+
+
 ## [0.128.0] - 2025-11-16
 
 ### Added
@@ -3380,7 +3386,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.128.0...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.128.1...HEAD
+
+
+## [0.128.1] - 2025-11-16
+
+### Fixed
+- fix(properties): Add universal Firestore fallback to PropertyService for all portals
 
 
 ## [0.128.0] - 2025-11-16
@@ -5212,3 +5224,4 @@ To generate changelog entries:
 [0.127.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.126.0...v0.127.0
 [0.127.1]: https://github.com/SirsiMaster/Assiduous/compare/v0.127.0...v0.127.1
 [0.128.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.127.1...v0.128.0
+[0.128.1]: https://github.com/SirsiMaster/Assiduous/compare/v0.128.0...v0.128.1
