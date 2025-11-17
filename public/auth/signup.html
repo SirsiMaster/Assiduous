@@ -487,22 +487,23 @@
         </div>
     </div>
     
+    <!-- Firebase compat SDK + shared config (canonical GA4-enabled app) -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-functions-compat.js"></script>
+    <script src="../firebase-config.js"></script>
+
     <script>
-        // Firebase configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyCzPcEJ0TPKnJtcVT2qymgJrII1p0vAJxs",
-            authDomain: "assiduous-prod.firebaseapp.com",
-            projectId: "assiduous-prod",
-            storageBucket: "assiduous-prod.appspot.com",
-            messagingSenderId: "594472642287",
-            appId: "1:594472642287:web:adf723a456b123c4567890"
-        };
-        
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const db = firebase.firestore();
-        
+        // Will be populated once firebase-config.js finishes initialization
+        let auth, db;
+
+        // Initialize shared auth/db instances when Firebase is ready
+        window.addEventListener('firebase-ready', () => {
+            auth = window.firebaseAuth || firebase.auth();
+            db = window.firebaseDb || firebase.firestore();
+        });
+
         // Get URL parameters for referral tracking
         const urlParams = new URLSearchParams(window.location.search);
         const referralCode = urlParams.get('ref');
@@ -629,6 +630,11 @@
             buttonLoader.style.display = 'inline-block';
             
             try {
+                // Ensure Firebase Auth is initialized
+                if (!auth) {
+                    throw new Error('Authentication service not ready. Please try again.');
+                }
+
                 // Create user with Firebase Auth
                 const userCredential = await auth.createUserWithEmailAndPassword(email, password);
                 const user = userCredential.user;
@@ -717,7 +723,7 @@
                         showError('Password is too weak. Please use a stronger password.');
                         break;
                     default:
-                        showError('Failed to create account. Please try again.');
+                        showError(error.message || 'Failed to create account. Please try again.');
                 }
             } finally {
                 // Reset button state
@@ -732,6 +738,10 @@
             const provider = new firebase.auth.GoogleAuthProvider();
             
             try {
+                if (!auth || !db) {
+                    throw new Error('Authentication service not ready. Please try again.');
+                }
+
                 const result = await auth.signInWithPopup(provider);
                 const user = result.user;
                 
@@ -787,7 +797,7 @@
                 
             } catch (error) {
                 console.error('Google signup error:', error);
-                showError('Google sign up failed. Please try again.');
+                showError(error.message || 'Google sign up failed. Please try again.');
             }
         }
         
@@ -796,6 +806,10 @@
             const provider = new firebase.auth.FacebookAuthProvider();
             
             try {
+                if (!auth || !db) {
+                    throw new Error('Authentication service not ready. Please try again.');
+                }
+
                 const result = await auth.signInWithPopup(provider);
                 const user = result.user;
                 
@@ -851,7 +865,7 @@
                 
             } catch (error) {
                 console.error('Facebook signup error:', error);
-                showError('Facebook sign up failed. Please try again.');
+                showError(error.message || 'Facebook sign up failed. Please try again.');
             }
         }
     </script>

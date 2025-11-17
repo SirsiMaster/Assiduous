@@ -281,42 +281,41 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-functions-compat.js"></script>
+    <script src="../firebase-config.js"></script>
     
     <script>
         let currentUser = null;
         let currentQRData = null;
+        let auth;
+        let functions;
         
-        // Initialize Firebase
-        const firebaseConfig = {
-            apiKey: 'AIzaSyCnQajchoBwP_VMEvc9mKH-vO0xlZjGCRE',
-            authDomain: 'assiduous-prod.firebaseapp.com',
-            projectId: 'assiduous-prod',
-            storageBucket: 'assiduous-prod.firebasestorage.app',
-            messagingSenderId: '9355377564',
-            appId: '1:9355377564:web:84bd6fa0e7c8a2e7c3f56b',
-        };
-        
-        if (!firebase.apps.length) {
-            firebase.initializeApp(firebaseConfig);
-        }
-        
-        // Check authentication
-        firebase.auth().onAuthStateChanged(async (user) => {
-            if (!user) {
-                window.location.href = '../index.html';
-                return;
-            }
-            
-            currentUser = user;
-            await loadUserQR();
+        // Initialize auth/functions when Firebase is ready
+        window.addEventListener('firebase-ready', () => {
+            auth = window.firebaseAuth || firebase.auth();
+            functions = firebase.functions();
+
+            // Check authentication
+            auth.onAuthStateChanged(async (user) => {
+                if (!user) {
+                    window.location.href = '../index.html#login';
+                    return;
+                }
+                
+                currentUser = user;
+                await loadUserQR();
+            });
         });
         
         // Load user QR code
         async function loadUserQR() {
+            if (!functions) {
+                console.warn('Firebase Functions not ready yet.');
+                return;
+            }
             const qrDisplay = document.getElementById('qrDisplay');
             
             try {
-                const generateUserQR = firebase.functions().httpsCallable('generateUserQR');
+                const generateUserQR = functions.httpsCallable('generateUserQR');
                 const result = await generateUserQR({ regenerate: false });
                 
                 currentQRData = result.data;
@@ -342,7 +341,6 @@
                 `;
             }
         }
-        
         // Download QR code
         function downloadQR() {
             if (!currentQRData) return;
@@ -390,11 +388,16 @@
                 return;
             }
             
+            if (!functions) {
+                showToast('QR service is not ready yet. Please try again.', 'error');
+                return;
+            }
+            
             const qrDisplay = document.getElementById('qrDisplay');
             qrDisplay.innerHTML = '<div class="qr-loading">Regenerating your QR code...</div>';
             
             try {
-                const generateUserQR = firebase.functions().httpsCallable('generateUserQR');
+                const generateUserQR = functions.httpsCallable('generateUserQR');
                 const result = await generateUserQR({ regenerate: true });
                 
                 currentQRData = result.data;

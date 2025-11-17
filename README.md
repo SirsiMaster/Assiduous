@@ -211,6 +211,24 @@ assiduous/
 
 ---
 
+## Firebase Configuration (Canonical)
+
+All environments share a single canonical Firebase production web app for analytics and data:
+
+- **Project:** `assiduous-prod`
+- **Web app (GA4):** `1:9355377564:web:cee09f952eea43976ee659`
+- **Measurement ID:** `G-DVBZP21459`
+
+Frontend code MUST use one of the shared initializers:
+
+- `public/assets/js/firebase-init.js` — modular SDK for the landing page and app services (AuthService, DatabaseService, etc.).
+- `public/firebase-config.js` — compat SDK wrapper for admin/client/legacy pages and QR widgets.
+
+Inline `firebase.initializeApp(...)` snippets are considered legacy and are being removed.
+Auth flows are centralized through the **index.html modals** using `AuthService` from `firebase-init.js`; SirsiAuth-based flows are deprecated.
+
+---
+
 ## 🔍 Document Consolidation Summary
 
 ### What Was Done

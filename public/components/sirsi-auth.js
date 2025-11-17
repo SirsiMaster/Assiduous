@@ -1,7 +1,15 @@
 /**
- * Sirsi Universal Authentication Component
- * A reusable, validated authentication system for all user types
- * 
+ * Sirsi Universal Authentication Component (LEGACY)
+ * ------------------------------------------------
+ * This class belongs to the legacy SirsiAuth stack and is currently QUARANTINED.
+ *
+ * - Do NOT wire new production pages directly to `SirsiAuth`.
+ * - All active auth flows must use the modal-based AuthService from
+ *   `public/assets/js/firebase-init.js`.
+ * - Once the new auth flows are fully stabilized, SirsiAuth will be updated
+ *   to consume the canonical Firebase/app behavior and can become the
+ *   reusable reference component for future apps.
+ *
  * @module SirsiAuth
  * @version 1.0.0
  * @author Sirsi Development Team

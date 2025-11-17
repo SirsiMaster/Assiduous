@@ -1,7 +1,12 @@
 /**
- * Auth Guard Middleware
- * Protects routes and ensures proper authentication across all pages
- * Part of the Sirsi Authentication System
+ * Auth Guard Middleware (LEGACY – SirsiAuth-based)
+ * ------------------------------------------------
+ * This guard is tightly coupled to the legacy SirsiAuth stack and is currently
+ * QUARANTINED. New protected pages must use `auth-guard-simple.js` together
+ * with `firebase-config.js` and modal-based auth from `index.html`.
+ *
+ * This file is kept for future refactor when SirsiAuth is updated to consume
+ * the canonical Firebase/auth implementation.
  */
 
 class AuthGuard {

@@ -1,7 +1,12 @@
 /**
- * Authentication Service for Assiduous Realty
- * This is a wrapper around SirsiAuth to maintain backward compatibility
- * while using the unified authentication system
+ * LEGACY Authentication Service (SirsiAuth Wrapper)
+ * ------------------------------------------------
+ * This file is part of the deprecated SirsiAuth stack and SHOULD NOT be used
+ * by new code paths. Active authentication flows must go through the
+ * modal-based AuthService exposed from `public/assets/js/firebase-init.js`.
+ *
+ * This wrapper is preserved temporarily for reference and for future work
+ * when SirsiAuth is refactored to consume the new canonical auth behavior.
  */
 
 // Ensure SirsiAuth is loaded

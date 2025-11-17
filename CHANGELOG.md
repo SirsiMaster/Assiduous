@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- fix(firebase): Align all frontend Firebase/QR/auth pages to canonical GA4 web app config and remove legacy inline app initializations
+
 
 ## [0.128.1] - 2025-11-16
 

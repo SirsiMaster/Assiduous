@@ -14,6 +14,28 @@
 
 ---
 
+## Firebase Configuration & Analytics (Canonical)
+
+**Production Project:** `assiduous-prod`  
+**Canonical Web App (GA4-enabled):**
+- `appId`: `1:9355377564:web:cee09f952eea43976ee659`  
+- `measurementId`: `G-DVBZP21459`  
+- `messagingSenderId`: `9355377564`
+
+**Authoritative Config Files:**
+- `public/assets/js/firebase-init.js` — modular SDK (Auth, Firestore, Storage, Functions, Analytics) for index.html, portals, and services.
+- `public/firebase-config.js` — compat SDK initializer used by legacy/admin/client pages and QR flows.
+
+All frontend Firebase usage MUST flow through these shared modules:
+- **Do not** inline `firebase.initializeApp(...)` configs in HTML.
+- **Do not** use legacy appIds (e.g. `1:9355377564:web:84bd6fa0e7c8a2e7c3f56b` or `1:594472642287:web:adf723a456b123c4567890`).
+- New work MUST import from `firebase-init.js` (modular) or rely on `firebase-config.js` + the `firebase-ready` event.
+
+Authentication is owned by the **modal-based flow** on `index.html` via `AuthService` from `firebase-init.js`.  
+The older SirsiAuth-based layer (`components/sirsi-auth.js`, `assets/js/services/auth.js`, `components/auth-guard.js`) is **deprecated** and MUST NOT be used for new features.
+
+---
+
 # Universal ID Generator System
 **Added:** October 12, 2025 (Commit: 6a434a0a)  
 **Status:** Production-Ready - In Use Across All Collections

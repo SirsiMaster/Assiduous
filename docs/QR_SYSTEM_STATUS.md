@@ -108,22 +108,29 @@ Property detail page updates:
 
 ## What's Broken
 
-### ❌ Critical Issues
+### ❌ Critical Issues (Historical)
 
-#### 1. **Missing SendGrid Configuration**
+> NOTE: SendGrid configuration has since been completed and deployed; email paths are now ready for production testing. The items below are kept for historical context.
+
+#### 1. **Missing SendGrid Configuration** (RESOLVED)
 ```bash
-# Check reveals:
+# Previous state:
 SENDGRID_API_KEY: ❌ Not found
 SENDGRID_FROM_EMAIL: ❌ Not found
 ```
 
-**Impact:**
-- All email sharing fails silently
-- Client invitations cannot be sent
-- Functions return `{success: true, emailSent: false}` with warning logs
-- Frontend shows success but emails never arrive
+**Impact (before fix):**
+- All email sharing failed silently
+- Client invitations could not be sent
+- Functions returned `{success: true, emailSent: false}` with warning logs
+- Frontend showed success but emails never arrived
 
-**Location:** `functions/index.js` lines 484-517, 713-738, 964-998
+**Current State:**
+- ✅ `SENDGRID_API_KEY` and `SENDGRID_FROM_EMAIL` are configured via Firebase Secrets
+- ✅ `sharePropertyQR` and related functions deployed with `runWith({ secrets: [...] })`
+- ⏳ End-to-end email validation pending manual Phase 1.3 tests
+
+**Location:** `functions/index.js` (QR email flows)
 
 #### 2. **Missing Twilio Configuration**
 ```bash
@@ -201,7 +208,7 @@ docs/
 
 ### External Services
 - `api.qrserver.com` - QR code image generation (working, no auth needed)
-- SendGrid API - Email delivery (not configured)
+- SendGrid API - Email delivery (configured via Firebase Secrets; production tests pending)
 - Twilio API - SMS delivery (not configured)
 
 ---
