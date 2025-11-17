@@ -7,6 +7,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+
+## [0.128.2] - 2025-11-17
+
+### Fixed
+- fix(auth): Align frontend Firebase config and quarantine legacy SirsiAuth
+- fix: align all frontend config with GA4-enabled production web app (cee09f...)
+- fix: point firebase-init back to new production app config
+- fix: point firebase-init to legacy analytics-enabled web app and restore Firestore warnings
+- fix: avoid external placeholder image URLs in properties and property detail
+- fix: wire properties header to universal header and align Firebase analytics config
+- fix: use correct Firebase config and re-enable Analytics
+- fix: disable Firebase Analytics to eliminate configuration errors
+- fix: correct header component path and suppress all deprecation warnings
+- fix: add header component, suppress Firebase warnings, handle missing images
+- fix: remove non-existent admin-header.js reference
+- fix: use authenticated DatabaseService from firebase-init.js in PropertyService
+- fix: remove exposed API key from client-side code
+- fix: add API key to Firestore REST API calls for authentication
+- fix: use Firestore REST API instead of SDK for PropertyService
+- fix: use Firebase compat version and inline config in properties.html
+- fix: add Firebase scripts to properties.html for Firestore access
+- fix: handle missing Firebase gracefully in PropertyService fallbacks
+- fix: defer Firebase initialization in PropertyService constructor
+- fix: add missing export statement to PropertyService class
+- fix(properties): Improve getNeighborhoods resilience with null checks
+
 ### Fixed
 - fix(firebase): Align all frontend Firebase/QR/auth pages to canonical GA4 web app config and remove legacy inline app initializations
 
@@ -3389,7 +3415,33 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.128.1...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.128.2...HEAD
+
+
+## [0.128.2] - 2025-11-17
+
+### Fixed
+- fix(auth): Align frontend Firebase config and quarantine legacy SirsiAuth
+- fix: align all frontend config with GA4-enabled production web app (cee09f...)
+- fix: point firebase-init back to new production app config
+- fix: point firebase-init to legacy analytics-enabled web app and restore Firestore warnings
+- fix: avoid external placeholder image URLs in properties and property detail
+- fix: wire properties header to universal header and align Firebase analytics config
+- fix: use correct Firebase config and re-enable Analytics
+- fix: disable Firebase Analytics to eliminate configuration errors
+- fix: correct header component path and suppress all deprecation warnings
+- fix: add header component, suppress Firebase warnings, handle missing images
+- fix: remove non-existent admin-header.js reference
+- fix: use authenticated DatabaseService from firebase-init.js in PropertyService
+- fix: remove exposed API key from client-side code
+- fix: add API key to Firestore REST API calls for authentication
+- fix: use Firestore REST API instead of SDK for PropertyService
+- fix: use Firebase compat version and inline config in properties.html
+- fix: add Firebase scripts to properties.html for Firestore access
+- fix: handle missing Firebase gracefully in PropertyService fallbacks
+- fix: defer Firebase initialization in PropertyService constructor
+- fix: add missing export statement to PropertyService class
+- fix(properties): Improve getNeighborhoods resilience with null checks
 
 
 ## [0.128.1] - 2025-11-16
@@ -5228,3 +5280,4 @@ To generate changelog entries:
 [0.127.1]: https://github.com/SirsiMaster/Assiduous/compare/v0.127.0...v0.127.1
 [0.128.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.127.1...v0.128.0
 [0.128.1]: https://github.com/SirsiMaster/Assiduous/compare/v0.128.0...v0.128.1
+[0.128.2]: https://github.com/SirsiMaster/Assiduous/compare/v0.128.1...v0.128.2
