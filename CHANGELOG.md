@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.128.3] - 2025-11-20
+
+### Fixed
+- fix(firebase): Align GA4 config, QR, and auth
+
+
 ## [0.128.2] - 2025-11-17
 
 ### Fixed
@@ -3415,7 +3421,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.128.2...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.128.3...HEAD
+
+
+## [0.128.3] - 2025-11-20
+
+### Fixed
+- fix(firebase): Align GA4 config, QR, and auth
 
 
 ## [0.128.2] - 2025-11-17
@@ -5281,3 +5293,4 @@ To generate changelog entries:
 [0.128.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.127.1...v0.128.0
 [0.128.1]: https://github.com/SirsiMaster/Assiduous/compare/v0.128.0...v0.128.1
 [0.128.2]: https://github.com/SirsiMaster/Assiduous/compare/v0.128.1...v0.128.2
+[0.128.3]: https://github.com/SirsiMaster/Assiduous/compare/v0.128.2...v0.128.3
