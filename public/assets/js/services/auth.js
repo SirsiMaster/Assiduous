@@ -187,7 +187,22 @@ const AuthService = {
     localStorage.removeItem('auth_token');
     localStorage.removeItem('user_role');
     localStorage.removeItem('user_data');
-    window.location.href = '/';
+
+    // Send user back to the marketing landing page in a way that works for both
+    // production (/) and local dev (/public/index.html)
+    try {
+      const path = window.location.pathname || '';
+      let base = '';
+      if (path.indexOf('/public/') === 0) {
+        base = '/public';
+      } else if (path.indexOf('/assiduousflip/') === 0) {
+        base = '/assiduousflip';
+      }
+      window.location.href = base + '/index.html';
+    } catch (e) {
+      // Fallback if something goes wrong
+      window.location.href = '/index.html';
+    }
   },
 
   /**

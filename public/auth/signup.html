@@ -772,10 +772,10 @@
                         }
                     });
                     
-                    // New user - go to onboarding
+                    // New user - go to onboarding (relative so it works under /public/ as well)
                     showSuccess('Account created successfully! Redirecting...');
                     setTimeout(() => {
-                        window.location.href = '/client/onboarding.html';
+                        window.location.href = '../client/onboarding.html';
                     }, 1500);
                 } else {
                     // Existing user - update last login and redirect
@@ -785,7 +785,7 @@
                     
                     showSuccess('Welcome back! Redirecting...');
                     setTimeout(() => {
-                        window.location.href = '/client/dashboard.html';
+                        window.location.href = '../client/dashboard.html';
                     }, 1500);
                 }
                 
@@ -840,10 +840,10 @@
                         }
                     });
                     
-                    // New user - go to onboarding
+                    // New user - go to onboarding (relative so it works under /public/ as well)
                     showSuccess('Account created successfully! Redirecting...');
                     setTimeout(() => {
-                        window.location.href = '/client/onboarding.html';
+                        window.location.href = '../client/onboarding.html';
                     }, 1500);
                 } else {
                     // Existing user - update last login and redirect
@@ -853,7 +853,7 @@
                     
                     showSuccess('Welcome back! Redirecting...');
                     setTimeout(() => {
-                        window.location.href = '/client/dashboard.html';
+                        window.location.href = '../client/dashboard.html';
                     }, 1500);
                 }
                 

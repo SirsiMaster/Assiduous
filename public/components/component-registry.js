@@ -20,6 +20,14 @@
     return 'components/' + filename;
   }
 
+  // Detect app base so UCS components can build environment-aware URLs
+  function getAppBasePath() {
+    const path = window.location.pathname || '';
+    if (path.startsWith('/public/')) return '/public';
+    if (path.startsWith('/assiduousflip/')) return '/assiduousflip';
+    return '';
+  }
+
   // Component Registry
   window.UCS_REGISTRY = {
     
@@ -65,6 +73,10 @@
         };
         const roleDisplay = roleNames[role] || 'User';
         
+        // Environment-aware URLs
+        const appBase = getAppBasePath();
+        const logoutUrl = `${appBase || ''}/index.html`;
+
         // Replace all tokens in innerHTML
         container.innerHTML = container.innerHTML
           .replace(/\[\[USER_NAME\]\]/g, userName)
@@ -74,7 +86,7 @@
           .replace(/\[\[USER_AVATAR_CONTENT\]\]/g, userInitials)
           .replace(/\[\[SETTINGS_URL\]\]/g, 'settings.html')
           .replace(/\[\[HELP_URL\]\]/g, 'help.html')
-          .replace(/\[\[LOGOUT_URL\]\]/g, '/');
+          .replace(/\[\[LOGOUT_URL\]\]/g, logoutUrl);
         
         // Initialize header dropdown toggles
         const userAvatar = container.querySelector('[data-user-avatar]');
@@ -99,6 +111,7 @@
       onLoad: async (container, role, base) => {
         // Build breadcrumb trail based on current path
         const path = window.location.pathname;
+        const appBase = getAppBasePath();
         const parts = path.split('/').filter(p => p && p !== 'public' && !p.endsWith('.html'));
         
         if (parts.length <= 1) {
@@ -107,8 +120,9 @@
         }
         
         // Generate breadcrumb HTML
-        let breadcrumbHTML = '<a href="/">Home</a>';
-        let currentPath = '';
+        const homeHref = `${appBase || ''}/index.html`;
+        let breadcrumbHTML = `<a href="${homeHref}">Home</a>`;
+        let currentPath = appBase || '';
         
         parts.forEach((part, index) => {
           currentPath += '/' + part;

@@ -205,6 +205,21 @@ module.exports = {
   // BUILD BEHAVIOR
   // ============================================
   build: {
+    // URL & Redirect Conventions
+    // -------------------------
+    // - DO NOT use root-absolute redirects in client/agent/admin pages
+    //   (e.g. "/client/dashboard.html", "/agent/login.html", "/")
+    // - Use one of the following instead:
+    //     * Paths relative to the current section directory
+    //       - From /client/*: "dashboard.html", "properties.html", etc.
+    //       - From /agent/*: "login.html", "dashboard.html", etc.
+    //     * Central helpers that calculate environment-aware base paths:
+    //       - AuthService.getRoleRedirect(role, status) from firebase-init.js
+    //       - auth-guard.js (APP_BASE_PATH, DASHBOARD_PATHS, LOGIN_URL_DEFAULT)
+    // - This guarantees identical behavior in:
+    //     * Production (Firebase Hosting at "/")
+    //     * Local development when serving from repo root (HTML lives under "/public")
+    // - Any new redirect logic must follow this convention or be updated before release.
     // Template discovery
     patterns: {
       templates: ['**/*.template.html'], // Find template files

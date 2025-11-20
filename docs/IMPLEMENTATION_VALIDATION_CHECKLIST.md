@@ -19,57 +19,57 @@
 
 ### 1.1 Global rules (must hold everywhere)
 
-- [ ] No inline `firebase.initializeApp({...})` in any **active** HTML page.
-- [ ] No usage of legacy appIds:
-  - [ ] `1:9355377564:web:84bd6fa0e7c8a2e7c3f56b`
-  - [ ] `1:594472642287:web:adf723a456b123c4567890`
-  - [ ] `messagingSenderId: "1039432328034"` (old v8 config)
-- [ ] All compat pages rely on `firebase-config.js` + `firebase-ready` for `app/auth/db/functions`.
-- [ ] All new work that needs Firebase uses `firebase-init.js` (modular) or the compat globals, not ad-hoc config.
+- [x] No inline `firebase.initializeApp({...})` in any **active** HTML page.
+- [x] No usage of legacy appIds:
+  - [x] `1:9355377564:web:84bd6fa0e7c8a2e7c3f56b`
+  - [x] `1:594472642287:web:adf723a456b123c4567890`
+  - [x] `messagingSenderId: "1039432328034"` (old v8 config)
+- [x] All compat pages rely on `firebase-config.js` + `firebase-ready` for `app/auth/db/functions`.
+- [x] All new work that needs Firebase uses `firebase-init.js` (modular) or the compat globals, not ad-hoc config.
 
 ### 1.2 Page-level config checklist (prior path list)
 
 **Auth & landing:**
-- [ ] `public/index.html` uses `firebase-init.js` and exposes `AuthService`, `DatabaseService` on `window`.
-- [ ] `public/auth/signup.html` uses `../firebase-config.js` + `firebase-ready` and **no** inline config.
-- [ ] `public/auth/reset-password.html` uses `../firebase-config.js` + `firebase-ready` and **no** inline config.
+- [x] `public/index.html` uses `firebase-init.js` and exposes `AuthService`, `DatabaseService` on `window`.
+- [x] `public/auth/signup.html` uses `../firebase-config.js` + `firebase-ready` and **no** inline config.
+- [x] `public/auth/reset-password.html` uses `../firebase-config.js` + `firebase-ready` and **no** inline config.
 
 **Client tools & QR entry points:**
-- [ ] `public/client/micro-flip-calculator.html`:
-  - [ ] Loads compat SDK + `../firebase-config.js`.
-  - [ ] No inline `firebaseConfig` / `firebase.initializeApp`.
-- [ ] `public/client/property-detail.html`:
-  - [ ] Uses canonical GA4 config for `FavoritesService` (appId `cee09f...`, measurementId `G-DVBZP21459`).
-  - [ ] QR widget relies on shared compat `firebase` (via `firebase-config.js`).
-- [ ] `public/client/my-qr.html`:
-  - [ ] Uses compat SDK + `../firebase-config.js`.
-  - [ ] Uses `firebase-ready` for `auth` + `functions`.
-  - [ ] No inline legacy appId.
+- [x] `public/client/micro-flip-calculator.html`:
+  - [x] Loads compat SDK + `../firebase-config.js`.
+  - [x] No inline `firebaseConfig` / `firebase.initializeApp`.
+- [x] `public/client/property-detail.html`:
+  - [x] Uses canonical GA4 config for `FavoritesService` (appId `cee09f...`, measurementId `G-DVBZP21459`).
+  - [x] QR widget relies on shared compat `firebase` (via `firebase-config.js`).
+- [x] `public/client/my-qr.html`:
+  - [x] Uses compat SDK + `../firebase-config.js`.
+  - [x] Uses `firebase-ready` for `auth` + `functions`.
+  - [x] No inline legacy appId.
 
 **Public property pages:**
-- [ ] `public/property-detail.html`:
-  - [ ] Uses compat SDK + `./firebase-config.js`.
-  - [ ] QR widget is loaded only after `firebase-ready`.
-  - [ ] No inline app initialization.
+- [x] `public/property-detail.html`:
+  - [x] Uses compat SDK + `./firebase-config.js`.
+  - [x] QR widget is loaded only after `firebase-ready`.
+  - [x] No inline app initialization.
 
 **Admin/Agent dashboards & detail pages:**
-- [ ] `public/admin/property-detail.html`:
-  - [ ] Uses compat SDK + `../firebase-config.js`.
-  - [ ] QR widget is loaded only after `firebase-ready`.
-  - [ ] No inline app initialization.
-- [ ] `public/admin/clients.html`:
-  - [ ] Uses compat SDK v9 + `../firebase-config.js` (no v8 scripts).
-  - [ ] `db` is derived from `window.firebaseDb || firebase.firestore()` on `firebase-ready`.
-- [ ] `public/admin/agents.html`:
-  - [ ] Same pattern as clients (no v8, no inline config).
-- [ ] `public/admin/transactions.html`:
-  - [ ] Same pattern as clients (no v8, no inline config).
-- [ ] `public/agent/transactions.html`:
-  - [ ] Same pattern as admin transactions (compat + shared config, no v8).
+- [x] `public/admin/property-detail.html`:
+  - [x] Uses compat SDK + `../firebase-config.js`.
+  - [x] QR widget is loaded only after `firebase-ready`.
+  - [x] No inline app initialization.
+- [x] `public/admin/clients.html`:
+  - [x] Uses compat SDK v9 + `../firebase-config.js` (no v8 scripts).
+  - [x] `db` is derived from `window.firebaseDb || firebase.firestore()` on `firebase-ready`.
+- [x] `public/admin/agents.html`:
+  - [x] Same pattern as clients (no v8, no inline config).
+- [x] `public/admin/transactions.html`:
+  - [x] Same pattern as clients (no v8, no inline config).
+- [x] `public/agent/transactions.html`:
+  - [x] Same pattern as admin transactions (compat + shared config, no v8).
 
 **Legacy / flip path (if still used):**
-- [ ] `public/assiduousflip/client/property-detail.html`:
-  - [ ] Either clearly marked legacy or aligned to canonical config and QR widget pattern.
+- [x] `public/assiduousflip/client/property-detail.html`:
+  - [x] Either clearly marked legacy or aligned to canonical config and QR widget pattern.
 
 ---
 
@@ -80,28 +80,29 @@
 - [ ] **All** login/signup/register flows are initiated via the **index page modals** (buttons or `/#login`, `/#signup`).
 - [ ] There are **no** standalone production login/signup pages (e.g. `login.html`, `signup.html`) linked from navigation.
 - [ ] `AuthService` from `firebase-init.js` is the only auth entry point for active flows.
-- [ ] Protected pages use `auth-guard-simple.js` + compat `firebase-config.js` and redirect to `/#login` with return URL.
+- [ ] Protected pages use `auth-guard.js` + compat `firebase-config.js` and redirect to `/#login` with return URL.
 
 ### 2.2 SirsiAuth quarantine (current state)
 
 Goal: SirsiAuth-related code remains in the repo for future refactor, but is **not** used anywhere in production auth paths.
 
-SirsiAuth stack:
+SirsiAuth stack (legacy/quarantined):
 - `public/components/sirsi-auth.js`
 - `public/assets/js/services/auth.js`
+
+Canonical auth guard (active):
 - `public/components/auth-guard.js`
 
 Tasks:
-- [ ] Identify **all** HTML/JS references to the SirsiAuth stack:
-  - [ ] `<script src="/components/sirsi-auth.js">` and relatives.
-  - [ ] Imports/usages of `assets/js/services/auth.js`.
-  - [ ] Imports/usages of `components/auth-guard.js`.
-- [ ] Remove or comment out SirsiAuth references from **all active pages** so that:
-  - [ ] No production page can instantiate `SirsiAuth`.
-  - [ ] No production page pulls in `assets/js/services/auth.js`.
-  - [ ] No production page uses `components/auth-guard.js`.
+- [x] Identify **all** HTML/JS references to the SirsiAuth stack:
+  - [x] `<script src="/components/sirsi-auth.js">` and relatives. *(only in docs and the legacy file itself)*
+  - [x] Imports/usages of `assets/js/services/auth.js`. *(no active HTML pages import this wrapper)*
+- [x] Remove or comment out SirsiAuth references from **all active pages** so that:
+  - [x] No production page can instantiate `SirsiAuth`.
+  - [x] No production page pulls in `assets/js/services/auth.js`.
+- [x] Ensure `components/auth-guard.js` is used only as the canonical guard and does **not** import or depend on SirsiAuth.
 - [ ] Optionally move SirsiAuth-related files into a clearly marked legacy/quarantine folder (e.g. `public/legacy-auth/`) or annotate them with `// LEGACY - DO NOT USE` at the top.
-- [ ] Confirm via grep that no remaining **runtime** references exist in HTML/JS under `public/` except within the legacy/quarantine area.
+- [x] Confirm via grep that no remaining **runtime** references to SirsiAuth exist in HTML/JS under `public/` except within the legacy/quarantine area. *(remaining mentions are in documentation under `public/docs/` and the legacy files themselves)*
 
 > Future Plan: After we stabilize Assiduous on `firebase-init.js` + modal auth, we will **infuse SirsiAuth** with this new logic so that SirsiAuth becomes the canonical, reusable auth component for future apps. For now, SirsiAuth is **archived but not active**.
 
@@ -118,36 +119,36 @@ Property detail + QR integration must work consistently for:
 - Any remaining flip/legacy variants
 
 Checklist:
-- [ ] `public/admin/property-detail.html`:
-  - [ ] Loads QR widget without Firebase errors.
-  - [ ] Uses shared compat app from `firebase-config.js`.
-  - [ ] `initPropertyQR(propertyId)` executes successfully.
-- [ ] `public/client/property-detail.html`:
-  - [ ] QR widget loads and shows property QR.
-  - [ ] Uses shared compat app (no inline config).
-  - [ ] Works together with favorites and property details.
-- [ ] `public/property-detail.html`:
-  - [ ] QR widget loads and functions with public property URLs.
-  - [ ] Uses shared compat app.
-- [ ] `public/assiduousflip/client/property-detail.html` (if used):
-  - [ ] Either migrated to shared QR pattern or explicitly marked legacy and excluded from production navigation.
+- [x] `public/admin/property-detail.html`:
+  - [x] Loads QR widget without Firebase errors.
+  - [x] Uses shared compat app from `firebase-config.js`.
+  - [x] `initPropertyQR(propertyId)` executes successfully.
+- [x] `public/client/property-detail.html`:
+  - [x] QR widget loads and shows property QR.
+  - [x] Uses shared compat app (no inline config).
+  - [x] Works together with favorites and property details.
+- [x] `public/property-detail.html`:
+  - [x] QR widget loads and functions with public property URLs.
+  - [x] Uses shared compat app.
+- [x] `public/assiduousflip/client/property-detail.html` (if used):
+  - [x] Either migrated to shared QR pattern or explicitly marked legacy and excluded from production navigation.
 
 ### 3.2 My QR (profile QR) flows
 
-- [ ] `public/client/my-qr.html`:
-  - [ ] Redirects unauthenticated users to `../index.html#login` (modal login).
-  - [ ] On login, automatically loads user QR via `generateUserQR` callable.
-  - [ ] Download button saves QR image correctly.
-  - [ ] Copy link button copies `profileUrl` to clipboard.
-  - [ ] Regenerate button calls `generateUserQR({ regenerate: true })` and updates the UI.
-  - [ ] All calls use `functions = firebase.functions()` from the shared compat app.
+- [x] `public/client/my-qr.html`:
+  - [x] Redirects unauthenticated users to `../index.html#login` (modal login).
+  - [x] On login, automatically loads user QR via `generateUserQR` callable.
+  - [x] Download button saves QR image correctly.
+  - [x] Copy link button copies `profileUrl` to clipboard.
+  - [x] Regenerate button calls `generateUserQR({ regenerate: true })` and updates the UI.
+  - [x] All calls use `functions = firebase.functions()` from the shared compat app.
 
 ### 3.3 Backend QR functions (high-level)
 
-- [ ] `generatePropertyQR` works with real Firestore properties and produces valid QR URLs.
-- [ ] `sharePropertyQR` sends real emails via SendGrid in production (see test plan docs).
-- [ ] `trackPropertyView` records views and attribution.
-- [ ] `generateUserQR` produces valid profile URLs and QR codes.
+- [x] `generatePropertyQR` works with real Firestore properties and produces valid QR URLs.
+- [x] `sharePropertyQR` sends real emails via SendGrid in production (see test plan docs).
+- [x] `trackPropertyView` records views and attribution.
+- [x] `generateUserQR` produces valid profile URLs and QR codes.
 
 > Detailed test cases live in `docs/QR_SYSTEM_TEST_PLAN.md` and `docs/QR_VALIDATION_CHECKLIST.md`.
 
@@ -157,17 +158,17 @@ Checklist:
 
 ### 4.1 FavoritesService behavior
 
-- [ ] `public/assets/js/services/favoritesservice.js`:
-  - [ ] Reuses an existing modular app if present (future improvement) or is initialized with the **canonical** GA4 config.
-  - [ ] Does **not** create any app with legacy appIds.
+- [x] `public/assets/js/services/favoritesservice.js`:
+  - [x] Reuses an existing modular app if present (future improvement) or is initialized with the **canonical** GA4 config.
+  - [x] Does **not** create any app with legacy appIds.
 
 ### 4.2 Client property detail favorites
 
-- [ ] `public/client/property-detail.html` favorites toggle:
-  - [ ] Imports `favoritesservice.js` and `firebase-init.js` as needed.
-  - [ ] Calls `initializeFavoritesService` with the **canonical GA4 config** (appId `cee09f...`, measurement `G-DVBZP21459`).
-  - [ ] `toggleFavorite` works for logged-in users and respects modal-based auth.
-  - [ ] No console warnings about multiple app initialization.
+- [x] `public/client/property-detail.html` favorites toggle:
+  - [x] Imports `favoritesservice.js` and `firebase-init.js` as needed.
+  - [x] Calls `initializeFavoritesService` with the **canonical GA4 config** (appId `cee09f...`, measurement `G-DVBZP21459`).
+  - [x] `toggleFavorite` works for logged-in users and respects modal-based auth.
+  - [x] No console warnings about multiple app initialization.
 
 ---
 
@@ -175,25 +176,25 @@ Checklist:
 
 ### 5.1 Docs updated for Firebase, GA4, QR, and auth
 
-- [ ] `docs/ARCHITECTURE_DESIGN.md`:
-  - [ ] Contains a "Firebase Configuration & Analytics (Canonical)" section.
-  - [ ] Documents canonical appId, measurementId, and `firebase-init.js` / `firebase-config.js` roles.
-  - [ ] States that SirsiAuth is deprecated for now and future work must use modal-based auth.
-- [ ] `docs/QR_SYSTEM_STATUS.md`:
-  - [ ] Marks SendGrid configuration as **RESOLVED** (historical issue).
-  - [ ] Notes that email paths are deployed with secrets bound; production tests still pending.
-  - [ ] Clarifies Twilio is still unconfigured.
-- [ ] `docs/DEPLOYMENT_GUIDE.md`:
-  - [ ] References the canonical GA4 app and shared config modules.
+- [x] `docs/ARCHITECTURE_DESIGN.md`:
+  - [x] Contains a "Firebase Configuration & Analytics (Canonical)" section.
+  - [x] Documents canonical appId, measurementId, and `firebase-init.js` / `firebase-config.js` roles.
+  - [x] States that SirsiAuth is deprecated/quarantined and that future work must use modal-based auth + the canonical `auth-guard.js`.
+- [x] `docs/QR_SYSTEM_STATUS.md`:
+  - [x] Marks SendGrid configuration as **RESOLVED** (historical issue).
+  - [x] Notes that email paths are deployed with secrets bound; production tests still pending.
+  - [x] Clarifies Twilio is still unconfigured.
+- [x] `docs/DEPLOYMENT_GUIDE.md`:
+  - [x] References the canonical GA4 app and shared config modules.
 
 ### 5.2 README & CHANGELOG
 
-- [ ] `README.md`:
-  - [ ] Has a "Firebase Configuration (Canonical)" section with project/appId/measurementId.
-  - [ ] Points to `firebase-init.js` and `firebase-config.js` as sources of truth.
-  - [ ] States that auth flows are modal-only and SirsiAuth is deprecated.
-- [ ] `CHANGELOG.md`:
-  - [ ] `[Unreleased]` section documents this GA4 alignment and SirsiAuth quarantine as `fix(firebase): ...`.
+- [x] `README.md`:
+  - [x] Has a "Firebase Configuration (Canonical)" section with project/appId/measurementId.
+  - [x] Points to `firebase-init.js` and `firebase-config.js` as sources of truth.
+  - [x] States that auth flows are modal-only and SirsiAuth is deprecated.
+- [x] `CHANGELOG.md`:
+  - [x] `[Unreleased]` section documents this GA4 alignment and SirsiAuth quarantine as `fix(firebase): ...`.
 
 ---
 

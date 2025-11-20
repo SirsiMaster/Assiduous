@@ -277,7 +277,10 @@
         <!-- Main Content -->
         <main class="main-content">
             <!-- Header -->
-            <div id="header-root"></div>
+            <header id="universal-header-root"
+                    data-title="Property Form"
+                    data-subtitle="Add or edit properties for the micro-flipping platform"
+                    data-search-placeholder="Search properties..."></header>
             
             <div class="page-content">
                 <a href="properties.html" class="back-button">
@@ -713,47 +716,9 @@
         // Initialize calculations
         calculateMetrics();
     </script>
+
+    <!-- Load admin components -->
+    <script src="../components/sidebar.js"></script>
+    <script src="../components/universal-header.js"></script>
 </body>
 </html>
-    
-    <!-- Load admin components -->
-    <script src="../components/universal-header.js"></script>
-    <script>
-        // Load sidebar inline
-        document.getElementById('sidebar-root').innerHTML = `
-<div class="sidebar-header">
-  <a href="dashboard.html" class="sidebar-logo">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-      <polyline points="9 22 9 12 15 12 15 22"></polyline>
-    </svg>
-    <span class="sidebar-logo-text">Admin Portal</span>
-  </a>
-</div>
-
-<nav class="sidebar-nav">
-  <div class="nav-section">
-    <div class="nav-section-title">Main</div>
-    <a href="dashboard.html" class="nav-item">
-      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <rect x="3" y="3" width="7" height="7"></rect>
-        <rect x="14" y="3" width="7" height="7"></rect>
-        <rect x="14" y="14" width="7" height="7"></rect>
-        <rect x="3" y="14" width="7" height="7"></rect>
-      </svg>
-      Dashboard
-    </a>
-  </div>
-
-  <div class="nav-section">
-    <div class="nav-section-title">Management</div>
-    <a href="properties.html" class="nav-item active">
-      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-      </svg>
-      Properties
-    </a>
-  </div>
-</nav>
-        `;
-    </script>

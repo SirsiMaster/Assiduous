@@ -264,6 +264,14 @@ service cloud.firestore {
       // Update/Delete: No direct updates
       allow update, delete: if false;
     }
+
+    // Auth events: per-user login history (successes only)
+    match /auth_events/{eventId} {
+      // Users can create their own auth event documents; admins can read all
+      allow create: if isAuthenticated() && request.resource.data.uid == getUserId();
+      allow read: if isAdmin();
+      allow update, delete: if false;
+    }
     
     match /email_logs/{logId} {
       // Read: Only admins can read email logs

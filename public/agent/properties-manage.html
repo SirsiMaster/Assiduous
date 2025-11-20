@@ -270,7 +270,14 @@
                         loadProperties();
                     } else {
                         console.log('No user, redirecting to login...');
-                        window.location.href = '/#login';
+                        const path = window.location.pathname || '';
+                        let base = '';
+                        if (path.indexOf('/public/') === 0) {
+                            base = '/public';
+                        } else if (path.indexOf('/assiduousflip/') === 0) {
+                            base = '/assiduousflip';
+                        }
+                        window.location.href = base + '/index.html#login';
                     }
                 });
             } catch (error) {

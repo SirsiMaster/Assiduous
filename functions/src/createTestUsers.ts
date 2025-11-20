@@ -2,20 +2,19 @@ import * as admin from 'firebase-admin';
 import { onRequest } from 'firebase-functions/v2/https';
 
 /**
- * Cloud Function to create test users for authentication testing
- * 
- * SECURITY: This should ONLY be deployed in development/staging environments
- * Remove before production deployment!
- * 
- * Usage:
- *   curl -X POST https://us-central1-assiduous-prod.cloudfunctions.net/createTestUsers \
- *     -H "Content-Type: application/json" \
- *     -d '{"action": "create"}'
- * 
- * Actions:
- *   - create: Create all test users
- *   - delete: Delete all test users
- *   - list: List all test users
+ * DEPRECATED: Legacy test-user factory (DO NOT USE IN PRODUCTION)
+ * ----------------------------------------------------------------
+ * This function was originally used to create `@assiduous.com` test
+ * accounts for Step 12 auth testing. Those accounts have been removed
+ * from the production project and must not be recreated.
+ *
+ * To avoid future confusion, this endpoint is now **hard-disabled**.
+ * Any calls will return HTTP 410 and perform **no writes** to Auth or
+ * Firestore. The implementation is kept only for historical reference.
+ *
+ * If you need to seed test users in the future, create them manually
+ * in Firebase Auth using the current approved test-account policy for
+ * this project.
  */
 
 interface TestUser {
@@ -87,6 +86,17 @@ const TEST_USERS: TestUser[] = [
 export const createTestUsers = onRequest(
   { cors: true, maxInstances: 1 },
   async (req, res) => {
+    // HARD-DEPRECATED GUARD
+    // ----------------------
+    // This endpoint no longer performs any actions. It exists only so
+    // that old documentation references do not break.
+    res.status(410).json({
+      error:
+        'createTestUsers is deprecated. @assiduous.com test users were removed and must not be recreated.',
+    });
+    return;
+
+    // --- Legacy implementation below (kept for historical reference) ---
     try {
       // SECURITY: Require authorization header for production
       const authHeader = req.headers.authorization;

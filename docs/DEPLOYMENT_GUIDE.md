@@ -8,6 +8,21 @@
 
 ## Deployment Procedures and Configuration
 
+### Firebase Configuration (Canonical)
+
+All deployments target the production Firebase project and GA4-enabled web app:
+
+- **Project:** `assiduous-prod`
+- **Web app (GA4):** `1:9355377564:web:cee09f952eea43976ee659`
+- **Measurement ID:** `G-DVBZP21459`
+
+Frontend code in deployed artifacts MUST use the shared configuration modules:
+
+- `public/assets/js/firebase-init.js` — canonical modular initializer (AuthService, DatabaseService, etc.) used by `public/index.html` and modular services.
+- `public/firebase-config.js` — compat initializer used by admin/agent/client portals, QR widgets, and other compat pages via the `firebase-ready` event.
+
+Inline `firebase.initializeApp({...})` calls and ad-hoc configs MUST NOT appear in any deployed HTML; they are considered legacy and should only remain in explicitly marked legacy paths (e.g., `public/assiduousflip/**`).
+
 **Document Type:** Deployment Guide  
 **Version:** 2.1.0  
 **Last Updated:** November 4, 2025  

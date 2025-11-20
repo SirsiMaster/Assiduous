@@ -77,5 +77,11 @@ service cloud.firestore {
     match /idempotency/{doc} {
       allow read, write: if false;
     }
+
+    // Auth events: per-user login history (successes only)
+    match /auth_events/{eventId} {
+      allow create: if isAuthenticated() && request.auth.uid == request.resource.data.uid;
+      allow read: if isAdmin();
+    }
   }
 }

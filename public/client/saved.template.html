@@ -594,7 +594,7 @@
                     <div class="empty-icon">❤️</div>
                     <h2 class="empty-title">No Saved Properties Yet</h2>
                     <p class="empty-text">Start browsing properties and save your favorites to see them here</p>
-                    <button class="btn btn-primary" onclick="window.location.href='/client/properties.html'">
+                    <button class="btn btn-primary" onclick="window.location.href='properties.html'">
                         📋 Browse Properties
                     </button>
                 </div>
@@ -805,9 +805,9 @@
         // View property details
         function viewProperty(propertyId) {
             if (propertyId === 'demo-property') {
-                window.location.href = '/client/property-detail.html';
+                window.location.href = 'property-detail.html';
             } else {
-                window.location.href = `/client/property-detail.html?id=${propertyId}`;
+                window.location.href = `property-detail.html?id=${propertyId}`;
             }
         }
         

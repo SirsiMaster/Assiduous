@@ -363,7 +363,10 @@
         <!-- Main Content -->
         <main class="main-content">
             <!-- Header -->
-            <div id="header-root"></div>
+            <header id="universal-header-root"
+                    data-title="Agents Management"
+                    data-subtitle="Manage all agents, performance, and coverage"
+                    data-search-placeholder="Search agents..."></header>
 
             <!-- Page Content -->
             <div class="page-content">
@@ -558,18 +561,6 @@
                 }
             }
         };
-
-        // Highlight active page in sidebar
-        document.addEventListener('DOMContentLoaded', function() {
-            const currentPath = window.location.pathname;
-            document.querySelectorAll('.nav-item').forEach(item => {
-                if (item.getAttribute('href') === currentPath) {
-                    item.classList.add('active');
-                } else {
-                    item.classList.remove('active');
-                }
-            });
-        });
     </script>
     
     <!-- Firebase SDK compat + shared config -->
@@ -678,6 +669,6 @@
     
     <!-- Components -->
     <script src="../components/sidebar.js"></script>
-    <script src="../components/admin-header.js"></script>
+    <script src="../components/universal-header.js"></script>
 </body>
 </html>

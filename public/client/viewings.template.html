@@ -666,7 +666,8 @@
 
   <div class="nav-section">
     <div class="nav-section-title">Tools</div>
-    <a href="/client/micro-flip-calculator.html" class="nav-item" data-key="calculator">
+    <!-- Use paths relative to /client/ so this works in both prod and local /public/client/ -->
+    <a href="micro-flip-calculator.html" class="nav-item" data-key="calculator">
       <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect>
         <line x1="8" y1="6" x2="16" y2="6"></line>
@@ -675,7 +676,7 @@
       </svg>
       Micro-Flip Calculator
     </a>
-    <a href="/client/deal-analyzer.html" class="nav-item" data-key="analyzer">
+    <a href="deal-analyzer.html" class="nav-item" data-key="analyzer">
       <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <line x1="12" y1="1" x2="12" y2="23"></line>
         <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
@@ -728,7 +729,7 @@
                     <div class="viewings-section">
                         <div class="section-header">
                             <h2 class="section-title">Your Viewings</h2>
-                            <button class="btn btn-primary" onclick="window.location.href='/client/properties.html'">
+                            <button class="btn btn-primary" onclick="window.location.href='properties.html'">
                                 + Schedule New
                             </button>
                         </div>
@@ -748,7 +749,7 @@
                             <div class="empty-icon">📅</div>
                             <h2 class="empty-title">No Scheduled Viewings</h2>
                             <p class="empty-text">Browse properties and schedule viewings to see them here</p>
-                            <button class="btn btn-primary" onclick="window.location.href='/client/properties.html'">
+                            <button class="btn btn-primary" onclick="window.location.href='properties.html'">
                                 Browse Properties
                             </button>
                         </div>

@@ -81,7 +81,7 @@ STRIPE_WEBHOOK_SECRET=whsec_YOUR_ACTUAL_SECRET_HERE
 SENDGRID_API_KEY=SG.YOUR_ACTUAL_KEY_HERE
 
 # Default Email Settings
-NOTIFICATION_EMAIL=noreply@assiduous.com
+NOTIFICATION_EMAIL=noreply@assiduousrealty.com
 
 # Payment Settings (keep defaults)
 PAYMENT_CURRENCY=usd

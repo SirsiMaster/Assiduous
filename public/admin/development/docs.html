@@ -296,7 +296,10 @@
         <!-- Main Content -->
         <main class="main-content">
             <!-- Standardized Admin Header -->
-            <div id="header-root"></div>
+            <header id="universal-header-root" 
+                    data-title="Development Documentation" 
+                    data-subtitle="Canonical documentation, specs, and implementation guides"
+                    data-search-placeholder="Search development docs..."></header>
 
             <!-- Page Content -->
             <div class="page-content">
@@ -1007,11 +1010,14 @@ python -m pytest
         });
 
         // Search functionality
-        document.querySelector('.search-input').addEventListener('input', function(e) {
-            const searchTerm = e.target.value.toLowerCase();
-            // Implement search logic here
-            console.log('Searching for:', searchTerm);
-        });
+        const searchInput = document.querySelector('[data-search-input]');
+        if (searchInput) {
+            searchInput.addEventListener('input', function(e) {
+                const searchTerm = e.target.value.toLowerCase();
+                // Implement search logic here
+                console.log('Searching for:', searchTerm);
+            });
+        }
     </script>
     <!-- Load Component Scripts -->
     <script src="../../components/sidebar.js"></script>

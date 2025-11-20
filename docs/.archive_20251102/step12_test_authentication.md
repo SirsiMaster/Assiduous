@@ -35,10 +35,14 @@ Comprehensive testing of Firebase Authentication flows across all user roles (cl
 - Location: `public/assets/js/firebase-init.js`
 - Methods: `signIn`, `signUp`, `signOut`, `resetPassword`
 
-✅ **Test Users** (Will be created during seeding or manually)
+✅ **Test Users** (historical)
 - Admin: `admin@assiduous.com`
 - Agent: `agent@assiduous.com`
 - Client: `client@assiduous.com`
+
+> NOTE (2025-11-19): These `@assiduous.com` accounts were legacy test
+> users only and have been removed. They are kept here solely for
+> historical reference and must not be treated as current credentials.
 
 ---
 

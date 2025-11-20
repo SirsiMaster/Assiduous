@@ -602,7 +602,8 @@
                 // Check authentication
                 const user = await checkAuth();
                 if (!user) {
-                    window.location.href = '/agent/login.html';
+                    // Use path relative to /agent/ so it works in prod and /public/agent/
+                    window.location.href = 'login.html';
                     return;
                 }
                 

@@ -458,18 +458,6 @@
                 }
             }
         };
-
-        // Highlight active page in sidebar
-        document.addEventListener('DOMContentLoaded', function() {
-            const currentPath = window.location.pathname;
-            document.querySelectorAll('.nav-item').forEach(item => {
-                if (item.getAttribute('href') === currentPath) {
-                    item.classList.add('active');
-                } else {
-                    item.classList.remove('active');
-                }
-            });
-        });
     </script>
     
     <!-- Firebase SDK compat + shared config -->
@@ -579,6 +567,6 @@
     
     <!-- Components -->
     <script src="../components/sidebar.js"></script>
-    <script src="../components/admin-header.js"></script>
+    <script src="../components/universal-header.js"></script>
 </body>
 </html>

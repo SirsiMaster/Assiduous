@@ -31,8 +31,8 @@ All frontend Firebase usage MUST flow through these shared modules:
 - **Do not** use legacy appIds (e.g. `1:9355377564:web:84bd6fa0e7c8a2e7c3f56b` or `1:594472642287:web:adf723a456b123c4567890`).
 - New work MUST import from `firebase-init.js` (modular) or rely on `firebase-config.js` + the `firebase-ready` event.
 
-Authentication is owned by the **modal-based flow** on `index.html` via `AuthService` from `firebase-init.js`.  
-The older SirsiAuth-based layer (`components/sirsi-auth.js`, `assets/js/services/auth.js`, `components/auth-guard.js`) is **deprecated** and MUST NOT be used for new features.
+Authentication is owned by the **modal-based flow** on `index.html` via `AuthService` from `firebase-init.js`, with `public/components/auth-guard.js` as the canonical guard for protected admin/agent/client pages.  
+The older SirsiAuth stack (`public/components/sirsi-auth.js`, `public/assets/js/services/auth.js`) is **deprecated/quarantined** and MUST NOT be used for new features.
 
 ---
 

@@ -175,6 +175,20 @@ export const AuthService = {
       const userDoc = await getDoc(doc(db, 'users', user.uid));
       const userData = userDoc.data();
 
+      // Log successful auth event for audit/debugging
+      try {
+        await addDoc(collection(db, 'auth_events'), {
+          uid: user.uid,
+          email: user.email,
+          role: userData?.role || 'client',
+          status: 'success',
+          source: 'web_landing_modal',
+          timestamp: serverTimestamp(),
+        });
+      } catch (logError) {
+        console.warn('Failed to log auth event:', logError);
+      }
+
       return {
         success: true,
         user,
@@ -233,20 +247,28 @@ export const AuthService = {
     }
   },
 
-  // Get redirect URL based on role
+  // Get redirect URL based on role (environment-aware for local /public dev)
   getRoleRedirect(role, status = 'active') {
+    const path = window.location.pathname || '';
+    let base = '';
+    if (path.startsWith('/public/')) {
+      base = '/public';
+    } else if (path.startsWith('/assiduousflip/')) {
+      base = '/assiduousflip';
+    }
+
     if (role === 'agent' && status === 'pending') {
-      return '/agent-pending.html';
+      return `${base}/agent-pending.html`;
     }
 
     const redirects = {
-      admin: '/admin/dashboard.html',
-      agent: '/agent/dashboard.html',
-      client: '/client/dashboard.html',
-      investor: '/client/dashboard.html', // Investors use client portal
+      admin: `${base}/admin/dashboard.html`,
+      agent: `${base}/agent/dashboard.html`,
+      client: `${base}/client/dashboard.html`,
+      investor: `${base}/client/dashboard.html`, // Investors use client portal
     };
 
-    return redirects[role] || '/client/dashboard.html';
+    return redirects[role] || `${base}/client/dashboard.html`;
   },
 };
 

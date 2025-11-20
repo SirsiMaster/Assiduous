@@ -18,6 +18,11 @@
 
 ---
 
+> NOTE (2025-11-19): The `@assiduous.com` accounts described in this
+> document were legacy test users and have been removed from the
+> production Firebase project. They are kept here only for historical
+> reference and must not be treated as current credentials.
+>
 ## 🔐 Admin Users (4 total)
 
 ### 1. admin@assiduous.com ✅ RECOMMENDED FOR TESTING

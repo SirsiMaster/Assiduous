@@ -307,7 +307,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics-compat.js"></script>
     <script src="../firebase-config.js"></script>
-    <script src="../components/auth-guard-simple.js"></script>
+    <script src="../components/auth-guard.js"></script>
     <script>
         // Ensure button styles are loaded
         (function() {
@@ -336,31 +336,31 @@
     <script>
         // Protect this page - agents only (modal-based auth via compat guard)
         (async function() {
+            // Ensure Firebase has initialized
             if (!window.firebaseAuth || !window.firebaseDb) {
                 console.error('[Agent Dashboard] Firebase auth/db not ready');
                 return;
             }
 
-            // Use simple auth guard (redirects to index.html#login if not authenticated)
-            if (typeof protectPage !== 'function') {
-                console.warn('[Agent Dashboard] auth-guard-simple.js not loaded; falling back to direct check');
-            }
-
-            const user = await (window.AuthService?.getCurrentUser?.() || null);
-            if (!user) {
-                window.location.href = '/#login';
+            if (typeof authGuard === 'undefined' || !authGuard.protect) {
+                console.error('[Agent Dashboard] auth-guard-simple not available');
                 return;
             }
 
-            // Update header with actual user data
-            const headerRoot = document.getElementById('universal-header-root');
-            if (headerRoot) {
-                headerRoot.setAttribute('data-user-name', `${user.firstName || ''} ${user.lastName || ''}`.trim());
-                headerRoot.setAttribute('data-user-email', user.email || '');
-            }
+            await authGuard.protect('agent', {
+                requireEmailVerification: true,
+                onSuccess: async (user) => {
+                    // Update header with actual user data
+                    const headerRoot = document.getElementById('universal-header-root');
+                    if (headerRoot) {
+                        headerRoot.setAttribute('data-user-name', `${user.displayName || user.email}`);
+                        headerRoot.setAttribute('data-user-email', user.email || '');
+                    }
 
-            // Load agent dashboard data
-            await loadAgentDashboard(user);
+                    // Load agent dashboard data
+                    await loadAgentDashboard(user);
+                }
+            });
         })();
         
         // Initialize dashboard with user data

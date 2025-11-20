@@ -22,31 +22,41 @@
  * - Dynamically adjusts content based on user role
  */
 (function () {
-  function resolveBase(el) {
-    var base = el.getAttribute('data-base');
-    if (base && base.trim()) return base.replace(/\/$/, '');
-
-    // New structure: everything is at root level
+  // Detect app base so redirects work for both production ("/") and local "/public" dev
+  function getAppBasePath() {
+    var path = window.location.pathname || '';
+    if (path.indexOf('/public/') === 0) return '/public';
+    if (path.indexOf('/assiduousflip/') === 0) return '/assiduousflip';
     return '';
   }
 
-  function createBreadcrumb(pathParts) {
+  function resolveBase(el) {
+    var baseAttr = el.getAttribute('data-base');
+    if (baseAttr && baseAttr.trim()) return baseAttr.replace(/\/$/, '');
+
+    // Default to app root path so header works under /public and /assiduousflip in local dev
+    return getAppBasePath();
+  }
+
+  function createBreadcrumb(pathParts, appBase) {
     if (pathParts.length <= 1) return null;
     
     var breadcrumbItems = [];
-    var currentPath = '';
+    var base = appBase || '';
+    var currentPath = base;
     
     // Add back button for nested pages (depth > 2)
     if (pathParts.length > 2) {
-      var parentPath = '/' + pathParts.slice(0, -1).join('/') + '/';
+      var parentPath = base + '/' + pathParts.slice(0, -1).join('/') + '/';
       var backButton = '<a href="' + parentPath + '" class="breadcrumb-back">';
       backButton += '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>';
       backButton += 'Back</a>';
       breadcrumbItems.push(backButton);
     }
     
-    // Add home/root
-    breadcrumbItems.push('<a href="/">Home</a>');
+    // Add home/root (always index.html under app base)
+    var homeHref = (base || '') + '/index.html';
+    breadcrumbItems.push('<a href="' + homeHref + '">Home</a>');
     
     // Build breadcrumb trail
     for (var i = 0; i < pathParts.length; i++) {
@@ -121,12 +131,16 @@
   }
   
   function getRoleSpecificUrls(role) {
-    var basePrefix = role === 'admin' ? '../admin/' : (role === 'agent' ? '../agent/' : '../client/');
+    // Compute dashboard section prefix for settings/help links
+    var sectionPrefix = role === 'admin' ? '../admin/' : (role === 'agent' ? '../agent/' : '../client/');
+    // Environment-aware home URL for logout
+    var appBase = getAppBasePath();
+    var logoutUrl = (appBase || '') + '/index.html';
     
     return {
-      settings: basePrefix + 'settings.html',
-      help: basePrefix + 'help.html',
-      logout: '/' // TODO: Should be '/login?role=' + role in production
+      settings: sectionPrefix + 'settings.html',
+      help: sectionPrefix + 'help.html',
+      logout: logoutUrl
     };
   }
   
@@ -211,7 +225,12 @@
   function configureHeader(config) {
     // Add back button if we're in a subdirectory
     var path = window.location.pathname;
-    var pathParts = path.split('/').filter(function(p) { return p; });
+    var appBase = getAppBasePath();
+    var relativePath = path;
+    if (appBase && path.indexOf(appBase + '/') === 0) {
+      relativePath = path.substring(appBase.length);
+    }
+    var pathParts = relativePath.split('/').filter(function(p) { return p; });
     
     // Set page title and subtitle
     var titleEl = document.querySelector('[data-header-title]');
@@ -223,7 +242,7 @@
     if (pathParts.length > 1 && !path.includes('/admin/development/')) {
       var breadcrumbContainer = document.querySelector('[data-breadcrumb-container]');
       if (breadcrumbContainer) {
-        var breadcrumb = createBreadcrumb(pathParts);
+        var breadcrumb = createBreadcrumb(pathParts, appBase);
         if (breadcrumb) {
           breadcrumbContainer.innerHTML = breadcrumb;
           breadcrumbContainer.style.display = 'flex';
@@ -255,6 +274,17 @@
           return '<button class="' + classes + '" onclick="' + (action.onclick || '') + '">' + icon + action.label + '</button>';
         }
       }).join('');
+    }
+
+    // Wire up logout links to global logout handler
+    var logoutLinks = document.querySelectorAll('[data-logout-link]');
+    if (logoutLinks && logoutLinks.length > 0) {
+      logoutLinks.forEach(function(link) {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+          performGlobalLogout();
+        });
+      });
     }
   }
 
@@ -343,6 +373,43 @@
     var config = parseConfig(root);
     injectHeader(root, base, config);
   });
+
+  function performGlobalLogout() {
+    try {
+      // Prefer the simple auth guard if available (handles HOME_URL correctly)
+      if (window.authGuard && typeof window.authGuard.signOut === 'function') {
+        window.authGuard.signOut();
+        return;
+      }
+
+      // Fallback: use FirebaseServices Auth if present
+      if (window.FirebaseServices && FirebaseServices.auth && typeof FirebaseServices.auth.signOut === 'function') {
+        FirebaseServices.auth.signOut().finally(function() {
+          var base = getAppBasePath();
+          window.location.href = (base || '') + '/index.html';
+        });
+        return;
+      }
+
+      // Legacy compat Firebase fallback
+      if (window.firebase && firebase.auth) {
+        firebase.auth().signOut().finally(function() {
+          var base = getAppBasePath();
+          window.location.href = (base || '') + '/index.html';
+        });
+        return;
+      }
+    } catch (e) {
+      console.error('[Header] Logout error:', e);
+    }
+
+    // Last resort: redirect without explicit sign out
+    var base = getAppBasePath();
+    window.location.href = (base || '') + '/index.html';
+  }
+
+  // Expose global logout helper for sidebars and other components
+  window.performGlobalLogout = performGlobalLogout;
 
   // Utility functions for common header actions
   window.HeaderActions = {

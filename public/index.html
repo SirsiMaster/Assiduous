@@ -921,7 +921,7 @@
     <!-- Header -->
     <header class="header" id="header">
         <div class="header-inner">
-            <a href="/" class="logo">AssiduousFlip</a>
+            <a href="index.html" class="logo">AssiduousFlip</a>
             <nav class="nav">
                 <a href="#features">Features</a>
                 <a href="#deals">Properties</a>
@@ -1863,14 +1863,11 @@
                         success.style.display = 'block';
                         form.style.display = 'none';
                         
-                        // Redirect immediately based on role
-                        const redirects = {
-                            admin: '/admin/dashboard.html',
-                            agent: '/agent-pending.html', // Agents wait for approval
-                            client: '/client/dashboard.html',
-                            investor: '/client/dashboard.html'
-                        };
-                        window.location.href = redirects[role] || '/client/dashboard.html';
+                        // Redirect immediately based on role (env-aware via AuthService)
+                        const status = role === 'agent' ? 'pending' : 'active';
+                        const redirectUrl = window.AuthService.getRoleRedirect(role, status);
+                        console.log('[Signup] Redirecting to:', redirectUrl);
+                        window.location.href = redirectUrl;
                         
                     } catch (error) {
                         console.error('[Signup] Error:', error);
@@ -1908,6 +1905,15 @@
             if (loginModal) loginModal.style.display = 'none';
             if (modal) modal.style.display = 'flex';
         }
+
+        // Auto-open login/signup modals based on URL hash (e.g. index.html#login)
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.location.hash === '#login') {
+                showLogin();
+            } else if (window.location.hash === '#signup') {
+                showSignup();
+            }
+        });
 
         (function() {
             const closeBtn = document.getElementById('closeLogin');
@@ -2152,29 +2158,45 @@
     
     <!-- Firebase Modular SDK - v10.7.0 -->
     <script type="module">
-        import { AuthService, DatabaseService } from '/assets/js/firebase-init.js';
-        
-        // Make services available globally for modal handlers
-        window.AuthService = AuthService;
-        window.DatabaseService = DatabaseService;
-        
-        // Signal that Firebase is ready
-        window.dispatchEvent(new Event('firebase-ready'));
-        
-        // Check for hash-based modal triggers
-        window.addEventListener('DOMContentLoaded', () => {
-            const hash = window.location.hash;
-            
-            // Open login modal if #login in URL
-            if (hash === '#login') {
-                showLogin();
+        (async () => {
+            try {
+                const path = window.location.pathname || '';
+                let base = '';
+                if (path.startsWith('/public/')) {
+                    base = '/public';
+                } else if (path.startsWith('/assiduousflip/')) {
+                    base = '/assiduousflip';
+                }
+
+                // Dynamically import the Firebase module from the correct base
+                const { AuthService, DatabaseService } = await import(`${base}/assets/js/firebase-init.js`);
+
+                // Make services available globally for modal handlers
+                window.AuthService = AuthService;
+                window.DatabaseService = DatabaseService;
+
+                // Signal that Firebase is ready
+                window.dispatchEvent(new Event('firebase-ready'));
+
+                // Check for hash-based modal triggers
+                window.addEventListener('DOMContentLoaded', () => {
+                    const hash = window.location.hash;
+
+                    // Open login modal if #login in URL
+                    if (hash === '#login') {
+                        if (typeof showLogin === 'function') showLogin();
+                    }
+                    // Open signup modal if #signup in URL
+                    else if (hash === '#signup') {
+                        if (typeof showSignup === 'function') showSignup();
+                    }
+                });
+
+                console.log('🔥 Firebase services loaded and ready', { base });
+            } catch (err) {
+                console.error('[Landing] Failed to load Firebase module', err);
             }
-            // Open signup modal if #signup in URL
-            else if (hash === '#signup') {
-                showSignup();
-            }
-        });
-        console.log('🔥 Firebase services loaded and ready');
+        })();
     </script>
     <script>
         // HARDENED CAROUSEL FIX: Reduce DOM to a single background layer and rotate URLs

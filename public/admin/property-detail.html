@@ -335,7 +335,10 @@
         <!-- Main Content -->
         <main class="main-content">
             <!-- Header -->
-            <div id="header-root"></div>
+            <header id="universal-header-root"
+                    data-title="Property Details"
+                    data-subtitle="View and manage property details and investment metrics"
+                    data-search-placeholder="Search properties..."></header>
 
             <div class="page-content">
                 <a href="properties.html" class="back-button">
@@ -715,76 +718,9 @@
         // Initialize
         init();
     </script>
-    
+
     <!-- Load admin components -->
+    <script src="../components/sidebar.js"></script>
     <script src="../components/universal-header.js"></script>
-    <script>
-        // Load sidebar inline
-        document.getElementById('sidebar-root').innerHTML = `
-<div class="sidebar-header">
-  <a href="dashboard.html" class="sidebar-logo">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-      <polyline points="9 22 9 12 15 12 15 22"></polyline>
-    </svg>
-    <span class="sidebar-logo-text">Admin Portal</span>
-  </a>
-</div>
-
-<nav class="sidebar-nav">
-  <div class="nav-section">
-    <div class="nav-section-title">Main</div>
-    <a href="dashboard.html" class="nav-item">
-      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <rect x="3" y="3" width="7" height="7"></rect>
-        <rect x="14" y="3" width="7" height="7"></rect>
-        <rect x="14" y="14" width="7" height="7"></rect>
-        <rect x="3" y="14" width="7" height="7"></rect>
-      </svg>
-      Dashboard
-    </a>
-    <a href="analytics.html" class="nav-item">
-      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <line x1="12" y1="20" x2="12" y2="10"></line>
-        <line x1="18" y1="20" x2="18" y2="4"></line>
-        <line x1="6" y1="20" x2="6" y2="16"></line>
-      </svg>
-      Realty Analytics
-    </a>
-  </div>
-
-  <div class="nav-section">
-    <div class="nav-section-title">Management</div>
-    <a href="properties.html" class="nav-item active">
-      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-      </svg>
-      Properties
-    </a>
-    <a href="agents.html" class="nav-item">
-      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-        <circle cx="9" cy="7" r="4"></circle>
-      </svg>
-      Agents
-    </a>
-    <a href="clients.html" class="nav-item">
-      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-        <circle cx="12" cy="7" r="4"></circle>
-      </svg>
-      Clients
-    </a>
-    <a href="transactions.html" class="nav-item">
-      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <line x1="12" y1="1" x2="12" y2="23"></line>
-        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
-      </svg>
-      Transactions
-    </a>
-  </div>
-</nav>
-        `;
-    </script>
 </body>
 </html>

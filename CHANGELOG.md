@@ -34,7 +34,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - fix(properties): Improve getNeighborhoods resilience with null checks
 
 ### Fixed
-- fix(firebase): Align all frontend Firebase/QR/auth pages to canonical GA4 web app config and remove legacy inline app initializations
+- fix(firebase): Align all frontend Firebase/QR/auth pages to canonical GA4 web app config, remove legacy inline app initializations, and quarantine the SirsiAuth-based auth stack
 
 
 ## [0.128.1] - 2025-11-16

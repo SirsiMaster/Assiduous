@@ -276,7 +276,10 @@
         <!-- Main Content -->
         <main class="main-content">
             <!-- Standardized Admin Header -->
-            <div id="header-root"></div>
+            <header id="universal-header-root" 
+                    data-title="Contracts"
+                    data-subtitle="Centralized view of agreements, payment structures, and documentation"
+                    data-search-placeholder="Search contracts and documents..."></header>
 
             <!-- Dashboard Content -->
             <div class="dashboard-content">
@@ -378,20 +381,8 @@
     <script>
         // Simple interactivity
         document.addEventListener('DOMContentLoaded', function() {
-            // Mark current page in navigation
-            const currentPath = window.location.pathname;
-            document.querySelectorAll('.nav-item').forEach(item => {
-                if (currentPath.includes('contracts')) {
-                    if (item.textContent.includes('Contracts')) {
-                        item.classList.add('active');
-                    } else {
-                        item.classList.remove('active');
-                    }
-                }
-            });
-
             // Add hover effects to cards
-            document.querySelectorAll('.contract-card').forEach(card => {
+            document.querySelectorAll('.contract-sm-sm-card').forEach(card => {
                 card.addEventListener('mouseenter', function() {
                     this.style.transform = 'translateY(-4px)';
                 });
@@ -401,7 +392,7 @@
             });
         });
     </script>
-    <!-- Sidebar pre-rendered, no JS needed -->
+    <script src="../../components/sidebar.js"></script>
     <script src="../../components/universal-header.js"></script>
     
     <!-- OpenSign Global Integration -->

@@ -405,7 +405,8 @@
                     if (result.data.success) {
                         updateStatus('success', `✓ Connected to ${result.data.agentName}!`);
                         setTimeout(() => {
-                            window.location.href = '/client/dashboard.html';
+                            // Relative path so it works in both prod and /public dev
+                            window.location.href = 'client/dashboard.html';
                         }, 2000);
                     }
                 } catch (error) {
@@ -413,10 +414,10 @@
                     updateStatus('error', 'Failed to process referral: ' + error.message);
                 }
             } else {
-                // User not logged in - redirect to signup with referral code
+                // User not logged in - redirect to signup with referral code (relative)
                 updateStatus('success', '✓ Redirecting to sign up...');
                 setTimeout(() => {
-                    window.location.href = `/auth/signup.html?ref=${referralCode}`;
+                    window.location.href = `auth/signup.html?ref=${referralCode}`;
                 }, 1500);
             }
         }
@@ -446,14 +447,15 @@
         
         function goBack() {
             if (currentUser) {
-                // Check user role and redirect accordingly
+                // Check user role and redirect accordingly (relative from /scan-qr.html)
                 firebase.firestore().collection('users').doc(currentUser.uid).get()
                     .then(doc => {
                         const role = doc.data()?.role || 'client';
-                        window.location.href = `/${role}/dashboard.html`;
+                        window.location.href = `${role}/dashboard.html`;
                     });
             } else {
-                window.location.href = '/';
+                // Go back to marketing landing page
+                window.location.href = 'index.html';
             }
         }
         

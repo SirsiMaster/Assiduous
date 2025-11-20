@@ -38,6 +38,10 @@ Test all authentication flows end-to-end to ensure:
 
 ---
 
+> NOTE (2025-11-19): The test users listed in this plan use the
+> `@assiduous.com` domain and are **legacy only**. They no longer exist
+> in the production project and are kept for historical reference only.
+>
 ## 🔧 Test User Creation
 
 ### Automated Script

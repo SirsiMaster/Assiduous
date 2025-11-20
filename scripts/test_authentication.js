@@ -21,7 +21,17 @@ const args = process.argv.slice(2);
 const shouldCreateUsers = args.includes('--create-users');
 const shouldDeleteUsers = args.includes('--delete-users');
 
-// Initialize Firebase Admin
+// HARD DEPRECATION GUARD
+// ----------------------
+// This script creates `@assiduous.com` test users which are now
+// considered legacy-only and must not be recreated in production.
+//
+// To prevent accidental recreation of the old accounts, the script now
+// exits immediately.
+console.error('[DEPRECATED] scripts/test_authentication.js uses legacy @assiduous.com test users and is disabled.');
+process.exit(1);
+
+// Initialize Firebase Admin (unreachable; kept for historical context)
 let serviceAccount;
 try {
   serviceAccount = require('../firebase-migration-package/firebase-service-account.json');

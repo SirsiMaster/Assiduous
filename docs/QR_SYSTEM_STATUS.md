@@ -7,7 +7,7 @@
 
 ## Executive Summary
 
-The QR code system for property sharing and client invitations has been **implemented in code** but is **non-functional in production** due to missing SendGrid and Twilio secret configurations. The recent work (commits from Nov 12, 2025) focused on building the infrastructure, but the system has never been tested end-to-end with actual email/SMS delivery.
+The QR code system for property sharing and client invitations has been **implemented in code** and is **email-capable in production** with SendGrid secrets configured and bound to Cloud Functions. Twilio SMS secrets are still missing, so SMS delivery paths are effectively disabled. The recent work focused on wiring the infrastructure end-to-end; email flows are ready for production testing, while SMS flows remain dormant until Twilio is configured.
 
 ---
 

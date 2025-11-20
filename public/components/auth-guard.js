@@ -1,432 +1,503 @@
 /**
- * Auth Guard Middleware (LEGACY – SirsiAuth-based)
- * ------------------------------------------------
- * This guard is tightly coupled to the legacy SirsiAuth stack and is currently
- * QUARANTINED. New protected pages must use `auth-guard-simple.js` together
- * with `firebase-config.js` and modal-based auth from `index.html`.
- *
- * This file is kept for future refactor when SirsiAuth is updated to consume
- * the canonical Firebase/auth implementation.
+ * Auth Guard for AssiduousFlip
+ * Protects pages by checking Firebase Auth state and user roles
+ * USAGE: Add to any protected page with:
+ *   <script src="/components/auth-guard.js"></script>
+ *   <script>authGuard.protect(['admin', 'agent']);</script>
  */
 
-class AuthGuard {
-    constructor(config = {}) {
-        this.auth = null;
-        
-        // Dynamic environment detection
-        this.environment = this.detectEnvironment();
-        
-        this.config = {
-            checkInterval: 30000, // Check session every 30 seconds
-            sessionTimeout: 3600000, // 1 hour
-            ...config
-        };
-        
-        this.lastActivity = Date.now();
-        this.sessionCheckInterval = null;
-    }
+(function() {
+    'use strict';
     
-    /**
-     * Detect current environment (staging or production)
-     */
-    detectEnvironment() {
-        const hostname = window.location.hostname;
-        
-        if (hostname.includes('staging')) {
-            return 'staging';
-        } else if (hostname.includes('prod') || hostname === 'assiduousflip.com' || hostname === 'www.assiduousflip.com') {
-            return 'production';
-        } else if (hostname === 'localhost' || hostname === '127.0.0.1') {
-            return 'development';
-        }
-        
-        return 'production'; // default
+    // Determine app base path so redirects work in both production and local /public dev
+    // - In production (Firebase Hosting): paths look like /admin/dashboard.html → base ''
+    // - In local dev (python -m http.server from repo root): paths look like /public/admin/dashboard.html → base '/public'
+    // - For alternate mounts (/assiduousflip/*): base '/assiduousflip'
+    function getAppBasePath() {
+        var path = window.location.pathname || '';
+        if (path.indexOf('/public/') === 0) return '/public';
+        if (path.indexOf('/assiduousflip/') === 0) return '/assiduousflip';
+        return '';
     }
 
-    /**
-     * Initialize auth guard with SirsiAuth instance
-     */
-    async initialize(sirsiAuthInstance) {
-        if (!sirsiAuthInstance) {
-            throw new Error('SirsiAuth instance is required');
-        }
-        
-        this.auth = sirsiAuthInstance;
-        
-        // Initialize Firebase if not already done
-        if (!this.auth.initialized) {
-            await this.auth.initialize();
-        }
-        
-        // Start session monitoring
-        this.startSessionMonitoring();
-        
-        // Track user activity
-        this.trackUserActivity();
-        
-        return true;
-    }
+    const APP_BASE_PATH = getAppBasePath();
+    // Base login URL without hash; redirectToLogin will append #login so returnUrl stays in the query
+    const LOGIN_URL_DEFAULT = APP_BASE_PATH + '/index.html';
+    const HOME_URL = APP_BASE_PATH + '/index.html';
 
-    /**
-     * Protect a page with authentication
-     * @param {Object} options - Protection options
-     * @param {Array} options.allowedRoles - Array of roles that can access this page
-     * @param {Function} options.onSuccess - Callback when authentication succeeds
-     * @param {Function} options.onFailure - Callback when authentication fails
-     */
-    async protect(options = {}) {
-        const {
-            allowedRoles = null,
-            onSuccess = null,
-            onFailure = null,
-            requireEmailVerification = false,
-            requireCompleteProfile = false
-        } = options;
+    const DASHBOARD_PATHS = {
+        admin: APP_BASE_PATH + '/admin/dashboard.html',
+        agent: APP_BASE_PATH + '/agent/dashboard.html',
+        agentPending: APP_BASE_PATH + '/agent-pending.html',
+        client: APP_BASE_PATH + '/client/dashboard.html'
+    };
 
-        return new Promise((resolve) => {
-            this.auth.onAuthStateChanged(async (user) => {
-                // Check if user is authenticated
-                if (!user) {
-                    if (onFailure) onFailure('Not authenticated');
-                    this.redirectToLogin();
-                    resolve(false);
-                    return;
-                }
+    // Session management defaults (can be overridden by setting authGuard.SESSION_TIMEOUT_MS)
+    const DEFAULT_SESSION_TIMEOUT_MS = 60 * 60 * 1000; // 1 hour
+    const DEFAULT_SESSION_CHECK_INTERVAL_MS = 30 * 1000; // 30 seconds
 
-                // Check email verification if required
-                if (requireEmailVerification && !user.emailVerified) {
-                    if (onFailure) onFailure('Email not verified');
-                    this.showEmailVerificationRequired();
-                    resolve(false);
-                    return;
-                }
-
-                // Check profile completion if required
-                if (requireCompleteProfile && !user.profileComplete) {
-                    if (onFailure) onFailure('Profile incomplete');
-                    this.redirectToProfileCompletion();
-                    resolve(false);
-                    return;
-                }
-
-                // Check role permissions
-                if (allowedRoles && !allowedRoles.includes(user.role)) {
-                    if (onFailure) onFailure('Unauthorized role');
-                    this.handleUnauthorized(user.role);
-                    resolve(false);
-                    return;
-                }
-
-                // Check agent approval status
-                if (user.role === 'agent' && user.agentInfo?.status !== 'approved') {
-                    if (onFailure) onFailure('Agent not approved');
-                    this.handleUnapprovedAgent(user.agentInfo);
-                    resolve(false);
-                    return;
-                }
-
-                // Authentication successful
-                if (onSuccess) onSuccess(user);
-                
-                // Update UI with user info
-                this.updateUIWithUserInfo(user);
-                
-                resolve(true);
-            });
-        });
-    }
-
-    /**
-     * Protect admin routes
-     */
-    async protectAdmin(onSuccess = null) {
-        return this.protect({
-            allowedRoles: ['admin'],
-            onSuccess,
-            requireEmailVerification: true
-        });
-    }
-
-    /**
-     * Protect agent routes
-     */
-    async protectAgent(onSuccess = null) {
-        return this.protect({
-            allowedRoles: ['agent'],
-            onSuccess,
-            requireEmailVerification: true,
-            requireCompleteProfile: true
-        });
-    }
-
-    /**
-     * Protect client routes
-     */
-    async protectClient(onSuccess = null) {
-        return this.protect({
-            allowedRoles: ['client'],
-            onSuccess,
-            requireEmailVerification: true
-        });
-    }
-
-    /**
-     * Protect investor routes
-     */
-    async protectInvestor(onSuccess = null) {
-        return this.protect({
-            allowedRoles: ['investor'],
-            onSuccess,
-            requireEmailVerification: true
-        });
-    }
-
-    /**
-     * Protect any authenticated route (any role)
-     */
-    async protectAuthenticated(onSuccess = null) {
-        return this.protect({
-            onSuccess,
-            requireEmailVerification: false
-        });
-    }
-
-    /**
-     * Start session monitoring
-     */
-    startSessionMonitoring() {
-        // Clear any existing interval
-        if (this.sessionCheckInterval) {
-            clearInterval(this.sessionCheckInterval);
-        }
-
-        // Check session periodically
-        this.sessionCheckInterval = setInterval(() => {
-            this.checkSession();
-        }, this.config.checkInterval);
-    }
-
-    /**
-     * Check if session is still valid
-     */
-    checkSession() {
-        const now = Date.now();
-        const timeSinceLastActivity = now - this.lastActivity;
-
-        // Check if session has timed out
-        if (timeSinceLastActivity > this.config.sessionTimeout) {
-            this.handleSessionTimeout();
-        }
-
-        // Check if user is still authenticated with Firebase
-        const user = this.auth.getCurrentUser();
-        if (!user) {
-            this.redirectToLogin();
-        }
-    }
-
-    /**
-     * Track user activity to keep session alive
-     */
-    trackUserActivity() {
-        const events = ['mousedown', 'keydown', 'scroll', 'touchstart'];
-        
-        events.forEach(event => {
-            document.addEventListener(event, () => {
-                this.lastActivity = Date.now();
-            });
-        });
-    }
-
-    /**
-     * Handle session timeout
-     */
-    async handleSessionTimeout() {
-        // Show timeout warning
-        if (confirm('Your session has expired. Would you like to continue?')) {
-            // Refresh the session
-            this.lastActivity = Date.now();
-        } else {
-            // Sign out and redirect
-            await this.auth.signOut();
-            this.redirectToLogin();
-        }
-    }
-
-    /**
-     * Handle login requirement - dynamically based on current page
-     */
-    redirectToLogin() {
-        const currentPath = window.location.pathname;
-        
-        // If already on landing page, trigger login modal
-        if (currentPath === '/' || currentPath === '/index.html') {
-            this.triggerLoginModal();
-            return;
-        }
-        
-        // If on a protected page, go to landing page (modals will be available)
-        const returnUrl = encodeURIComponent(currentPath);
-        window.location.href = `/?return=${returnUrl}`;
-    }
-    
-    /**
-     * Trigger the login modal on landing page
-     */
-    triggerLoginModal() {
-        // Try to trigger the existing modal
-        const loginModal = document.getElementById('loginModal');
-        if (loginModal) {
-            loginModal.classList.add('active');
-            return;
-        }
-        
-        // If modal doesn't exist, show a simple prompt
-        alert('Please sign in to continue. You will be redirected to the sign-in page.');
-        window.location.href = '/';
-    }
-
-    /**
-     * Redirect to profile completion
-     */
-    redirectToProfileCompletion() {
-        window.location.href = '/profile/complete.html';
-    }
-
-    /**
-     * Handle unauthorized access
-     */
-    handleUnauthorized(userRole) {
-        // Redirect to user's appropriate dashboard
-        const redirectUrl = this.auth.getRedirectUrl(userRole);
-        if (redirectUrl) {
-            window.location.href = redirectUrl;
-        } else {
-            window.location.href = this.config.unauthorizedUrl;
-        }
-    }
-
-    /**
-     * Handle unapproved agent
-     */
-    handleUnapprovedAgent(agentInfo) {
-        if (agentInfo?.status === 'pending_approval') {
-            window.location.href = '/agent-pending.html';
-        } else if (agentInfo?.status === 'rejected') {
-            alert(`Your agent application was rejected: ${agentInfo.rejectionReason || 'Contact support'}`);
-            window.location.href = '/';
-        } else {
-            alert('Your agent account requires approval. Please complete your profile.');
-            window.location.href = '/signup.html';
-        }
-    }
-
-    /**
-     * Show email verification required message
-     */
-    showEmailVerificationRequired() {
-        document.body.innerHTML = `
-            <div style="display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px;">
-                <div style="text-align: center; max-width: 400px;">
-                    <h2 style="color: #1e293b; margin-bottom: 16px;">Email Verification Required</h2>
-                    <p style="color: #64748b; margin-bottom: 24px;">
-                        Please verify your email address to access this page.
-                        Check your inbox for the verification link.
-                    </p>
-                    <button onclick="resendVerification()" style="
-                        padding: 12px 24px;
-                        background: #667eea;
-                        color: white;
-                        border: none;
-                        border-radius: 8px;
-                        font-weight: 600;
-                        cursor: pointer;
-                        margin-right: 12px;
-                    ">Resend Verification Email</button>
-                    <a href="/" style="
-                        display: inline-block;
-                        padding: 12px 24px;
-                        background: #e2e8f0;
-                        color: #475569;
-                        text-decoration: none;
-                        border-radius: 8px;
-                        font-weight: 600;
-                    ">Back to Home</a>
-                </div>
-            </div>
-        `;
-
-        window.resendVerification = async () => {
-            const user = this.auth.getCurrentUser();
-            if (user) {
-                try {
-                    await firebase.auth().currentUser.sendEmailVerification();
-                    alert('Verification email sent! Please check your inbox.');
-                } catch (error) {
-                    alert('Failed to send verification email. Please try again.');
-                }
+    const authGuard = {
+        // Exposed so pages can override if needed
+        SESSION_TIMEOUT_MS: DEFAULT_SESSION_TIMEOUT_MS,
+        SESSION_CHECK_INTERVAL_MS: DEFAULT_SESSION_CHECK_INTERVAL_MS,
+        lastActivity: Date.now(),
+        sessionCheckInterval: null,
+        currentUser: null,
+        currentUserRole: null,
+        /**
+         * Protect a page - check authentication and roles
+         * @param {Array|string} allowedRoles - Roles that can access this page
+         * @param {Object} options - Additional options
+         */
+        protect: async function(allowedRoles = null, options = {}) {
+            // Convert single role to array
+            if (typeof allowedRoles === 'string') {
+                allowedRoles = [allowedRoles];
             }
-        };
-    }
+            
+        // Default options
+        const opts = {
+                // Use environment-aware login URL so local dev points at /public/index.html#login
+                loginUrl: LOGIN_URL_DEFAULT,
+                requireEmailVerification: false,
+                requireCompleteProfile: false,
+                profileCompletionUrl: APP_BASE_PATH + '/client/onboarding.html',
+                onUnauthorized: null,
+                onSuccess: null,
+                ...options
+            };
+            
+            try {
+                // Wait for Firebase to be ready
+                if (!window.firebaseAuth) {
+                    console.warn('[AuthGuard] Waiting for Firebase...');
+                    await this.waitForFirebase();
+                }
+                
+                // Check authentication state
+                const user = await this.checkAuth();
+                
+                if (!user) {
+                    console.log('[AuthGuard] Not authenticated, redirecting to login');
+                    this.redirectToLogin(opts.loginUrl);
+                    return false;
+                }
+                
+                console.log('[AuthGuard] User authenticated:', user.uid);
+                
+                // Persist current user reference
+                this.currentUser = user;
+                
+                // Check email verification if required
+                if (opts.requireEmailVerification && !user.emailVerified) {
+                    console.log('[AuthGuard] Email not verified');
+                    this.showEmailVerificationRequired();
+                    return false;
+                }
+                
+                let userData = null;
+                let userRole = 'client';
 
-    /**
-     * Update UI with user information
-     */
-    updateUIWithUserInfo(user) {
-        // Update any user-specific elements in the UI
-        const userNameElements = document.querySelectorAll('[data-user-name]');
-        const userEmailElements = document.querySelectorAll('[data-user-email]');
-        const userRoleElements = document.querySelectorAll('[data-user-role]');
-        const userInitialsElements = document.querySelectorAll('[data-user-initials]');
+                // Get user data from Firestore if roles need checking
+                if (allowedRoles && allowedRoles.length > 0) {
+                    userData = await this.getUserData(user.uid);
+                    
+                    if (!userData) {
+                        console.error('[AuthGuard] User data not found');
+                        this.redirectToLogin(opts.loginUrl);
+                        return false;
+                    }
+                    
+                    userRole = userData.role || 'client';
+                    console.log('[AuthGuard] User role:', userRole);
+                    
+                    // Persist role for UI helpers
+                    this.currentUserRole = userRole;
+                    
+                    // Check if user's role is allowed
+                    if (!allowedRoles.includes(userRole)) {
+                        console.log('[AuthGuard] Unauthorized role, redirecting');
+                        if (opts.onUnauthorized) {
+                            opts.onUnauthorized(userRole);
+                        } else {
+                            this.redirectToRoleDashboard(userRole, userData);
+                        }
+                        return false;
+                    }
+                    
+                    // Check agent approval status
+                    if (userRole === 'agent' && userData.agentInfo?.status !== 'approved') {
+                        console.log('[AuthGuard] Agent not approved');
+                        // Use environment-aware pending URL so local /public dev stays inside app
+                        window.location.href = DASHBOARD_PATHS.agentPending;
+                        return false;
+                    }
+                } else {
+                    // We may still want user data for profile completion / role UI
+                    userData = await this.getUserData(user.uid);
+                    if (userData && userData.role) {
+                        this.currentUserRole = userData.role;
+                    }
+                }
 
-        userNameElements.forEach(el => {
-            el.textContent = `${user.firstName} ${user.lastName}`;
-        });
+                // Profile completion enforcement (clients/investors)
+                if (userData && (userRole === 'client' || userRole === 'investor')) {
+                    const profileComplete = userData.profileComplete === true;
+                    const path = window.location.pathname || '';
+                    const isOnOnboarding = path.indexOf('/client/onboarding') !== -1;
+                    if (!profileComplete && (opts.requireCompleteProfile || !isOnOnboarding)) {
+                        console.log('[AuthGuard] Incomplete profile, redirecting to onboarding');
+                        window.location.href = opts.profileCompletionUrl;
+                        return false;
+                    }
+                }
+                
+                // Success - update UI with user info and role-based toggles
+                console.log('[AuthGuard] \u2713 Access granted');
+                this.updateUI(user);
+                this.updateRoleUI(this.currentUserRole || (userData && userData.role) || null);
+                
+                // Start session monitoring / idle timeout handlers
+                this.startSessionMonitoring();
+                this.trackUserActivity();
+                
+                if (opts.onSuccess) {
+                    opts.onSuccess(user);
+                }
+                
+                return true;
+                
+            } catch (error) {
+                console.error('[AuthGuard] Error:', error);
+                this.redirectToLogin(opts.loginUrl);
+                return false;
+            }
+        },
+        
+        /**
+         * Wait for Firebase to be initialized
+         */
+        waitForFirebase: function() {
+            return new Promise((resolve) => {
+                if (window.firebaseAuth) {
+                    resolve();
+                    return;
+                }
+                
+                // Listen for firebase-ready event
+                window.addEventListener('firebase-ready', () => {
+                    resolve();
+                }, { once: true });
+                
+                // Timeout after 10 seconds
+                setTimeout(() => {
+                    if (!window.firebaseAuth) {
+                        console.error('[AuthGuard] Firebase initialization timeout');
+                        resolve(); // Resolve anyway to show error
+                    }
+                }, 10000);
+            });
+        },
+        
+        /**
+         * Check if user is authenticated
+         */
+        checkAuth: function() {
+            return new Promise((resolve) => {
+                // Check session storage first for faster initial load
+                const sessionData = sessionStorage.getItem('assiduousUser');
+                const localData = localStorage.getItem('assiduousUser');
+                
+                if (sessionData || localData) {
+                    const data = JSON.parse(sessionData || localData);
+                    console.log('[AuthGuard] Found cached session:', data.email);
+                }
+                
+                // Always verify with Firebase
+                const unsubscribe = window.firebaseAuth.onAuthStateChanged((user) => {
+                    unsubscribe(); // Only check once
+                    resolve(user);
+                });
+            });
+        },
+        
+        /**
+         * Start session monitoring (idle timeout + auth state)
+         */
+        startSessionMonitoring: function() {
+            if (this.sessionCheckInterval) {
+                clearInterval(this.sessionCheckInterval);
+            }
 
-        userEmailElements.forEach(el => {
-            el.textContent = user.email;
-        });
+            const self = this;
+            this.sessionCheckInterval = setInterval(function() {
+                self.checkSession();
+            }, this.SESSION_CHECK_INTERVAL_MS || DEFAULT_SESSION_CHECK_INTERVAL_MS);
+        },
 
-        userRoleElements.forEach(el => {
-            el.textContent = user.role;
-        });
+        /**
+         * Track user activity events to keep session alive
+         */
+        trackUserActivity: function() {
+            const self = this;
+            const events = ['mousedown', 'keydown', 'scroll', 'touchstart'];
 
-        userInitialsElements.forEach(el => {
-            const initials = `${user.firstName?.[0] || ''}${user.lastName?.[0] || ''}`.toUpperCase();
-            el.textContent = initials;
-        });
+            events.forEach(function(eventName) {
+                document.addEventListener(eventName, function() {
+                    self.lastActivity = Date.now();
+                });
+            });
+        },
 
-        // Show/hide role-specific elements
-        document.querySelectorAll('[data-show-for-role]').forEach(el => {
-            const allowedRoles = el.dataset.showForRole.split(',');
-            el.style.display = allowedRoles.includes(user.role) ? '' : 'none';
-        });
+        /**
+         * Periodic session check
+         */
+        checkSession: function() {
+            const now = Date.now();
+            const timeoutMs = this.SESSION_TIMEOUT_MS || DEFAULT_SESSION_TIMEOUT_MS;
+            const timeSinceLastActivity = now - (this.lastActivity || now);
 
-        document.querySelectorAll('[data-hide-for-role]').forEach(el => {
-            const hiddenRoles = el.dataset.hideForRole.split(',');
-            el.style.display = hiddenRoles.includes(user.role) ? 'none' : '';
-        });
-    }
+            // Idle timeout
+            if (timeSinceLastActivity > timeoutMs) {
+                this.handleSessionTimeout();
+                return;
+            }
 
-    /**
-     * Cleanup on page unload
-     */
-    destroy() {
-        if (this.sessionCheckInterval) {
-            clearInterval(this.sessionCheckInterval);
+            // Auth state sanity check
+            try {
+                const user = window.firebaseAuth && window.firebaseAuth.currentUser;
+                if (!user) {
+                    console.log('[AuthGuard] Session check: user signed out, redirecting to login');
+                    this.redirectToLogin(LOGIN_URL_DEFAULT);
+                }
+            } catch (e) {
+                console.warn('[AuthGuard] Session check error:', e);
+            }
+        },
+
+        /**
+         * Handle idle session timeout
+         */
+        handleSessionTimeout: async function() {
+            try {
+                // Simple confirm flow to avoid surprising users
+                const staySignedIn = window.confirm('Your session has been idle for a while. Stay signed in?');
+                if (staySignedIn) {
+                    this.lastActivity = Date.now();
+                    return;
+                }
+
+                // Sign out via Firebase if available
+                if (window.firebaseAuth && typeof window.firebaseAuth.signOut === 'function') {
+                    await window.firebaseAuth.signOut();
+                }
+
+                // Clear cached session data
+                sessionStorage.removeItem('assiduousUser');
+                localStorage.removeItem('assiduousUser');
+                localStorage.removeItem('assiduousRememberMe');
+
+                console.log('[AuthGuard] Session timed out, redirecting to login');
+                this.redirectToLogin(LOGIN_URL_DEFAULT);
+            } catch (error) {
+                console.error('[AuthGuard] Error handling session timeout:', error);
+                this.redirectToLogin(LOGIN_URL_DEFAULT);
+            }
+        },
+        
+        /**
+         * Get user data from Firestore
+         */
+        getUserData: async function(uid) {
+            try {
+                const doc = await window.firebaseDb.collection('users').doc(uid).get();
+                if (doc.exists) {
+                    return { id: doc.id, ...doc.data() };
+                }
+                return null;
+            } catch (error) {
+                console.error('[AuthGuard] Error fetching user data:', error);
+                return null;
+            }
+        },
+        
+        /**
+         * Redirect to login page
+         */
+        redirectToLogin: function(loginUrl) {
+            const currentPath = window.location.pathname + window.location.search;
+            const returnUrl = encodeURIComponent(currentPath);
+
+            // Ensure we append returnUrl before any hash so #login remains the fragment
+            const hasHash = loginUrl.includes('#');
+            let base = loginUrl;
+            let hash = '';
+
+            if (hasHash) {
+                const parts = loginUrl.split('#');
+                base = parts[0];
+                hash = '#' + (parts[1] || 'login');
+            }
+
+            const separator = base.includes('?') ? '&' : '?';
+            const urlWithReturn = `${base}${separator}returnUrl=${returnUrl}`;
+            const finalHash = hasHash ? hash : '#login';
+            const finalUrl = `${urlWithReturn}${finalHash}`;
+
+            window.location.href = finalUrl;
+        },
+        
+        /**
+         * Redirect to user's appropriate dashboard based on role
+         */
+        redirectToRoleDashboard: function(role, userData) {
+            const redirects = {
+                admin: DASHBOARD_PATHS.admin,
+                agent: userData.agentInfo?.status === 'approved'
+                    ? DASHBOARD_PATHS.agent
+                    : DASHBOARD_PATHS.agentPending,
+                client: DASHBOARD_PATHS.client,
+                investor: DASHBOARD_PATHS.client
+            };
+            
+            const url = redirects[role] || DASHBOARD_PATHS.client;
+            console.log('[AuthGuard] Redirecting to role dashboard:', url);
+            window.location.href = url;
+        },
+        
+        /**
+         * Show email verification required message
+         */
+        showEmailVerificationRequired: function() {
+            // Use HOME_URL so "Back to Home" works correctly in both prod and /public dev
+            const home = HOME_URL;
+            document.body.innerHTML = `
+                <div style="display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; font-family: system-ui, sans-serif;">
+                    <div style="text-align: center; max-width: 500px; background: white; padding: 40px; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.1);">
+                        <div style="font-size: 48px; margin-bottom: 20px;">✉️</div>
+                        <h2 style="color: #1e293b; margin-bottom: 16px; font-size: 24px;">Email Verification Required</h2>
+                        <p style="color: #64748b; margin-bottom: 24px; line-height: 1.6;">
+                            Please verify your email address to access this page.
+                            Check your inbox for the verification link.
+                        </p>
+                        <button onclick="window.location.href='${home}'" style="
+                            padding: 12px 24px;
+                            background: #3b82f6;
+                            color: white;
+                            border: none;
+                            border-radius: 8px;
+                            font-weight: 600;
+                            cursor: pointer;
+                            font-size: 15px;
+                        ">Back to Home</button>
+                    </div>
+                </div>
+            `;
+        },
+        
+        /**
+         * Update UI with user information
+         */
+        updateUI: function(user) {
+            if (!user) return;
+
+            // Update elements with data-user-* attributes
+            const elements = {
+                '[data-user-email]': user.email,
+                '[data-user-name]': user.displayName || (user.email && user.email.split('@')[0]) || '',
+                '[data-user-initials]': this.getInitials(user.displayName || user.email),
+            };
+
+            if (this.currentUserRole) {
+                elements['[data-user-role]'] = this.currentUserRole;
+            }
+            
+            Object.entries(elements).forEach(([selector, value]) => {
+                if (value == null) return;
+                document.querySelectorAll(selector).forEach(el => {
+                    el.textContent = value;
+                });
+            });
+        },
+        
+        /**
+         * Apply role-based UI toggles
+         */
+        updateRoleUI: function(role) {
+            if (!role) return;
+
+            // Elements that should be shown only for specific roles
+            document.querySelectorAll('[data-show-for-role]').forEach(function(el) {
+                const allowedRoles = (el.getAttribute('data-show-for-role') || '')
+                    .split(',')
+                    .map(function(r) { return r.trim(); })
+                    .filter(Boolean);
+                if (allowedRoles.length === 0) return;
+                el.style.display = allowedRoles.indexOf(role) !== -1 ? '' : 'none';
+            });
+
+            // Elements that should be hidden for specific roles
+            document.querySelectorAll('[data-hide-for-role]').forEach(function(el) {
+                const hiddenRoles = (el.getAttribute('data-hide-for-role') || '')
+                    .split(',')
+                    .map(function(r) { return r.trim(); })
+                    .filter(Boolean);
+                if (hiddenRoles.length === 0) return;
+                el.style.display = hiddenRoles.indexOf(role) !== -1 ? 'none' : '';
+            });
+        },
+        
+        /**
+         * Get user initials from display name
+         */
+        getInitials: function(name) {
+            if (!name) return '?';
+            const parts = name.split(' ');
+            if (parts.length >= 2) {
+                return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+            }
+            return name[0].toUpperCase();
+        },
+        
+        /**
+         * Sign out helper
+         */
+        signOut: async function() {
+            try {
+                await window.firebaseAuth.signOut();
+                sessionStorage.removeItem('assiduousUser');
+                localStorage.removeItem('assiduousUser');
+                localStorage.removeItem('assiduousRememberMe');
+                console.log('[AuthGuard] Signed out');
+                window.location.href = HOME_URL;
+            } catch (error) {
+                console.error('[AuthGuard] Sign out error:', error);
+            }
+        }
+    };
+    
+    // Expose base path & core URLs for other components (headers, nav, etc.)
+    authGuard.APP_BASE_PATH = APP_BASE_PATH;
+    authGuard.HOME_URL = HOME_URL;
+    authGuard.DASHBOARD_PATHS = DASHBOARD_PATHS;
+    
+    // Export globally
+    window.authGuard = authGuard;
+    
+    // Auto-protect if data-auth-protect attribute is present
+    if (document.documentElement.hasAttribute('data-auth-protect')) {
+        const roles = document.documentElement.getAttribute('data-auth-protect');
+        const roleArray = roles ? roles.split(',').map(r => r.trim()) : null;
+        
+        // Protect on DOMContentLoaded
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                authGuard.protect(roleArray);
+            });
+        } else {
+            authGuard.protect(roleArray);
         }
     }
-}
-
-// Export for use as ES6 module
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = AuthGuard;
-}
-
-// Make available globally
-window.AuthGuard = AuthGuard;
-
-// Auto-initialize if sirsi-auth is already loaded
-if (window.SirsiAuth) {
-    window.authGuard = new AuthGuard();
-}
+    
+    console.log('[AuthGuard] \ud83d\udee1\ufe0f Loaded and ready');
+})();

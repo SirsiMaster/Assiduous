@@ -969,7 +969,8 @@
                 // Check authentication
                 const user = firebase.auth().currentUser;
                 if (!user) {
-                    window.location.href = '/agent/login.html';
+                    // Use path relative to /agent/ so it works in prod and /public/agent/
+                    window.location.href = 'login.html';
                     return;
                 }
                 

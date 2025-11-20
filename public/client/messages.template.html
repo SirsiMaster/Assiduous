@@ -1162,11 +1162,12 @@
         }
         
         function scheduleViewing() {
-            window.location.href = '/client/viewings.html';
+            // Use paths relative to /client/ so this works in prod and /public/client/
+            window.location.href = 'viewings.html';
         }
         
         function showPropertyDetails() {
-            window.location.href = '/client/property-detail.html';
+            window.location.href = 'property-detail.html';
         }
         
         function attachFile() {

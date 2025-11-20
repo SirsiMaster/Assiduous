@@ -857,16 +857,17 @@
                 <div style="text-align: center; margin: 40px 0;">
                     <h3 style="margin-bottom: 20px; color: #333;">What would you like to do first?</h3>
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 500px; margin: 0 auto;">
-                        <button class="btn btn-primary" onclick="window.location.href='/client/properties.html'">
+                        <!-- Use paths relative to /client/ so this works in both prod and local /public/client/ -->
+                        <button class="btn btn-primary" onclick="window.location.href='properties.html'">
                             Browse Properties
                         </button>
-                        <button class="btn btn-primary" onclick="window.location.href='/client/micro-flip-calculator.html'">
+                        <button class="btn btn-primary" onclick="window.location.href='micro-flip-calculator.html'">
                             Try ROI Calculator
                         </button>
-                        <button class="btn btn-primary" onclick="window.location.href='/client/saved.html'">
+                        <button class="btn btn-primary" onclick="window.location.href='saved.html'">
                             View Saved Properties
                         </button>
-                        <button class="btn btn-primary" onclick="window.location.href='/client/dashboard.html'">
+                        <button class="btn btn-primary" onclick="window.location.href='dashboard.html'">
                             Go to Dashboard
                         </button>
                     </div>
@@ -883,7 +884,7 @@
             </div>
             
             <div class="skip-link" id="skipLink">
-                <a href="/client/dashboard.html">Skip for now</a>
+                <a href="dashboard.html">Skip for now</a>
             </div>
         </div>
     </div>
@@ -1094,14 +1095,14 @@
         // Check if user is logged in
         auth.onAuthStateChanged((user) => {
             if (!user) {
-                // Redirect to login if not authenticated
-                window.location.href = '/auth/login.html';
+                // Redirect to login if not authenticated (relative to /client/)
+                window.location.href = '../auth/login.html';
             } else {
                 // Check if onboarding is already complete
                 db.collection('users').doc(user.uid).get().then(doc => {
                     if (doc.exists && doc.data().profileComplete) {
                         // Already completed onboarding
-                        window.location.href = '/client/dashboard.html';
+                        window.location.href = 'dashboard.html';
                     }
                 });
             }

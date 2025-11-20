@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-11-16T19:08:14.475Z",
+  "lastUpdated": "2025-11-17T00:32:43.274Z",
   "summary": {
     "health": "Good",
     "score": 59,
@@ -7,7 +7,7 @@
     "alerts": [
       "✅ UCS implementation complete - 40 pages converted",
       "⚠️ Test coverage is very low",
-      "⏰ Timeline warning - 15 days until launch"
+      "⏰ Timeline warning - 14 days until launch"
     ]
   },
   "features": {
@@ -152,21 +152,21 @@
     }
   },
   "project": {
-    "totalHours": "324",
-    "avgHoursPerDay": "8.5",
-    "totalCost": 50693,
-    "laborCost": 48600,
-    "toolsCost": 2093,
-    "monthsElapsed": "3.2",
-    "totalCommits": 983,
-    "totalFiles": 831,
+    "totalHours": "332",
+    "avgHoursPerDay": "8.7",
+    "totalCost": 51914,
+    "laborCost": 49800,
+    "toolsCost": 2114,
+    "monthsElapsed": "3.3",
+    "totalCommits": 1005,
+    "totalFiles": 796,
     "activeDays": 38,
-    "totalDays": 98,
-    "projectAgeDays": 98,
-    "linesAdded": 9820901,
-    "linesDeleted": 9429025,
-    "netLines": 391876,
-    "velocity": "25.9",
+    "totalDays": 99,
+    "projectAgeDays": 99,
+    "linesAdded": 9821816,
+    "linesDeleted": 9441397,
+    "netLines": 380419,
+    "velocity": "26.4",
     "completionPercentage": 59,
     "actualStartDate": "2025-08-10",
     "architecture": {
@@ -176,22 +176,22 @@
     }
   },
   "today": {
-    "date": "2025-11-16",
-    "hours": "1.3",
-    "cost": 198,
-    "commits": 4,
+    "date": "2025-11-17",
+    "hours": "8.6",
+    "cost": 1287,
+    "commits": 26,
     "deployments": 0
   },
   "thisWeek": {
-    "hours": "23.8",
-    "cost": 3564,
-    "commits": 72,
+    "hours": "28.4",
+    "cost": 4257,
+    "commits": 86,
     "days": 7
   },
   "thisMonth": {
-    "hours": "137.6",
-    "cost": 20642,
-    "commits": 417
+    "hours": "144.9",
+    "cost": 21731,
+    "commits": 439
   },
   "quality": {
     "testCoverage": {
@@ -224,7 +224,7 @@
       "low": 0,
       "total": 0
     },
-    "lastAudit": "2025-11-16T19:07:52.197Z",
+    "lastAudit": "2025-11-17T00:32:10.086Z",
     "dependencies": {
       "total": 0,
       "outdated": 0,
@@ -296,7 +296,7 @@
     }
   },
   "documentation": {
-    "markdownFiles": 2533,
+    "markdownFiles": 2516,
     "jsFilesTotal": 25043,
     "jsFilesDocumented": 25043,
     "coverage": 423,
@@ -312,16 +312,16 @@
     "changelog": true,
     "contributing": false,
     "license": false,
-    "lastUpdate": "2025-11-16 14:07:04 -0500"
+    "lastUpdate": "2025-11-16 19:31:27 -0500"
   },
   "productivity": {
     "velocityTrend": "decreasing",
-    "weeklyCommits": 72,
+    "weeklyCommits": 86,
     "contributors": {
       "total": 0,
       "active": 0
     },
-    "averageCommitSize": 88,
+    "averageCommitSize": 86,
     "pullRequests": {
       "open": 0,
       "merged": 0,
@@ -349,7 +349,7 @@
       "projectStart": "2025-08-10",
       "originalLaunch": "2025-11-01",
       "plannedLaunch": "2025-12-01",
-      "daysRemaining": 15,
+      "daysRemaining": 14,
       "onTrack": false,
       "adjustmentReason": "Timeline adjusted for realistic completion based on current velocity"
     },
@@ -394,68 +394,68 @@
   },
   "recentActivity": [
     {
-      "hash": "5510f983707be88af40c4746ed6bb256f26cbf11",
-      "message": "fix(properties): Add universal Firestore fallback to PropertyService for all portals",
+      "hash": "42585a7337ffa5a8ae8a358545548109ea7c14e3",
+      "message": "fix(auth): Align frontend Firebase config and quarantine legacy SirsiAuth",
       "author": "SirsiMaster",
-      "date": "2025-11-16 14:07:04 -0500"
+      "date": "2025-11-16 19:31:27 -0500"
     },
     {
-      "hash": "9b8d59da65a5c7da2ac59187fa086cdaf5be8078",
-      "message": "chore(release): Bump version to 0.128.0 [skip ci]",
-      "author": "github-actions[bot]",
-      "date": "2025-11-16 17:48:13 +0000"
-    },
-    {
-      "hash": "d97c871d6ec2eff725deecc786b171a45355f7fd",
-      "message": "feat(qr): Implement QR widget integration across all property detail pages with SendGrid email support",
+      "hash": "a2a855c73e1a36d723ed632a4f52c32fa456c14c",
+      "message": "fix: align all frontend config with GA4-enabled production web app (cee09f...)",
       "author": "SirsiMaster",
-      "date": "2025-11-16 12:47:58 -0500"
+      "date": "2025-11-16 18:30:51 -0500"
     },
     {
-      "hash": "055689ea091d1089bcdafcfeb3f62278acce834e",
-      "message": "merge(sync): Reconcile local test plan with origin version bump",
+      "hash": "405312aad63fc9051904c5a22e378b1a53446dfa",
+      "message": "fix: point firebase-init back to new production app config",
       "author": "SirsiMaster",
-      "date": "2025-11-16 12:11:51 -0500"
+      "date": "2025-11-16 18:25:00 -0500"
     },
     {
-      "hash": "d78c3cb0b58a55bb397d7fa685c29f56b8fb73ac",
-      "message": "docs(testing): Add comprehensive QR system test plan",
+      "hash": "92fda372dfa1fd7e77f0e492d011ab6e6ccad77b",
+      "message": "fix: point firebase-init to legacy analytics-enabled web app and restore Firestore warnings",
       "author": "SirsiMaster",
-      "date": "2025-11-12 15:50:09 -0500"
+      "date": "2025-11-16 18:15:08 -0500"
     },
     {
-      "hash": "133afadd058bdda4a35f22b4e295a59a1ef1ae75",
-      "message": "chore(release): Bump version to 0.127.1 [skip ci]",
-      "author": "github-actions[bot]",
-      "date": "2025-11-12 20:31:19 +0000"
-    },
-    {
-      "hash": "8d5888da956ebfdddfea0c4d1d0603426f6df30e",
-      "message": "fix(qr): Add Firebase SDK to property detail pages for QR widget functionality",
+      "hash": "1b0d0608890c58ba297c7e918c6ecad5b535d9f4",
+      "message": "fix: avoid external placeholder image URLs in properties and property detail",
       "author": "SirsiMaster",
-      "date": "2025-11-12 15:30:44 -0500"
+      "date": "2025-11-16 18:02:39 -0500"
     },
     {
-      "hash": "17ee2ff171e6451e17edca9297b65533a7840038",
-      "message": "chore(release): Bump version to 0.127.0 [skip ci]",
-      "author": "github-actions[bot]",
-      "date": "2025-11-12 20:26:30 +0000"
-    },
-    {
-      "hash": "8bcb643f4e564d3670191eb771c87d7f2e42dcc9",
-      "message": "feat(qr): Integrate sequential ID Generator into QR system",
+      "hash": "91c18e7aefc4309e3945a86f36b0aad8dc862d97",
+      "message": "fix: wire properties header to universal header and align Firebase analytics config",
       "author": "SirsiMaster",
-      "date": "2025-11-12 15:25:59 -0500"
+      "date": "2025-11-16 17:55:02 -0500"
     },
     {
-      "hash": "3d6222985bfa7228333168b6ba0643a6e022c3d3",
-      "message": "docs(architecture): Add ID Generator and QR System to canonical documentation",
+      "hash": "75e9e18ae06b9c74343ddea847d4ba83bc6fcb0b",
+      "message": "fix: use correct Firebase config and re-enable Analytics",
       "author": "SirsiMaster",
-      "date": "2025-11-12 15:23:32 -0500"
+      "date": "2025-11-16 17:50:36 -0500"
+    },
+    {
+      "hash": "02a9da883739f138076708e0edbd36bf13515af8",
+      "message": "fix: disable Firebase Analytics to eliminate configuration errors",
+      "author": "SirsiMaster",
+      "date": "2025-11-16 17:47:38 -0500"
+    },
+    {
+      "hash": "2c65377465a57a814f248b010781a4fd9ff98ef2",
+      "message": "fix: correct header component path and suppress all deprecation warnings",
+      "author": "SirsiMaster",
+      "date": "2025-11-16 17:45:10 -0500"
+    },
+    {
+      "hash": "340f9da5a5a8acdcedac0ae3159085e95864d7f1",
+      "message": "fix: add header component, suppress Firebase warnings, handle missing images",
+      "author": "SirsiMaster",
+      "date": "2025-11-16 17:43:58 -0500"
     }
   ],
   "automation": {
-    "lastRun": "2025-11-16T19:08:14.475Z",
+    "lastRun": "2025-11-17T00:32:43.274Z",
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",

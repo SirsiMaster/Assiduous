@@ -265,6 +265,22 @@ The builder automatically calculates correct relative paths based on file depth:
 - `public/admin/development/reports.html` → `{{BASE_PATH}}` = `../../`
 - `public/client/index.html` → `{{BASE_PATH}}` = `../`
 
+### Redirect & URL Conventions
+
+To keep local and production behavior identical, **do not use root-absolute redirects**
+inside client/agent/admin pages (e.g. `/client/dashboard.html`, `/agent/login.html`, `/`).
+Instead:
+
+- Use paths **relative to the section directory**:
+  - From `public/client/*`: `dashboard.html`, `properties.html`, `saved.html`, etc.
+  - From `public/agent/*`: `login.html`, `dashboard.html`, etc.
+- For role-based routing and auth redirects, always use the central helpers:
+  - `AuthService.getRoleRedirect(role, status)` from `public/assets/js/firebase-init.js`
+  - `auth-guard-simple.js` (`APP_BASE_PATH`, `DASHBOARD_PATHS`, `LOGIN_URL_DEFAULT`)
+
+This ensures the same URLs work when pages are served at `/` in production and
+under `/public` during local development.
+
 ---
 
 ## Creating Pages
