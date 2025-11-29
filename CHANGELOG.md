@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+
+## [0.128.4] - 2025-11-29
+
+### Fixed
+- fix(auth): Stabilize reset-password page Firebase wiring
+
 ### Fixed
 - fix(firebase): Align all frontend Firebase/QR/auth pages to canonical GA4 web app config, remove legacy inline app initializations, and quarantine the SirsiAuth-based auth stack
 
@@ -3420,7 +3426,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.128.3...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.128.4...HEAD
+
+
+## [0.128.4] - 2025-11-29
+
+### Fixed
+- fix(auth): Stabilize reset-password page Firebase wiring
 
 
 ## [0.128.3] - 2025-11-20
@@ -5293,3 +5305,4 @@ To generate changelog entries:
 [0.128.1]: https://github.com/SirsiMaster/Assiduous/compare/v0.128.0...v0.128.1
 [0.128.2]: https://github.com/SirsiMaster/Assiduous/compare/v0.128.1...v0.128.2
 [0.128.3]: https://github.com/SirsiMaster/Assiduous/compare/v0.128.2...v0.128.3
+[0.128.4]: https://github.com/SirsiMaster/Assiduous/compare/v0.128.3...v0.128.4
