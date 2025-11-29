@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-11-17T00:32:43.274Z",
+  "lastUpdated": "2025-11-20T04:44:17.945Z",
   "summary": {
     "health": "Good",
     "score": 59,
@@ -7,7 +7,7 @@
     "alerts": [
       "✅ UCS implementation complete - 40 pages converted",
       "⚠️ Test coverage is very low",
-      "⏰ Timeline warning - 14 days until launch"
+      "⏰ Timeline warning - 11 days until launch"
     ]
   },
   "features": {
@@ -153,20 +153,20 @@
   },
   "project": {
     "totalHours": "332",
-    "avgHoursPerDay": "8.7",
-    "totalCost": 51914,
+    "avgHoursPerDay": "8.3",
+    "totalCost": 51978,
     "laborCost": 49800,
-    "toolsCost": 2114,
-    "monthsElapsed": "3.3",
-    "totalCommits": 1005,
-    "totalFiles": 796,
-    "activeDays": 38,
-    "totalDays": 99,
-    "projectAgeDays": 99,
-    "linesAdded": 9821816,
-    "linesDeleted": 9441397,
-    "netLines": 380419,
-    "velocity": "26.4",
+    "toolsCost": 2178,
+    "monthsElapsed": "3.4",
+    "totalCommits": 1007,
+    "totalFiles": 800,
+    "activeDays": 40,
+    "totalDays": 102,
+    "projectAgeDays": 102,
+    "linesAdded": 9823659,
+    "linesDeleted": 9443035,
+    "netLines": 380624,
+    "velocity": "25.2",
     "completionPercentage": 59,
     "actualStartDate": "2025-08-10",
     "architecture": {
@@ -176,22 +176,22 @@
     }
   },
   "today": {
-    "date": "2025-11-17",
-    "hours": "8.6",
-    "cost": 1287,
-    "commits": 26,
+    "date": "2025-11-20",
+    "hours": "0.3",
+    "cost": 50,
+    "commits": 1,
     "deployments": 0
   },
   "thisWeek": {
-    "hours": "28.4",
-    "cost": 4257,
-    "commits": 86,
+    "hours": "9.2",
+    "cost": 1386,
+    "commits": 28,
     "days": 7
   },
   "thisMonth": {
-    "hours": "144.9",
-    "cost": 21731,
-    "commits": 439
+    "hours": "145.5",
+    "cost": 21830,
+    "commits": 441
   },
   "quality": {
     "testCoverage": {
@@ -211,7 +211,7 @@
       "eslintWarnings": 0,
       "codeComplexity": "N/A",
       "duplicateCode": 0,
-      "technicalDebt": 13714,
+      "technicalDebt": 13713,
       "codeSmells": 0
     },
     "score": 100
@@ -224,7 +224,7 @@
       "low": 0,
       "total": 0
     },
-    "lastAudit": "2025-11-17T00:32:10.086Z",
+    "lastAudit": "2025-11-20T04:43:45.585Z",
     "dependencies": {
       "total": 0,
       "outdated": 0,
@@ -297,8 +297,8 @@
   },
   "documentation": {
     "markdownFiles": 2516,
-    "jsFilesTotal": 25043,
-    "jsFilesDocumented": 25043,
+    "jsFilesTotal": 25044,
+    "jsFilesDocumented": 25044,
     "coverage": 423,
     "apiEndpoints": {
       "total": 0,
@@ -312,11 +312,11 @@
     "changelog": true,
     "contributing": false,
     "license": false,
-    "lastUpdate": "2025-11-16 19:31:27 -0500"
+    "lastUpdate": "2025-11-19 23:42:54 -0500"
   },
   "productivity": {
     "velocityTrend": "decreasing",
-    "weeklyCommits": 86,
+    "weeklyCommits": 28,
     "contributors": {
       "total": 0,
       "active": 0
@@ -349,7 +349,7 @@
       "projectStart": "2025-08-10",
       "originalLaunch": "2025-11-01",
       "plannedLaunch": "2025-12-01",
-      "daysRemaining": 14,
+      "daysRemaining": 11,
       "onTrack": false,
       "adjustmentReason": "Timeline adjusted for realistic completion based on current velocity"
     },
@@ -393,6 +393,18 @@
     "projectedAnnualCost": 12
   },
   "recentActivity": [
+    {
+      "hash": "2a7662d19d74a822a8bf0537f2796cc5598d7704",
+      "message": "fix(firebase): Align GA4 config, QR, and auth",
+      "author": "SirsiMaster",
+      "date": "2025-11-19 23:42:54 -0500"
+    },
+    {
+      "hash": "8a0d939ee11202d401f2b4902b5ef78e4465c4c7",
+      "message": "chore(release): Bump version to 0.128.2 [skip ci]",
+      "author": "github-actions[bot]",
+      "date": "2025-11-17 00:31:58 +0000"
+    },
     {
       "hash": "42585a7337ffa5a8ae8a358545548109ea7c14e3",
       "message": "fix(auth): Align frontend Firebase config and quarantine legacy SirsiAuth",
@@ -440,22 +452,10 @@
       "message": "fix: disable Firebase Analytics to eliminate configuration errors",
       "author": "SirsiMaster",
       "date": "2025-11-16 17:47:38 -0500"
-    },
-    {
-      "hash": "2c65377465a57a814f248b010781a4fd9ff98ef2",
-      "message": "fix: correct header component path and suppress all deprecation warnings",
-      "author": "SirsiMaster",
-      "date": "2025-11-16 17:45:10 -0500"
-    },
-    {
-      "hash": "340f9da5a5a8acdcedac0ae3159085e95864d7f1",
-      "message": "fix: add header component, suppress Firebase warnings, handle missing images",
-      "author": "SirsiMaster",
-      "date": "2025-11-16 17:43:58 -0500"
     }
   ],
   "automation": {
-    "lastRun": "2025-11-17T00:32:43.274Z",
+    "lastRun": "2025-11-20T04:44:17.945Z",
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",
