@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.128.8] - 2025-12-03
+
+### Fixed
+- fix(client): Align viewings page with offers layout
+
+
 ## [0.128.7] - 2025-12-03
 
 ### Fixed
@@ -1616,6 +1622,12 @@ accountIds/{accountId} = {
 **Sprint Progress**: Day 4 of 6 (67% target after Day 4 completion)
 
 ## [Unreleased]
+
+
+## [0.128.8] - 2025-12-03
+
+### Fixed
+- fix(client): Align viewings page with offers layout
 
 
 ## [0.128.7] - 2025-12-03
@@ -3464,7 +3476,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.128.7...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.128.8...HEAD
+
+
+## [0.128.8] - 2025-12-03
+
+### Fixed
+- fix(client): Align viewings page with offers layout
 
 
 ## [0.128.7] - 2025-12-03
@@ -5365,3 +5383,4 @@ To generate changelog entries:
 [0.128.5]: https://github.com/SirsiMaster/Assiduous/compare/v0.128.4...v0.128.5
 [0.128.6]: https://github.com/SirsiMaster/Assiduous/compare/v0.128.5...v0.128.6
 [0.128.7]: https://github.com/SirsiMaster/Assiduous/compare/v0.128.6...v0.128.7
+[0.128.8]: https://github.com/SirsiMaster/Assiduous/compare/v0.128.7...v0.128.8
