@@ -433,7 +433,9 @@
                     
                     <div class="sidebar">
                         <div class="calendar-widget">
-                            <div class="calendar-nav">
+                            <div class="calendar-header">
+                                <div class="month-year" id="currentMonth">December 2025</div>
+                                <div class="calendar-nav">
                                     <button class="nav-btn" onclick="previousMonth()">‹</button>
                                     <button class="nav-btn" onclick="nextMonth()">›</button>
                                 </div>
@@ -466,6 +468,38 @@
                         </div>
                     </div>
                 </div>
+        </div>
+    </div>
+
+    <!-- Reschedule Modal -->
+    <div class="modal" id="rescheduleModal">
+        <div class="modal-content">
+            <h2 style="margin-bottom: 20px;">Reschedule Viewing</h2>
+            <form id="rescheduleForm">
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 500;">New Date</label>
+                    <input type="date" id="newDate" required style="width: 100%; padding: 10px; border: 2px solid #e0e0e0; border-radius: 8px;">
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 500;">New Time</label>
+                    <select id="newTime" required style="width: 100%; padding: 10px; border: 2px solid #e0e0e0; border-radius: 8px;">
+                        <option value="">Select time</option>
+                        <option value="9:00 AM">9:00 AM</option>
+                        <option value="10:00 AM">10:00 AM</option>
+                        <option value="11:00 AM">11:00 AM</option>
+                        <option value="12:00 PM">12:00 PM</option>
+                        <option value="1:00 PM">1:00 PM</option>
+                        <option value="2:00 PM">2:00 PM</option>
+                        <option value="3:00 PM">3:00 PM</option>
+                        <option value="4:00 PM">4:00 PM</option>
+                        <option value="5:00 PM">5:00 PM</option>
+                    </select>
+                </div>
+                <div style="display: flex; gap: 10px;">
+                    <button type="submit" class="btn btn-primary" style="flex: 1;">Confirm</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()" style="flex: 1;">Cancel</button>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -595,12 +629,12 @@
             
             if (viewings.length === 0) {
                 container.innerHTML = '';
-                        emptyState.style.display = 'none';
-                        return;
-                    }
-                    
-                    emptyState.style.display = 'none';
-                    container.innerHTML = viewings.map(viewing => {
+                emptyState.style.display = 'block';
+                return;
+            }
+            
+            emptyState.style.display = 'none';
+            container.innerHTML = viewings.map(viewing => {
                         const date = new Date(viewing.date + 'T00:00:00');
                         const isUpcoming = viewing.date >= new Date().toISOString().split('T')[0];
                         const statusClass = viewing.status === 'cancelled' ? 'cancelled' : 
@@ -783,8 +817,10 @@
             document.getElementById('rescheduleModal').classList.add('active');
         }
         
-        // Handle reschedule form
-        document.getElementById('rescheduleForm').addEventListener('submit', async (e) => {
+        // Handle reschedule form (guard against missing DOM in older builds)
+        const rescheduleFormEl = document.getElementById('rescheduleForm');
+        if (rescheduleFormEl) {
+            rescheduleFormEl.addEventListener('submit', async (e) => {
             e.preventDefault();
             
             const newDate = document.getElementById('newDate').value;
@@ -821,6 +857,7 @@
                 alert('Viewing rescheduled successfully! You will receive a confirmation.');
             }
         });
+        }
         
         // Close modal
         function closeModal() {
