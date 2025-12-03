@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.129.2] - 2025-12-03
+
+### Fixed
+- fix(client): Shim httpsCallable for QR functions
+
+
 ## [0.129.1] - 2025-12-03
 
 ### Fixed
@@ -1634,6 +1640,12 @@ accountIds/{accountId} = {
 **Sprint Progress**: Day 4 of 6 (67% target after Day 4 completion)
 
 ## [Unreleased]
+
+
+## [0.129.2] - 2025-12-03
+
+### Fixed
+- fix(client): Shim httpsCallable for QR functions
 
 
 ## [0.129.1] - 2025-12-03
@@ -3500,7 +3512,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.129.1...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.129.2...HEAD
+
+
+## [0.129.2] - 2025-12-03
+
+### Fixed
+- fix(client): Shim httpsCallable for QR functions
 
 
 ## [0.129.1] - 2025-12-03
@@ -5422,3 +5440,4 @@ To generate changelog entries:
 [0.128.8]: https://github.com/SirsiMaster/Assiduous/compare/v0.128.7...v0.128.8
 [0.129.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.128.8...v0.129.0
 [0.129.1]: https://github.com/SirsiMaster/Assiduous/compare/v0.129.0...v0.129.1
+[0.129.2]: https://github.com/SirsiMaster/Assiduous/compare/v0.129.1...v0.129.2
