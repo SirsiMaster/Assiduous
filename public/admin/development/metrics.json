@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-12-03T06:11:42.820Z",
+  "lastUpdated": "2025-12-03T06:17:07.803Z",
   "summary": {
     "health": "Good",
     "score": 59,
@@ -158,13 +158,13 @@
     "laborCost": 50700,
     "toolsCost": 2456,
     "monthsElapsed": "3.8",
-    "totalCommits": 1024,
+    "totalCommits": 1025,
     "totalFiles": 807,
     "activeDays": 44,
     "totalDays": 115,
     "projectAgeDays": 115,
-    "linesAdded": 9829468,
-    "linesDeleted": 9448279,
+    "linesAdded": 9829540,
+    "linesDeleted": 9448351,
     "netLines": 381189,
     "velocity": "23.3",
     "completionPercentage": 59,
@@ -177,21 +177,21 @@
   },
   "today": {
     "date": "2025-12-03",
-    "hours": "4.6",
-    "cost": 693,
-    "commits": 14,
+    "hours": "5.0",
+    "cost": 743,
+    "commits": 15,
     "deployments": 0
   },
   "thisWeek": {
-    "hours": "5.3",
-    "cost": 792,
-    "commits": 16,
+    "hours": "5.6",
+    "cost": 842,
+    "commits": 17,
     "days": 7
   },
   "thisMonth": {
-    "hours": "91.4",
-    "cost": 13712,
-    "commits": 277
+    "hours": "91.7",
+    "cost": 13761,
+    "commits": 278
   },
   "quality": {
     "testCoverage": {
@@ -224,7 +224,7 @@
       "low": 0,
       "total": 0
     },
-    "lastAudit": "2025-12-03T06:11:11.298Z",
+    "lastAudit": "2025-12-03T06:16:37.317Z",
     "dependencies": {
       "total": 0,
       "outdated": 0,
@@ -316,7 +316,7 @@
   },
   "productivity": {
     "velocityTrend": "increasing",
-    "weeklyCommits": 16,
+    "weeklyCommits": 17,
     "contributors": {
       "total": 0,
       "active": 0
@@ -394,6 +394,12 @@
   },
   "recentActivity": [
     {
+      "hash": "54e035a52a72925c1f6664291da4ac78771547bf",
+      "message": "fix(ui): Point geist-sans CDN to index.css",
+      "author": "SirsiMaster",
+      "date": "2025-12-03 01:16:08 -0500"
+    },
+    {
       "hash": "1554e31e1b8de8d4172a5f8b432f52a77357fd55",
       "message": "style(client): Present offers as deal sheet",
       "author": "SirsiMaster",
@@ -446,16 +452,10 @@
       "message": "chore(release): Bump version to 0.128.6 [skip ci]",
       "author": "github-actions[bot]",
       "date": "2025-12-03 05:37:02 +0000"
-    },
-    {
-      "hash": "bf60898b5595a946ae67f1e59e03be7c2315ad60",
-      "message": "fix(client): Align client portal with UCS and modular Firebase",
-      "author": "SirsiMaster",
-      "date": "2025-12-03 00:36:33 -0500"
     }
   ],
   "automation": {
-    "lastRun": "2025-12-03T06:11:42.820Z",
+    "lastRun": "2025-12-03T06:17:07.803Z",
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",

@@ -80,6 +80,18 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 const functions = getFunctions(app, 'us-central1');
+
+// Provide a compat-style shim so legacy code can call
+// firebase.functions.httpsCallable('name') against the
+// modular Functions instance.
+try {
+  if (typeof httpsCallable === 'function' && !functions.httpsCallable) {
+    functions.httpsCallable = (name) => httpsCallable(functions, name);
+  }
+} catch (e) {
+  console.warn('[firebase-init] Failed to attach httpsCallable shim:', e);
+}
+
 const storage = getStorage(app);
 let analytics = null;
 
