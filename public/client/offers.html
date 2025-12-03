@@ -79,97 +79,77 @@
             color: var(--white);
         }
         
-        .viewing-card {
-            background: var(--gray-50);
+        /* Deal sheet table */
+        .offers-table {
+            background: var(--white);
+            border: 1px solid var(--border);
             border-radius: var(--radius-md);
-            padding: var(--space-md);
-            margin-bottom: var(--space-md);
-            border-left: 4px solid var(--sky);
-            transition: all 0.2s;
-            cursor: pointer;
+            overflow-x: auto;
         }
         
-        .viewing-card:hover {
-            transform: translateX(4px);
-            box-shadow: var(--shadow-md);
+        .offers-table table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 720px;
         }
         
-        .viewing-card.cancelled {
-            opacity: 0.6;
-            border-left-color: var(--danger);
+        .offers-table th,
+        .offers-table td {
+            padding: var(--space-sm) var(--space-md);
+            font-size: 13px;
+            border-bottom: 1px solid var(--border);
+            text-align: left;
+            white-space: nowrap;
         }
         
-        .viewing-card.completed {
-            border-left-color: var(--success);
+        .offers-table th {
+            font-weight: 600;
+            color: var(--navy);
+            background: var(--gray-50);
         }
         
-        .viewing-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: var(--space-md);
+        .offers-table tbody tr:hover {
+            background: var(--gray-50);
         }
         
-        .viewing-date {
-            font-size: 16px;
+        .amount-cell {
             font-weight: 600;
             color: var(--navy);
         }
         
-        .viewing-time {
-            font-size: 14px;
-            color: var(--text-secondary);
-            margin-top: 4px;
-        }
-        
-        .viewing-status {
-            padding: 4px 12px;
-            border-radius: var(--radius);
-            font-size: 12px;
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2px 10px;
+            border-radius: 999px;
+            font-size: 11px;
             font-weight: 600;
         }
         
-        .status-pending {
+        .status-open {
             background: rgba(245, 158, 11, 0.1);
             color: var(--warning);
         }
         
-        .status-confirmed {
+        .status-won {
             background: rgba(5, 150, 105, 0.1);
             color: var(--success);
         }
         
-        .status-cancelled {
+        .status-lost {
             background: rgba(220, 38, 38, 0.1);
             color: var(--danger);
         }
         
-        .property-info {
-            background: var(--white);
-            border-radius: var(--radius);
-            padding: var(--space-md);
-            margin-bottom: var(--space-md);
+        .contingencies-cell {
+            max-width: 220px;
+            white-space: normal;
         }
         
-        .property-title {
-            font-size: 16px;
-            font-weight: 600;
-            color: var(--navy);
-            margin-bottom: 4px;
-        }
-        
-        .property-address {
-            font-size: 14px;
-            color: var(--text-secondary);
-        }
-        
-        .viewing-notes {
-            font-size: 14px;
-            color: var(--text-secondary);
-            background: var(--white);
-            padding: var(--space-sm);
-            border-radius: var(--radius);
-            margin-top: var(--space-sm);
+        .notes-subtext {
+            font-size: 11px;
+            color: var(--text-tertiary);
         }
         
         .action-buttons {
@@ -646,48 +626,57 @@
             }
             
             emptyState.style.display = 'none';
-            container.innerHTML = offers.map(offer => {
+
+            const rows = offers.map(offer => {
                 const createdDate = getOfferCreatedDate(offer);
                 const amount = getOfferAmount(offer);
-                const status = getOfferStatus(offer);
-                const statusClass = status === 'cancelled' || status === 'rejected' || status === 'lost'
-                    ? 'cancelled'
-                    : (status === 'completed' || status === 'closed' || status === 'accepted' ? 'completed' : '');
-                
-                const closingDate = offer.details?.terms?.closingDate;
+                const rawStatus = getOfferStatus(offer);
+                const statusForPill = (rawStatus === 'completed' || rawStatus === 'closed' || rawStatus === 'accepted')
+                    ? 'won'
+                    : (['cancelled','rejected','lost'].includes(rawStatus) ? 'lost' : 'open');
+
+                const closingDate = offer.details?.terms?.closingDate || '';
                 const contingencies = offer.details?.terms?.contingencies || [];
-                
+                const agentLabel = offer.agentName || offer.agentId || 'Assigned Agent';
+
                 return `
-                    <div class="viewing-card ${statusClass}">
-                        <div class="viewing-header">
-                            <div>
-                                <div class="viewing-date">${createdDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</div>
-                                <div class="viewing-time">Offer on ${offer.propertyTitle || 'Selected Property'}</div>
-                            </div>
-                            <div class="viewing-status status-${status}">
-                                ${status.charAt(0).toUpperCase() + status.slice(1)}
-                            </div>
-                        </div>
-                        
-                        <div class="property-info">
-                            <div class="property-title">${offer.propertyAddress || offer.propertyTitle || offer.propertyId || 'Property'}</div>
-                            <div class="property-address">Offer Amount: $${amount.toLocaleString()}</div>
-                        </div>
-                        
-                        <div class="viewing-notes">
-                            ${closingDate ? `
-                                <div><strong>Target Closing:</strong> ${closingDate}</div>
-                            ` : ''}
-                            ${contingencies.length ? `
-                                <div><strong>Contingencies:</strong> ${contingencies.join(', ')}</div>
-                            ` : ''}
-                            ${offer.agreedPrice ? `
-                                <div><strong>Agreed Price:</strong> $${Number(offer.agreedPrice).toLocaleString()}</div>
-                            ` : ''}
-                        </div>
-                    </div>
+                    <tr>
+                        <td>${offer.propertyTitle || (offer.propertyAddress || offer.propertyId || 'Property')}</td>
+                        <td class="amount-cell">$${amount.toLocaleString()}</td>
+                        <td>
+                            <span class="status-pill status-${statusForPill}">
+                                ${statusForPill.charAt(0).toUpperCase() + statusForPill.slice(1)}
+                            </span>
+                            <div class="notes-subtext">${rawStatus}</div>
+                        </td>
+                        <td>${closingDate || '—'}</td>
+                        <td class="contingencies-cell">${contingencies.length ? contingencies.join(', ') : '—'}</td>
+                        <td>${agentLabel}</td>
+                        <td>${createdDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</td>
+                    </tr>
                 `;
             }).join('');
+
+            container.innerHTML = `
+                <div class="offers-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Property</th>
+                                <th>Offer amount</th>
+                                <th>Status</th>
+                                <th>Target close</th>
+                                <th>Contingencies</th>
+                                <th>Agent</th>
+                                <th>Created</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${rows}
+                        </tbody>
+                    </table>
+                </div>
+            `;
         }
         
         // Update statistics

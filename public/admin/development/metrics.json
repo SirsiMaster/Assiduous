@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-12-03T05:56:42.298Z",
+  "lastUpdated": "2025-12-03T06:05:42.859Z",
   "summary": {
     "health": "Good",
     "score": 59,
@@ -158,14 +158,14 @@
     "laborCost": 50550,
     "toolsCost": 2456,
     "monthsElapsed": "3.8",
-    "totalCommits": 1020,
+    "totalCommits": 1022,
     "totalFiles": 807,
     "activeDays": 44,
     "totalDays": 115,
     "projectAgeDays": 115,
-    "linesAdded": 9829100,
-    "linesDeleted": 9447875,
-    "netLines": 381225,
+    "linesAdded": 9829332,
+    "linesDeleted": 9448151,
+    "netLines": 381181,
     "velocity": "23.2",
     "completionPercentage": 59,
     "actualStartDate": "2025-08-10",
@@ -177,21 +177,21 @@
   },
   "today": {
     "date": "2025-12-03",
-    "hours": "3.3",
-    "cost": 495,
-    "commits": 10,
-    "deployments": 0
-  },
-  "thisWeek": {
     "hours": "4.0",
     "cost": 594,
     "commits": 12,
+    "deployments": 0
+  },
+  "thisWeek": {
+    "hours": "4.6",
+    "cost": 693,
+    "commits": 14,
     "days": 7
   },
   "thisMonth": {
-    "hours": "90.1",
-    "cost": 13514,
-    "commits": 273
+    "hours": "90.8",
+    "cost": 13613,
+    "commits": 275
   },
   "quality": {
     "testCoverage": {
@@ -224,7 +224,7 @@
       "low": 0,
       "total": 0
     },
-    "lastAudit": "2025-12-03T05:56:09.246Z",
+    "lastAudit": "2025-12-03T06:05:09.428Z",
     "dependencies": {
       "total": 0,
       "outdated": 0,
@@ -312,11 +312,11 @@
     "changelog": true,
     "contributing": false,
     "license": false,
-    "lastUpdate": "2025-12-03 05:48:36 +0000"
+    "lastUpdate": "2025-12-03 05:56:00 +0000"
   },
   "productivity": {
     "velocityTrend": "increasing",
-    "weeklyCommits": 12,
+    "weeklyCommits": 14,
     "contributors": {
       "total": 0,
       "active": 0
@@ -394,6 +394,18 @@
   },
   "recentActivity": [
     {
+      "hash": "869c5ba6816a2ec5d8180470d744072e715a6f8b",
+      "message": "feat(client): Wire offers page to transactions",
+      "author": "SirsiMaster",
+      "date": "2025-12-03 01:04:15 -0500"
+    },
+    {
+      "hash": "529dd8fd58f8f314187e71f37707e779d92686a3",
+      "message": "chore(release): Bump version to 0.128.8 [skip ci]",
+      "author": "github-actions[bot]",
+      "date": "2025-12-03 05:56:00 +0000"
+    },
+    {
       "hash": "a808d943a505e9034f3ba37f8dd60537abe0438c",
       "message": "fix(client): Align viewings page with offers layout",
       "author": "SirsiMaster",
@@ -440,22 +452,10 @@
       "message": "chore(wip): capture docs, metrics, and new messages scaffolding",
       "author": "SirsiMaster",
       "date": "2025-12-02 23:54:46 -0500"
-    },
-    {
-      "hash": "b68fdaff2410550efb12118940bf227dc92cb083",
-      "message": "chore(release): Bump version to 0.128.5 [skip ci]",
-      "author": "github-actions[bot]",
-      "date": "2025-12-03 04:52:36 +0000"
-    },
-    {
-      "hash": "bc957e4131c5ca27f573b42ffd94ff70030c8dbe",
-      "message": "fix(client-ucs): align client persona pages with UCS header/sidebar",
-      "author": "SirsiMaster",
-      "date": "2025-12-02 23:50:07 -0500"
     }
   ],
   "automation": {
-    "lastRun": "2025-12-03T05:56:42.298Z",
+    "lastRun": "2025-12-03T06:05:42.859Z",
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",
