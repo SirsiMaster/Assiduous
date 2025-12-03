@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.128.6] - 2025-12-03
+
+### Fixed
+- fix(client): Align client portal with UCS and modular Firebase
+
+
 ## [0.128.5] - 2025-12-03
 
 ### Fixed
@@ -1604,6 +1610,12 @@ accountIds/{accountId} = {
 **Sprint Progress**: Day 4 of 6 (67% target after Day 4 completion)
 
 ## [Unreleased]
+
+
+## [0.128.6] - 2025-12-03
+
+### Fixed
+- fix(client): Align client portal with UCS and modular Firebase
 
 ### Fixed
 - fix(client): Align client persona pages with UCS header/sidebar and modular Firebase bootstrap
@@ -3440,7 +3452,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.128.5...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.128.6...HEAD
+
+
+## [0.128.6] - 2025-12-03
+
+### Fixed
+- fix(client): Align client portal with UCS and modular Firebase
 
 
 ## [0.128.5] - 2025-12-03
@@ -5327,3 +5345,4 @@ To generate changelog entries:
 [0.128.3]: https://github.com/SirsiMaster/Assiduous/compare/v0.128.2...v0.128.3
 [0.128.4]: https://github.com/SirsiMaster/Assiduous/compare/v0.128.3...v0.128.4
 [0.128.5]: https://github.com/SirsiMaster/Assiduous/compare/v0.128.4...v0.128.5
+[0.128.6]: https://github.com/SirsiMaster/Assiduous/compare/v0.128.5...v0.128.6
