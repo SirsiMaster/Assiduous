@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.129.5] - 2025-12-03
+
+### Fixed
+- fix(firebase): Rename FunctionsService to CloudFunctionsService
+
+
 ## [0.129.4] - 2025-12-03
 
 ### Fixed
@@ -1652,6 +1658,12 @@ accountIds/{accountId} = {
 **Sprint Progress**: Day 4 of 6 (67% target after Day 4 completion)
 
 ## [Unreleased]
+
+
+## [0.129.5] - 2025-12-03
+
+### Fixed
+- fix(firebase): Rename FunctionsService to CloudFunctionsService
 
 
 ## [0.129.4] - 2025-12-03
@@ -3536,7 +3548,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.129.4...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.129.5...HEAD
+
+
+## [0.129.5] - 2025-12-03
+
+### Fixed
+- fix(firebase): Rename FunctionsService to CloudFunctionsService
 
 
 ## [0.129.4] - 2025-12-03
@@ -5479,3 +5497,4 @@ To generate changelog entries:
 [0.129.2]: https://github.com/SirsiMaster/Assiduous/compare/v0.129.1...v0.129.2
 [0.129.3]: https://github.com/SirsiMaster/Assiduous/compare/v0.129.2...v0.129.3
 [0.129.4]: https://github.com/SirsiMaster/Assiduous/compare/v0.129.3...v0.129.4
+[0.129.5]: https://github.com/SirsiMaster/Assiduous/compare/v0.129.4...v0.129.5
