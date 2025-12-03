@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.129.3] - 2025-12-03
+
+### Fixed
+- fix(client): Use FunctionsService for QR generation
+
+
 ## [0.129.2] - 2025-12-03
 
 ### Fixed
@@ -1640,6 +1646,12 @@ accountIds/{accountId} = {
 **Sprint Progress**: Day 4 of 6 (67% target after Day 4 completion)
 
 ## [Unreleased]
+
+
+## [0.129.3] - 2025-12-03
+
+### Fixed
+- fix(client): Use FunctionsService for QR generation
 
 
 ## [0.129.2] - 2025-12-03
@@ -3512,7 +3524,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.129.2...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.129.3...HEAD
+
+
+## [0.129.3] - 2025-12-03
+
+### Fixed
+- fix(client): Use FunctionsService for QR generation
 
 
 ## [0.129.2] - 2025-12-03
@@ -5441,3 +5459,4 @@ To generate changelog entries:
 [0.129.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.128.8...v0.129.0
 [0.129.1]: https://github.com/SirsiMaster/Assiduous/compare/v0.129.0...v0.129.1
 [0.129.2]: https://github.com/SirsiMaster/Assiduous/compare/v0.129.1...v0.129.2
+[0.129.3]: https://github.com/SirsiMaster/Assiduous/compare/v0.129.2...v0.129.3
