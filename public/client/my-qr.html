@@ -295,7 +295,7 @@
         window.addEventListener('firebase-ready', () => {
             const firebase = window.Firebase || {};
             auth = firebase.auth || window.firebaseAuth;
-            functionsService = firebase.FunctionsService || null;
+            functionsService = firebase.CloudFunctionsService || null;
 
             // Check authentication
             auth.onAuthStateChanged(async (user) => {

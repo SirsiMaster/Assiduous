@@ -566,9 +566,9 @@ export const DatabaseService = {
 };
 
 /**
- * Functions Service - Cloud Functions helpers
+ * Cloud Functions Service - Cloud Functions helpers
  */
-export const FunctionsService = {
+export const CloudFunctionsService = {
   // Generate or fetch the current user's profile QR code
   async generateUserQR(payload = {regenerate: false}) {
     try {
@@ -696,7 +696,7 @@ const Firebase = {
   DatabaseService,
   APIService,
   StorageService,
-  FunctionsService,
+  CloudFunctionsService,
 };
 
 // Make available globally for legacy code

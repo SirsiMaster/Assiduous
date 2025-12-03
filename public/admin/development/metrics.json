@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-12-03T18:36:21.275Z",
+  "lastUpdated": "2025-12-03T18:42:50.882Z",
   "summary": {
     "health": "Good",
     "score": 59,
@@ -158,14 +158,14 @@
     "laborCost": 51000,
     "toolsCost": 2456,
     "monthsElapsed": "3.8",
-    "totalCommits": 1029,
+    "totalCommits": 1031,
     "totalFiles": 807,
     "activeDays": 44,
     "totalDays": 115,
     "projectAgeDays": 115,
-    "linesAdded": 9829688,
-    "linesDeleted": 9448425,
-    "netLines": 381263,
+    "linesAdded": 9829745,
+    "linesDeleted": 9448463,
+    "netLines": 381282,
     "velocity": "23.4",
     "completionPercentage": 59,
     "actualStartDate": "2025-08-10",
@@ -177,21 +177,21 @@
   },
   "today": {
     "date": "2025-12-03",
-    "hours": "6.3",
-    "cost": 941,
-    "commits": 19,
-    "deployments": 0
-  },
-  "thisWeek": {
     "hours": "6.9",
     "cost": 1040,
     "commits": 21,
+    "deployments": 0
+  },
+  "thisWeek": {
+    "hours": "7.6",
+    "cost": 1139,
+    "commits": 23,
     "days": 7
   },
   "thisMonth": {
-    "hours": "93.1",
-    "cost": 13959,
-    "commits": 282
+    "hours": "93.7",
+    "cost": 14058,
+    "commits": 284
   },
   "quality": {
     "testCoverage": {
@@ -224,7 +224,7 @@
       "low": 0,
       "total": 0
     },
-    "lastAudit": "2025-12-03T18:35:49.538Z",
+    "lastAudit": "2025-12-03T18:42:18.736Z",
     "dependencies": {
       "total": 0,
       "outdated": 0,
@@ -312,16 +312,16 @@
     "changelog": true,
     "contributing": false,
     "license": false,
-    "lastUpdate": "2025-12-03 18:31:52 +0000"
+    "lastUpdate": "2025-12-03 18:35:40 +0000"
   },
   "productivity": {
     "velocityTrend": "increasing",
-    "weeklyCommits": 21,
+    "weeklyCommits": 23,
     "contributors": {
       "total": 0,
       "active": 0
     },
-    "averageCommitSize": 85,
+    "averageCommitSize": 84,
     "pullRequests": {
       "open": 0,
       "merged": 0,
@@ -394,6 +394,18 @@
   },
   "recentActivity": [
     {
+      "hash": "4ad55b50396499eca4690d4b0fde29aaea608ea8",
+      "message": "fix(firebase): Remove duplicate FunctionsService export",
+      "author": "SirsiMaster",
+      "date": "2025-12-03 13:41:21 -0500"
+    },
+    {
+      "hash": "cf1db28dc88f3c13d1398710bf848be4a59f654a",
+      "message": "chore(release): Bump version to 0.129.3 [skip ci]",
+      "author": "github-actions[bot]",
+      "date": "2025-12-03 18:35:40 +0000"
+    },
+    {
       "hash": "ea7bc9afe75708913d87f9084f31589ced5d72f9",
       "message": "fix(client): Use FunctionsService for QR generation",
       "author": "SirsiMaster",
@@ -440,22 +452,10 @@
       "message": "feat(client): Wire offers page to transactions",
       "author": "SirsiMaster",
       "date": "2025-12-03 01:04:15 -0500"
-    },
-    {
-      "hash": "529dd8fd58f8f314187e71f37707e779d92686a3",
-      "message": "chore(release): Bump version to 0.128.8 [skip ci]",
-      "author": "github-actions[bot]",
-      "date": "2025-12-03 05:56:00 +0000"
-    },
-    {
-      "hash": "a808d943a505e9034f3ba37f8dd60537abe0438c",
-      "message": "fix(client): Align viewings page with offers layout",
-      "author": "SirsiMaster",
-      "date": "2025-12-03 00:55:12 -0500"
     }
   ],
   "automation": {
-    "lastRun": "2025-12-03T18:36:21.275Z",
+    "lastRun": "2025-12-03T18:42:50.883Z",
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",
