@@ -94,16 +94,11 @@ if (typeof window !== 'undefined' && !window.location.hostname.includes('localho
   });
 }
 
-// Enable offline persistence with the simpler API
-// NOTE: This uses the legacy API and will be migrated to FirestoreSettings.cache,
-// but we keep the warnings visible instead of muting console output.
-enableIndexedDbPersistence(db).catch(err => {
-  if (err.code === 'failed-precondition') {
-    console.warn('[Firestore] Persistence not enabled: multiple tabs open');
-  } else if (err.code === 'unimplemented') {
-    console.warn("[Firestore] Persistence not supported in this browser");
-  }
-});
+// NOTE: Offline persistence via enableIndexedDbPersistence(db) was causing
+// long hangs when IndexedDB was disabled or locked by another tab. For now
+// we rely on the default in-memory cache to prioritize responsiveness.
+// When we migrate to FirestoreSettings.cache with multi-tab support, we can
+// reintroduce persistence in a more robust way.
 
 // Set authentication persistence
 setPersistence(auth, browserLocalPersistence).catch(error => {
@@ -168,32 +163,55 @@ export const AuthService = {
   // Sign in user
   async signIn(email, password) {
     try {
+      const PROFILE_TIMEOUT_MS = 3000;
+
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
-      // Get user role from Firestore
-      const userDoc = await getDoc(doc(db, 'users', user.uid));
-      const userData = userDoc.data();
+      // Quick role guess based on canonical test emails to avoid long waits
+      let guessedRole = null;
+      if (user.email === 'admin@assiduousrealty.com') guessedRole = 'admin';
+      if (user.email === 'agent@assiduousrealty.com') guessedRole = 'agent';
+      if (user.email === 'client@assiduousrealty.com') guessedRole = 'client';
+      if (user.email === 'investor@assiduousrealty.com') guessedRole = 'investor';
 
-      // Log successful auth event for audit/debugging
+      // Get user role from Firestore, but bound latency with a timeout
+      let userData = null;
       try {
-        await addDoc(collection(db, 'auth_events'), {
+        const userRef = doc(db, 'users', user.uid);
+        const profilePromise = getDoc(userRef).then((snap) => (snap.exists() ? snap.data() : null));
+        const timeoutPromise = new Promise((resolve) => {
+          setTimeout(() => resolve(null), PROFILE_TIMEOUT_MS);
+        });
+        userData = await Promise.race([profilePromise, timeoutPromise]);
+      } catch (profileError) {
+        console.warn('User profile fetch failed, continuing with guessed role:', profileError);
+      }
+
+      const role = userData?.role || guessedRole || 'client';
+      const status = userData?.status || 'active';
+
+      // Log successful auth event for audit/debugging (best-effort, non-blocking for caller)
+      try {
+        addDoc(collection(db, 'auth_events'), {
           uid: user.uid,
           email: user.email,
-          role: userData?.role || 'client',
+          role,
           status: 'success',
           source: 'web_landing_modal',
           timestamp: serverTimestamp(),
+        }).catch((logError) => {
+          console.warn('Failed to log auth event:', logError);
         });
-      } catch (logError) {
-        console.warn('Failed to log auth event:', logError);
+      } catch (logErrorOuter) {
+        console.warn('Failed to enqueue auth event log:', logErrorOuter);
       }
 
       return {
         success: true,
         user,
-        role: userData?.role || 'client',
-        status: userData?.status || 'active',
+        role,
+        status,
       };
     } catch (error) {
       console.error('Sign in error:', error);
@@ -483,6 +501,56 @@ export const DatabaseService = {
       callback(leads);
     });
   },
+
+  // Real-time listener for per-user message inbox
+  onUserMessagesChange(userId, callback, options = {}) {
+    try {
+      const { limitCount = 50 } = options;
+      let q = collection(db, 'users', userId, 'messages');
+      q = query(q, orderBy('createdAt', 'desc'));
+      if (limitCount) {
+        q = query(q, limit(limitCount));
+      }
+
+      return onSnapshot(
+        q,
+        snapshot => {
+          callback(snapshot);
+        },
+        error => {
+          console.error(`Error listening to messages for user ${userId}:`, error);
+        }
+      );
+    } catch (error) {
+      console.error('onUserMessagesChange setup failed:', error);
+      return () => {};
+    }
+  },
+
+  // Saved properties helpers (used by client portal)
+  async getUserSavedProperties(userId) {
+    try {
+      const userRef = doc(db, 'users', userId);
+      const snap = await getDoc(userRef);
+      if (!snap.exists()) return [];
+      const data = snap.data() || {};
+      return Array.isArray(data.savedProperties) ? data.savedProperties : [];
+    } catch (error) {
+      console.error(`Error loading savedProperties for user ${userId}:`, error);
+      return [];
+    }
+  },
+
+  async setUserSavedProperties(userId, savedArray) {
+    try {
+      const userRef = doc(db, 'users', userId);
+      await updateDoc(userRef, { savedProperties: savedArray || [] });
+      return { success: true };
+    } catch (error) {
+      console.error(`Error updating savedProperties for user ${userId}:`, error);
+      return { success: false, error: error.message };
+    }
+  },
 };
 
 /**
@@ -603,6 +671,25 @@ const Firebase = {
 
 // Make available globally for legacy code
 window.Firebase = Firebase;
+
+// Bridge modular SDK to compat-style globals so legacy code and auth-guard
+// see the same app, auth, and db instances as the landing AuthService.
+try {
+  if (!window.firebaseApp) window.firebaseApp = app;
+  if (!window.firebaseAuth) window.firebaseAuth = auth;
+  if (!window.firebaseDb) window.firebaseDb = db;
+  if (!window.firebaseStorage) window.firebaseStorage = storage;
+
+  // Expose AuthService for guards/pages that expect it on window
+  if (!window.AuthService) window.AuthService = AuthService;
+
+  // Fire a firebase-ready event for any compat listeners waiting on it
+  window.dispatchEvent(new CustomEvent('firebase-ready', {
+    detail: { app, auth, db, storage, analytics }
+  }));
+} catch (e) {
+  console.warn('[firebase-init] Failed to bridge to compat globals:', e);
+}
 
 // Export for ES modules
 export default Firebase;

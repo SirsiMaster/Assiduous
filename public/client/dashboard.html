@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-auth-protect="client,investor">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,10 +9,17 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/@fontsource/geist-sans@5.0.6/latin.css" rel="stylesheet">
     
     <link rel="stylesheet" href="../assiduous.css">
     <link rel="stylesheet" href="../components/admin-layout.css">
+    
+    <!-- Canonical modular Firebase auth: used by AuthService and auth-guard -->
+    <script type="module">
+        import Firebase, { AuthService } from '../assets/js/firebase-init.js';
+        // Expose for auth-guard and any modular-aware components
+        window.Firebase = Firebase;
+        window.AuthService = AuthService;
+    </script>
     
     <style>
 /* Minimal dashboard-specific styles only */
@@ -368,10 +375,6 @@
     <!-- UCS Core Scripts -->
     <script src="../components/ucs-core.js"></script>
     <script src="../components/component-registry.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-    <script src="../firebase-config.js"></script>
     <script src="../components/auth-guard.js"></script>
     <script>
         // Load dashboard stats from localStorage

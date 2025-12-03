@@ -1,21 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-auth-protect="client,investor">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Messages - Assiduous Client Portal</title>
-    
+
     <!-- Assiduous Design System -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/@fontsource/geist-sans@5.0.6/latin.css" rel="stylesheet">
-    
+
     <link rel="stylesheet" href="../assiduous.css">
     <link rel="stylesheet" href="../components/admin-layout.css">
-    
+
+    <!-- Canonical modular Firebase bootstrap for portal pages -->
+    <script type="module" src="../assets/js/firebase-init.js"></script>
+
     <style>
-/* Chat-specific styles using design system */
+        /* Chat-specific styles using design system (mirrors agent/client layouts) */
         .messages-container {
             display: grid;
             grid-template-columns: 320px 1fr;
@@ -25,27 +27,25 @@
             border-radius: var(--radius-md);
             overflow: hidden;
         }
-        
         .conversations-sidebar {
             background: var(--white);
             border-right: 1px solid var(--border);
             display: flex;
             flex-direction: column;
         }
-        
-        
-        
+        .sidebar-header {
+            padding: var(--space-lg);
+            border-bottom: 1px solid var(--border);
+        }
         .header-title {
             font-size: 20px;
             font-weight: 700;
             color: var(--navy);
             margin-bottom: var(--space-sm);
         }
-        
         .search-box {
             position: relative;
         }
-        
         .search-box input {
             width: 100%;
             padding: var(--space-sm) var(--space-md) var(--space-sm) 40px;
@@ -53,12 +53,10 @@
             border-radius: var(--radius);
             font-size: 14px;
         }
-        
         .search-box input:focus {
             outline: none;
             border-color: var(--sky);
         }
-        
         .search-icon {
             position: absolute;
             left: var(--space-md);
@@ -66,12 +64,10 @@
             transform: translateY(-50%);
             color: var(--text-secondary);
         }
-        
         .conversations-list {
             flex: 1;
             overflow-y: auto;
         }
-        
         .conversation-item {
             padding: var(--space-md) var(--space-lg);
             border-bottom: 1px solid var(--border);
@@ -81,20 +77,17 @@
             align-items: center;
             gap: var(--space-sm);
         }
-        
         .conversation-item:hover {
             background: var(--gray-50);
         }
-        
         .conversation-item.active {
             background: rgba(96, 163, 217, 0.1);
             border-left: 3px solid var(--sky);
             padding-left: calc(var(--space-lg) - 3px);
         }
-        
         .avatar {
-            width: 48px;
-            height: 48px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             background: var(--gradient);
             color: var(--white);
@@ -102,27 +95,18 @@
             align-items: center;
             justify-content: center;
             font-weight: 600;
-            font-size: 18px;
+            font-size: 16px;
             flex-shrink: 0;
         }
-        
         .conversation-details {
             flex: 1;
             min-width: 0;
         }
-        
         .conversation-name {
             font-weight: 600;
             color: var(--navy);
             margin-bottom: 4px;
         }
-        
-        .conversation-role {
-            font-size: 12px;
-            color: var(--sky);
-            margin-bottom: 4px;
-        }
-        
         .conversation-preview {
             font-size: 14px;
             color: var(--text-secondary);
@@ -130,18 +114,15 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
-        
         .conversation-meta {
             text-align: right;
             flex-shrink: 0;
         }
-        
         .conversation-time {
             font-size: 12px;
             color: var(--text-secondary);
             margin-bottom: 4px;
         }
-        
         .unread-badge {
             background: var(--sky);
             color: var(--white);
@@ -150,12 +131,10 @@
             border-radius: 10px;
             display: inline-block;
         }
-        
         .chat-area {
             display: flex;
             flex-direction: column;
         }
-        
         .chat-header {
             padding: var(--space-lg);
             border-bottom: 1px solid var(--border);
@@ -164,160 +143,31 @@
             align-items: center;
             gap: var(--space-md);
         }
-        
         .chat-header-details {
             flex: 1;
         }
-        
         .chat-header-name {
             font-size: 18px;
             font-weight: 600;
             color: var(--navy);
         }
-        
         .chat-header-status {
             font-size: 14px;
             color: var(--success);
         }
-        
-        .chat-header-actions {
-            display: flex;
-            gap: var(--space-sm);
-        }
-        
-        .action-btn {
-            width: 36px;
-            height: 36px;
-            border: none;
-            background: var(--gray-50);
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s;
-        }
-        
-        .action-btn:hover {
-            background: var(--gray-100);
-        }
-        
         .messages-area {
             flex: 1;
             overflow-y: auto;
             padding: var(--space-lg);
             background: var(--gray-50);
         }
-        
-        .message {
-            display: flex;
-            margin-bottom: var(--space-lg);
-            gap: var(--space-sm);
-        }
-        
-        .message.sent {
-            flex-direction: row-reverse;
-        }
-        
-        .message-avatar {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: var(--gradient);
-            color: var(--white);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-            font-size: 14px;
-            flex-shrink: 0;
-        }
-        
-        .message-content {
-            max-width: 60%;
-        }
-        
-        .message-bubble {
-            background: var(--white);
-            padding: var(--space-md);
-            border-radius: var(--radius-md);
-            margin-bottom: 4px;
-        }
-        
-        .message.sent .message-bubble {
-            background: var(--sky);
-            color: var(--white);
-        }
-        
-        .message-text {
-            font-size: 14px;
-            line-height: 1.5;
-        }
-        
-        .message-time {
-            font-size: 12px;
-            color: var(--text-secondary);
-            padding: 0 var(--space-sm);
-        }
-        
-        .message-input-area {
-            padding: var(--space-lg);
-            border-top: 1px solid var(--border);
-            background: var(--white);
-        }
-        
-        .input-wrapper {
-            display: flex;
-            gap: var(--space-sm);
-            align-items: flex-end;
-        }
-        
-        .message-input {
-            flex: 1;
-            padding: var(--space-md);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            font-size: 14px;
-            resize: none;
-            min-height: 44px;
-            max-height: 120px;
-        }
-        
-        .message-input:focus {
-            outline: none;
-            border-color: var(--sky);
-        }
-        
-        .send-button {
-            padding: var(--space-md) var(--space-lg);
-            background: var(--sky);
-            color: var(--white);
-            border: none;
-            border-radius: var(--radius);
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .send-button:hover {
-            background: var(--sky-dark);
-        }
-        
-        .send-button:disabled {
-            background: var(--gray-200);
-            cursor: not-allowed;
-        }
-        
         @media (max-width: 768px) {
             .messages-container {
                 grid-template-columns: 1fr;
             }
-            
             .conversations-sidebar {
                 display: none;
             }
-            
             .conversations-sidebar.show {
                 display: flex;
                 position: absolute;
@@ -339,523 +189,187 @@
 
         <!-- Dashboard Content -->
         <div class="dashboard-content">
-<div class="messages-container">
-                    <div class="conversations-sidebar">
-                        </div>
-                        <div class="conversations-list" id="conversationsList">
-                            <!-- Conversations loaded here -->
-                        </div>
-                    </div>
-                    
-                    <div class="chat-area" id="chatArea">
-                        </div>
-                            </div>
-                        
-                        <div class="messages-area" id="messagesArea">
-                            <!-- Messages loaded here -->
-                        </div>
-                        
-                        <div class="message-input-area">
-                            <div class="input-wrapper">
-                                <textarea 
-                                    class="message-input" 
-                                    id="messageInput" 
-                                    placeholder="Type a message..."
-                                    rows="1"></textarea>
-                                <button class="send-button" id="sendButton" onclick="sendMessage()">Send</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <h1 class="page-title">Messages</h1>
+            <p class="page-subtitle">All notifications and email mirrors sent to your account</p>
+
+            <div id="inbox-root" class="messages-container" data-show-for-role="client,investor"></div>
         </div>
     </div>
 
     <!-- UCS Core Scripts -->
     <script src="../components/ucs-core.js"></script>
     <script src="../components/component-registry.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-    <script src="../firebase-config.js"></script>
-    <script>
-        window.addEventListener('firebase-ready', function() {
-            const headerScript = document.createElement('script');
-            headerScript.src = '../components/universal-header.js';
-            document.head.appendChild(headerScript);
-            
-            headerScript.onload = function() {
-                // Load sidebar first
-                const sidebarScript = document.createElement('script');
-                sidebarScript.src = '../components/sidebar.js';
-                document.head.appendChild(sidebarScript);
-                
-                // Then auth guard
-                sidebarScript.onload = function() {
-                    const authScript = document.createElement('script');
-                    authScript.src = '../components/auth-guard.js';
-                    document.head.appendChild(authScript);
-                };
-            };
-        });
-    </script>
-    <script>
-        window.addEventListener('firebase-ready', function() {
-            const db = window.db;
-            const auth = window.auth;
+    <script src="../components/auth-guard.js"></script>
+    <script src="../components/universal-header.js"></script>
+    <script src="../components/sidebar.js"></script>
 
-        
-        let currentConversationId = null;
-        let currentUserId = null;
-        let messagesListener = null;
-        let conversations = [];
-        
-        // Demo data
-        const demoConversations = [
-            {
-                id: 'conv-1',
-                agentId: 'agent-1',
-                agentName: 'Sarah Johnson',
-                agentRole: 'Real Estate Agent',
-                lastMessage: 'Great! I can schedule a viewing for tomorrow',
-                lastMessageTime: new Date(Date.now() - 1000 * 60 * 30).toISOString(),
-                unread: 2
-            },
-            {
-                id: 'conv-2',
-                agentId: 'agent-2',
-                agentName: 'Mike Chen',
-                agentRole: 'Investment Specialist',
-                lastMessage: 'The micro-flip analysis looks promising',
-                lastMessageTime: new Date(Date.now() - 1000 * 60 * 60 * 2).toISOString(),
-                unread: 0
-            },
-            {
-                id: 'conv-3',
-                agentId: 'agent-3',
-                agentName: 'Emily Rodriguez',
-                agentRole: 'Buyer\'s Agent',
-                lastMessage: 'I found 3 properties that match your criteria',
-                lastMessageTime: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString(),
-                unread: 5
-            }
-        ];
-        
-        const demoMessages = {
-            'conv-1': [
-                {
-                    id: 'msg-1',
-                    text: 'Hi Sarah! I\'m interested in the property at 2547 Frankford Ave',
-                    sender: 'user',
-                    timestamp: new Date(Date.now() - 1000 * 60 * 60).toISOString()
-                },
-                {
-                    id: 'msg-2',
-                    text: 'Hello! That\'s a great choice. It\'s a beautiful 3BR townhouse in Fishtown.',
-                    sender: 'agent',
-                    timestamp: new Date(Date.now() - 1000 * 60 * 55).toISOString()
-                },
-                {
-                    id: 'msg-3',
-                    text: 'Can we schedule a viewing?',
-                    sender: 'user',
-                    timestamp: new Date(Date.now() - 1000 * 60 * 45).toISOString()
-                },
-                {
-                    id: 'msg-4',
-                    text: 'Great! I can schedule a viewing for tomorrow',
-                    sender: 'agent',
-                    timestamp: new Date(Date.now() - 1000 * 60 * 30).toISOString()
-                }
-            ]
-        };
-        
-        // Load conversations
-        async function loadConversations() {
-            const container = document.getElementById('conversationsList');
-            
-            // Try to load from Firebase
-            if (auth.currentUser) {
-                try {
-                    const snapshot = await db.collection('conversations')
-                        .where('participants', 'array-contains', auth.currentUser.uid)
-                        .orderBy('lastMessageTime', 'desc')
-                        .get();
-                    
-                    conversations = [];
-                    snapshot.forEach(doc => {
-                        conversations.push({ id: doc.id, ...doc.data() });
-                    });
-                } catch (error) {
-                    console.log('Loading demo conversations:', error);
-                }
-            }
-            
-            // Use demo data if no conversations
-            if (conversations.length === 0) {
-                conversations = demoConversations;
-            }
-            
-            displayConversations(conversations);
-        }
-        
-        // Display conversations
-        function displayConversations(convs) {
-            const container = document.getElementById('conversationsList');
-            
-            if (convs.length === 0) {
-                container.innerHTML = `
-                    <div style="padding: 20px; text-align: center; color: #999;">
-                        No conversations yet
-                    </div>
-                `;
-                return;
-            }
-            
-            container.innerHTML = convs.map(conv => {
-                const initials = conv.agentName.split(' ').map(n => n[0]).join('');
-                const time = formatTime(conv.lastMessageTime);
-                
-                return `
-                    <div class="conversation-item ${conv.id === currentConversationId ? 'active' : ''}" 
-                         onclick="selectConversation('${conv.id}')">
-                        <div class="avatar">${initials}</div>
-                        <div class="conversation-details">
-                            <div class="conversation-name">${conv.agentName}</div>
-                            <div class="conversation-role">${conv.agentRole}</div>
-                            <div class="conversation-preview">${conv.lastMessage}</div>
-                        </div>
-                        <div class="conversation-meta">
-                            <div class="conversation-time">${time}</div>
-                            ${conv.unread > 0 ? `<span class="unread-badge">${conv.unread}</span>` : ''}
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
-        
-        // Select conversation
-        async function selectConversation(conversationId) {
-            currentConversationId = conversationId;
-            const conv = conversations.find(c => c.id === conversationId);
-            
-            if (!conv) return;
-            
-            // Update UI
-            document.getElementById('emptyChat').style.display = 'none';
-            document.getElementById('chatContent').style.display = 'flex';
-            document.getElementById('chatContent').style.flex = '1';
-            document.getElementById('chatContent').style.flexDirection = 'column';
-            
-            // Update header
-            const initials = conv.agentName.split(' ').map(n => n[0]).join('');
-            document.getElementById('chatAvatar').textContent = initials;
-            document.getElementById('chatName').textContent = conv.agentName;
-            
-            // Update active state
-            document.querySelectorAll('.conversation-item').forEach(item => {
-                item.classList.remove('active');
-            });
-            event.currentTarget.classList.add('active');
-            
-            // Clear unread count
-            conv.unread = 0;
-            displayConversations(conversations);
-            
-            // Load messages
-            loadMessages(conversationId);
-            
-            // Mobile view
-            if (window.innerWidth <= 768) {
-                document.getElementById('sidebar').classList.remove('mobile-visible');
-                document.getElementById('mobileBackBtn').style.display = 'block';
-            }
-        }
-        
-        // Load messages
-        async function loadMessages(conversationId) {
-            const container = document.getElementById('messagesContainer');
-            let messages = [];
-            
-            // Try to load from Firebase
-            if (auth.currentUser) {
-                try {
-                    // Set up real-time listener
-                    if (messagesListener) {
-                        messagesListener();
+    <!-- Persona-aware header text for Client/Investor Messages -->
+    <script>
+        (function() {
+            function applyClientHeaderCopy() {
+                var titleEl = document.querySelector('[data-header-title]');
+                var subtitleEl = document.querySelector('[data-header-subtitle]');
+                if (!titleEl || !subtitleEl) {
+                    if (document.readyState === 'complete') {
+                        setTimeout(applyClientHeaderCopy, 100);
+                    } else {
+                        window.addEventListener('load', function() {
+                            setTimeout(applyClientHeaderCopy, 50);
+                        }, { once: true });
                     }
-                    
-                    messagesListener = db.collection('conversations')
-                        .doc(conversationId)
-                        .collection('messages')
-                        .orderBy('timestamp', 'asc')
-                        .onSnapshot(snapshot => {
-                            messages = [];
-                            snapshot.forEach(doc => {
-                                messages.push({ id: doc.id, ...doc.data() });
-                            });
-                            displayMessages(messages);
-                        });
-                } catch (error) {
-                    console.log('Loading demo messages:', error);
+                    return;
                 }
+                titleEl.textContent = 'Client Messages';
+                subtitleEl.textContent = 'All notifications and email mirrors sent to your account';
             }
-            
-            // Use demo data
-            if (messages.length === 0 && demoMessages[conversationId]) {
-                messages = demoMessages[conversationId];
-                displayMessages(messages);
-            }
+            setTimeout(applyClientHeaderCopy, 50);
+        })();
+    </script>
+
+    <!-- Canonical client inbox viewer: users/{uid}/messages -->
+    <script>
+      (function() {
+        function formatTime(ts) {
+          if (!ts || !ts.toDate) return '';
+          var d = ts.toDate();
+          return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) + ' ' +
+                 d.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' });
         }
-        
-        // Display messages
-        function displayMessages(messages) {
-            const container = document.getElementById('messagesContainer');
-            let lastDate = null;
-            
-            container.innerHTML = messages.map(msg => {
-                const messageDate = new Date(msg.timestamp).toDateString();
-                let dateHeader = '';
-                
-                if (messageDate !== lastDate) {
-                    lastDate = messageDate;
-                    const today = new Date().toDateString();
-                    const yesterday = new Date(Date.now() - 86400000).toDateString();
-                    
-                    let dateText = messageDate;
-                    if (messageDate === today) dateText = 'Today';
-                    else if (messageDate === yesterday) dateText = 'Yesterday';
-                    
-                    dateHeader = `
-                        <div class="date-divider">
-                            <span class="date-divider-text">${dateText}</span>
-                        </div>
-                    `;
-                }
-                
-                const isSent = msg.sender === 'user' || msg.senderId === auth.currentUser?.uid;
-                const time = new Date(msg.timestamp).toLocaleTimeString('en-US', { 
-                    hour: 'numeric', 
-                    minute: '2-digit' 
-                });
-                
-                return `
-                    ${dateHeader}
-                    <div class="message ${isSent ? 'sent' : 'received'}">
-                        ${!isSent ? '<div class="message-avatar">SA</div>' : ''}
-                        <div class="message-content">
-                            <div class="message-bubble">${msg.text}</div>
-                            ${msg.propertyId ? `
-                                <div class="property-card-message">
-                                    <div class="property-card-image"></div>
-                                    <div class="property-card-details">
-                                        <div class="property-card-title">3BR Townhouse</div>
-                                        <div class="property-card-address">2547 Frankford Ave</div>
-                                        <div class="property-card-price">$450,000</div>
-                                    </div>
-                                </div>
-                            ` : ''}
-                            <div class="message-time">${time}</div>
-                        </div>
-                        ${isSent ? '<div class="message-avatar">You</div>' : ''}
-                    </div>
-                `;
-            }).join('');
-            
-            // Scroll to bottom
-            container.scrollTop = container.scrollHeight;
-        }
-        
-        // Send message
-        async function sendMessage(event) {
-            event.preventDefault();
-            
-            const input = document.getElementById('messageInput');
-            const text = input.value.trim();
-            
-            if (!text || !currentConversationId) return;
-            
-            const message = {
-                text,
-                senderId: auth.currentUser?.uid || 'user',
-                sender: 'user',
-                timestamp: new Date().toISOString(),
-                read: false
-            };
-            
-            // Save to Firebase if logged in
-            if (auth.currentUser) {
-                try {
-                    await db.collection('conversations')
-                        .doc(currentConversationId)
-                        .collection('messages')
-                        .add(message);
-                    
-                    // Update conversation last message
-                    await db.collection('conversations')
-                        .doc(currentConversationId)
-                        .update({
-                            lastMessage: text,
-                            lastMessageTime: new Date().toISOString()
-                        });
-                } catch (error) {
-                    console.error('Error sending message:', error);
-                }
-            }
-            
-            // Add to local demo data
-            if (!demoMessages[currentConversationId]) {
-                demoMessages[currentConversationId] = [];
-            }
-            demoMessages[currentConversationId].push({
-                id: `msg-${Date.now()}`,
-                ...message
+
+        var latestDocs = [];
+
+        function renderMessages(snapshot) {
+          var container = document.getElementById('inbox-root');
+          if (!container) return;
+          var docs = snapshot && snapshot.docs ? snapshot.docs : [];
+          latestDocs = docs;
+
+          if (!docs.length) {
+            container.innerHTML = '<div class="empty-state" style="padding:24px;">No messages yet. When you share properties or receive important notifications, they will appear here.</div>';
+            return;
+          }
+
+          var items = docs.map(function(doc) {
+            var data = doc.data();
+            var subject = data.subject || '(No subject)';
+            var preview = data.bodyPreview || '';
+            var createdAt = formatTime(data.createdAt);
+            return '\
+              <div class="conversation-item" data-message-id="' + doc.id + '\">\
+                <div class="avatar">IN</div>\
+                <div class="conversation-details">\
+                  <div class="conversation-name">' + subject + '</div>\
+                  <div class="conversation-preview">' + preview + '</div>\
+                </div>\
+                <div class="conversation-meta">\
+                  <div class="conversation-time">' + createdAt + '</div>\
+                </div>\
+              </div>';
+          }).join('');
+
+          container.innerHTML = '\
+            <div class="conversations-sidebar">\
+              <div class="sidebar-header">\
+                <div class="header-title">Inbox</div>\
+                <div class="search-box">\
+                  <span class="search-icon">🔍</span>\
+                  <input type="text" placeholder="Search messages (coming soon)" disabled />\
+                </div>\
+              </div>\
+              <div class="conversations-list">' + items + '</div>\
+            </div>\
+            <div class="chat-area">\
+              <div class="chat-header">\
+                <div class="chat-header-details">\
+                  <div class="chat-header-name">Portal Messages</div>\
+                  <div class="chat-header-status">These entries mirror important emails and notifications.</div>\
+                </div>\
+              </div>\
+              <div class="messages-area" id="messageDetailArea">\
+                <p class="page-subtitle">Select a message on the left to view more detail.</p>\
+              </div>\
+            </div>';
+
+          Array.prototype.forEach.call(container.querySelectorAll('.conversation-item'), function(item) {
+            item.addEventListener('click', function() {
+              var id = this.getAttribute('data-message-id');
+              var doc = latestDocs.find(function(d) { return d.id === id; });
+              if (!doc) return;
+              var data = doc.data();
+              var detail = document.getElementById('messageDetailArea');
+              if (!detail) return;
+
+              var createdAt = formatTime(data.createdAt);
+              var meta = data.meta || {};
+
+              detail.innerHTML = '\
+                <div class="activity-card">\
+                  <div class="activity-header">\
+                    <h3 class="activity-title">' + (data.subject || '(No subject)') + '</h3>\
+                    <span class="activity-status status-completed">' + createdAt + '</span>\
+                  </div>\
+                  <div class="activity-details">\
+                    <div class="detail-item">\
+                      <span class="detail-label">Preview</span>\
+                      <span class="detail-value">' + (data.bodyPreview || '') + '</span>\
+                    </div>\
+                    <div class="detail-item">\
+                      <span class="detail-label">Channel</span>\
+                      <span class="detail-value">' + ((data.channels || []).join(', ') || 'inbox') + '</span>\
+                    </div>\
+                    <div class="detail-item">\
+                      <span class="detail-label">External Provider</span>\
+                      <span class="detail-value">' + (data.externalProvider || '—') + '</span>\
+                    </div>\
+                    <div class="detail-item">\
+                      <span class="detail-label">Destination</span>\
+                      <span class="detail-value">' + (data.email || '—') + '</span>\
+                    </div>\
+                  </div>\
+                  <div class="info-box">\
+                    <strong>Metadata</strong>\
+                    <pre style="margin-top:8px;font-size:12px;background:#f9fafb;padding:8px;border-radius:6px;white-space:pre-wrap;">' +
+                      JSON.stringify(meta, null, 2) + '</pre>\
+                  </div>\
+                </div>';
             });
-            
-            // Update conversation
-            const conv = conversations.find(c => c.id === currentConversationId);
-            if (conv) {
-                conv.lastMessage = text;
-                conv.lastMessageTime = new Date().toISOString();
-                displayConversations(conversations);
+          });
+        }
+
+        window.addEventListener('firebase-ready', function() {
+          var firebase = window.Firebase || {};
+          var auth = firebase.auth || window.firebaseAuth;
+          var messagesService = firebase.DatabaseService || (typeof firebase.DatabaseService !== 'undefined' ? firebase.DatabaseService : null);
+
+          if (!auth || !messagesService || typeof messagesService.onUserMessagesChange !== 'function') {
+            console.error('[Client Messages] Firebase or DatabaseService not ready for inbox view');
+            renderMessages({ docs: [] });
+            return;
+          }
+
+          var unsubscribe = null;
+
+          auth.onAuthStateChanged(function(user) {
+            if (unsubscribe) {
+              unsubscribe();
+              unsubscribe = null;
             }
-            
-            displayMessages(demoMessages[currentConversationId]);
-            
-            // Clear input
-            input.value = '';
-            autoResize(input);
-            
-            // Simulate agent typing
-            setTimeout(() => {
-                document.getElementById('typingIndicator').style.display = 'block';
-                document.getElementById('messagesContainer').scrollTop = 
-                    document.getElementById('messagesContainer').scrollHeight;
-            }, 1000);
-            
-            // Simulate agent response
-            setTimeout(() => {
-                document.getElementById('typingIndicator').style.display = 'none';
-                
-                const agentResponse = {
-                    id: `msg-${Date.now()}`,
-                    text: getAgentResponse(text),
-                    sender: 'agent',
-                    timestamp: new Date().toISOString()
-                };
-                
-                demoMessages[currentConversationId].push(agentResponse);
-                displayMessages(demoMessages[currentConversationId]);
-                
-                // Update conversation
-                conv.lastMessage = agentResponse.text;
-                conv.lastMessageTime = agentResponse.timestamp;
-                displayConversations(conversations);
-            }, 3000);
-        }
-        
-        // Get simulated agent response
-        function getAgentResponse(userMessage) {
-            const responses = [
-                "I'll look into that for you right away!",
-                "That's a great question. Let me check our listings.",
-                "I can definitely help you with that property.",
-                "Would you like to schedule a viewing?",
-                "I have some similar properties you might be interested in.",
-                "The seller is very motivated. We might be able to negotiate.",
-                "This property has excellent investment potential.",
-                "I'll send you more details about the property."
-            ];
-            
-            if (userMessage.toLowerCase().includes('viewing')) {
-                return "I can schedule a viewing for tomorrow at 2 PM or Thursday at 10 AM. Which works better for you?";
-            } else if (userMessage.toLowerCase().includes('price')) {
-                return "The asking price is $450,000, but there's room for negotiation. The seller is motivated!";
-            } else if (userMessage.toLowerCase().includes('hello') || userMessage.toLowerCase().includes('hi')) {
-                return "Hello! How can I help you today?";
+
+            if (!user) {
+              renderMessages({ docs: [] });
+              return;
             }
-            
-            return responses[Math.floor(Math.random() * responses.length)];
-        }
-        
-        // Format time
-        function formatTime(timestamp) {
-            const date = new Date(timestamp);
-            const now = new Date();
-            const diffMs = now - date;
-            const diffMins = Math.floor(diffMs / 60000);
-            const diffHours = Math.floor(diffMs / 3600000);
-            const diffDays = Math.floor(diffMs / 86400000);
-            
-            if (diffMins < 1) return 'Just now';
-            if (diffMins < 60) return `${diffMins}m ago`;
-            if (diffHours < 24) return `${diffHours}h ago`;
-            if (diffDays === 1) return 'Yesterday';
-            if (diffDays < 7) return `${diffDays}d ago`;
-            
-            return date.toLocaleDateString();
-        }
-        
-        // Auto-resize textarea
-        function autoResize(textarea) {
-            textarea.style.height = 'auto';
-            textarea.style.height = Math.min(textarea.scrollHeight, 120) + 'px';
-        }
-        
-        // Handle key press
-        function handleKeyPress(event) {
-            if (event.key === 'Enter' && !event.shiftKey) {
-                event.preventDefault();
-                sendMessage(event);
-            }
-        }
-        
-        // Search conversations
-        document.getElementById('searchInput').addEventListener('input', (e) => {
-            const search = e.target.value.toLowerCase();
-            const filtered = conversations.filter(conv => 
-                conv.agentName.toLowerCase().includes(search) ||
-                conv.lastMessage.toLowerCase().includes(search)
+
+            unsubscribe = messagesService.onUserMessagesChange(
+              user.uid,
+              function(snapshot) {
+                renderMessages(snapshot);
+              },
+              { limitCount: 50 }
             );
-            displayConversations(filtered);
+          });
         });
-        
-        // Utility functions
-        function makeCall() {
-            alert('Calling agent... (This feature requires phone integration)');
-        }
-        
-        function scheduleViewing() {
-            window.location.href = '/client/viewings.html';
-        }
-        
-        function showPropertyDetails() {
-            window.location.href = '/client/property-detail.html';
-        }
-        
-        function attachFile() {
-            alert('File attachment coming soon!');
-        }
-        
-        function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('mobile-visible');
-        }
-        
-        // Check auth and load
-        auth.onAuthStateChanged((user) => {
-            if (user) {
-                currentUserId = user.uid;
-            }
-            loadConversations();
-        });
-        
-        // Handle window resize
-        window.addEventListener('resize', () => {
-            if (window.innerWidth > 768) {
-                document.getElementById('sidebar').classList.remove('mobile-visible');
-                document.getElementById('mobileBackBtn').style.display = 'none';
-            }
-        });
-        });
+      })();
     </script>
 </body>
 </html>

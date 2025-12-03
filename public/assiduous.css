@@ -115,6 +115,11 @@
 /* ========================================
    Base Styles
    ======================================== */
+html {
+    height: 100%;
+    overflow-y: scroll; /* Always show vertical scrollbar to prevent horizontal layout shifts */
+}
+
 body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     font-size: var(--text-base);
