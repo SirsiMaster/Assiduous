@@ -566,7 +566,24 @@ export const DatabaseService = {
 };
 
 /**
- * API Service - Calls to Cloud Functions
+ * Functions Service - Cloud Functions helpers
+ */
+export const FunctionsService = {
+  // Generate or fetch the current user's profile QR code
+  async generateUserQR(payload = {regenerate: false}) {
+    try {
+      const fn = httpsCallable(functions, 'generateUserQR');
+      const result = await fn(payload);
+      return { success: true, data: result.data };
+    } catch (error) {
+      console.error('generateUserQR error:', error);
+      return { success: false, error: error.message };
+    }
+  },
+};
+
+/**
+ * API Service - Calls to Cloud Functions (HTTP API)
  */
 export const APIService = {
   // Call the main API endpoint
@@ -679,6 +696,7 @@ const Firebase = {
   DatabaseService,
   APIService,
   StorageService,
+  FunctionsService,
 };
 
 // Make available globally for legacy code
@@ -705,4 +723,4 @@ try {
 
 // Export for ES modules
 export default Firebase;
-export { app, auth, db, functions, storage, analytics };
+export { app, auth, db, functions, storage, analytics, FunctionsService };

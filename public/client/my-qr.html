@@ -289,13 +289,13 @@
         let currentUser = null;
         let currentQRData = null;
         let auth;
-        let functions;
+        let functionsService;
         
         // Initialize auth/functions when Firebase is ready
         window.addEventListener('firebase-ready', () => {
             const firebase = window.Firebase || {};
             auth = firebase.auth || window.firebaseAuth;
-            functions = firebase.functions || null;
+            functionsService = firebase.FunctionsService || null;
 
             // Check authentication
             auth.onAuthStateChanged(async (user) => {
@@ -311,17 +311,20 @@
         
         // Load user QR code
         async function loadUserQR() {
-            if (!functions) {
-                console.warn('Firebase Functions not ready yet.');
+            if (!functionsService) {
+                console.warn('Firebase FunctionsService not ready yet.');
                 return;
             }
             const qrDisplay = document.getElementById('qrDisplay');
             
             try {
-                const generateUserQR = functions.httpsCallable('generateUserQR');
-                const result = await generateUserQR({ regenerate: false });
+                const response = await functionsService.generateUserQR({ regenerate: false });
                 
-                currentQRData = result.data;
+                if (!response || !response.success) {
+                    throw new Error(response?.error || 'Failed to load QR');
+                }
+                
+                currentQRData = response.data;
                 
                 // Update UI
                 document.getElementById('profileUrl').textContent = currentQRData.profileUrl;
@@ -391,7 +394,7 @@
                 return;
             }
             
-            if (!functions) {
+            if (!functionsService) {
                 showToast('QR service is not ready yet. Please try again.', 'error');
                 return;
             }
@@ -400,10 +403,13 @@
             qrDisplay.innerHTML = '<div class="qr-loading">Regenerating your QR code...</div>';
             
             try {
-                const generateUserQR = functions.httpsCallable('generateUserQR');
-                const result = await generateUserQR({ regenerate: true });
+                const response = await functionsService.generateUserQR({ regenerate: true });
                 
-                currentQRData = result.data;
+                if (!response || !response.success) {
+                    throw new Error(response?.error || 'Failed to regenerate QR');
+                }
+                
+                currentQRData = response.data;
                 
                 // Update UI
                 document.getElementById('profileUrl').textContent = currentQRData.profileUrl;
