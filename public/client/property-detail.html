@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-auth-protect="client,investor">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,6 +13,13 @@
     
     <link rel="stylesheet" href="../assiduous.css">
     <link rel="stylesheet" href="../components/admin-layout.css">
+
+    <!-- Canonical modular Firebase auth: used by AuthService and auth-guard -->
+    <script type="module">
+        import Firebase, { AuthService } from '../assets/js/firebase-init.js';
+        window.Firebase = Firebase;
+        window.AuthService = AuthService;
+    </script>
     
     <style>
         /* Page-specific styles */
@@ -247,36 +254,12 @@
     <!-- UCS Core Scripts -->
     <script src="../components/ucs-core.js"></script>
     <script src="../components/component-registry.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-functions-compat.js"></script>
-    <script src="../firebase-config.js"></script>
+    <script src="../components/auth-guard.js"></script>
     <script>
         window.addEventListener('firebase-ready', function() {
-            const headerScript = document.createElement('script');
-            headerScript.src = '../components/universal-header.js';
-            document.head.appendChild(headerScript);
-            
-            headerScript.onload = function() {
-                // Load sidebar first
-                const sidebarScript = document.createElement('script');
-                sidebarScript.src = '../components/sidebar.js';
-                document.head.appendChild(sidebarScript);
-                
-                // Then auth guard
-                sidebarScript.onload = function() {
-                    const authScript = document.createElement('script');
-                    authScript.src = '../components/auth-guard.js';
-                    document.head.appendChild(authScript);
-                };
-            };
-        });
-    </script>
-    <script>
-        window.addEventListener('firebase-ready', function() {
-            const db = window.db;
-            const auth = window.auth;
+            const firebase = window.Firebase || {};
+            const db = firebase.db || window.firebaseDb;
+            const auth = firebase.auth || window.firebaseAuth;
 
         
         // Get property ID from URL
@@ -294,14 +277,16 @@
             }
             
             try {
-                const doc = await db.collection('properties').doc(propertyId).get();
-                if (doc.exists) {
-                    currentProperty = { id: doc.id, ...doc.data() };
+                const snapshot = await db.collection('properties').doc(propertyId).get();
+                if (snapshot.exists) {
+                    const data = snapshot.data();
+                    currentProperty = { id: snapshot.id, ...data };
                     displayProperty(currentProperty);
                     
-                    // Increment view count
+                    // Increment view count (fallback to +1 if FieldValue-style helpers are not available)
+                    const currentViews = typeof data.views === 'number' ? data.views : 0;
                     await db.collection('properties').doc(propertyId).update({
-                        views: firebase.firestore.FieldValue.increment(1)
+                        views: currentViews + 1
                     });
                 } else {
                     loadMockProperty();

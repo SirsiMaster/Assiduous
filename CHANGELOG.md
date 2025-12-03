@@ -1603,6 +1603,14 @@ accountIds/{accountId} = {
 
 **Sprint Progress**: Day 4 of 6 (67% target after Day 4 completion)
 
+## [Unreleased]
+
+### Fixed
+- fix(client): Align client persona pages with UCS header/sidebar and modular Firebase bootstrap
+  - Updated all shipped `public/client/*.html` pages to use `ucs-core.js`, `component-registry.js`, and `auth-guard.js` instead of per-page header/sidebar loaders
+  - Migrated client portal Firebase usage from compat SDK + `firebase-config.js` to the canonical modular stack via `public/assets/js/firebase-init.js`
+  - Resolved console errors on client QR, micro-flip calculator, viewings, and documents/tax pages by wiring them to `window.Firebase` services (`DatabaseService`, `StorageService`, `AuthService`)
+
 ## [0.50.0] - 2025-10-12
 
 ### Added - DAY 3: AUTHENTICATION SYSTEM IMPLEMENTATION

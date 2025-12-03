@@ -1,21 +1,13 @@
 {
-<<<<<<< Updated upstream
-  "lastUpdated": "2025-12-03T04:53:18.469Z",
-=======
-  "lastUpdated": "2025-11-29T19:06:47.531Z",
->>>>>>> Stashed changes
+  "lastUpdated": "2025-12-03T04:56:45.166Z",
   "summary": {
     "health": "Good",
     "score": 59,
     "trend": "increasing",
     "alerts": [
-      "✅ UCS implementation complete - 40 pages converted",
+      "✅ UCS implementation complete - 41 pages converted",
       "⚠️ Test coverage is very low",
-<<<<<<< Updated upstream
       "⏰ Timeline warning - -2 days until launch"
-=======
-      "⏰ Timeline warning - 2 days until launch"
->>>>>>> Stashed changes
     ]
   },
   "features": {
@@ -108,15 +100,15 @@
         "Universal header template",
         "Role-based filtering",
         "Token replacement system",
-        "40 pages converted",
+        "41 pages converted",
         "5,000+ lines of code removed",
         "Complete documentation"
       ],
       "remainingTasks": [],
       "metrics": {
-        "totalPagesConverted": 40,
+        "totalPagesConverted": 41,
         "clientPages": 20,
-        "agentPages": 20,
+        "agentPages": 21,
         "linesRemoved": 5000,
         "componentReuse": "100%",
         "adoptionRate": "69%"
@@ -160,39 +152,21 @@
     }
   },
   "project": {
-<<<<<<< Updated upstream
-    "totalHours": "334",
-    "avgHoursPerDay": "7.8",
-    "totalCost": 52556,
-    "laborCost": 50100,
+    "totalHours": "335",
+    "avgHoursPerDay": "7.6",
+    "totalCost": 52706,
+    "laborCost": 50250,
     "toolsCost": 2456,
     "monthsElapsed": "3.8",
-    "totalCommits": 1011,
-    "totalFiles": 801,
-    "activeDays": 43,
+    "totalCommits": 1014,
+    "totalFiles": 807,
+    "activeDays": 44,
     "totalDays": 115,
     "projectAgeDays": 115,
-    "linesAdded": 9824623,
-    "linesDeleted": 9444856,
-    "netLines": 379767,
-    "velocity": "23.5",
-=======
-    "totalHours": "333",
-    "avgHoursPerDay": "7.9",
-    "totalCost": 52320,
-    "laborCost": 49950,
-    "toolsCost": 2370,
-    "monthsElapsed": "3.6",
-    "totalCommits": 1009,
-    "totalFiles": 801,
-    "activeDays": 42,
-    "totalDays": 111,
-    "projectAgeDays": 111,
-    "linesAdded": 9823807,
-    "linesDeleted": 9443092,
-    "netLines": 380715,
-    "velocity": "24.0",
->>>>>>> Stashed changes
+    "linesAdded": 9828488,
+    "linesDeleted": 9447256,
+    "netLines": 381232,
+    "velocity": "23.0",
     "completionPercentage": 59,
     "actualStartDate": "2025-08-10",
     "architecture": {
@@ -202,38 +176,22 @@
     }
   },
   "today": {
-<<<<<<< Updated upstream
     "date": "2025-12-03",
-=======
-    "date": "2025-11-29",
->>>>>>> Stashed changes
-    "hours": "0.3",
-    "cost": 50,
-    "commits": 1,
+    "hours": "1.3",
+    "cost": 198,
+    "commits": 4,
     "deployments": 0
   },
   "thisWeek": {
-<<<<<<< Updated upstream
-    "hours": "1.0",
-    "cost": 149,
-    "commits": 3,
+    "hours": "2.0",
+    "cost": 297,
+    "commits": 6,
     "days": 7
   },
   "thisMonth": {
-    "hours": "91.4",
-    "cost": 13712,
-    "commits": 277
-=======
-    "hours": "0.3",
-    "cost": 50,
-    "commits": 1,
-    "days": 7
-  },
-  "thisMonth": {
-    "hours": "146.2",
-    "cost": 21929,
-    "commits": 443
->>>>>>> Stashed changes
+    "hours": "92.4",
+    "cost": 13860,
+    "commits": 280
   },
   "quality": {
     "testCoverage": {
@@ -266,11 +224,7 @@
       "low": 0,
       "total": 0
     },
-<<<<<<< Updated upstream
-    "lastAudit": "2025-12-03T04:52:47.030Z",
-=======
-    "lastAudit": "2025-11-29T19:06:12.230Z",
->>>>>>> Stashed changes
+    "lastAudit": "2025-12-03T04:56:13.192Z",
     "dependencies": {
       "total": 0,
       "outdated": 0,
@@ -342,15 +296,9 @@
     }
   },
   "documentation": {
-<<<<<<< Updated upstream
-    "markdownFiles": 2541,
+    "markdownFiles": 2543,
     "jsFilesTotal": 25076,
     "jsFilesDocumented": 25076,
-=======
-    "markdownFiles": 2517,
-    "jsFilesTotal": 25044,
-    "jsFilesDocumented": 25044,
->>>>>>> Stashed changes
     "coverage": 423,
     "apiEndpoints": {
       "total": 0,
@@ -364,19 +312,11 @@
     "changelog": true,
     "contributing": false,
     "license": false,
-<<<<<<< Updated upstream
-    "lastUpdate": "2025-11-29 19:06:00 +0000"
+    "lastUpdate": "2025-12-02 23:55:09 -0500"
   },
   "productivity": {
     "velocityTrend": "increasing",
-    "weeklyCommits": 3,
-=======
-    "lastUpdate": "2025-11-29 14:05:06 -0500"
-  },
-  "productivity": {
-    "velocityTrend": "decreasing",
-    "weeklyCommits": 1,
->>>>>>> Stashed changes
+    "weeklyCommits": 6,
     "contributors": {
       "total": 0,
       "active": 0
@@ -409,11 +349,7 @@
       "projectStart": "2025-08-10",
       "originalLaunch": "2025-11-01",
       "plannedLaunch": "2025-12-01",
-<<<<<<< Updated upstream
       "daysRemaining": -2,
-=======
-      "daysRemaining": 2,
->>>>>>> Stashed changes
       "onTrack": false,
       "adjustmentReason": "Timeline adjusted for realistic completion based on current velocity"
     },
@@ -458,7 +394,24 @@
   },
   "recentActivity": [
     {
-<<<<<<< Updated upstream
+      "hash": "9b60d5991e957c290c530d4ee71d5df991dfe4cf",
+      "message": "chore(wip): restore cached metrics and UCS-aligned WIP from stash",
+      "author": "SirsiMaster",
+      "date": "2025-12-02 23:55:09 -0500"
+    },
+    {
+      "hash": "d6430b8ceb944bcdcff588999092e9f30be71c13",
+      "message": "chore(wip): capture docs, metrics, and new messages scaffolding",
+      "author": "SirsiMaster",
+      "date": "2025-12-02 23:54:46 -0500"
+    },
+    {
+      "hash": "b68fdaff2410550efb12118940bf227dc92cb083",
+      "message": "chore(release): Bump version to 0.128.5 [skip ci]",
+      "author": "github-actions[bot]",
+      "date": "2025-12-03 04:52:36 +0000"
+    },
+    {
       "hash": "bc957e4131c5ca27f573b42ffd94ff70030c8dbe",
       "message": "fix(client-ucs): align client persona pages with UCS header/sidebar",
       "author": "SirsiMaster",
@@ -471,8 +424,6 @@
       "date": "2025-11-29 19:06:00 +0000"
     },
     {
-=======
->>>>>>> Stashed changes
       "hash": "66c293ba00940b0e1f0cb278d55a576e7edbdbaf",
       "message": "fix(auth): Stabilize reset-password page Firebase wiring",
       "author": "SirsiMaster",
@@ -501,47 +452,10 @@
       "message": "fix(auth): Align frontend Firebase config and quarantine legacy SirsiAuth",
       "author": "SirsiMaster",
       "date": "2025-11-16 19:31:27 -0500"
-    },
-    {
-      "hash": "a2a855c73e1a36d723ed632a4f52c32fa456c14c",
-      "message": "fix: align all frontend config with GA4-enabled production web app (cee09f...)",
-      "author": "SirsiMaster",
-      "date": "2025-11-16 18:30:51 -0500"
-    },
-    {
-      "hash": "405312aad63fc9051904c5a22e378b1a53446dfa",
-      "message": "fix: point firebase-init back to new production app config",
-      "author": "SirsiMaster",
-      "date": "2025-11-16 18:25:00 -0500"
-    },
-    {
-      "hash": "92fda372dfa1fd7e77f0e492d011ab6e6ccad77b",
-      "message": "fix: point firebase-init to legacy analytics-enabled web app and restore Firestore warnings",
-      "author": "SirsiMaster",
-      "date": "2025-11-16 18:15:08 -0500"
-<<<<<<< Updated upstream
     }
   ],
   "automation": {
-    "lastRun": "2025-12-03T04:53:18.469Z",
-=======
-    },
-    {
-      "hash": "1b0d0608890c58ba297c7e918c6ecad5b535d9f4",
-      "message": "fix: avoid external placeholder image URLs in properties and property detail",
-      "author": "SirsiMaster",
-      "date": "2025-11-16 18:02:39 -0500"
-    },
-    {
-      "hash": "91c18e7aefc4309e3945a86f36b0aad8dc862d97",
-      "message": "fix: wire properties header to universal header and align Firebase analytics config",
-      "author": "SirsiMaster",
-      "date": "2025-11-16 17:55:02 -0500"
-    }
-  ],
-  "automation": {
-    "lastRun": "2025-11-29T19:06:47.531Z",
->>>>>>> Stashed changes
+    "lastRun": "2025-12-03T04:56:45.166Z",
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",

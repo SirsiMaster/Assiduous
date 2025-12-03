@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-auth-protect="client,investor">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +8,13 @@
     <link href="https://cdn.jsdelivr.net/npm/@fontsource/geist-sans@5.0.6/latin.css" rel="stylesheet">
     <link rel="stylesheet" href="../assiduous.css">
     <link rel="stylesheet" href="../components/admin-layout.css">
+
+    <!-- Canonical modular Firebase auth: used by AuthService and auth-guard -->
+    <script type="module">
+        import Firebase, { AuthService } from '../assets/js/firebase-init.js';
+        window.Firebase = Firebase;
+        window.AuthService = AuthService;
+    </script>
 </head>
 <body class="admin-wrapper" data-active="settings">
     <aside class="sidebar" data-component="sidebar"></aside>
@@ -22,5 +29,6 @@
     </div>
     <script src="../components/ucs-core.js"></script>
     <script src="../components/component-registry.js"></script>
+    <script src="../components/auth-guard.js"></script>
 </body>
 </html>

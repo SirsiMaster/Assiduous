@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-auth-protect="client,investor">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,6 +13,13 @@
     
     <link rel="stylesheet" href="../assiduous.css">
     <link rel="stylesheet" href="../components/admin-layout.css">
+
+    <!-- Canonical modular Firebase auth: used by AuthService and auth-guard -->
+    <script type="module">
+        import Firebase, { AuthService } from '../assets/js/firebase-init.js';
+        window.Firebase = Firebase;
+        window.AuthService = AuthService;
+    </script>
     
     <style>
 /* Minimal page-specific styles - design system handles most */
@@ -285,38 +292,17 @@
     <!-- UCS Core Scripts -->
     <script src="../components/ucs-core.js"></script>
     <script src="../components/component-registry.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-    <script src="../firebase-config.js"></script>
-    <script>
-        window.addEventListener('firebase-ready', function() {
-            // Load universal header
-            const headerScript = document.createElement('script');
-            headerScript.src = '../components/universal-header.js';
-            document.head.appendChild(headerScript);
-            
-            // Load auth guard after header
-            headerScript.onload = function() {
-                // Load sidebar first
-                const sidebarScript = document.createElement('script');
-                sidebarScript.src = '../components/sidebar.js';
-                document.head.appendChild(sidebarScript);
-                
-                // Then auth guard
-                sidebarScript.onload = function() {
-                    const authScript = document.createElement('script');
-                    authScript.src = '../components/auth-guard.js';
-                    document.head.appendChild(authScript);
-                };
-            };
-        });
-    </script>
+    <script src="../components/auth-guard.js"></script>
     <script>
         // Wait for Firebase to be ready
         window.addEventListener('firebase-ready', function() {
-            const db = window.db;
-            const auth = window.auth;
+            const firebase = window.Firebase || {};
+            const auth = firebase.auth || window.firebaseAuth;
+            const databaseService = firebase.DatabaseService || {};
+
+            if (!databaseService || typeof databaseService.getUserSavedProperties !== 'function') {
+                console.error('[Client Saved Properties] DatabaseService not ready; using localStorage only');
+            }
         
         let savedProperties = [];
         let displayedProperties = [];
@@ -331,15 +317,15 @@
             grid.innerHTML = '';
             empty.style.display = 'none';
             
-            // First try to load from user's Firebase profile
-            if (auth.currentUser) {
+            // First try to load from user's Firebase profile via DatabaseService
+            if (auth && auth.currentUser && databaseService && typeof databaseService.getUserSavedProperties === 'function') {
                 try {
-                    const userDoc = await db.collection('users').doc(auth.currentUser.uid).get();
-                    if (userDoc.exists && userDoc.data().savedProperties) {
-                        savedProperties = userDoc.data().savedProperties;
+                    const userSaved = await databaseService.getUserSavedProperties(auth.currentUser.uid);
+                    if (Array.isArray(userSaved)) {
+                        savedProperties = userSaved;
                     }
                 } catch (error) {
-                    console.log('Could not load from Firebase:', error);
+                    console.log('[Client Saved Properties] Could not load from Firestore:', error);
                 }
             }
             
@@ -388,24 +374,25 @@
                             potentialProfit: 65000
                         }
                     });
-                } else {
+                } else if (databaseService && typeof databaseService.getProperty === 'function') {
                     try {
-                        // Try to load from Firebase
-                        const doc = await db.collection('properties').doc(saved.id).get();
-                        if (doc.exists) {
+                        const result = await databaseService.getProperty(saved.id);
+                        if (result && result.success && result.data) {
                             detailedProperties.push({
                                 ...saved,
-                                ...doc.data(),
-                                id: doc.id
+                                ...result.data,
+                                id: result.data.id || saved.id,
                             });
                         } else {
-                            // Use saved data as-is
                             detailedProperties.push(saved);
                         }
                     } catch (error) {
-                        // Use saved data as-is
+                        console.log('[Client Saved Properties] Failed to load property details:', error);
                         detailedProperties.push(saved);
                     }
+                } else {
+                    // DatabaseService not available; use saved data as-is
+                    detailedProperties.push(saved);
                 }
             }
             
@@ -503,13 +490,11 @@
                 localStorage.setItem('savedProperties', JSON.stringify(savedProperties));
                 
                 // Update Firebase if logged in
-                if (auth.currentUser) {
+                if (auth && auth.currentUser && databaseService && typeof databaseService.setUserSavedProperties === 'function') {
                     try {
-                        await db.collection('users').doc(auth.currentUser.uid).update({
-                            savedProperties: savedProperties
-                        });
+                        await databaseService.setUserSavedProperties(auth.currentUser.uid, savedProperties);
                     } catch (error) {
-                        console.log('Could not update Firebase:', error);
+                        console.log('[Client Saved Properties] Could not update savedProperties in Firestore:', error);
                     }
                 }
                 
@@ -581,10 +566,8 @@
                 displayedProperties = [];
                 localStorage.setItem('savedProperties', '[]');
                 
-                if (auth.currentUser) {
-                    db.collection('users').doc(auth.currentUser.uid).update({
-                        savedProperties: []
-                    }).catch(console.error);
+                if (auth && auth.currentUser && databaseService && typeof databaseService.setUserSavedProperties === 'function') {
+                    databaseService.setUserSavedProperties(auth.currentUser.uid, []).catch(console.error);
                 }
                 
                 document.getElementById('propertiesGrid').innerHTML = '';

@@ -13,8 +13,12 @@
   <link rel="stylesheet" href="../assiduous.css" />
   <link rel="stylesheet" href="../components/admin-layout.css" />
 
-  <!-- Canonical modular Firebase bootstrap for portal pages -->
-  <script type="module" src="../assets/js/firebase-init.js"></script>
+  <!-- Canonical modular Firebase auth: used by AuthService and auth-guard -->
+  <script type="module">
+    import Firebase, { AuthService } from '../assets/js/firebase-init.js';
+    window.Firebase = Firebase;
+    window.AuthService = AuthService;
+  </script>
 
   <style>
     .properties-layout {
@@ -410,5 +414,10 @@
       });
     })();
   </script>
+
+  <!-- UCS Core Scripts -->
+  <script src="../components/ucs-core.js"></script>
+  <script src="../components/component-registry.js"></script>
+  <script src="../components/auth-guard.js"></script>
 </body>
 </html>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-auth-protect="client,investor">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -462,38 +462,15 @@
         </div>
     </div>
 
-    <!-- UCS Core Scripts -->
+    <!-- UCS Core Scripts (standard client shell) -->
     <script src="../components/ucs-core.js"></script>
     <script src="../components/component-registry.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-    <script src="../firebase-config.js"></script>
+    <script src="../components/auth-guard.js"></script>
     <script>
         window.addEventListener('firebase-ready', function() {
-            const headerScript = document.createElement('script');
-            headerScript.src = '../components/universal-header.js';
-            document.head.appendChild(headerScript);
-            
-            headerScript.onload = function() {
-                // Load sidebar first
-                const sidebarScript = document.createElement('script');
-                sidebarScript.src = '../components/sidebar.js';
-                document.head.appendChild(sidebarScript);
-                
-                // Then auth guard
-                sidebarScript.onload = function() {
-                    const authScript = document.createElement('script');
-                    authScript.src = '../components/auth-guard.js';
-                    document.head.appendChild(authScript);
-                };
-            };
-        });
-    </script>
-    <script>
-        window.addEventListener('firebase-ready', function() {
-            const db = window.db;
-            const auth = window.auth;
+            const firebase = window.Firebase || {};
+            const db = firebase.db || window.firebaseDb;
+            const auth = firebase.auth || window.firebaseAuth;
 
         
         let allViewings = [];
@@ -624,7 +601,9 @@
                 
                 return `
                     <div class="viewing-card ${statusClass}">
-                        <header data-component="header"></header>
+                        <div class="viewing-header">
+                            <div>
+                                <div class="viewing-date">${date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}</div>
                                 <div class="viewing-time">${viewing.time}</div>
                             </div>
                             <div class="viewing-status status-${viewing.status || 'pending'}">

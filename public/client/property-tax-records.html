@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-auth-protect="client,investor">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,6 +13,13 @@
     
     <link rel="stylesheet" href="../assiduous.css">
     <link rel="stylesheet" href="../components/admin-layout.css">
+
+    <!-- Canonical modular Firebase auth: used by AuthService and auth-guard -->
+    <script type="module">
+        import Firebase, { AuthService } from '../assets/js/firebase-init.js';
+        window.Firebase = Firebase;
+        window.AuthService = AuthService;
+    </script>
     
     <style>
 /* Tax Records Specific Styles */
@@ -632,37 +639,20 @@
     <!-- UCS Core Scripts -->
     <script src="../components/ucs-core.js"></script>
     <script src="../components/component-registry.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
-    <script src="../firebase-config.js"></script>
-    <script>
-        // Wait for firebase-ready event before loading auth-dependent scripts
-        window.addEventListener('firebase-ready', function() {
-            console.log('[Tax Records] Firebase ready, loading auth guard and header');
-            
-            // Load universal header
-            const headerScript = document.createElement('script');
-            headerScript.src = '../components/universal-header.js';
-            document.head.appendChild(headerScript);
-            
-            // Load auth guard after header
-            headerScript.onload = function() {
-                const authScript = document.createElement('script');
-                authScript.src = '../components/auth-guard.js';
-                document.head.appendChild(authScript);
-            };
-        });
-    </script>
+    <script src="../components/auth-guard.js"></script>
     <script type="module">
-        // Wait for Firebase to be ready before initializing PropertyService
+        // Wait for Firebase to be ready before initializing services
         window.addEventListener('firebase-ready', async function() {
             console.log('[Tax Records] Initializing PropertyService after Firebase ready');
             
+            const firebaseGlobal = window.Firebase || {};
             const { PropertyService } = await import('../assets/js/services/propertyservice.js');
             
             const propertyService = new PropertyService();
+            const DatabaseService = firebaseGlobal.DatabaseService || {};
+            const StorageService = firebaseGlobal.StorageService || {};
+            const auth = firebaseGlobal.auth || window.firebaseAuth;
+            
             window.propertyService = propertyService; // Make available globally
             let currentProperty = null;
             let isEditMode = false;
@@ -933,7 +923,7 @@
             const publicRecords = property.publicRecords || {};
             const container = document.getElementById('documents-list');
             
-            const documents = publicRecords.documents || [
+            const documents = publicRecords.documents || property.documents || [
                 { name: 'Deed', type: 'PDF', date: 'N/A', size: 'N/A' },
                 { name: 'Tax Assessment Notice', type: 'PDF', date: 'N/A', size: 'N/A' },
                 { name: 'Plat Map', type: 'PDF', date: 'N/A', size: 'N/A' },
@@ -1069,14 +1059,17 @@
                     }
                 });
                 
-                // Update Firestore
-                const db = firebase.firestore();
-                await db.collection('properties').doc(propertyId).update({
-                    'publicRecords': {
-                        ...currentProperty.publicRecords,
+                if (!DatabaseService || typeof DatabaseService.updateProperty !== 'function') {
+                    throw new Error('DatabaseService not available');
+                }
+                
+                // Update property publicRecords via DatabaseService
+                await DatabaseService.updateProperty(propertyId, {
+                    publicRecords: {
+                        ...(currentProperty.publicRecords || {}),
                         ...updates,
-                        lastUpdated: new Date().toISOString()
-                    }
+                        lastUpdated: new Date().toISOString(),
+                    },
                 });
                 
                 // Hide save bar
@@ -1115,12 +1108,13 @@
             const files = event.target.files;
             if (!files || files.length === 0) return;
             
-            const storage = firebase.storage();
-            const db = firebase.firestore();
-            const user = firebase.auth().currentUser;
-            
-            if (!user) {
+            if (!auth || !auth.currentUser) {
                 alert('You must be logged in to upload files');
+                return;
+            }
+            if (!StorageService || typeof StorageService.uploadFile !== 'function' ||
+                !DatabaseService || typeof DatabaseService.updateProperty !== 'function') {
+                alert('File upload service is not available right now. Please try again later.');
                 return;
             }
             
@@ -1131,44 +1125,37 @@
             progressContainer.style.display = 'block';
             
             try {
+                let documents = Array.isArray(currentProperty.documents)
+                    ? [...currentProperty.documents]
+                    : [];
+                
                 for (let i = 0; i < files.length; i++) {
                     const file = files[i];
                     const fileName = `${Date.now()}_${file.name}`;
-                    const storageRef = storage.ref(`properties/${propertyId}/documents/${fileName}`);
+                    const path = `properties/${propertyId}/documents/${fileName}`;
                     
                     progressText.textContent = `Uploading ${file.name} (${i + 1}/${files.length})...`;
+                    progressFill.style.width = '25%';
                     
-                    // Upload file
-                    const uploadTask = storageRef.put(file);
+                    const result = await StorageService.uploadFile(path, file);
+                    if (!result || !result.success) {
+                        throw new Error(result?.error || `Failed to upload ${file.name}`);
+                    }
                     
-                    await new Promise((resolve, reject) => {
-                        uploadTask.on('state_changed',
-                            (snapshot) => {
-                                const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                                progressFill.style.width = progress + '%';
-                            },
-                            (error) => reject(error),
-                            async () => {
-                                // Get download URL
-                                const downloadURL = await uploadTask.snapshot.ref.getDownloadURL();
-                                
-                                // Save document metadata to Firestore
-                                await db.collection('properties').doc(propertyId).update({
-                                    documents: firebase.firestore.FieldValue.arrayUnion({
-                                        name: file.name,
-                                        url: downloadURL,
-                                        type: file.type,
-                                        size: file.size,
-                                        uploadedAt: new Date().toISOString(),
-                                        uploadedBy: user.uid
-                                    })
-                                });
-                                
-                                resolve();
-                            }
-                        );
+                    documents.push({
+                        name: file.name,
+                        url: result.url,
+                        type: file.type,
+                        size: file.size,
+                        uploadedAt: new Date().toISOString(),
+                        uploadedBy: auth.currentUser.uid,
                     });
+                    
+                    progressFill.style.width = '100%';
                 }
+                
+                await DatabaseService.updateProperty(propertyId, { documents });
+                currentProperty = { ...currentProperty, documents };
                 
                 // Success
                 progressText.textContent = 'Upload complete!';

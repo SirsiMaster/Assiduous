@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-auth-protect="client,investor">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,6 +13,13 @@
     
     <link rel="stylesheet" href="../assiduous.css">
     <link rel="stylesheet" href="../components/admin-layout.css">
+
+    <!-- Canonical modular Firebase auth: used by AuthService and auth-guard -->
+    <script type="module">
+        import Firebase, { AuthService } from '../assets/js/firebase-init.js';
+        window.Firebase = Firebase;
+        window.AuthService = AuthService;
+    </script>
     
     <style>
 /* Document Management Styles */
@@ -381,22 +388,17 @@
     <!-- UCS Core Scripts -->
     <script src="../components/ucs-core.js"></script>
     <script src="../components/component-registry.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
-    <script src="../firebase-config.js"></script>
-    <script src="../components/universal-header.js"></script>
     <script src="../components/auth-guard.js"></script>
     <script>
         // ==========================================
-        // FIREBASE DOCUMENT MANAGEMENT SERVICE
+        // FIREBASE DOCUMENT MANAGEMENT SERVICE (modular via window.Firebase)
         // ==========================================
         
+        const FirebaseGlobal = window.Firebase || {};
         const DocumentService = {
-            db: firebase.firestore(),
-            storage: firebase.storage(),
-            auth: firebase.auth(),
+            db: FirebaseGlobal.db || window.firebaseDb,
+            storage: FirebaseGlobal.storage || window.firebaseStorage,
+            auth: FirebaseGlobal.auth || window.firebaseAuth,
             
             /**
              * Upload document to Firebase Storage
@@ -441,7 +443,7 @@
                                     fileType: file.type,
                                     fileSize: file.size,
                                     documentType: type,
-                                    uploadedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                                    uploadedAt: new Date(),
                                     ...metadata
                                 };
                                 
@@ -841,7 +843,10 @@
         // ==========================================
         
         document.addEventListener('DOMContentLoaded', function() {
-            firebase.auth().onAuthStateChanged(user => {
+            const firebase = window.Firebase || {};
+            const auth = firebase.auth || window.firebaseAuth;
+            
+            auth.onAuthStateChanged(user => {
                 if (!user) {
                     window.location.href = '/client/login.html';
                     return;

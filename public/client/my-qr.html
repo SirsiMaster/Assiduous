@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-auth-protect="client,investor">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,6 +12,13 @@
     
     <link rel="stylesheet" href="../assiduous.css">
     <link rel="stylesheet" href="../components/admin-layout.css">
+
+    <!-- Canonical modular Firebase auth: used by AuthService and auth-guard -->
+    <script type="module">
+        import Firebase, { AuthService } from '../assets/js/firebase-init.js';
+        window.Firebase = Firebase;
+        window.AuthService = AuthService;
+    </script>
     
     <style>
         .page-header {
@@ -276,12 +283,7 @@
     <!-- UCS Core Scripts -->
     <script src="../components/ucs-core.js"></script>
     <script src="../components/component-registry.js"></script>
-    
-    <!-- Firebase & Services -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-functions-compat.js"></script>
-    <script src="../firebase-config.js"></script>
+    <script src="../components/auth-guard.js"></script>
     
     <script>
         let currentUser = null;
@@ -291,8 +293,9 @@
         
         // Initialize auth/functions when Firebase is ready
         window.addEventListener('firebase-ready', () => {
-            auth = window.firebaseAuth || firebase.auth();
-            functions = firebase.functions();
+            const firebase = window.Firebase || {};
+            auth = firebase.auth || window.firebaseAuth;
+            functions = firebase.functions || null;
 
             // Check authentication
             auth.onAuthStateChanged(async (user) => {
