@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.128.5] - 2025-12-03
+
+### Fixed
+- fix(client-ucs): align client persona pages with UCS header/sidebar
+
+
 ## [0.128.4] - 2025-11-29
 
 ### Fixed
@@ -3426,7 +3432,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.128.4...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.128.5...HEAD
+
+
+## [0.128.5] - 2025-12-03
+
+### Fixed
+- fix(client-ucs): align client persona pages with UCS header/sidebar
 
 
 ## [0.128.4] - 2025-11-29
@@ -5306,3 +5318,4 @@ To generate changelog entries:
 [0.128.2]: https://github.com/SirsiMaster/Assiduous/compare/v0.128.1...v0.128.2
 [0.128.3]: https://github.com/SirsiMaster/Assiduous/compare/v0.128.2...v0.128.3
 [0.128.4]: https://github.com/SirsiMaster/Assiduous/compare/v0.128.3...v0.128.4
+[0.128.5]: https://github.com/SirsiMaster/Assiduous/compare/v0.128.4...v0.128.5
