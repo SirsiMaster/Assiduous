@@ -140,7 +140,7 @@ module.exports = {
     externalCss: [
       'https://cdn.jsdelivr.net/gh/SirsiMaster/ui-components@latest/dist/sirsimaster-ui.css',
       'https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap',
-      'https://cdn.jsdelivr.net/npm/@fontsource/geist-sans@5.0.6/latin.css',
+      'https://cdn.jsdelivr.net/npm/@fontsource/geist-sans@5.0.6/index.css',
     ],
     
     // Design tokens

@@ -24,7 +24,7 @@ def fix_css_links(content):
     if 'DM+Serif+Display' not in content:
         content = re.sub(
             r'(<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>)',
-            r'\1\n    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">\n    <link href="https://cdn.jsdelivr.net/npm/@fontsource/geist-sans@5.0.6/latin.css" rel="stylesheet">',
+            r'\1\n    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">\n    <link href="https://cdn.jsdelivr.net/npm/@fontsource/geist-sans@5.0.6/index.css" rel="stylesheet">',
             content
         )
     
