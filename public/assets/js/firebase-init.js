@@ -723,4 +723,4 @@ try {
 
 // Export for ES modules
 export default Firebase;
-export { app, auth, db, functions, storage, analytics, FunctionsService };
+export { app, auth, db, functions, storage, analytics };
