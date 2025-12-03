@@ -708,16 +708,9 @@
         
         // Initialize on page load
         document.addEventListener('DOMContentLoaded', () => {
-            // Check if user is admin
-            auth.onAuthStateChanged(user => {
-                if (!user) {
-                    window.location.href = '/login.html';
-                    return;
-                }
-                
-                // Load initial data
-                loadApplications('pending');
-            });
+            // Rely on global auth-guard / landing AuthService for authentication.
+            // If user reached this page, we assume they are already authenticated.
+            loadApplications('pending');
         });
         
         // Auto-refresh every 30 seconds

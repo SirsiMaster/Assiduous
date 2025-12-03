@@ -1,5 +1,9 @@
 {
+<<<<<<< Updated upstream
   "lastUpdated": "2025-12-03T04:53:18.469Z",
+=======
+  "lastUpdated": "2025-11-29T19:06:47.531Z",
+>>>>>>> Stashed changes
   "summary": {
     "health": "Good",
     "score": 59,
@@ -7,7 +11,11 @@
     "alerts": [
       "✅ UCS implementation complete - 40 pages converted",
       "⚠️ Test coverage is very low",
+<<<<<<< Updated upstream
       "⏰ Timeline warning - -2 days until launch"
+=======
+      "⏰ Timeline warning - 2 days until launch"
+>>>>>>> Stashed changes
     ]
   },
   "features": {
@@ -152,6 +160,7 @@
     }
   },
   "project": {
+<<<<<<< Updated upstream
     "totalHours": "334",
     "avgHoursPerDay": "7.8",
     "totalCost": 52556,
@@ -167,6 +176,23 @@
     "linesDeleted": 9444856,
     "netLines": 379767,
     "velocity": "23.5",
+=======
+    "totalHours": "333",
+    "avgHoursPerDay": "7.9",
+    "totalCost": 52320,
+    "laborCost": 49950,
+    "toolsCost": 2370,
+    "monthsElapsed": "3.6",
+    "totalCommits": 1009,
+    "totalFiles": 801,
+    "activeDays": 42,
+    "totalDays": 111,
+    "projectAgeDays": 111,
+    "linesAdded": 9823807,
+    "linesDeleted": 9443092,
+    "netLines": 380715,
+    "velocity": "24.0",
+>>>>>>> Stashed changes
     "completionPercentage": 59,
     "actualStartDate": "2025-08-10",
     "architecture": {
@@ -176,13 +202,18 @@
     }
   },
   "today": {
+<<<<<<< Updated upstream
     "date": "2025-12-03",
+=======
+    "date": "2025-11-29",
+>>>>>>> Stashed changes
     "hours": "0.3",
     "cost": 50,
     "commits": 1,
     "deployments": 0
   },
   "thisWeek": {
+<<<<<<< Updated upstream
     "hours": "1.0",
     "cost": 149,
     "commits": 3,
@@ -192,6 +223,17 @@
     "hours": "91.4",
     "cost": 13712,
     "commits": 277
+=======
+    "hours": "0.3",
+    "cost": 50,
+    "commits": 1,
+    "days": 7
+  },
+  "thisMonth": {
+    "hours": "146.2",
+    "cost": 21929,
+    "commits": 443
+>>>>>>> Stashed changes
   },
   "quality": {
     "testCoverage": {
@@ -224,7 +266,11 @@
       "low": 0,
       "total": 0
     },
+<<<<<<< Updated upstream
     "lastAudit": "2025-12-03T04:52:47.030Z",
+=======
+    "lastAudit": "2025-11-29T19:06:12.230Z",
+>>>>>>> Stashed changes
     "dependencies": {
       "total": 0,
       "outdated": 0,
@@ -296,9 +342,15 @@
     }
   },
   "documentation": {
+<<<<<<< Updated upstream
     "markdownFiles": 2541,
     "jsFilesTotal": 25076,
     "jsFilesDocumented": 25076,
+=======
+    "markdownFiles": 2517,
+    "jsFilesTotal": 25044,
+    "jsFilesDocumented": 25044,
+>>>>>>> Stashed changes
     "coverage": 423,
     "apiEndpoints": {
       "total": 0,
@@ -312,11 +364,19 @@
     "changelog": true,
     "contributing": false,
     "license": false,
+<<<<<<< Updated upstream
     "lastUpdate": "2025-11-29 19:06:00 +0000"
   },
   "productivity": {
     "velocityTrend": "increasing",
     "weeklyCommits": 3,
+=======
+    "lastUpdate": "2025-11-29 14:05:06 -0500"
+  },
+  "productivity": {
+    "velocityTrend": "decreasing",
+    "weeklyCommits": 1,
+>>>>>>> Stashed changes
     "contributors": {
       "total": 0,
       "active": 0
@@ -349,7 +409,11 @@
       "projectStart": "2025-08-10",
       "originalLaunch": "2025-11-01",
       "plannedLaunch": "2025-12-01",
+<<<<<<< Updated upstream
       "daysRemaining": -2,
+=======
+      "daysRemaining": 2,
+>>>>>>> Stashed changes
       "onTrack": false,
       "adjustmentReason": "Timeline adjusted for realistic completion based on current velocity"
     },
@@ -394,6 +458,7 @@
   },
   "recentActivity": [
     {
+<<<<<<< Updated upstream
       "hash": "bc957e4131c5ca27f573b42ffd94ff70030c8dbe",
       "message": "fix(client-ucs): align client persona pages with UCS header/sidebar",
       "author": "SirsiMaster",
@@ -406,6 +471,8 @@
       "date": "2025-11-29 19:06:00 +0000"
     },
     {
+=======
+>>>>>>> Stashed changes
       "hash": "66c293ba00940b0e1f0cb278d55a576e7edbdbaf",
       "message": "fix(auth): Stabilize reset-password page Firebase wiring",
       "author": "SirsiMaster",
@@ -452,10 +519,29 @@
       "message": "fix: point firebase-init to legacy analytics-enabled web app and restore Firestore warnings",
       "author": "SirsiMaster",
       "date": "2025-11-16 18:15:08 -0500"
+<<<<<<< Updated upstream
     }
   ],
   "automation": {
     "lastRun": "2025-12-03T04:53:18.469Z",
+=======
+    },
+    {
+      "hash": "1b0d0608890c58ba297c7e918c6ecad5b535d9f4",
+      "message": "fix: avoid external placeholder image URLs in properties and property detail",
+      "author": "SirsiMaster",
+      "date": "2025-11-16 18:02:39 -0500"
+    },
+    {
+      "hash": "91c18e7aefc4309e3945a86f36b0aad8dc862d97",
+      "message": "fix: wire properties header to universal header and align Firebase analytics config",
+      "author": "SirsiMaster",
+      "date": "2025-11-16 17:55:02 -0500"
+    }
+  ],
+  "automation": {
+    "lastRun": "2025-11-29T19:06:47.531Z",
+>>>>>>> Stashed changes
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",

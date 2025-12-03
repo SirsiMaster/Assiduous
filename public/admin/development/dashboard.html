@@ -986,6 +986,47 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- History Explorer -->
+                <div class="sm-sm-card" style="margin-top: var(--space-2xl);">
+                    <div class="sm-sm-sm-sm-card-header">
+                        <div class="sm-sm-card-title">History Explorer</div>
+                        <div style="display:flex; gap: var(--space-sm); align-items:center;">
+                            <select id="history-range" class="sm-input" style="min-width: 140px;">
+                                <option value="7d">Last 7 days</option>
+                                <option value="30d" selected>Last 30 days</option>
+                                <option value="90d">Last 90 days</option>
+                                <option value="all">All time</option>
+                                <option value="custom">Custom range</option>
+                            </select>
+                            <input id="history-start" type="date" class="sm-input" style="display:none;" />
+                            <input id="history-end" type="date" class="sm-input" style="display:none;" />
+                            <button id="history-apply" class="sm-btn sm-btn-secondary">Apply</button>
+                        </div>
+                    </div>
+                    <div class="sm-sm-sm-sm-card-body">
+                        <div style="font-size:12px; color:var(--text-secondary); margin-bottom:var(--space-sm);">
+                            Filter development activity by date range. Data is sourced from <code>development_metrics</code> and <code>git_commits</code> in Firestore.
+                        </div>
+                        <div style="overflow-x:auto;">
+                            <table style="width:100%; border-collapse:collapse; font-size:13px;">
+                                <thead>
+                                    <tr style="text-align:left; border-bottom:1px solid var(--border);">
+                                        <th style="padding:8px;">Date</th>
+                                        <th style="padding:8px;">Hours</th>
+                                        <th style="padding:8px;">Cost</th>
+                                        <th style="padding:8px;">Commits</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="history-table-body">
+                                    <tr>
+                                        <td colspan="4" style="padding:8px; color:var(--text-secondary);">Loading history...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
         </main>
     </div>
@@ -1018,6 +1059,9 @@
             
             // Load Business Readiness (spec compliance) data
             loadSpecificationMetrics();
+            
+            // Set up History Explorer controls (uses Firestore directly)
+            setupHistoryControls();
             
             // Subscribe to real-time updates
             unsubscribe = metricsService.subscribeToMetrics((metrics) => {
@@ -1169,9 +1213,62 @@
             
             // Update Development Progress from features
             updateFeatureProgress(metrics.features);
+
+            // Update sessions panel
+            updateSessionsPanel(metrics.sessions, metrics.today);
+
+            // Optionally show a simple consistency hint between metrics and commits
+            if (metrics.today && Array.isArray(metrics.recentActivity)) {
+                const commitsToday = metrics.today.commits || 0;
+                const todayStr = new Date().toISOString().split('T')[0];
+                const recentCount = metrics.recentActivity.filter(a => {
+                    const d = a.date instanceof Date ? a.date : new Date(a.date);
+                    return d.toISOString().startsWith(todayStr);
+                }).length;
+                const ok = !commitsToday || commitsToday === recentCount;
+                console.log(`Metrics consistency (today): commits=${commitsToday}, recentActivityMatches=${recentCount}, ok=${ok}`);
+
+                const pill = document.getElementById('metrics-consistency-pill');
+                if (pill) {
+                    if (ok) {
+                        pill.style.background = 'rgba(34,197,94,0.1)';
+                        pill.style.color = '#16a34a';
+                        pill.querySelector('.status-dot').style.background = '#16a34a';
+                        pill.textContent = 'Consistency: In sync';
+                    } else {
+                        pill.style.background = 'rgba(239,68,68,0.1)';
+                        pill.style.color = '#b91c1c';
+                        pill.querySelector('.status-dot').style.background = '#b91c1c';
+                        pill.textContent = `Consistency: Mismatch (${commitsToday} vs ${recentCount})`;
+                    }
+                }
+            }
             
             // Update the page with timestamp
             console.log(`Dashboard updated at ${new Date().toLocaleString()} - Accurate metrics loaded`);
+        }
+
+        function updateSessionsPanel(sessionMetrics, todayMetrics) {
+            const listEl = document.getElementById('sessions-list');
+            const summaryEl = document.getElementById('sessions-summary');
+            if (!listEl || !summaryEl) return;
+
+            const totalSessions = sessionMetrics?.sessionsCount || 0;
+            const hours = sessionMetrics?.totalSessionHours || 0;
+            const cost = sessionMetrics?.totalSessionCost || 0;
+
+            summaryEl.textContent = `${totalSessions} session${totalSessions === 1 ? '' : 's'} • ${hours}h • $${cost}`;
+
+            // For now, use aggregate numbers only; detailed per-session docs can be loaded later if needed
+            listEl.innerHTML = `
+                <div class="activity-item" style="padding:8px 0; border-bottom:1px solid var(--gray-100);">
+                    <div class="activity-content">
+                        <div class="activity-user">Aggregate sessions</div>
+                        <div class="activity-action">${totalSessions} recorded sessions across all tracked days.</div>
+                        <div class="activity-time">Total hours: ${hours}, total cost: $${cost}</div>
+                    </div>
+                </div>
+            `;
         }
         
         function updateFeatureProgress(features) {
@@ -1372,6 +1469,191 @@
             if (days > 0) return `${days} day${days > 1 ? 's' : ''} ago`;
             if (hours > 0) return `${hours} hour${hours > 1 ? 's' : ''} ago`;
             return 'Just now';
+        }
+
+        // ==========================
+        // History Explorer Helpers
+        // ==========================
+
+        async function loadHistory(rangeKey) {
+            try {
+                if (!window.firebaseDb) {
+                    console.warn('Firebase DB not available for history explorer');
+                    return;
+                }
+
+                const db = window.firebaseDb;
+                let startDate = null;
+                let endDate = null;
+
+                const today = new Date();
+                const endStr = today.toISOString().split('T')[0];
+
+                if (rangeKey === '7d' || rangeKey === '30d' || rangeKey === '90d') {
+                    const days = rangeKey === '7d' ? 7 : rangeKey === '30d' ? 30 : 90;
+                    const start = new Date();
+                    start.setDate(start.getDate() - (days - 1));
+                    startDate = start.toISOString().split('T')[0];
+                    endDate = endStr;
+                } else if (rangeKey === 'all') {
+                    // Let Firestore return everything (no where clause)
+                } else if (rangeKey === 'custom') {
+                    const startInput = document.getElementById('history-start').value;
+                    const endInput = document.getElementById('history-end').value;
+                    if (!startInput || !endInput) {
+                        console.warn('Custom range requires start and end dates');
+                        renderHistoryTable([]);
+                        return;
+                    }
+                    startDate = startInput;
+                    endDate = endInput;
+                }
+
+                let query = db.collection('development_metrics').orderBy('date', 'desc');
+
+                if (startDate && endDate) {
+                    query = query.where('date', '>=', startDate).where('date', '<=', endDate);
+                }
+
+                const snapshot = await query.limit(365).get();
+                const rows = [];
+                snapshot.forEach(doc => {
+                    const d = doc.data();
+                    rows.push({
+                        date: d.date,
+                        hours: d.hours || 0,
+                        cost: d.cost || 0,
+                        commits: d.commits || 0
+                    });
+                });
+
+                renderHistoryTable(rows);
+            } catch (err) {
+                console.error('Error loading history range:', err);
+                renderHistoryTable([]);
+            }
+        }
+
+        function renderHistoryTable(rows) {
+            const tbody = document.getElementById('history-table-body');
+            if (!tbody) return;
+
+            if (!rows || rows.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" style="padding:8px; color:var(--text-secondary);">No history found for this range.</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = rows
+                .sort((a, b) => a.date < b.date ? 1 : -1)
+                .map(r => {
+                    const costStr = `$${Number(r.cost || 0).toFixed(0)}`;
+                    const dateAttr = r.date;
+                    return `
+                        <tr data-history-date="${dateAttr}" style="cursor:pointer;">
+                            <td style="padding:6px 8px; white-space:nowrap;">${r.date}</td>
+                            <td style="padding:6px 8px;">${Number(r.hours || 0).toFixed(2)}</td>
+                            <td style="padding:6px 8px;">${costStr}</td>
+                            <td style="padding:6px 8px;">${r.commits || 0}</td>
+                        </tr>
+                    `;
+                })
+                .join('');
+
+            // attach click handlers for per-day drilldown
+            Array.from(tbody.querySelectorAll('tr[data-history-date]')).forEach((row) => {
+                row.addEventListener('click', () => {
+                    const date = row.getAttribute('data-history-date');
+                    if (date) {
+                        showCommitsForDate(date);
+                    }
+                });
+            });
+        }
+
+        async function showCommitsForDate(dateStr) {
+            try {
+                if (!window.firebaseDb) {
+                    console.warn('Firebase DB not available for commit drilldown');
+                    return;
+                }
+                const db = window.firebaseDb;
+
+                const start = new Date(dateStr + 'T00:00:00Z');
+                const end = new Date(dateStr + 'T23:59:59Z');
+
+                const snapshot = await db.collection('git_commits')
+                    .where('timestamp', '>=', start)
+                    .where('timestamp', '<=', end)
+                    .orderBy('timestamp', 'desc')
+                    .limit(100)
+                    .get();
+
+                const items: any[] = [];
+                snapshot.forEach(doc => {
+                    const d = doc.data();
+                    const ts: any = d.timestamp?.toDate ? d.timestamp.toDate() : new Date(d.timestamp);
+                    items.push({
+                        hash: d.hash || doc.id,
+                        message: d.message || '',
+                        author: d.author || 'Developer',
+                        time: ts,
+                        branch: d.branch || '',
+                    });
+                });
+
+                const content = items.length === 0
+                    ? `<div style="padding:20px; font-size:14px; color:var(--text-secondary);">No commits recorded for ${dateStr}.</div>`
+                    : `
+                        <div style="padding:20px;">
+                            <div style="font-size:13px; color:var(--text-secondary); margin-bottom:8px;">${items.length} commit(s) on ${dateStr}</div>
+                            <div style="max-height:60vh; overflow-y:auto;">
+                                ${items.map((c) => {
+                                    const sha = String(c.hash).substring(0, 7);
+                                    const time = c.time.toLocaleTimeString('en-US', {hour: '2-digit', minute: '2-digit'});
+                                    const branch = c.branch ? ` • <span style=\"color:var(--text-secondary);\">${c.branch}</span>` : '';
+                                    return `
+                                        <div style="padding:10px 0; border-bottom:1px solid var(--gray-100);">
+                                            <div style="font-size:13px; font-weight:600; color:var(--navy);">${c.author}</div>
+                                            <div style="font-size:13px; color:var(--text-secondary); margin-top:2px;">${c.message}</div>
+                                            <div style="font-size:11px; color:var(--text-secondary); margin-top:4px;">
+                                                <span style="font-family:SFMono-Regular,Menlo,monospace; padding:2px 4px; background:var(--gray-50); border-radius:4px;">${sha}</span>
+                                                <span style="margin-left:8px;">${time}</span>${branch}
+                                            </div>
+                                        </div>
+                                    `;
+                                }).join('')}
+                            </div>
+                        </div>
+                    `;
+
+                showModal(`Commits on ${dateStr}`, content);
+            } catch (err) {
+                console.error('Error loading commits for date', dateStr, err);
+            }
+        }
+
+        function setupHistoryControls() {
+            const rangeSelect = document.getElementById('history-range');
+            const startInput = document.getElementById('history-start');
+            const endInput = document.getElementById('history-end');
+            const applyBtn = document.getElementById('history-apply');
+
+            if (!rangeSelect || !startInput || !endInput || !applyBtn) return;
+
+            rangeSelect.addEventListener('change', () => {
+                const value = rangeSelect.value;
+                const isCustom = value === 'custom';
+                startInput.style.display = isCustom ? 'block' : 'none';
+                endInput.style.display = isCustom ? 'block' : 'none';
+            });
+
+            applyBtn.addEventListener('click', () => {
+                const value = rangeSelect.value || '30d';
+                loadHistory(value);
+            });
+
+            // Initial load (last 30 days by default)
+            loadHistory(rangeSelect.value || '30d');
         }
 
         function refresh() {

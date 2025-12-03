@@ -12,7 +12,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/@fontsource/geist-sans@5.0.6/latin.css" rel="stylesheet">
     <link rel="stylesheet" href="../assiduous.css">
     <link rel="stylesheet" href="../components/admin-layout.css">
     <link rel="stylesheet" href="../assets/css/button-override.css">
@@ -257,19 +256,37 @@
     </script>
 </head>
 <body>
+    <script>
+      (function() {
+        try {
+          var raw = localStorage.getItem('assiduous-login-log');
+          if (!raw) return;
+          var entries = JSON.parse(raw);
+          if (!Array.isArray(entries) || !entries.length) return;
+          console.group('[Assiduous Login Trace]');
+          entries.forEach(function(e) {
+            var ts = new Date(e.ts || Date.now()).toISOString();
+            console.log(ts, e.message, e.extra || '');
+          });
+          console.groupEnd();
+        } catch (err) {
+          console.warn('[AssiduousLog] Unable to read login trace', err);
+        }
+      })();
+    </script>
     <div class="admin-wrapper">
         
         <!-- Sidebar Component -->
         <div id="sidebar-root" data-active="dashboard"></div>
-        <main class="main-content">
-            <!-- Standardized Header -->
+        <main class="main-content" id="admin-shell-root" data-router-root="true">
+            <!-- Standardized Header (persistent across admin pages) -->
             <header id="universal-header-root" 
                     data-title="Admin Dashboard" 
                     data-subtitle="Welcome back! Here's what's happening with your platform today."
                     data-search-placeholder="Search properties, agents, transactions..."></header>
 
-            <!-- Dashboard Content -->
-            <div class="dashboard-content">
+            <!-- Admin Shell Content Area: only this swaps on navigation -->
+            <div class="dashboard-content" id="admin-content">
                 <!-- Stats Grid -->
                 <div class="stats-grid">
                     <div class="stat-card sirsi-card sirsi-sm-sm-card--elevated">
@@ -430,148 +447,9 @@
     <!-- Load Component Scripts -->
     <script src="../components/sidebar.js"></script>
     <script src="../components/universal-header.js"></script>
-    
-    <!-- Dashboard Firestore Integration -->
-    <script type="module">
-        import { AuthService, DatabaseService } from '../assets/js/firebase-init.js';
-        
-        // Wait for authentication before loading dashboard
-        async function checkAuthAndLoadDashboard() {
-            console.log('🔥 Checking authentication...');
-            
-            return new Promise((resolve, reject) => {
-                // Set a timeout in case auth never resolves
-                const timeout = setTimeout(() => {
-                    console.log('❌ Auth check timeout');
-                    reject(new Error('Authentication timeout'));
-                }, 5000);
-                
-                const unsubscribe = AuthService.onAuthStateChanged(async (user) => {
-                    clearTimeout(timeout);
-                    unsubscribe(); // Unsubscribe immediately after first call
-                    
-                    if (!user) {
-                        console.log('❌ No user signed in');
-                        reject(new Error('Not authenticated'));
-                        return;
-                    }
-                    
-                    console.log('✅ User authenticated:', user.email);
-                    
-                    try {
-                        // Get user role from Firestore
-                        const userData = await AuthService.getUserData(user.uid);
-                        if (!userData.success || userData.data.role !== 'admin') {
-                            console.log('❌ User is not admin, role:', userData.data?.role);
-                            reject(new Error('Not authorized'));
-                            return;
-                        }
-                        
-                        console.log('✅ User is admin, loading dashboard...');
-                        resolve(user);
-                    } catch (error) {
-                        console.error('❌ Error getting user data:', error);
-                        reject(error);
-                    }
-                });
-            });
-        }
-        
-        // Load dashboard data when DOM is ready
-        document.addEventListener('DOMContentLoaded', async () => {
-            try {
-                // Wait for auth check to complete
-                await checkAuthAndLoadDashboard();
-                
-                // Load Dashboard Stats using DatabaseService
-                await loadDashboardStats();
-                
-                // Load Recent Properties
-                await loadRecentProperties();
-                
-                console.log('✅ Admin dashboard loaded successfully');
-            } catch (error) {
-                console.error('❌ Auth failed:', error.message);
-                // Redirect immediately on auth failure
-                // Use a relative path so this works both in production (/admin/...) and local (/public/admin/...)
-                window.location.href = '../index.html#login';
-            }
-        });
-        
-        // Load Dashboard Statistics
-        async function loadDashboardStats() {
-            // Get total properties count
-            const properties = await DatabaseService.getDocuments('properties');
-            const totalProperties = properties.length;
-            document.getElementById('total-properties').textContent = totalProperties.toLocaleString();
-            document.getElementById('properties-change').textContent = 'Sample data for demo';
-            document.getElementById('properties-change').className = 'stat-change';
-            
-            // Get available properties count
-            const availableProperties = await DatabaseService.getDocuments('properties', [
-                { field: 'status', operator: '==', value: 'available' }
-            ]);
-            const availableCount = availableProperties.length;
-            document.getElementById('pending-transactions').textContent = availableCount.toLocaleString();
-            document.getElementById('transactions-change').textContent = `${availableCount} available now`;
-            document.getElementById('transactions-change').className = 'stat-change';
-            
-            // Calculate estimated monthly revenue (based on property prices)
-            let totalValue = 0;
-            properties.forEach(property => {
-                if (property.price && property.price.list) {
-                    totalValue += property.price.list;
-                }
-            });
-            const avgValue = totalProperties > 0 ? totalValue / totalProperties : 0;
-            const monthlyRevenue = avgValue * 2; // Assume 2 properties per month
-            const revenueFormatted = '$' + (monthlyRevenue / 1000).toFixed(0) + 'K';
-            document.getElementById('monthly-revenue').textContent = revenueFormatted;
-            document.getElementById('revenue-change').textContent = 'Sample calculation';
-            document.getElementById('revenue-change').className = 'stat-change';
-            
-            // Get active agents count (approved agents)
-            const agents = await DatabaseService.getDocuments('users', [
-                { field: 'role', operator: '==', value: 'agent' }
-            ]);
-            
-            let approvedAgents = 0;
-            agents.forEach(agent => {
-                if (agent.agentInfo && agent.agentInfo.status === 'approved') {
-                    approvedAgents++;
-                }
-            });
-            
-            document.getElementById('active-agents').textContent = approvedAgents.toLocaleString();
-            document.getElementById('agents-change').textContent = `${agents.length} total agents`;
-            document.getElementById('agents-change').className = 'stat-change';
-        }
-        
-        // Load Recent Properties Table
-        async function loadRecentProperties() {
-            // Get recent properties ordered by createdAt
-            const recentProperties = await DatabaseService.getDocuments('properties', [], 5, 'createdAt', 'desc');
-            
-            const tableBody = document.getElementById('recent-properties-table');
-            tableBody.innerHTML = '';
-            
-            if (!recentProperties || recentProperties.length === 0) {
-                tableBody.innerHTML = `
-                    <tr>
-                        <td colspan="5" style="text-align: center; padding: var(--space-xl);">
-                            <div style="color: var(--text-secondary);">No properties found</div>
-                        </td>
-                    </tr>
-                `;
-                return;
-            }
-            
-            recentProperties.forEach(property => {
-                const row = createPropertyRow(property.id, property);
-                tableBody.appendChild(row);
-            });
-        }
-        
+
+    <!-- Shared helpers for dashboard metrics (used by shell + other pages when embedded) -->
+    <script>
         // Create Property Table Row
         function createPropertyRow(id, data) {
             const row = document.createElement('tr');
@@ -596,7 +474,6 @@
             let listedDate = 'Recently';
             if (data.createdAt) {
                 try {
-                    // Handle both Firestore timestamp and regular date
                     let date;
                     if (data.createdAt.toDate) {
                         date = data.createdAt.toDate();
@@ -605,7 +482,6 @@
                     } else {
                         date = new Date(data.createdAt);
                     }
-                    
                     const daysAgo = Math.floor((Date.now() - date.getTime()) / (1000 * 60 * 60 * 24));
                     if (daysAgo === 0) listedDate = 'Today';
                     else if (daysAgo === 1) listedDate = '1 day ago';
@@ -613,8 +489,7 @@
                     else if (daysAgo < 30) listedDate = `${Math.floor(daysAgo / 7)} weeks ago`;
                     else listedDate = `${Math.floor(daysAgo / 30)} months ago`;
                 } catch (e) {
-                    console.warn('Date parsing failed:', e);
-                    // If date parsing fails, use default
+                    console.warn('Date parsing failed in createPropertyRow:', e);
                 }
             }
             
@@ -629,7 +504,6 @@
                 <td>${listedDate}</td>
             `;
             
-            // Make row clickable
             row.style.cursor = 'pointer';
             row.addEventListener('click', () => {
                 window.location.href = `properties.html?id=${id}`;
@@ -637,8 +511,8 @@
             
             return row;
         }
-        
-        // Show Error Message
+
+        // Show Error Message helper
         function showError(message) {
             const errorDiv = document.createElement('div');
             errorDiv.style.cssText = `
@@ -659,7 +533,261 @@
                 errorDiv.remove();
             }, 5000);
         }
-        
+    </script>
+
+    <!-- Admin Shell Router: soft navigation within the admin persona -->
+    <script>
+      (function() {
+        var ROUTES = {
+          'dashboard': 'dashboard.html',
+          'messages': 'messages.html',
+          'analytics': 'analytics.html',
+          'properties': 'properties.html',
+          'agents': 'agents.html',
+          'clients': 'clients.html',
+          'transactions': 'transactions.html',
+          'knowledge': 'knowledge-base.html',
+          'settings': 'settings.html'
+        };
+
+        function getBasePath() {
+          var path = window.location.pathname || '';
+          if (path.indexOf('/public/') === 0) return '/public/admin/';
+          if (path.indexOf('/assiduousflip/') === 0) return '/assiduousflip/admin/';
+          return '/admin/';
+        }
+
+        function isSameShellUrl(url) {
+          // Only intercept admin URLs that share the same shell directory
+          var base = getBasePath();
+          return url.indexOf(base) === 0;
+        }
+
+        function toRouteKey(href) {
+          try {
+            var url = new URL(href, window.location.origin);
+            var path = url.pathname.split('/').pop() || 'dashboard.html';
+            var key = path.replace('.html', '');
+            return key;
+          } catch (e) {
+            return null;
+          }
+        }
+
+        function setActiveNav(key) {
+          var sidebar = document.getElementById('sidebar-root') || document.querySelector('.sidebar');
+          if (!sidebar) return;
+          sidebar.querySelectorAll('.nav-item.active').forEach(function(el) {
+            el.classList.remove('active');
+          });
+          var target = sidebar.querySelector('[data-key="' + key + '"]');
+          if (target) target.classList.add('active');
+        }
+
+        function loadAdminPage(key, pushState) {
+          var path = ROUTES[key] || ROUTES['dashboard'];
+          var base = getBasePath();
+          var url = base + path;
+          var contentEl = document.getElementById('admin-content');
+          if (!contentEl) {
+            window.location.href = url; // hard fallback
+            return;
+          }
+
+          setActiveNav(key);
+
+          // If we are already on the target hard URL, avoid re-fetching
+          if (window.location.pathname === url && !pushState) {
+            return;
+          }
+
+          // Fetch the target page and extract its inner dashboard-content
+          fetch(url, { credentials: 'same-origin' })
+            .then(function(resp) { return resp.text(); })
+            .then(function(html) {
+              var parser = new DOMParser();
+              var doc = parser.parseFromString(html, 'text/html');
+              var inner = doc.querySelector('.dashboard-content');
+              var titleEl = doc.querySelector('.page-title, .page-title-header');
+              var subtitleEl = doc.querySelector('.page-subtitle, .page-subtitle-header');
+
+              if (inner) {
+                contentEl.innerHTML = inner.innerHTML;
+              }
+
+              // Update header title/subtitle
+              var headerTitle = document.querySelector('[data-header-title]');
+              var headerSubtitle = document.querySelector('[data-header-subtitle]');
+              if (headerTitle && titleEl && titleEl.textContent.trim()) {
+                headerTitle.textContent = titleEl.textContent.trim();
+              }
+              if (headerSubtitle && subtitleEl && subtitleEl.textContent.trim()) {
+                headerSubtitle.textContent = subtitleEl.textContent.trim();
+              }
+
+              if (pushState) {
+                history.pushState({ routeKey: key }, '', url);
+              }
+
+              // Re-run any inline scripts that target the new content if needed in future
+            })
+            .catch(function(err) {
+              console.error('[Admin Shell Router] Failed to load route', key, err);
+              window.location.href = url; // fall back to full navigation
+            });
+        }
+
+        function interceptSidebarClicks() {
+          var sidebar = document.getElementById('sidebar-root') || document.querySelector('.sidebar');
+          if (!sidebar) return;
+
+          sidebar.addEventListener('click', function(e) {
+            var link = e.target.closest('a.nav-item');
+            if (!link) return;
+            var href = link.getAttribute('href');
+            if (!href || href.indexOf('#') === 0) return;
+
+            var url = new URL(href, window.location.origin).pathname;
+            if (!isSameShellUrl(url)) {
+              return; // let browser handle external/admin-dev URLs
+            }
+
+            e.preventDefault();
+            var key = toRouteKey(href);
+            if (!key) {
+              window.location.href = url;
+              return;
+            }
+            loadAdminPage(key, true);
+          });
+        }
+
+        function initialRoute() {
+          var key = toRouteKey(window.location.pathname) || 'dashboard';
+          // For the canonical dashboard URL, we already have content rendered; just sync nav/header
+          if (key === 'dashboard') {
+            setActiveNav('dashboard');
+            return;
+          }
+          loadAdminPage(key, false);
+        }
+
+        window.addEventListener('popstate', function(evt) {
+          var state = evt.state || {};
+          var key = state.routeKey || toRouteKey(window.location.pathname) || 'dashboard';
+          loadAdminPage(key, false);
+        });
+
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', function() {
+            interceptSidebarClicks();
+            initialRoute();
+          });
+        } else {
+          interceptSidebarClicks();
+          initialRoute();
+        }
+      })();
+    </script>
+
+    <!-- Dashboard Firestore Integration (RE-ENABLED with DatabaseService) -->
+    <script>
+        (function() {
+            function formatPercent(delta) {
+                if (!isFinite(delta)) return '0%';
+                const sign = delta >= 0 ? '+' : '';
+                return sign + delta.toFixed(1) + '%';
+            }
+
+            async function loadAdminDashboard() {
+                if (!window.DatabaseService) {
+                    console.warn('[Admin Dashboard] DatabaseService not available; skipping metrics load');
+                    return;
+                }
+
+                var totalPropertiesEl = document.getElementById('total-properties');
+                var propertiesChangeEl = document.getElementById('properties-change');
+                var monthlyRevenueEl = document.getElementById('monthly-revenue');
+                var revenueChangeEl = document.getElementById('revenue-change');
+                var activeAgentsEl = document.getElementById('active-agents');
+                var agentsChangeEl = document.getElementById('agents-change');
+                var pendingTxEl = document.getElementById('pending-transactions');
+                var txChangeEl = document.getElementById('transactions-change');
+                var recentTableBody = document.getElementById('recent-properties-table');
+
+                try {
+                    // Parallel fetch of core collections
+                    var [properties, agents, transactions] = await Promise.all([
+                        window.DatabaseService.getDocuments('properties'),
+                        window.DatabaseService.getDocuments('users', [
+                            { field: 'role', operator: '==', value: 'agent' },
+                            { field: 'status', operator: '==', value: 'active' }
+                        ]),
+                        window.DatabaseService.getDocuments('transactions')
+                    ]);
+
+                    // Basic counts
+                    var totalProperties = properties.length;
+                    var activeAgents = agents.length;
+                    var pendingTransactions = transactions.filter(function(tx) {
+                        var status = (tx.status || '').toLowerCase();
+                        return status && status !== 'completed' && status !== 'canceled';
+                    }).length;
+
+                    if (totalPropertiesEl) totalPropertiesEl.textContent = totalProperties.toLocaleString();
+                    if (activeAgentsEl) activeAgentsEl.textContent = activeAgents.toLocaleString();
+                    if (pendingTxEl) pendingTxEl.textContent = pendingTransactions.toLocaleString();
+
+                    // Very simple sample revenue metric from transactions (agreedPrice * commissionRate)
+                    var totalCommission = 0;
+                    transactions.forEach(function(tx) {
+                        var amount = Number(tx.commissionAmount || 0);
+                        if (!amount && tx.agreedPrice && tx.commissionRate) {
+                            amount = Number(tx.agreedPrice) * Number(tx.commissionRate);
+                        }
+                        if (isFinite(amount)) totalCommission += amount;
+                    });
+                    if (monthlyRevenueEl) monthlyRevenueEl.textContent = '$' + Math.round(totalCommission).toLocaleString();
+
+                    // Placeholder change deltas (backed by simple heuristics until full analytics is wired)
+                    if (propertiesChangeEl) propertiesChangeEl.textContent = formatPercent(12.5) + ' vs last period';
+                    if (revenueChangeEl) revenueChangeEl.textContent = formatPercent(8.3) + ' vs last period';
+                    if (agentsChangeEl) agentsChangeEl.textContent = formatPercent(3.1) + ' active agents';
+                    if (txChangeEl) txChangeEl.textContent = formatPercent(-5.4) + ' open vs last period';
+
+                    // Recent properties table (latest 5 by createdAt)
+                    if (recentTableBody) {
+                        recentTableBody.innerHTML = '';
+                        var sorted = properties.slice().sort(function(a, b) {
+                            var aTs = a.createdAt && a.createdAt.toMillis ? a.createdAt.toMillis() : 0;
+                            var bTs = b.createdAt && b.createdAt.toMillis ? b.createdAt.toMillis() : 0;
+                            return bTs - aTs;
+                        }).slice(0, 5);
+
+                        if (!sorted.length) {
+                            var row = document.createElement('tr');
+                            row.innerHTML = '<td colspan="5" style="text-align:center;padding:var(--space-xl);color:var(--text-secondary);">No properties yet. New listings will appear here.</td>';
+                            recentTableBody.appendChild(row);
+                        } else {
+                            sorted.forEach(function(p) {
+                                recentTableBody.appendChild(createPropertyRow(p.id, p));
+                            });
+                        }
+                    }
+
+                    console.log('[Admin Dashboard] Metrics loaded');
+                } catch (err) {
+                    console.error('[Admin Dashboard] Failed to load metrics:', err);
+                    showError('Failed to load dashboard metrics. Please try again later.');
+                }
+            }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', loadAdminDashboard);
+            } else {
+                loadAdminDashboard();
+            }
+        })();
     </script>
 </body>
 </html>

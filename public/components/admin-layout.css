@@ -16,6 +16,10 @@ body {
   background: var(--white);
 }
 
+html, body {
+  height: 100%;
+}
+
 /* Main admin wrapper - flex layout */
 .admin-wrapper {
   display: flex;

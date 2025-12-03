@@ -1,4 +1,6 @@
-# 🚀 15-DAY MVP ACCELERATION PLAN
+# 🚀 15-DAY MVP ACCELERATION PLAN (ARCHIVED)
+
+> **Status:** Archived plan. For the single canonical path forward, see `FINAL_MVP_AGENT_EXECUTION_PLAN.md` and the canonical docs in `/docs/`.
 ## From 48% to 100% — Non-AI MVP (7 Days) + AI MVP (8 Days)
 
 **Created:** November 2, 2025  

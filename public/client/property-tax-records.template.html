@@ -1151,7 +1151,7 @@
             // Load auth guard after header
             headerScript.onload = function() {
                 const authScript = document.createElement('script');
-                authScript.src = '../components/auth-guard-simple.js';
+                authScript.src = '../components/auth-guard.js';
                 document.head.appendChild(authScript);
             };
         });

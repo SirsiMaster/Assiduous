@@ -13,8 +13,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     
-    <!-- SirsiMaster Component Library CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SirsiMaster/sirsimaster-component-library@latest/dist/sirsimaster-ui.css">
+    <!-- SirsiMaster Component Library CSS (served locally to avoid CDN CORB issues) -->
+    <link rel="stylesheet" href="assets/css/sirsimaster-ui.css">
     
     <style>
         /* EMBEDDED CAROUSEL FIXES - CRITICAL */
@@ -914,6 +914,11 @@
             background: #3b82f6;
             transform: translateY(-4px);
         }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
     
 </head>
@@ -1012,7 +1017,10 @@
                     <input type="checkbox" id="rememberMe" style="width: auto;">
                     <label for="rememberMe" style="color: #64748b; font-size: 14px; cursor: pointer;">Remember me</label>
                 </div>
-                <button type="submit" id="loginSubmit" style="padding: 12px 16px; background: linear-gradient(135deg, #3b82f6, #2563eb); color: white; border: none; border-radius: 10px; font-size: 16px; font-weight: 700; cursor: pointer;">Sign In →</button>
+                <button type="submit" id="loginSubmit" style="position: relative; padding: 12px 16px; background: linear-gradient(135deg, #3b82f6, #2563eb); color: white; border: none; border-radius: 10px; font-size: 16px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px;">
+                    <span id="loginSpinner" style="display: none; width: 16px; height: 16px; border-radius: 999px; border: 2px solid rgba(255,255,255,0.4); border-top-color: white; animation: spin 0.6s linear infinite;"></span>
+                    <span id="loginButtonText">Sign In →</span>
+                </button>
             </form>
             <div style="margin-top: 16px; text-align: center;">
                 <p style="color: #64748b; font-size: 14px;">Don't have an account? <a href="#" onclick="showSignup(); return false;" style="color: #3b82f6; text-decoration: none; font-weight: 600;">Sign up</a></p>
@@ -1805,6 +1813,10 @@
             if (form) {
                 form.addEventListener('submit', async (e) => {
                     e.preventDefault();
+
+                    if (window.AssiduousLog) {
+                        window.AssiduousLog.push('[Login] submit', { path: window.location.pathname });
+                    }
                     
                     // Get form values
                     const email = document.getElementById('signupEmail').value;
@@ -1870,7 +1882,10 @@
                         window.location.href = redirectUrl;
                         
                     } catch (error) {
-                        console.error('[Signup] Error:', error);
+                        if (window.AssiduousLog) {
+                            window.AssiduousLog.push('[Login] error', { message: error && error.message, code: error && error.code });
+                        }
+                        console.error('[Login] Error:', error);
                         let errorMessage = error.message;
                         
                         // User-friendly error messages
@@ -1890,6 +1905,32 @@
                 });
             }
         })();
+
+        // Persistent login trace helper
+        window.AssiduousLog = {
+            push: function(message, extra) {
+                try {
+                    var key = 'assiduous-login-log';
+                    var raw = localStorage.getItem(key);
+                    var arr = [];
+                    if (raw) {
+                        try { arr = JSON.parse(raw) || []; } catch (e) { arr = []; }
+                    }
+                    arr.push({ ts: Date.now(), message: message, extra: extra || null });
+                    if (arr.length > 50) {
+                        arr = arr.slice(arr.length - 50);
+                    }
+                    localStorage.setItem(key, JSON.stringify(arr));
+                } catch (e) {
+                    // Do not let logging impact login flow
+                }
+                try {
+                    console.log(message, extra || '');
+                } catch (e) {
+                    // ignore console errors
+                }
+            }
+        };
 
         // Sign in modal handlers
         function showLogin() {
@@ -1932,6 +1973,7 @@
             if (form) {
                 form.addEventListener('submit', async (e) => {
                     e.preventDefault();
+                    console.log('[Login] Submit handler start');
                     
                     // Get form values
                     const identifier = document.getElementById('loginEmail').value.trim(); // Can be email, username, or accountId
@@ -1941,20 +1983,48 @@
                     // Hide errors, show loading
                     if (errorDiv) errorDiv.style.display = 'none';
                     const submitBtn = form.querySelector('button[type="submit"]');
-                    const originalText = submitBtn.textContent;
-                    submitBtn.textContent = 'Signing in...';
+                    const textSpan = document.getElementById('loginButtonText');
+                    const spinner = document.getElementById('loginSpinner');
+                    const originalText = textSpan ? textSpan.textContent : submitBtn.textContent;
+                    if (textSpan) textSpan.textContent = 'Signing in...'; else submitBtn.textContent = 'Signing in...';
+                    if (spinner) spinner.style.display = 'inline-block';
                     submitBtn.disabled = true;
                     
                     try {
+                        console.time('[Login] total');
+                        console.log('[Login] Waiting for AuthService...');
                         // Wait for Firebase to be ready
                         if (!window.AuthService) {
                             throw new Error('Firebase not initialized. Please refresh the page.');
                         }
                         
-                        // Sign in using AuthService
-                        const result = await window.AuthService.signIn(identifier, password);
+                        // Show global auth transition overlay while we complete login
+                        if (window.AuthTransition && typeof window.AuthTransition.show === 'function') {
+                            window.AuthTransition.show('Verifying your credentials and restoring your workspace…');
+                        }
+                        
+                        if (window.AssiduousLog) {
+                            window.AssiduousLog.push('[Login] calling AuthService.signIn', { identifier: identifier });
+                        }
+                        
+                        // Safety timeout so we never hang indefinitely on network/auth issues
+                        const SIGN_IN_TIMEOUT_MS = 12000;
+                        const signInPromise = window.AuthService.signIn(identifier, password).then((r) => {
+                            console.log('[Login] AuthService.signIn resolved');
+                            return r;
+                        });
+                        const timeoutPromise = new Promise((_, reject) => {
+                            setTimeout(() => reject(new Error('Login is taking longer than expected. Please try again.')), SIGN_IN_TIMEOUT_MS);
+                        });
+                        
+                        // Sign in using AuthService (canonical entry point) with timeout protection
+                        const result = await Promise.race([signInPromise, timeoutPromise]);
+                        console.log('[Login] Promise.race(signIn, timeout) resolved');
                         
                         if (!result.success) {
+                            if (window.AssiduousLog) {
+                                window.AssiduousLog.push('[Login] signIn result not success', { error: result.error });
+                            }
                             throw new Error(result.error || 'Login failed');
                         }
                         
@@ -1962,22 +2032,40 @@
                         const role = result.role || 'client';
                         const status = result.status || 'active';
                         
-                        console.log('[Login] User signed in:', user.uid);
-                        console.log('[Login] User role:', role);
+                        console.log('[Login] User signed in:', user && user.uid);
+                        console.log('[Login] User role:', role, 'status:', status);
                         
                         // Show success
                         if (successDiv) {
                             successDiv.textContent = 'Success! Redirecting...';
                             successDiv.style.display = 'block';
                         }
+                        if (window.AssiduousLog) {
+                            window.AssiduousLog.push('[Login] signed in', { uid: user && user.uid, role: role, status: status });
+                        }
                         
-                        // Redirect immediately based on role and status
+                        // If auth-guard sent us here with a returnUrl, honor it first to
+                        // avoid redirect loops and keep deep links stable.
+                        const params = new URLSearchParams(window.location.search || '');
+                        const returnUrl = params.get('returnUrl');
+                        if (returnUrl) {
+                            if (window.AssiduousLog) {
+                                window.AssiduousLog.push('[Login] using returnUrl', { returnUrl: returnUrl });
+                            }
+                            window.location.href = returnUrl;
+                            return;
+                        }
+                        
+                        // Fallback to canonical role-based redirect (backportable across envs)
                         const redirectUrl = window.AuthService.getRoleRedirect(role, status);
-                        console.log('[Login] Redirecting to:', redirectUrl);
+                        if (window.AssiduousLog) {
+                            window.AssiduousLog.push('[Login] redirecting to role dashboard', { redirectUrl: redirectUrl, role: role, status: status });
+                        }
                         window.location.href = redirectUrl;
                         
                     } catch (error) {
                         console.error('[Login] Error:', error);
+                        try { console.timeEnd('[Login] total'); } catch (_) {}
                         let errorMessage = error.message;
                         
                         // User-friendly error messages
@@ -1995,7 +2083,13 @@
                             errorDiv.textContent = errorMessage;
                             errorDiv.style.display = 'block';
                         }
-                        submitBtn.textContent = originalText;
+                        
+                        // Hide overlay on error
+                        if (window.AuthTransition && typeof window.AuthTransition.hide === 'function') {
+                            window.AuthTransition.hide();
+                        }
+                        if (textSpan) textSpan.textContent = originalText; else submitBtn.textContent = originalText;
+                        if (spinner) spinner.style.display = 'none';
                         submitBtn.disabled = false;
                     }
                 });

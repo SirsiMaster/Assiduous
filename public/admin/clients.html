@@ -509,7 +509,7 @@
                 });
                 
                 // Update table
-                const tbody = document.querySelector('.clients-table tbody');
+                const tbody = document.querySelector('tbody.clients-table');
                 if (tbody && clients.length > 0) {
                     tbody.innerHTML = clients.map(client => {
                         const name = client.name || client.displayName || 'Unknown';

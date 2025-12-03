@@ -1,4 +1,6 @@
-# ⚡ 80-HOUR BLITZ TO REVENUE-READY PLATFORM
+# ⚡ 80-HOUR BLITZ TO REVENUE-READY PLATFORM (ARCHIVED)
+
+> **Status:** Archived plan. Superseded by the canonical MVP plan and current completion status. See `FINAL_MVP_AGENT_EXECUTION_PLAN.md` and `/docs/`.
 ## Tuesday Night → Friday EOD (October 14-17, 2025)
 
 **Target**: Functional, revenue-generating platform with REAL business capability

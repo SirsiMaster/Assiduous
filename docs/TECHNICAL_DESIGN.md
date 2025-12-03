@@ -233,6 +233,44 @@ window.AssiduousConfig = {
 
 ---
 
+## Development Metrics & History Subsystem
+
+### Overview
+The development metrics system is responsible for tracking project activity (commits, hours, cost, sessions) and surfacing it in the `/admin/development/` dashboards.
+
+Authoritative Firestore collections:
+- `git_commits` – one document per commit (hash as id) ingested from GitHub webhooks
+- `development_metrics` – daily aggregates keyed by `date` (`YYYY-MM-DD`)
+- `development_sessions` – higher-level work sessions (duration, cost, focus)
+- `project_metadata` / `project_analytics` – overall project totals and top-file analytics
+- `business_metrics/current` – high-level KPIs (users, properties, leads, transactions)
+
+### Ingestion Path (Server-Side Only)
+- `functions/src/index.ts:githubWebhook`
+  - HTTPS endpoint configured as a GitHub webhook (`push` events)
+  - For each commit: writes/merges `git_commits/{hash}` and increments `development_metrics/{date}.commits`
+- `functions/src/index.ts:recomputeDailyMetrics`
+  - HTTPS endpoint intended for Cloud Scheduler
+  - Periodically scans recent `git_commits` and recomputes `development_metrics/{date}.commits` for a rolling window (e.g. last 90 days)
+
+No metrics ingestion runs on developer laptops. All automation is GitHub → Cloud Functions → Firestore.
+
+### Consumption Path (Frontend)
+- `public/assets/js/services/developmentmetricsservice.js`
+  - Initializes from `window.firebaseDb` (compat)
+  - Subscribes to `development_metrics`, `git_commits`, `development_sessions`, `feature_progress`, and `business_metrics/current`
+  - Provides aggregated data to dev dashboards via `subscribeToMetrics()` and `getDashboardMetrics()`
+- `public/admin/development/dashboard.html`
+  - Uses the service for real-time cards (project totals, today, week, recent activity)
+  - Uses Firestore directly for the **History Explorer** (range queries on `development_metrics` for date-based lookups)
+
+If any future agent extends dev analytics, they MUST:
+- Use these existing collections instead of inventing new ones
+- Keep ingestion server-side only (Cloud Functions + CI), never local scripts
+- Document schema changes in this section and in `FINAL_MVP_AGENT_EXECUTION_PLAN.md`
+
+---
+
 ## Integration with Existing Architecture
 
 ### Frontend Architecture (Before UCS)

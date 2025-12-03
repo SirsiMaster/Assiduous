@@ -27,6 +27,8 @@ import * as emailService from "./emailService";
 
 // Import Test Users function (REMOVE before production!)
 import {createTestUsers} from "./createTestUsers";
+// Import Test User normalization function (development only)
+import {normalizeTestUsers} from "./normalizeTestUsers";
 
 // Import RBAC functions
 import * as rbacFunctions from "./rbac";
@@ -50,6 +52,85 @@ const db = admin.firestore();
 
 // Set global options
 setGlobalOptions({maxInstances: 10});
+
+// ============================================================================
+// GITHUB WEBHOOK - SERVER-SIDE METRICS INGESTION
+// ============================================================================
+
+/**
+ * GitHub webhook handler
+ * - Triggered on push events from GitHub
+ * - Logs each commit into `git_commits`
+ * - Increments per-day `development_metrics` documents
+ *
+ * NOTE: Configure this endpoint as a GitHub webhook URL (push events only).
+ */
+export const githubWebhook = onRequest({
+  region: "us-central1",
+  maxInstances: 5,
+}, async (req, res) => {
+  if (req.method !== "POST") {
+    res.status(405).send("Method not allowed");
+    return;
+  }
+
+  const contentType = req.get("content-type") || "";
+  if (!contentType.includes("application/json")) {
+    res.status(400).send("Invalid content type");
+    return;
+  }
+
+  const payload = (req.body || {}) as any;
+  const commits = Array.isArray(payload.commits) ? payload.commits : [];
+
+  if (commits.length === 0) {
+    res.status(200).json({ok: true, processed: 0});
+    return;
+  }
+
+  try {
+    const batch = db.batch();
+
+    commits.forEach((commit: any) => {
+      const id: string = commit.id || commit.sha;
+      if (!id) {
+        return;
+      }
+
+      const ts = new Date(commit.timestamp || commit.date || new Date().toISOString());
+      const dateStr = ts.toISOString().split("T")[0];
+
+      // 1) Write git_commits entry (idempotent by commit id)
+      const commitRef = db.collection("git_commits").doc(id);
+      batch.set(commitRef, {
+        hash: id,
+        message: commit.message || "",
+        author: commit.author?.name || payload.pusher?.name || "unknown",
+        email: commit.author?.email || payload.pusher?.email || null,
+        branch: payload.ref || null,
+        repository: payload.repository?.full_name || null,
+        timestamp: admin.firestore.Timestamp.fromDate(ts),
+        importedBy: "github-webhook",
+        syncedAt: admin.firestore.FieldValue.serverTimestamp(),
+      }, {merge: true});
+
+      // 2) Increment daily development_metrics for this date
+      const metricsRef = db.collection("development_metrics").doc(dateStr);
+      batch.set(metricsRef, {
+        date: dateStr,
+        commits: admin.firestore.FieldValue.increment(1),
+        // Hours / cost can be computed later by scheduled job if desired
+        updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+      }, {merge: true});
+    });
+
+    await batch.commit();
+    res.status(200).json({ok: true, processed: commits.length});
+  } catch (err) {
+    logger.error("GitHub webhook processing failed", err as any);
+    res.status(500).json({error: "Failed to process webhook"});
+  }
+});
 
 // ============================================================================
 // API ENDPOINTS - Express-style routing with v2 API
@@ -133,6 +214,60 @@ export const api = onRequest(
   } catch (error) {
     logger.error("API Error", error);
     res.status(500).json({error: "Internal server error"});
+  }
+});
+
+// ============================================================================
+// DAILY METRICS RECOMPUTE ENDPOINT (HTTPS)
+// ============================================================================
+
+/**
+ * Recompute daily development_metrics from git_commits for a recent window.
+ *
+ * This is intended to be called by Cloud Scheduler via HTTPS (server-side only):
+ * - e.g. once per day to guarantee consistency even if a webhook was missed.
+ */
+export const recomputeDailyMetrics = onRequest({
+  region: "us-central1",
+  maxInstances: 1,
+}, async (_req, res) => {
+  try {
+    const today = new Date();
+    const past = new Date();
+    past.setDate(today.getDate() - 90); // last 90 days
+
+    const snapshot = await db.collection("git_commits")
+      .where("timestamp", ">=", admin.firestore.Timestamp.fromDate(past))
+      .get();
+
+    const byDate: Record<string, {commits: number}> = {};
+
+    snapshot.forEach((doc) => {
+      const d = doc.data();
+      const ts: Date = d.timestamp?.toDate ? d.timestamp.toDate() : new Date(d.timestamp);
+      const dateStr = ts.toISOString().split("T")[0];
+      if (!byDate[dateStr]) {
+        byDate[dateStr] = {commits: 0};
+      }
+      byDate[dateStr].commits += 1;
+    });
+
+    const batch = db.batch();
+    Object.entries(byDate).forEach(([dateStr, metrics]) => {
+      const ref = db.collection("development_metrics").doc(dateStr);
+      batch.set(ref, {
+        date: dateStr,
+        commits: metrics.commits,
+        updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+      }, {merge: true});
+    });
+
+    await batch.commit();
+
+    res.status(200).json({ok: true, daysUpdated: Object.keys(byDate).length});
+  } catch (err) {
+    logger.error("recomputeDailyMetrics failed", err as any);
+    res.status(500).json({error: "Failed to recompute metrics"});
   }
 });
 
@@ -1631,6 +1766,13 @@ export const getSubscriptionStatus = stripeModule.getSubscriptionStatus;
  * SECURITY: This function should be removed before production deployment
  */
 export {createTestUsers};
+
+/**
+ * normalizeTestUsers - Development Only
+ * Normalizes test accounts so they match the canonical user schema
+ * (users/{uid} docs with role, status, agentInfo, profileComplete, etc.)
+ */
+export {normalizeTestUsers};
 
 // ============================================================================
 // RBAC (ROLE-BASED ACCESS CONTROL) FUNCTIONS

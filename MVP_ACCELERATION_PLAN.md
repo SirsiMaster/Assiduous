@@ -1,4 +1,6 @@
-# MVP Acceleration Plan
+# MVP Acceleration Plan (ARCHIVED)
+
+> **Status:** Archived plan. Timeline and scope have been superseded by later documents. Use `FINAL_MVP_AGENT_EXECUTION_PLAN.md` + `/docs/PROJECT_SCOPE.md` and `/docs/REQUIREMENTS_SPECIFICATION.md` as the canonical path.
 **Created:** October 10, 2025  
 **Target Launch:** December 1, 2025 (52 days remaining)  
 **Current Completion:** 46%

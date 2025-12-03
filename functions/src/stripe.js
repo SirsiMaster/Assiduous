@@ -8,8 +8,8 @@ let stripe = null;
 // Lazy initialization - only create Stripe instance when needed
 function getStripe() {
   if (!stripe) {
-    // Try process.env first (Gen 2), fallback to functions.config() (Gen 1)
-    const apiKey = process.env.STRIPE_SECRET_KEY || functions.config().stripe?.secret;
+    // In Gen 2, Stripe secret is provided via environment or Secret Manager (no functions.config())
+    const apiKey = process.env.STRIPE_SECRET_KEY;
     if (!apiKey || apiKey === 'sk_test_placeholder') {
       throw new Error('STRIPE_SECRET_KEY not configured');
     }

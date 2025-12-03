@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-auth-protect="agent">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,10 +9,12 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/@fontsource/geist-sans@5.0.6/latin.css" rel="stylesheet">
     
     <link rel="stylesheet" href="../assiduous.css">
     <link rel="stylesheet" href="../components/admin-layout.css">
+
+    <!-- Canonical modular Firebase bootstrap for portal pages -->
+    <script type="module" src="../assets/js/firebase-init.js"></script>
     
     <style>
 /* Minimal dashboard-specific styles only */
@@ -301,264 +303,185 @@
     <!-- UCS Core Scripts -->
     <script src="../components/ucs-core.js"></script>
     <script src="../components/component-registry.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics-compat.js"></script>
-    <script src="../firebase-config.js"></script>
     <script src="../components/auth-guard.js"></script>
-    <script>
-        // Ensure button styles are loaded
-        (function() {
-            const checkButtons = function() {
-                const testBtn = document.querySelector('button');
-                if (testBtn) {
-                    const styles = window.getComputedStyle(testBtn);
-                    if (styles.borderStyle === 'outset' || styles.backgroundColor.includes('192')) {
-                        // Force reload override styles
-                        const link = document.querySelector('link[href*="button-override"]');
-                        if (link) {
-                            link.href = link.href.split('?')[0] + '?v=' + Date.now();
-                        }
-                    }
-                }
-            };
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', checkButtons);
-            } else {
-                checkButtons();
-            }
-        })();
-    </script>
     <script src="../components/universal-header.js"></script>
-    <script src="../firebase-config.js"></script>
     <script>
-        // Protect this page - agents only (modal-based auth via compat guard)
-        (async function() {
-            // Ensure Firebase has initialized
-            if (!window.firebaseAuth || !window.firebaseDb) {
-                console.error('[Agent Dashboard] Firebase auth/db not ready');
-                return;
-            }
-
-            if (typeof authGuard === 'undefined' || !authGuard.protect) {
-                console.error('[Agent Dashboard] auth-guard-simple not available');
-                return;
-            }
-
-            await authGuard.protect('agent', {
-                requireEmailVerification: true,
-                onSuccess: async (user) => {
-                    // Update header with actual user data
-                    const headerRoot = document.getElementById('universal-header-root');
-                    if (headerRoot) {
-                        headerRoot.setAttribute('data-user-name', `${user.displayName || user.email}`);
-                        headerRoot.setAttribute('data-user-email', user.email || '');
-                    }
-
-                    // Load agent dashboard data
-                    await loadAgentDashboard(user);
+        // Canonical agent dashboard bootstrap using modular Firebase services
+        (function() {
+            function formatCurrency(amount) {
+                if (!isFinite(amount)) return '$0';
+                if (amount >= 1000) {
+                    return `$${(amount / 1000).toFixed(1)}K`;
                 }
-            });
-        })();
-        
-        // Initialize dashboard with user data
-        async function loadAgentDashboard(user) {
-            try {
-                const db = firebase.firestore();
-                console.log('[Agent Dashboard] Loading data for agent:', user.email);
-                
-                // Get actual statistics from collections
-                // 1. Count properties assigned to this agent
-                const propertiesSnapshot = await db.collection('properties')
-                    .where('agent.email', '==', user.email)
-                    .where('status', '==', 'available')
-                    .get();
-                const activeListings = propertiesSnapshot.size;
-                
-                // 2. Count leads assigned to this agent
-                const leadsSnapshot = await db.collection('leads')
-                    .where('assignedAgent', '==', user.email)
-                    .where('status', '==', 'new')
-                    .get();
-                const newLeads = leadsSnapshot.size;
-                
-                // 3. Calculate commission from transactions
-                const transactionsSnapshot = await db.collection('transactions')
-                    .where('agentId', '==', user.uid)
-                    .where('status', '==', 'closed')
-                    .get();
-                
-                let totalCommission = 0;
-                transactionsSnapshot.forEach(doc => {
-                    const data = doc.data();
-                    if (data.financial && data.financial.commission) {
-                        totalCommission += data.financial.commission;
-                    }
-                });
-                
-                // 4. Count active clients (users who have inquired about properties)
-                const clientsSnapshot = await db.collection('leads')
-                    .where('assignedAgent', '==', user.email)
-                    .get();
-                
-                // Get unique client emails
-                const uniqueClients = new Set();
-                clientsSnapshot.forEach(doc => {
-                    const data = doc.data();
-                    if (data.user && data.user.email) {
-                        uniqueClients.add(data.user.email);
-                    }
-                });
-                const activeClients = uniqueClients.size;
-                
-                // Update dashboard stats with real data
-                document.getElementById('activeListingsCount').textContent = activeListings;
-                document.getElementById('commissionYTD').textContent = formatCurrency(totalCommission);
-                document.getElementById('activeClientsCount').textContent = activeClients;
-                document.getElementById('newLeadsCount').textContent = newLeads;
-                
-                console.log('[Agent Dashboard] Stats loaded:', {
-                    activeListings,
-                    totalCommission,
-                    activeClients,
-                    newLeads
-                });
-                
-                // Load recent properties for the table
-                await loadRecentListings(user.email);
-                
-                // Set up real-time listeners for live updates
-                setupRealtimeListeners(user);
-                
-            } catch (error) {
-                console.error('[Agent Dashboard] Error loading data:', error);
-                // Show error message to user
-                showError('Failed to load dashboard data. Please refresh the page.');
+                return `$${Math.round(amount).toLocaleString()}`;
             }
-        }
-        
-        function formatCurrency(amount) {
-            if (amount >= 1000) {
-                return `$${(amount / 1000).toFixed(1)}K`;
+
+            async function loadAgentDashboard(user) {
+                if (!window.DatabaseService) {
+                    console.warn('[Agent Dashboard] DatabaseService not available; skipping metrics load');
+                    return;
+                }
+
+                var activeListingsEl = document.getElementById('activeListingsCount');
+                var commissionYTDEl = document.getElementById('commissionYTD');
+                var activeClientsEl = document.getElementById('activeClientsCount');
+                var newLeadsEl = document.getElementById('newLeadsCount');
+
+                try {
+                    var agentEmail = user.email || '';
+                    var agentId = user.uid;
+
+                    // Load core stats in parallel
+                    var [properties, leads, transactions] = await Promise.all([
+                        window.DatabaseService.getDocuments('properties', [
+                            { field: 'agent.email', operator: '==', value: agentEmail }
+                        ]),
+                        window.DatabaseService.getDocuments('leads', [
+                            { field: 'assignedAgent', operator: '==', value: agentEmail }
+                        ]),
+                        window.DatabaseService.getDocuments('transactions', [
+                            { field: 'agentId', operator: '==', value: agentId },
+                            { field: 'status', operator: '==', value: 'closed' }
+                        ])
+                    ]);
+
+                    var activeListings = properties.filter(function(p) {
+                        return (p.status || '').toLowerCase() === 'available';
+                    }).length;
+
+                    var newLeads = leads.filter(function(l) {
+                        return (l.status || '').toLowerCase() === 'new';
+                    }).length;
+
+                    var uniqueClients = new Set();
+                    leads.forEach(function(l) {
+                        var email = l.user && l.user.email;
+                        if (email) uniqueClients.add(email);
+                    });
+                    var activeClients = uniqueClients.size;
+
+                    var totalCommission = 0;
+                    transactions.forEach(function(tx) {
+                        var amount = 0;
+                        if (tx.financial && tx.financial.commission) {
+                            amount = Number(tx.financial.commission);
+                        } else if (tx.agreedPrice && tx.commissionRate) {
+                            amount = Number(tx.agreedPrice) * Number(tx.commissionRate);
+                        }
+                        if (isFinite(amount)) totalCommission += amount;
+                    });
+
+                    if (activeListingsEl) activeListingsEl.textContent = activeListings;
+                    if (commissionYTDEl) commissionYTDEl.textContent = formatCurrency(totalCommission);
+                    if (activeClientsEl) activeClientsEl.textContent = activeClients;
+                    if (newLeadsEl) newLeadsEl.textContent = newLeads;
+
+                    await loadRecentListings(agentEmail, properties);
+
+                    console.log('[Agent Dashboard] Metrics loaded', {
+                        activeListings,
+                        totalCommission,
+                        activeClients,
+                        newLeads
+                    });
+                } catch (error) {
+                    console.error('[Agent Dashboard] Failed to load metrics:', error);
+                    showError('Failed to load dashboard data. Please refresh the page.');
+                }
             }
-            return `$${amount.toLocaleString()}`;
-        }
-        
-        function setupRealtimeListeners(user) {
-            const db = firebase.firestore();
-            
-            // Listen for new leads assigned to this agent
-            db.collection('leads')
-                .where('assignedAgent', '==', user.email)
-                .onSnapshot((snapshot) => {
-                    const newLeads = snapshot.docs.filter(doc => doc.data().status === 'new').length;
-                    document.getElementById('newLeadsCount').textContent = newLeads;
+
+            async function loadRecentListings(agentEmail, preloadedProperties) {
+                var tbody = document.querySelector('.data-table tbody');
+                if (!tbody) return;
+
+                var properties = Array.isArray(preloadedProperties) ? preloadedProperties.slice() : [];
+
+                // Sort by createdAt if present
+                properties.sort(function(a, b) {
+                    var aTs = a.createdAt && a.createdAt.toMillis ? a.createdAt.toMillis() : 0;
+                    var bTs = b.createdAt && b.createdAt.toMillis ? b.createdAt.toMillis() : 0;
+                    return bTs - aTs;
                 });
-            
-            // Listen for property updates
-            db.collection('properties')
-                .where('agent.email', '==', user.email)
-                .onSnapshot((snapshot) => {
-                    const activeListings = snapshot.docs.filter(doc => doc.data().status === 'available').length;
-                    document.getElementById('activeListingsCount').textContent = activeListings;
-                });
-        }
-        
-        async function loadRecentListings(agentEmail) {
-            const db = firebase.firestore();
-            
-            // Get recent properties for this agent
-            const snapshot = await db.collection('properties')
-                .where('agent.email', '==', agentEmail)
-                .limit(5)
-                .get();
-            
-            const tbody = document.querySelector('.data-table tbody');
-            if (!tbody) return;
-            
-            // Clear existing rows
-            tbody.innerHTML = '';
-            
-            if (snapshot.empty) {
-                tbody.innerHTML = `
-                    <tr>
-                        <td colspan="5" style="text-align: center; padding: var(--space-xl); color: var(--text-secondary);">
-                            No listings found. Properties will appear here when assigned to you.
+
+                var recent = properties.filter(function(p) {
+                    return p.agent && p.agent.email === agentEmail;
+                }).slice(0, 5);
+
+                tbody.innerHTML = '';
+
+                if (!recent.length) {
+                    var row = document.createElement('tr');
+                    row.innerHTML = '<td colspan="5" style="text-align:center;padding:var(--space-xl);color:var(--text-secondary);">No listings found. Properties will appear here when assigned to you.</td>';
+                    tbody.appendChild(row);
+                    return;
+                }
+
+                recent.forEach(function(p) {
+                    var row = document.createElement('tr');
+                    var status = (p.status || 'Unknown').toLowerCase();
+                    var statusClass = status === 'available' ? 'success' : (status === 'pending' ? 'warning' : 'inactive');
+
+                    row.innerHTML = '
+                        <td>
+                            <div style="font-weight:600;">' + (p.address && p.address.street || 'N/A') + '</div>
+                            <div style="font-size:12px;color:var(--text-secondary);">' +
+                                (p.address && p.address.city || 'Philadelphia') + ', ' +
+                                (p.address && p.address.state || 'PA') + ' ' +
+                                (p.address && p.address.zip || '') +
+                            '</div>
                         </td>
-                    </tr>
-                `;
-                return;
+                        <td>' + (p.details && p.details.type || 'N/A') + '</td>
+                        <td>$' + ((p.price && p.price.list) || 0).toLocaleString() + '</td>
+                        <td><span class="sirsi-badge sirsi-sm-sm-badge--' + statusClass + '">' + (p.status || 'Unknown') + '</span></td>
+                        <td>' + (p.metrics && p.metrics.views || 0) + '</td>
+                    ';
+
+                    tbody.appendChild(row);
+                });
             }
-            
-            // Add real property data
-            snapshot.forEach(doc => {
-                const data = doc.data();
-                const row = document.createElement('tr');
-                
-                const statusClass = data.status === 'available' ? 'success' : 
-                                   data.status === 'pending' ? 'warning' : 'inactive';
-                
-                row.innerHTML = `
-                    <td>
-                        <div style="font-weight: 600;">${data.address?.street || 'N/A'}</div>
-                        <div style="font-size: 12px; color: var(--text-secondary);">
-                            ${data.address?.city || 'Philadelphia'}, ${data.address?.state || 'PA'} ${data.address?.zip || ''}
-                        </div>
-                    </td>
-                    <td>${data.details?.type || 'N/A'}</td>
-                    <td>$${(data.price?.list || 0).toLocaleString()}</td>
-                    <td><span class="sirsi-badge sirsi-sm-sm-badge--${statusClass}">${data.status || 'Unknown'}</span></td>
-                    <td>${data.metrics?.views || 0}</td>
-                `;
-                
-                tbody.appendChild(row);
-            });
-        }
-        
-        function showError(message) {
-            const errorDiv = document.createElement('div');
-            errorDiv.style.cssText = `
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                background: var(--danger);
-                color: white;
-                padding: var(--space-md) var(--space-lg);
-                border-radius: var(--radius-md);
-                box-shadow: var(--shadow-lg);
-                z-index: 9999;
-            `;
-            errorDiv.textContent = message;
-            document.body.appendChild(errorDiv);
-            
-            setTimeout(() => {
-                errorDiv.remove();
-            }, 5000);
-        }
-        
-        function updateListingsTable(listings) {
-            // Update the listings table with real data
-            const tbody = document.querySelector('.data-table tbody');
-            if (!tbody || listings.length === 0) return;
-            
-            tbody.innerHTML = listings.map(listing => `
-                <tr>
-                    <td>
-                        <div style="font-weight: 600;">${listing.address || '123 Main St'}</div>
-                        <div style="font-size: 12px; color: var(--text-secondary);">${listing.city || 'Chicago'}, ${listing.state || 'IL'} ${listing.zip || '60601'}</div>
-                    </td>
-                    <td>${listing.type || 'House'}</td>
-                    <td>${formatCurrency(listing.price || 450000)}</td>
-                    <td><span class="sirsi-badge sirsi-sm-sm-badge--${listing.status === 'active' ? 'success' : 'warning'}">${listing.status || 'Active'}</span></td>
-                    <td>${listing.views || 0}</td>
-                </tr>
-            `).join('');
-        }
-        
-        
-        // Page initialization is handled by the auth guard above
+
+            function showError(message) {
+                var errorDiv = document.createElement('div');
+                errorDiv.style.cssText = '
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    background: var(--danger);
+                    color: white;
+                    padding: var(--space-md) var(--space-lg);
+                    border-radius: var(--radius-md);
+                    box-shadow: var(--shadow-lg);
+                    z-index: 9999;
+                ';
+                errorDiv.textContent = message;
+                document.body.appendChild(errorDiv);
+
+                setTimeout(function() {
+                    errorDiv.remove();
+                }, 5000);
+            }
+
+            function init() {
+                if (!window.authGuard || typeof window.authGuard.protect !== 'function') {
+                    console.error('[Agent Dashboard] auth-guard not available');
+                    return;
+                }
+
+                window.authGuard.protect('agent', {
+                    requireEmailVerification: true,
+                    onSuccess: function(user) {
+                        // Header personalization can be handled by universal-header.js
+                        loadAgentDashboard(user);
+                    }
+                });
+            }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', init);
+            } else {
+                init();
+            }
+        })();
     </script>
 </body>
 </html>

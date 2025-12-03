@@ -1,4 +1,6 @@
-# 🚀 100% MVP ACCELERATION PLAN
+# 🚀 100% MVP ACCELERATION PLAN (ARCHIVED)
+
+> **Status:** Archived plan. For the single canonical path forward, see `FINAL_MVP_AGENT_EXECUTION_PLAN.md` and the docs in `/docs/` (especially `PROJECT_SCOPE.md` and `REQUIREMENTS_SPECIFICATION.md`).
 ## From 27% to 100% in 6 Days - Here's How
 
 **Current Time:** October 9, 2025, 11:54 PM  

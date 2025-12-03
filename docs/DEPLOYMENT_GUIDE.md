@@ -190,8 +190,8 @@ head -50 public/docs/ucs-test.html
 
 # CI/CD Pipeline Setup Guide
 
-**Last Updated:** October 8, 2025  
-**Status:** Ready to Implement
+**Last Updated:** November 29, 2025  
+**Status:** Implemented for Production (dev/staging optional)
 
 ---
 
@@ -209,9 +209,17 @@ head -50 public/docs/ucs-test.html
 
 ## Overview
 
-This CI/CD pipeline automates deployments to all three Firebase environments with proper security gates and approval workflows.
+This CI/CD pipeline defines how changes in the Assiduous repository flow to Firebase environments. The **implemented baseline today** is a simple, reliable production pipeline:
 
-### Key Features
+1. Local changes committed and pushed to `main`.
+2. GitHub Actions (`deploy-production.yml`) deploy `public/` to the `assiduous-prod` Firebase Hosting site on every push that touches `public/**`.
+3. GitHub Actions (`deploy-metrics.yml`) update Firebase development metrics on every push to `main`.
+
+Additional dev/staging environments and release gates remain available as an extension path, but the core production path is:
+
+> **Local → GitHub `main` → GitHub Actions → Firebase Hosting (`assiduous-prod.web.app`)**
+
+### Key Features (Target Architecture)
 
 ✅ **Automatic DEV Deployment** - Deploys on every push to `main`  
 ✅ **Manual STAGING Approval** - Requires approval before staging deployment  

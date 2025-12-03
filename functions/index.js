@@ -11,6 +11,9 @@ const admin = require('firebase-admin');
 admin.initializeApp();
 const db = admin.firestore();
 
+// Shared support/contact email used as default from/reply-to for outbound mail
+const SUPPORT_EMAIL = 'sirsimaster@gmail.com';
+
 /**
  * Update business metrics aggregation
  * Called by all triggers to keep counts in sync
@@ -479,7 +482,7 @@ exports.sendClientInvitation = functions
             expiresAt: admin.firestore.Timestamp.fromDate(new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)) // 7 days
         };
 
-        await db.collection('client_invitations').add(invitationData);
+        const invitationRef = await db.collection('client_invitations').add(invitationData);
 
         // Send email via SendGrid
         const sgMail = require('@sendgrid/mail');
@@ -507,17 +510,44 @@ exports.sendClientInvitation = functions
             <p style="color:#666;font-size:12px;margin-top:24px;">This invitation expires in 7 days.</p>
         `;
 
-        const fromEmail = process.env.SENDGRID_FROM_EMAIL || 'noreply@assiduous.com';
+        const fromEmail = process.env.SENDGRID_FROM_EMAIL || SUPPORT_EMAIL;
         const msg = {
             to: clientEmail,
             from: fromEmail,
+            replyTo: SUPPORT_EMAIL,
             subject: `${agentName} invited you to Assiduous`,
             html: emailHtml
         };
 
-        await sgMail.send(msg);
+        let externalEmailId = null;
+        const [response] = await sgMail.send(msg);
+        externalEmailId =
+            (response && (response.headers['x-message-id'] || response.headers['x-message-id'.toLowerCase()])) ||
+            null;
 
         console.log(`✅ Invitation sent to ${clientEmail} from agent ${agentId}`);
+
+        // Mirror invitation into agent's portal inbox
+        try {
+            await logPortalMessage({
+                userId: agentId,
+                type: 'email_mirror',
+                template: 'client_invitation',
+                subject: `Invitation sent to ${clientName}`,
+                bodyPreview: `We emailed ${clientEmail} an invitation to join Assiduous.`,
+                channels: ['email', 'inbox'],
+                email: clientEmail,
+                externalProvider: 'sendgrid',
+                externalMessageId: externalEmailId,
+                meta: {
+                    invitationId: invitationRef.id,
+                    clientEmail,
+                    clientName
+                }
+            });
+        } catch (inboxError) {
+            console.warn('⚠️ Failed to log portal message for client invitation:', inboxError);
+        }
         
         return { 
             success: true, 
@@ -710,6 +740,7 @@ exports.shareQRCode = functions
             throw new functions.https.HttpsError('failed-precondition', 'Agent must have QR code. Call generateReferralCode first.');
         }
 
+        let externalEmailId = null;
         if (method === 'email' && recipientEmail) {
             const sgMail = require('@sendgrid/mail');
             const sendGridApiKey = process.env.SENDGRID_API_KEY;
@@ -730,17 +761,22 @@ exports.shareQRCode = functions
 
             const msg = {
                 to: recipientEmail,
-                from: 'noreply@assiduous.com',
+                from: process.env.SENDGRID_FROM_EMAIL || SUPPORT_EMAIL,
+                replyTo: SUPPORT_EMAIL,
                 subject: `Connect with ${agentName} on Assiduous`,
                 html: emailHtml
             };
 
-            await sgMail.send(msg);
+            const [response] = await sgMail.send(msg);
+            externalEmailId =
+                (response && (response.headers['x-message-id'] || response.headers['x-message-id'.toLowerCase()])) ||
+                null;
             
             console.log(`✅ QR code shared via email to ${recipientEmail} by agent ${agentId}`);
         }
 
         // Send SMS via Twilio
+        let externalSmsId = null;
         if (method === 'sms' && recipientPhone) {
             const twilioAccountSid = process.env.TWILIO_ACCOUNT_SID;
             const twilioAuthToken = process.env.TWILIO_AUTH_TOKEN;
@@ -755,13 +791,42 @@ exports.shareQRCode = functions
             
             const smsBody = `${agentName} invited you to Assiduous! Sign up here: ${signupUrl}`;
             
-            await twilio.messages.create({
+            const smsResult = await twilio.messages.create({
                 body: smsBody,
                 from: twilioPhoneNumber,
                 to: recipientPhone
             });
+            externalSmsId = smsResult && smsResult.sid ? smsResult.sid : null;
             
             console.log(`✅ QR code shared via SMS to ${recipientPhone} by agent ${agentId}`);
+        }
+        
+        // Mirror into agent's portal inbox
+        try {
+            const channel = method === 'email' ? 'email' : 'sms';
+            const destination = recipientEmail || recipientPhone;
+            await logPortalMessage({
+                userId: agentId,
+                type: 'email_mirror',
+                template: 'referral_share',
+                subject: `Referral QR shared via ${channel.toUpperCase()}`,
+                bodyPreview: destination
+                    ? `We sent your referral link to ${destination}.`
+                    : `Referral shared via ${channel}.`,
+                channels: ['email', 'inbox'],
+                email: destination || null,
+                externalProvider: channel === 'email' ? 'sendgrid' : 'twilio',
+                externalMessageId: externalEmailId || externalSmsId,
+                meta: {
+                    signupUrl,
+                    qrCodeUrl,
+                    method,
+                    recipientEmail: recipientEmail || null,
+                    recipientPhone: recipientPhone || null
+                }
+            });
+        } catch (inboxError) {
+            console.warn('⚠️ Failed to log portal message for referral share:', inboxError);
         }
         
         return { success: true, sent: true };
@@ -823,6 +888,58 @@ async function generateSequentialId(type) {
         const paddedSequence = String(nextSequence).padStart(6, '0');
         return `${type.toUpperCase()}-${year}-${paddedSequence}`;
     });
+}
+
+// ============================================================================
+// INTERNAL MESSAGE INBOX (PORTAL MESSAGES)
+// ============================================================================
+
+/**
+ * Log a portal message for a specific user.
+ *
+ * Messages are stored under users/{userId}/messages/{messageId} so that
+ * Security Rules can easily restrict access to the owning user only.
+ */
+async function logPortalMessage({
+    userId,
+    type = 'email_mirror',
+    template = null,
+    subject,
+    bodyPreview,
+    channels = ['email', 'inbox'],
+    email = null,
+    externalProvider = null,
+    externalMessageId = null,
+    meta = {}
+}) {
+    if (!userId) {
+        console.warn('logPortalMessage called without userId');
+        return null;
+    }
+
+    const messageRef = db
+        .collection('users')
+        .doc(userId)
+        .collection('messages')
+        .doc();
+
+    const payload = {
+        type,
+        template,
+        subject,
+        bodyPreview,
+        channels,
+        email,
+        externalProvider,
+        externalMessageId,
+        meta,
+        createdAt: admin.firestore.FieldValue.serverTimestamp(),
+        readAt: null
+    };
+
+    await messageRef.set(payload);
+    console.log(`📥 Portal message logged for user ${userId}:`, subject);
+    return messageRef.id;
 }
 
 // ============================================================================
@@ -948,7 +1065,7 @@ exports.sharePropertyQR = functions
         const trackedUrl = `${property.propertyUrl}&shared_by=${sharerId}`;
         
         // Track the share
-        await db.collection('property_shares').add({
+        const shareRef = await db.collection('property_shares').add({
             propertyId: propertyId,
             assiduousId: assiduousId,
             sharedBy: sharerId,
@@ -961,6 +1078,7 @@ exports.sharePropertyQR = functions
         });
         
         // Send via email
+        let externalEmailId = null;
         if (method === 'email' && recipientEmail) {
             const sgMail = require('@sendgrid/mail');
             const sendGridApiKey = process.env.SENDGRID_API_KEY;
@@ -987,16 +1105,50 @@ exports.sharePropertyQR = functions
                 </div>
             `;
 
-            const fromEmail = process.env.SENDGRID_FROM_EMAIL || 'noreply@assiduous.com';
+            const fromEmail = process.env.SENDGRID_FROM_EMAIL || SUPPORT_EMAIL;
             const msg = {
                 to: recipientEmail,
                 from: fromEmail,
+                replyTo: SUPPORT_EMAIL,
                 subject: `${sharerName} shared ${address} with you`,
                 html: emailHtml
             };
 
-            await sgMail.send(msg);
+            const [response] = await sgMail.send(msg);
+            // Best-effort capture of provider message ID (header name may vary by region)
+            externalEmailId =
+                (response && (response.headers['x-message-id'] || response.headers['x-message-id'.toLowerCase()])) ||
+                null;
+
             console.log(`✅ Property ${propertyId} shared via email to ${recipientEmail}`);
+        }
+
+        // Mirror into portal inbox for the sharer
+        try {
+            const address = property.address || 'Property';
+            await logPortalMessage({
+                userId: sharerId,
+                type: 'email_mirror',
+                template: 'property_share',
+                subject: `You shared ${address}`,
+                bodyPreview: recipientEmail
+                    ? `We emailed ${recipientEmail} a link to ${address}.`
+                    : `You shared ${address} via ${method}.`,
+                channels: ['email', 'inbox'],
+                email: recipientEmail || recipientPhone || null,
+                externalProvider: method === 'email' ? 'sendgrid' : 'twilio',
+                externalMessageId: externalEmailId,
+                meta: {
+                    propertyId,
+                    assiduousId,
+                    shareId: shareRef.id,
+                    method,
+                    recipientEmail: recipientEmail || null,
+                    recipientPhone: recipientPhone || null
+                }
+            });
+        } catch (inboxError) {
+            console.warn('⚠️ Failed to log portal message for property share:', inboxError);
         }
         
         // Send via SMS

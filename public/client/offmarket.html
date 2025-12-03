@@ -1,1089 +1,414 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-auth-protect="client,investor">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Off-Market Properties - Assiduous Client Portal</title>
-    
-    <!-- Assiduous Design System -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/@fontsource/geist-sans@5.0.6/latin.css" rel="stylesheet">
-    
-    <link rel="stylesheet" href="../assiduous.css">
-    <link rel="stylesheet" href="../components/admin-layout.css">
-    
-    <style>
-/* Search & Filter Section */
-        .search-section {
-            background: var(--white);
-            border-radius: var(--radius-md);
-            border: 1px solid var(--border);
-            padding: var(--space-lg);
-            margin-bottom: var(--space-xl);
-        }
-        
-        
-        
-        .search-input-wrapper {
-            flex: 1;
-            position: relative;
-        }
-        
-        
-        
-        .search-icon {
-            position: absolute;
-            left: var(--space-md);
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-secondary);
-        }
-        
-        .filter-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: var(--space-md);
-        }
-        
-        .filter-group {
-            display: flex;
-            flex-direction: column;
-            gap: var(--space-xs);
-        }
-        
-        .filter-label {
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-        
-        .filter-select {
-            padding: var(--space-sm) var(--space-md);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            font-size: 14px;
-            background: var(--white);
-            cursor: pointer;
-        }
-        
-        .filter-actions {
-            display: flex;
-            gap: var(--space-sm);
-            align-items: flex-end;
-        }
-        
-        /* Results Header */
-        .results-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: var(--space-lg);
-        }
-        
-        .results-count {
-            font-size: 16px;
-            color: var(--text-secondary);
-        }
-        
-        .results-count strong {
-            color: var(--navy);
-            font-weight: 600;
-        }
-        
-        .view-toggle {
-            display: flex;
-            gap: var(--space-xs);
-        }
-        
-        .view-btn {
-            padding: var(--space-sm) var(--space-md);
-            border: 1px solid var(--border);
-            background: var(--white);
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .view-btn:first-child {
-            border-radius: var(--radius) 0 0 var(--radius);
-        }
-        
-        .view-btn:last-child {
-            border-radius: 0 var(--radius) var(--radius) 0;
-        }
-        
-        .view-btn.active {
-            background: var(--navy);
-            color: var(--white);
-            border-color: var(--navy);
-        }
-        
-        /* Properties Grid */
-        .properties-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: var(--space-lg);
-        }
-        
-        .property-card {
-            background: var(--white);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-md);
-            overflow: hidden;
-            transition: all 0.2s;
-            cursor: pointer;
-        }
-        
-        .property-card:hover {
-            box-shadow: var(--shadow-lg);
-            transform: translateY(-4px);
-        }
-        
-        .property-image-wrapper {
-            position: relative;
-            height: 220px;
-            overflow: hidden;
-        }
-        
-        .property-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        
-        .property-badge {
-            position: absolute;
-            top: var(--space-md);
-            left: var(--space-md);
-            padding: 4px 12px;
-            border-radius: var(--radius);
-            font-size: 12px;
-            font-weight: 600;
-            background: var(--white);
-        }
-        
-        .property-badge.new {
-            background: var(--success);
-            color: var(--white);
-        }
-        
-        .property-badge.hot {
-            background: var(--danger);
-            color: var(--white);
-        }
-        
-        .property-save-btn {
-            position: absolute;
-            top: var(--space-md);
-            right: var(--space-md);
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: var(--white);
-            border: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .property-save-btn:hover {
-            background: var(--sky);
-            color: var(--white);
-        }
-        
-        .property-save-btn.saved {
-            background: var(--sky);
-            color: var(--white);
-        }
-        
-        .property-content {
-            padding: var(--space-lg);
-        }
-        
-        .property-price {
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--navy);
-            margin-bottom: var(--space-xs);
-        }
-        
-        .property-address {
-            font-size: 14px;
-            color: var(--text-secondary);
-            margin-bottom: var(--space-md);
-        }
-        
-        .property-features {
-            display: flex;
-            gap: var(--space-lg);
-            padding-top: var(--space-md);
-            border-top: 1px solid var(--border);
-            font-size: 13px;
-            color: var(--text-secondary);
-        }
-        
-        .feature {
-            display: flex;
-            align-items: center;
-            gap: var(--space-xs);
-        }
-        
-        .feature svg {
-            width: 16px;
-            height: 16px;
-        }
-        
-        /* Properties List View */
-        .properties-list {
-            display: flex;
-            flex-direction: column;
-            gap: var(--space-md);
-        }
-        
-        .property-list-item {
-            background: var(--white);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-md);
-            display: flex;
-            overflow: hidden;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .property-list-item:hover {
-            box-shadow: var(--shadow-md);
-        }
-        
-        .property-list-image {
-            width: 280px;
-            height: 200px;
-            object-fit: cover;
-            flex-shrink: 0;
-        }
-        
-        .property-list-content {
-            flex: 1;
-            padding: var(--space-lg);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-        
-        /* Empty State */
-        .empty-state {
-            text-align: center;
-            padding: var(--space-3xl) var(--space-xl);
-            background: var(--white);
-            border-radius: var(--radius-md);
-            border: 1px solid var(--border);
-        }
-        
-        .empty-state svg {
-            width: 64px;
-            height: 64px;
-            color: var(--text-secondary);
-            margin-bottom: var(--space-lg);
-        }
-        
-        .empty-state-title {
-            font-size: 18px;
-            font-weight: 600;
-            color: var(--dark);
-            margin-bottom: var(--space-sm);
-        }
-        
-        .empty-state-message {
-            color: var(--text-secondary);
-            margin-bottom: var(--space-lg);
-        }
-        
-        /* Loading State */
-        .loading-state {
-            text-align: center;
-            padding: var(--space-3xl);
-        }
-        
-        .spinner {
-            width: 48px;
-            height: 48px;
-            border: 4px solid var(--gray-200);
-            border-top-color: var(--sky);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto var(--space-lg);
-        }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        
-        /* Pagination */
-        .pagination {
-            display: flex;
-            justify-content: center;
-            gap: var(--space-sm);
-            margin-top: var(--space-xl);
-            padding-top: var(--space-xl);
-            border-top: 1px solid var(--border);
-        }
-        
-        .pagination-btn {
-            padding: var(--space-sm) var(--space-md);
-            border: 1px solid var(--border);
-            background: var(--white);
-            border-radius: var(--radius);
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .pagination-btn:hover:not(:disabled) {
-            border-color: var(--sky);
-            color: var(--sky);
-        }
-        
-        .pagination-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-        
-        .pagination-btn.active {
-            background: var(--navy);
-            color: var(--white);
-            border-color: var(--navy);
-        }
-        
-        /* Responsive */
-        @media (max-width: 768px) {
-            .properties-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .property-list-item {
-                flex-direction: column;
-            }
-            
-            .property-list-image {
-                width: 100%;
-                height: 200px;
-            }
-            
-            .filter-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Off-Market Properties - Assiduous Client Portal</title>
+
+  <!-- Assiduous Design System -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="../assiduous.css" />
+  <link rel="stylesheet" href="../components/admin-layout.css" />
+
+  <!-- Canonical modular Firebase bootstrap for portal pages -->
+  <script type="module" src="../assets/js/firebase-init.js"></script>
+
+  <style>
+    .properties-layout {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-lg);
+    }
+    .filters-card {
+      background: var(--white);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      padding: var(--space-lg);
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr 1fr auto;
+      gap: var(--space-md);
+      align-items: end;
+    }
+    .filters-card label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      margin-bottom: 4px;
+    }
+    .filters-card input,
+    .filters-card select {
+      width: 100%;
+      padding: 8px 10px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      font-size: 14px;
+    }
+    .filters-card button.primary {
+      padding: 10px 18px;
+      border-radius: var(--radius);
+      border: none;
+      background: var(--sky);
+      color: var(--white);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .filters-card button.secondary {
+      padding: 10px 18px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: var(--white);
+      color: var(--text-secondary);
+      font-size: 14px;
+      cursor: pointer;
+    }
+    .results-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .results-meta {
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+    .view-toggle {
+      display: inline-flex;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+    .view-toggle button {
+      padding: 6px 10px;
+      border: none;
+      background: var(--white);
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .view-toggle button.active {
+      background: var(--gray-100);
+    }
+    .properties-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: var(--space-lg);
+    }
+    .property-card {
+      background: var(--white);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+    }
+    .property-image {
+      height: 180px;
+      background-size: cover;
+      background-position: center;
+    }
+    .property-body {
+      padding: var(--space-md);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .property-price {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--navy);
+    }
+    .property-address {
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+    .property-meta {
+      display: flex;
+      gap: 12px;
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+    .badge-offmarket {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: rgba(223, 168, 0, 0.12);
+      color: #8a5b00;
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .loading-state,
+    .empty-state {
+      padding: var(--space-xl);
+      text-align: center;
+      color: var(--text-secondary);
+    }
+  </style>
 </head>
 <body class="admin-wrapper" data-active="offmarket">
-    <!-- UCS Sidebar Component -->
-    <aside class="sidebar" data-component="sidebar"></aside>
+  <!-- UCS Sidebar Component -->
+  <aside class="sidebar" data-component="sidebar"></aside>
 
-    <!-- Main Content Area -->
-    <div class="main-content">
-        <!-- UCS Header Component -->
-        <header data-component="header"></header>
+  <!-- Main Content Area -->
+  <div class="main-content">
+    <!-- UCS Header Component -->
+    <header data-component="header"></header>
 
-        <!-- Dashboard Content -->
-        <div class="dashboard-content">
-<!-- Search & Filters -->
-                <div class="search-section">
-                    <div class="search-bar">
-                        <div class="search-input-wrapper">
-                            <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <circle cx="11" cy="11" r="8"></circle>
-                                <path d="m21 21-4.35-4.35"></path>
-                            </svg>
-                            <input type="text" 
-                                   id="searchInput" 
-                                   class="search-input" 
-                                   placeholder="Search by address, city, or ZIP code...">
-                        </div>
-                        <button class="sm-btn sm-btn-primary" onclick="applyFilters()">
-                            Search
-                        </button>
-                    </div>
-                    
-                    <div class="filter-grid">
-                        <div class="filter-group">
-                            <label class="filter-label">Property Type</label>
-                            <select id="typeFilter" class="filter-select">
-                                <option value="">All Types</option>
-                                <option value="single-family">Single Family</option>
-                                <option value="condo">Condo</option>
-                                <option value="townhouse">Townhouse</option>
-                                <option value="multi-family">Multi-Family</option>
-                                <option value="land">Land</option>
-                            </select>
-                        </div>
-                        
-                        <div class="filter-group">
-                            <label class="filter-label">Price Range</label>
-                            <select id="priceFilter" class="filter-select">
-                                <option value="">Any Price</option>
-                                <option value="0-200000">Under $200K</option>
-                                <option value="200000-400000">$200K - $400K</option>
-                                <option value="400000-600000">$400K - $600K</option>
-                                <option value="600000-1000000">$600K - $1M</option>
-                                <option value="1000000+">$1M+</option>
-                            </select>
-                        </div>
-                        
-                        <div class="filter-group">
-                            <label class="filter-label">Bedrooms</label>
-                            <select id="bedsFilter" class="filter-select">
-                                <option value="">Any</option>
-                                <option value="1">1+</option>
-                                <option value="2">2+</option>
-                                <option value="3">3+</option>
-                                <option value="4">4+</option>
-                                <option value="5">5+</option>
-                            </select>
-                        </div>
-                        
-                        <div class="filter-group">
-                            <label class="filter-label">Bathrooms</label>
-                            <select id="bathsFilter" class="filter-select">
-                                <option value="">Any</option>
-                                <option value="1">1+</option>
-                                <option value="2">2+</option>
-                                <option value="3">3+</option>
-                                <option value="4">4+</option>
-                            </select>
-                        </div>
-                        
-                        <div class="filter-actions">
-                            <button class="sm-btn sm-btn-secondary" onclick="clearFilters()">
-                                Clear Filters
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Results Header -->
-                <div class="view-toggle">
-                        <button class="view-btn active" data-view="grid" onclick="switchView('grid')">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <rect x="3" y="3" width="7" height="7"></rect>
-                                <rect x="14" y="3" width="7" height="7"></rect>
-                                <rect x="3" y="14" width="7" height="7"></rect>
-                                <rect x="14" y="14" width="7" height="7"></rect>
-                            </svg>
-                        </button>
-                        <button class="view-btn" data-view="list" onclick="switchView('list')">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <line x1="8" y1="6" x2="21" y2="6"></line>
-                                <line x1="8" y1="12" x2="21" y2="12"></line>
-                                <line x1="8" y1="18" x2="21" y2="18"></line>
-                                <line x1="3" y1="6" x2="3.01" y2="6"></line>
-                                <line x1="3" y1="12" x2="3.01" y2="12"></line>
-                                <line x1="3" y1="18" x2="3.01" y2="18"></line>
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-                
-                <!-- Loading State -->
-                <div id="loadingState" class="loading-state" style="display: none;">
-                    <div class="spinner"></div>
-                    <p>Loading properties...</p>
-                </div>
-                
-                <!-- Properties Container (Grid View) -->
-                <div id="propertiesGrid" class="properties-grid"></div>
-                
-                <!-- Properties Container (List View) -->
-                <div id="propertiesList" class="properties-list" style="display: none;"></div>
-                
-                <!-- Empty State -->
-                <div id="emptyState" class="empty-state" style="display: none;">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="11" cy="11" r="8"></circle>
-                        <path d="m21 21-4.35-4.35"></path>
-                    </svg>
-                    <h3 class="empty-state-title">No properties found</h3>
-                    <p class="empty-state-message">Try adjusting your search filters or search terms</p>
-                    <button class="sm-btn sm-btn-primary" onclick="clearFilters()">Clear All Filters</button>
-                </div>
-                
-                <!-- Pagination -->
-                <div id="pagination" class="pagination" style="display: none;"></div>
+    <!-- Dashboard Content -->
+    <div class="dashboard-content">
+      <h1 class="page-title">Off-Market Properties</h1>
+      <p class="page-subtitle">Privately marketed opportunities shared through the Assiduous network</p>
+
+      <div class="properties-layout">
+        <div class="filters-card">
+          <div>
+            <label for="searchInput">Search</label>
+            <input id="searchInput" type="text" placeholder="Search by address, city" />
+          </div>
+          <div>
+            <label for="typeFilter">Property Type</label>
+            <select id="typeFilter">
+              <option value="any">All Types</option>
+              <option value="single_family">Single Family</option>
+              <option value="multi_family">Multi-Family</option>
+              <option value="condo">Condo</option>
+              <option value="townhouse">Townhouse</option>
+            </select>
+          </div>
+          <div>
+            <label for="priceFilter">Price Range</label>
+            <select id="priceFilter">
+              <option value="any">Any Price</option>
+              <option value="0-250000">Under $250k</option>
+              <option value="250000-500000">$250k - $500k</option>
+              <option value="500000-750000">$500k - $750k</option>
+              <option value="750000-1000000">$750k - $1M</option>
+              <option value="1000000-99999999">$1M+</option>
+            </select>
+          </div>
+          <div>
+            <label for="bedsFilter">Bedrooms</label>
+            <select id="bedsFilter">
+              <option value="any">Any</option>
+              <option value="1">1+</option>
+              <option value="2">2+</option>
+              <option value="3">3+</option>
+              <option value="4">4+</option>
+            </select>
+          </div>
+          <div>
+            <label for="bathsFilter">Bathrooms</label>
+            <select id="bathsFilter">
+              <option value="any">Any</option>
+              <option value="1">1+</option>
+              <option value="2">2+</option>
+              <option value="3">3+</option>
+            </select>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button class="primary" id="applyFiltersBtn">Search</button>
+            <button class="secondary" id="clearFiltersBtn">Clear Filters</button>
+          </div>
         </div>
-    </div>
 
-    <!-- UCS Core Scripts -->
-    <script src="../components/ucs-core.js"></script>
-    <script src="../components/component-registry.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    <script src="../firebase-config.js"></script>
-    <script src="../components/universal-header.js"></script>
-    <script src="../components/auth-guard.js"></script>
-    <script>
-        // ==========================================
-        // PROPERTY SEARCH SERVICE
-        // ==========================================
-        
-        const PropertySearchService = {
-            db: firebase.firestore(),
-            auth: firebase.auth(),
-            
-            currentFilters: {
-                search: '',
-                type: '',
-                priceMin: 0,
-                priceMax: Infinity,
-                beds: 0,
-                baths: 0
-            },
-            
-            currentPage: 1,
-            pageSize: 12,
-            currentView: 'grid',
-            
-            /**
-             * Fetch properties from Firestore with filters
-             */
-            async getProperties() {
-                try {
-                    let query = this.db.collection('properties')
-                        .where('status', '==', 'available');
-                    
-                    // Apply type filter
-                    if (this.currentFilters.type) {
-                        query = query.where('type', '==', this.currentFilters.type);
-                    }
-                    
-                    // Apply beds filter
-                    if (this.currentFilters.beds > 0) {
-                        query = query.where('bedrooms', '>=', this.currentFilters.beds);
-                    }
-                    
-                    // Apply baths filter
-                    if (this.currentFilters.baths > 0) {
-                        query = query.where('bathrooms', '>=', this.currentFilters.baths);
-                    }
-                    
-                    const snapshot = await query.get();
-                    let properties = snapshot.docs.map(doc => ({
-                        id: doc.id,
-                        ...doc.data()
-                    }));
-                    
-                    // Apply client-side filters
-                    properties = this.applyClientFilters(properties);
-                    
-                    return properties;
-                } catch (error) {
-                    console.error('Error fetching properties:', error);
-                    return this.getDemoProperties();
-                }
-            },
-            
-            /**
-             * Apply filters that can't be done in Firestore
-             */
-            applyClientFilters(properties) {
-                return properties.filter(property => {
-                    // Search filter
-                    if (this.currentFilters.search) {
-                        const searchLower = this.currentFilters.search.toLowerCase();
-                        const matchesSearch = 
-                            (property.address || '').toLowerCase().includes(searchLower) ||
-                            (property.city || '').toLowerCase().includes(searchLower) ||
-                            (property.state || '').toLowerCase().includes(searchLower) ||
-                            (property.zipCode || '').toString().includes(searchLower);
-                        
-                        if (!matchesSearch) return false;
-                    }
-                    
-                    // Price filter
-                    const price = property.price || 0;
-                    if (price < this.currentFilters.priceMin || price > this.currentFilters.priceMax) {
-                        return false;
-                    }
-                    
-                    return true;
-                });
-            },
-            
-            /**
-             * Paginate results
-             */
-            paginateResults(properties) {
-                const start = (this.currentPage - 1) * this.pageSize;
-                const end = start + this.pageSize;
-                return properties.slice(start, end);
-            },
-            
-            /**
-             * Save/unsave property for user
-             */
-            async toggleSaveProperty(propertyId) {
-                try {
-                    const user = this.auth.currentUser;
-                    if (!user) throw new Error('Not authenticated');
-                    
-                    const savedRef = this.db.collection('saved_properties').doc(`${user.uid}_${propertyId}`);
-                    const savedDoc = await savedRef.get();
-                    
-                    if (savedDoc.exists) {
-                        // Unsave
-                        await savedRef.delete();
-                        return false;
-                    } else {
-                        // Save
-                        await savedRef.set({
-                            userId: user.uid,
-                            propertyId: propertyId,
-                            savedAt: firebase.firestore.FieldValue.serverTimestamp()
-                        });
-                        return true;
-                    }
-                } catch (error) {
-                    console.error('Error toggling save:', error);
-                    return false;
-                }
-            },
-            
-            /**
-             * Check if property is saved
-             */
-            async isPropertySaved(propertyId) {
-                try {
-                    const user = this.auth.currentUser;
-                    if (!user) return false;
-                    
-                    const savedRef = this.db.collection('saved_properties').doc(`${user.uid}_${propertyId}`);
-                    const savedDoc = await savedRef.get();
-                    
-                    return savedDoc.exists;
-                } catch (error) {
-                    return false;
-                }
-            },
-            
-            /**
-             * Demo properties for development
-             */
-            getDemoProperties() {
-                return [
-                    {
-                        id: '1',
-                        address: '123 Ocean View Drive',
-                        city: 'Santa Monica',
-                        state: 'CA',
-                        zipCode: '90401',
-                        price: 850000,
-                        bedrooms: 3,
-                        bathrooms: 2.5,
-                        sqft: 2100,
-                        type: 'single-family',
-                        status: 'available',
-                        image: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600',
-                        badge: 'new',
-                        daysOnMarket: 5
-                    },
-                    {
-                        id: '2',
-                        address: '456 Downtown Loft #302',
-                        city: 'Los Angeles',
-                        state: 'CA',
-                        zipCode: '90013',
-                        price: 625000,
-                        bedrooms: 2,
-                        bathrooms: 2,
-                        sqft: 1450,
-                        type: 'condo',
-                        status: 'available',
-                        image: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=600',
-                        badge: 'hot',
-                        daysOnMarket: 2
-                    },
-                    {
-                        id: '3',
-                        address: '789 Maple Street',
-                        city: 'Pasadena',
-                        state: 'CA',
-                        zipCode: '91101',
-                        price: 475000,
-                        bedrooms: 3,
-                        bathrooms: 2,
-                        sqft: 1800,
-                        type: 'townhouse',
-                        status: 'available',
-                        image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600',
-                        badge: null,
-                        daysOnMarket: 15
-                    },
-                    {
-                        id: '4',
-                        address: '321 Beverly Hills Blvd',
-                        city: 'Beverly Hills',
-                        state: 'CA',
-                        zipCode: '90210',
-                        price: 2100000,
-                        bedrooms: 5,
-                        bathrooms: 4,
-                        sqft: 4200,
-                        type: 'single-family',
-                        status: 'available',
-                        image: 'https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=600',
-                        badge: 'new',
-                        daysOnMarket: 3
-                    },
-                    {
-                        id: '5',
-                        address: '555 Sunset Plaza',
-                        city: 'West Hollywood',
-                        state: 'CA',
-                        zipCode: '90069',
-                        price: 725000,
-                        bedrooms: 2,
-                        bathrooms: 2,
-                        sqft: 1600,
-                        type: 'condo',
-                        status: 'available',
-                        image: 'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=600',
-                        badge: null,
-                        daysOnMarket: 10
-                    },
-                    {
-                        id: '6',
-                        address: '777 Pacific Coast Highway',
-                        city: 'Malibu',
-                        state: 'CA',
-                        zipCode: '90265',
-                        price: 3500000,
-                        bedrooms: 4,
-                        bathrooms: 3.5,
-                        sqft: 3200,
-                        type: 'single-family',
-                        status: 'available',
-                        image: 'https://images.unsplash.com/photo-1600573472591-ee6b68d14c68?w=600',
-                        badge: 'hot',
-                        daysOnMarket: 1
-                    }
-                ];
-            }
-        };
-        
-        // ==========================================
-        // UI RENDERING FUNCTIONS
-        // ==========================================
-        
-        /**
-         * Render property card (grid view)
-         */
-        function renderPropertyCard(property) {
-            const isSaved = false; // Will be checked async
-            
-            return `
-                <div class="property-card" onclick="viewProperty('${property.id}')">
-                    <div class="property-image-wrapper">
-                        <img src="${property.image}" alt="${property.address}" class="property-image">
-                        ${property.badge ? `<div class="property-badge ${property.badge}">${property.badge.toUpperCase()}</div>` : ''}
-                        <button class="property-save-btn ${isSaved ? 'saved' : ''}" 
-                                onclick="event.stopPropagation(); toggleSave('${property.id}', this)">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="${isSaved ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2">
-                                <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
-                            </svg>
-                        </button>
-                    </div>
-                    <div class="property-content">
-                        <div class="property-price">$${property.price.toLocaleString()}</div>
-                        <div class="property-address">${property.address}, ${property.city}, ${property.state}</div>
-                        <div class="property-features">
-                            <div class="feature">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                                </svg>
-                                ${property.bedrooms} beds
-                            </div>
-                            <div class="feature">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <circle cx="12" cy="12" r="4"></circle>
-                                    <line x1="1.05" y1="12" x2="7" y2="12"></line>
-                                    <line x1="17.01" y1="12" x2="22.96" y2="12"></line>
-                                </svg>
-                                ${property.bathrooms} baths
-                            </div>
-                            <div class="feature">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
-                                </svg>
-                                ${property.sqft.toLocaleString()} sqft
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `;
+        <div class="results-header">
+          <div class="results-meta" id="resultsMeta">Loading properties…</div>
+        </div>
+
+        <div id="loadingState" class="loading-state">Loading off-market opportunities…</div>
+        <div id="emptyState" class="empty-state" style="display:none;">No off-market properties match your criteria.</div>
+
+        <div id="propertiesGrid" class="properties-grid" style="display:none;"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var firebase = window.Firebase || {};
+      var auth = firebase.auth || window.firebaseAuth;
+      var dbService = firebase.DatabaseService || {};
+
+      var state = {
+        allProperties: [],
+        filtered: [],
+      };
+
+      function getFilterValues() {
+        var search = document.getElementById('searchInput').value.trim().toLowerCase();
+        var type = document.getElementById('typeFilter').value;
+        var price = document.getElementById('priceFilter').value;
+        var beds = document.getElementById('bedsFilter').value;
+        var baths = document.getElementById('bathsFilter').value;
+
+        var priceMin = null;
+        var priceMax = null;
+        if (price && price !== 'any') {
+          var parts = price.split('-');
+          priceMin = parseInt(parts[0], 10);
+          priceMax = parseInt(parts[1], 10);
         }
-        
-        /**
-         * Render property list item
-         */
-        function renderPropertyListItem(property) {
-            const isSaved = false;
-            
-            return `
-                <div class="property-list-item" onclick="viewProperty('${property.id}')">
-                    <img src="${property.image}" alt="${property.address}" class="property-list-image">
-                    <div class="property-list-content">
-                        <div>
-                            <div class="property-price">$${property.price.toLocaleString()}</div>
-                            <div class="property-address">${property.address}, ${property.city}, ${property.state} ${property.zipCode}</div>
-                            <div class="property-features" style="margin-top: var(--space-md);">
-                                <div class="feature">${property.bedrooms} beds</div>
-                                <div class="feature">${property.bathrooms} baths</div>
-                                <div class="feature">${property.sqft.toLocaleString()} sqft</div>
-                                <div class="feature">${property.type.replace('-', ' ')}</div>
-                            </div>
-                        </div>
-                        <div style="display: flex; gap: var(--space-sm);">
-                            <button class="sm-btn sm-btn-secondary" onclick="event.stopPropagation(); toggleSave('${property.id}', this)">
-                                ${isSaved ? 'Saved' : 'Save'}
-                            </button>
-                            <button class="sm-btn sm-btn-primary" onclick="event.stopPropagation(); viewProperty('${property.id}')">
-                                View Details
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `;
+
+        return { search, type, priceMin, priceMax, beds, baths };
+      }
+
+      function applyClientFilters() {
+        var filters = getFilterValues();
+        var props = state.allProperties.slice();
+
+        if (filters.search) {
+          props = props.filter(function (p) {
+            var haystack = [p.address, p.city, p.state, p.zipCode]
+              .filter(Boolean)
+              .join(' ')
+              .toLowerCase();
+            return haystack.indexOf(filters.search) !== -1;
+          });
         }
-        
-        /**
-         * Render all properties
-         */
-        async function renderProperties(properties) {
-            const gridContainer = document.getElementById('propertiesGrid');
-            const listContainer = document.getElementById('propertiesList');
-            const emptyState = document.getElementById('emptyState');
-            const resultsCount = document.getElementById('resultsCount');
-            
-            // Update count
-            resultsCount.textContent = properties.length;
-            
-            if (properties.length === 0) {
-                gridContainer.style.display = 'none';
-                listContainer.style.display = 'none';
-                emptyState.style.display = 'block';
-                return;
-            }
-            
-            emptyState.style.display = 'none';
-            
-            // Paginate
-            const paginated = PropertySearchService.paginateResults(properties);
-            
-            if (PropertySearchService.currentView === 'grid') {
-                gridContainer.style.display = 'grid';
-                listContainer.style.display = 'none';
-                gridContainer.innerHTML = paginated.map(p => renderPropertyCard(p)).join('');
-            } else {
-                gridContainer.style.display = 'none';
-                listContainer.style.display = 'flex';
-                listContainer.innerHTML = paginated.map(p => renderPropertyListItem(p)).join('');
-            }
-            
-            renderPagination(properties.length);
+
+        if (filters.type && filters.type !== 'any') {
+          props = props.filter(function (p) { return (p.type || '').toLowerCase() === filters.type.toLowerCase(); });
         }
-        
-        /**
-         * Render pagination
-         */
-        function renderPagination(totalItems) {
-            const pagination = document.getElementById('pagination');
-            const totalPages = Math.ceil(totalItems / PropertySearchService.pageSize);
-            
-            if (totalPages <= 1) {
-                pagination.style.display = 'none';
-                return;
-            }
-            
-            pagination.style.display = 'flex';
-            
-            let html = '';
-            
-            // Previous button
-            html += `<button class="pagination-btn" ${PropertySearchService.currentPage === 1 ? 'disabled' : ''} 
-                onclick="changePage(${PropertySearchService.currentPage - 1})">Previous</button>`;
-            
-            // Page numbers
-            for (let i = 1; i <= totalPages; i++) {
-                if (i === 1 || i === totalPages || (i >= PropertySearchService.currentPage - 1 && i <= PropertySearchService.currentPage + 1)) {
-                    html += `<button class="pagination-btn ${i === PropertySearchService.currentPage ? 'active' : ''}" 
-                        onclick="changePage(${i})">${i}</button>`;
-                } else if (i === PropertySearchService.currentPage - 2 || i === PropertySearchService.currentPage + 2) {
-                    html += `<button class="pagination-btn" disabled>...</button>`;
-                }
-            }
-            
-            // Next button
-            html += `<button class="pagination-btn" ${PropertySearchService.currentPage === totalPages ? 'disabled' : ''} 
-                onclick="changePage(${PropertySearchService.currentPage + 1})">Next</button>`;
-            
-            pagination.innerHTML = html;
+
+        if (filters.priceMin != null && filters.priceMax != null) {
+          props = props.filter(function (p) {
+            var price = p.price || 0;
+            return price >= filters.priceMin && price <= filters.priceMax;
+          });
         }
-        
-        // ==========================================
-        // EVENT HANDLERS
-        // ==========================================
-        
-        /**
-         * Apply search and filters
-         */
-        async function applyFilters() {
-            const searchInput = document.getElementById('searchInput').value;
-            const typeFilter = document.getElementById('typeFilter').value;
-            const priceFilter = document.getElementById('priceFilter').value;
-            const bedsFilter = document.getElementById('bedsFilter').value;
-            const bathsFilter = document.getElementById('bathsFilter').value;
-            
-            // Update filters
-            PropertySearchService.currentFilters.search = searchInput;
-            PropertySearchService.currentFilters.type = typeFilter;
-            PropertySearchService.currentFilters.beds = parseInt(bedsFilter) || 0;
-            PropertySearchService.currentFilters.baths = parseInt(bathsFilter) || 0;
-            
-            // Parse price range
-            if (priceFilter) {
-                if (priceFilter.includes('+')) {
-                    PropertySearchService.currentFilters.priceMin = parseInt(priceFilter.replace('+', ''));
-                    PropertySearchService.currentFilters.priceMax = Infinity;
-                } else {
-                    const [min, max] = priceFilter.split('-').map(p => parseInt(p));
-                    PropertySearchService.currentFilters.priceMin = min;
-                    PropertySearchService.currentFilters.priceMax = max;
-                }
-            } else {
-                PropertySearchService.currentFilters.priceMin = 0;
-                PropertySearchService.currentFilters.priceMax = Infinity;
-            }
-            
-            // Reset to page 1
-            PropertySearchService.currentPage = 1;
-            
-            // Reload properties
-            await loadProperties();
+
+        if (filters.beds && filters.beds !== 'any') {
+          var bedsMin = parseInt(filters.beds, 10);
+          props = props.filter(function (p) { return (p.bedrooms || 0) >= bedsMin; });
         }
-        
-        /**
-         * Clear all filters
-         */
-        async function clearFilters() {
-            document.getElementById('searchInput').value = '';
-            document.getElementById('typeFilter').value = '';
-            document.getElementById('priceFilter').value = '';
-            document.getElementById('bedsFilter').value = '';
-            document.getElementById('bathsFilter').value = '';
-            
-            PropertySearchService.currentFilters = {
-                search: '',
-                type: '',
-                priceMin: 0,
-                priceMax: Infinity,
-                beds: 0,
-                baths: 0
-            };
-            
-            await loadProperties();
+
+        if (filters.baths && filters.baths !== 'any') {
+          var bathsMin = parseInt(filters.baths, 10);
+          props = props.filter(function (p) { return (p.bathrooms || 0) >= bathsMin; });
         }
-        
-        /**
-         * Switch between grid and list view
-         */
-        function switchView(view) {
-            PropertySearchService.currentView = view;
-            
-            document.querySelectorAll('.view-btn').forEach(btn => {
-                btn.classList.toggle('active', btn.dataset.view === view);
-            });
-            
-            loadProperties();
+
+        state.filtered = props;
+        renderResults();
+      }
+
+      function renderResults() {
+        var loadingEl = document.getElementById('loadingState');
+        var emptyEl = document.getElementById('emptyState');
+        var gridEl = document.getElementById('propertiesGrid');
+        var metaEl = document.getElementById('resultsMeta');
+
+        loadingEl.style.display = 'none';
+
+        if (!state.filtered.length) {
+          gridEl.style.display = 'none';
+          emptyEl.style.display = 'block';
+          metaEl.textContent = '0 off-market properties match your filters.';
+          return;
         }
-        
-        /**
-         * Change page
-         */
-        function changePage(page) {
-            PropertySearchService.currentPage = page;
-            loadProperties();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-        
-        /**
-         * Toggle save property
-         */
-        async function toggleSave(propertyId, button) {
-            const isSaved = await PropertySearchService.toggleSaveProperty(propertyId);
-            
-            if (button) {
-                button.classList.toggle('saved', isSaved);
-                const svg = button.querySelector('svg');
-                svg.setAttribute('fill', isSaved ? 'currentColor' : 'none');
-            }
-        }
-        
-        /**
-         * View property details
-         */
-        function viewProperty(propertyId) {
-            window.location.href = `property-detail.html?id=${propertyId}`;
-        }
-        
-        // ==========================================
-        // INITIALIZATION
-        // ==========================================
-        
-        /**
-         * Load properties with current filters
-         */
-        async function loadProperties() {
-            const loadingState = document.getElementById('loadingState');
-            
-            loadingState.style.display = 'block';
-            document.getElementById('propertiesGrid').style.display = 'none';
-            document.getElementById('propertiesList').style.display = 'none';
-            document.getElementById('emptyState').style.display = 'none';
-            
-            try {
-                const properties = await PropertySearchService.getProperties();
-                await renderProperties(properties);
-            } catch (error) {
-                console.error('Error loading properties:', error);
-            } finally {
-                loadingState.style.display = 'none';
-            }
-        }
-        
-        /**
-         * Initialize page
-         */
-        document.addEventListener('DOMContentLoaded', function() {
-            // Check authentication
-            firebase.auth().onAuthStateChanged(user => {
-                if (!user) {
-                    window.location.href = '/client/login.html';
-                    return;
-                }
-                
-                // Load properties
-                loadProperties();
-                
-                // Add search on Enter key
-                document.getElementById('searchInput').addEventListener('keypress', function(e) {
-                    if (e.key === 'Enter') {
-                        applyFilters();
-                    }
-                });
-            });
+
+        emptyEl.style.display = 'none';
+        metaEl.textContent = state.filtered.length + ' off-market properties found';
+
+        gridEl.style.display = 'grid';
+        gridEl.innerHTML = state.filtered
+          .map(function (p) {
+            var address = [p.address, p.city, p.state, p.zipCode].filter(Boolean).join(', ');
+            var price = typeof p.price === 'number' ? '$' + p.price.toLocaleString() : '—';
+            var beds = p.bedrooms != null ? p.bedrooms + ' bd' : '';
+            var baths = p.bathrooms != null ? p.bathrooms + ' ba' : '';
+            var sqft = p.sqft != null ? p.sqft.toLocaleString() + ' sqft' : '';
+            var meta = [beds, baths, sqft].filter(Boolean).join(' • ');
+
+            return (
+              '<div class="property-card" data-id="' + p.id + '">' +
+                '<div class="property-image" style="background-image:url(' +
+                  (p.image || '\'/assets/img/property-placeholder.jpg\'') + ');"></div>' +
+                '<div class="property-body">' +
+                  '<div class="property-price">' + price + '</div>' +
+                  '<div class="property-address">' + address + '</div>' +
+                  '<div class="property-meta">' + meta + '</div>' +
+                  '<span class="badge-offmarket">Off-Market</span>' +
+                '</div>' +
+              '</div>'
+            );
+          })
+          .join('');
+
+        Array.prototype.forEach.call(gridEl.querySelectorAll('.property-card'), function (card) {
+          card.addEventListener('click', function () {
+            var id = this.getAttribute('data-id');
+            if (!id) return;
+            window.location.href = 'property-detail.html?id=' + encodeURIComponent(id);
+          });
         });
-    </script>
+      }
+
+      function wireEvents() {
+        document.getElementById('applyFiltersBtn').addEventListener('click', function () {
+          applyClientFilters();
+        });
+        document.getElementById('clearFiltersBtn').addEventListener('click', function () {
+          document.getElementById('searchInput').value = '';
+          document.getElementById('typeFilter').value = 'any';
+          document.getElementById('priceFilter').value = 'any';
+          document.getElementById('bedsFilter').value = 'any';
+          document.getElementById('bathsFilter').value = 'any';
+          state.filtered = state.allProperties.slice();
+          renderResults();
+        });
+      }
+
+      async function loadOffMarketForUser(user) {
+        var loadingEl = document.getElementById('loadingState');
+        loadingEl.style.display = 'block';
+
+        try {
+          if (!dbService || typeof dbService.getProperties !== 'function') {
+            console.error('[Client OffMarket] DatabaseService.getProperties not available');
+            state.allProperties = [];
+          } else {
+            // Reuse properties collection, but filter by status offmarket
+            var result = await dbService.getProperties({ status: 'offmarket', limit: 100 });
+            state.allProperties = result && result.success ? result.data : [];
+          }
+        } catch (e) {
+          console.error('[Client OffMarket] Failed to load off-market properties:', e);
+          state.allProperties = [];
+        }
+
+        state.filtered = state.allProperties.slice();
+        applyClientFilters();
+      }
+
+      // Wait for Firebase + auth
+      window.addEventListener('firebase-ready', function () {
+        var authInstance = (window.Firebase && window.Firebase.auth) || window.firebaseAuth;
+        if (!authInstance || typeof authInstance.onAuthStateChanged !== 'function') {
+          console.warn('[Client OffMarket] Auth not ready; rendering anonymous view');
+          state.allProperties = [];
+          state.filtered = [];
+          renderResults();
+          wireEvents();
+          return;
+        }
+
+        wireEvents();
+
+        authInstance.onAuthStateChanged(function (user) {
+          if (!user) {
+            state.allProperties = [];
+            state.filtered = [];
+            renderResults();
+            return;
+          }
+          loadOffMarketForUser(user);
+        });
+      });
+    })();
+  </script>
 </body>
 </html>

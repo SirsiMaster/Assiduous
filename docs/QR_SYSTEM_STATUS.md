@@ -20,10 +20,16 @@ Git and workspace:
 
 Firebase Secrets status:
 - SENDGRID_API_KEY: Configured and accessible
-- SENDGRID_FROM_EMAIL: Referenced in code (fallback to noreply@assiduous.com)
+- SENDGRID_FROM_EMAIL: Referenced in code (fallback to `SUPPORT_EMAIL` when unset)
 - TWILIO_ACCOUNT_SID: Placeholder value present (needs real value)
 - TWILIO_AUTH_TOKEN: Placeholder value present (needs real value)
 - TWILIO_PHONE_NUMBER: Missing (secret not set)
+
+Email reply behavior:
+- All QR-related email flows (property shares, invitations, referral shares) use a shared support inbox for replies.
+- **Support / Reply-To Email:** `sirsimaster@gmail.com` (via `SUPPORT_EMAIL` constant in `functions/index.js`).
+- If `SENDGRID_FROM_EMAIL` is configured, it is used as the "from" address with `Reply-To: SUPPORT_EMAIL`.
+- Otherwise, `SUPPORT_EMAIL` is used as both `from` and `replyTo`.
 
 Property detail page updates:
 - All variants now load QR widget HTML and execute embedded <script> tags safely

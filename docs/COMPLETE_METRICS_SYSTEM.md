@@ -309,3 +309,72 @@ With typical usage:
 4. **Monitor**: Check Firebase Console → Functions
 
 Now you have **complete real-time metrics** for both development AND business! 🎉
+
+---
+
+## Server-Side Dev History & Metrics Pipeline (Canonical)
+
+This section defines how development history and metrics are kept up to date **without any local scripts**.
+
+### 1. GitHub → Cloud Functions → Firestore
+
+**Functions:**
+- `functions/src/index.ts:githubWebhook`
+  - Type: HTTPS (v2 `onRequest`)
+  - Purpose: Ingest GitHub `push` events and write:
+    - `git_commits/{hash}` docs
+    - `development_metrics/{YYYY-MM-DD}.commits` increments
+- `functions/src/index.ts:recomputeDailyMetrics`
+  - Type: HTTPS (v2 `onRequest`)
+  - Purpose: Recompute `development_metrics/{date}.commits` from `git_commits` for a rolling window (e.g. last 90 days).
+
+**Collections used:**
+- `git_commits`
+- `development_metrics`
+- `development_sessions`
+- `project_metadata` / `project_analytics`
+
+### 2. Configure GitHub Webhook (once per repo)
+
+1. Go to the GitHub repo settings: **Settings → Webhooks**.
+2. Click **Add webhook**:
+   - **Payload URL:**
+     - `https://us-central1-assiduous-prod.cloudfunctions.net/githubWebhook`
+     - (replace `assiduous-prod` with the correct project if needed)
+   - **Content type:** `application/json`
+   - **Secret:** _(optional, can be added later)_
+   - **SSL verification:** enabled
+   - **Events:** Select "Just the push event".
+3. Click **Add webhook**.
+
+After this, every push to `main` will POST to `githubWebhook`, and commits will appear in `git_commits` plus `development_metrics`.
+
+### 3. Configure Cloud Scheduler for Recompute (recommended)
+
+Use **Cloud Scheduler** to call `recomputeDailyMetrics` once per day as a safety net.
+
+- **Target URL:**
+  - `https://us-central1-assiduous-prod.cloudfunctions.net/recomputeDailyMetrics`
+- **Schedule:**
+  - Example: `0 5 * * *` (05:00 UTC daily)
+- **HTTP method:** `GET` or `POST` (function ignores body)
+- **Auth:**
+  - For simplicity, you can allow unauthenticated access on this function, or
+  - Configure it to use an appropriate service account and set Scheduler to use OIDC.
+
+### 4. Verification Procedure
+
+To verify the pipeline end-to-end:
+
+1. **Make a test commit** to `main`.
+2. In Firestore:
+   - Confirm a new doc exists in `git_commits` with the commit hash.
+   - Confirm `development_metrics/{today}` has `commits` incremented.
+3. Open `/admin/development/dashboard.html`:
+   - The **Today’s Commits** card should reflect the new count.
+   - The **History Explorer** should list today with updated commits.
+   - The **Consistency** pill should show **"In sync"** if counts match.
+
+If consistency shows a mismatch, wait for `recomputeDailyMetrics` to run or trigger it manually, then refresh the dashboard.
+
+---

@@ -132,6 +132,23 @@ service cloud.firestore {
       
       // Delete: Only admins can delete users
       allow delete: if isAdmin();
+      
+      // User-scoped message inbox: users/{userId}/messages/{messageId}
+      match /messages/{messageId} {
+        // Read: user can read only their own messages; admins can read all
+        allow read: if isOwner(userId) || isAdmin();
+        
+        // Create: Cloud Functions or the user themselves
+        allow create: if isOwner(userId) || isAdmin();
+        
+        // Update: user can mark their own messages as read; admins can update all
+        allow update: if (isOwner(userId) &&
+                         request.resource.data.diff(resource.data).affectedKeys().hasOnly(['readAt'])) ||
+                        isAdmin();
+        
+        // Delete: user can delete their own messages; admins can delete all
+        allow delete: if isOwner(userId) || isAdmin();
+      }
     }
     
     // ============================================================================
@@ -486,6 +503,19 @@ service cloud.firestore {
       // Audit trail - admin read only, server write only
       allow read: if isAdmin();
       allow write: if false;
+    }
+
+    // ============================================================================
+    // USER MESSAGE INBOX (PER-USER SUBCOLLECTION)
+    // ============================================================================
+
+    // Read-only per-user message inbox used by admin/agent/client portals
+    match /users/{userId}/messages/{messageId} {
+      // Authenticated users can read their own inbox; admins can read any
+      allow read: if (isAuthenticated() && getUserId() == userId) || isAdmin();
+
+      // Writes are server-only (Cloud Functions); block direct client writes
+      allow create, update, delete: if false;
     }
     
     // ============================================================================

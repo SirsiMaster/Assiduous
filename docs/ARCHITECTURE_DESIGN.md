@@ -36,6 +36,55 @@ The older SirsiAuth stack (`public/components/sirsi-auth.js`, `public/assets/js/
 
 ---
 
+## Development History & Metrics Architecture (Canonical)
+
+The platform maintains a **server-driven** development history and metrics layer used by the admin/development dashboards.
+
+### Data Stores
+- **Firestore Collections**
+  - `git_commits` – append-only log of ingested commits
+  - `development_metrics` – daily aggregates (hours, cost, commits, etc.)
+  - `development_sessions` – higher-level work sessions
+  - `project_metadata` / `project_analytics` – project totals and analytics
+  - `business_metrics` – business-level KPIs (users, properties, leads, transactions)
+
+### Ingestion Pipeline
+- **Source of truth:** GitHub repo `SirsiMaster/Assiduous` (`main` branch).
+- **GitHub Webhook → Cloud Function:**
+  - Webhook target: `githubWebhook` (HTTPS function in `functions/src/index.ts`).
+  - Trigger: `push` events.
+  - Responsibility:
+    - Write `git_commits/{hash}` docs for each commit.
+    - Increment `development_metrics/{YYYY-MM-DD}.commits` for the commit date.
+- **Scheduled Recompute (optional safety net):**
+  - Cloud Scheduler calls `recomputeDailyMetrics` (HTTPS function) on a fixed schedule.
+  - Reads `git_commits` over a rolling window (e.g. last 90 days) and recomputes `development_metrics/{date}.commits`.
+
+All ingestion is **server-side**. Developer machines do not run long-lived metrics daemons; their only role is pushing code to GitHub.
+
+### Consumption
+- **Admin Dev Dashboards** (`/admin/development/*.html`):
+  - Read from Firestore via `DevelopmentMetricsService` and direct queries.
+  - Provide historical lookups (by date, range, all time) using only Firestore data.
+
+This architecture guarantees that when the owner visits `/admin/development/dashboard.html`, they see an accurate, canonical history of commits and daily activity, regardless of which device was used to develop the code.
+
+---
+
+## Deployment & CI/CD (Canonical Overview)
+
+All production deployments follow this pipeline:
+
+1. **Source of Truth:** Local changes committed to the `main` branch in the GitHub repo `SirsiMaster/Assiduous`.
+2. **CI Trigger:** A push to `main` that touches `public/**` automatically triggers the `deploy-production.yml` GitHub Actions workflow.
+3. **Hosting Deploy:** `deploy-production.yml` runs `firebase deploy --only hosting --project assiduous-prod` (using `FIREBASE_TOKEN`) from the `public/` directory.
+4. **Verification:** The workflow performs an HTTP health check against `https://assiduous-prod.web.app` and logs success/failure.
+5. **Metrics Pipeline:** A separate workflow (`deploy-metrics.yml`) runs on every push to `main`, updating Firebase metrics for the development dashboard.
+
+For detailed steps and environment options (dev/staging), see `docs/DEPLOYMENT_GUIDE.md`.
+
+---
+
 # Universal ID Generator System
 **Added:** October 12, 2025 (Commit: 6a434a0a)  
 **Status:** Production-Ready - In Use Across All Collections
