@@ -411,20 +411,20 @@
 <div class="content-grid">
                     <div class="viewings-section">
                         <div class="tabs">
-                            <button class="tab active" onclick="filterViewings('upcoming')">Upcoming</button>
-                            <button class="tab" onclick="filterViewings('past')">Past</button>
-                            <button class="tab" onclick="filterViewings('cancelled')">Cancelled</button>
-                            <button class="tab" onclick="filterViewings('all')">All</button>
+                            <button class="tab active" onclick="filterOffers('open')">Open</button>
+                            <button class="tab" onclick="filterOffers('won')">Won</button>
+                            <button class="tab" onclick="filterOffers('lost')">Lost</button>
+                            <button class="tab" onclick="filterOffers('all')">All</button>
                         </div>
                         
-                        <div id="viewingsList">
-                            <!-- Viewings will be loaded here -->
+                        <div id="offersList">
+                            <!-- Offers will be loaded here -->
                         </div>
                         
                         <div id="emptyState" class="empty-state" style="display: none;">
-                            <div class="empty-icon">📅</div>
-                            <h2 class="empty-title">No Scheduled Viewings</h2>
-                            <p class="empty-text">Browse properties and schedule viewings to see them here</p>
+                            <div class="empty-icon">📄</div>
+                            <h2 class="empty-title">No Offers Yet</h2>
+                            <p class="empty-text">Submit an offer on a property to see it tracked here.</p>
                             <button class="btn btn-primary" onclick="window.location.href='/client/properties.html'">
                                 Browse Properties
                             </button>
@@ -446,60 +446,28 @@
                         </div>
                         
                         <div class="quick-stats">
-                            <h3 class="section-title">Quick Stats</h3>
+                            <h3 class="section-title">Offer Stats</h3>
                             <div class="stats-grid">
                                 <div class="stat-item">
-                                    <div class="stat-value" id="totalViewings">0</div>
-                                    <div class="stat-label">Total Viewings</div>
+                                    <div class="stat-value" id="totalOffers">0</div>
+                                    <div class="stat-label">Total Offers</div>
                                 </div>
                                 <div class="stat-item">
-                                    <div class="stat-value" id="upcomingCount">0</div>
-                                    <div class="stat-label">Upcoming</div>
+                                    <div class="stat-value" id="openCount">0</div>
+                                    <div class="stat-label">Open</div>
                                 </div>
                                 <div class="stat-item">
-                                    <div class="stat-value" id="thisWeek">0</div>
-                                    <div class="stat-label">This Week</div>
+                                    <div class="stat-value" id="wonCount">0</div>
+                                    <div class="stat-label">Won</div>
                                 </div>
                                 <div class="stat-item">
-                                    <div class="stat-value" id="confirmedCount">0</div>
-                                    <div class="stat-label">Confirmed</div>
+                                    <div class="stat-value" id="lostCount">0</div>
+                                    <div class="stat-label">Lost</div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-        </div>
-    </div>
-
-    <!-- Reschedule Modal -->
-    <div class="modal" id="rescheduleModal">
-        <div class="modal-content">
-            <h2 style="margin-bottom: 20px;">Reschedule Viewing</h2>
-            <form id="rescheduleForm">
-                <div style="margin-bottom: 20px;">
-                    <label style="display: block; margin-bottom: 8px; font-weight: 500;">New Date</label>
-                    <input type="date" id="newDate" required style="width: 100%; padding: 10px; border: 2px solid #e0e0e0; border-radius: 8px;">
-                </div>
-                <div style="margin-bottom: 20px;">
-                    <label style="display: block; margin-bottom: 8px; font-weight: 500;">New Time</label>
-                    <select id="newTime" required style="width: 100%; padding: 10px; border: 2px solid #e0e0e0; border-radius: 8px;">
-                        <option value="">Select time</option>
-                        <option value="9:00 AM">9:00 AM</option>
-                        <option value="10:00 AM">10:00 AM</option>
-                        <option value="11:00 AM">11:00 AM</option>
-                        <option value="12:00 PM">12:00 PM</option>
-                        <option value="1:00 PM">1:00 PM</option>
-                        <option value="2:00 PM">2:00 PM</option>
-                        <option value="3:00 PM">3:00 PM</option>
-                        <option value="4:00 PM">4:00 PM</option>
-                        <option value="5:00 PM">5:00 PM</option>
-                    </select>
-                </div>
-                <div style="display: flex; gap: 10px;">
-                    <button type="submit" class="btn btn-primary" style="flex: 1;">Confirm</button>
-                    <button type="button" class="btn btn-secondary" onclick="closeModal()" style="flex: 1;">Cancel</button>
-                </div>
-            </form>
         </div>
     </div>
 
@@ -514,101 +482,145 @@
             const auth = firebase.auth || window.firebaseAuth;
 
         
-        let allViewings = [];
-        let currentFilter = 'upcoming';
+        let allOffers = [];
+        let currentFilter = 'open';
         let currentMonthDate = new Date();
-        let selectedViewingId = null;
         
-        // Load viewings
-        async function loadViewings() {
+        function getOfferAmount(offer) {
+            if (typeof offer.offerPrice === 'number') return offer.offerPrice;
+            if (offer.details && typeof offer.details.offerAmount === 'number') return offer.details.offerAmount;
+            return 0;
+        }
+        
+        function getOfferStatus(offer) {
+            return (offer.status || 'pending').toLowerCase();
+        }
+        
+        function getOfferCreatedDate(offer) {
+            if (offer.createdAt && typeof offer.createdAt.toDate === 'function') {
+                return offer.createdAt.toDate();
+            }
+            if (offer.createdAt) {
+                return new Date(offer.createdAt);
+            }
+            if (offer.timeline && offer.timeline.created) {
+                return new Date(offer.timeline.created);
+            }
+            return new Date();
+        }
+        
+        // Load offers from transactions
+        async function loadOffers() {
             try {
                 // Try to load from Firebase
                 if (auth.currentUser) {
-                    const snapshot = await db.collection('viewings')
-                        .where('userId', '==', auth.currentUser.uid)
-                        .orderBy('date', 'desc')
+                    const snapshot = await db.collection('transactions')
+                        .where('buyerId', '==', auth.currentUser.uid)
+                        .orderBy('createdAt', 'desc')
+                        .limit(100)
                         .get();
                     
-                    allViewings = [];
-                    snapshot.forEach(doc => {
-                        allViewings.push({ id: doc.id, ...doc.data() });
+                    allOffers = snapshot.docs.map(doc => {
+                        const data = doc.data();
+                        const createdDate = getOfferCreatedDate(data);
+                        return {
+                            id: doc.id,
+                            ...data,
+                            createdAt: createdDate,
+                            uiDate: createdDate.toISOString().split('T')[0]
+                        };
                     });
                 }
             } catch (error) {
-                console.log('Loading from localStorage:', error);
+                console.log('Error loading offers from Firestore, falling back to local/demo:', error);
             }
             
             // Also check localStorage
-            const localViewings = JSON.parse(localStorage.getItem('viewings') || '[]');
+            const localOffers = JSON.parse(localStorage.getItem('offers') || '[]');
             
             // Merge and deduplicate
-            const mergedViewings = [...allViewings, ...localViewings];
-            allViewings = Array.from(new Map(mergedViewings.map(v => [v.id || v.createdAt, v])).values());
+            const mergedOffers = [...allOffers, ...localOffers];
+            allOffers = Array.from(new Map(mergedOffers.map(o => [o.id || o.createdAt, o])).values());
             
-            // Add demo viewings if none exist
-            if (allViewings.length === 0) {
-                allViewings = getDemoViewings();
+            // Add demo offers if none exist
+            if (allOffers.length === 0) {
+                allOffers = getDemoOffers();
             }
             
-            filterViewings(currentFilter);
+            filterOffers(currentFilter);
             updateStats();
             generateCalendar();
         }
         
-        // Get demo viewings
-        function getDemoViewings() {
+        // Get demo offers
+        function getDemoOffers() {
             const today = new Date();
-            const tomorrow = new Date(today);
-            tomorrow.setDate(tomorrow.getDate() + 1);
-            const nextWeek = new Date(today);
-            nextWeek.setDate(nextWeek.getDate() + 7);
+            const threeDaysAgo = new Date(today);
+            threeDaysAgo.setDate(today.getDate() - 3);
+            const tenDaysAgo = new Date(today);
+            tenDaysAgo.setDate(today.getDate() - 10);
             
             return [
                 {
-                    id: 'demo-1',
+                    id: 'demo-offer-1',
                     propertyTitle: '3BR Townhouse in Fishtown',
                     propertyAddress: '2547 Frankford Avenue, Philadelphia, PA',
-                    date: tomorrow.toISOString().split('T')[0],
-                    time: '2:00 PM',
-                    status: 'confirmed',
-                    notes: 'Looking forward to seeing the property',
-                    createdAt: new Date().toISOString()
+                    offerPrice: 285000,
+                    status: 'pending',
+                    createdAt: threeDaysAgo,
+                    uiDate: threeDaysAgo.toISOString().split('T')[0],
+                    details: {
+                        terms: {
+                            closingDate: new Date(today.getFullYear(), today.getMonth() + 1, today.getDate()).toISOString().split('T')[0],
+                            contingencies: ['financing', 'inspection']
+                        }
+                    }
                 },
                 {
-                    id: 'demo-2',
+                    id: 'demo-offer-2',
                     propertyTitle: '2BR Condo in Center City',
                     propertyAddress: '1500 Market Street, Philadelphia, PA',
-                    date: nextWeek.toISOString().split('T')[0],
-                    time: '10:00 AM',
-                    status: 'pending',
-                    notes: 'Interested in investment potential',
-                    createdAt: new Date().toISOString()
+                    offerPrice: 475000,
+                    status: 'completed',
+                    createdAt: tenDaysAgo,
+                    uiDate: tenDaysAgo.toISOString().split('T')[0],
+                    agreedPrice: 470000,
+                    details: {
+                        terms: {
+                            closingDate: tenDaysAgo.toISOString().split('T')[0],
+                            contingencies: ['inspection']
+                        }
+                    }
                 }
             ];
         }
         
-        // Filter viewings
-        function filterViewings(filter) {
+        // Filter offers
+        function filterOffers(filter) {
             currentFilter = filter;
-            const today = new Date().toISOString().split('T')[0];
             let filtered = [];
             
             switch(filter) {
-                case 'upcoming':
-                    filtered = allViewings.filter(v => 
-                        v.date >= today && v.status !== 'cancelled'
-                    );
+                case 'open':
+                    filtered = allOffers.filter(o => {
+                        const status = getOfferStatus(o);
+                        return !['completed','closed','cancelled','rejected','lost'].includes(status);
+                    });
                     break;
-                case 'past':
-                    filtered = allViewings.filter(v => 
-                        v.date < today && v.status !== 'cancelled'
-                    );
+                case 'won':
+                    filtered = allOffers.filter(o => {
+                        const status = getOfferStatus(o);
+                        return ['completed','closed','accepted'].includes(status);
+                    });
                     break;
-                case 'cancelled':
-                    filtered = allViewings.filter(v => v.status === 'cancelled');
+                case 'lost':
+                    filtered = allOffers.filter(o => {
+                        const status = getOfferStatus(o);
+                        return ['cancelled','rejected','lost'].includes(status);
+                    });
                     break;
                 default:
-                    filtered = allViewings;
+                    filtered = allOffers;
             }
             
             // Update tabs
@@ -619,60 +631,60 @@
                 }
             });
             
-            displayViewings(filtered);
+            displayOffers(filtered);
         }
         
-        // Display viewings
-        function displayViewings(viewings) {
-            const container = document.getElementById('viewingsList');
+        // Display offers
+        function displayOffers(offers) {
+            const container = document.getElementById('offersList');
             const emptyState = document.getElementById('emptyState');
             
-            if (viewings.length === 0) {
+            if (!offers || offers.length === 0) {
                 container.innerHTML = '';
                 emptyState.style.display = 'block';
                 return;
             }
             
             emptyState.style.display = 'none';
-            container.innerHTML = viewings.map(viewing => {
-                        const date = new Date(viewing.date + 'T00:00:00');
-                        const isUpcoming = viewing.date >= new Date().toISOString().split('T')[0];
-                        const statusClass = viewing.status === 'cancelled' ? 'cancelled' : 
-                                       viewing.status === 'confirmed' ? 'completed' : '';
-                        
-                        return `
+            container.innerHTML = offers.map(offer => {
+                const createdDate = getOfferCreatedDate(offer);
+                const amount = getOfferAmount(offer);
+                const status = getOfferStatus(offer);
+                const statusClass = status === 'cancelled' || status === 'rejected' || status === 'lost'
+                    ? 'cancelled'
+                    : (status === 'completed' || status === 'closed' || status === 'accepted' ? 'completed' : '');
+                
+                const closingDate = offer.details?.terms?.closingDate;
+                const contingencies = offer.details?.terms?.contingencies || [];
+                
+                return `
                     <div class="viewing-card ${statusClass}">
                         <div class="viewing-header">
                             <div>
-                                <div class="viewing-date">${date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}</div>
-                                <div class="viewing-time">${viewing.time}</div>
+                                <div class="viewing-date">${createdDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</div>
+                                <div class="viewing-time">Offer on ${offer.propertyTitle || 'Selected Property'}</div>
                             </div>
-                            <div class="viewing-status status-${viewing.status || 'pending'}">
-                                ${viewing.status || 'Pending'}
+                            <div class="viewing-status status-${status}">
+                                ${status.charAt(0).toUpperCase() + status.slice(1)}
                             </div>
                         </div>
                         
                         <div class="property-info">
-                            <div class="property-title">${viewing.propertyTitle}</div>
-                            <div class="property-address">${viewing.propertyAddress || viewing.address || 'Philadelphia, PA'}</div>
+                            <div class="property-title">${offer.propertyAddress || offer.propertyTitle || offer.propertyId || 'Property'}</div>
+                            <div class="property-address">Offer Amount: $${amount.toLocaleString()}</div>
                         </div>
                         
-                        ${viewing.notes ? `
-                            <div class="viewing-notes">
-                                📝 ${viewing.notes}
-                            </div>
-                        ` : ''}
-                        
-                        ${isUpcoming && viewing.status !== 'cancelled' ? `
-                            <div class="action-buttons">
-                                <button class="btn btn-secondary" onclick="rescheduleViewing('${viewing.id}')">
-                                    Reschedule
-                                </button>
-                                <button class="btn btn-danger" onclick="cancelViewing('${viewing.id}')">
-                                    Cancel
-                                </button>
-                            </div>
-                        ` : ''}
+                        <div class="viewing-notes">
+                            ${closingDate ? `
+                                <div><strong>Target Closing:</strong> ${closingDate}</div>
+                            ` : ''}
+                            ${contingencies.length ? `
+                                <div><strong>Contingencies:</strong> ${contingencies.join(', ')}</div>
+                            ` : ''}
+                            ${offer.agreedPrice ? `
+                                <div><strong>Agreed Price:</strong> $${Number(offer.agreedPrice).toLocaleString()}</div>
+                            ` : ''}
+                        </div>
                     </div>
                 `;
             }).join('');
@@ -680,19 +692,28 @@
         
         // Update statistics
         function updateStats() {
-            const today = new Date().toISOString().split('T')[0];
-            const weekFromNow = new Date();
-            weekFromNow.setDate(weekFromNow.getDate() + 7);
-            const weekDate = weekFromNow.toISOString().split('T')[0];
+            const open = allOffers.filter(o => {
+                const status = getOfferStatus(o);
+                return !['completed','closed','cancelled','rejected','lost'].includes(status);
+            });
+            const won = allOffers.filter(o => {
+                const status = getOfferStatus(o);
+                return ['completed','closed','accepted'].includes(status);
+            });
+            const lost = allOffers.filter(o => {
+                const status = getOfferStatus(o);
+                return ['cancelled','rejected','lost'].includes(status);
+            });
             
-            const upcoming = allViewings.filter(v => v.date >= today && v.status !== 'cancelled');
-            const thisWeek = upcoming.filter(v => v.date <= weekDate);
-            const confirmed = allViewings.filter(v => v.status === 'confirmed');
+            const totalEl = document.getElementById('totalOffers');
+            const openEl = document.getElementById('openCount');
+            const wonEl = document.getElementById('wonCount');
+            const lostEl = document.getElementById('lostCount');
             
-            document.getElementById('totalViewings').textContent = allViewings.length;
-            document.getElementById('upcomingCount').textContent = upcoming.length;
-            document.getElementById('thisWeek').textContent = thisWeek.length;
-            document.getElementById('confirmedCount').textContent = confirmed.length;
+            if (totalEl) totalEl.textContent = allOffers.length;
+            if (openEl) openEl.textContent = open.length;
+            if (wonEl) wonEl.textContent = won.length;
+            if (lostEl) lostEl.textContent = lost.length;
         }
         
         // Generate calendar
@@ -747,11 +768,11 @@
                     day.classList.add('today');
                 }
                 
-                // Check for viewings
-                const hasViewing = allViewings.some(v => 
-                    v.date === dateString && v.status !== 'cancelled'
+                // Check for offers on this day (by createdAt/uiDate)
+                const hasOffer = allOffers.some(o => 
+                    (o.uiDate || (o.createdAt && getOfferCreatedDate(o).toISOString().split('T')[0])) === dateString
                 );
-                if (hasViewing) {
+                if (hasOffer) {
                     day.classList.add('has-viewing');
                     const dot = document.createElement('div');
                     dot.className = 'viewing-dot';
@@ -782,90 +803,6 @@
             generateCalendar();
         }
         
-        // Cancel viewing
-        async function cancelViewing(viewingId) {
-            if (!confirm('Are you sure you want to cancel this viewing?')) return;
-            
-            const viewing = allViewings.find(v => v.id === viewingId);
-            if (viewing) {
-                viewing.status = 'cancelled';
-                
-                // Update Firebase if logged in
-                if (auth.currentUser && !viewingId.startsWith('demo')) {
-                    try {
-                        await db.collection('viewings').doc(viewingId).update({
-                            status: 'cancelled',
-                            cancelledAt: new Date().toISOString()
-                        });
-                    } catch (error) {
-                        console.error('Error cancelling in Firebase:', error);
-                    }
-                }
-                
-                // Update localStorage
-                localStorage.setItem('viewings', JSON.stringify(allViewings));
-                
-                filterViewings(currentFilter);
-                updateStats();
-                generateCalendar();
-            }
-        }
-        
-        // Reschedule viewing
-        function rescheduleViewing(viewingId) {
-            selectedViewingId = viewingId;
-            document.getElementById('rescheduleModal').classList.add('active');
-        }
-        
-        // Handle reschedule form (guard against missing DOM in older builds)
-        const rescheduleFormEl = document.getElementById('rescheduleForm');
-        if (rescheduleFormEl) {
-            rescheduleFormEl.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const newDate = document.getElementById('newDate').value;
-            const newTime = document.getElementById('newTime').value;
-            
-            const viewing = allViewings.find(v => v.id === selectedViewingId);
-            if (viewing) {
-                viewing.date = newDate;
-                viewing.time = newTime;
-                viewing.status = 'pending';
-                
-                // Update Firebase if logged in
-                if (auth.currentUser && !selectedViewingId.startsWith('demo')) {
-                    try {
-                        await db.collection('viewings').doc(selectedViewingId).update({
-                            date: newDate,
-                            time: newTime,
-                            status: 'pending',
-                            rescheduledAt: new Date().toISOString()
-                        });
-                    } catch (error) {
-                        console.error('Error rescheduling in Firebase:', error);
-                    }
-                }
-                
-                // Update localStorage
-                localStorage.setItem('viewings', JSON.stringify(allViewings));
-                
-                closeModal();
-                filterViewings(currentFilter);
-                updateStats();
-                generateCalendar();
-                
-                alert('Viewing rescheduled successfully! You will receive a confirmation.');
-            }
-        });
-        }
-        
-        // Close modal
-        function closeModal() {
-            document.getElementById('rescheduleModal').classList.remove('active');
-            selectedViewingId = null;
-            document.getElementById('rescheduleForm').reset();
-        }
-        
         // Close modal on outside click
         window.onclick = function(event) {
             if (event.target.classList.contains('modal')) {
@@ -878,13 +815,13 @@
             if (user) {
                 console.log('User logged in:', user.email);
             }
-            loadViewings();
+            loadOffers();
         });
         
-        // Load on page load
+        // Load on page load (for demo/unauthenticated)
         window.addEventListener('load', () => {
             if (!auth.currentUser) {
-                loadViewings();
+                loadOffers();
             }
         });
         });
