@@ -1,13 +1,13 @@
 {
-  "lastUpdated": "2025-11-20T04:44:17.945Z",
+  "lastUpdated": "2025-12-03T04:53:18.469Z",
   "summary": {
     "health": "Good",
     "score": 59,
-    "trend": "decreasing",
+    "trend": "increasing",
     "alerts": [
       "✅ UCS implementation complete - 40 pages converted",
       "⚠️ Test coverage is very low",
-      "⏰ Timeline warning - 11 days until launch"
+      "⏰ Timeline warning - -2 days until launch"
     ]
   },
   "features": {
@@ -152,21 +152,21 @@
     }
   },
   "project": {
-    "totalHours": "332",
-    "avgHoursPerDay": "8.3",
-    "totalCost": 51978,
-    "laborCost": 49800,
-    "toolsCost": 2178,
-    "monthsElapsed": "3.4",
-    "totalCommits": 1007,
-    "totalFiles": 800,
-    "activeDays": 40,
-    "totalDays": 102,
-    "projectAgeDays": 102,
-    "linesAdded": 9823659,
-    "linesDeleted": 9443035,
-    "netLines": 380624,
-    "velocity": "25.2",
+    "totalHours": "334",
+    "avgHoursPerDay": "7.8",
+    "totalCost": 52556,
+    "laborCost": 50100,
+    "toolsCost": 2456,
+    "monthsElapsed": "3.8",
+    "totalCommits": 1011,
+    "totalFiles": 801,
+    "activeDays": 43,
+    "totalDays": 115,
+    "projectAgeDays": 115,
+    "linesAdded": 9824623,
+    "linesDeleted": 9444856,
+    "netLines": 379767,
+    "velocity": "23.5",
     "completionPercentage": 59,
     "actualStartDate": "2025-08-10",
     "architecture": {
@@ -176,22 +176,22 @@
     }
   },
   "today": {
-    "date": "2025-11-20",
+    "date": "2025-12-03",
     "hours": "0.3",
     "cost": 50,
     "commits": 1,
     "deployments": 0
   },
   "thisWeek": {
-    "hours": "9.2",
-    "cost": 1386,
-    "commits": 28,
+    "hours": "1.0",
+    "cost": 149,
+    "commits": 3,
     "days": 7
   },
   "thisMonth": {
-    "hours": "145.5",
-    "cost": 21830,
-    "commits": 441
+    "hours": "91.4",
+    "cost": 13712,
+    "commits": 277
   },
   "quality": {
     "testCoverage": {
@@ -211,7 +211,7 @@
       "eslintWarnings": 0,
       "codeComplexity": "N/A",
       "duplicateCode": 0,
-      "technicalDebt": 13713,
+      "technicalDebt": 13718,
       "codeSmells": 0
     },
     "score": 100
@@ -224,7 +224,7 @@
       "low": 0,
       "total": 0
     },
-    "lastAudit": "2025-11-20T04:43:45.585Z",
+    "lastAudit": "2025-12-03T04:52:47.030Z",
     "dependencies": {
       "total": 0,
       "outdated": 0,
@@ -296,9 +296,9 @@
     }
   },
   "documentation": {
-    "markdownFiles": 2516,
-    "jsFilesTotal": 25044,
-    "jsFilesDocumented": 25044,
+    "markdownFiles": 2541,
+    "jsFilesTotal": 25076,
+    "jsFilesDocumented": 25076,
     "coverage": 423,
     "apiEndpoints": {
       "total": 0,
@@ -312,11 +312,11 @@
     "changelog": true,
     "contributing": false,
     "license": false,
-    "lastUpdate": "2025-11-19 23:42:54 -0500"
+    "lastUpdate": "2025-11-29 19:06:00 +0000"
   },
   "productivity": {
-    "velocityTrend": "decreasing",
-    "weeklyCommits": 28,
+    "velocityTrend": "increasing",
+    "weeklyCommits": 3,
     "contributors": {
       "total": 0,
       "active": 0
@@ -349,7 +349,7 @@
       "projectStart": "2025-08-10",
       "originalLaunch": "2025-11-01",
       "plannedLaunch": "2025-12-01",
-      "daysRemaining": 11,
+      "daysRemaining": -2,
       "onTrack": false,
       "adjustmentReason": "Timeline adjusted for realistic completion based on current velocity"
     },
@@ -394,6 +394,30 @@
   },
   "recentActivity": [
     {
+      "hash": "bc957e4131c5ca27f573b42ffd94ff70030c8dbe",
+      "message": "fix(client-ucs): align client persona pages with UCS header/sidebar",
+      "author": "SirsiMaster",
+      "date": "2025-12-02 23:50:07 -0500"
+    },
+    {
+      "hash": "59c9b0bf5fa958d8e522d06e353e2cf016866fa3",
+      "message": "chore(release): Bump version to 0.128.4 [skip ci]",
+      "author": "github-actions[bot]",
+      "date": "2025-11-29 19:06:00 +0000"
+    },
+    {
+      "hash": "66c293ba00940b0e1f0cb278d55a576e7edbdbaf",
+      "message": "fix(auth): Stabilize reset-password page Firebase wiring",
+      "author": "SirsiMaster",
+      "date": "2025-11-29 14:05:06 -0500"
+    },
+    {
+      "hash": "bfd361749210372ef117d95c37c896ea40b9f731",
+      "message": "chore(release): Bump version to 0.128.3 [skip ci]",
+      "author": "github-actions[bot]",
+      "date": "2025-11-20 04:43:35 +0000"
+    },
+    {
       "hash": "2a7662d19d74a822a8bf0537f2796cc5598d7704",
       "message": "fix(firebase): Align GA4 config, QR, and auth",
       "author": "SirsiMaster",
@@ -428,34 +452,10 @@
       "message": "fix: point firebase-init to legacy analytics-enabled web app and restore Firestore warnings",
       "author": "SirsiMaster",
       "date": "2025-11-16 18:15:08 -0500"
-    },
-    {
-      "hash": "1b0d0608890c58ba297c7e918c6ecad5b535d9f4",
-      "message": "fix: avoid external placeholder image URLs in properties and property detail",
-      "author": "SirsiMaster",
-      "date": "2025-11-16 18:02:39 -0500"
-    },
-    {
-      "hash": "91c18e7aefc4309e3945a86f36b0aad8dc862d97",
-      "message": "fix: wire properties header to universal header and align Firebase analytics config",
-      "author": "SirsiMaster",
-      "date": "2025-11-16 17:55:02 -0500"
-    },
-    {
-      "hash": "75e9e18ae06b9c74343ddea847d4ba83bc6fcb0b",
-      "message": "fix: use correct Firebase config and re-enable Analytics",
-      "author": "SirsiMaster",
-      "date": "2025-11-16 17:50:36 -0500"
-    },
-    {
-      "hash": "02a9da883739f138076708e0edbd36bf13515af8",
-      "message": "fix: disable Firebase Analytics to eliminate configuration errors",
-      "author": "SirsiMaster",
-      "date": "2025-11-16 17:47:38 -0500"
     }
   ],
   "automation": {
-    "lastRun": "2025-11-20T04:44:17.945Z",
+    "lastRun": "2025-12-03T04:53:18.469Z",
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",

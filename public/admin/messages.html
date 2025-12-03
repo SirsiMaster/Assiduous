@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en" data-auth-protect="admin">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Messages — Assiduous Admin Portal</title>
+
+    <!-- Assiduous Design System -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fontsource/geist-sans@5.0.6/latin.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="../assiduous.css">
+    <link rel="stylesheet" href="../components/admin-layout.css">
+
+    <style>
+        .messages-container {
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            height: calc(100vh - 120px);
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+        }
+        .conversations-sidebar {
+            background: var(--white);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+        }
+        .sidebar-header {
+            padding: var(--space-lg);
+            border-bottom: 1px solid var(--border);
+        }
+        .header-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: var(--space-sm);
+        }
+        .search-box { position: relative; }
+        .search-box input {
+            width: 100%;
+            padding: var(--space-sm) var(--space-md) var(--space-sm) 40px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            font-size: 14px;
+        }
+        .search-box input:focus { outline: none; border-color: var(--sky); }
+        .search-icon {
+            position: absolute;
+            left: var(--space-md);
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+        }
+        .conversations-list { flex: 1; overflow-y: auto; }
+        .conversation-item {
+            padding: var(--space-md) var(--space-lg);
+            border-bottom: 1px solid var(--border);
+            cursor: pointer;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+        .conversation-item:hover { background: var(--gray-50); }
+        .conversation-item.active {
+            background: rgba(96, 163, 217, 0.1);
+            border-left: 3px solid var(--sky);
+            padding-left: calc(var(--space-lg) - 3px);
+        }
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--gradient);
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+        .conversation-details { flex: 1; min-width: 0; }
+        .conversation-name { font-weight: 600; color: var(--navy); margin-bottom: 4px; }
+        .conversation-role { font-size: 12px; color: var(--sky); margin-bottom: 4px; }
+        .conversation-preview {
+            font-size: 14px;
+            color: var(--text-secondary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .conversation-meta { text-align: right; flex-shrink: 0; }
+        .conversation-time { font-size: 12px; color: var(--text-secondary); margin-bottom: 4px; }
+        .unread-badge {
+            background: var(--sky);
+            color: var(--white);
+            font-size: 11px;
+            padding: 2px 6px;
+            border-radius: 10px;
+            display: inline-block;
+        }
+        .chat-area { display: flex; flex-direction: column; }
+        .chat-header {
+            padding: var(--space-lg);
+            border-bottom: 1px solid var(--border);
+            background: var(--white);
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+        }
+        .chat-header-details { flex: 1; }
+        .chat-header-name { font-size: 18px; font-weight: 600; color: var(--navy); }
+        .chat-header-status { font-size: 14px; color: var(--success); }
+        .messages-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: var(--space-lg);
+            background: var(--gray-50);
+        }
+        .message {
+            display: flex;
+            margin-bottom: var(--space-lg);
+            gap: var(--space-sm);
+        }
+        .message-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--gradient);
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+        .message-content { max-width: 70%; }
+        .message-bubble {
+            background: var(--white);
+            padding: var(--space-md);
+            border-radius: var(--radius-md);
+            margin-bottom: 4px;
+        }
+        .message-text { font-size: 14px; line-height: 1.5; }
+        .message-time { font-size: 12px; color: var(--text-secondary); padding: 0 var(--space-sm); }
+        @media (max-width: 768px) {
+            .messages-container { grid-template-columns: 1fr; }
+            .conversations-sidebar { display: none; }
+            .conversations-sidebar.show {
+                display: flex;
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                z-index: 10;
+            }
+        }
+    </style>
+</head>
+<body class="admin-wrapper" data-active="messages">
+    <!-- UCS Sidebar Component -->
+    <aside class="sidebar" data-component="sidebar"></aside>
+
+    <!-- Main Content Area -->
+    <div class="main-content">
+        <!-- UCS Header Component -->
+        <header data-component="header"></header>
+
+        <!-- Page Content -->
+        <div class="dashboard-content">
+            <h1 class="page-title">System Messages</h1>
+            <p class="page-subtitle">Notifications and alerts related to the Assiduous platform</p>
+
+            <div id="inbox-root" class="messages-container" data-show-for-role="admin"></div>
+        </div>
+    </div>
+
+    <!-- UCS Core Scripts -->
+    <script src="../components/ucs-core.js"></script>
+    <script src="../components/component-registry.js"></script>
+    <script src="../firebase-config.js"></script>
+
+    <!-- Persona-aware header text for Admin Messages -->
+    <script>
+        (function() {
+            function applyAdminHeaderCopy() {
+                var titleEl = document.querySelector('[data-header-title]');
+                var subtitleEl = document.querySelector('[data-header-subtitle]');
+                if (!titleEl || !subtitleEl) {
+                    if (document.readyState === 'complete') {
+                        setTimeout(applyAdminHeaderCopy, 100);
+                    } else {
+                        window.addEventListener('load', function() {
+                            setTimeout(applyAdminHeaderCopy, 50);
+                        }, { once: true });
+                    }
+                    return;
+                }
+                titleEl.textContent = 'Admin Messages';
+                subtitleEl.textContent = 'System notifications and platform-level alerts';
+            }
+            setTimeout(applyAdminHeaderCopy, 50);
+        })();
+    </script>
+
+    <!-- Lazy-load header, sidebar, and auth-guard once Firebase is ready -->
+    <script>
+        window.addEventListener('firebase-ready', function() {
+            var headerScript = document.createElement('script');
+            headerScript.src = '../components/universal-header.js';
+            document.head.appendChild(headerScript);
+
+            headerScript.onload = function() {
+                var sidebarScript = document.createElement('script');
+                sidebarScript.src = '../components/sidebar.js';
+                document.head.appendChild(sidebarScript);
+
+                sidebarScript.onload = function() {
+                    var authScript = document.createElement('script');
+                    authScript.src = '../components/auth-guard.js';
+                    document.head.appendChild(authScript);
+                };
+            };
+        });
+    </script>
+
+    <!-- Canonical inbox viewer: users/{uid}/messages for admin -->
+    <script>
+      (function() {
+        function formatTime(ts) {
+          if (!ts || !ts.toDate) return '';
+          var d = ts.toDate();
+          return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) + ' ' +
+                 d.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' });
+        }
+
+        var latestDocs = [];
+
+        function renderMessages(snapshot) {
+          var container = document.getElementById('inbox-root');
+          if (!container) return;
+          var docs = snapshot.docs || [];
+          latestDocs = docs;
+
+          if (!docs.length) {
+            container.innerHTML = '<div class="empty-state" style="padding:24px;">No admin messages yet. Deployment alerts, system notices, and critical events will appear here.</div>';
+            return;
+          }
+
+          var items = docs.map(function(doc) {
+            var data = doc.data();
+            var subject = data.subject || '(No subject)';
+            var preview = data.bodyPreview || '';
+            var createdAt = formatTime(data.createdAt);
+            return '\
+              <div class="conversation-item" data-message-id="' + doc.id + '\">\
+                <div class="avatar">SYS</div>\
+                <div class="conversation-details">\
+                  <div class="conversation-name">' + subject + '</div>\
+                  <div class="conversation-preview">' + preview + '</div>\
+                </div>\
+                <div class="conversation-meta">\
+                  <div class="conversation-time">' + createdAt + '</div>\
+                </div>\
+              </div>';
+          }).join('');
+
+          container.innerHTML = '\
+            <div class="conversations-sidebar">\
+              <div class="sidebar-header">\
+                <div class="header-title">Admin Inbox</div>\
+                <div class="search-box">\
+                  <span class="search-icon">🔍</span>\
+                  <input type="text" placeholder="Search messages (coming soon)" disabled />\
+                </div>\
+              </div>\
+              <div class="conversations-list">' + items + '</div>\
+            </div>\
+            <div class="chat-area">\
+              <div class="chat-header">\
+                <div class="chat-header-details">\
+                  <div class="chat-header-name">Platform Notifications</div>\
+                  <div class="chat-header-status">System-level alerts and role-based notifications.</div>\
+                </div>\
+              </div>\
+              <div class="messages-area" id="messageDetailArea">\
+                <p class="page-subtitle">Select a message on the left to view more detail.</p>\
+              </div>\
+            </div>';
+
+          Array.prototype.forEach.call(container.querySelectorAll('.conversation-item'), function(item) {
+            item.addEventListener('click', function() {
+              var id = this.getAttribute('data-message-id');
+              var doc = latestDocs.find(function(d) { return d.id === id; });
+              if (!doc) return;
+              var data = doc.data();
+              var detail = document.getElementById('messageDetailArea');
+              if (!detail) return;
+
+              var createdAt = formatTime(data.createdAt);
+              var meta = data.meta || {};
+
+              detail.innerHTML = '\
+                <div class="activity-card">\
+                  <div class="activity-header">\
+                    <h3 class="activity-title">' + (data.subject || '(No subject)') + '</h3>\
+                    <span class="activity-status status-completed">' + createdAt + '</span>\
+                  </div>\
+                  <div class="activity-details">\
+                    <div class="detail-item">\
+                      <span class="detail-label">Preview</span>\
+                      <span class="detail-value">' + (data.bodyPreview || '') + '</span>\
+                    </div>\
+                    <div class="detail-item">\
+                      <span class="detail-label">Channel</span>\
+                      <span class="detail-value">' + ((data.channels || []).join(', ') || 'inbox') + '</span>\
+                    </div>\
+                    <div class="detail-item">\
+                      <span class="detail-label">External Provider</span>\
+                      <span class="detail-value">' + (data.externalProvider || '—') + '</span>\
+                    </div>\
+                    <div class="detail-item">\
+                      <span class="detail-label">Destination</span>\
+                      <span class="detail-value">' + (data.email || '—') + '</span>\
+                    </div>\
+                  </div>\
+                  <div class="info-box">\
+                    <strong>Metadata</strong>\
+                    <pre style="margin-top:8px;font-size:12px;background:#f9fafb;padding:8px;border-radius:6px;white-space:pre-wrap;">' +
+                      JSON.stringify(meta, null, 2) + '</pre>\
+                  </div>\
+                </div>';
+            });
+          });
+        }
+
+        window.addEventListener('firebase-ready', function() {
+          var auth = window.firebaseAuth || (window.firebase && firebase.auth && firebase.auth());
+          var db = window.firebaseDb || (window.firebase && firebase.firestore && firebase.firestore());
+          if (!auth || !db) {
+            console.error('[Admin Messages] Firebase not ready for inbox view');
+            return;
+          }
+
+          auth.onAuthStateChanged(function(user) {
+            if (!user) return;
+
+            var inboxRef = db
+              .collection('users')
+              .doc(user.uid)
+              .collection('messages')
+              .orderBy('createdAt', 'desc')
+              .limit(50);
+
+            inboxRef.onSnapshot(renderMessages, function(err) {
+              console.error('[Admin Messages] Inbox snapshot error:', err);
+            });
+          });
+        });
+      })();
+    </script>
+</body>
+</html>
