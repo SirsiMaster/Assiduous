@@ -14,6 +14,13 @@
     <link rel="stylesheet" href="../assiduous.css">
     <link rel="stylesheet" href="../components/admin-layout.css">
     
+    <!-- Canonical modular Firebase auth: used by AuthService and auth-guard -->
+    <script type="module">
+        import Firebase, { AuthService } from '../assets/js/firebase-init.js';
+        window.Firebase = Firebase;
+        window.AuthService = AuthService;
+    </script>
+    
     <style>
 /* Page-specific styles using design system variables */
         .content-grid {
@@ -426,7 +433,9 @@
                     
                     <div class="sidebar">
                         <div class="calendar-widget">
-                            <div class="calendar-nav">
+                            <div class="calendar-header">
+                                <div class="month-year" id="currentMonth">December 2025</div>
+                                <div class="calendar-nav">
                                     <button class="nav-btn" onclick="previousMonth()">‹</button>
                                     <button class="nav-btn" onclick="nextMonth()">›</button>
                                 </div>
@@ -459,6 +468,38 @@
                         </div>
                     </div>
                 </div>
+        </div>
+    </div>
+
+    <!-- Reschedule Modal -->
+    <div class="modal" id="rescheduleModal">
+        <div class="modal-content">
+            <h2 style="margin-bottom: 20px;">Reschedule Viewing</h2>
+            <form id="rescheduleForm">
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 500;">New Date</label>
+                    <input type="date" id="newDate" required style="width: 100%; padding: 10px; border: 2px solid #e0e0e0; border-radius: 8px;">
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 500;">New Time</label>
+                    <select id="newTime" required style="width: 100%; padding: 10px; border: 2px solid #e0e0e0; border-radius: 8px;">
+                        <option value="">Select time</option>
+                        <option value="9:00 AM">9:00 AM</option>
+                        <option value="10:00 AM">10:00 AM</option>
+                        <option value="11:00 AM">11:00 AM</option>
+                        <option value="12:00 PM">12:00 PM</option>
+                        <option value="1:00 PM">1:00 PM</option>
+                        <option value="2:00 PM">2:00 PM</option>
+                        <option value="3:00 PM">3:00 PM</option>
+                        <option value="4:00 PM">4:00 PM</option>
+                        <option value="5:00 PM">5:00 PM</option>
+                    </select>
+                </div>
+                <div style="display: flex; gap: 10px;">
+                    <button type="submit" class="btn btn-primary" style="flex: 1;">Confirm</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()" style="flex: 1;">Cancel</button>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -776,50 +817,58 @@
             document.getElementById('rescheduleModal').classList.add('active');
         }
         
-        // Handle reschedule form
-        document.getElementById('rescheduleForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const newDate = document.getElementById('newDate').value;
-            const newTime = document.getElementById('newTime').value;
-            
-            const viewing = allViewings.find(v => v.id === selectedViewingId);
-            if (viewing) {
-                viewing.date = newDate;
-                viewing.time = newTime;
-                viewing.status = 'pending';
+        // Handle reschedule form (guard against missing DOM in older builds)
+        const rescheduleFormEl = document.getElementById('rescheduleForm');
+        if (rescheduleFormEl) {
+            rescheduleFormEl.addEventListener('submit', async (e) => {
+                e.preventDefault();
                 
-                // Update Firebase if logged in
-                if (auth.currentUser && !selectedViewingId.startsWith('demo')) {
-                    try {
-                        await db.collection('viewings').doc(selectedViewingId).update({
-                            date: newDate,
-                            time: newTime,
-                            status: 'pending',
-                            rescheduledAt: new Date().toISOString()
-                        });
-                    } catch (error) {
-                        console.error('Error rescheduling in Firebase:', error);
+                const newDate = document.getElementById('newDate').value;
+                const newTime = document.getElementById('newTime').value;
+                
+                const viewing = allViewings.find(v => v.id === selectedViewingId);
+                if (viewing) {
+                    viewing.date = newDate;
+                    viewing.time = newTime;
+                    viewing.status = 'pending';
+                    
+                    // Update Firebase if logged in
+                    if (auth.currentUser && !selectedViewingId.startsWith('demo')) {
+                        try {
+                            await db.collection('viewings').doc(selectedViewingId).update({
+                                date: newDate,
+                                time: newTime,
+                                status: 'pending',
+                                rescheduledAt: new Date().toISOString()
+                            });
+                        } catch (error) {
+                            console.error('Error rescheduling in Firebase:', error);
+                        }
                     }
+                    
+                    // Update localStorage
+                    localStorage.setItem('viewings', JSON.stringify(allViewings));
+                    
+                    closeModal();
+                    filterViewings(currentFilter);
+                    updateStats();
+                    generateCalendar();
+                    
+                    alert('Viewing rescheduled successfully! You will receive a confirmation.');
                 }
-                
-                // Update localStorage
-                localStorage.setItem('viewings', JSON.stringify(allViewings));
-                
-                closeModal();
-                filterViewings(currentFilter);
-                updateStats();
-                generateCalendar();
-                
-                alert('Viewing rescheduled successfully! You will receive a confirmation.');
-            }
-        });
+            });
+        }
         
         // Close modal
         function closeModal() {
-            document.getElementById('rescheduleModal').classList.remove('active');
+            const modalEl = document.getElementById('rescheduleModal');
+            if (modalEl) {
+                modalEl.classList.remove('active');
+            }
             selectedViewingId = null;
-            document.getElementById('rescheduleForm').reset();
+            if (rescheduleFormEl) {
+                rescheduleFormEl.reset();
+            }
         }
         
         // Close modal on outside click
