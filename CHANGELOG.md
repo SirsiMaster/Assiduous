@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.136.0] - 2025-12-05
+
+### Added
+- feat(opensign): add envelopes api and sender ui
+
+
 ## [0.135.0] - 2025-12-05
 
 ### Added
@@ -1694,6 +1700,12 @@ accountIds/{accountId} = {
 **Sprint Progress**: Day 4 of 6 (67% target after Day 4 completion)
 
 ## [Unreleased]
+
+
+## [0.136.0] - 2025-12-05
+
+### Added
+- feat(opensign): add envelopes api and sender ui
 
 
 ## [0.135.0] - 2025-12-05
@@ -3620,7 +3632,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.135.0...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.136.0...HEAD
+
+
+## [0.136.0] - 2025-12-05
+
+### Added
+- feat(opensign): add envelopes api and sender ui
 
 
 ## [0.135.0] - 2025-12-05
@@ -5612,3 +5630,4 @@ To generate changelog entries:
 [0.133.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.132.0...v0.133.0
 [0.134.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.133.0...v0.134.0
 [0.135.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.134.0...v0.135.0
+[0.136.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.135.0...v0.136.0
