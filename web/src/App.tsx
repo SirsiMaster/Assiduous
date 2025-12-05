@@ -2,6 +2,7 @@ import React from 'react';
 
 import DocumentUploader from './components/DocumentUploader';
 import PricingPlans from './components/PricingPlans';
+import PlaidLinkButton from './components/PlaidLinkButton';
 import { useEntitlements } from './hooks/useEntitlements';
 
 const App: React.FC = () => {
@@ -36,7 +37,7 @@ const App: React.FC = () => {
         )}
 
         <div className="grid gap-6 md:grid-cols-2">
-          <section className="space-y-3">
+          <section className="space-y-4">
             <h2 className="text-sm font-semibold text-slate-100">Encrypted Uploads</h2>
             {apiBaseURL && (
               <DocumentUploader
@@ -45,6 +46,7 @@ const App: React.FC = () => {
                 storagePrefix="uploads/documents"
               />
             )}
+            {apiBaseURL && <PlaidLinkButton apiBaseURL={apiBaseURL} />}
           </section>
 
           <section className="space-y-3">

@@ -55,6 +55,16 @@
         "web/src/hooks/useEntitlements.ts",
         "web/src/App.tsx"
       ]
+    },
+    {
+      "id": "I-PLAID-001-004",
+      "name": "Plaid banking integration (link token, token exchange, accounts)",
+      "status": "in_progress",
+      "area": "integrations",
+      "codeRefs": [
+        "backend/pkg/plaid/plaid.go",
+        "backend/cmd/api/main.go:/api/plaid"
+      ]
     }
   ]
 }

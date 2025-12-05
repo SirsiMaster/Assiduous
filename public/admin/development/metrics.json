@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-12-05T14:43:59.303Z",
+  "lastUpdated": "2025-12-05T15:06:39.174Z",
   "summary": {
     "health": "Good",
     "score": 59,
@@ -152,19 +152,19 @@
     }
   },
   "project": {
-    "totalHours": "343",
+    "totalHours": "344",
     "avgHoursPerDay": "7.5",
-    "totalCost": 53948,
-    "laborCost": 51450,
+    "totalCost": 54098,
+    "laborCost": 51600,
     "toolsCost": 2498,
     "monthsElapsed": "3.8",
-    "totalCommits": 1040,
+    "totalCommits": 1041,
     "totalFiles": 849,
     "activeDays": 46,
     "totalDays": 117,
     "projectAgeDays": 117,
-    "linesAdded": 9840037,
-    "linesDeleted": 9448820,
+    "linesAdded": 9840070,
+    "linesDeleted": 9448853,
     "netLines": 391217,
     "velocity": "22.6",
     "completionPercentage": 59,
@@ -177,21 +177,21 @@
   },
   "today": {
     "date": "2025-12-05",
-    "hours": "2.0",
-    "cost": 297,
-    "commits": 6,
+    "hours": "2.3",
+    "cost": 347,
+    "commits": 7,
     "deployments": 0
   },
   "thisWeek": {
-    "hours": "10.6",
-    "cost": 1584,
-    "commits": 32,
+    "hours": "10.9",
+    "cost": 1634,
+    "commits": 33,
     "days": 7
   },
   "thisMonth": {
-    "hours": "82.8",
-    "cost": 12425,
-    "commits": 251
+    "hours": "83.2",
+    "cost": 12474,
+    "commits": 252
   },
   "quality": {
     "testCoverage": {
@@ -224,7 +224,7 @@
       "low": 0,
       "total": 0
     },
-    "lastAudit": "2025-12-05T14:43:28.934Z",
+    "lastAudit": "2025-12-05T15:06:03.990Z",
     "dependencies": {
       "total": 0,
       "outdated": 0,
@@ -263,14 +263,14 @@
     }
   },
   "deployment": {
-    "lastDeployment": "2025-12-05 09:42:42 -0500",
-    "totalDeployments": 136,
+    "lastDeployment": "2025-12-05 10:05:30 -0500",
+    "totalDeployments": 137,
     "deploymentFrequency": "Weekly",
     "environments": {
       "production": {
         "url": "https://assiduous-prod.web.app",
         "status": "Active",
-        "lastDeploy": "2025-12-05 09:42:42 -0500"
+        "lastDeploy": "2025-12-05 10:05:30 -0500"
       },
       "staging": {
         "url": "https://assiduous-staging.web.app",
@@ -316,7 +316,7 @@
   },
   "productivity": {
     "velocityTrend": "increasing",
-    "weeklyCommits": 32,
+    "weeklyCommits": 33,
     "contributors": {
       "total": 0,
       "active": 0
@@ -394,6 +394,12 @@
   },
   "recentActivity": [
     {
+      "hash": "ad2dc9a926355f99e85bc4158b92b2c25c29ac3b",
+      "message": "chore(metrics): update dev portal metrics after api deploy",
+      "author": "SirsiMaster",
+      "date": "2025-12-05 10:05:30 -0500"
+    },
+    {
       "hash": "950d294a1205b1319cff1dfa2712104b759abe5f",
       "message": "chore(deploy): fix api docker build and update metrics artifacts",
       "author": "SirsiMaster",
@@ -446,16 +452,10 @@
       "message": "chore(release): Bump version to 0.129.4 [skip ci]",
       "author": "github-actions[bot]",
       "date": "2025-12-03 18:42:45 +0000"
-    },
-    {
-      "hash": "4ad55b50396499eca4690d4b0fde29aaea608ea8",
-      "message": "fix(firebase): Remove duplicate FunctionsService export",
-      "author": "SirsiMaster",
-      "date": "2025-12-03 13:41:21 -0500"
     }
   ],
   "automation": {
-    "lastRun": "2025-12-05T14:43:59.303Z",
+    "lastRun": "2025-12-05T15:06:39.174Z",
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",
