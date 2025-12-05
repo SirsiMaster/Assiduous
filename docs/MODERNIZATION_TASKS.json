@@ -59,12 +59,20 @@
     {
       "id": "I-PLAID-001-004",
       "name": "Plaid banking integration (link token, token exchange, accounts)",
-      "status": "in_progress",
+      "status": "complete",
       "area": "integrations",
       "codeRefs": [
         "backend/pkg/plaid/plaid.go",
-        "backend/cmd/api/main.go:/api/plaid"
+        "backend/cmd/api/main.go:/api/plaid",
+        "web/src/components/PlaidLinkButton.tsx"
       ]
+    },
+    {
+      "id": "I-LOB-001-003",
+      "name": "Lob certified mail integration (letters API)",
+      "status": "planned",
+      "area": "integrations",
+      "codeRefs": []
     }
   ]
 }

@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-12-05T15:26:54.168Z",
+  "lastUpdated": "2025-12-05T15:28:48.233Z",
   "summary": {
     "health": "Good",
     "score": 59,
@@ -152,20 +152,20 @@
     }
   },
   "project": {
-    "totalHours": "344",
+    "totalHours": "345",
     "avgHoursPerDay": "7.5",
-    "totalCost": 54098,
-    "laborCost": 51600,
+    "totalCost": 54248,
+    "laborCost": 51750,
     "toolsCost": 2498,
     "monthsElapsed": "3.8",
-    "totalCommits": 1042,
+    "totalCommits": 1044,
     "totalFiles": 851,
     "activeDays": 46,
     "totalDays": 117,
     "projectAgeDays": 117,
-    "linesAdded": 9841195,
-    "linesDeleted": 9448886,
-    "netLines": 392309,
+    "linesAdded": 9841247,
+    "linesDeleted": 9448919,
+    "netLines": 392328,
     "velocity": "22.7",
     "completionPercentage": 59,
     "actualStartDate": "2025-08-10",
@@ -177,21 +177,21 @@
   },
   "today": {
     "date": "2025-12-05",
-    "hours": "2.6",
-    "cost": 396,
-    "commits": 8,
+    "hours": "3.3",
+    "cost": 495,
+    "commits": 10,
     "deployments": 0
   },
   "thisWeek": {
-    "hours": "11.2",
-    "cost": 1683,
-    "commits": 34,
+    "hours": "11.9",
+    "cost": 1782,
+    "commits": 36,
     "days": 7
   },
   "thisMonth": {
-    "hours": "83.5",
-    "cost": 12524,
-    "commits": 253
+    "hours": "84.2",
+    "cost": 12623,
+    "commits": 255
   },
   "quality": {
     "testCoverage": {
@@ -224,7 +224,7 @@
       "low": 0,
       "total": 0
     },
-    "lastAudit": "2025-12-05T15:26:16.383Z",
+    "lastAudit": "2025-12-05T15:28:14.195Z",
     "dependencies": {
       "total": 0,
       "outdated": 0,
@@ -263,14 +263,14 @@
     }
   },
   "deployment": {
-    "lastDeployment": "2025-12-05 10:05:30 -0500",
-    "totalDeployments": 137,
+    "lastDeployment": "2025-12-05 10:27:24 -0500",
+    "totalDeployments": 138,
     "deploymentFrequency": "Weekly",
     "environments": {
       "production": {
         "url": "https://assiduous-prod.web.app",
         "status": "Active",
-        "lastDeploy": "2025-12-05 10:05:30 -0500"
+        "lastDeploy": "2025-12-05 10:27:24 -0500"
       },
       "staging": {
         "url": "https://assiduous-staging.web.app",
@@ -312,16 +312,16 @@
     "changelog": true,
     "contributing": false,
     "license": false,
-    "lastUpdate": "2025-12-05 14:21:01 +0000"
+    "lastUpdate": "2025-12-05 15:26:05 +0000"
   },
   "productivity": {
     "velocityTrend": "increasing",
-    "weeklyCommits": 34,
+    "weeklyCommits": 36,
     "contributors": {
       "total": 0,
       "active": 0
     },
-    "averageCommitSize": 84,
+    "averageCommitSize": 83,
     "pullRequests": {
       "open": 0,
       "merged": 0,
@@ -394,6 +394,18 @@
   },
   "recentActivity": [
     {
+      "hash": "ae77cab138fde74e81fa46970b6345a307f0818b",
+      "message": "chore(metrics): refresh metrics after plaid deployment",
+      "author": "SirsiMaster",
+      "date": "2025-12-05 10:27:24 -0500"
+    },
+    {
+      "hash": "952e602bb03c2c58b040003df63c64a5c8689b2b",
+      "message": "chore(release): Bump version to 0.132.0 [skip ci]",
+      "author": "github-actions[bot]",
+      "date": "2025-12-05 15:26:05 +0000"
+    },
+    {
       "hash": "0ce1245fdea85ec3f11daae2f95abf69987f81c0",
       "message": "feat(plaid): add banking link, token exchange and accounts endpoints",
       "author": "SirsiMaster",
@@ -440,22 +452,10 @@
       "message": "feat(profile-qr): Add profile settings UIs and QR backfill",
       "author": "SirsiMaster",
       "date": "2025-12-04 22:23:26 -0500"
-    },
-    {
-      "hash": "59889c5b94eb03354f93df1a539dfab4d4b988f5",
-      "message": "chore(release): Bump version to 0.129.5 [skip ci]",
-      "author": "github-actions[bot]",
-      "date": "2025-12-03 18:48:49 +0000"
-    },
-    {
-      "hash": "76e107395087e4260997aca5047ec99b0b1278ea",
-      "message": "fix(firebase): Rename FunctionsService to CloudFunctionsService",
-      "author": "SirsiMaster",
-      "date": "2025-12-03 13:47:57 -0500"
     }
   ],
   "automation": {
-    "lastRun": "2025-12-05T15:26:54.168Z",
+    "lastRun": "2025-12-05T15:28:48.233Z",
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",
