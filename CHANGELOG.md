@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.133.0] - 2025-12-05
+
+### Added
+- feat(lob): add certified mail letters endpoint
+
+
 ## [0.132.0] - 2025-12-05
 
 ### Added
@@ -1676,6 +1682,12 @@ accountIds/{accountId} = {
 **Sprint Progress**: Day 4 of 6 (67% target after Day 4 completion)
 
 ## [Unreleased]
+
+
+## [0.133.0] - 2025-12-05
+
+### Added
+- feat(lob): add certified mail letters endpoint
 
 
 ## [0.132.0] - 2025-12-05
@@ -3584,7 +3596,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.132.0...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.133.0...HEAD
+
+
+## [0.133.0] - 2025-12-05
+
+### Added
+- feat(lob): add certified mail letters endpoint
 
 
 ## [0.132.0] - 2025-12-05
@@ -5555,3 +5573,4 @@ To generate changelog entries:
 [0.130.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.129.5...v0.130.0
 [0.131.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.130.0...v0.131.0
 [0.132.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.131.0...v0.132.0
+[0.133.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.132.0...v0.133.0
