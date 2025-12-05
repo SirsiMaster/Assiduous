@@ -223,8 +223,8 @@ function generateId(type) {
 
 # QR Code System Architecture
 **Added:** November 12, 2025 (Commit: 7bd76bcf, b84ae6fd, dcc2f02d, 69f6542b)  
-**Status:** Production-Ready - Fully Deployed
-**Location:** `/functions/index.js` (Cloud Functions), `/public/components/property-qr-widget.html`
+**Status:** Partially Validated – Profile QR live; property/referral QR pending full validation
+**Location:** Cloud Functions v2 in `/functions/src/index.ts` (compiled to `/functions/lib/index.js`), legacy QR helpers in `/functions/index.js`, UI in `/public/components/property-qr-widget.html` and persona-specific pages
 
 ## Overview
 
@@ -324,29 +324,32 @@ properties/{propertyId}/views/{viewId} {
 ```
 
 #### `generateUserQR`
-**Purpose**: Generate profile QR codes for users  
-**Trigger**: HTTPS Callable  
+**Purpose**: Generate profile QR codes for users across personas (admin/agent/client)  
+**Trigger**: HTTPS Callable (v2 `onCall` in `functions/src/index.ts`)  
 **Auth**: Required
 
 ```javascript
 // Input
-{ regenerate?: boolean }
+{ regenerate?: boolean, userId?: string }
 
 // Output
 {
   success: true,
   qrCodeUrl: "https://api.qrserver.com/v1/create-qr-code/?data=...",
-  profileUrl: "https://assiduous-prod.web.app/profile?uid=xyz",
+  profileUrl: "https://assiduous-prod.web.app/{role}/profile.html?id=USER_ID",
   regenerated: boolean
 }
 
 // Updates user document
 users/{userId} {
   profileQRCode: "https://...",
-  profileUrl: "https://...",
-  profileQRGeneratedAt: Timestamp
+  profileUrl: "https://assiduous-prod.web.app/{role}/profile.html?id=USER_ID",
+  profileQRGeneratedAt: Timestamp,
+  updatedAt: Timestamp
 }
 ```
+
+> Current UI usage: `public/client/my-qr.html` calls this via `CloudFunctionsService.generateUserQR` from `firebase-init.js`. Admin/agent personas can reuse the same callable and URL pattern for their own profile QR pages.
 
 ### 2. Frontend Components
 

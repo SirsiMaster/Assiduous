@@ -11,24 +11,609 @@
 
     <!-- Canonical modular Firebase auth: used by AuthService and auth-guard -->
     <script type="module">
-        import Firebase, { AuthService } from '../assets/js/firebase-init.js';
+        import Firebase, { AuthService, DatabaseService, StorageService } from '../assets/js/firebase-init.js';
         window.Firebase = Firebase;
         window.AuthService = AuthService;
+        window.DatabaseService = DatabaseService;
+        window.StorageService = StorageService;
     </script>
+
+    <style>
+        .dashboard-content {
+            padding: var(--space-xl);
+            background: var(--gray-50);
+            overflow-y: auto;
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: var(--space-xs);
+        }
+
+        .page-description {
+            color: var(--text-secondary);
+            font-size: 15px;
+            margin-bottom: var(--space-2xl);
+        }
+
+        .settings-grid {
+            display: grid;
+            grid-template-columns: minmax(260px, 320px) minmax(0, 1fr);
+            gap: var(--space-xl);
+        }
+
+        .profile-card,
+        .form-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: var(--space-xl);
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            margin-bottom: var(--space-lg);
+        }
+
+        .profile-avatar {
+            width: 72px;
+            height: 72px;
+            border-radius: 999px;
+            background: var(--gray-100);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 24px;
+            color: var(--navy);
+            background-size: cover;
+            background-position: center;
+        }
+
+        .profile-meta h2 {
+            margin: 0 0 4px 0;
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .profile-meta p {
+            margin: 0;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .profile-link-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+
+        .profile-link-value {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            font-size: 12px;
+            padding: 4px 8px;
+            border-radius: var(--radius);
+            background: var(--gray-50);
+            color: var(--text-secondary);
+            text-decoration: none;
+            word-break: break-all;
+        }
+
+        .profile-link-value svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        .form-section-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: var(--space-md);
+            color: var(--dark);
+        }
+
+        .form-grid-two {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: var(--space-lg);
+        }
+
+        .form-group {
+            margin-bottom: var(--space-lg);
+        }
+
+        .form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .form-input,
+        .form-textarea {
+            width: 100%;
+            padding: 8px 10px;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            font-size: 14px;
+            font-family: inherit;
+            transition: border-color 0.15s, box-shadow 0.15s;
+        }
+
+        .form-input:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--sky);
+            box-shadow: 0 0 0 3px rgba(96, 163, 217, 0.12);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 96px;
+        }
+
+        .form-helper {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        .photo-input {
+            margin-top: var(--space-sm);
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: var(--space-md);
+            margin-top: var(--space-xl);
+            border-top: 1px solid var(--border);
+            padding-top: var(--space-md);
+        }
+
+        .btn {
+            border-radius: 999px;
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: 500;
+            border: 1px solid transparent;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-secondary {
+            background: var(--white);
+            border-color: var(--border);
+            color: var(--text-primary);
+        }
+
+        .btn-primary {
+            background: var(--navy);
+            color: var(--white);
+        }
+
+        .btn[disabled] {
+            opacity: 0.6;
+            cursor: default;
+        }
+
+        .status-text {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-md);
+        }
+
+        .status-text.error {
+            color: var(--danger);
+        }
+
+        @media (max-width: 900px) {
+            .settings-grid {
+                grid-template-columns: minmax(0, 1fr);
+            }
+        }
+    </style>
 </head>
 <body class="admin-wrapper" data-active="settings">
     <aside class="sidebar" data-component="sidebar"></aside>
     <div class="main-content">
         <header data-component="header"></header>
-        <div class="dashboard-content" style="padding: var(--space-xl); background: var(--gray-50);">
-            <h1 style="font-size: 32px; font-weight: 700; margin-bottom: var(--space-2xl);">Settings</h1>
-            <div style="background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-md); padding: var(--space-xl);">
-                <p style="color: var(--text-secondary); text-align: center; padding: var(--space-3xl);">Settings page coming soon</p>
+        <div class="dashboard-content">
+            <h1 class="page-title">Profile settings</h1>
+            <p class="page-description">Update the information that appears on your public Assiduous profile.</p>
+
+            <div id="profileStatus" class="status-text">Loading your profile...</div>
+
+            <div id="profileSettingsCard" class="settings-grid" style="display:none;">
+                <!-- Left: profile summary -->
+                <section class="profile-card">
+                    <div class="profile-header">
+                        <div id="profilePhotoPreview" class="profile-avatar">--</div>
+                        <div class="profile-meta">
+                            <h2 id="profileName">Client</h2>
+                            <p id="profileEmailText">&nbsp;</p>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="profile-link-label">Public profile link</div>
+                        <a id="publicProfileLink" class="profile-link-value" href="#" target="_blank" rel="noopener">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+                                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+                            </svg>
+                            <span id="publicProfileUrlText">--</span>
+                        </a>
+                    </div>
+
+                    <div class="form-group" style="margin-top: var(--space-xl);">
+                        <label class="form-label" for="photoInput">Profile photo</label>
+                        <input id="photoInput" class="form-input photo-input" type="file" accept="image/*" onchange="handlePhotoChange(event)">
+                        <p class="form-helper">Use a clear headshot. This appears on your profile and QR page.</p>
+                        <input type="hidden" id="photoUrl" />
+                    </div>
+                </section>
+
+                <!-- Right: editable form -->
+                <section class="form-card">
+                    <form id="profileForm" onsubmit="return false;">
+                        <div class="form-section-title">Basic information</div>
+                        <div class="form-grid-two">
+                            <div class="form-group">
+                                <label class="form-label" for="firstName">First name</label>
+                                <input id="firstName" class="form-input" type="text" autocomplete="given-name">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="lastName">Last name</label>
+                                <input id="lastName" class="form-input" type="text" autocomplete="family-name">
+                            </div>
+                        </div>
+
+                        <div class="form-grid-two">
+                            <div class="form-group">
+                                <label class="form-label" for="email">Email</label>
+                                <input id="email" class="form-input" type="email" autocomplete="email" disabled>
+                                <p class="form-helper">Primary contact email. To change this, contact support.</p>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="phone">Phone</label>
+                                <input id="phone" class="form-input" type="tel" autocomplete="tel">
+                            </div>
+                        </div>
+
+                        <div class="form-section-title" style="margin-top: var(--space-xl);">Location</div>
+                        <div class="form-grid-two">
+                            <div class="form-group">
+                                <label class="form-label" for="city">City</label>
+                                <input id="city" class="form-input" type="text" autocomplete="address-level2">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="state">State</label>
+                                <input id="state" class="form-input" type="text" autocomplete="address-level1">
+                            </div>
+                        </div>
+                        <div class="form-group" style="max-width: 200px;">
+                            <label class="form-label" for="zip">ZIP code</label>
+                            <input id="zip" class="form-input" type="text" autocomplete="postal-code">
+                        </div>
+
+                        <div class="form-section-title" style="margin-top: var(--space-xl);">About you</div>
+                        <div class="form-group">
+                            <label class="form-label" for="bio">Short bio</label>
+                            <textarea id="bio" class="form-textarea" maxlength="600" placeholder="Tell agents and partners a bit about your goals, experience, or what you're looking for."></textarea>
+                            <p class="form-helper">Shown on your profile page when someone scans your QR code.</p>
+                        </div>
+
+                        <div class="form-section-title" style="margin-top: var(--space-xl);">Social & links</div>
+                        <div class="form-grid-two">
+                            <div class="form-group">
+                                <label class="form-label" for="linkedinUrl">LinkedIn URL</label>
+                                <input id="linkedinUrl" class="form-input" type="url" placeholder="https://www.linkedin.com/in/username">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="websiteUrl">Website</label>
+                                <input id="websiteUrl" class="form-input" type="url" placeholder="https://your-site.com">
+                            </div>
+                        </div>
+                        <div class="form-grid-two">
+                            <div class="form-group">
+                                <label class="form-label" for="twitterHandle">X / Twitter</label>
+                                <input id="twitterHandle" class="form-input" type="text" placeholder="@handle or full URL">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="instagramHandle">Instagram</label>
+                                <input id="instagramHandle" class="form-input" type="text" placeholder="@handle or full URL">
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-secondary" onclick="resetProfileForm()">Reset</button>
+                            <button id="saveProfileBtn" type="button" class="btn btn-primary" onclick="saveProfileSettings()">Save changes</button>
+                        </div>
+                    </form>
+                </section>
             </div>
         </div>
     </div>
+
     <script src="../components/ucs-core.js"></script>
     <script src="../components/component-registry.js"></script>
     <script src="../components/auth-guard.js"></script>
+    <script>
+        let auth;
+        let dbService;
+        let storageService;
+        let currentUser = null;
+        let originalProfileData = null;
+        let currentPhotoUrl = '';
+
+        function buildProfileUrl(uid) {
+            const origin = window.location.origin;
+            const path = window.location.pathname || '';
+            const base = path.includes('/public/') ? '/public/client' : '/client';
+            return `${origin}${base}/profile.html?id=${encodeURIComponent(uid)}`;
+        }
+
+        function setAvatarFromNameOrPhoto(name, photoUrl) {
+            const avatarEl = document.getElementById('profilePhotoPreview');
+            if (!avatarEl) return;
+
+            if (photoUrl) {
+                avatarEl.style.backgroundImage = `url('${photoUrl}')`;
+                avatarEl.textContent = '';
+                return;
+            }
+
+            avatarEl.style.backgroundImage = 'none';
+            const trimmed = (name || '').trim();
+            if (!trimmed) {
+                avatarEl.textContent = '--';
+                return;
+            }
+            const parts = trimmed.split(/\s+/);
+            const initials = (parts[0]?.[0] || '') + (parts[1]?.[0] || '');
+            avatarEl.textContent = initials.toUpperCase();
+        }
+
+        window.addEventListener('firebase-ready', () => {
+            const firebase = window.Firebase || {};
+            auth = firebase.auth || window.firebaseAuth;
+            dbService = firebase.DatabaseService || window.DatabaseService;
+            storageService = firebase.StorageService || window.StorageService;
+
+            if (!auth) {
+                console.error('Auth not available');
+                return;
+            }
+
+            auth.onAuthStateChanged(async (user) => {
+                if (!user) {
+                    window.location.href = '../index.html#login';
+                    return;
+                }
+
+                currentUser = user;
+                await loadProfileSettings();
+            });
+        });
+
+        async function loadProfileSettings() {
+            const statusEl = document.getElementById('profileStatus');
+            const cardEl = document.getElementById('profileSettingsCard');
+
+            if (!dbService || typeof dbService.getUserData !== 'function') {
+                statusEl.textContent = 'Profile service is not available. Please try again later.';
+                statusEl.classList.add('error');
+                return;
+            }
+
+            try {
+                statusEl.textContent = 'Loading your profile...';
+                const result = await dbService.getUserData(currentUser.uid);
+                if (!result || !result.success || !result.data) {
+                    statusEl.textContent = 'Profile not found.';
+                    statusEl.classList.add('error');
+                    return;
+                }
+
+                const data = result.data;
+                const profile = data.profile || {};
+                originalProfileData = { data, profile };
+
+                const firstName = data.firstName || '';
+                const lastName = data.lastName || '';
+                const displayName = (data.displayName || `${firstName} ${lastName}`).trim() || 'Client';
+                const email = data.email || '';
+                const phone = data.phone || '';
+
+                currentPhotoUrl = profile.photoUrl || '';
+
+                document.getElementById('firstName').value = firstName;
+                document.getElementById('lastName').value = lastName;
+                document.getElementById('email').value = email;
+                document.getElementById('phone').value = phone;
+
+                document.getElementById('city').value = profile.city || '';
+                document.getElementById('state').value = profile.state || '';
+                document.getElementById('zip').value = profile.zip || '';
+                document.getElementById('bio').value = profile.bio || '';
+                document.getElementById('linkedinUrl').value = profile.linkedinUrl || '';
+                document.getElementById('websiteUrl').value = profile.websiteUrl || '';
+                document.getElementById('twitterHandle').value = profile.twitterHandle || '';
+                document.getElementById('instagramHandle').value = profile.instagramHandle || '';
+                document.getElementById('photoUrl').value = currentPhotoUrl;
+
+                document.getElementById('profileName').textContent = displayName;
+                document.getElementById('profileEmailText').textContent = email;
+                setAvatarFromNameOrPhoto(displayName, currentPhotoUrl);
+
+                const profileUrl = data.profileUrl || buildProfileUrl(currentUser.uid);
+                const linkEl = document.getElementById('publicProfileLink');
+                const urlTextEl = document.getElementById('publicProfileUrlText');
+                linkEl.href = profileUrl;
+                urlTextEl.textContent = profileUrl;
+
+                statusEl.style.display = 'none';
+                cardEl.style.display = 'grid';
+            } catch (error) {
+                console.error('Error loading profile settings:', error);
+                statusEl.textContent = 'Error loading profile settings.';
+                statusEl.classList.add('error');
+            }
+        }
+
+        async function handlePhotoChange(event) {
+            const file = event.target.files && event.target.files[0];
+            if (!file) return;
+
+            if (!auth || !auth.currentUser) {
+                alert('You must be logged in to upload a profile photo.');
+                return;
+            }
+            if (!storageService || typeof storageService.uploadFile !== 'function') {
+                alert('File upload service is not available right now. Please try again later.');
+                return;
+            }
+
+            const statusEl = document.getElementById('profileStatus');
+            statusEl.style.display = 'block';
+            statusEl.classList.remove('error');
+            statusEl.textContent = 'Uploading profile photo...';
+
+            try {
+                const safeName = file.name.replace(/[^a-zA-Z0-9_.-]/g, '_');
+                const path = `users/${auth.currentUser.uid}/profile-photo/${Date.now()}_${safeName}`;
+                const result = await storageService.uploadFile(path, file);
+                if (!result || !result.success) {
+                    throw new Error(result?.error || 'Failed to upload photo');
+                }
+
+                currentPhotoUrl = result.url;
+                document.getElementById('photoUrl').value = currentPhotoUrl;
+                const displayName = document.getElementById('profileName').textContent || 'Client';
+                setAvatarFromNameOrPhoto(displayName, currentPhotoUrl);
+                statusEl.textContent = 'Profile photo uploaded. Remember to save your changes.';
+            } catch (error) {
+                console.error('Error uploading profile photo:', error);
+                statusEl.textContent = 'Error uploading profile photo.';
+                statusEl.classList.add('error');
+            }
+        }
+
+        async function saveProfileSettings() {
+            if (!dbService || typeof dbService.updateUserProfile !== 'function') {
+                alert('Profile service is not available right now. Please try again later.');
+                return;
+            }
+            if (!currentUser) return;
+
+            const saveBtn = document.getElementById('saveProfileBtn');
+            const statusEl = document.getElementById('profileStatus');
+
+            const firstName = document.getElementById('firstName').value.trim();
+            const lastName = document.getElementById('lastName').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const city = document.getElementById('city').value.trim();
+            const state = document.getElementById('state').value.trim();
+            const zip = document.getElementById('zip').value.trim();
+            const bio = document.getElementById('bio').value.trim();
+            const linkedinUrl = document.getElementById('linkedinUrl').value.trim();
+            const websiteUrl = document.getElementById('websiteUrl').value.trim();
+            const twitterHandle = document.getElementById('twitterHandle').value.trim();
+            const instagramHandle = document.getElementById('instagramHandle').value.trim();
+
+            const displayName = `${firstName} ${lastName}`.trim() || 'Client';
+
+            const updates = {
+                firstName,
+                lastName,
+                displayName,
+                phone,
+                'profile.city': city,
+                'profile.state': state,
+                'profile.zip': zip,
+                'profile.bio': bio,
+                'profile.linkedinUrl': linkedinUrl,
+                'profile.websiteUrl': websiteUrl,
+                'profile.twitterHandle': twitterHandle,
+                'profile.instagramHandle': instagramHandle,
+                'profile.photoUrl': currentPhotoUrl || '',
+            };
+
+            try {
+                saveBtn.disabled = true;
+                saveBtn.textContent = 'Saving...';
+                statusEl.style.display = 'block';
+                statusEl.classList.remove('error');
+                statusEl.textContent = 'Saving your profile...';
+
+                const result = await dbService.updateUserProfile(currentUser.uid, updates);
+                if (!result || !result.success) {
+                    throw new Error(result?.error || 'Failed to save profile');
+                }
+
+                document.getElementById('profileName').textContent = displayName;
+                document.getElementById('profileEmailText').textContent = document.getElementById('email').value;
+                setAvatarFromNameOrPhoto(displayName, currentPhotoUrl);
+
+                const profileUrl = buildProfileUrl(currentUser.uid);
+                const linkEl = document.getElementById('publicProfileLink');
+                const urlTextEl = document.getElementById('publicProfileUrlText');
+                linkEl.href = profileUrl;
+                urlTextEl.textContent = profileUrl;
+
+                statusEl.textContent = 'Profile updated.';
+            } catch (error) {
+                console.error('Error saving profile settings:', error);
+                statusEl.textContent = 'Error saving profile settings.';
+                statusEl.classList.add('error');
+                alert('Error saving profile: ' + error.message);
+            } finally {
+                saveBtn.disabled = false;
+                saveBtn.textContent = 'Save changes';
+            }
+        }
+
+        function resetProfileForm() {
+            if (!originalProfileData) return;
+            const { data, profile } = originalProfileData;
+
+            const firstName = data.firstName || '';
+            const lastName = data.lastName || '';
+            const displayName = (data.displayName || `${firstName} ${lastName}`).trim() || 'Client';
+            const email = data.email || '';
+
+            document.getElementById('firstName').value = firstName;
+            document.getElementById('lastName').value = lastName;
+            document.getElementById('email').value = email;
+            document.getElementById('phone').value = data.phone || '';
+
+            document.getElementById('city').value = profile.city || '';
+            document.getElementById('state').value = profile.state || '';
+            document.getElementById('zip').value = profile.zip || '';
+            document.getElementById('bio').value = profile.bio || '';
+            document.getElementById('linkedinUrl').value = profile.linkedinUrl || '';
+            document.getElementById('websiteUrl').value = profile.websiteUrl || '';
+            document.getElementById('twitterHandle').value = profile.twitterHandle || '';
+            document.getElementById('instagramHandle').value = profile.instagramHandle || '';
+
+            currentPhotoUrl = profile.photoUrl || '';
+            document.getElementById('photoUrl').value = currentPhotoUrl;
+            document.getElementById('profileName').textContent = displayName;
+            document.getElementById('profileEmailText').textContent = email;
+            setAvatarFromNameOrPhoto(displayName, currentPhotoUrl);
+        }
+    </script>
 </body>
 </html>

@@ -41,41 +41,42 @@ Property detail page updates:
 
 ### ✅ Implemented Features
 
-#### Cloud Functions (`functions/index.js`)
-1. **`generatePropertyQR`** (line 835)
+#### Cloud Functions
+1. **`generatePropertyQR`** (legacy JS in `functions/index.js`)
    - Generates sequential Assiduous IDs using `generateSequentialId('PROP')`
    - Creates QR codes via `api.qrserver.com`
    - Stores QR data in Firestore property documents
-   - Status: Code complete, untested
+   - Status: Code complete, unported to v2 TS entrypoint, untested
 
-2. **`sharePropertyQR`** (line 906)
+2. **`sharePropertyQR`** (legacy JS in `functions/index.js`)
    - Shares properties via email or SMS with tracking
    - Uses SendGrid for email, Twilio for SMS
    - Records shares in `property_shares` collection
-   - Status: Code complete, **broken** (missing secrets)
+   - Status: Code complete, **broken** (missing secrets) and not yet ported to v2 TS entrypoint
 
-3. **`generateReferralCode`** (line 386)
+3. **`generateReferralCode`** (legacy JS in `functions/index.js`)
    - Creates unique referral codes for users
    - Generates QR codes for signup URLs
-   - Status: Code complete, untested
+   - Status: Code complete, unported to v2 TS entrypoint, untested
 
-4. **`sendClientInvitation`** (line 437)
+4. **`sendClientInvitation`** (legacy JS in `functions/index.js`)
    - Sends invitation emails to clients
    - Creates temp accounts with tokens
-   - Status: Code complete, **broken** (missing secrets)
+   - Status: Code complete, **broken** (missing secrets) and not yet ported to v2 TS entrypoint
 
-5. **`shareQRCode`** (line 680)
+5. **`shareQRCode`** (legacy JS in `functions/index.js`)
    - Shares user referral QR codes via email/SMS
-   - Status: Code complete, **broken** (missing secrets)
+   - Status: Code complete, **broken** (missing secrets) and not yet ported to v2 TS entrypoint
 
-6. **`trackPropertyView`** (line 1037)
+6. **`trackPropertyView`** (legacy JS in `functions/index.js`)
    - Tracks when shared properties are viewed
    - Updates attribution data
-   - Status: Code complete, untested
+   - Status: Code complete, unported to v2 TS entrypoint, untested
 
-7. **`generateUserQR`** (line 1090)
-   - Generates profile QR codes for users
-   - Status: Code complete, untested
+7. **`generateUserQR`** (**canonical v2 callable in `functions/src/index.ts`**)
+   - Generates role-aware profile QR codes for users (admin/agent/client)
+   - Persists `profileQRCode` and `profileUrl` on the user document
+   - Status: **Deployed and tested in production for client My QR page**; admin/agent UI integration pending
 
 #### Frontend Components
 
@@ -171,7 +172,9 @@ TWILIO_PHONE_NUMBER: ❌ Not found
 ### Backend (Cloud Functions)
 ```
 functions/
-├── index.js                    # All QR functions (7 callable functions)
+├── src/index.ts                # Canonical v2 functions (generateUserQR, API, Stripe, RBAC)
+├── lib/index.js                # Compiled JS output deployed by Firebase
+├── index.js                    # Legacy QR functions (generatePropertyQR, sharePropertyQR, etc.)
 ├── package.json                # Dependencies: @sendgrid/mail, twilio
 ├── check-secrets.sh            # Secret validation script
 └── set-secrets-from-env.sh     # Secret configuration helper
@@ -281,7 +284,7 @@ docs/
 
 ## Conclusion
 
-The QR system represents **significant development effort** but is **completely untested and non-functional** due to missing third-party service configurations. The code quality appears solid, but without secrets configured and browser testing completed, it cannot be considered MVP-ready.
+The QR system represents **significant development effort** but is still **partially untested and non-functional** due to missing third-party service configurations and legacy JS-only functions. The **profile QR path (`generateUserQR` + `public/client/my-qr.html`) is now deployed and tested in production for client personas**, but property/referral QR flows remain unvalidated until we port the remaining functions to the v2 TS entrypoint and complete end-to-end tests.
 
 **Estimated Time to Fix:** 6-8 hours
 - Secret configuration: 1-2 hours

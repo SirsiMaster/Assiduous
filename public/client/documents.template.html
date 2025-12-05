@@ -802,6 +802,19 @@
         </main>
     </div>
 
+    <!-- Document QR Modal -->
+    <div id="documentQRModal" class="share-modal" style="display: none;" onclick="closeDocumentQRModal(event)">
+        <div class="share-modal-content" onclick="event.stopPropagation()">
+            <div class="share-modal-header">
+                <h3>Document QR Code</h3>
+                <button class="close-modal" onclick="hideDocumentQRModal()">&times;</button>
+            </div>
+            <div class="qr-display" id="documentQRDisplay">
+                <div class="qr-loading">Generating QR...</div>
+            </div>
+        </div>
+    </div>
+
     <!-- Upload Progress Indicator -->
     <div id="uploadProgress" class="upload-progress" style="display: none;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-sm);">
@@ -1062,6 +1075,14 @@
                             <span>${getRelativeTime(doc.uploadedAt)}</span>
                         </div>
                         <div class="document-actions">
+                            <button class="doc-action-btn" onclick="showDocumentQR('${doc.downloadURL}', '${doc.fileName}')" title="QR Code">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="3" width="7" height="7"></rect>
+                                    <rect x="14" y="3" width="7" height="7"></rect>
+                                    <rect x="3" y="14" width="7" height="7"></rect>
+                                    <rect x="14" y="14" width="4" height="4"></rect>
+                                </svg>
+                            </button>
                             <button class="doc-action-btn" onclick="downloadDocument('${doc.downloadURL}', '${doc.fileName}')" title="Download">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
@@ -1199,6 +1220,35 @@
             }
         }
         
+        let currentDocumentQR = null;
+
+        function showDocumentQR(url, fileName) {
+            const modal = document.getElementById('documentQRModal');
+            const display = document.getElementById('documentQRDisplay');
+            const qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=' + encodeURIComponent(url);
+            currentDocumentQR = { url, qrUrl, fileName };
+            display.innerHTML = `
+                <img src="${qrUrl}" alt="Document QR Code" />
+                <p style="margin-top:8px; font-size:13px;">
+                    <a href="${url}" target="_blank" rel="noopener" style="color: var(--sky); text-decoration: underline;">
+                        Open document
+                    </a>
+                </p>
+            `;
+            modal.style.display = 'flex';
+        }
+
+        function hideDocumentQRModal() {
+            const modal = document.getElementById('documentQRModal');
+            modal.style.display = 'none';
+        }
+
+        function closeDocumentQRModal(event) {
+            if (event.target.id === 'documentQRModal') {
+                hideDocumentQRModal();
+            }
+        }
+
         /**
          * Download document
          */

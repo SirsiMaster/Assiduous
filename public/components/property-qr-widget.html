@@ -328,7 +328,14 @@ async function initPropertyQR(propertyId) {
         document.getElementById('assiduousId').textContent = currentPropertyQRData.assiduousId;
         
         const qrDisplay = document.getElementById('qrDisplay');
-        qrDisplay.innerHTML = `<img src="${currentPropertyQRData.qrCodeUrl}" alt="Property QR Code" />`;
+        qrDisplay.innerHTML = `
+            <img src="${currentPropertyQRData.qrCodeUrl}" alt="Property QR Code" />
+            <p style="margin-top: 8px; font-size: 13px;">
+                <a href="${currentPropertyQRData.propertyUrl}" target="_blank" rel="noopener" style="color: var(--sky); text-decoration: underline;">
+                    Open property page
+                </a>
+            </p>
+        `;
         
         console.log('✅ Property QR loaded:', currentPropertyQRData);
         

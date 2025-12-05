@@ -6,7 +6,7 @@
  */
 
 import {setGlobalOptions} from "firebase-functions";
-import {onRequest} from "firebase-functions/v2/https";
+import {onRequest, onCall, HttpsError} from "firebase-functions/v2/https";
 import {onDocumentCreated} from "firebase-functions/v2/firestore";
 import {beforeUserCreated} from "firebase-functions/v2/identity";
 import {defineSecret} from "firebase-functions/params";
@@ -52,6 +52,119 @@ const db = admin.firestore();
 
 // Set global options
 setGlobalOptions({maxInstances: 10});
+
+// ============================================================================
+// SHARED HELPERS (ID GENERATOR, PORTAL MESSAGES)
+// ============================================================================
+
+/**
+ * Generate unique alphanumeric referral code (non-sequential).
+ */
+function generateRandomReferralCode(length: number): string {
+  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; // remove ambiguous chars
+  let code = "";
+  for (let i = 0; i < length; i++) {
+    code += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return code;
+}
+
+/**
+ * Generate sequential ID using atomic counter
+ * Format: TYPE-YEAR-SEQUENCE (e.g., PROP-2024-001234)
+ */
+async function generateSequentialId(type: string): Promise<string> {
+  const year = new Date().getFullYear();
+  const counterKey = `${type.toUpperCase()}_${year}`;
+  const counterRef = db.collection("_id_counters").doc(counterKey);
+
+  return db.runTransaction(async (transaction) => {
+    const doc = await transaction.get(counterRef);
+
+    let nextSequence = 1;
+    if (doc.exists) {
+      const data = doc.data() as {current?: number} | undefined;
+      nextSequence = ((data?.current) || 0) + 1;
+      transaction.update(counterRef, {
+        current: nextSequence,
+        lastUpdated: admin.firestore.FieldValue.serverTimestamp(),
+      });
+    } else {
+      // First time for this type+year combo
+      transaction.set(counterRef, {
+        type: type.toUpperCase(),
+        year,
+        current: 1,
+        created: admin.firestore.FieldValue.serverTimestamp(),
+        lastUpdated: admin.firestore.FieldValue.serverTimestamp(),
+      });
+    }
+
+    const paddedSequence = String(nextSequence).padStart(6, "0");
+    return `${type.toUpperCase()}-${year}-${paddedSequence}`;
+  });
+}
+
+interface PortalMessagePayload {
+  userId: string;
+  type?: string;
+  template?: string | null;
+  subject: string;
+  bodyPreview: string;
+  channels?: string[];
+  email?: string | null;
+  externalProvider?: string | null;
+  externalMessageId?: string | null;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  meta?: any;
+}
+
+/**
+ * Log a portal message for a specific user.
+ * Messages are stored under users/{userId}/messages/{messageId}.
+ */
+async function logPortalMessage(payload: PortalMessagePayload): Promise<string | null> {
+  const {
+    userId,
+    type = "email_mirror",
+    template = null,
+    subject,
+    bodyPreview,
+    channels = ["email", "inbox"],
+    email = null,
+    externalProvider = null,
+    externalMessageId = null,
+    meta = {},
+  } = payload;
+
+  if (!userId) {
+    logger.warn("logPortalMessage called without userId");
+    return null;
+  }
+
+  const messageRef = db
+    .collection("users")
+    .doc(userId)
+    .collection("messages")
+    .doc();
+
+  await messageRef.set({
+    type,
+    template,
+    subject,
+    bodyPreview,
+    channels,
+    email,
+    externalProvider,
+    externalMessageId,
+    meta,
+    createdAt: admin.firestore.FieldValue.serverTimestamp(),
+    readAt: null,
+  });
+
+  logger.info("Portal message logged", {userId, subject});
+  return messageRef.id;
+}
 
 // ============================================================================
 // GITHUB WEBHOOK - SERVER-SIDE METRICS INGESTION
@@ -1690,7 +1803,7 @@ export const onNewUserCreated = beforeUserCreated(async (event) => {
 });
 
 /**
- * Trigger: User profile created - Send welcome email
+ * Trigger: User profile created - Send welcome email and initialize profile/QR
  */
 export const onUserProfileCreated = onDocumentCreated(
   {
@@ -1703,6 +1816,38 @@ export const onUserProfileCreated = onDocumentCreated(
     const userData = event.data.data();
     const userId = event.params.userId;
     
+    // Ensure profile object exists
+    try {
+      if (!userData.profile) {
+        await db.collection("users").doc(userId).set(
+          {
+            profile: {
+              photoUrl: "",
+              bio: "",
+              city: "",
+              state: "",
+              zip: "",
+              linkedinUrl: "",
+              twitterHandle: "",
+              instagramHandle: "",
+              websiteUrl: "",
+            },
+          },
+          {merge: true}
+        );
+      }
+    } catch (e: any) {
+      logger.error("Failed to backfill profile object for new user", {userId, error: e?.message});
+    }
+    
+    // Auto-generate profile QR (best effort; do not block welcome email)
+    try {
+      await generateUserProfileQRInternal(userId);
+    } catch (e: any) {
+      logger.error("Failed to auto-generate profile QR on user create", {userId, error: e?.message});
+    }
+    
+    // Send welcome email
     if (userData.email && userData.displayName) {
       logger.info("Sending welcome email to new user", {userId, email: userData.email});
       await emailService.sendWelcomeEmail(
@@ -1755,6 +1900,868 @@ export const getSubscriptionStatus = stripeModule.getSubscriptionStatus;
 // export const ingestProperty = propertyIngestion.ingestProperty;
 // export const bulkDeleteProperties = propertyIngestion.bulkDeleteProperties;
 // export const createApiKey = propertyIngestion.createApiKey;
+
+// ============================================================================
+// QR CODE FUNCTIONS (USER PROFILE + PROPERTY/REFERRAL)
+// ============================================================================
+
+/**
+ * Internal helper to (re)generate a user's profile QR.
+ * Used by both the callable function and the Firestore trigger.
+ */
+async function generateUserProfileQRInternal(targetUserId: string, regenerate = false) {
+  const userRef = db.collection("users").doc(targetUserId);
+  const userDoc = await userRef.get();
+
+  if (!userDoc.exists) {
+    throw new HttpsError("not-found", "User not found");
+  }
+
+  const userData = userDoc.data() || {};
+
+  // If QR already exists and we're not regenerating, return existing
+  if (userData.profileQRCode && !regenerate) {
+    return {
+      qrCodeUrl: userData.profileQRCode as string,
+      profileUrl: userData.profileUrl as string,
+      regenerated: false,
+    };
+  }
+
+  const role = (userData.role as string) || "client";
+  const baseUrl = "https://assiduous-prod.web.app";
+
+  let profileUrl: string;
+  if (role === "admin") {
+    profileUrl = `${baseUrl}/admin/profile.html?id=${targetUserId}`;
+  } else if (role === "agent") {
+    profileUrl = `${baseUrl}/agent/profile.html?id=${targetUserId}`;
+  } else {
+    profileUrl = `${baseUrl}/client/profile.html?id=${targetUserId}`;
+  }
+
+  const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(profileUrl)}`;
+
+  await userRef.update({
+    profileQRCode: qrCodeUrl,
+    profileUrl,
+    profileQRGeneratedAt: admin.firestore.FieldValue.serverTimestamp(),
+    updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+  });
+
+  logger.info("Generated profile QR for user", {userId: targetUserId, role});
+
+  return {
+    qrCodeUrl,
+    profileUrl,
+    regenerated: !!regenerate,
+  };
+}
+
+/**
+ * generateUserQR (callable)
+ * Generates or fetches a user's profile QR code.
+ *
+ * Frontend uses httpsCallable(functions, "generateUserQR").
+ */
+export const generateUserQR = onCall({region: "us-central1"}, async (request) => {
+  // Ensure the caller is authenticated
+  if (!request.auth) {
+    throw new HttpsError("unauthenticated", "User must be authenticated");
+  }
+
+  const data = (request.data || {}) as {userId?: string; regenerate?: boolean};
+  const targetUserId = data.userId || request.auth.uid;
+  const regenerate = !!data.regenerate;
+
+  try {
+    const {qrCodeUrl, profileUrl, regenerated} = await generateUserProfileQRInternal(
+      targetUserId,
+      regenerate
+    );
+
+    return {
+      success: true,
+      qrCodeUrl,
+      profileUrl,
+      regenerated,
+    };
+  } catch (error: any) {
+    logger.error("Error generating user QR", {error: error?.message, userId: targetUserId});
+    if (error instanceof HttpsError) {
+      throw error;
+    }
+    throw new HttpsError("internal", error?.message || "Failed to generate user QR");
+  }
+});
+
+/**
+ * backfillUserProfiles (HTTP onRequest)
+ *
+ * Admin-only maintenance endpoint to backfill profile objects and
+ * profile QR fields for existing users.
+ *
+ * Usage (example):
+ *   - Obtain an ID token for an admin user.
+ *   - Call this endpoint with Authorization: Bearer <ID_TOKEN>.
+ *   - Optional query params:
+ *       dryRun=true|false (default true)
+ *       pageSize=100 (max docs per call)
+ *       startAfter=<lastUserId> (for pagination)
+ */
+export const backfillUserProfiles = onRequest({
+  region: "us-central1",
+  maxInstances: 1,
+}, async (req, res) => {
+  // Basic CORS for manual invocation from browser tools
+  res.set("Access-Control-Allow-Origin", "*");
+  res.set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+  res.set("Access-Control-Allow-Headers", "Content-Type, Authorization");
+
+  if (req.method === "OPTIONS") {
+    res.status(204).send("");
+    return;
+  }
+
+  const authHeader = req.headers.authorization as string | undefined;
+  if (!authHeader) {
+    res.status(401).json({error: "Authorization header required"});
+    return;
+  }
+
+  let caller: any;
+  try {
+    caller = await verifyAuth(authHeader);
+  } catch (error: any) {
+    logger.error("backfillUserProfiles verifyAuth failed", {error: error?.message});
+    res.status(401).json({error: "Invalid or expired token"});
+    return;
+  }
+
+  if (!isAdmin(caller)) {
+    res.status(403).json({error: "Admin role required"});
+    return;
+  }
+
+  const dryRunParam = (req.query.dryRun as string | undefined) ?? "true";
+  const dryRun = dryRunParam !== "false";
+  const pageSizeParam = (req.query.pageSize as string | undefined) ?? "100";
+  const pageSize = Math.max(1, Math.min(parseInt(pageSizeParam, 10) || 100, 500));
+  const startAfterId = req.query.startAfter as string | undefined;
+
+  try {
+    let query: FirebaseFirestore.Query = db
+      .collection("users")
+      .orderBy(admin.firestore.FieldPath.documentId())
+      .limit(pageSize);
+
+    if (startAfterId) {
+      const cursorDoc = await db.collection("users").doc(startAfterId).get();
+      if (cursorDoc.exists) {
+        query = query.startAfter(cursorDoc);
+      }
+    }
+
+    const snapshot = await query.get();
+    if (snapshot.empty) {
+      res.json({
+        dryRun,
+        processed: 0,
+        message: "No users found for this page.",
+      });
+      return;
+    }
+
+    let profileBackfilled = 0;
+    let qrBackfilled = 0;
+
+    for (const docSnap of snapshot.docs) {
+      const userId = docSnap.id;
+      const data = docSnap.data() || {};
+      const updates: Record<string, unknown> = {};
+
+      if (!data.profile) {
+        updates.profile = {
+          photoUrl: "",
+          bio: "",
+          city: "",
+          state: "",
+          zip: "",
+          linkedinUrl: "",
+          twitterHandle: "",
+          instagramHandle: "",
+          websiteUrl: "",
+        };
+        profileBackfilled++;
+      }
+
+      const missingQR = !data.profileUrl || !data.profileQRCode;
+
+      if (!dryRun && Object.keys(updates).length > 0) {
+        await docSnap.ref.update({
+          ...updates,
+          updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+        });
+      }
+
+      if (!dryRun && missingQR) {
+        try {
+          await generateUserProfileQRInternal(userId, false);
+          qrBackfilled++;
+        } catch (error: any) {
+          logger.error("backfillUserProfiles: failed to generate QR for user", {
+            userId,
+            error: error?.message,
+          });
+        }
+      } else if (dryRun && (Object.keys(updates).length > 0 || missingQR)) {
+        // Count potential QR backfills in dry-run mode
+        if (missingQR) {
+          qrBackfilled++;
+        }
+      }
+    }
+
+    const lastDoc = snapshot.docs[snapshot.docs.length - 1];
+
+    res.json({
+      dryRun,
+      processed: snapshot.size,
+      profileBackfilled,
+      qrBackfilled,
+      nextPageCursor: lastDoc ? lastDoc.id : null,
+    });
+  } catch (error: any) {
+    logger.error("backfillUserProfiles failed", {error: error?.message});
+    res.status(500).json({error: error?.message || "Internal error"});
+  }
+});
+
+/**
+ * generatePropertyQR (callable)
+ * Generate or regenerate QR code for a property.
+ */
+export const generatePropertyQR = onCall({region: "us-central1"}, async (request) => {
+  if (!request.auth) {
+    throw new HttpsError("unauthenticated", "User must be authenticated");
+  }
+
+  const {propertyId, regenerate} = (request.data || {}) as {
+    propertyId?: string;
+    regenerate?: boolean;
+  };
+
+  if (!propertyId) {
+    throw new HttpsError("invalid-argument", "propertyId is required");
+  }
+
+  try {
+    const propertyRef = db.collection("properties").doc(propertyId);
+    const propertyDoc = await propertyRef.get();
+
+    if (!propertyDoc.exists) {
+      throw new HttpsError("not-found", "Property not found");
+    }
+
+    const propertyData = propertyDoc.data() || {};
+
+    // If QR already exists and we're not regenerating, return existing
+    if (propertyData.assiduousId && propertyData.qrCodeUrl && !regenerate) {
+      return {
+        success: true,
+        assiduousId: propertyData.assiduousId,
+        qrCodeUrl: propertyData.qrCodeUrl,
+        propertyUrl: propertyData.propertyUrl,
+        regenerated: false,
+      };
+    }
+
+    // Generate sequential Assiduous ID
+    const assiduousId = await generateSequentialId("PROP");
+
+    const baseUrl = "https://assiduous-prod.web.app";
+    const propertyUrl = `${baseUrl}/property-detail.html?id=${propertyId}`;
+
+    const qrCodeUrl =
+      `https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=${encodeURIComponent(propertyUrl)}`;
+
+    await propertyRef.update({
+      assiduousId,
+      qrCodeUrl,
+      propertyUrl,
+      qrGeneratedAt: admin.firestore.FieldValue.serverTimestamp(),
+      qrGeneratedBy: request.auth.uid,
+      updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+    });
+
+    logger.info("Generated property QR", {propertyId, assiduousId});
+
+    return {
+      success: true,
+      assiduousId,
+      qrCodeUrl,
+      propertyUrl,
+      regenerated: !!regenerate,
+    };
+  } catch (error: any) {
+    logger.error("Error generating property QR", {error: error?.message});
+    throw new HttpsError("internal", error?.message || "Failed to generate property QR");
+  }
+});
+
+/**
+ * sharePropertyQR (callable)
+ * Share property via QR code with tracking (email/SMS).
+ */
+export const sharePropertyQR = onCall(
+  {
+    region: "us-central1",
+    secrets: [sendgridApiKey, sendgridFromEmail, twilioAccountSid, twilioAuthToken, twilioFromNumber],
+  },
+  async (request) => {
+    if (!request.auth) {
+      throw new HttpsError("unauthenticated", "User must be authenticated");
+    }
+
+    const {
+      propertyId,
+      recipientEmail,
+      recipientPhone,
+      method,
+      personalMessage,
+    } = (request.data || {}) as {
+      propertyId?: string;
+      recipientEmail?: string;
+      recipientPhone?: string;
+      method?: "email" | "sms";
+      personalMessage?: string;
+    };
+
+    if (!propertyId) {
+      throw new HttpsError("invalid-argument", "propertyId is required");
+    }
+
+    if (!recipientEmail && !recipientPhone) {
+      throw new HttpsError("invalid-argument", "recipientEmail or recipientPhone is required");
+    }
+
+    try {
+      const sharerId = request.auth.uid;
+
+      const propertyDoc = await db.collection("properties").doc(propertyId).get();
+      if (!propertyDoc.exists) {
+        throw new HttpsError("not-found", "Property not found");
+      }
+
+      const property = propertyDoc.data() || {};
+      const qrCodeUrl = property.qrCodeUrl as string | undefined;
+      const assiduousId = property.assiduousId as string | undefined;
+
+      if (!qrCodeUrl || !assiduousId) {
+        throw new HttpsError("failed-precondition", "Property does not have QR code. Generate it first.");
+      }
+
+      const sharerDoc = await db.collection("users").doc(sharerId).get();
+      const sharerData = sharerDoc.data() || {};
+      const sharerName = (sharerData.displayName as string) || (sharerData.email as string) || "Someone";
+
+      const trackedUrl = `${property.propertyUrl}&shared_by=${sharerId}`;
+
+      const shareRef = await db.collection("property_shares").add({
+        propertyId,
+        assiduousId,
+        sharedBy: sharerId,
+        sharerName,
+        method,
+        recipientEmail: recipientEmail || null,
+        recipientPhone: recipientPhone || null,
+        sharedAt: admin.firestore.FieldValue.serverTimestamp(),
+        viewed: false,
+      });
+
+      let externalEmailId: string | null = null;
+      let externalSmsId: string | null = null;
+
+      // Email via SendGrid
+      if (method === "email" && recipientEmail) {
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        const sgMail = require("@sendgrid/mail");
+        const apiKey = process.env.SENDGRID_API_KEY;
+
+        if (!apiKey) {
+          logger.warn("SendGrid API key not configured. Email not sent.");
+          return {success: true, sent: false};
+        }
+
+        sgMail.setApiKey(apiKey);
+
+        const emailHtml = `
+          <h2>Property shared with you from ${sharerName}</h2>
+          <p>Scan this QR code to view the property:</p>
+          <img src="${qrCodeUrl}" alt="Property QR Code" style="max-width:250px;" />
+          <p>Or click here: <a href="${trackedUrl}">${trackedUrl}</a></p>
+          ${personalMessage ? `<p><em>${personalMessage}</em></p>` : ""}
+        `;
+
+        const fromEmail = process.env.SENDGRID_FROM_EMAIL || process.env.SUPPORT_EMAIL;
+        const msg = {
+          to: recipientEmail,
+          from: fromEmail,
+          replyTo: process.env.SUPPORT_EMAIL,
+          subject: `${sharerName} shared a property with you`,
+          html: emailHtml,
+        };
+
+        const [response] = await sgMail.send(msg);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const headers: any = response && response.headers ? response.headers : {};
+        externalEmailId = headers["x-message-id"] || headers["x-message-id".toLowerCase()] || null;
+
+        logger.info("Property QR shared via email", {propertyId, recipientEmail, sharerId});
+      }
+
+      // SMS via Twilio
+      if (method === "sms" && recipientPhone) {
+        const twilioSid = process.env.TWILIO_ACCOUNT_SID;
+        const twilioToken = process.env.TWILIO_AUTH_TOKEN;
+        const twilioFrom = process.env.TWILIO_PHONE_NUMBER;
+
+        if (!twilioSid || !twilioToken || !twilioFrom) {
+          logger.warn("Twilio credentials not configured. SMS not sent.");
+          return {success: true, sent: false, method: "sms"};
+        }
+
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        const twilioClient = require("twilio")(twilioSid, twilioToken);
+        const smsBody = `${sharerName} shared a property with you! View it here: ${trackedUrl}`;
+
+        const smsResult = await twilioClient.messages.create({
+          body: smsBody,
+          from: twilioFrom,
+          to: recipientPhone,
+        });
+
+        externalSmsId = smsResult && smsResult.sid ? smsResult.sid : null;
+        logger.info("Property QR shared via SMS", {propertyId, recipientPhone, sharerId});
+      }
+
+      // Mirror into sharer's portal inbox
+      try {
+        const channel = method === "email" ? "email" : "sms";
+        const destination = recipientEmail || recipientPhone || "";
+        await logPortalMessage({
+          userId: sharerId,
+          type: "email_mirror",
+          template: "property_share",
+          subject: `Property QR shared via ${channel.toUpperCase()}`,
+          bodyPreview: destination
+            ? `We sent your property link to ${destination}.`
+            : `Property shared via ${channel}.`,
+          channels: ["email", "inbox"],
+          email: destination || null,
+          externalProvider: channel === "email" ? "sendgrid" : "twilio",
+          externalMessageId: externalEmailId || externalSmsId,
+          meta: {
+            propertyId,
+            assiduousId,
+            trackedUrl,
+            qrCodeUrl,
+            method,
+            recipientEmail: recipientEmail || null,
+            recipientPhone: recipientPhone || null,
+            shareId: shareRef.id,
+          },
+        });
+      } catch (inboxError: any) {
+        logger.warn("Failed to log portal message for property share", {error: inboxError?.message});
+      }
+
+      return {success: true, sent: true};
+    } catch (error: any) {
+      logger.error("Error sharing property QR", {error: error?.message});
+      throw new HttpsError("internal", error?.message || "Failed to share property QR");
+    }
+  }
+);
+
+/**
+ * generateReferralCode (callable)
+ * Generate unique referral code + QR for a user.
+ */
+export const generateReferralCode = onCall({region: "us-central1"}, async (request) => {
+  if (!request.auth) {
+    throw new HttpsError("unauthenticated", "User must be authenticated");
+  }
+
+  try {
+    const userId = request.auth.uid;
+    const userRef = db.collection("users").doc(userId);
+    const userDoc = await userRef.get();
+
+    if (!userDoc.exists) {
+      throw new HttpsError("not-found", "User not found");
+    }
+
+    const referralCode = generateRandomReferralCode(8);
+
+    const baseUrl = "https://assiduous-prod.web.app";
+    const signupUrl = `${baseUrl}/signup.html?ref=${referralCode}`;
+    const qrCodeUrl =
+      `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(signupUrl)}`;
+
+    await userRef.update({
+      referralCode,
+      qrCodeUrl,
+      referralSignupUrl: signupUrl,
+      updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+    });
+
+    logger.info("Generated referral code", {userId, referralCode});
+
+    return {
+      success: true,
+      referralCode,
+      qrCodeUrl,
+      signupUrl,
+    };
+  } catch (error: any) {
+    logger.error("Error generating referral code", {error: error?.message});
+    throw new HttpsError("internal", error?.message || "Failed to generate referral code");
+  }
+});
+
+/**
+ * sendClientInvitation (callable)
+ * Send client invitation via email with QR link.
+ */
+export const sendClientInvitation = onCall(
+  {region: "us-central1", secrets: [sendgridApiKey, sendgridFromEmail]},
+  async (request) => {
+    if (!request.auth) {
+      throw new HttpsError("unauthenticated", "User must be authenticated");
+    }
+
+    const {clientEmail, clientName, personalMessage} = (request.data || {}) as {
+      clientEmail?: string;
+      clientName?: string;
+      personalMessage?: string;
+    };
+
+    if (!clientEmail || !clientName) {
+      throw new HttpsError("invalid-argument", "clientEmail and clientName are required");
+    }
+
+    try {
+      const agentId = request.auth.uid;
+      const agentDoc = await db.collection("users").doc(agentId).get();
+      if (!agentDoc.exists) {
+        throw new HttpsError("not-found", "Agent not found");
+      }
+
+      const agentData = agentDoc.data() || {};
+      const agentName = (agentData.displayName as string) || (agentData.email as string);
+      const agentReferralCode = agentData.referralCode as string | undefined;
+
+      if (!agentReferralCode) {
+        throw new HttpsError(
+          "failed-precondition",
+          "Agent must have referral code. Call generateReferralCode first."
+        );
+      }
+
+      const tempToken = generateRandomReferralCode(16);
+      const invitationData = {
+        email: clientEmail,
+        name: clientName,
+        agentId,
+        agentName,
+        agentReferralCode,
+        tempToken,
+        status: "invited",
+        invitedAt: admin.firestore.FieldValue.serverTimestamp(),
+        expiresAt: admin.firestore.Timestamp.fromDate(
+          new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
+        ),
+      };
+
+      const invitationRef = await db.collection("client_invitations").add(invitationData);
+
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      const sgMail = require("@sendgrid/mail");
+      const apiKey = process.env.SENDGRID_API_KEY;
+
+      if (!apiKey) {
+        logger.warn("SendGrid API key not configured. Invitation email not sent.");
+        return {success: true, emailSent: false, tempToken};
+      }
+
+      sgMail.setApiKey(apiKey);
+
+      const signupUrl = `https://assiduous-prod.web.app/signup.html?token=${tempToken}`;
+      const qrCodeUrl =
+        `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(signupUrl)}`;
+
+      const emailHtml = `
+        <h2>Welcome to Assiduous Real Estate</h2>
+        <p>Hi ${clientName},</p>
+        <p>${agentName} has invited you to join Assiduous.</p>
+        ${personalMessage ? `<p><em>${personalMessage}</em></p>` : ""}
+        <p>Click the link below to complete your registration:</p>
+        <p><a href="${signupUrl}" style="background:#2563eb;color:white;padding:12px 24px;text-decoration:none;border-radius:6px;display:inline-block;">Complete Registration</a></p>
+        <p>Or scan this QR code:</p>
+        <img src="${qrCodeUrl}" alt="Registration QR Code" style="max-width:200px;" />
+        <p style="color:#666;font-size:12px;margin-top:24px;">This invitation expires in 7 days.</p>
+      `;
+
+      const fromEmail = process.env.SENDGRID_FROM_EMAIL || process.env.SUPPORT_EMAIL;
+      const msg = {
+        to: clientEmail,
+        from: fromEmail,
+        replyTo: process.env.SUPPORT_EMAIL,
+        subject: `${agentName} invited you to Assiduous`,
+        html: emailHtml,
+      };
+
+      const [response] = await sgMail.send(msg);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const headers: any = response && response.headers ? response.headers : {};
+      const externalEmailId =
+        headers["x-message-id"] || headers["x-message-id".toLowerCase()] || null;
+
+      logger.info("Invitation sent", {clientEmail, agentId});
+
+      // Mirror invitation into agent's portal inbox (best-effort)
+      try {
+        await logPortalMessage({
+          userId: agentId,
+          type: "email_mirror",
+          template: "client_invitation",
+          subject: `Invitation sent to ${clientName}`,
+          bodyPreview: `We emailed ${clientEmail} an invitation to join Assiduous.`,
+          channels: ["email", "inbox"],
+          email: clientEmail,
+          externalProvider: "sendgrid",
+          externalMessageId: externalEmailId,
+          meta: {
+            invitationId: invitationRef.id,
+            signupUrl,
+            qrCodeUrl,
+            tempToken,
+          },
+        });
+      } catch (logError: any) {
+        logger.warn("Failed to log portal message for client invitation", {error: logError?.message});
+      }
+
+      return {success: true, emailSent: true, tempToken};
+    } catch (error: any) {
+      logger.error("Error sending client invitation", {error: error?.message});
+      throw new HttpsError("internal", error?.message || "Failed to send client invitation");
+    }
+  }
+);
+
+/**
+ * shareQRCode (callable)
+ * Share referral QR code via email or SMS.
+ */
+export const shareQRCode = onCall(
+  {
+    region: "us-central1",
+    secrets: [sendgridApiKey, sendgridFromEmail, twilioAccountSid, twilioAuthToken, twilioFromNumber],
+  },
+  async (request) => {
+    if (!request.auth) {
+      throw new HttpsError("unauthenticated", "User must be authenticated");
+    }
+
+    const {recipientEmail, recipientPhone, method} = (request.data || {}) as {
+      recipientEmail?: string;
+      recipientPhone?: string;
+      method?: "email" | "sms";
+    };
+
+    if (!recipientEmail && !recipientPhone) {
+      throw new HttpsError("invalid-argument", "recipientEmail or recipientPhone is required");
+    }
+
+    try {
+      const userId = request.auth.uid;
+      const userDoc = await db.collection("users").doc(userId).get();
+      if (!userDoc.exists) {
+        throw new HttpsError("not-found", "User not found");
+      }
+
+      const userData = userDoc.data() || {};
+      const agentName = (userData.displayName as string) || (userData.email as string);
+      const qrCodeUrl = userData.qrCodeUrl as string | undefined;
+      const signupUrl = userData.referralSignupUrl as string | undefined;
+
+      if (!qrCodeUrl || !signupUrl) {
+        throw new HttpsError(
+          "failed-precondition",
+          "User must have QR code. Call generateReferralCode first."
+        );
+      }
+
+      let externalEmailId: string | null = null;
+      let externalSmsId: string | null = null;
+
+      // Email via SendGrid
+      if (method === "email" && recipientEmail) {
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        const sgMail = require("@sendgrid/mail");
+        const apiKey = process.env.SENDGRID_API_KEY;
+
+        if (!apiKey) {
+          logger.warn("SendGrid API key not configured. Email not sent.");
+          return {success: true, sent: false};
+        }
+
+        sgMail.setApiKey(apiKey);
+
+        const emailHtml = `
+          <h2>Join ${agentName} on Assiduous</h2>
+          <p>Scan this QR code to get started:</p>
+          <img src="${qrCodeUrl}" alt="QR Code" style="max-width:250px;" />
+          <p>Or click here: <a href="${signupUrl}">${signupUrl}</a></p>
+        `;
+
+        const msg = {
+          to: recipientEmail,
+          from: process.env.SENDGRID_FROM_EMAIL || process.env.SUPPORT_EMAIL,
+          replyTo: process.env.SUPPORT_EMAIL,
+          subject: `Connect with ${agentName} on Assiduous`,
+          html: emailHtml,
+        };
+
+        const [response] = await sgMail.send(msg);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const headers: any = response && response.headers ? response.headers : {};
+        externalEmailId =
+          headers["x-message-id"] || headers["x-message-id".toLowerCase()] || null;
+
+        logger.info("Referral QR shared via email", {userId, recipientEmail});
+      }
+
+      // SMS via Twilio
+      if (method === "sms" && recipientPhone) {
+        const twilioSid = process.env.TWILIO_ACCOUNT_SID;
+        const twilioToken = process.env.TWILIO_AUTH_TOKEN;
+        const twilioFrom = process.env.TWILIO_PHONE_NUMBER;
+
+        if (!twilioSid || !twilioToken || !twilioFrom) {
+          logger.warn("Twilio credentials not configured. SMS not sent.");
+          return {success: true, sent: false, method: "sms"};
+        }
+
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        const twilioClient = require("twilio")(twilioSid, twilioToken);
+        const smsBody = `${agentName} invited you to Assiduous! Sign up here: ${signupUrl}`;
+
+         const smsResult = await twilioClient.messages.create({
+          body: smsBody,
+          from: twilioFrom,
+          to: recipientPhone,
+        });
+
+        externalSmsId = smsResult && smsResult.sid ? smsResult.sid : null;
+        logger.info("Referral QR shared via SMS", {userId, recipientPhone});
+      }
+
+      // Mirror into portal inbox
+      try {
+        const channel = method === "email" ? "email" : "sms";
+        const destination = recipientEmail || recipientPhone || "";
+        await logPortalMessage({
+          userId,
+          type: "email_mirror",
+          template: "referral_share",
+          subject: `Referral QR shared via ${channel.toUpperCase()}`,
+          bodyPreview: destination
+            ? `We sent your referral link to ${destination}.`
+            : `Referral shared via ${channel}.`,
+          channels: ["email", "inbox"],
+          email: destination || null,
+          externalProvider: channel === "email" ? "sendgrid" : "twilio",
+          externalMessageId: externalEmailId || externalSmsId,
+          meta: {
+            signupUrl,
+            qrCodeUrl,
+            method,
+            recipientEmail: recipientEmail || null,
+            recipientPhone: recipientPhone || null,
+          },
+        });
+      } catch (logError: any) {
+        logger.warn("Failed to log portal message for referral share", {error: logError?.message});
+      }
+
+      return {success: true, sent: true};
+    } catch (error: any) {
+      logger.error("Error sharing QR code", {error: error?.message});
+      throw new HttpsError("internal", error?.message || "Failed to share QR code");
+    }
+  }
+);
+
+/**
+ * trackPropertyView (callable)
+ * Track property views originating from shared links.
+ */
+export const trackPropertyView = onCall({region: "us-central1"}, async (request) => {
+  const {propertyId, sharedBy, viewerEmail} = (request.data || {}) as {
+    propertyId?: string;
+    sharedBy?: string;
+    viewerEmail?: string;
+  };
+
+  if (!propertyId) {
+    throw new HttpsError("invalid-argument", "propertyId is required");
+  }
+
+  try {
+    const viewData = {
+      propertyId,
+      viewedAt: admin.firestore.FieldValue.serverTimestamp(),
+      viewerEmail: viewerEmail || null,
+      viewerId: request.auth ? request.auth.uid : null,
+      sharedBy: sharedBy || null,
+      authenticated: !!request.auth,
+    };
+
+    await db
+      .collection("properties")
+      .doc(propertyId)
+      .collection("views")
+      .add(viewData);
+
+    if (sharedBy) {
+      const sharesSnapshot = await db
+        .collection("property_shares")
+        .where("propertyId", "==", propertyId)
+        .where("sharedBy", "==", sharedBy)
+        .where("viewed", "==", false)
+        .limit(1)
+        .get();
+
+      if (!sharesSnapshot.empty) {
+        const shareDoc = sharesSnapshot.docs[0];
+        await shareDoc.ref.update({
+          viewed: true,
+          viewedAt: admin.firestore.FieldValue.serverTimestamp(),
+          viewerId: request.auth ? request.auth.uid : null,
+        });
+      }
+    }
+
+    logger.info("Property view tracked", {propertyId});
+    return {success: true};
+  } catch (error: any) {
+    logger.error("Error tracking property view", {error: error?.message});
+    throw new HttpsError("internal", error?.message || "Failed to track property view");
+  }
+});
 
 // ============================================================================
 // TEST USERS API (REMOVE BEFORE PRODUCTION!)

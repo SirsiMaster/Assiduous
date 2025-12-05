@@ -573,6 +573,7 @@ This document provides a comprehensive test plan for the QR Code system across a
 1. Logout
 2. Try to call `generatePropertyQR` directly from console
 3. Try to call `sharePropertyQR`
+4. Try to call `generateUserQR` via `httpsCallable(functions, 'generateUserQR')`
 
 #### Expected Results
 - ✅ Functions return auth error
@@ -602,6 +603,123 @@ This document provides a comprehensive test plan for the QR Code system across a
 - [ ] Privacy rules enforced
 - [ ] Admin override works
 - [ ] No data leaks
+
+---
+
+## Profile & User QR Acceptance Test
+
+### Overview
+These tests validate the end-to-end profile system and user QR flows for all personas (client, agent, admin). Run them after all profile-related development (18-task plan) is complete.
+
+### P1. Backend Profile Schema & QR Triggers
+- [ ] New users (admin, agent, client/investor) created via normal signup have:
+  - [ ] `profile` object present under `users/{uid}` with keys: `photoUrl`, `bio`, `city`, `state`, `zip`, `linkedinUrl`, `twitterHandle`, `instagramHandle`, `websiteUrl`.
+  - [ ] `profileUrl` pointing to the correct portal path:
+    - Admin → `/admin/profile.html?id={uid}`
+    - Agent → `/agent/profile.html?id={uid}`
+    - Client/Investor → `/client/profile.html?id={uid}`
+  - [ ] `profileQRCode` and `profileQRGeneratedAt` populated.
+- [ ] Creating a user document manually (no `profile` field) triggers `onUserProfileCreated` to backfill `profile` and generate `profileUrl` + `profileQRCode`.
+- [ ] Calling `generateUserQR({regenerate:false})` returns the existing QR + URL without creating a new code.
+- [ ] Calling `generateUserQR({regenerate:true})` updates `profileQRCode` and `profileQRGeneratedAt` while keeping `profileUrl` stable.
+
+### P2. Client Portal – Settings & Profile
+- [ ] `/client/settings.html` (authenticated as client):
+  - [ ] Loads without console errors; Firebase initialized.
+  - [ ] Pre-populates: first/last name, email (disabled), phone, city, state, ZIP, bio, LinkedIn, website, X/Twitter, Instagram.
+  - [ ] "Public profile link" shows a valid `/client/profile.html?id={uid}` URL and opens that page.
+  - [ ] Editing basic info and saving updates Firestore root fields (`firstName`, `lastName`, `displayName`, `phone`).
+  - [ ] Editing location/bio/social updates `profile.city/state/zip/bio/*social*`.
+  - [ ] Uploading a profile photo:
+    - [ ] Stores file under `users/{uid}/profile-photo/...` in Storage.
+    - [ ] Sets `profile.photoUrl` and updates avatar preview.
+- [ ] `/client/profile.html?id={uid}`:
+  - [ ] Shows avatar (photo or initials), name, role, email (mailto), phone, location, bio.
+  - [ ] Social pills open correct URLs; `@handle` or bare handle is normalized for X/Instagram.
+  - [ ] Viewing another client’s profile while logged in shows that client’s data (no "not authorized" error for valid IDs).
+
+### P3. Agent Portal – Settings & Profile
+- [ ] `/agent/settings.html` (authenticated as agent):
+  - [ ] Pre-populates basic info + brokerage + license fields (`brokerageName`, `licenseNumber`, `licenseState`, `licenseExpiry`).
+  - [ ] License badge in summary card reflects current license number/state or "Not provided" when blank.
+  - [ ] Saving writes updates to Firestore root and `profile` fields as designed.
+  - [ ] Uploading a profile photo stores under `agents/{uid}/profile-photo/...` and updates `profile.photoUrl`.
+  - [ ] Public profile link points to `/agent/profile.html?id={uid}` and opens correctly.
+- [ ] `/agent/profile.html?id={uid}`:
+  - [ ] Renders avatar, name, role, email, phone, location, bio.
+  - [ ] Shows brokerage badge and license badge with correct values.
+  - [ ] Social pills behave as in client profile.
+  - [ ] Any authenticated user with access to this route can view an agent’s profile by ID.
+
+### P4. Admin Portal – Settings & Profile
+- [ ] `/admin/settings.html` (authenticated as admin):
+  - [ ] "Admin profile" section populated from `users/{uid}` and `profile`.
+  - [ ] Saving updates `displayName`, `phone` and `profile.*` fields.
+  - [ ] Admin photo upload stores under `admins/{uid}/profile-photo/...` and updates `profile.photoUrl`.
+- [ ] `/admin/profile.html?id={uid}`:
+  - [ ] Renders avatar, name, role, email, phone, location, bio and social links.
+  - [ ] Admin can view any user’s profile by ID; layout adjusts to the user’s role and data.
+
+### P5. User QR Flows (My QR)
+- [ ] `/client/my-qr.html`:
+  - [ ] Loads a QR image without CORS/Callable errors.
+  - [ ] Profile URL text matches `/client/profile.html?id={uid}`.
+  - [ ] "Download QR Code" downloads a PNG that scans to the same profile URL.
+  - [ ] "Copy Profile Link" copies the profile URL to clipboard.
+  - [ ] "Share QR Code" uses Web Share or falls back to copy behavior gracefully.
+  - [ ] "Regenerate QR" shows a warning, then updates QR image and `profileQRCode` / `profileQRGeneratedAt`.
+- [ ] Equivalent behavior holds for agent/admin My QR pages (if implemented) with role-appropriate URLs.
+
+### P6. Property & Document QR Non-Dud Behavior
+- [ ] Property QR widgets:
+  - [ ] Display a QR image and a clickable "Open property page" link that routes to the correct property detail URL.
+  - [ ] Scanning the property QR from a phone reaches the same property page (login/guard behavior is acceptable as long as there is a valid destination).
+- [ ] Document QR (client documents page):
+  - [ ] QR button opens a modal with QR image and "Open document" link.
+  - [ ] Scanning the QR opens the document’s URL (or login then URL) without a dead end.
+
+### P7. Backfill & Migration
+- [ ] Sample of pre-existing users (admin, agent, several clients):
+  - [ ] Now have `profile` object with all keys.
+  - [ ] Have `profileUrl` + `profileQRCode` populated.
+  - [ ] Settings and profile pages work identically to newly-created accounts.
+  - [ ] My QR pages can load/regenerate QRs without error.
+
+### P8. Security & Access Control
+- [ ] Anonymous users cannot access portal profile pages (are redirected or blocked by auth-guard).
+- [ ] Auth rules still prevent a user from writing to another user’s `users/{uid}` document.
+- [ ] Admin retains ability to read user profiles where expected (for admin tools).
+
+### P9. Final Acceptance Flow
+- [ ] New client signup → complete settings → verify profile page → verify My QR scan end-to-end.
+- [ ] New agent signup (including any approval flow) → complete settings → verify profile page → verify My QR scan end-to-end.
+- [ ] Admin configures own profile → verifies admin profile page.
+- [ ] Spot-check property + document QR flows still behave as expected.
+
+---
+
+## Agent Mode Automation Prompt (Profile + QR)
+
+Use the following prompt to have WARP Agent Mode execute this test plan once all 18 profile tasks are complete:
+
+```text
+You are Agent Mode running inside Warp on the Assiduous codebase.
+The profile system and QR-related development tasks are complete.
+
+Using docs/QR_SYSTEM_TEST_PLAN.md, run the "Profile & User QR Acceptance Test" section (P1–P9) against production (https://assiduous-prod.web.app) and, where appropriate, localhost.
+
+For each subsection:
+- Drive the browser and Firebase console as if you were the QA tester.
+- Report pass/fail for every checklist item.
+- Log any defects or inconsistencies with precise URLs, user roles, and console errors.
+- Confirm that every QR (profile, property, document) resolves to a meaningful destination and never to a dead end.
+
+When finished, output a short summary including:
+- Overall status (PASS/FAIL/CONDITIONAL)
+- Critical issues
+- Minor issues
+- Any follow-up work required before MVP handover on December 15.
+```
 
 ---
 
@@ -680,7 +798,13 @@ db.collection('_id_counters').doc('PROP_2025').get()
 ```javascript
 // Call from browser console on authenticated page
 const generatePropertyQR = firebase.functions().httpsCallable('generatePropertyQR');
+const generateUserQR = firebase.functions().httpsCallable('generateUserQR');
+
 generatePropertyQR({ propertyId: 'YOUR_PROPERTY_ID' })
-  .then(result => console.log('✅ Result:', result.data))
-  .catch(error => console.error('❌ Error:', error));
+  .then(result => console.log('✅ Property QR:', result.data))
+  .catch(error => console.error('❌ Property QR error:', error));
+
+generateUserQR({ regenerate: false })
+  .then(result => console.log('✅ User QR:', result.data))
+  .catch(error => console.error('❌ User QR error:', error));
 ```

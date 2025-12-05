@@ -151,6 +151,18 @@ export const AuthService = {
         phone: userData.phone || '',
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp(),
+        // Public profile fields (can be edited later in settings)
+        profile: {
+          photoUrl: userData.photoUrl || '',
+          bio: userData.bio || '',
+          city: userData.city || '',
+          state: userData.state || '',
+          zip: userData.zip || '',
+          linkedinUrl: userData.linkedinUrl || '',
+          twitterHandle: userData.twitterHandle || '',
+          instagramHandle: userData.instagramHandle || '',
+          websiteUrl: userData.websiteUrl || '',
+        },
         // Agent-specific fields
         ...(userData.role === 'agent'
           ? {
@@ -306,6 +318,34 @@ export const AuthService = {
  * Database Service
  */
 export const DatabaseService = {
+  // User helpers
+  async getUserData(userId) {
+    try {
+      const userDoc = await getDoc(doc(db, 'users', userId));
+      if (userDoc.exists()) {
+        return { success: true, data: userDoc.data() };
+      }
+      return { success: false, error: 'User not found' };
+    } catch (error) {
+      console.error('Error getting user data (DatabaseService):', error);
+      return { success: false, error: error.message };
+    }
+  },
+
+  async updateUserProfile(userId, updates) {
+    try {
+      const userRef = doc(db, 'users', userId);
+      await updateDoc(userRef, {
+        ...updates,
+        updatedAt: serverTimestamp(),
+      });
+      return { success: true };
+    } catch (error) {
+      console.error(`Error updating user profile ${userId}:`, error);
+      return { success: false, error: error.message };
+    }
+  },
+
   // Generic method to get documents from any collection
   async getDocuments(
     collectionName,

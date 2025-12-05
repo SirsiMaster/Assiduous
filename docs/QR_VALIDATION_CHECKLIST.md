@@ -184,8 +184,9 @@ Before testing SMS:
 - [ ] Writes to properties/{id}/views subcollection
 
 #### 7. generateUserQR
-- [ ] Generates QR for user profile
-- [ ] Returns QR code image URL
+- [ ] Generates QR for user profile via v2 callable (`onCall`) in `functions/src/index.ts`
+- [ ] Returns QR code image URL and persona-aware `profileUrl` (`/admin|agent|client/profile.html?id=...`)
+- [ ] Works from `public/client/my-qr.html` using `CloudFunctionsService.generateUserQR`
 
 ---
 

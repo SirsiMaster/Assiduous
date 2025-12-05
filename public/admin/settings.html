@@ -13,6 +13,9 @@
     <link rel="stylesheet" href="../assiduous.css">
     <link rel="stylesheet" href="../components/admin-layout.css">
     <!-- Removed old Sirsi UI -->
+
+    <!-- Canonical modular Firebase bootstrap for admin portal -->
+    <script type="module" src="../assets/js/firebase-init.js"></script>
     
     <style>
         /* Admin Layout - Consistent across all admin pages */
@@ -496,6 +499,79 @@
 
                     <!-- Settings Content -->
                     <div class="settings-content">
+                        <!-- Admin Profile Settings -->
+                        <section id="admin-profile-section" class="settings-section">
+                            <h2 class="section-title">Admin profile</h2>
+                            <p class="form-helper">Controls how your details appear on QR/profile pages and system messages.</p>
+
+                            <div class="form-row">
+                                <div class="sm-sm-form-group">
+                                    <label class="sm-sm-form-label" for="adminDisplayName">Display name</label>
+                                    <input id="adminDisplayName" type="text" class="sm-sm-form-input" placeholder="Admin User">
+                                    <p class="form-helper">Shown on profile pages and in certain notifications.</p>
+                                </div>
+                                <div class="sm-sm-form-group">
+                                    <label class="sm-sm-form-label" for="adminPhone">Phone</label>
+                                    <input id="adminPhone" type="tel" class="sm-sm-form-input" placeholder="(555) 555-5555">
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="sm-sm-form-group">
+                                    <label class="sm-sm-form-label" for="adminCity">City</label>
+                                    <input id="adminCity" type="text" class="sm-sm-form-input" placeholder="City">
+                                </div>
+                                <div class="sm-sm-form-group">
+                                    <label class="sm-sm-form-label" for="adminState">State</label>
+                                    <input id="adminState" type="text" class="sm-sm-form-input" placeholder="State">
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="sm-sm-form-group">
+                                    <label class="sm-sm-form-label" for="adminZip">ZIP code</label>
+                                    <input id="adminZip" type="text" class="sm-sm-form-input" placeholder="ZIP">
+                                </div>
+                                <div class="sm-sm-form-group">
+                                    <label class="sm-sm-form-label" for="adminPhotoInput">Profile photo</label>
+                                    <input id="adminPhotoInput" type="file" class="sm-sm-form-input" accept="image/*" onchange="handleAdminPhotoChange(event)">
+                                    <p class="form-helper">Optional headshot for profile and QR pages.</p>
+                                </div>
+                            </div>
+
+                            <div class="sm-sm-form-group">
+                                <label class="sm-sm-form-label" for="adminBio">Short bio</label>
+                                <textarea id="adminBio" class="sm-sm-form-input" rows="3" placeholder="Describe your role and responsibilities."></textarea>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="sm-sm-form-group">
+                                    <label class="sm-sm-form-label" for="adminLinkedinUrl">LinkedIn URL</label>
+                                    <input id="adminLinkedinUrl" type="url" class="sm-sm-form-input" placeholder="https://www.linkedin.com/in/username">
+                                </div>
+                                <div class="sm-sm-form-group">
+                                    <label class="sm-sm-form-label" for="adminWebsiteUrl">Website</label>
+                                    <input id="adminWebsiteUrl" type="url" class="sm-sm-form-input" placeholder="https://your-site.com">
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="sm-sm-form-group">
+                                    <label class="sm-sm-form-label" for="adminTwitterHandle">X / Twitter</label>
+                                    <input id="adminTwitterHandle" type="text" class="sm-sm-form-input" placeholder="@handle or full URL">
+                                </div>
+                                <div class="sm-sm-form-group">
+                                    <label class="sm-sm-form-label" for="adminInstagramHandle">Instagram</label>
+                                    <input id="adminInstagramHandle" type="text" class="sm-sm-form-input" placeholder="@handle or full URL">
+                                </div>
+                            </div>
+
+                            <div class="form-actions" style="margin-top: var(--space-md); padding-top: 0; border-top: none;">
+                                <button type="button" class="sm-btn sm-btn-primary" onclick="saveAdminProfileFromSettings()">Save profile</button>
+                                <p id="adminProfileStatus" class="form-helper" style="margin-left: var(--space-md);"></p>
+                            </div>
+                        </section>
+
                         <!-- General Settings -->
                         <section id="general-section" class="settings-section">
                             <h2 class="section-title">General Settings</h2>
@@ -624,6 +700,165 @@
         const HeaderActions = {
             // Reference to existing save function for header action compatibility
         };
+
+        // Admin profile Firebase wiring
+        let adminAuth;
+        let adminDbService;
+        let adminStorageService;
+        let adminCurrentUser = null;
+        let adminCurrentPhotoUrl = '';
+
+        function normalizeHandleOrUrl(type, value) {
+            if (!value) return null;
+            const trimmed = value.trim();
+            if (!trimmed) return null;
+            if (/^https?:\/\//i.test(trimmed)) return trimmed;
+            const handle = trimmed.replace(/^@/, '');
+            if (!handle) return null;
+            if (type === 'twitter') return `https://twitter.com/${handle}`;
+            if (type === 'instagram') return `https://instagram.com/${handle}`;
+            return null;
+        }
+
+        window.addEventListener('firebase-ready', () => {
+            const firebase = window.Firebase || {};
+            adminAuth = firebase.auth || window.firebaseAuth;
+            adminDbService = firebase.DatabaseService || window.DatabaseService;
+            adminStorageService = firebase.StorageService || window.StorageService;
+
+            if (!adminAuth || !adminDbService) {
+                console.warn('[Admin Settings] Firebase services not available');
+                return;
+            }
+
+            adminAuth.onAuthStateChanged(async (user) => {
+                if (!user) {
+                    // Admin settings should only be accessible to authenticated admins
+                    return;
+                }
+                adminCurrentUser = user;
+                await loadAdminProfileSettings();
+            });
+        });
+
+        async function loadAdminProfileSettings() {
+            const statusEl = document.getElementById('adminProfileStatus');
+            if (!adminDbService || typeof adminDbService.getUserData !== 'function' || !adminCurrentUser) {
+                if (statusEl) statusEl.textContent = '';
+                return;
+            }
+
+            try {
+                if (statusEl) statusEl.textContent = 'Loading profile...';
+                const result = await adminDbService.getUserData(adminCurrentUser.uid);
+                if (!result || !result.success || !result.data) {
+                    if (statusEl) statusEl.textContent = 'Profile not found';
+                    return;
+                }
+
+                const data = result.data;
+                const profile = data.profile || {};
+
+                const firstName = data.firstName || '';
+                const lastName = data.lastName || '';
+                const displayName = (data.displayName || `${firstName} ${lastName}`).trim() || 'Admin';
+
+                adminCurrentPhotoUrl = profile.photoUrl || '';
+
+                const $ = (id) => document.getElementById(id);
+
+                if ($('adminDisplayName')) $('adminDisplayName').value = displayName;
+                if ($('adminPhone')) $('adminPhone').value = data.phone || '';
+                if ($('adminCity')) $('adminCity').value = profile.city || '';
+                if ($('adminState')) $('adminState').value = profile.state || '';
+                if ($('adminZip')) $('adminZip').value = profile.zip || '';
+                if ($('adminBio')) $('adminBio').value = profile.bio || '';
+                if ($('adminLinkedinUrl')) $('adminLinkedinUrl').value = profile.linkedinUrl || '';
+                if ($('adminWebsiteUrl')) $('adminWebsiteUrl').value = profile.websiteUrl || '';
+                if ($('adminTwitterHandle')) $('adminTwitterHandle').value = profile.twitterHandle || '';
+                if ($('adminInstagramHandle')) $('adminInstagramHandle').value = profile.instagramHandle || '';
+
+                if (statusEl) statusEl.textContent = '';
+            } catch (error) {
+                console.error('[Admin Settings] Failed to load profile', error);
+                if (statusEl) statusEl.textContent = 'Error loading profile';
+            }
+        }
+
+        async function handleAdminPhotoChange(event) {
+            const file = event.target.files && event.target.files[0];
+            const statusEl = document.getElementById('adminProfileStatus');
+            if (!file) return;
+            if (!adminAuth || !adminAuth.currentUser) {
+                alert('You must be logged in to upload a profile photo.');
+                return;
+            }
+            if (!adminStorageService || typeof adminStorageService.uploadFile !== 'function') {
+                alert('File upload service is not available right now. Please try again later.');
+                return;
+            }
+
+            try {
+                if (statusEl) statusEl.textContent = 'Uploading photo...';
+                const safeName = file.name.replace(/[^a-zA-Z0-9_.-]/g, '_');
+                const path = `admins/${adminAuth.currentUser.uid}/profile-photo/${Date.now()}_${safeName}`;
+                const result = await adminStorageService.uploadFile(path, file);
+                if (!result || !result.success) {
+                    throw new Error(result?.error || 'Failed to upload photo');
+                }
+                adminCurrentPhotoUrl = result.url;
+                if (statusEl) statusEl.textContent = 'Photo uploaded. Click "Save profile" to apply.';
+            } catch (error) {
+                console.error('[Admin Settings] Failed to upload photo', error);
+                if (statusEl) statusEl.textContent = 'Error uploading photo';
+            }
+        }
+
+        async function saveAdminProfileFromSettings() {
+            const statusEl = document.getElementById('adminProfileStatus');
+            if (!adminDbService || typeof adminDbService.updateUserProfile !== 'function' || !adminCurrentUser) {
+                if (statusEl) statusEl.textContent = 'Profile service unavailable';
+                return;
+            }
+
+            const $ = (id) => document.getElementById(id);
+            const displayName = ($('adminDisplayName')?.value || 'Admin').trim();
+            const phone = $('adminPhone')?.value.trim() || '';
+            const city = $('adminCity')?.value.trim() || '';
+            const state = $('adminState')?.value.trim() || '';
+            const zip = $('adminZip')?.value.trim() || '';
+            const bio = $('adminBio')?.value.trim() || '';
+            const linkedinUrl = $('adminLinkedinUrl')?.value.trim() || '';
+            const websiteUrl = $('adminWebsiteUrl')?.value.trim() || '';
+            const twitterHandle = $('adminTwitterHandle')?.value.trim() || '';
+            const instagramHandle = $('adminInstagramHandle')?.value.trim() || '';
+
+            const updates = {
+                displayName,
+                phone,
+                'profile.city': city,
+                'profile.state': state,
+                'profile.zip': zip,
+                'profile.bio': bio,
+                'profile.linkedinUrl': linkedinUrl,
+                'profile.websiteUrl': websiteUrl,
+                'profile.twitterHandle': twitterHandle,
+                'profile.instagramHandle': instagramHandle,
+                'profile.photoUrl': adminCurrentPhotoUrl || '',
+            };
+
+            try {
+                if (statusEl) statusEl.textContent = 'Saving profile...';
+                const result = await adminDbService.updateUserProfile(adminCurrentUser.uid, updates);
+                if (!result || !result.success) {
+                    throw new Error(result?.error || 'Failed to save profile');
+                }
+                if (statusEl) statusEl.textContent = 'Profile saved.';
+            } catch (error) {
+                console.error('[Admin Settings] Failed to save profile', error);
+                if (statusEl) statusEl.textContent = 'Error saving profile';
+            }
+        }
 
         // Settings navigation
         document.querySelectorAll('.settings-nav-item').forEach(item => {

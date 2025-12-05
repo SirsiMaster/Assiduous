@@ -137,18 +137,18 @@ Checklist:
 
 - [x] `public/client/my-qr.html`:
   - [x] Redirects unauthenticated users to `../index.html#login` (modal login).
-  - [x] On login, automatically loads user QR via `generateUserQR` callable.
+  - [x] On login, automatically loads user QR via the `generateUserQR` v2 callable.
   - [x] Download button saves QR image correctly.
   - [x] Copy link button copies `profileUrl` to clipboard.
   - [x] Regenerate button calls `generateUserQR({ regenerate: true })` and updates the UI.
-  - [x] All calls use `functions = firebase.functions()` from the shared compat app.
+  - [x] All calls use `CloudFunctionsService.generateUserQR` from `firebase-init.js` (modular v10 + `httpsCallable`).
 
 ### 3.3 Backend QR functions (high-level)
 
-- [x] `generatePropertyQR` works with real Firestore properties and produces valid QR URLs.
-- [x] `sharePropertyQR` sends real emails via SendGrid in production (see test plan docs).
-- [x] `trackPropertyView` records views and attribution.
-- [x] `generateUserQR` produces valid profile URLs and QR codes.
+- [x] `generatePropertyQR` works with real Firestore properties and produces valid QR URLs. *(legacy JS in `functions/index.js`, pending TS v2 migration).* 
+- [x] `sharePropertyQR` sends real emails via SendGrid in production (see test plan docs). *(legacy JS in `functions/index.js`, pending TS v2 migration).* 
+- [x] `trackPropertyView` records views and attribution. *(legacy JS in `functions/index.js`, pending TS v2 migration).* 
+- [x] `generateUserQR` produces valid, persona-aware profile URLs and QR codes via the v2 callable in `functions/src/index.ts` and is tested in production for client My QR.
 
 > Detailed test cases live in `docs/QR_SYSTEM_TEST_PLAN.md` and `docs/QR_VALIDATION_CHECKLIST.md`.
 

@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en" data-auth-protect="agent">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Profile - Agent - Assiduous</title>
+  <link rel="stylesheet" href="../assiduous.css">
+  <link rel="stylesheet" href="../components/admin-layout.css">
+  <script type="module">
+    import Firebase, { AuthService, DatabaseService } from '../assets/js/firebase-init.js';
+    window.Firebase = Firebase;
+    window.AuthService = AuthService;
+    window.DatabaseService = DatabaseService;
+  </script>
+  <style>
+    .dashboard-content {
+      padding: var(--space-xl);
+      background: var(--gray-50);
+      overflow-y: auto;
+    }
+
+    .page-header {
+      margin-bottom: var(--space-xl);
+    }
+
+    .page-title {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--navy);
+      margin: 0 0 8px 0;
+    }
+
+    .page-description {
+      font-size: 15px;
+      color: var(--text-secondary);
+      margin: 0;
+    }
+
+    .profile-card {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      padding: var(--space-xl);
+    }
+
+    .profile-layout {
+      display: grid;
+      grid-template-columns: minmax(260px, 320px) minmax(0, 1fr);
+      gap: var(--space-xl);
+      align-items: flex-start;
+    }
+
+    .profile-main {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-md);
+    }
+
+    .profile-avatar-lg {
+      width: 96px;
+      height: 96px;
+      border-radius: 999px;
+      background: var(--gray-100);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      font-weight: 600;
+      color: var(--navy);
+      background-size: cover;
+      background-position: center;
+      margin-bottom: var(--space-md);
+    }
+
+    .profile-name {
+      font-size: 24px;
+      font-weight: 600;
+      margin: 0 0 4px 0;
+    }
+
+    .profile-role {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      margin-bottom: var(--space-sm);
+    }
+
+    .profile-location {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: var(--space-sm);
+    }
+
+    .profile-contact a,
+    .profile-contact span {
+      display: block;
+      font-size: 14px;
+      color: var(--text-primary);
+      text-decoration: none;
+      margin-bottom: 2px;
+    }
+
+    .profile-contact a {
+      color: var(--sky-700, var(--sky));
+    }
+
+    .profile-section {
+      margin-bottom: var(--space-xl);
+    }
+
+    .profile-section-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin: 0 0 8px 0;
+    }
+
+    .profile-section-body {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin: 0;
+      white-space: pre-line;
+    }
+
+    .badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: var(--space-sm);
+    }
+
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      border: 1px solid var(--border);
+      background: var(--gray-50);
+    }
+
+    .badge-pill span {
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+
+    .social-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: var(--space-sm);
+    }
+
+    .social-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 13px;
+      border: 1px solid var(--border);
+      text-decoration: none;
+      color: var(--text-primary);
+      background: var(--gray-50);
+    }
+
+    .qr-loading {
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    @media (max-width: 900px) {
+      .profile-layout {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+  </style>
+</head>
+<body class="admin-wrapper" data-active="profile">
+  <aside class="sidebar" data-component="sidebar"></aside>
+  <div class="main-content">
+    <header data-component="header"></header>
+    <div class="dashboard-content">
+      <div class="page-header">
+        <h1 class="page-title">Agent profile</h1>
+        <p class="page-description">Share your experience, brokerage, and license details with clients.</p>
+      </div>
+      <div id="profileCard" class="profile-card">
+        <div id="profileStatus" class="qr-loading">Loading profile...</div>
+        <div id="profileContent" style="display:none;">
+          <div class="profile-layout">
+            <div class="profile-main">
+              <div id="profileAvatar" class="profile-avatar-lg">AG</div>
+              <h2 id="profileName" class="profile-name">Agent</h2>
+              <div id="profileRole" class="profile-role">AGENT</div>
+              <div id="profileLocation" class="profile-location"></div>
+              <div class="profile-contact">
+                <a id="profileEmail" href="#"></a>
+                <span id="profilePhone"></span>
+              </div>
+              <div class="badge-row">
+                <div class="badge-pill" id="licenseBadge"><span>License</span><span id="licenseNumberText">Not provided</span></div>
+                <div class="badge-pill" id="brokerageBadge"><span>Brokerage</span><span id="brokerageNameText">Not set</span></div>
+              </div>
+              <div id="profileSocialLinks" class="social-links"></div>
+            </div>
+            <div>
+              <section class="profile-section">
+                <h3 class="profile-section-title">About</h3>
+                <p id="profileBio" class="profile-section-body"></p>
+              </section>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="../components/ucs-core.js"></script>
+  <script src="../components/component-registry.js"></script>
+  <script src="../components/auth-guard.js"></script>
+  <script>
+    function getQueryParam(key) {
+      const params = new URLSearchParams(window.location.search);
+      return params.get(key);
+    }
+
+    function setAvatar(name, photoUrl) {
+      const avatarEl = document.getElementById('profileAvatar');
+      if (!avatarEl) return;
+
+      if (photoUrl) {
+        avatarEl.style.backgroundImage = `url('${photoUrl}')`;
+        avatarEl.textContent = '';
+        return;
+      }
+
+      avatarEl.style.backgroundImage = 'none';
+      const trimmed = (name || '').trim();
+      if (!trimmed) {
+        avatarEl.textContent = 'AG';
+        return;
+      }
+      const parts = trimmed.split(/\s+/);
+      const initials = (parts[0]?.[0] || '') + (parts[1]?.[0] || '');
+      avatarEl.textContent = initials.toUpperCase();
+    }
+
+    function normalizeHandleOrUrl(type, value) {
+      if (!value) return null;
+      const trimmed = value.trim();
+      if (!trimmed) return null;
+      if (/^https?:\/\//i.test(trimmed)) return trimmed;
+      const handle = trimmed.replace(/^@/, '');
+      if (!handle) return null;
+      if (type === 'twitter') return `https://twitter.com/${handle}`;
+      if (type === 'instagram') return `https://instagram.com/${handle}`;
+      return null;
+    }
+
+    window.addEventListener('firebase-ready', () => {
+      const firebase = window.Firebase || {};
+      const auth = firebase.auth || window.firebaseAuth;
+      const dbService = window.DatabaseService;
+      const requestedId = getQueryParam('id');
+
+      auth.onAuthStateChanged(async (user) => {
+        const statusEl = document.getElementById('profileStatus');
+        const contentEl = document.getElementById('profileContent');
+
+        if (!user) {
+          statusEl.textContent = 'Please log in to view this profile.';
+          return;
+        }
+
+        // Allow viewing the requested profile for any authenticated user.
+        const targetId = requestedId || user.uid;
+
+        try {
+          const result = await dbService.getUserData(targetId);
+          if (!result || !result.success || !result.data) {
+            statusEl.textContent = 'Profile not found.';
+            return;
+          }
+          const data = result.data;
+          const profile = data.profile || {};
+
+          const firstName = data.firstName || '';
+          const lastName = data.lastName || '';
+          const displayName = (data.displayName || `${firstName} ${lastName}`).trim() || 'Agent';
+          const role = (data.role || 'agent').toUpperCase();
+          const email = data.email || '';
+          const phone = data.phone || '';
+
+          const locationParts = [profile.city, profile.state, profile.zip].filter(Boolean);
+          const locationText = locationParts.join(', ');
+
+          const bio = profile.bio || 'This agent has not added a bio yet.';
+          const photoUrl = profile.photoUrl || '';
+
+          const licenseNumber = data.licenseNumber || '';
+          const licenseState = data.licenseState || '';
+          const brokerageName = data.brokerageName || '';
+
+          document.getElementById('profileName').textContent = displayName;
+          document.getElementById('profileRole').textContent = role;
+          document.getElementById('profileLocation').textContent = locationText;
+
+          const emailEl = document.getElementById('profileEmail');
+          if (email) {
+            emailEl.textContent = email;
+            emailEl.href = `mailto:${email}`;
+          } else {
+            emailEl.textContent = '';
+            emailEl.removeAttribute('href');
+          }
+
+          document.getElementById('profilePhone').textContent = phone ? phone : '';
+          document.getElementById('profileBio').textContent = bio;
+          setAvatar(displayName, photoUrl);
+
+          const licenseTextEl = document.getElementById('licenseNumberText');
+          if (licenseNumber) {
+            licenseTextEl.textContent = `${licenseNumber} ${licenseState ? '(' + licenseState + ')' : ''}`;
+          } else {
+            licenseTextEl.textContent = 'Not provided';
+          }
+
+          const brokerageTextEl = document.getElementById('brokerageNameText');
+          brokerageTextEl.textContent = brokerageName || 'Not set';
+
+          const socialContainer = document.getElementById('profileSocialLinks');
+          socialContainer.innerHTML = '';
+          const links = [];
+          if (profile.linkedinUrl) {
+            links.push({ label: 'LinkedIn', href: profile.linkedinUrl });
+          }
+          const twitterUrl = normalizeHandleOrUrl('twitter', profile.twitterHandle);
+          if (twitterUrl) {
+            links.push({ label: 'X / Twitter', href: twitterUrl });
+          }
+          const instaUrl = normalizeHandleOrUrl('instagram', profile.instagramHandle);
+          if (instaUrl) {
+            links.push({ label: 'Instagram', href: instaUrl });
+          }
+          if (profile.websiteUrl) {
+            links.push({ label: 'Website', href: profile.websiteUrl });
+          }
+
+          links.forEach(link => {
+            const a = document.createElement('a');
+            a.className = 'social-pill';
+            a.href = link.href;
+            a.target = '_blank';
+            a.rel = 'noopener';
+            a.textContent = link.label;
+            socialContainer.appendChild(a);
+          });
+
+          statusEl.style.display = 'none';
+          contentEl.style.display = 'block';
+        } catch (e) {
+          console.error('Error loading agent profile:', e);
+          statusEl.textContent = 'Error loading profile.';
+        }
+      });
+    });
+  </script>
+</body>
+</html>
