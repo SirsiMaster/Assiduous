@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-12-05T14:21:54.261Z",
+  "lastUpdated": "2025-12-05T14:43:59.303Z",
   "summary": {
     "health": "Good",
     "score": 59,
@@ -158,14 +158,14 @@
     "laborCost": 51450,
     "toolsCost": 2498,
     "monthsElapsed": "3.8",
-    "totalCommits": 1038,
+    "totalCommits": 1040,
     "totalFiles": 849,
     "activeDays": 46,
     "totalDays": 117,
     "projectAgeDays": 117,
-    "linesAdded": 9839862,
-    "linesDeleted": 9448666,
-    "netLines": 391196,
+    "linesAdded": 9840037,
+    "linesDeleted": 9448820,
+    "netLines": 391217,
     "velocity": "22.6",
     "completionPercentage": 59,
     "actualStartDate": "2025-08-10",
@@ -177,21 +177,21 @@
   },
   "today": {
     "date": "2025-12-05",
-    "hours": "1.3",
-    "cost": 198,
-    "commits": 4,
+    "hours": "2.0",
+    "cost": 297,
+    "commits": 6,
     "deployments": 0
   },
   "thisWeek": {
-    "hours": "9.9",
-    "cost": 1485,
-    "commits": 30,
+    "hours": "10.6",
+    "cost": 1584,
+    "commits": 32,
     "days": 7
   },
   "thisMonth": {
-    "hours": "82.2",
-    "cost": 12326,
-    "commits": 249
+    "hours": "82.8",
+    "cost": 12425,
+    "commits": 251
   },
   "quality": {
     "testCoverage": {
@@ -224,7 +224,7 @@
       "low": 0,
       "total": 0
     },
-    "lastAudit": "2025-12-05T14:21:16.152Z",
+    "lastAudit": "2025-12-05T14:43:28.934Z",
     "dependencies": {
       "total": 0,
       "outdated": 0,
@@ -263,14 +263,14 @@
     }
   },
   "deployment": {
-    "lastDeployment": "2025-11-11 19:50:20 -0500",
-    "totalDeployments": 135,
+    "lastDeployment": "2025-12-05 09:42:42 -0500",
+    "totalDeployments": 136,
     "deploymentFrequency": "Weekly",
     "environments": {
       "production": {
         "url": "https://assiduous-prod.web.app",
         "status": "Active",
-        "lastDeploy": "2025-11-11 19:50:20 -0500"
+        "lastDeploy": "2025-12-05 09:42:42 -0500"
       },
       "staging": {
         "url": "https://assiduous-staging.web.app",
@@ -312,11 +312,11 @@
     "changelog": true,
     "contributing": false,
     "license": false,
-    "lastUpdate": "2025-12-05 09:20:43 -0500"
+    "lastUpdate": "2025-12-05 14:21:01 +0000"
   },
   "productivity": {
     "velocityTrend": "increasing",
-    "weeklyCommits": 30,
+    "weeklyCommits": 32,
     "contributors": {
       "total": 0,
       "active": 0
@@ -394,6 +394,18 @@
   },
   "recentActivity": [
     {
+      "hash": "950d294a1205b1319cff1dfa2712104b759abe5f",
+      "message": "chore(deploy): fix api docker build and update metrics artifacts",
+      "author": "SirsiMaster",
+      "date": "2025-12-05 09:42:42 -0500"
+    },
+    {
+      "hash": "a69b77bc128c65faece52a53a7c2a01e306bb19c",
+      "message": "chore(release): Bump version to 0.131.0 [skip ci]",
+      "author": "github-actions[bot]",
+      "date": "2025-12-05 14:21:01 +0000"
+    },
+    {
       "hash": "047285397458731a0188adc1da5cb70dda5c6620",
       "message": "feat(modernization): add backend api, web shell, crypto and subscriptions",
       "author": "SirsiMaster",
@@ -440,22 +452,10 @@
       "message": "fix(firebase): Remove duplicate FunctionsService export",
       "author": "SirsiMaster",
       "date": "2025-12-03 13:41:21 -0500"
-    },
-    {
-      "hash": "cf1db28dc88f3c13d1398710bf848be4a59f654a",
-      "message": "chore(release): Bump version to 0.129.3 [skip ci]",
-      "author": "github-actions[bot]",
-      "date": "2025-12-03 18:35:40 +0000"
-    },
-    {
-      "hash": "ea7bc9afe75708913d87f9084f31589ced5d72f9",
-      "message": "fix(client): Use FunctionsService for QR generation",
-      "author": "SirsiMaster",
-      "date": "2025-12-03 13:34:48 -0500"
     }
   ],
   "automation": {
-    "lastRun": "2025-12-05T14:21:54.261Z",
+    "lastRun": "2025-12-05T14:43:59.303Z",
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",
