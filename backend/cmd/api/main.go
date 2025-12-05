@@ -9,6 +9,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
 	"time"
 
 	gfs "cloud.google.com/go/firestore"
@@ -25,12 +26,15 @@ import (
 	"github.com/SirsiMaster/assiduous/backend/pkg/opensign"
 	"github.com/SirsiMaster/assiduous/backend/pkg/plaid"
 	"github.com/SirsiMaster/assiduous/backend/pkg/sqlclient"
+	"github.com/SirsiMaster/assiduous/backend/pkg/ai"
 	"github.com/stripe/stripe-go/v79"
 	"github.com/stripe/stripe-go/v79/webhook"
 )
 
 func main() {
 	cfg := config.Load()
+
+	ctx := context.Background()
 
 	// Initialize shared SQL client for integrations like Stripe and Plaid.
 	sqlDB, err := sqlclient.New()
@@ -56,6 +60,11 @@ func main() {
 	openSignSvc, err := opensign.NewService(sqlDB)
 	if err != nil {
 		log.Printf("[api] warning: OpenSign not fully configured: %v", err)
+	}
+
+	aiSvc, err := ai.NewService(ctx, cfg.ProjectID, cfg.Region)
+	if err != nil {
+		log.Printf("[api] warning: Vertex AI not fully configured: %v", err)
 	}
 
 	r := chi.NewRouter()
@@ -108,6 +117,46 @@ func main() {
 				"keyName":   os.Getenv("KMS_KEY_NAME"),
 				"keyVersion": "", // Optional: can be populated when using versioned keys
 			})
+		})
+	})
+
+	// AI endpoints (Vertex/Gemini)
+	r.Route("/api/ai", func(r chi.Router) {
+		// POST /api/ai/explain
+		// Body: { "prompt": "..." }
+		// Returns a simple text explanation from the configured Gemini model.
+		r.Post("/explain", func(w http.ResponseWriter, r *http.Request) {
+			if aiSvc == nil {
+				httpapi.Error(w, http.StatusServiceUnavailable, "ai_unavailable", "AI service not configured")
+				return
+			}
+
+			uc := auth.FromContext(r.Context())
+			if uc == nil {
+				httpapi.Error(w, http.StatusUnauthorized, "unauthorized", "authentication required")
+				return
+			}
+
+			var req struct {
+				Prompt string `json:"prompt"`
+			}
+			if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+				httpapi.Error(w, http.StatusBadRequest, "invalid_request", "invalid JSON body")
+				return
+			}
+			if strings.TrimSpace(req.Prompt) == "" {
+				httpapi.Error(w, http.StatusBadRequest, "invalid_request", "prompt is required")
+				return
+			}
+
+			answer, err := aiSvc.Explain(r.Context(), req.Prompt)
+			if err != nil {
+				log.Printf("[ai] Explain error: %v", err)
+				httpapi.Error(w, http.StatusInternalServerError, "ai_error", "failed to generate explanation")
+				return
+			}
+
+			httpapi.JSON(w, http.StatusOK, map[string]any{"answer": answer})
 		})
 	})
 

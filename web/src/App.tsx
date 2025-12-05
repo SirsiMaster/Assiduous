@@ -5,6 +5,7 @@ import PricingPlans from './components/PricingPlans';
 import PlaidLinkButton from './components/PlaidLinkButton';
 import LobLetterSender from './components/LobLetterSender';
 import OpenSignSender from './components/OpenSignSender';
+import AiExplain from './components/AiExplain';
 import { useEntitlements } from './hooks/useEntitlements';
 
 const App: React.FC = () => {
@@ -69,6 +70,9 @@ const App: React.FC = () => {
 
           <section className="space-y-3">
             <PricingPlans apiBaseURL={apiBaseURL || ''} />
+            {apiBaseURL && entitlements?.hasActiveSubscription && (
+              <AiExplain apiBaseURL={apiBaseURL} />
+            )}
           </section>
         </div>
       </div>

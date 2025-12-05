@@ -93,6 +93,18 @@
         "docker-compose.opensign.yml",
         "scripts/archive/deploy-opensign.sh"
       ]
+    },
+    {
+      "id": "I-AI-001-003",
+      "name": "Vertex AI (Gemini) foundation + explain endpoint",
+      "status": "in_progress",
+      "area": "ai",
+      "codeRefs": [
+        "backend/pkg/ai/ai.go",
+        "backend/cmd/api/main.go:/api/ai",
+        "web/src/components/AiExplain.tsx",
+        "web/src/App.tsx"
+      ]
     }
   ]
 }
