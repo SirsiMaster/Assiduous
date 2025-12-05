@@ -4,6 +4,7 @@ import DocumentUploader from './components/DocumentUploader';
 import PricingPlans from './components/PricingPlans';
 import PlaidLinkButton from './components/PlaidLinkButton';
 import LobLetterSender from './components/LobLetterSender';
+import OpenSignSender from './components/OpenSignSender';
 import { useEntitlements } from './hooks/useEntitlements';
 
 const App: React.FC = () => {
@@ -59,7 +60,10 @@ const App: React.FC = () => {
             {apiBaseURL &&
               entitlements?.hasActiveSubscription &&
               (role === 'admin' || role === 'agent') && (
-                <LobLetterSender apiBaseURL={apiBaseURL} />
+                <>
+                  <LobLetterSender apiBaseURL={apiBaseURL} />
+                  <OpenSignSender apiBaseURL={apiBaseURL} />
+                </>
               )}
           </section>
 

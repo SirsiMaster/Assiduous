@@ -22,6 +22,7 @@ import (
 	"github.com/SirsiMaster/assiduous/backend/pkg/httpapi"
 	"github.com/SirsiMaster/assiduous/backend/pkg/kms"
 	"github.com/SirsiMaster/assiduous/backend/pkg/lob"
+	"github.com/SirsiMaster/assiduous/backend/pkg/opensign"
 	"github.com/SirsiMaster/assiduous/backend/pkg/plaid"
 	"github.com/SirsiMaster/assiduous/backend/pkg/sqlclient"
 	"github.com/stripe/stripe-go/v79"
@@ -50,6 +51,11 @@ func main() {
 	lobSvc, err := lob.NewService(sqlDB)
 	if err != nil {
 		log.Printf("[api] warning: Lob not fully configured: %v", err)
+	}
+
+	openSignSvc, err := opensign.NewService(sqlDB)
+	if err != nil {
+		log.Printf("[api] warning: OpenSign not fully configured: %v", err)
 	}
 
 	r := chi.NewRouter()
@@ -102,6 +108,105 @@ func main() {
 				"keyName":   os.Getenv("KMS_KEY_NAME"),
 				"keyVersion": "", // Optional: can be populated when using versioned keys
 			})
+		})
+	})
+
+	// OpenSign endpoints (e-sign envelopes)
+	r.Route("/api/opensign", func(r chi.Router) {
+		// POST /api/opensign/envelopes
+		// Body: { "docType": "...", "recipients": [...], "metadata": {...} }
+		// Only admin/agent roles are permitted to create envelopes.
+		r.Post("/envelopes", func(w http.ResponseWriter, r *http.Request) {
+			if openSignSvc == nil {
+				httpapi.Error(w, http.StatusServiceUnavailable, "opensign_unavailable", "OpenSign service not configured")
+				return
+			}
+
+			uc := auth.FromContext(r.Context())
+			if uc == nil {
+				httpapi.Error(w, http.StatusUnauthorized, "unauthorized", "authentication required")
+				return
+			}
+			if uc.Role != "admin" && uc.Role != "agent" {
+				httpapi.Error(w, http.StatusForbidden, "forbidden", "insufficient role to create signing envelopes")
+				return
+			}
+
+			var req struct {
+				DocType    string            `json:"docType"`
+				Recipients []map[string]any `json:"recipients"`
+				Metadata   map[string]any   `json:"metadata,omitempty"`
+			}
+			if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+				httpapi.Error(w, http.StatusBadRequest, "invalid_request", "invalid JSON body")
+				return
+			}
+			if req.DocType == "" {
+				httpapi.Error(w, http.StatusBadRequest, "invalid_request", "docType is required")
+				return
+			}
+
+			env, err := openSignSvc.CreateEnvelope(r.Context(), opensign.CreateEnvelopeRequest{
+				FirebaseUID: uc.UID,
+				DocType:     req.DocType,
+				Recipients:  req.Recipients,
+				Metadata:    req.Metadata,
+			})
+			if err != nil {
+				log.Printf("[opensign] CreateEnvelope error: %v", err)
+				httpapi.Error(w, http.StatusInternalServerError, "opensign_error", "failed to create envelope")
+				return
+			}
+
+			resp := map[string]any{
+				"envelopeId": env.EnvelopeID,
+				"status":     env.Status,
+			}
+			if env.SigningURL != nil {
+				resp["signingUrl"] = *env.SigningURL
+			}
+
+			httpapi.JSON(w, http.StatusOK, resp)
+		})
+
+		// POST /api/opensign/webhook
+		// OpenSign will call this endpoint with envelope status updates.
+		r.Post("/webhook", func(w http.ResponseWriter, r *http.Request) {
+			secret := os.Getenv("OPENSIGN_WEBHOOK_SECRET")
+			if secret != "" {
+				if r.Header.Get("X-OpenSign-Secret") != secret {
+					log.Printf("[opensign] invalid webhook secret")
+					w.WriteHeader(http.StatusUnauthorized)
+					return
+				}
+			}
+
+			var payload struct {
+				EnvelopeID string            `json:"envelopeId"`
+				Status     string            `json:"status"`
+				Metadata   map[string]any   `json:"metadata,omitempty"`
+			}
+			if err := json.NewDecoder(r.Body).Decode(&payload); err != nil {
+				log.Printf("[opensign] webhook decode error: %v", err)
+				w.WriteHeader(http.StatusBadRequest)
+				return
+			}
+			if payload.EnvelopeID == "" {
+				w.WriteHeader(http.StatusBadRequest)
+				return
+			}
+
+			if openSignSvc == nil {
+				// If OpenSign isn't configured, just acknowledge to avoid retry storms.
+				w.WriteHeader(http.StatusOK)
+				return
+			}
+
+			if err := openSignSvc.UpdateEnvelopeStatus(r.Context(), payload.EnvelopeID, payload.Status, payload.Metadata); err != nil {
+				log.Printf("[opensign] UpdateEnvelopeStatus error: %v", err)
+			}
+
+			w.WriteHeader(http.StatusOK)
 		})
 	})
 

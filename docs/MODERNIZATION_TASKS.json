@@ -78,6 +78,21 @@
         "web/src/components/LobLetterSender.tsx",
         "web/src/App.tsx"
       ]
+    },
+    {
+      "id": "I-OPENSIGN-001-004",
+      "name": "OpenSign e-sign integration (envelopes API + webhooks + UI)",
+      "status": "in_progress",
+      "area": "integrations",
+      "codeRefs": [
+        "infra/sql/schema.sql:envelopes",
+        "backend/pkg/opensign/opensign.go",
+        "backend/cmd/api/main.go:/api/opensign",
+        "web/src/components/OpenSignSender.tsx",
+        "web/src/App.tsx",
+        "docker-compose.opensign.yml",
+        "scripts/archive/deploy-opensign.sh"
+      ]
     }
   ]
 }

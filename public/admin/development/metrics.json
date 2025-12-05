@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-12-05T16:12:21.169Z",
+  "lastUpdated": "2025-12-05T17:51:11.921Z",
   "summary": {
     "health": "Good",
     "score": 59,
@@ -158,15 +158,15 @@
     "laborCost": 52050,
     "toolsCost": 2498,
     "monthsElapsed": "3.8",
-    "totalCommits": 1051,
+    "totalCommits": 1052,
     "totalFiles": 853,
     "activeDays": 46,
     "totalDays": 117,
     "projectAgeDays": 117,
-    "linesAdded": 9841731,
-    "linesDeleted": 9449050,
-    "netLines": 392681,
-    "velocity": "22.8",
+    "linesAdded": 9841814,
+    "linesDeleted": 9449104,
+    "netLines": 392710,
+    "velocity": "22.9",
     "completionPercentage": 59,
     "actualStartDate": "2025-08-10",
     "architecture": {
@@ -177,21 +177,21 @@
   },
   "today": {
     "date": "2025-12-05",
-    "hours": "5.6",
-    "cost": 842,
-    "commits": 17,
+    "hours": "5.9",
+    "cost": 891,
+    "commits": 18,
     "deployments": 0
   },
   "thisWeek": {
-    "hours": "14.2",
-    "cost": 2129,
-    "commits": 43,
+    "hours": "14.5",
+    "cost": 2178,
+    "commits": 44,
     "days": 7
   },
   "thisMonth": {
-    "hours": "86.5",
-    "cost": 12969,
-    "commits": 262
+    "hours": "86.8",
+    "cost": 13019,
+    "commits": 263
   },
   "quality": {
     "testCoverage": {
@@ -224,7 +224,7 @@
       "low": 0,
       "total": 0
     },
-    "lastAudit": "2025-12-05T16:11:52.602Z",
+    "lastAudit": "2025-12-05T17:50:40.232Z",
     "dependencies": {
       "total": 0,
       "outdated": 0,
@@ -316,7 +316,7 @@
   },
   "productivity": {
     "velocityTrend": "increasing",
-    "weeklyCommits": 43,
+    "weeklyCommits": 44,
     "contributors": {
       "total": 0,
       "active": 0
@@ -394,6 +394,12 @@
   },
   "recentActivity": [
     {
+      "hash": "bdc9d806fa9f363464f8de20cdc899de978c86a1",
+      "message": "feat(auth): gate lob letters to admin and agent roles",
+      "author": "SirsiMaster",
+      "date": "2025-12-05 12:50:05 -0500"
+    },
+    {
       "hash": "0e175047c1949f83a67eb8f37949e801cf9f5057",
       "message": "chore(metrics): refresh metrics after lob deployment",
       "author": "SirsiMaster",
@@ -446,16 +452,10 @@
       "message": "chore(release): Bump version to 0.132.0 [skip ci]",
       "author": "github-actions[bot]",
       "date": "2025-12-05 15:26:05 +0000"
-    },
-    {
-      "hash": "0ce1245fdea85ec3f11daae2f95abf69987f81c0",
-      "message": "feat(plaid): add banking link, token exchange and accounts endpoints",
-      "author": "SirsiMaster",
-      "date": "2025-12-05 10:25:42 -0500"
     }
   ],
   "automation": {
-    "lastRun": "2025-12-05T16:12:21.169Z",
+    "lastRun": "2025-12-05T17:51:11.921Z",
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",
