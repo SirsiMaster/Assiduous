@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.130.0] - 2025-12-05
+
+### Added
+- feat(profile-qr): Add profile settings UIs and QR backfill
+
+
 ## [0.129.5] - 2025-12-03
 
 ### Fixed
@@ -1658,6 +1664,12 @@ accountIds/{accountId} = {
 **Sprint Progress**: Day 4 of 6 (67% target after Day 4 completion)
 
 ## [Unreleased]
+
+
+## [0.130.0] - 2025-12-05
+
+### Added
+- feat(profile-qr): Add profile settings UIs and QR backfill
 
 
 ## [0.129.5] - 2025-12-03
@@ -3548,7 +3560,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.129.5...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.130.0...HEAD
+
+
+## [0.130.0] - 2025-12-05
+
+### Added
+- feat(profile-qr): Add profile settings UIs and QR backfill
 
 
 ## [0.129.5] - 2025-12-03
@@ -5498,3 +5516,4 @@ To generate changelog entries:
 [0.129.3]: https://github.com/SirsiMaster/Assiduous/compare/v0.129.2...v0.129.3
 [0.129.4]: https://github.com/SirsiMaster/Assiduous/compare/v0.129.3...v0.129.4
 [0.129.5]: https://github.com/SirsiMaster/Assiduous/compare/v0.129.4...v0.129.5
+[0.130.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.129.5...v0.130.0
