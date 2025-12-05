@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-12-05T16:07:41.700Z",
+  "lastUpdated": "2025-12-05T16:11:09.057Z",
   "summary": {
     "health": "Good",
     "score": 59,
@@ -152,21 +152,21 @@
     }
   },
   "project": {
-    "totalHours": "345",
+    "totalHours": "346",
     "avgHoursPerDay": "7.5",
-    "totalCost": 54248,
-    "laborCost": 51750,
+    "totalCost": 54398,
+    "laborCost": 51900,
     "toolsCost": 2498,
     "monthsElapsed": "3.8",
-    "totalCommits": 1046,
-    "totalFiles": 852,
+    "totalCommits": 1048,
+    "totalFiles": 853,
     "activeDays": 46,
     "totalDays": 117,
     "projectAgeDays": 117,
-    "linesAdded": 9841473,
-    "linesDeleted": 9448981,
-    "netLines": 392492,
-    "velocity": "22.7",
+    "linesAdded": 9841666,
+    "linesDeleted": 9449009,
+    "netLines": 392657,
+    "velocity": "22.8",
     "completionPercentage": 59,
     "actualStartDate": "2025-08-10",
     "architecture": {
@@ -177,21 +177,21 @@
   },
   "today": {
     "date": "2025-12-05",
-    "hours": "4.0",
-    "cost": 594,
-    "commits": 12,
+    "hours": "4.6",
+    "cost": 693,
+    "commits": 14,
     "deployments": 0
   },
   "thisWeek": {
-    "hours": "12.5",
-    "cost": 1881,
-    "commits": 38,
+    "hours": "13.2",
+    "cost": 1980,
+    "commits": 40,
     "days": 7
   },
   "thisMonth": {
-    "hours": "84.8",
-    "cost": 12722,
-    "commits": 257
+    "hours": "85.5",
+    "cost": 12821,
+    "commits": 259
   },
   "quality": {
     "testCoverage": {
@@ -224,7 +224,7 @@
       "low": 0,
       "total": 0
     },
-    "lastAudit": "2025-12-05T16:07:04.952Z",
+    "lastAudit": "2025-12-05T16:10:34.784Z",
     "dependencies": {
       "total": 0,
       "outdated": 0,
@@ -312,11 +312,11 @@
     "changelog": true,
     "contributing": false,
     "license": false,
-    "lastUpdate": "2025-12-05 15:26:05 +0000"
+    "lastUpdate": "2025-12-05 16:06:51 +0000"
   },
   "productivity": {
     "velocityTrend": "increasing",
-    "weeklyCommits": 38,
+    "weeklyCommits": 41,
     "contributors": {
       "total": 0,
       "active": 0
@@ -394,6 +394,18 @@
   },
   "recentActivity": [
     {
+      "hash": "60ea2f3eec066c27de71c92b7fa7d94b3e479aa9",
+      "message": "feat(lob): add certified mail sender UI",
+      "author": "SirsiMaster",
+      "date": "2025-12-05 11:09:53 -0500"
+    },
+    {
+      "hash": "2cac7d9e206668b5adf52eda21eda5d2ac69019e",
+      "message": "chore(release): Bump version to 0.133.0 [skip ci]",
+      "author": "github-actions[bot]",
+      "date": "2025-12-05 16:06:51 +0000"
+    },
+    {
       "hash": "45261edccdfebd969802c581535491ea667e7684",
       "message": "feat(lob): add certified mail letters endpoint",
       "author": "SirsiMaster",
@@ -440,22 +452,10 @@
       "message": "chore(release): Bump version to 0.131.0 [skip ci]",
       "author": "github-actions[bot]",
       "date": "2025-12-05 14:21:01 +0000"
-    },
-    {
-      "hash": "047285397458731a0188adc1da5cb70dda5c6620",
-      "message": "feat(modernization): add backend api, web shell, crypto and subscriptions",
-      "author": "SirsiMaster",
-      "date": "2025-12-05 09:20:43 -0500"
-    },
-    {
-      "hash": "18e14b1cf4c18f7dd0e2acb87966c47b940abeae",
-      "message": "docs(qr): Align QR status and tests with profile system",
-      "author": "SirsiMaster",
-      "date": "2025-12-04 22:55:36 -0500"
     }
   ],
   "automation": {
-    "lastRun": "2025-12-05T16:07:41.700Z",
+    "lastRun": "2025-12-05T16:11:09.057Z",
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",
