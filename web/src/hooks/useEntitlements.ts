@@ -12,6 +12,7 @@ export interface UseEntitlementsState {
   user: User | null;
   loading: boolean;
   entitlements: AssiduousEntitlements | null;
+  role: string | null;
 }
 
 const DEFAULT_ENTITLEMENTS: AssiduousEntitlements = {
@@ -28,16 +29,27 @@ const DEFAULT_ENTITLEMENTS: AssiduousEntitlements = {
 export function useEntitlements(): UseEntitlementsState {
   const [user, setUser] = useState<User | null>(auth.currentUser);
   const [entitlements, setEntitlements] = useState<AssiduousEntitlements | null>(null);
+  const [role, setRole] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     // Watch auth state first.
-    const unsubscribeAuth = auth.onAuthStateChanged(nextUser => {
+    const unsubscribeAuth = auth.onAuthStateChanged(async nextUser => {
       setUser(nextUser);
       setEntitlements(null);
+      setRole(null);
       if (!nextUser) {
         setLoading(false);
         return;
+      }
+
+      try {
+        const tokenResult = await nextUser.getIdTokenResult();
+        const claimRole = (tokenResult.claims?.role as string | undefined) || null;
+        setRole(claimRole);
+      } catch (err) {
+        console.error('[useEntitlements] failed to load custom claims', err);
+        setRole(null);
       }
 
       // Once we have a user, subscribe to their Firestore profile.
@@ -83,5 +95,5 @@ export function useEntitlements(): UseEntitlementsState {
     return () => unsubscribeAuth();
   }, []);
 
-  return { user, entitlements, loading };
+  return { user, entitlements, loading, role };
 }

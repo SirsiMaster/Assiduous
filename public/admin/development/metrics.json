@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-12-05T16:11:09.057Z",
+  "lastUpdated": "2025-12-05T16:12:21.169Z",
   "summary": {
     "health": "Good",
     "score": 59,
@@ -152,20 +152,20 @@
     }
   },
   "project": {
-    "totalHours": "346",
+    "totalHours": "347",
     "avgHoursPerDay": "7.5",
-    "totalCost": 54398,
-    "laborCost": 51900,
+    "totalCost": 54548,
+    "laborCost": 52050,
     "toolsCost": 2498,
     "monthsElapsed": "3.8",
-    "totalCommits": 1048,
+    "totalCommits": 1051,
     "totalFiles": 853,
     "activeDays": 46,
     "totalDays": 117,
     "projectAgeDays": 117,
-    "linesAdded": 9841666,
-    "linesDeleted": 9449009,
-    "netLines": 392657,
+    "linesAdded": 9841731,
+    "linesDeleted": 9449050,
+    "netLines": 392681,
     "velocity": "22.8",
     "completionPercentage": 59,
     "actualStartDate": "2025-08-10",
@@ -177,21 +177,21 @@
   },
   "today": {
     "date": "2025-12-05",
-    "hours": "4.6",
-    "cost": 693,
-    "commits": 14,
+    "hours": "5.6",
+    "cost": 842,
+    "commits": 17,
     "deployments": 0
   },
   "thisWeek": {
-    "hours": "13.2",
-    "cost": 1980,
-    "commits": 40,
+    "hours": "14.2",
+    "cost": 2129,
+    "commits": 43,
     "days": 7
   },
   "thisMonth": {
-    "hours": "85.5",
-    "cost": 12821,
-    "commits": 259
+    "hours": "86.5",
+    "cost": 12969,
+    "commits": 262
   },
   "quality": {
     "testCoverage": {
@@ -224,7 +224,7 @@
       "low": 0,
       "total": 0
     },
-    "lastAudit": "2025-12-05T16:10:34.784Z",
+    "lastAudit": "2025-12-05T16:11:52.602Z",
     "dependencies": {
       "total": 0,
       "outdated": 0,
@@ -263,14 +263,14 @@
     }
   },
   "deployment": {
-    "lastDeployment": "2025-12-05 10:27:24 -0500",
-    "totalDeployments": 138,
+    "lastDeployment": "2025-12-05 11:11:16 -0500",
+    "totalDeployments": 139,
     "deploymentFrequency": "Weekly",
     "environments": {
       "production": {
         "url": "https://assiduous-prod.web.app",
         "status": "Active",
-        "lastDeploy": "2025-12-05 10:27:24 -0500"
+        "lastDeploy": "2025-12-05 11:11:16 -0500"
       },
       "staging": {
         "url": "https://assiduous-staging.web.app",
@@ -312,11 +312,11 @@
     "changelog": true,
     "contributing": false,
     "license": false,
-    "lastUpdate": "2025-12-05 16:06:51 +0000"
+    "lastUpdate": "2025-12-05 16:10:35 +0000"
   },
   "productivity": {
     "velocityTrend": "increasing",
-    "weeklyCommits": 41,
+    "weeklyCommits": 43,
     "contributors": {
       "total": 0,
       "active": 0
@@ -394,6 +394,24 @@
   },
   "recentActivity": [
     {
+      "hash": "0e175047c1949f83a67eb8f37949e801cf9f5057",
+      "message": "chore(metrics): refresh metrics after lob deployment",
+      "author": "SirsiMaster",
+      "date": "2025-12-05 11:11:16 -0500"
+    },
+    {
+      "hash": "25d8699be9ff47d2446ada6214c734212323e2c1",
+      "message": "chore(tracking): mark lob integration complete",
+      "author": "SirsiMaster",
+      "date": "2025-12-05 11:10:54 -0500"
+    },
+    {
+      "hash": "289460b8334bceda4879030464a5c253e463e62b",
+      "message": "chore(release): Bump version to 0.134.0 [skip ci]",
+      "author": "github-actions[bot]",
+      "date": "2025-12-05 16:10:35 +0000"
+    },
+    {
       "hash": "60ea2f3eec066c27de71c92b7fa7d94b3e479aa9",
       "message": "feat(lob): add certified mail sender UI",
       "author": "SirsiMaster",
@@ -434,28 +452,10 @@
       "message": "feat(plaid): add banking link, token exchange and accounts endpoints",
       "author": "SirsiMaster",
       "date": "2025-12-05 10:25:42 -0500"
-    },
-    {
-      "hash": "ad2dc9a926355f99e85bc4158b92b2c25c29ac3b",
-      "message": "chore(metrics): update dev portal metrics after api deploy",
-      "author": "SirsiMaster",
-      "date": "2025-12-05 10:05:30 -0500"
-    },
-    {
-      "hash": "950d294a1205b1319cff1dfa2712104b759abe5f",
-      "message": "chore(deploy): fix api docker build and update metrics artifacts",
-      "author": "SirsiMaster",
-      "date": "2025-12-05 09:42:42 -0500"
-    },
-    {
-      "hash": "a69b77bc128c65faece52a53a7c2a01e306bb19c",
-      "message": "chore(release): Bump version to 0.131.0 [skip ci]",
-      "author": "github-actions[bot]",
-      "date": "2025-12-05 14:21:01 +0000"
     }
   ],
   "automation": {
-    "lastRun": "2025-12-05T16:11:09.057Z",
+    "lastRun": "2025-12-05T16:12:21.169Z",
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",

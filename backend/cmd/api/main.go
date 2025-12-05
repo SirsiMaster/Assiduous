@@ -120,6 +120,11 @@ func main() {
 				httpapi.Error(w, http.StatusUnauthorized, "unauthorized", "authentication required")
 				return
 			}
+			// Only admins and agents are allowed to send certified mail via Lob.
+			if uc.Role != "admin" && uc.Role != "agent" {
+				httpapi.Error(w, http.StatusForbidden, "forbidden", "insufficient role to send certified mail")
+				return
+			}
 
 			var req struct {
 				ToAddress  map[string]any `json:"toAddress"`

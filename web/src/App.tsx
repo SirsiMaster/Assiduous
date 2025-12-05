@@ -8,7 +8,7 @@ import { useEntitlements } from './hooks/useEntitlements';
 
 const App: React.FC = () => {
   const apiBaseURL = import.meta.env.VITE_API_BASE_URL as string | undefined;
-  const { user, entitlements } = useEntitlements();
+  const { user, entitlements, role } = useEntitlements();
 
   return (
     <div className="min-h-screen bg-navy-900 text-slate-50 flex items-center justify-center p-6">
@@ -20,14 +20,22 @@ const App: React.FC = () => {
             end-to-end via the Go API and Firestore.
           </p>
 
-          {user && entitlements && (
-            <p className="text-xs text-slate-400">
-              Signed in as <span className="font-medium">{user.email || user.uid}</span> · Plan:{' '}
-              <span className="font-mono">
-                {entitlements.planId || 'none'} ({entitlements.status || 'no-subscription'})
-              </span>
-            </p>
-          )}
+        {user && entitlements && (
+          <p className="text-xs text-slate-400">
+            Signed in as <span className="font-medium">{user.email || user.uid}</span>
+            {role && (
+              <>
+                {' '}
+                · Role: <span className="font-mono">{role}</span>
+              </>
+            )}
+            {' '}
+            · Plan:{' '}
+            <span className="font-mono">
+              {entitlements.planId || 'none'} ({entitlements.status || 'no-subscription'})
+            </span>
+          </p>
+        )}
         </header>
 
         {!apiBaseURL && (
@@ -48,7 +56,11 @@ const App: React.FC = () => {
               />
             )}
             {apiBaseURL && <PlaidLinkButton apiBaseURL={apiBaseURL} />}
-            {apiBaseURL && <LobLetterSender apiBaseURL={apiBaseURL} />}
+            {apiBaseURL &&
+              entitlements?.hasActiveSubscription &&
+              (role === 'admin' || role === 'agent') && (
+                <LobLetterSender apiBaseURL={apiBaseURL} />
+              )}
           </section>
 
           <section className="space-y-3">
