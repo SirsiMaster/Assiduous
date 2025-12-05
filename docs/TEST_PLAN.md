@@ -256,8 +256,63 @@ Phase 3 (Agent Portal) was prematurely marked complete when only 1 of 4 pages wa
 **Date**: 2025-10-06 04:52 UTC  
 **Severity**: High - Violates multiple project governance rules
 
+---
+
+## Smoke Tests (Go-Live Verification)
+
+### ST-ESIGN-001: OpenSign E-Signature Flow
+
+**Purpose:**
+Verify that the OpenSign e-signature integration is correctly wired end-to-end (Go API, Cloud SQL envelopes table, and frontend) before a production go-live.
+
+**Preconditions:**
+- `OPENSIGN_BASE_URL` is configured on the Go API (Cloud Run) and points to a reachable OpenSign instance or tunnel.
+- `OPENSIGN_API_KEY` is set with valid OpenSign API credentials.
+- Optional but recommended: `OPENSIGN_WEBHOOK_SECRET` is configured in both:
+  - Go API env
+  - OpenSign webhook settings (sent as `X-OpenSign-Secret`).
+- Firebase Hosting is deployed with the latest React web shell (OpenSignSender component).
+- Test user exists with role `admin` or `agent` and an active `assiduousRealty` subscription.
+
+**Steps:**
+1. Sign in to the web shell as an `admin` or `agent` with an active subscription.
+2. Navigate to the shell at `https://assiduous-prod.web.app` (or the appropriate environment URL).
+3. Confirm that the header shows:
+   - Signed-in email/UID
+   - Role: `admin` or `agent`
+   - Plan: non-`none` and status `active`/`trialing`.
+4. In the "Encrypted Uploads & Integrations" column, locate the **"E-Sign Envelopes (OpenSign)"** panel.
+5. Enter a valid document type (e.g. `contract`).
+6. Enter a test seller name and seller email (use a test email that you can access).
+7. Click **"Create Signing Envelope"**.
+8. Observe the success message:
+   - Contains a non-empty `envelopeId`.
+   - Displays `status=...` (e.g. `status=created`).
+   - If the OpenSign API returns a signing URL, it should also display `signingUrl=...`.
+9. Verify in Cloud SQL (envelopes table):
+   - A new row exists in `envelopes` where `envelope_id` matches the value from step 8.
+   - `firebase_uid` equals the signed-in user.
+   - `doc_type` matches the requested document type.
+   - `status` matches the value returned by OpenSign.
+10. (If webhook is configured) Complete the signing flow in OpenSign (using its UI or email link), then:
+    - Confirm that OpenSign calls the `/api/opensign/webhook` endpoint.
+    - Verify that the `status` column in the `envelopes` table transitions to the expected terminal value (e.g. `completed`, `signed`).
+11. Check the Go API logs (Cloud Run) for the deployment revision:
+    - Confirm there are no 5xx errors for `/api/opensign/envelopes` or `/api/opensign/webhook`.
+
+**Pass Criteria:**
+- Step 8: UI shows a success message with a valid envelope ID and status.
+- Step 9: `envelopes` table contains a matching row with correct `firebase_uid`, `doc_type`, and `status`.
+- Step 10 (if webhook enabled): After completing the signing in OpenSign, the envelope row status is updated correctly.
+- Step 11: No unhandled 5xx errors logged during the flow.
+
+**Fail Criteria:**
+- Any API call to `/api/opensign/envelopes` or `/api/opensign/webhook` returns 4xx/5xx unexpectedly.
+- Envelope row is not created or not updated as expected.
+- UI reports failure or shows inconsistent status values.
 
 ---
+
 # Phase 3 QA Report
 ---
 
