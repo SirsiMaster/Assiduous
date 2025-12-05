@@ -3,6 +3,7 @@ import React from 'react';
 import DocumentUploader from './components/DocumentUploader';
 import PricingPlans from './components/PricingPlans';
 import PlaidLinkButton from './components/PlaidLinkButton';
+import LobLetterSender from './components/LobLetterSender';
 import { useEntitlements } from './hooks/useEntitlements';
 
 const App: React.FC = () => {
@@ -38,7 +39,7 @@ const App: React.FC = () => {
 
         <div className="grid gap-6 md:grid-cols-2">
           <section className="space-y-4">
-            <h2 className="text-sm font-semibold text-slate-100">Encrypted Uploads</h2>
+            <h2 className="text-sm font-semibold text-slate-100">Encrypted Uploads & Integrations</h2>
             {apiBaseURL && (
               <DocumentUploader
                 apiBaseURL={apiBaseURL}
@@ -47,6 +48,7 @@ const App: React.FC = () => {
               />
             )}
             {apiBaseURL && <PlaidLinkButton apiBaseURL={apiBaseURL} />}
+            {apiBaseURL && <LobLetterSender apiBaseURL={apiBaseURL} />}
           </section>
 
           <section className="space-y-3">
