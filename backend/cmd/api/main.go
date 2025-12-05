@@ -21,6 +21,7 @@ import (
 	"github.com/SirsiMaster/assiduous/backend/pkg/firestore"
 	"github.com/SirsiMaster/assiduous/backend/pkg/httpapi"
 	"github.com/SirsiMaster/assiduous/backend/pkg/kms"
+	"github.com/SirsiMaster/assiduous/backend/pkg/lob"
 	"github.com/SirsiMaster/assiduous/backend/pkg/plaid"
 	"github.com/SirsiMaster/assiduous/backend/pkg/sqlclient"
 	"github.com/stripe/stripe-go/v79"
@@ -44,6 +45,11 @@ func main() {
 	plaidSvc, err := plaid.NewService(sqlDB)
 	if err != nil {
 		log.Printf("[api] warning: Plaid not fully configured: %v", err)
+	}
+
+	lobSvc, err := lob.NewService(sqlDB)
+	if err != nil {
+		log.Printf("[api] warning: Lob not fully configured: %v", err)
 	}
 
 	r := chi.NewRouter()
@@ -96,6 +102,50 @@ func main() {
 				"keyName":   os.Getenv("KMS_KEY_NAME"),
 				"keyVersion": "", // Optional: can be populated when using versioned keys
 			})
+		})
+	})
+
+	// Lob endpoints (certified mail)
+	r.Route("/api/lob", func(r chi.Router) {
+		// POST /api/lob/letters
+		// Body: { "toAddress": {...}, "templateId": "..." }
+		r.Post("/letters", func(w http.ResponseWriter, r *http.Request) {
+			if lobSvc == nil {
+				httpapi.Error(w, http.StatusServiceUnavailable, "lob_unavailable", "Lob service not configured")
+				return
+			}
+
+			uc := auth.FromContext(r.Context())
+			if uc == nil {
+				httpapi.Error(w, http.StatusUnauthorized, "unauthorized", "authentication required")
+				return
+			}
+
+			var req struct {
+				ToAddress  map[string]any `json:"toAddress"`
+				TemplateID string        `json:"templateId"`
+			}
+			if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+				httpapi.Error(w, http.StatusBadRequest, "invalid_request", "invalid JSON body")
+				return
+			}
+			if req.TemplateID == "" {
+				httpapi.Error(w, http.StatusBadRequest, "invalid_request", "templateId is required")
+				return
+			}
+
+			letterID, err := lobSvc.CreateLetter(r.Context(), lob.CreateLetterRequest{
+				FirebaseUID: uc.UID,
+				ToAddress:   req.ToAddress,
+				TemplateID:  req.TemplateID,
+			})
+			if err != nil {
+				log.Printf("[lob] CreateLetter error: %v", err)
+				httpapi.Error(w, http.StatusInternalServerError, "lob_error", "failed to create letter")
+				return
+			}
+
+			httpapi.JSON(w, http.StatusOK, map[string]any{"letterId": letterID})
 		})
 	})
 
