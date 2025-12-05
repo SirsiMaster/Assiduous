@@ -10,7 +10,7 @@ IMAGE="gcr.io/${PROJECT_ID}/${SERVICE_NAME}:latest"
 echo "[deploy_api] Building image ${IMAGE}..."
 cd "$(dirname "$0")/.." # repo root
 
-docker build -t "${IMAGE}" ./backend/cmd/api
+docker build -t "${IMAGE}" -f ./backend/cmd/api/Dockerfile ./backend
 
 echo "[deploy_api] Pushing image..."
 docker push "${IMAGE}"
