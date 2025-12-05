@@ -70,9 +70,14 @@
     {
       "id": "I-LOB-001-003",
       "name": "Lob certified mail integration (letters API)",
-      "status": "planned",
+      "status": "complete",
       "area": "integrations",
-      "codeRefs": []
+      "codeRefs": [
+        "backend/pkg/lob/lob.go",
+        "backend/cmd/api/main.go:/api/lob",
+        "web/src/components/LobLetterSender.tsx",
+        "web/src/App.tsx"
+      ]
     }
   ]
 }
