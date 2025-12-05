@@ -15,11 +15,40 @@
 **Consolidation Note:** Merged from PROJECT_STATUS.md and CANONICAL_DOCS.md
 
 **Recent Updates:**
+- December 5, 2025: Initiated full-stack GCP/AI modernization (React/Vite web, Go/Cloud Run backend, Vertex AI, subscriptions, and integrations)
 - November 4, 2025: Added UCS Phase 0 completion milestone
 - October 9, 2025: Initial project management documentation
 
 ## Universal Component System (UCS) Milestone
 **Status:** ✅ Phase 0 Complete (November 4, 2025)
+
+## Modernization Workstream (Dec 2025 Release)
+**Status:** 🚀 In Progress (Go/Cloud Run + React/Vite + Vertex AI)**  
+**Target Release:** December 15, 2025
+
+### Modernization Task Tracker
+
+Progress for the ~30 task clusters is tracked in a machine-readable ledger at
+`docs/MODERNIZATION_TASKS.json` and summarized here:
+
+- `T020–T031` – **Backend foundation (Go + Chi + Firestore + SQL + KMS)** – ✅ complete
+- `T032–T036` – **Crypto + DEK API + encrypted upload path** – ✅ complete
+- `S-001–S-006` – **Stripe subscriptions + billing checkout** – ✅ complete
+- `S-007–S-010` – **Subscription entitlements on users (Firestore)** – ✅ complete
+
+As additional clusters (Plaid, Lob, OpenSign, AI services, MLS/FSBO, React embedding, etc.) are
+implemented, their status is updated in the JSON file first, then reflected in this summary.
+
+### Scope
+- Add Go 1.21 + Chi backend services on Cloud Run for core REST APIs, MLS/FSBO ingest, and integrations (Plaid, Lob, OpenSign).
+- Add React 18 + Vite + TailwindCSS web frontend, initially embedded into existing UCS/HTML pages, then expanded as primary shell.
+- Integrate Vertex AI (Gemini) for matching, market/valuation insights, lead scoring, chat assistant, and document/image intelligence.
+- Implement Stripe-based subscriptions and entitlements for Assiduous Realty plans.
+- Wire in Plaid (bank/investment data), Lob (certified mail), OpenSign (e-sign) and Cloud KMS-backed encryption.
+
+### Tracking
+- Detailed technical breakdown and tasks tracked via WARP TODOs and this document’s task sections.
+- API and schema details in `API_SPECIFICATION.md` and `DATA_MODEL.md`.
 
 ### Milestone: UCS Infrastructure
 - **Start Date:** October 28, 2025

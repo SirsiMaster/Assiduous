@@ -108,3 +108,17 @@ build-report.json
 .maps/
 .build/
 *.template.html.map
+
+# Web frontend (React/Vite)
+web/node_modules/
+web/dist/
+web/.vite/
+
+# Go backend build artifacts
+backend/bin/
+backend/dist/
+backend/.cache/
+
+# Infra-generated artifacts
+infra/.terraform/
+infra/terraform.tfstate*

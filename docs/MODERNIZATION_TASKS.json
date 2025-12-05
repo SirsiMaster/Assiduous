@@ -1,0 +1,60 @@
+{
+  "version": 1,
+  "lastUpdated": "2025-12-05T00:00:00Z",
+  "tasks": [
+    {
+      "id": "T020-T031",
+      "name": "Backend foundation (Go + Chi + Firestore + SQL + KMS)",
+      "status": "complete",
+      "area": "backend",
+      "codeRefs": [
+        "backend/cmd/api/main.go",
+        "backend/pkg/config/config.go",
+        "backend/pkg/httpapi/httpapi.go",
+        "backend/pkg/auth/auth.go",
+        "backend/pkg/firestore/*",
+        "backend/pkg/sqlclient/sqlclient.go",
+        "backend/pkg/kms/kms.go",
+        "infra/cloudrun/api-service.yaml",
+        "infra/deploy_api.sh",
+        "infra/sql/schema.sql"
+      ]
+    },
+    {
+      "id": "T032-T036",
+      "name": "Crypto + DEK API + encrypted upload path",
+      "status": "complete",
+      "area": "crypto",
+      "codeRefs": [
+        "backend/cmd/api/main.go:/api/crypto/dek",
+        "backend/pkg/kms/kms.go",
+        "web/src/lib/crypto.ts",
+        "web/src/hooks/useEncryptedUpload.ts",
+        "web/src/components/DocumentUploader.tsx"
+      ]
+    },
+    {
+      "id": "S-001-S-006",
+      "name": "Stripe subscriptions + billing checkout",
+      "status": "complete",
+      "area": "billing",
+      "codeRefs": [
+        "backend/pkg/billing/stripe.go",
+        "backend/cmd/api/main.go:/api/billing",
+        "web/src/lib/billing.ts",
+        "web/src/components/PricingPlans.tsx"
+      ]
+    },
+    {
+      "id": "S-007-S-010",
+      "name": "Subscription entitlements on users (Firestore)",
+      "status": "complete",
+      "area": "entitlements",
+      "codeRefs": [
+        "backend/cmd/api/main.go:updateUserSubscriptionEntitlement",
+        "web/src/hooks/useEntitlements.ts",
+        "web/src/App.tsx"
+      ]
+    }
+  ]
+}

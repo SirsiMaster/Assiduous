@@ -14,6 +14,20 @@
 
 ---
 
+## Modernization Roadmap (Dec 2025)
+
+The existing Firebase-centric architecture is being expanded into a full GCP-native stack using:
+- **Frontend:** React 18 + Vite + TailwindCSS (web), layered on top of UCS and embedded into existing `public/` HTML.
+- **Backend:** Go 1.21 + Chi on Cloud Run for core REST APIs, MLS/FSBO ingest, subscriptions/billing, and integrations.
+- **Data:** Firestore for primary app data + Cloud SQL for billing/audit/integrations + BigQuery for ingest analytics.
+- **AI:** Vertex AI (Gemini) for property matching, market insights, lead scoring, chat assistant, doc/image intelligence.
+- **Security & Crypto:** Firebase Auth with MFA, Cloud Storage + Cloud KMS + client-side AES-256-GCM.
+- **Integrations:** Plaid (accounts/investments), Lob (certified mail), OpenSign (e-sign), Stripe (subscriptions/payments).
+
+This roadmap is implemented incrementally so that existing portals, QR flows, and metrics dashboards remain functional while new services and UIs come online.
+
+---
+
 ## Firebase Configuration & Analytics (Canonical)
 
 **Production Project:** `assiduous-prod`  
