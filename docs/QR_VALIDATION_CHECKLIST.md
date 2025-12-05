@@ -187,6 +187,7 @@ Before testing SMS:
 - [ ] Generates QR for user profile via v2 callable (`onCall`) in `functions/src/index.ts`
 - [ ] Returns QR code image URL and persona-aware `profileUrl` (`/admin|agent|client/profile.html?id=...`)
 - [ ] Works from `public/client/my-qr.html` using `CloudFunctionsService.generateUserQR`
+- [ ] Works from `public/agent/my-qr.html` and `public/admin/my-qr.html` via the same callable
 
 ---
 

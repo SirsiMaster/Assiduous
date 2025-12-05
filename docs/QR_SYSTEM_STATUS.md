@@ -7,7 +7,7 @@
 
 ## Executive Summary
 
-The QR code system for property sharing and client invitations has been **implemented in code** and is **email-capable in production** with SendGrid secrets configured and bound to Cloud Functions. Twilio SMS secrets are still missing, so SMS delivery paths are effectively disabled. The recent work focused on wiring the infrastructure end-to-end; email flows are ready for production testing, while SMS flows remain dormant until Twilio is configured.
+The QR code system now covers both **properties** (sharing/tracking) and **user profiles** (role-aware profile pages with QR entry points). Property QR and referral flows remain partially validated due to external service dependencies (SendGrid/Twilio), while **profile QR is fully wired end-to-end** for all personas (client, agent, admin) with dedicated profile pages and settings UIs deployed to production. Email paths are ready for focused testing; SMS remains dormant until Twilio is configured and verified.
 
 ---
 
@@ -42,11 +42,11 @@ Property detail page updates:
 ### ✅ Implemented Features
 
 #### Cloud Functions
-1. **`generatePropertyQR`** (legacy JS in `functions/index.js`)
+1. **`generatePropertyQR`** (v2 callable in `functions/src/index.ts`, legacy JS retained for back-compat)
    - Generates sequential Assiduous IDs using `generateSequentialId('PROP')`
    - Creates QR codes via `api.qrserver.com`
    - Stores QR data in Firestore property documents
-   - Status: Code complete, unported to v2 TS entrypoint, untested
+   - Status: Deployed and wired to property QR widget; property/referral flows still need formal validation
 
 2. **`sharePropertyQR`** (legacy JS in `functions/index.js`)
    - Shares properties via email or SMS with tracking
@@ -76,7 +76,12 @@ Property detail page updates:
 7. **`generateUserQR`** (**canonical v2 callable in `functions/src/index.ts`**)
    - Generates role-aware profile QR codes for users (admin/agent/client)
    - Persists `profileQRCode` and `profileUrl` on the user document
-   - Status: **Deployed and tested in production for client My QR page**; admin/agent UI integration pending
+   - Status: **Deployed and wired in production for client, agent, and admin My QR pages**, with all three persona profile pages implemented and live
+
+8. **`backfillUserProfiles`** (v2 HTTPS `onRequest` in `functions/src/index.ts`)
+   - Admin-only endpoint to backfill missing `profile` objects and `profileUrl/profileQRCode` for existing users
+   - Supports dry-run and paginated execution
+   - Status: Deployed to assiduous-prod and ready for controlled execution
 
 #### Frontend Components
 
@@ -98,7 +103,19 @@ Property detail page updates:
 
 **Client My QR Page** (`public/client/my-qr.html`)
 - Personal QR code for client profiles
-- Status: Page exists, **untested**
+- Status: Implemented and deployed; formal end-to-end validation scheduled under Task 19 (Profile & User QR Acceptance Test)
+
+**Agent My QR Page** (`public/agent/my-qr.html`)
+- Personal QR code for agent profiles
+- Status: Implemented and deployed; formal end-to-end validation scheduled under Task 19
+
+**Admin My QR Page** (`public/admin/my-qr.html`)
+- Personal QR code for admin profiles
+- Status: Implemented and deployed; formal end-to-end validation scheduled under Task 19
+
+**Profile Pages** (`public/client/profile.html`, `public/agent/profile.html`, `public/admin/profile.html`)
+- Role-aware profile views used as QR targets, rendering `users/{uid}.profile` (photo, bio, location, socials, contact)
+- Status: Implemented and deployed; part of the Profile & User QR Acceptance Test
 
 #### Firestore Collections
 - `_id_counters/{TYPE_YEAR}` - Sequential ID tracking

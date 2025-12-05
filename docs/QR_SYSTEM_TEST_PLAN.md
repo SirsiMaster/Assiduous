@@ -608,6 +608,8 @@ This document provides a comprehensive test plan for the QR Code system across a
 
 ## Profile & User QR Acceptance Test
 
+> NOTE: This section is now wired to Task 19 (P8.1) in the development plan. Execute these tests after all profile and QR coding/backfill work is complete.
+
 ### Overview
 These tests validate the end-to-end profile system and user QR flows for all personas (client, agent, admin). Run them after all profile-related development (18-task plan) is complete.
 
