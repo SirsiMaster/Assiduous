@@ -169,6 +169,35 @@ func main() {
 			httpapi.JSON(w, http.StatusOK, resp)
 		})
 
+		// GET /api/opensign/envelopes
+		// Returns recent envelopes for the current user.
+		r.Get("/envelopes", func(w http.ResponseWriter, r *http.Request) {
+			if openSignSvc == nil {
+				httpapi.Error(w, http.StatusServiceUnavailable, "opensign_unavailable", "OpenSign service not configured")
+				return
+			}
+
+			uc := auth.FromContext(r.Context())
+			if uc == nil {
+				httpapi.Error(w, http.StatusUnauthorized, "unauthorized", "authentication required")
+				return
+			}
+			if uc.Role != "admin" && uc.Role != "agent" {
+				httpapi.Error(w, http.StatusForbidden, "forbidden", "insufficient role to list envelopes")
+				return
+			}
+
+			// For now, return the last 10 envelopes; can be expanded with query params later.
+			envelopes, err := openSignSvc.ListEnvelopes(r.Context(), uc.UID, 10)
+			if err != nil {
+				log.Printf("[opensign] ListEnvelopes error: %v", err)
+				httpapi.Error(w, http.StatusInternalServerError, "opensign_error", "failed to load envelopes")
+				return
+			}
+
+			httpapi.JSON(w, http.StatusOK, map[string]any{"envelopes": envelopes})
+		})
+
 		// POST /api/opensign/webhook
 		// OpenSign will call this endpoint with envelope status updates.
 		r.Post("/webhook", func(w http.ResponseWriter, r *http.Request) {

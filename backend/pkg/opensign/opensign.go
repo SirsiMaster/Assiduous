@@ -73,6 +73,16 @@ type openSignCreateEnvelopeResponse struct {
 	Raw        json.RawMessage `json:"-"`
 }
 
+// Envelope represents a stored envelope record for API consumers.
+type Envelope struct {
+	EnvelopeID string         `json:"envelopeId"`
+	DocType    string         `json:"docType"`
+	Status     string         `json:"status"`
+	Metadata   map[string]any `json:"metadata,omitempty"`
+	CreatedAt  time.Time      `json:"createdAt"`
+	UpdatedAt  time.Time      `json:"updatedAt"`
+}
+
 // CreateEnvelope calls the OpenSign API to create a new envelope and records it
 // in the envelopes SQL table.
 func (s *Service) CreateEnvelope(ctx context.Context, req CreateEnvelopeRequest) (*CreateEnvelopeResponse, error) {
@@ -164,4 +174,64 @@ func (s *Service) UpdateEnvelopeStatus(ctx context.Context, envelopeID, status s
 		metadata,
 	)
 	return err
+}
+
+// ListEnvelopes returns the most recent envelopes for a given Firebase user.
+func (s *Service) ListEnvelopes(ctx context.Context, firebaseUID string, limit int) ([]Envelope, error) {
+	if s == nil || s.DB == nil {
+		return nil, errors.New("opensign service not configured")
+	}
+	if firebaseUID == "" {
+		return nil, errors.New("firebaseUID is required")
+	}
+	if limit <= 0 {
+		limit = 10
+	}
+
+	rows, err := s.DB.QueryContext(ctx,
+		`SELECT envelope_id, doc_type, status, metadata, created_at, updated_at
+		 FROM envelopes
+		 WHERE firebase_uid = $1
+		 ORDER BY created_at DESC
+		 LIMIT $2`,
+		firebaseUID, limit,
+	)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var list []Envelope
+	for rows.Next() {
+		var (
+			id       string
+			docType  string
+			status  string
+			metaRaw []byte
+			created time.Time
+			updated time.Time
+		)
+		if err := rows.Scan(&id, &docType, &status, &metaRaw, &created, &updated); err != nil {
+			return nil, err
+		}
+
+		var meta map[string]any
+		if len(metaRaw) > 0 {
+			_ = json.Unmarshal(metaRaw, &meta)
+		}
+
+		list = append(list, Envelope{
+			EnvelopeID: id,
+			DocType:    docType,
+			Status:     status,
+			Metadata:   meta,
+			CreatedAt:  created,
+			UpdatedAt:  updated,
+		})
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return list, nil
 }
