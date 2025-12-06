@@ -64,7 +64,7 @@
                         <!-- Populated by JavaScript -->
                     </div>
                     
-                    <div class="micro-flip-analysis">
+                    <div class="micro-flip-analysis" id="microflip">
                         <h2 class="section-title" style="color: white; border-color: rgba(255,255,255,0.3);">
                             Micro-Flip Investment Analysis
                         </h2>
@@ -256,6 +256,8 @@
     <script src="../components/component-registry.js"></script>
     <script src="../components/auth-guard.js"></script>
     <script>
+        const API_BASE_URL = 'https://assiduous-api-9355377564.us-central1.run.app';
+
         window.addEventListener('firebase-ready', function() {
             const firebase = window.Firebase || {};
             const db = firebase.db || window.firebaseDb;
@@ -268,6 +270,92 @@
         let currentProperty = null;
         let savedProperties = JSON.parse(localStorage.getItem('savedProperties') || '[]');
         
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0,
+            }).format(amount || 0);
+        }
+
+        async function runMicroFlipAnalysis(property) {
+            if (!property || !auth || !auth.currentUser) {
+                console.warn('[PropertyDetail] micro-flip analysis skipped (no auth or property).');
+                return;
+            }
+            try {
+                const user = auth.currentUser;
+                const idToken = await user.getIdToken();
+
+                // Use shared PropertyService helpers to derive ARV and repairs when possible.
+                const { PropertyService } = await import('../assets/js/services/propertyservice.js');
+                const svc = new PropertyService();
+                const arv = svc.calculateARV(property, property.mls || {}, property.publicRecords || {});
+                const repairs = svc.estimateRepairs(property, property.publicRecords || {});
+
+                const purchasePrice = typeof property.price === 'number'
+                    ? property.price
+                    : property.price && typeof property.price.list === 'number'
+                    ? property.price.list
+                    : 0;
+
+                const body = {
+                    purchasePrice,
+                    afterRepairValue: arv,
+                    rehabCosts: repairs,
+                    holdingPeriod: 90,
+                    financingType: 'cash',
+                };
+
+                const res = await fetch(`${API_BASE_URL}/api/microflip/analyze`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${idToken}`,
+                    },
+                    body: JSON.stringify(body),
+                });
+                const data = await res.json().catch(() => ({}));
+                if (!res.ok) {
+                    console.warn('[PropertyDetail] micro-flip analyze failed', data);
+                    return;
+                }
+
+                const inputs = data.inputs || {};
+                const metrics = data.metrics || {};
+                const assessment = data.assessment || {};
+
+                document.getElementById('arvValue').textContent = formatCurrency(inputs.afterRepairValue || arv);
+                document.getElementById('repairCost').textContent = formatCurrency(inputs.rehabCosts || repairs);
+                document.getElementById('potentialProfit').textContent = formatCurrency(metrics.netProfit || metrics.grossProfit || 0);
+                document.getElementById('marketDemand').textContent =
+                    (assessment.dealQuality || 'Unscored') + ' · ' + (assessment.riskLevel || 'risk n/a');
+
+                // If we have recommendations, surface top repair-focused ones as a simple list.
+                const repairList = document.getElementById('repairList');
+                if (repairList && Array.isArray(data.recommendations) && data.recommendations.length) {
+                    repairList.innerHTML = data.recommendations
+                        .slice(0, 5)
+                        .map(rec => `
+                            <div class="repair-item">
+                                <span>${rec.category || 'Insight'}</span>
+                                <span>${rec.message || ''}</span>
+                            </div>
+                        `)
+                        .join('');
+                }
+
+                // Update headline investment summary when present in DOM
+                const roiBadge = document.getElementById('propertyROI');
+                if (roiBadge && typeof metrics.roi === 'number') {
+                    roiBadge.textContent = `${metrics.roi.toFixed(1)}% ROI`;
+                }
+            } catch (err) {
+                console.error('[PropertyDetail] micro-flip analysis error', err);
+            }
+        }
+
         // Load property details
         async function loadProperty() {
             if (!propertyId) {
@@ -282,6 +370,8 @@
                     const data = snapshot.data();
                     currentProperty = { id: snapshot.id, ...data };
                     displayProperty(currentProperty);
+                    // Run a fresh micro-flip analysis based on live property data
+                    runMicroFlipAnalysis(currentProperty);
                     
                     // Increment view count (fallback to +1 if FieldValue-style helpers are not available)
                     const currentViews = typeof data.views === 'number' ? data.views : 0;

@@ -249,6 +249,20 @@
             overflow: hidden;
         }
 
+        .btn-mls-sync {
+            padding: 4px 8px;
+            border-radius: 999px;
+            border: 1px solid var(--border);
+            background: var(--white);
+            font-size: 11px;
+            cursor: pointer;
+            color: var(--navy);
+        }
+
+        .btn-mls-sync:hover {
+            background: var(--gray-100);
+        }
+
         .table-header {
             padding: var(--space-md) var(--space-lg);
             border-bottom: 1px solid var(--border);
@@ -390,8 +404,8 @@
                         <div class="stat-label">Avg Rating</div>
                     </div>
                     <div class="stat-card sirsi-card sirsi-sm-sm-card--elevated">
-                        <div class="stat-value">89%</div>
-                        <div class="stat-label">Satisfaction</div>
+                        <div class="stat-value">0</div>
+                        <div class="stat-label">MLS-connected agents</div>
                     </div>
                 </div>
 
@@ -408,8 +422,11 @@
                                 <th>Specialization</th>
                                 <th>Active Listings</th>
                                 <th>Sales (YTD)</th>
+                                <th>MLS Board / IDs</th>
+                                <th>MLS Status</th>
                                 <th>Performance</th>
                                 <th>Status</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -547,6 +564,8 @@
     </div>
 
     <script>
+        const API_BASE_URL = 'https://assiduous-api-9355377564.us-central1.run.app';
+
         // Header Actions for Agents
         const HeaderActions = {
             handleAction: function(action) {
@@ -573,11 +592,88 @@
     <script>
         let db;
 
+        // Cache of MLS connections keyed by agent uid
+        const agentMLSById = {};
+
+        async function getIdTokenOrThrow() {
+            const auth = window.firebaseAuth || (window.firebase && window.firebase.auth && window.firebase.auth());
+            if (!auth || !auth.currentUser) {
+                throw new Error('You must be signed in as an admin to load MLS data.');
+            }
+            return auth.currentUser.getIdToken();
+        }
+
+        async function triggerAgentMLSIngest(agent) {
+            let token;
+            try {
+                token = await getIdTokenOrThrow();
+            } catch (err) {
+                alert(err.message || 'You must be signed in to trigger MLS sync.');
+                return;
+            }
+            const name = agent.name || agent.email || agent.id;
+            const confirmed = window.confirm(`Run MLS ingest for ${name}? This will fetch listings using their MLS defaults.`);
+            if (!confirmed) return;
+            try {
+                const res = await fetch(`${API_BASE_URL}/api/listings/ingest/mls`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${token}`,
+                    },
+                    body: JSON.stringify({ agentUid: agent.id, limit: 50 }),
+                });
+                const data = await res.json().catch(() => ({}));
+                if (!res.ok) {
+                    throw new Error(data.message || data.error || res.statusText || 'MLS ingest failed');
+                }
+                const fetched = data.fetched != null ? data.fetched : 'unknown';
+                const created = data.created != null ? data.created : 0;
+                const updated = data.updated != null ? data.updated : 0;
+                alert(`MLS sync complete for ${name}: fetched ${fetched}, created ${created}, updated ${updated}.`);
+            } catch (err) {
+                console.error('[AgentsAdmin] MLS ingest error', err);
+                alert(err.message || 'Failed to run MLS ingest for this agent.');
+            }
+        }
+
         // Initialize Firestore once Firebase is ready
         window.addEventListener('firebase-ready', () => {
             db = window.firebaseDb || firebase.firestore();
             loadAgentsData();
         });
+        
+        async function loadMLSConnections(agents) {
+            if (!agents || agents.length === 0) return;
+            let token;
+            try {
+                token = await getIdTokenOrThrow();
+            } catch (err) {
+                console.warn('MLS connections unavailable (auth error):', err);
+                return;
+            }
+
+            const fetches = agents.map(async (agent) => {
+                try {
+                    const res = await fetch(`${API_BASE_URL}/api/mls/connection?agentId=${encodeURIComponent(agent.id)}`, {
+                        headers: { Authorization: `Bearer ${token}` },
+                    });
+                    const data = await res.json().catch(() => ({}));
+                    if (!res.ok) {
+                        return { id: agent.id, conn: null };
+                    }
+                    return { id: agent.id, conn: data.connection || null };
+                } catch (err) {
+                    console.warn('[AgentsAdmin] failed to load MLS connection for', agent.id, err);
+                    return { id: agent.id, conn: null };
+                }
+            });
+
+            const results = await Promise.all(fetches);
+            results.forEach(({ id, conn }) => {
+                agentMLSById[id] = conn;
+            });
+        }
         
         // Load agents data from Firestore
         async function loadAgentsData() {
@@ -596,12 +692,19 @@
                 });
                 
                 console.log(`Loaded ${agents.length} agents from Firestore`);
+
+                // Load MLS connection metadata for these agents via Go API
+                await loadMLSConnections(agents);
                 
                 // Update stats
                 const totalAgents = agents.length;
                 const activeAgents = agents.filter(a => a.status === 'active').length;
                 const totalSales = agents.reduce((sum, a) => sum + (a.totalSales || 0), 0);
                 const avgRating = agents.reduce((sum, a) => sum + (a.rating || 0), 0) / agents.length || 0;
+                const mlsConnected = agents.filter(a => {
+                    const conn = agentMLSById[a.id];
+                    return conn && conn.enabled;
+                }).length;
                 
                 // Update stat cards
                 document.querySelectorAll('.stat-value').forEach((el, index) => {
@@ -610,13 +713,30 @@
                         case 1: el.textContent = activeAgents; break;
                         case 2: el.textContent = `$${(totalSales / 1000000).toFixed(1)}M`; break;
                         case 3: el.textContent = avgRating.toFixed(1); break;
+                        case 4: el.textContent = mlsConnected; break;
                     }
                 });
                 
                 // Update table
                 const tbody = document.querySelector('.agents-table tbody');
                 if (tbody && agents.length > 0) {
-                    tbody.innerHTML = agents.map(agent => `
+                    tbody.innerHTML = agents.map(agent => {
+                        const mls = agentMLSById[agent.id];
+                        const hasMLS = !!mls;
+                        const mlsBoardLine = hasMLS
+                            ? `${mls.board || 'MLS'}${mls.mlsAgentId ? ' · Agent ' + mls.mlsAgentId : ''}${mls.mlsOfficeId ? ' · Office ' + mls.mlsOfficeId : ''}`
+                            : 'Not configured';
+                        let lastSynced = '—';
+                        if (mls && mls.lastSyncedAt) {
+                            const d = new Date(mls.lastSyncedAt);
+                            if (!isNaN(d.getTime())) {
+                                lastSynced = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                            }
+                        }
+                        const mlsStatusLabel = !mls ? 'Not configured' : mls.enabled ? 'Enabled' : 'Disabled';
+                        const mlsBadgeKind = !mls ? 'subtle' : mls.enabled ? 'success' : 'warning';
+
+                        return `
                         <tr>
                             <td>
                                 <div class="agent-info">
@@ -632,6 +752,17 @@
                             <td>${agent.activeListings || 0}</td>
                             <td>$${((agent.totalSales || 0) / 1000000).toFixed(1)}M</td>
                             <td>
+                                <div class="stack-sm">
+                                    <div style="font-size: 13px;">${mlsBoardLine}</div>
+                                    <div style="font-size: 11px; color: var(--text-secondary);">Last sync: ${lastSynced}</div>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="sirsi-badge sirsi-sm-sm-badge--${mlsBadgeKind}">
+                                    ${mlsStatusLabel}
+                                </span>
+                            </td>
+                            <td>
                                 <div class="performance-bar">
                                     <div class="performance-fill" style="width: ${agent.performanceScore || 50}%"></div>
                                 </div>
@@ -641,8 +772,29 @@
                                     ${agent.status || 'Active'}
                                 </span>
                             </td>
+                            <td>
+                                <button
+                                  type="button"
+                                  class="btn-mls-sync"
+                                  data-agent-id="${agent.id}"
+                                  data-agent-name="${agent.name || agent.email || agent.id}"
+                                >
+                                  Sync MLS
+                                </button>
+                            </td>
                         </tr>
-                    `).join('');
+                        `;
+                    }).join('');
+
+                    // Wire per-agent MLS sync buttons
+                    tbody.querySelectorAll('.btn-mls-sync').forEach((btn) => {
+                        btn.addEventListener('click', () => {
+                            const id = btn.getAttribute('data-agent-id');
+                            const name = btn.getAttribute('data-agent-name');
+                            const agent = agents.find(a => a.id === id) || { id, name };
+                            triggerAgentMLSIngest(agent);
+                        });
+                    });
                 }
                 
                 // Show success message

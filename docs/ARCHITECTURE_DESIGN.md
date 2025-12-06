@@ -518,6 +518,194 @@ https://api.qrserver.com/v1/create-qr-code/
 
 ### Planned Integrations
 1. **ID Generator Integration**: Replace random `PROP-XXXXXXXX` with sequential `PROP-2024-001234`
+
+---
+
+# Deal Graph and Shepherded Workflows
+**Added:** December 6, 2025  
+**Status:** Design Approved – Implementation in Progress
+
+## Overview
+
+Assiduous treats every transaction (traditional or micro-flip) as a **deal graph** composed of stages, participants, checklists, and documents. The goal is to provide a **high-visual, shepherded experience** so that no user (client, agent, seller, admin) ever feels lost in the process.
+
+Key properties:
+- **Multi-entry**: Deals can start from property discovery, client ingestion, or seller/FSBO leads.
+- **Unified graph**: All paths converge into a consistent stage model and API surface.
+- **Role-aware**: Clients, agents, sellers, and admins see different “next actions” on the same underlying data.
+- **Integrated**: Micro-flip engine, MLS/FSBO ingest, Stripe, Plaid, Lob, and OpenSign all land in this graph.
+
+## Core Data Model (Conceptual)
+
+All deal graph data is modeled in Firestore, with important events mirrored into Cloud SQL `audit_events` for compliance and reporting.
+
+### Deal
+
+**Collection:** `deals`
+
+```text
+id              string   // Firestore doc id
+entrySource     string   // 'property' | 'client' | 'seller' | 'other'
+propertyId      string?  // Firestore properties/{id} when known
+clientUid       string?  // Primary client/investor UID (optional at intake)
+creatorUid      string   // Who initiated the deal (client/agent/admin)
+stageKey        string   // intake, underwriting, offer, contract, preclose, close, postclose
+stageStatus     string   // not_started, in_progress, blocked, completed
+microflipSnapshot map    // Optional snapshot of micro-flip analysis at creation time
+searchProfile   map      // Optional buy-box / preferences for client-led deals
+leadMetadata    map      // Optional seller/FSBO lead details (address, contact)
+createdAt       Timestamp
+updatedAt       Timestamp
+```
+
+### Participants
+
+**Subcollection:** `deals/{dealId}/participants`
+
+Each participant doc represents a role in the deal:
+
+```text
+id          string // participant id
+role        string // buyer, seller, buyerAgent, listingAgent, wholesaler, titleCompany, lender, etc.
+userUid     string? // Firebase user id when applicable
+contactId   string? // Reference to a contacts collection (future)
+name        string
+email       string?
+phone       string?
+createdAt   Timestamp
+updatedAt   Timestamp
+```
+
+### Stages
+
+**Subcollection:** `deals/{dealId}/stages`
+
+Each doc captures a stage in the lifecycle with a checklist used for shepherding:
+
+```text
+id          string  // stage key (e.g. 'intake', 'underwriting', 'offer', ...)
+order       number  // ordering for UI steppers
+status      string  // not_started, in_progress, blocked, completed
+assignee    string? // default responsible role (client, agent, admin)
+checklist   [
+  {
+    id: string,
+    label: string,
+    description?: string,
+    required: boolean,
+    status: 'todo' | 'in_progress' | 'done' | 'blocked',
+    ownerRole?: string,    // who is expected to complete it
+    documentRef?: string,  // deals/{id}/documents/{docId}
+    dueAt?: Timestamp
+  }
+]
+createdAt   Timestamp
+updatedAt   Timestamp
+```
+
+Stage templates for different deal types (microflip, traditional buy, wholesale) are stored separately (e.g. `deal_stage_templates`) so the flow can evolve without rewriting code.
+
+### Documents
+
+**Subcollection:** `deals/{dealId}/documents`
+
+Documents tie into existing crypto + OpenSign + Lob infrastructure:
+
+```text
+id           string
+kind         string  // 'opensign', 'upload', 'lob_letter', 'note', etc.
+status       string  // draft, pending_signature, completed, void
+ref          map     // { envelopeId, letterId, storagePath, mimeType, ... }
+requiredBy   string? // stage key that depends on this document
+createdAt    Timestamp
+updatedAt    Timestamp
+```
+
+### Events / Audit
+
+**Cloud SQL table:** `audit_events`
+
+Deals write key transitions to `audit_events` (e.g. stage changes, document completions, participant changes) using `entity_type = 'deal'` and `entity_id = dealId` to enable cross-deal reporting and compliance audits.
+
+## Entry Paths (How Deals Start)
+
+Assiduous supports three canonical entry paths, all landing on the same deal graph.
+
+### 1. Property-led (Discovery → Deal)
+
+**Who:** Investor/client or agent browsing properties.
+
+**Trigger:** From `/client/properties.html` or `/client/property-detail.html`, user clicks "Start deal" or similar CTA.
+
+**Behavior:**
+- Backend creates a `deal` with:
+  - `entrySource = 'property'`
+  - `propertyId = properties/{id}`
+  - optional `microflipSnapshot` from the Go micro-flip engine.
+- Initial stage: `intake` with checklists for confirming participants and intent.
+- User is redirected to a Deal Overview page with a stage stepper and “next step” spelled out.
+
+### 2. Client-led (Client → Search → Deal)
+
+**Who:** Agent or admin starting from a client profile, or a client expressing interest before choosing a property.
+
+**Trigger:** "New deal" CTA from a client record or client onboarding.
+
+**Behavior:**
+- Backend creates a `deal` with:
+  - `entrySource = 'client'`
+  - `clientUid = {uid}`
+  - `searchProfile` describing buy box and strategy.
+- No `propertyId` initially; deal lives in `intake` while representation agreements, KYC, and preferences are gathered.
+- Once a property is chosen, a later update attaches `propertyId` and transitions to `underwriting`.
+
+### 3. Seller-led / FSBO (Owner Tip → Deal)
+
+**Who:** Seller/owner, wholesaler, or client entering an off-market opportunity.
+
+**Trigger:** Seller intake form or "New off-market opportunity" CTA.
+
+**Behavior:**
+- Backend creates a `deal` with:
+  - `entrySource = 'seller'`
+  - `leadMetadata` including address and seller contact details.
+- An associated `property` doc may be created or linked later once data is verified.
+- Intake checklists focus on verifying ownership, gathering property details, and deciding whether to list, wholesale, or proceed as a direct investor purchase.
+
+All three entry sources converge onto the same stage graph: `intake → underwriting → offer → contract → preclose → close → postclose`.
+
+## API Surface (High-Level)
+
+All deal graph operations are exposed via the Go API on Cloud Run under `/api/deals`:
+
+```text
+POST   /api/deals                    # create deal from any entry path
+GET    /api/deals                    # list deals for current user (role-filtered)
+GET    /api/deals/{id}               # fetch full deal with stages + participants
+PATCH  /api/deals/{id}               # update core fields (attach property, update stageKey)
+POST   /api/deals/{id}/stages        # transition/update stage & checklist state
+POST   /api/deals/{id}/participants  # add or update participants
+POST   /api/deals/{id}/documents     # attach document references (OpenSign, Lob, uploads)
+```
+
+Implementation notes:
+- Auth and entitlements are enforced via the existing middleware and `entitlements` helpers.
+- All mutating operations emit `audit_events` for traceability.
+- Stage templates and checklists are **data-driven**, not hard-coded, to allow future PRD-driven changes.
+
+## UX Principles for Shepherded Deals
+
+The deal graph is surfaced in the UI with the following design rules:
+
+1. **Always show where you are**: A top-of-page stage stepper appears on every deal view (client, agent, admin).
+2. **Always show what’s next**: Each persona sees a "Next step" panel derived from the current stage’s checklist and their role.
+3. **High-visual dashboards**:
+   - Agents/Admins see Kanban-style boards grouped by stage (Intake, Underwriting, Offers, Contracted, Closing, Post-Close).
+   - Clients see a simpler list of their deals with progress indicators and clear CTAs.
+4. **Integrated actions**: Micro-flip analysis, OpenSign envelopes, Lob letters, encrypted uploads, and Plaid data are all attached to deals and surfaced as checklist items, not isolated features.
+5. **No dead-ends**: Every page that touches deals (property detail, client profile, seller intake) includes an explicit action to either start a deal, attach to a deal, or return to an existing deal.
+
+This architecture ensures that new workflows (e.g. renovation tracking, AI-guided suggestions) can be added by extending the deal graph with new stages, participants, and documents, without re-architecting the system.
 2. **Analytics Dashboard**: View/share metrics per property
 3. **Custom QR Branding**: Add logo to center of QR codes
 4. **Vanity URLs**: Short URLs like `assiduous.io/p/ABC123`

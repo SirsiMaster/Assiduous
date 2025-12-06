@@ -228,6 +228,28 @@
             color: var(--danger);
         }
 
+        .mls-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+            border: 1px solid var(--border);
+            background: var(--gray-50);
+        }
+
+        .mls-pill-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 999px;
+            background: var(--danger);
+        }
+
+        .mls-pill-dot.live {
+            background: var(--success);
+        }
+
         @media (max-width: 900px) {
             .settings-grid {
                 grid-template-columns: minmax(0, 1fr);
@@ -349,6 +371,44 @@
                             <input id="zip" class="form-input" type="text" autocomplete="postal-code">
                         </div>
 
+                        <div class="form-section-title" style="margin-top: var(--space-xl);">MLS connection</div>
+                        <div class="form-group">
+                            <div class="mls-pill" id="mlsStatusPill">
+                                <span class="mls-pill-dot" id="mlsStatusDot"></span>
+                                <span id="mlsStatusLabel">Not configured</span>
+                            </div>
+                            <p class="form-helper" id="mlsStatusText">Connect your MLS board so Assiduous can ingest live listings for your market.</p>
+                        </div>
+                        <div class="form-grid-two">
+                            <div class="form-group">
+                                <label class="form-label" for="mlsBoard">MLS board</label>
+                                <input id="mlsBoard" class="form-input" type="text" placeholder="Bright MLS, CRMLS, etc.">
+                                <p class="form-helper">The primary MLS where you are a member.</p>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="mlsAgentId">MLS agent ID</label>
+                                <input id="mlsAgentId" class="form-input" type="text" placeholder="Agent ID in MLS">
+                            </div>
+                        </div>
+                        <div class="form-grid-two">
+                            <div class="form-group">
+                                <label class="form-label" for="mlsOfficeId">MLS office / brokerage ID</label>
+                                <input id="mlsOfficeId" class="form-input" type="text" placeholder="Office or brokerage ID in MLS">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="mlsDefaultCity">Default MLS market</label>
+                                <input id="mlsDefaultCity" class="form-input" type="text" placeholder="City (e.g., Philadelphia)">
+                                <input id="mlsDefaultState" class="form-input" type="text" placeholder="State (e.g., PA)" style="margin-top:6px; max-width:120px;">
+                                <p class="form-helper">Used as the default region when running ingest jobs for you.</p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">
+                                <input id="mlsEnabled" type="checkbox" style="margin-right:6px;"> Enable MLS-backed ingest and tools for my account
+                            </label>
+                            <p class="form-helper">When enabled, admin ingest tools can pull listings for this MLS profile into your pipeline.</p>
+                        </div>
+
                         <div class="form-section-title" style="margin-top: var(--space-xl);">About you</div>
                         <div class="form-group">
                             <label class="form-label" for="bio">Short bio</label>
@@ -400,6 +460,8 @@
         let originalProfileData = null;
         let currentPhotoUrl = '';
 
+        const MLS_API_BASE = 'https://assiduous-api-9355377564.us-central1.run.app';
+
         function buildProfileUrl(uid) {
             const origin = window.location.origin;
             const path = window.location.pathname || '';
@@ -447,6 +509,7 @@
 
                 currentUser = user;
                 await loadProfileSettings();
+                await loadMLSConnection();
             });
         });
 
@@ -534,6 +597,69 @@
                 console.error('Error loading agent profile settings:', error);
                 statusEl.textContent = 'Error loading profile settings.';
                 statusEl.classList.add('error');
+            }
+        }
+
+        async function loadMLSConnection() {
+            const statusText = document.getElementById('mlsStatusText');
+            const statusLabel = document.getElementById('mlsStatusLabel');
+            const statusDot = document.getElementById('mlsStatusDot');
+
+            if (!auth || !auth.currentUser) {
+                statusText.textContent = 'Sign in to manage your MLS connection.';
+                statusText.classList.add('error');
+                return;
+            }
+
+            try {
+                statusText.textContent = 'Loading MLS connection...';
+                statusText.classList.remove('error');
+                const token = await auth.currentUser.getIdToken();
+                const res = await fetch(MLS_API_BASE + '/api/mls/connection', {
+                    headers: {
+                        Authorization: 'Bearer ' + token,
+                    },
+                });
+                const data = await res.json().catch(() => ({}));
+                if (!res.ok) {
+                    throw new Error(data.message || res.statusText || 'Failed to load MLS connection');
+                }
+
+                const conn = data.connection;
+                if (!conn) {
+                    document.getElementById('mlsBoard').value = '';
+                    document.getElementById('mlsAgentId').value = '';
+                    document.getElementById('mlsOfficeId').value = '';
+                    document.getElementById('mlsDefaultCity').value = '';
+                    document.getElementById('mlsDefaultState').value = '';
+                    document.getElementById('mlsEnabled').checked = false;
+
+                    statusLabel.textContent = 'Not configured';
+                    statusDot.classList.remove('live');
+                    statusText.textContent = 'No MLS connection has been configured yet.';
+                    return;
+                }
+
+                document.getElementById('mlsBoard').value = conn.board || '';
+                document.getElementById('mlsAgentId').value = conn.mlsAgentId || '';
+                document.getElementById('mlsOfficeId').value = conn.mlsOfficeId || '';
+                document.getElementById('mlsDefaultCity').value = conn.defaultCity || '';
+                document.getElementById('mlsDefaultState').value = conn.defaultState || '';
+                document.getElementById('mlsEnabled').checked = !!conn.enabled;
+
+                if (conn.enabled) {
+                    statusLabel.textContent = 'Enabled';
+                    statusDot.classList.add('live');
+                    statusText.textContent = 'MLS connection is enabled. Ingest jobs can use this profile.';
+                } else {
+                    statusLabel.textContent = 'Disabled';
+                    statusDot.classList.remove('live');
+                    statusText.textContent = 'MLS connection is saved but currently disabled.';
+                }
+            } catch (error) {
+                console.error('Error loading MLS connection:', error);
+                statusText.textContent = 'Error loading MLS connection.';
+                statusText.classList.add('error');
             }
         }
 
@@ -635,6 +761,9 @@
                     throw new Error(result?.error || 'Failed to save profile');
                 }
 
+                // Save MLS connection in the same flow so profile + MLS stay in sync.
+                await saveMLSConnectionFromForm();
+
                 document.getElementById('profileName').textContent = displayName;
                 document.getElementById('profileEmailText').textContent = document.getElementById('email').value;
                 setAvatarFromNameOrPhoto(displayName, currentPhotoUrl);
@@ -655,7 +784,7 @@
                     statusHelper.textContent = 'Add your license details so clients can verify your credentials.';
                 }
 
-                statusEl.textContent = 'Profile updated.';
+                statusEl.textContent = 'Profile and MLS settings updated.';
             } catch (error) {
                 console.error('Error saving agent profile settings:', error);
                 statusEl.textContent = 'Error saving profile settings.';
@@ -664,6 +793,57 @@
             } finally {
                 saveBtn.disabled = false;
                 saveBtn.textContent = 'Save changes';
+            }
+        }
+
+        async function saveMLSConnectionFromForm() {
+            const statusText = document.getElementById('mlsStatusText');
+            const statusLabel = document.getElementById('mlsStatusLabel');
+            const statusDot = document.getElementById('mlsStatusDot');
+
+            if (!auth || !auth.currentUser) {
+                return;
+            }
+
+            try {
+                const token = await auth.currentUser.getIdToken();
+                const body = {
+                    board: document.getElementById('mlsBoard').value.trim(),
+                    mlsAgentId: document.getElementById('mlsAgentId').value.trim(),
+                    mlsOfficeId: document.getElementById('mlsOfficeId').value.trim(),
+                    defaultCity: document.getElementById('mlsDefaultCity').value.trim(),
+                    defaultState: document.getElementById('mlsDefaultState').value.trim(),
+                    enabled: document.getElementById('mlsEnabled').checked,
+                };
+
+                const res = await fetch(MLS_API_BASE + '/api/mls/connection', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: 'Bearer ' + token,
+                    },
+                    body: JSON.stringify(body),
+                });
+                const data = await res.json().catch(() => ({}));
+                if (!res.ok) {
+                    throw new Error(data.message || res.statusText || 'Failed to save MLS connection');
+                }
+
+                if (body.enabled) {
+                    statusLabel.textContent = 'Enabled';
+                    statusDot.classList.add('live');
+                    statusText.textContent = 'MLS connection is enabled. Ingest jobs can use this profile.';
+                    statusText.classList.remove('error');
+                } else {
+                    statusLabel.textContent = 'Disabled';
+                    statusDot.classList.remove('live');
+                    statusText.textContent = 'MLS connection is saved but currently disabled.';
+                    statusText.classList.remove('error');
+                }
+            } catch (error) {
+                console.error('Error saving MLS connection:', error);
+                statusText.textContent = 'Error saving MLS connection.';
+                statusText.classList.add('error');
             }
         }
 

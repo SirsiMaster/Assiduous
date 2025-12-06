@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Listings Ingest - Assiduous Admin</title>
+
+  <!-- Assiduous Design System -->
+  <link rel="stylesheet" href="../../assiduous.css" />
+  <link rel="stylesheet" href="../../components/admin-layout.css" />
+  <link rel="stylesheet" href="/assets/css/button-override.css" />
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: "Geist Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+        "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+      background: var(--white);
+    }
+
+    .admin-wrapper {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    .main-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .page-content {
+      flex: 1;
+      padding: var(--space-xl);
+      overflow-y: auto;
+      background: var(--gray-50);
+    }
+
+    .page-title {
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--navy);
+      margin-bottom: var(--space-xs);
+    }
+
+    .page-subtitle {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-bottom: var(--space-xl);
+    }
+
+    .card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      margin-bottom: var(--space-lg);
+    }
+
+    .card-header {
+      padding: var(--space-lg);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .card-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--dark);
+    }
+
+    .card-body {
+      padding: var(--space-lg);
+    }
+
+    .providers-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    .providers-table th,
+    .providers-table td {
+      padding: 10px 8px;
+      text-align: left;
+      border-bottom: 1px solid var(--gray-100);
+    }
+
+    .providers-table th {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-secondary);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 500;
+    }
+
+    .badge-success {
+      background: rgba(34, 197, 94, 0.12);
+      color: #16a34a;
+    }
+
+    .badge-muted {
+      background: rgba(148, 163, 184, 0.18);
+      color: #64748b;
+    }
+
+    .badge-warning {
+      background: rgba(234, 179, 8, 0.15);
+      color: #b45309;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      color: var(--text-secondary);
+      background: rgba(15, 23, 42, 0.02);
+    }
+
+    .pill-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: #22c55e;
+    }
+
+    .pill-dot.warning {
+      background: #f97316;
+    }
+
+    .pill-dot.danger {
+      background: #ef4444;
+    }
+
+    .btn-sm {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 6px 10px;
+      font-size: 12px;
+      border-radius: 6px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      background: var(--sky);
+      color: white;
+      font-weight: 500;
+    }
+
+    .btn-sm:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .btn-secondary-sm {
+      background: white;
+      color: var(--navy);
+      border-color: var(--border);
+    }
+
+    .stack-sm {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .text-muted {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    .monospace {
+      font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+
+    .results-log {
+      font-size: 12px;
+      color: var(--text-secondary);
+      max-height: 220px;
+      overflow-y: auto;
+      border-radius: var(--radius-md);
+      background: var(--gray-50);
+      padding: 10px 12px;
+      border: 1px solid var(--gray-200);
+    }
+
+    .results-log-entry {
+      padding: 4px 0;
+      border-bottom: 1px dashed var(--gray-200);
+    }
+
+    .results-log-entry:last-child {
+      border-bottom: none;
+    }
+
+    .grid-two {
+      display: grid;
+      grid-template-columns: minmax(0, 2fr) minmax(0, 1.2fr);
+      gap: var(--space-lg);
+    }
+
+    @media (max-width: 960px) {
+      .grid-two {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="admin-wrapper">
+    <!-- UCS Sidebar -->
+    <aside id="sidebar-root" data-active="dev-listings"></aside>
+
+    <!-- Main content -->
+    <main class="main-content">
+      <!-- UCS Header -->
+      <header
+        id="universal-header-root"
+        data-title="Listings Ingest"
+        data-subtitle="Wire MLS and portal connectors into the Assiduous property graph"
+        data-search-placeholder="Filter providers or regions..."
+      ></header>
+
+      <div class="page-content">
+        <section class="card" style="border-color: rgba(234,179,8,0.4);">
+          <div
+            class="card-header"
+            style="background: linear-gradient(135deg, rgba(234,179,8,0.15), rgba(248,250,252,1));"
+          >
+            <div>
+              <div class="page-title">Provider status & safety rails</div>
+              <p class="page-subtitle">
+                This surface is for internal operators and senior admins only. It calls the Go API
+                directly and writes into production Firestore collections.
+              </p>
+            </div>
+            <div class="stack-sm" style="align-items: flex-end;">
+              <div class="pill" id="ingest-overall-pill">
+                <span class="pill-dot"></span>
+                <span id="ingest-overall-text">Ready for dry-run ingest</span>
+              </div>
+              <button type="button" class="btn-secondary-sm btn-sm" id="refresh-providers-btn">
+                Refresh providers
+              </button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="grid-two">
+              <div>
+                <table class="providers-table" id="providers-table">
+                  <thead>
+                    <tr>
+                      <th style="width: 18%;">Provider</th>
+                      <th style="width: 12%;">Key</th>
+                      <th style="width: 16%;">Status</th>
+                      <th style="width: 28%;">Notes</th>
+                      <th style="width: 26%; text-align: right;">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="providers-tbody">
+                    <tr>
+                      <td colspan="5" class="text-muted">Loading provider configuration…</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div>
+                <div class="stack-sm" style="margin-bottom: var(--space-md);">
+                  <div style="font-size: 13px; font-weight: 600; color: var(--dark);">
+                    Last ingest results
+                  </div>
+                  <div class="text-muted">
+                    Most recent manual runs from this console. For scheduled jobs, see Cloud Run logs.
+                  </div>
+                </div>
+                <div class="results-log" id="results-log">
+                  <div class="results-log-entry text-muted">
+                    No manual runs yet. Trigger an ingest above to see a summary here.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="card-header">
+            <div class="stack-sm">
+              <div class="card-title">Default ingest parameters</div>
+              <div class="text-muted">
+                These are sent to <span class="monospace">POST /api/listings/ingest/{provider}</span> when you click
+                "Run ingest". For now they are static and tuned for dry-run scale.
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px;">
+              <div class="stack-sm">
+                <label for="limit-input" style="font-size: 12px; font-weight: 500;">Max listings per run</label>
+                <input
+                  id="limit-input"
+                  type="number"
+                  min="1"
+                  max="500"
+                  value="50"
+                  style="padding: 6px 8px; border-radius: 6px; border: 1px solid var(--border); font-size: 13px;"
+                />
+                <div class="text-muted">Use a small limit until MLS and scrapers are fully wired.</div>
+              </div>
+              <div class="stack-sm">
+                <label for="include-sold-checkbox" style="font-size: 12px; font-weight: 500;">Include sold / off-market</label>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <input id="include-sold-checkbox" type="checkbox" />
+                  <span class="text-muted">Only enable when backfilling history.</span>
+                </div>
+              </div>
+              <div class="stack-sm">
+                <label for="agent-select" style="font-size: 12px; font-weight: 500;">Agent MLS defaults</label>
+                <select
+                  id="agent-select"
+                  style="padding: 6px 8px; border-radius: 6px; border: 1px solid var(--border); font-size: 13px;"
+                >
+                  <option value="">None (manual region)</option>
+                </select>
+                <div class="text-muted" id="agent-select-help">
+                  Optional: pick an agent to prefill city/state from their MLS settings.
+                </div>
+              </div>
+              <div class="stack-sm">
+                <label style="font-size: 12px; font-weight: 500;">Region hint</label>
+                <input
+                  id="region-city-input"
+                  type="text"
+                  placeholder="City (optional, e.g., Philadelphia)"
+                  style="padding: 6px 8px; border-radius: 6px; border: 1px solid var(--border); font-size: 13px; margin-bottom: 6px;"
+                />
+                <input
+                  id="region-state-input"
+                  type="text"
+                  placeholder="State (optional, e.g., PA)"
+                  style="padding: 6px 8px; border-radius: 6px; border: 1px solid var(--border); font-size: 13px;"
+                />
+                <div class="text-muted">
+                  Providers that understand regions (MLS, Zillow, Redfin) will use these when present.
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <!-- Firebase / Auth bootstrapping -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+  <script src="../../firebase-config.js"></script>
+
+  <!-- UCS core (sidebar + header) -->
+  <script src="../../components/ucs-core.js"></script>
+  <script src="../../components/component-registry.js"></script>
+
+  <script>
+    (function () {
+      const API_BASE_URL = 'https://assiduous-api-9355377564.us-central1.run.app';
+
+      const PROVIDER_DESCRIPTIONS = {
+        mls: 'Primary MLS / RESO feed. Uses broker / agent credentials or a partner API.',
+        zillow: 'Zillow or aggregator feed. Initially wired to a low-volume scraper/API.',
+        redfin: 'Redfin feed for public comps and investor-grade data.',
+        realtor: 'Realtor.com or similar portal; secondary source for comps.',
+        fsbo: 'For-sale-by-owner / classifieds aggregation for off-market micro-flips.',
+      };
+
+      function byId(id) {
+        return document.getElementById(id);
+      }
+
+      let db = null;
+      const mlsAgentsIndex = {};
+
+      function ensureFirebaseReady() {
+        return new Promise((resolve) => {
+          if (window.firebaseAuth) {
+            resolve();
+            return;
+          }
+          window.addEventListener('firebase-ready', () => resolve(), { once: true });
+        });
+      }
+
+      async function getIdTokenOrThrow() {
+        await ensureFirebaseReady();
+        const auth = window.firebaseAuth || firebase.auth();
+        const user = auth.currentUser;
+        if (!user) {
+          throw new Error('You must be signed in to run ingest.');
+        }
+        return user.getIdToken();
+      }
+
+      function renderProviders(providers) {
+        const tbody = byId('providers-tbody');
+        if (!providers || !providers.length) {
+          tbody.innerHTML =
+            '<tr><td colspan="5" class="text-muted">No providers registered in the Go API registry.</td></tr>';
+          return;
+        }
+
+        tbody.innerHTML = providers
+          .map((p) => {
+            const desc = PROVIDER_DESCRIPTIONS[p.key] || 'External property data provider.';
+            const enabled = !!p.enabled;
+            const badgeClass = enabled ? 'badge badge-success' : 'badge badge-muted';
+            const badgeLabel = enabled ? 'Configured' : 'Not configured';
+
+            const safetyNote =
+              p.key === 'mls'
+                ? 'Use for broker-backed MLS feeds. Respect license & IDX/RESO rules.'
+                : p.key === 'zillow' || p.key === 'redfin'
+                ? 'Only call through a compliant partner API / scraper. Validate ToS before enabling.'
+                : 'Good for seeding FSBO & off-market leads; validate deduplication before scaling.';
+
+            return (
+              '<tr data-key="' +
+              p.key +
+              '">' +
+              '<td><div class="stack-sm"><span>' +
+              p.name +
+              '</span></div></td>' +
+              '<td><span class="monospace">' +
+              p.key +
+              '</span></td>' +
+              '<td><span class="' +
+              badgeClass +
+              '">' +
+              badgeLabel +
+              '</span></td>' +
+              '<td><div class="stack-sm"><span class="text-muted">' +
+              desc +
+              '</span><span class="text-muted" style="font-size:11px;">' +
+              safetyNote +
+              '</span></div></td>' +
+              '<td style="text-align:right;">' +
+              '<button type="button" class="btn-sm run-ingest-btn" data-provider="' +
+              p.key +
+              '" ' +
+              (enabled ? '' : 'disabled') +
+              '>' +
+              '<span>Run ingest</span>' +
+              '</button>' +
+              '</td>' +
+              '</tr>'
+            );
+          })
+          .join('');
+
+        Array.prototype.forEach.call(
+          tbody.querySelectorAll('.run-ingest-btn'),
+          function (btn) {
+            btn.addEventListener('click', function () {
+              const provider = this.getAttribute('data-provider');
+              if (!provider) return;
+              runIngest(provider, this);
+            });
+          }
+        );
+      }
+
+      function appendResultLine(line) {
+        const logEl = byId('results-log');
+        if (!logEl) return;
+        const now = new Date();
+        const ts = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        const entry = document.createElement('div');
+        entry.className = 'results-log-entry';
+        entry.innerHTML =
+          '<span class="monospace" style="color:var(--text-secondary);">[' +
+          ts +
+          ']</span> ' +
+          line;
+        logEl.insertBefore(entry, logEl.firstChild);
+      }
+
+      function summarizeIngestResult(providerKey, data) {
+        const fetched = data.fetched != null ? data.fetched : 'unknown';
+        const attempted = data.attempted != null ? data.attempted : 'unknown';
+        const created = data.created != null ? data.created : 0;
+        const updated = data.updated != null ? data.updated : 0;
+        const skipped = data.skipped != null ? data.skipped : 0;
+        const next = data.nextPage ? ' (nextPage available)' : '';
+
+        return (
+          '<strong>' +
+          providerKey +
+          '</strong>: fetched <strong>' +
+          fetched +
+          '</strong> listings (' +
+          attempted +
+          ' attempted, ' +
+          created +
+          ' created, ' +
+          updated +
+          ' updated, ' +
+          skipped +
+          ' skipped)' +
+          next +
+          ' via Go API.'
+        );
+      }
+
+      async function loadProviders() {
+        try {
+          const token = await getIdTokenOrThrow();
+          const res = await fetch(API_BASE_URL + '/api/listings/providers', {
+            headers: {
+              Authorization: 'Bearer ' + token,
+            },
+          });
+          const data = await res.json().catch(() => ({}));
+          if (!res.ok) {
+            throw new Error(data.message || 'Failed to load providers');
+          }
+          renderProviders(data.providers || []);
+          updateOverallPill(data.providers || []);
+        } catch (err) {
+          console.error('[ListingsIngest] failed to load providers', err);
+          const tbody = byId('providers-tbody');
+          if (tbody) {
+            tbody.innerHTML =
+              '<tr><td colspan="5" class="text-muted">' +
+              (err && err.message ? err.message : 'Failed to load providers') +
+              '</td></tr>';
+          }
+          const pill = byId('ingest-overall-pill');
+          if (pill) {
+            pill.querySelector('.pill-dot').classList.add('danger');
+            pill.querySelector('span:nth-child(2)').textContent = 'Provider registry unavailable';
+          }
+        }
+      }
+
+      function collectIngestParams() {
+        const limitInput = byId('limit-input');
+        const includeSold = byId('include-sold-checkbox');
+        const cityInput = byId('region-city-input');
+        const stateInput = byId('region-state-input');
+        const agentSelect = byId('agent-select');
+
+        const limit = Math.max(1, Math.min(500, Number(limitInput.value) || 50));
+        const include = !!includeSold.checked;
+        const city = (cityInput.value || '').trim();
+        const state = (stateInput.value || '').trim();
+        const agentUid = agentSelect && agentSelect.value ? agentSelect.value : '';
+
+        const body = { limit, includeSold: include };
+        if (city || state) {
+          body.region = { city: city || undefined, state: state || undefined };
+        }
+        if (agentUid) {
+          body.agentUid = agentUid;
+        }
+        return body;
+      }
+
+      async function runIngest(providerKey, buttonEl) {
+        try {
+          const params = collectIngestParams();
+          const token = await getIdTokenOrThrow();
+
+          const originalLabel = buttonEl.textContent;
+          buttonEl.disabled = true;
+          buttonEl.textContent = 'Running…';
+
+          const res = await fetch(API_BASE_URL + '/api/listings/ingest/' + providerKey, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: 'Bearer ' + token,
+            },
+            body: JSON.stringify(params),
+          });
+
+          const data = await res.json().catch(() => ({}));
+          if (!res.ok) {
+            const msg = data.message || data.error || res.statusText || 'Ingest failed';
+            appendResultLine('<span style="color:#b91c1c;">' + providerKey + ' ingest failed: ' + msg + '</span>');
+            throw new Error(msg);
+          }
+
+          appendResultLine(summarizeIngestResult(providerKey, data));
+        } catch (err) {
+          console.error('[ListingsIngest] runIngest error', err);
+          alert(err && err.message ? err.message : 'Failed to run ingest');
+        } finally {
+          if (buttonEl) {
+            buttonEl.disabled = false;
+            buttonEl.textContent = 'Run ingest';
+          }
+        }
+      }
+
+      function updateOverallPill(providers) {
+        const pill = byId('ingest-overall-pill');
+        if (!pill) return;
+        const dot = pill.querySelector('.pill-dot');
+        const label = pill.querySelector('span:nth-child(2)');
+
+        const enabledCount = (providers || []).filter((p) => p.enabled).length;
+        if (!enabledCount) {
+          dot.classList.add('warning');
+          label.textContent = 'All providers currently unconfigured';
+        } else {
+          dot.classList.remove('warning', 'danger');
+          label.textContent = enabledCount + ' provider(s) configured for ingest';
+        }
+      }
+
+      async function loadMLSAgents() {
+        try {
+          await ensureFirebaseReady();
+          db = window.firebaseDb || (window.firebase && window.firebase.firestore && window.firebase.firestore());
+          if (!db) {
+            console.warn('[ListingsIngest] Firestore not available for MLS agent defaults');
+            return;
+          }
+
+          const snap = await db.collection('mls_connections').where('enabled', '==', true).limit(50).get();
+          const agents = [];
+          for (const doc of snap.docs) {
+            const conn = doc.data() || {};
+            const uid = doc.id;
+            let userDoc = null;
+            try {
+              userDoc = await db.collection('users').doc(uid).get();
+            } catch (e) {
+              console.warn('[ListingsIngest] failed to load user for MLS connection', uid, e);
+            }
+            const user = userDoc && userDoc.exists ? userDoc.data() : {};
+            agents.push({
+              id: uid,
+              name: user.name || user.displayName || user.email || uid,
+              email: user.email || '',
+              defaultCity: conn.defaultCity || '',
+              defaultState: conn.defaultState || '',
+              board: conn.board || '',
+            });
+          }
+          populateAgentSelect(agents);
+        } catch (e) {
+          console.error('[ListingsIngest] loadMLSAgents error', e);
+        }
+      }
+
+      function populateAgentSelect(agents) {
+        const select = byId('agent-select');
+        const help = byId('agent-select-help');
+        if (!select) return;
+
+        select.innerHTML = '<option value="">None (manual region)</option>';
+        agents.forEach(function (agent) {
+          mlsAgentsIndex[agent.id] = agent;
+          const opt = document.createElement('option');
+          opt.value = agent.id;
+          opt.textContent = agent.name + (agent.defaultCity || agent.defaultState ? '  b7 ' + [agent.defaultCity, agent.defaultState].filter(Boolean).join(', ') : '');
+          select.appendChild(opt);
+        });
+
+        select.addEventListener('change', function () {
+          const id = this.value;
+          if (!id) {
+            if (help) {
+              help.textContent = 'Optional: pick an agent to prefill city/state from their MLS settings.';
+            }
+            return;
+          }
+          const agent = mlsAgentsIndex[id];
+          if (!agent) return;
+          const cityInput = byId('region-city-input');
+          const stateInput = byId('region-state-input');
+          if (cityInput && agent.defaultCity) {
+            cityInput.value = agent.defaultCity;
+          }
+          if (stateInput && agent.defaultState) {
+            stateInput.value = agent.defaultState;
+          }
+          if (help) {
+            const region = [agent.defaultCity, agent.defaultState].filter(Boolean).join(', ');
+            help.textContent = 'Using MLS defaults for ' + (agent.name || agent.email || id) + (region ? ' (' + region + ')' : '');
+          }
+        });
+      }
+
+      function wireEvents() {
+        const refreshBtn = byId('refresh-providers-btn');
+        if (refreshBtn) {
+          refreshBtn.addEventListener('click', function () {
+            loadProviders();
+          });
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', function () {
+        wireEvents();
+        // Wait briefly for Firebase bootstrap, then load providers and MLS-aware agent defaults.
+        setTimeout(function () {
+          loadProviders();
+          loadMLSAgents();
+        }, 300);
+      });
+    })();
+  </script>
+</body>
+</html>

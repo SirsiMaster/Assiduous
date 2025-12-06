@@ -5,6 +5,7 @@ import (
 	"crypto/rand"
 	"encoding/base64"
 	"encoding/json"
+	"errors"
 	"io"
 	"log"
 	"net/http"
@@ -16,17 +17,20 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 
+	"github.com/SirsiMaster/assiduous/backend/pkg/ai"
 	"github.com/SirsiMaster/assiduous/backend/pkg/auth"
 	"github.com/SirsiMaster/assiduous/backend/pkg/billing"
 	"github.com/SirsiMaster/assiduous/backend/pkg/config"
+	"github.com/SirsiMaster/assiduous/backend/pkg/entitlements"
 	"github.com/SirsiMaster/assiduous/backend/pkg/firestore"
 	"github.com/SirsiMaster/assiduous/backend/pkg/httpapi"
 	"github.com/SirsiMaster/assiduous/backend/pkg/kms"
+	"github.com/SirsiMaster/assiduous/backend/pkg/listings"
 	"github.com/SirsiMaster/assiduous/backend/pkg/lob"
+	"github.com/SirsiMaster/assiduous/backend/pkg/microflip"
 	"github.com/SirsiMaster/assiduous/backend/pkg/opensign"
 	"github.com/SirsiMaster/assiduous/backend/pkg/plaid"
 	"github.com/SirsiMaster/assiduous/backend/pkg/sqlclient"
-	"github.com/SirsiMaster/assiduous/backend/pkg/ai"
 	"github.com/stripe/stripe-go/v79"
 	"github.com/stripe/stripe-go/v79/webhook"
 )
@@ -67,6 +71,9 @@ func main() {
 		log.Printf("[api] warning: Vertex AI not fully configured: %v", err)
 	}
 
+	microflipEngine := microflip.NewEngine()
+	listingsRegistry := listings.NewRegistry()
+
 	r := chi.NewRouter()
 	r.Use(middleware.RequestID)
 	r.Use(middleware.RealIP)
@@ -77,9 +84,106 @@ func main() {
 	// Simple health endpoint for Cloud Run and monitoring.
 	r.Get("/healthz", func(w http.ResponseWriter, r *http.Request) {
 		httpapi.JSON(w, http.StatusOK, map[string]any{
-			"status":   "ok",
-			"env":      cfg.Env,
+			"status":    "ok",
+			"env":       cfg.Env,
 			"projectId": cfg.ProjectID,
+		})
+	})
+
+	// MLS agent configuration endpoints
+	r.Route("/api/mls", func(r chi.Router) {
+		// GET /api/mls/connection
+		// Returns the current agent's MLS connection metadata. Admins may pass
+		// ?agentId=UID to inspect a specific agent.
+		r.Get("/connection", func(w http.ResponseWriter, r *http.Request) {
+			uc := auth.FromContext(r.Context())
+			if uc == nil {
+				httpapi.Error(w, http.StatusUnauthorized, "unauthorized", "authentication required")
+				return
+			}
+
+			targetUID := uc.UID
+			if uc.Role == "admin" {
+				if q := r.URL.Query().Get("agentId"); q != "" {
+					targetUID = q
+				}
+			}
+			if targetUID == "" {
+				httpapi.Error(w, http.StatusBadRequest, "invalid_request", "agentId is required")
+				return
+			}
+
+			conn, err := listings.GetAgentMLSConnection(r.Context(), cfg.ProjectID, targetUID)
+			if err != nil {
+				log.Printf("[mls] GetAgentMLSConnection error for %s: %v", targetUID, err)
+				httpapi.Error(w, http.StatusInternalServerError, "mls_error", "failed to load MLS connection")
+				return
+			}
+
+			if conn == nil {
+				httpapi.JSON(w, http.StatusOK, map[string]any{"connection": nil})
+				return
+			}
+
+			httpapi.JSON(w, http.StatusOK, map[string]any{"connection": conn})
+		})
+
+		// PUT /api/mls/connection
+		// Upserts MLS connection metadata for the current agent. Admins can set
+		// configuration on behalf of an agent by including agentUid in the body.
+		r.Put("/connection", func(w http.ResponseWriter, r *http.Request) {
+			uc := auth.FromContext(r.Context())
+			if uc == nil {
+				httpapi.Error(w, http.StatusUnauthorized, "unauthorized", "authentication required")
+				return
+			}
+
+			// Only agents and admins may manage MLS connections.
+			if uc.Role != "agent" && uc.Role != "admin" {
+				httpapi.Error(w, http.StatusForbidden, "forbidden", "insufficient role to manage MLS connection")
+				return
+			}
+
+			var body struct {
+				AgentUID     string `json:"agentUid,omitempty"`
+				Board        string `json:"board"`
+				MLSAgentID   string `json:"mlsAgentId"`
+				MLSOfficeID  string `json:"mlsOfficeId"`
+				DefaultCity  string `json:"defaultCity"`
+				DefaultState string `json:"defaultState"`
+				Enabled      bool   `json:"enabled"`
+			}
+			if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+				httpapi.Error(w, http.StatusBadRequest, "invalid_request", "invalid JSON body")
+				return
+			}
+
+			agentUID := body.AgentUID
+			if agentUID == "" || uc.Role == "agent" {
+				agentUID = uc.UID
+			}
+			if agentUID == "" {
+				httpapi.Error(w, http.StatusBadRequest, "invalid_request", "agentUid is required")
+				return
+			}
+
+			conn := &listings.AgentMLSConnection{
+				AgentUID:     agentUID,
+				Board:        strings.TrimSpace(body.Board),
+				MLSAgentID:   strings.TrimSpace(body.MLSAgentID),
+				MLSOfficeID:  strings.TrimSpace(body.MLSOfficeID),
+				DefaultCity:  strings.TrimSpace(body.DefaultCity),
+				DefaultState: strings.TrimSpace(body.DefaultState),
+				Enabled:      body.Enabled,
+			}
+
+			if err := listings.UpsertAgentMLSConnection(r.Context(), cfg.ProjectID, conn); err != nil {
+				log.Printf("[mls] UpsertAgentMLSConnection error for %s: %v", agentUID, err)
+				httpapi.Error(w, http.StatusInternalServerError, "mls_error", "failed to save MLS connection")
+				return
+			}
+
+			httpapi.JSON(w, http.StatusOK, map[string]any{"connection": conn})
 		})
 	})
 
@@ -114,9 +218,192 @@ func main() {
 				"plaintext": base64.StdEncoding.EncodeToString(dek),
 				"wrapped":   base64.StdEncoding.EncodeToString(wrapped),
 				// keyName is resolved from environment inside the kms package when empty.
-				"keyName":   os.Getenv("KMS_KEY_NAME"),
+				"keyName":    os.Getenv("KMS_KEY_NAME"),
 				"keyVersion": "", // Optional: can be populated when using versioned keys
 			})
+		})
+	})
+
+	// Listings ingest endpoints (external property providers)
+	// NOTE: This surface is intentionally low-level and primarily driven by
+	// internal operators / schedulers rather than public clients.
+	
+	r.Route("/api/listings", func(r chi.Router) {
+		// GET /api/listings/providers
+		// Returns the configured providers and whether they are currently
+		// enabled. This is primarily used by the admin UI.
+					
+		r.Get("/providers", func(w http.ResponseWriter, r *http.Request) {
+			uc := auth.FromContext(r.Context())
+			if uc == nil {
+				httpapi.Error(w, http.StatusUnauthorized, "unauthorized", "authentication required")
+				return
+			}
+			if uc.Role != "admin" {
+				httpapi.Error(w, http.StatusForbidden, "forbidden", "admin role required")
+				return
+			}
+
+			providers := listingsRegistry.Providers()
+			out := make([]map[string]any, 0, len(providers))
+			for _, p := range providers {
+				out = append(out, map[string]any{
+					"key":     string(p.Key()),
+					"name":    p.DisplayName(),
+					"enabled": p.Enabled(),
+				})
+			}
+
+			httpapi.JSON(w, http.StatusOK, map[string]any{"providers": out})
+		})
+
+		// POST /api/listings/ingest/{provider}
+		// Triggers a one-off ingest run from a configured provider. This is
+		// restricted to admin/dev roles and is typically invoked by a
+		// Cloud Scheduler job or an internal operator.
+		r.Post("/ingest/{provider}", func(w http.ResponseWriter, r *http.Request) {
+			uc := auth.FromContext(r.Context())
+			if uc == nil {
+				httpapi.Error(w, http.StatusUnauthorized, "unauthorized", "authentication required")
+				return
+			}
+			if uc.Role != "admin" && uc.Role != "agent" {
+				// For now, restrict to staff-like roles; can be tightened to dev/admin only.
+				httpapi.Error(w, http.StatusForbidden, "forbidden", "insufficient role to trigger ingest")
+				return
+			}
+
+			providerKeyStr := chi.URLParam(r, "provider")
+			pk := listings.ProviderKey(strings.ToLower(providerKeyStr))
+			prov, ok := listingsRegistry.Get(pk)
+			if !ok {
+				httpapi.Error(w, http.StatusNotFound, "unknown_provider", "unknown listings provider")
+				return
+			}
+
+			if !prov.Enabled() {
+				httpapi.Error(w, http.StatusServiceUnavailable, "provider_not_configured", "provider is not configured; set API credentials and base URL")
+				return
+			}
+
+			var body struct {
+				Since       *time.Time             `json:"since,omitempty"`
+				Region      *listings.RegionFilter `json:"region,omitempty"`
+				Limit       int                    `json:"limit,omitempty"`
+				MaxPages    int                    `json:"maxPages,omitempty"`
+				IncludeSold bool                   `json:"includeSold,omitempty"`
+				AgentUID    string                 `json:"agentUid,omitempty"`
+			}
+			if err := json.NewDecoder(r.Body).Decode(&body); err != nil && err != io.EOF {
+				httpapi.Error(w, http.StatusBadRequest, "invalid_request", "invalid JSON body")
+				return
+			}
+
+			params := listings.FetchParams{
+				Limit:       body.Limit,
+				MaxPages:    body.MaxPages,
+				IncludeSold: body.IncludeSold,
+			}
+			if body.Since != nil {
+				params.Since = *body.Since
+			}
+			if body.Region != nil {
+				params.Region = *body.Region
+			}
+			// If this is an MLS ingest scoped to a specific agent and no explicit
+			// region was provided, fall back to that agent's MLS defaults.
+			if params.Region == (listings.RegionFilter{}) && body.AgentUID != "" && pk == listings.ProviderMLS {
+				if conn, err := listings.GetAgentMLSConnection(r.Context(), cfg.ProjectID, body.AgentUID); err == nil && conn != nil {
+					if conn.DefaultCity != "" || conn.DefaultState != "" {
+						params.Region = listings.RegionFilter{
+							City:  conn.DefaultCity,
+							State: conn.DefaultState,
+						}
+					}
+				}
+			}
+
+			res, err := prov.FetchListings(r.Context(), params)
+			if err != nil {
+				if errors.Is(err, listings.ErrNotConfigured) {
+					httpapi.Error(w, http.StatusServiceUnavailable, "provider_not_configured", "provider is not yet implemented or configured")
+					return
+				}
+				log.Printf("[listings] ingest error for provider %s: %v", prov.Key(), err)
+				httpapi.Error(w, http.StatusInternalServerError, "ingest_error", "failed to fetch listings from provider")
+				return
+			}
+
+			// Normalize into Firestore properties collection. This helper is
+			// intentionally conservative and uses Merge semantics so existing
+			// documents created by legacy flows are not clobbered.
+			summary, err := listings.UpsertExternalListingsToFirestore(r.Context(), cfg.ProjectID, res)
+			if err != nil {
+				log.Printf("[listings] Firestore upsert error for provider %s: %v", prov.Key(), err)
+				httpapi.Error(w, http.StatusInternalServerError, "ingest_persist_error", "failed to persist listings into Firestore")
+				return
+			}
+
+			// Record a lightweight sync heartbeat for agent-scoped MLS ingests so
+			// admin tooling can display "last MLS sync" per agent.
+			if body.AgentUID != "" && pk == listings.ProviderMLS {
+				if err := listings.TouchAgentMLSLastSynced(r.Context(), cfg.ProjectID, body.AgentUID, time.Now()); err != nil {
+					log.Printf("[listings] failed to touch MLS lastSyncedAt for agent %s: %v", body.AgentUID, err)
+				}
+			}
+
+			resp := map[string]any{
+				"provider": string(res.Provider),
+				"fetched":  len(res.Listings),
+				"nextPage": res.NextPage,
+			}
+			if summary != nil {
+				resp["attempted"] = summary.Attempted
+				resp["created"] = summary.Created
+				resp["updated"] = summary.Updated
+				resp["skipped"] = summary.Skipped
+			}
+			httpapi.JSON(w, http.StatusOK, resp)
+		})
+	})
+
+	// Micro-flip analysis endpoints
+	r.Route("/api/microflip", func(r chi.Router) {
+		// POST /api/microflip/analyze
+		// Body: DealInput JSON, returns DealAnalysis.
+		r.Post("/analyze", func(w http.ResponseWriter, r *http.Request) {
+			uc := auth.FromContext(r.Context())
+			if uc == nil {
+				httpapi.Error(w, http.StatusUnauthorized, "unauthorized", "authentication required")
+				return
+			}
+
+			// Enforce active subscription for micro-flip engine.
+			if ok, err := entitlements.HasActiveAssiduousSubscription(r.Context(), cfg.ProjectID, uc.UID); err != nil {
+				log.Printf("[microflip] entitlement check failed for user %s: %v", uc.UID, err)
+				httpapi.Error(w, http.StatusInternalServerError, "entitlement_error", "failed to verify subscription")
+				return
+			} else if !ok {
+				httpapi.Error(w, http.StatusForbidden, "subscription_required", "active subscription required for micro-flip analysis")
+				return
+			}
+
+			var in microflip.DealInput
+			if err := json.NewDecoder(r.Body).Decode(&in); err != nil {
+				httpapi.Error(w, http.StatusBadRequest, "invalid_request", "invalid JSON body")
+				return
+			}
+
+			// Basic input sanity defaults.
+			if in.HoldingPeriod <= 0 {
+				in.HoldingPeriod = 90
+			}
+			if in.FinancingType == "" {
+				in.FinancingType = "cash"
+			}
+
+			analysis := microflipEngine.AnalyzeDeal(in)
+			httpapi.JSON(w, http.StatusOK, analysis)
 		})
 	})
 
@@ -134,6 +421,16 @@ func main() {
 			uc := auth.FromContext(r.Context())
 			if uc == nil {
 				httpapi.Error(w, http.StatusUnauthorized, "unauthorized", "authentication required")
+				return
+			}
+
+			// Enforce active subscription for AI features.
+			if ok, err := entitlements.HasActiveAssiduousSubscription(r.Context(), cfg.ProjectID, uc.UID); err != nil {
+				log.Printf("[ai] entitlement check failed for user %s: %v", uc.UID, err)
+				httpapi.Error(w, http.StatusInternalServerError, "entitlement_error", "failed to verify subscription")
+				return
+			} else if !ok {
+				httpapi.Error(w, http.StatusForbidden, "subscription_required", "active subscription required for AI features")
 				return
 			}
 
@@ -181,8 +478,18 @@ func main() {
 				return
 			}
 
+			// Enforce active subscription for OpenSign features.
+			if ok, err := entitlements.HasActiveAssiduousSubscription(r.Context(), cfg.ProjectID, uc.UID); err != nil {
+				log.Printf("[opensign] entitlement check failed for user %s: %v", uc.UID, err)
+				httpapi.Error(w, http.StatusInternalServerError, "entitlement_error", "failed to verify subscription")
+				return
+			} else if !ok {
+				httpapi.Error(w, http.StatusForbidden, "subscription_required", "active subscription required for e-sign features")
+				return
+			}
+
 			var req struct {
-				DocType    string            `json:"docType"`
+				DocType    string           `json:"docType"`
 				Recipients []map[string]any `json:"recipients"`
 				Metadata   map[string]any   `json:"metadata,omitempty"`
 			}
@@ -236,6 +543,16 @@ func main() {
 				return
 			}
 
+			// Enforce active subscription for OpenSign features.
+			if ok, err := entitlements.HasActiveAssiduousSubscription(r.Context(), cfg.ProjectID, uc.UID); err != nil {
+				log.Printf("[opensign] entitlement check failed for user %s: %v", uc.UID, err)
+				httpapi.Error(w, http.StatusInternalServerError, "entitlement_error", "failed to verify subscription")
+				return
+			} else if !ok {
+				httpapi.Error(w, http.StatusForbidden, "subscription_required", "active subscription required for e-sign features")
+				return
+			}
+
 			// For now, return the last 10 envelopes; can be expanded with query params later.
 			envelopes, err := openSignSvc.ListEnvelopes(r.Context(), uc.UID, 10)
 			if err != nil {
@@ -260,9 +577,9 @@ func main() {
 			}
 
 			var payload struct {
-				EnvelopeID string            `json:"envelopeId"`
-				Status     string            `json:"status"`
-				Metadata   map[string]any   `json:"metadata,omitempty"`
+				EnvelopeID string         `json:"envelopeId"`
+				Status     string         `json:"status"`
+				Metadata   map[string]any `json:"metadata,omitempty"`
 			}
 			if err := json.NewDecoder(r.Body).Decode(&payload); err != nil {
 				log.Printf("[opensign] webhook decode error: %v", err)
@@ -309,14 +626,25 @@ func main() {
 				return
 			}
 
+			// Enforce active subscription for Lob features.
+			if ok, err := entitlements.HasActiveAssiduousSubscription(r.Context(), cfg.ProjectID, uc.UID); err != nil {
+				log.Printf("[lob] entitlement check failed for user %s: %v", uc.UID, err)
+				httpapi.Error(w, http.StatusInternalServerError, "entitlement_error", "failed to verify subscription")
+				return
+			} else if !ok {
+				httpapi.Error(w, http.StatusForbidden, "subscription_required", "active subscription required for certified mail features")
+				return
+			}
+
 			var req struct {
 				ToAddress  map[string]any `json:"toAddress"`
-				TemplateID string        `json:"templateId"`
+				TemplateID string         `json:"templateId"`
 			}
 			if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 				httpapi.Error(w, http.StatusBadRequest, "invalid_request", "invalid JSON body")
 				return
 			}
+
 			if req.TemplateID == "" {
 				httpapi.Error(w, http.StatusBadRequest, "invalid_request", "templateId is required")
 				return
@@ -335,8 +663,46 @@ func main() {
 
 			httpapi.JSON(w, http.StatusOK, map[string]any{"letterId": letterID})
 		})
-	})
 
+		// GET /api/lob/letters
+		// Returns recent letters for the current user for operator review.
+		r.Get("/letters", func(w http.ResponseWriter, r *http.Request) {
+			if lobSvc == nil {
+				httpapi.Error(w, http.StatusServiceUnavailable, "lob_unavailable", "Lob service not configured")
+				return
+			}
+
+			uc := auth.FromContext(r.Context())
+			if uc == nil {
+				httpapi.Error(w, http.StatusUnauthorized, "unauthorized", "authentication required")
+				return
+			}
+			// Only admins and agents can view certified mail history.
+			if uc.Role != "admin" && uc.Role != "agent" {
+				httpapi.Error(w, http.StatusForbidden, "forbidden", "insufficient role to view certified mail history")
+				return
+			}
+
+			// Enforce active subscription for Lob features.
+			if ok, err := entitlements.HasActiveAssiduousSubscription(r.Context(), cfg.ProjectID, uc.UID); err != nil {
+				log.Printf("[lob] entitlement check failed for user %s: %v", uc.UID, err)
+				httpapi.Error(w, http.StatusInternalServerError, "entitlement_error", "failed to verify subscription")
+				return
+			} else if !ok {
+				httpapi.Error(w, http.StatusForbidden, "subscription_required", "active subscription required for certified mail features")
+				return
+			}
+
+			letters, err := lobSvc.ListLetters(r.Context(), uc.UID, 20)
+			if err != nil {
+				log.Printf("[lob] ListLetters error: %v", err)
+				httpapi.Error(w, http.StatusInternalServerError, "lob_error", "failed to load letters")
+				return
+			}
+
+			httpapi.JSON(w, http.StatusOK, map[string]any{"letters": letters})
+		})
+	})
 	// Plaid endpoints (banking integration)
 	r.Route("/api/plaid", func(r chi.Router) {
 		// POST /api/plaid/link-token
@@ -350,6 +716,16 @@ func main() {
 			uc := auth.FromContext(r.Context())
 			if uc == nil {
 				httpapi.Error(w, http.StatusUnauthorized, "unauthorized", "authentication required")
+				return
+			}
+
+			// Enforce active subscription for Plaid features.
+			if ok, err := entitlements.HasActiveAssiduousSubscription(r.Context(), cfg.ProjectID, uc.UID); err != nil {
+				log.Printf("[plaid] entitlement check failed for user %s: %v", uc.UID, err)
+				httpapi.Error(w, http.StatusInternalServerError, "entitlement_error", "failed to verify subscription")
+				return
+			} else if !ok {
+				httpapi.Error(w, http.StatusForbidden, "subscription_required", "active subscription required for banking integrations")
 				return
 			}
 
@@ -382,6 +758,16 @@ func main() {
 			uc := auth.FromContext(r.Context())
 			if uc == nil {
 				httpapi.Error(w, http.StatusUnauthorized, "unauthorized", "authentication required")
+				return
+			}
+
+			// Enforce active subscription for Plaid features.
+			if ok, err := entitlements.HasActiveAssiduousSubscription(r.Context(), cfg.ProjectID, uc.UID); err != nil {
+				log.Printf("[plaid] entitlement check failed for user %s: %v", uc.UID, err)
+				httpapi.Error(w, http.StatusInternalServerError, "entitlement_error", "failed to verify subscription")
+				return
+			} else if !ok {
+				httpapi.Error(w, http.StatusForbidden, "subscription_required", "active subscription required for banking integrations")
 				return
 			}
 
@@ -418,6 +804,16 @@ func main() {
 			uc := auth.FromContext(r.Context())
 			if uc == nil {
 				httpapi.Error(w, http.StatusUnauthorized, "unauthorized", "authentication required")
+				return
+			}
+
+			// Enforce active subscription for Plaid features.
+			if ok, err := entitlements.HasActiveAssiduousSubscription(r.Context(), cfg.ProjectID, uc.UID); err != nil {
+				log.Printf("[plaid] entitlement check failed for user %s: %v", uc.UID, err)
+				httpapi.Error(w, http.StatusInternalServerError, "entitlement_error", "failed to verify subscription")
+				return
+			} else if !ok {
+				httpapi.Error(w, http.StatusForbidden, "subscription_required", "active subscription required for banking integrations")
 				return
 			}
 
@@ -580,7 +976,7 @@ func updateUserSubscriptionEntitlement(ctx context.Context, projectID string, su
 		"subscriptions": map[string]any{
 			"assiduousRealty": map[string]any{
 				"planId":           planID,
-				"status":          string(sub.Status),
+				"status":           string(sub.Status),
 				"currentPeriodEnd": time.Unix(sub.CurrentPeriodEnd, 0),
 			},
 		},

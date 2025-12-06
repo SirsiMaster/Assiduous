@@ -34,6 +34,9 @@ const PlaidLinkButton: React.FC<Props> = ({ apiBaseURL }) => {
 
         if (!res.ok) {
           const body = await res.json().catch(() => ({}));
+          if (body.code === 'subscription_required') {
+            throw new Error('Active subscription required to link bank accounts');
+          }
           throw new Error(body.message || res.statusText);
         }
 

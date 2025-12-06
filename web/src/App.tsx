@@ -3,9 +3,12 @@ import React from 'react';
 import DocumentUploader from './components/DocumentUploader';
 import PricingPlans from './components/PricingPlans';
 import PlaidLinkButton from './components/PlaidLinkButton';
+import PlaidAccountsList from './components/PlaidAccountsList';
 import LobLetterSender from './components/LobLetterSender';
+import LobLettersList from './components/LobLettersList';
 import OpenSignSender from './components/OpenSignSender';
 import AiExplain from './components/AiExplain';
+import MicroFlipAnalyzer from './components/MicroFlipAnalyzer';
 import { useEntitlements } from './hooks/useEntitlements';
 
 const App: React.FC = () => {
@@ -57,12 +60,20 @@ const App: React.FC = () => {
                 storagePrefix="uploads/documents"
               />
             )}
-            {apiBaseURL && <PlaidLinkButton apiBaseURL={apiBaseURL} />}
+            {apiBaseURL && (
+              <>
+                <PlaidLinkButton apiBaseURL={apiBaseURL} />
+                {entitlements?.hasActiveSubscription && (
+                  <PlaidAccountsList apiBaseURL={apiBaseURL} />
+                )}
+              </>
+            )}
             {apiBaseURL &&
               entitlements?.hasActiveSubscription &&
               (role === 'admin' || role === 'agent') && (
                 <>
                   <LobLetterSender apiBaseURL={apiBaseURL} />
+                  <LobLettersList apiBaseURL={apiBaseURL} />
                   <OpenSignSender apiBaseURL={apiBaseURL} />
                 </>
               )}
@@ -71,7 +82,10 @@ const App: React.FC = () => {
           <section className="space-y-3">
             <PricingPlans apiBaseURL={apiBaseURL || ''} />
             {apiBaseURL && entitlements?.hasActiveSubscription && (
-              <AiExplain apiBaseURL={apiBaseURL} />
+              <>
+                <AiExplain apiBaseURL={apiBaseURL} />
+                <MicroFlipAnalyzer apiBaseURL={apiBaseURL} />
+              </>
             )}
           </section>
         </div>

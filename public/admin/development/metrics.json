@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-12-05T18:37:47.414Z",
+  "lastUpdated": "2025-12-05T18:49:37.564Z",
   "summary": {
     "health": "Good",
     "score": 59,
@@ -158,14 +158,14 @@
     "laborCost": 52350,
     "toolsCost": 2498,
     "monthsElapsed": "3.8",
-    "totalCommits": 1057,
-    "totalFiles": 855,
+    "totalCommits": 1059,
+    "totalFiles": 857,
     "activeDays": 46,
     "totalDays": 117,
     "projectAgeDays": 117,
-    "linesAdded": 9842585,
-    "linesDeleted": 9449181,
-    "netLines": 393404,
+    "linesAdded": 9842871,
+    "linesDeleted": 9449226,
+    "netLines": 393645,
     "velocity": "23.0",
     "completionPercentage": 59,
     "actualStartDate": "2025-08-10",
@@ -177,21 +177,21 @@
   },
   "today": {
     "date": "2025-12-05",
-    "hours": "7.6",
-    "cost": 1139,
-    "commits": 23,
+    "hours": "8.3",
+    "cost": 1238,
+    "commits": 25,
     "deployments": 0
   },
   "thisWeek": {
-    "hours": "16.2",
-    "cost": 2426,
-    "commits": 49,
+    "hours": "16.8",
+    "cost": 2525,
+    "commits": 51,
     "days": 7
   },
   "thisMonth": {
-    "hours": "88.4",
-    "cost": 13266,
-    "commits": 268
+    "hours": "89.1",
+    "cost": 13365,
+    "commits": 270
   },
   "quality": {
     "testCoverage": {
@@ -224,7 +224,7 @@
       "low": 0,
       "total": 0
     },
-    "lastAudit": "2025-12-05T18:37:15.371Z",
+    "lastAudit": "2025-12-05T18:48:58.273Z",
     "dependencies": {
       "total": 0,
       "outdated": 0,
@@ -312,11 +312,11 @@
     "changelog": true,
     "contributing": false,
     "license": false,
-    "lastUpdate": "2025-12-05 13:36:30 -0500"
+    "lastUpdate": "2025-12-05 18:36:59 +0000"
   },
   "productivity": {
     "velocityTrend": "increasing",
-    "weeklyCommits": 49,
+    "weeklyCommits": 51,
     "contributors": {
       "total": 0,
       "active": 0
@@ -394,6 +394,18 @@
   },
   "recentActivity": [
     {
+      "hash": "2e075bfc35a076386612a1d1cc60be94bba3298e",
+      "message": "feat(ai): add vertex gemini explain endpoint and ui",
+      "author": "SirsiMaster",
+      "date": "2025-12-05 13:48:03 -0500"
+    },
+    {
+      "hash": "d7be1e8d858ae1c7345f3a9ab0337718b3c5cf77",
+      "message": "chore(release): Bump version to 0.137.0 [skip ci]",
+      "author": "github-actions[bot]",
+      "date": "2025-12-05 18:36:59 +0000"
+    },
+    {
       "hash": "a43b3fd4598dcb3e8cab1e327620ec1d4d732627",
       "message": "docs(testplan): add opensign smoke test",
       "author": "SirsiMaster",
@@ -440,22 +452,10 @@
       "message": "chore(tracking): mark lob integration complete",
       "author": "SirsiMaster",
       "date": "2025-12-05 11:10:54 -0500"
-    },
-    {
-      "hash": "289460b8334bceda4879030464a5c253e463e62b",
-      "message": "chore(release): Bump version to 0.134.0 [skip ci]",
-      "author": "github-actions[bot]",
-      "date": "2025-12-05 16:10:35 +0000"
-    },
-    {
-      "hash": "60ea2f3eec066c27de71c92b7fa7d94b3e479aa9",
-      "message": "feat(lob): add certified mail sender UI",
-      "author": "SirsiMaster",
-      "date": "2025-12-05 11:09:53 -0500"
     }
   ],
   "automation": {
-    "lastRun": "2025-12-05T18:37:47.414Z",
+    "lastRun": "2025-12-05T18:49:37.564Z",
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",

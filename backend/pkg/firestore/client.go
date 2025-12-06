@@ -6,6 +6,8 @@ import (
 	"sync"
 
 	"cloud.google.com/go/firestore"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 var (
@@ -27,4 +29,18 @@ func Client(ctx context.Context, projectID string) (*firestore.Client, error) {
 		}
 	})
 	return client, clientErr
+}
+
+// IsNotFound reports whether the given error is a Firestore NotFound error.
+func IsNotFound(err error) bool {
+	if err == nil {
+		return false
+	}
+	return status.Code(err) == codes.NotFound
+}
+
+// MergeAll returns the firestore.MergeAll option so callers outside this
+// package do not need to import the Firestore client library directly.
+func MergeAll() firestore.SetOption {
+	return firestore.MergeAll
 }

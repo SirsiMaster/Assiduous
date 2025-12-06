@@ -21,6 +21,13 @@
     window.AuthService = AuthService;
   </script>
 
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""
+  />
+
   <style>
     .properties-layout {
       display: flex;
@@ -33,7 +40,7 @@
       border: 1px solid var(--border);
       padding: var(--space-lg);
       display: grid;
-      grid-template-columns: 2fr 1fr 1fr 1fr 1fr auto;
+      grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr auto;
       gap: var(--space-md);
       align-items: end;
     }
@@ -76,6 +83,14 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+    }
+    .properties-map {
+      margin-top: var(--space-md);
+      margin-bottom: var(--space-xl);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      height: 320px;
     }
     .results-meta {
       font-size: 14px;
@@ -144,11 +159,54 @@
       border: 1px solid var(--border);
       font-size: 12px;
     }
+    .roi-pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 6px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 600;
+      border: 1px solid transparent;
+      margin-left: 4px;
+    }
+    .roi-high {
+      background: rgba(16, 185, 129, 0.12);
+      color: #047857;
+      border-color: rgba(16, 185, 129, 0.4);
+    }
+    .roi-medium {
+      background: rgba(14, 165, 233, 0.12);
+      color: #0369a1;
+      border-color: rgba(14, 165, 233, 0.4);
+    }
+    .roi-low {
+      background: rgba(234, 179, 8, 0.12);
+      color: #92400e;
+      border-color: rgba(234, 179, 8, 0.4);
+    }
+    .roi-thin {
+      background: rgba(148, 163, 184, 0.18);
+      color: #475569;
+      border-color: rgba(148, 163, 184, 0.4);
+    }
     .loading-state,
     .empty-state {
       padding: var(--space-xl);
       text-align: center;
       color: var(--text-secondary);
+    }
+    .roi-legend {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+    .roi-legend-label {
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
     }
   </style>
 </head>
@@ -212,6 +270,16 @@
               <option value="3">3+</option>
             </select>
           </div>
+          <div>
+            <label for="radiusFilter">Radius (mi from map center)</label>
+            <input
+              id="radiusFilter"
+              type="number"
+              min="0"
+              max="100"
+              placeholder="e.g. 10"
+            />
+          </div>
           <div style="display:flex; gap:8px;">
             <button class="primary" id="applyFiltersBtn">Search</button>
             <button class="secondary" id="clearFiltersBtn">Clear Filters</button>
@@ -226,8 +294,19 @@
           </div>
         </div>
 
+        <div class="roi-legend" aria-label="Micro-flip ROI legend">
+          <span class="roi-legend-label">Micro-flip ROI</span>
+          <span class="roi-pill roi-high">High ≥ 25%</span>
+          <span class="roi-pill roi-medium">Medium 15–24%</span>
+          <span class="roi-pill roi-low">Low 5–14%</span>
+          <span class="roi-pill roi-thin">Thin &lt; 5%</span>
+        </div>
+
         <div id="loadingState" class="loading-state">Loading properties from the marketplace…</div>
         <div id="emptyState" class="empty-state" style="display:none;">No properties match your criteria.</div>
+
+        <div id="radiusSummary" class="results-meta" style="font-size:12px; display:none;"></div>
+        <div id="propertiesMap" class="properties-map" style="display:none;"></div>
 
         <div id="propertiesGrid" class="properties-grid" style="display:none;"></div>
         <div id="propertiesList" style="display:none;"></div>
@@ -240,19 +319,66 @@
   <script src="../components/component-registry.js"></script>
   <script src="../components/auth-guard.js"></script>
  
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""></script>
+
   <script>
     (function () {
       var state = {
         currentView: 'grid',
         allProperties: [],
         filtered: [],
+        radiusMiles: null,
+        mapCenter: null,
       };
+
+      var map = null;
+      var mapMarkers = [];
+      var mapInitialized = false;
 
       var propertyService = null;
 
       function normalizeProperty(p) {
         if (!p) return null;
         var addressObj = p.address || {};
+        var coords = addressObj.coordinates || p.coordinates || null;
+        var lat = null;
+        var lng = null;
+        if (coords) {
+          // Firestore GeoPoint or plain object
+          lat = typeof coords.latitude === 'number' ? coords.latitude : coords._lat;
+          lng = typeof coords.longitude === 'number' ? coords.longitude : coords._long;
+        }
+
+        var basePrice =
+          typeof p.price === 'object'
+            ? p.price.list != null
+              ? p.price.list
+              : p.price.arv != null
+              ? p.price.arv
+              : 0
+            : p.price || 0;
+
+        var arv = p.estimatedARV || p.arv || (p.price && p.price.arv) || basePrice * 1.2;
+        var repairs =
+          p.estimatedRepairs ||
+          p.repairCosts ||
+          (p.price && p.price.repair) ||
+          Math.round(basePrice * 0.15);
+        var totalInvestment = basePrice + repairs;
+        var holding = arv * 0.1; // 10% holding costs
+        var profit = arv - totalInvestment - holding;
+        var roi = totalInvestment > 0 ? (profit / totalInvestment) * 100 : null;
+
+        var roiBucket = null;
+        if (roi != null) {
+          if (roi >= 25) roiBucket = 'high';
+          else if (roi >= 15) roiBucket = 'medium';
+          else if (roi >= 5) roiBucket = 'low';
+          else roiBucket = 'thin';
+        }
+
         return Object.assign({}, p, {
           id: p.id,
           address:
@@ -260,18 +386,16 @@
           city: addressObj.city || p.city || '',
           state: addressObj.state || p.state || '',
           zipCode: addressObj.zip || addressObj.postalCode || p.zipCode || p.postalCode || '',
-          price:
-            typeof p.price === 'object'
-              ? p.price.list != null
-                ? p.price.list
-                : p.price.arv != null
-                ? p.price.arv
-                : 0
-              : p.price || 0,
+          latitude: typeof lat === 'number' ? lat : null,
+          longitude: typeof lng === 'number' ? lng : null,
+          price: basePrice,
           bedrooms: p.bedrooms != null ? p.bedrooms : p.beds != null ? p.beds : null,
           bathrooms:
             p.bathrooms != null ? p.bathrooms : p.baths != null ? p.baths : null,
           sqft: p.sqft != null ? p.sqft : p.squareFeet != null ? p.squareFeet : null,
+          microFlipRoi: roi,
+          microFlipProfit: profit,
+          microFlipBucket: roiBucket,
           image:
             p.image ||
             (Array.isArray(p.images) && p.images.length ? p.images[0] : p.primaryImageUrl || ''),
@@ -284,6 +408,7 @@
         var price = document.getElementById('priceFilter').value;
         var beds = document.getElementById('bedsFilter').value;
         var baths = document.getElementById('bathsFilter').value;
+        var radiusInput = document.getElementById('radiusFilter');
 
         var priceMin = null;
         var priceMax = null;
@@ -293,7 +418,51 @@
           priceMax = parseInt(parts[1], 10);
         }
 
-        return { search, type, priceMin, priceMax, beds, baths };
+        var radiusMiles = null;
+        if (radiusInput && radiusInput.value) {
+          var r = parseFloat(radiusInput.value);
+          if (!isNaN(r) && r > 0) {
+            radiusMiles = r;
+          }
+        }
+        state.radiusMiles = radiusMiles;
+
+        return { search, type, priceMin, priceMax, beds, baths, radiusMiles };
+      }
+
+      function haversineMiles(lat1, lon1, lat2, lon2) {
+        function toRad(d) {
+          return (d * Math.PI) / 180;
+        }
+        var R = 3958.8; // miles
+        var dLat = toRad(lat2 - lat1);
+        var dLon = toRad(lon2 - lon1);
+        var a =
+          Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+          Math.cos(toRad(lat1)) *
+            Math.cos(toRad(lat2)) *
+            Math.sin(dLon / 2) *
+            Math.sin(dLon / 2);
+        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        return R * c;
+      }
+
+      function updateRadiusSummary() {
+        var el = document.getElementById('radiusSummary');
+        if (!el) return;
+        if (!state.radiusMiles || !state.mapCenter) {
+          el.style.display = 'none';
+          el.textContent = '';
+          return;
+        }
+        var lat = state.mapCenter.lat != null ? state.mapCenter.lat.toFixed(4) : null;
+        var lng = state.mapCenter.lng != null ? state.mapCenter.lng.toFixed(4) : null;
+        el.style.display = 'block';
+        if (lat != null && lng != null) {
+          el.textContent = 'Radius filter: ' + state.radiusMiles + ' mi around ' + lat + ', ' + lng;
+        } else {
+          el.textContent = 'Radius filter: ' + state.radiusMiles + ' mi from map center';
+        }
       }
 
       function applyClientFilters() {
@@ -337,6 +506,18 @@
           });
         }
 
+        if (filters.radiusMiles && state.mapCenter) {
+          var centerLat = state.mapCenter.lat;
+          var centerLng = state.mapCenter.lng;
+          props = props.filter(function (p) {
+            if (typeof p.latitude !== 'number' || typeof p.longitude !== 'number') {
+              return false;
+            }
+            var d = haversineMiles(centerLat, centerLng, p.latitude, p.longitude);
+            return d <= filters.radiusMiles;
+          });
+        }
+
         state.filtered = props;
         renderResults();
       }
@@ -347,6 +528,7 @@
         var gridEl = document.getElementById('propertiesGrid');
         var listEl = document.getElementById('propertiesList');
         var metaEl = document.getElementById('resultsMeta');
+        var mapEl = document.getElementById('propertiesMap');
 
         loadingEl.style.display = 'none';
 
@@ -355,11 +537,18 @@
           listEl.style.display = 'none';
           emptyEl.style.display = 'block';
           metaEl.textContent = '0 properties match your filters.';
+          if (mapEl) {
+            mapEl.style.display = 'none';
+          }
+          updateRadiusSummary();
           return;
         }
 
         emptyEl.style.display = 'none';
         metaEl.textContent = state.filtered.length + ' properties found';
+        updateRadiusSummary();
+
+        renderMap();
 
         if (state.currentView === 'grid') {
           gridEl.style.display = 'grid';
@@ -375,13 +564,24 @@
               var baths = p.bathrooms != null ? p.bathrooms + ' ba' : '';
               var sqft = p.sqft != null ? p.sqft.toLocaleString() + ' sqft' : '';
               var meta = [beds, baths, sqft].filter(Boolean).join(' • ');
+              var roiBadge = '';
+              if (typeof p.microFlipRoi === 'number' && p.microFlipBucket) {
+                var cls = p.microFlipBucket === 'high'
+                  ? 'roi-pill roi-high'
+                  : p.microFlipBucket === 'medium'
+                  ? 'roi-pill roi-medium'
+                  : p.microFlipBucket === 'low'
+                  ? 'roi-pill roi-low'
+                  : 'roi-pill roi-thin';
+                roiBadge = '<span class="' + cls + '">ROI ' + p.microFlipRoi.toFixed(1) + '%</span>';
+              }
 
               return (
                 '<div class="property-card" data-id="' + p.id + '">' +
                 '<div class="property-image" style="background-image:url(' +
                 (p.image || '\'/assets/img/property-placeholder.jpg\'') + ');"></div>' +
                 '<div class="property-body">' +
-                '<div class="property-price">' + price + '</div>' +
+                '<div class="property-price">' + price + (roiBadge ? ' ' + roiBadge : '') + '</div>' +
                 '<div class="property-address">' + address + '</div>' +
                 '<div class="property-meta">' + meta + '</div>' +
                 '</div>' +
@@ -406,6 +606,84 @@
         }
       }
 
+      function renderMap() {
+        var mapEl = document.getElementById('propertiesMap');
+        if (!mapEl || typeof L === 'undefined') {
+          return;
+        }
+
+        var withCoords = state.filtered.filter(function (p) {
+          return typeof p.latitude === 'number' && typeof p.longitude === 'number';
+        });
+
+        if (!withCoords.length) {
+          mapEl.style.display = 'none';
+          return;
+        }
+
+        mapEl.style.display = 'block';
+
+        if (!mapInitialized) {
+          map = L.map('propertiesMap').setView([39.9526, -75.1652], 12);
+          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors',
+          }).addTo(map);
+          map.on('moveend', function () {
+            state.mapCenter = map.getCenter();
+            // Reapply filters when center moves and radius is set
+            if (state.radiusMiles) {
+              applyClientFilters();
+            }
+          });
+          mapInitialized = true;
+        }
+
+        state.mapCenter = map.getCenter();
+
+        // Clear old markers
+        mapMarkers.forEach(function (m) {
+          map.removeLayer(m);
+        });
+        mapMarkers = [];
+
+        var bounds = [];
+        withCoords.forEach(function (p) {
+          var marker = L.marker([p.latitude, p.longitude]).addTo(map);
+          var addr = [p.address, p.city, p.state, p.zipCode].filter(Boolean).join(', ');
+          var price = typeof p.price === 'number' ? '$' + p.price.toLocaleString() : '';
+          var roiText = '';
+          var roiClass = '';
+          if (typeof p.microFlipRoi === 'number' && p.microFlipBucket) {
+            roiText = 'ROI ' + p.microFlipRoi.toFixed(1) + '%';
+            if (p.microFlipBucket === 'high') roiClass = 'roi-pill roi-high';
+            else if (p.microFlipBucket === 'medium') roiClass = 'roi-pill roi-medium';
+            else if (p.microFlipBucket === 'low') roiClass = 'roi-pill roi-low';
+            else roiClass = 'roi-pill roi-thin';
+          }
+          var roiHtml = roiText ? '<br/><span class="' + roiClass + '">' + roiText + '</span>' : '';
+          var detailHref = p.id
+            ? 'property-detail.html?id=' + encodeURIComponent(p.id) + '#microflip'
+            : null;
+          var ctaHtml = detailHref
+            ? '<br/><a href="' +
+              detailHref +
+              '" style="font-size:12px; color:#0f766e; text-decoration:underline;">Analyze micro-flip  3F</a>'
+            : '';
+          marker.bindPopup('<strong>' + price + '</strong><br/>' + addr + roiHtml + ctaHtml);
+          marker.on('click', function () {
+            if (p.id) {
+              window.location.href = 'property-detail.html?id=' + encodeURIComponent(p.id);
+            }
+          });
+          mapMarkers.push(marker);
+          bounds.push([p.latitude, p.longitude]);
+        });
+
+        if (bounds.length) {
+          map.fitBounds(bounds, { padding: [20, 20] });
+        }
+      }
+
       function setView(view) {
         state.currentView = view;
         document.getElementById('viewGridBtn').classList.toggle('active', view === 'grid');
@@ -423,6 +701,9 @@
           document.getElementById('priceFilter').value = 'any';
           document.getElementById('bedsFilter').value = 'any';
           document.getElementById('bathsFilter').value = 'any';
+          var radiusInput = document.getElementById('radiusFilter');
+          if (radiusInput) radiusInput.value = '';
+          state.radiusMiles = null;
           state.filtered = state.allProperties.slice();
           renderResults();
         });
