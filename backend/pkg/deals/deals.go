@@ -500,6 +500,40 @@ func AddDealDocument(ctx context.Context, projectID, dealID string, in DealDocum
 	return &in, nil
 }
 
+// UpdateDealDocument applies a partial update to a deal document and returns
+// the updated record. Only fields present in updates will be modified.
+func UpdateDealDocument(ctx context.Context, projectID, dealID, docID string, updates map[string]any) (*DealDocument, error) {
+	if projectID == "" || dealID == "" || docID == "" {
+		return nil, fmt.Errorf("projectID, dealID, and docID are required")
+	}
+	if len(updates) == 0 {
+		return nil, fmt.Errorf("no updates provided")
+	}
+
+	client, err := fs.Client(ctx, projectID)
+	if err != nil {
+		return nil, err
+	}
+
+	updates["updatedAt"] = time.Now()
+	ref := client.Collection("deals").Doc(dealID).Collection("documents").Doc(docID)
+	if _, err := ref.Set(ctx, updates, fs.MergeAll()); err != nil {
+		return nil, err
+	}
+	doc, err := ref.Get(ctx)
+	if err != nil {
+		return nil, err
+	}
+	var out DealDocument
+	if err := doc.DataTo(&out); err != nil {
+		return nil, err
+	}
+	if out.ID == "" {
+		out.ID = doc.Ref.ID
+	}
+	return &out, nil
+}
+
 // UpdateStageChecklist updates the status of checklist items for a single
 // stage. It also updates the stage status when all required items are done.
 func UpdateStageChecklist(ctx context.Context, projectID, dealID, stageKey string, updates map[string]string) (*Stage, error) {

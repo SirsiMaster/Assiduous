@@ -212,6 +212,41 @@
                 </div>
               </div>
             </form>
+            <div style="margin-top: 10px; display: flex; flex-direction: column; gap: 4px;">
+              <button id="sendOpenSignButton" style="font-size: 12px; padding: 4px 8px; border-radius: 999px; border: 1px solid var(--border); background: white; cursor: pointer; display: none; text-align: left;">
+                ✍️ Send for e-sign (OpenSign)
+              </button>
+              <form id="openSignForm" style="display: none; font-size: 12px; color: var(--text-secondary); margin-top: 4px;">
+                <div style="display: flex; flex-direction: column; gap: 6px;">
+                  <input id="openSignDocType" type="text" placeholder="Doc type (e.g. purchase_agreement)" style="padding: 4px 6px; border-radius: 4px; border: 1px solid var(--border);" />
+                  <input id="openSignRecipientName" type="text" placeholder="Recipient name" style="padding: 4px 6px; border-radius: 4px; border: 1px solid var(--border);" />
+                  <input id="openSignRecipientEmail" type="email" placeholder="Recipient email" style="padding: 4px 6px; border-radius: 4px; border: 1px solid var(--border);" />
+                  <div style="display: flex; justify-content: flex-end; gap: 6px;">
+                    <button type="button" id="openSignCancel" style="font-size: 11px; padding: 4px 8px; border-radius: 999px; border: 1px solid var(--border); background: white; cursor: pointer;">Cancel</button>
+                    <button type="submit" style="font-size: 11px; padding: 4px 10px; border-radius: 999px; border: none; background: var(--sky); color: white; cursor: pointer;">Send</button>
+                  </div>
+                </div>
+              </form>
+              <button id="sendLobButton" style="font-size: 12px; padding: 4px 8px; border-radius: 999px; border: 1px solid var(--border); background: white; cursor: pointer; display: none; text-align: left;">
+                📬 Send certified letter (Lob)
+              </button>
+              <form id="lobForm" style="display: none; font-size: 12px; color: var(--text-secondary); margin-top: 4px;">
+                <div style="display: flex; flex-direction: column; gap: 6px;">
+                  <input id="lobTemplateId" type="text" placeholder="Template ID" style="padding: 4px 6px; border-radius: 4px; border: 1px solid var(--border);" />
+                  <input id="lobToName" type="text" placeholder="Recipient name" style="padding: 4px 6px; border-radius: 4px; border: 1px solid var(--border);" />
+                  <input id="lobAddress1" type="text" placeholder="Address line 1" style="padding: 4px 6px; border-radius: 4px; border: 1px solid var(--border);" />
+                  <div style="display: flex; gap: 6px;">
+                    <input id="lobCity" type="text" placeholder="City" style="flex: 1; padding: 4px 6px; border-radius: 4px; border: 1px solid var(--border);" />
+                    <input id="lobState" type="text" placeholder="State" style="width: 80px; padding: 4px 6px; border-radius: 4px; border: 1px solid var(--border);" />
+                    <input id="lobZip" type="text" placeholder="ZIP" style="width: 100px; padding: 4px 6px; border-radius: 4px; border: 1px solid var(--border);" />
+                  </div>
+                  <div style="display: flex; justify-content: flex-end; gap: 6px;">
+                    <button type="button" id="lobCancel" style="font-size: 11px; padding: 4px 8px; border-radius: 999px; border: 1px solid var(--border); background: white; cursor: pointer;">Cancel</button>
+                    <button type="submit" style="font-size: 11px; padding: 4px 10px; border-radius: 999px; border: none; background: var(--sky); color: white; cursor: pointer;">Send</button>
+                  </div>
+                </div>
+              </form>
+            </div>
           </aside>
         </div>
       </div>
@@ -260,8 +295,12 @@
         const isStaff = role === 'admin' || role === 'agent';
         const addPart = byId('addParticipantButton');
         const addDoc = byId('addDocumentButton');
+        const sendOpenSign = byId('sendOpenSignButton');
+        const sendLob = byId('sendLobButton');
         if (addPart) addPart.style.display = isStaff ? 'inline-block' : 'none';
         if (addDoc) addDoc.style.display = isStaff ? 'inline-block' : 'none';
+        if (sendOpenSign) sendOpenSign.style.display = isStaff ? 'inline-block' : 'none';
+        if (sendLob) sendLob.style.display = isStaff ? 'inline-block' : 'none';
       }
 
       function renderStageStepper(stageKey) {
@@ -561,6 +600,34 @@
           if (docForm) docForm.style.display = 'none';
           return;
         }
+
+        // OpenSign quick form toggles
+        const openSignBtn = evt.target.closest('#sendOpenSignButton');
+        const openSignCancel = evt.target.closest('#openSignCancel');
+        const openSignForm = byId('openSignForm');
+        if (openSignBtn) {
+          if (currentRole !== 'admin' && currentRole !== 'agent') return;
+          if (openSignForm) openSignForm.style.display = openSignForm.style.display === 'none' || !openSignForm.style.display ? 'block' : 'none';
+          return;
+        }
+        if (openSignCancel) {
+          if (openSignForm) openSignForm.style.display = 'none';
+          return;
+        }
+
+        // Lob quick form toggles
+        const lobBtn = evt.target.closest('#sendLobButton');
+        const lobCancel = evt.target.closest('#lobCancel');
+        const lobForm = byId('lobForm');
+        if (lobBtn) {
+          if (currentRole !== 'admin' && currentRole !== 'agent') return;
+          if (lobForm) lobForm.style.display = lobForm.style.display === 'none' || !lobForm.style.display ? 'block' : 'none';
+          return;
+        }
+        if (lobCancel) {
+          if (lobForm) lobForm.style.display = 'none';
+          return;
+        }
       });
 
       const participantFormEl = document.getElementById('participantForm');
@@ -669,6 +736,117 @@
           } catch (err) {
             console.error('[Deal] document submit error', err);
             showToast('Failed to attach document.');
+          }
+        });
+      }
+
+      // OpenSign quick send
+      const openSignFormEl = document.getElementById('openSignForm');
+      if (openSignFormEl) {
+        openSignFormEl.addEventListener('submit', async function (evt) {
+          evt.preventDefault();
+          if (currentRole !== 'admin' && currentRole !== 'agent') {
+            showToast('Only admins and agents can send e-sign envelopes.');
+            return;
+          }
+          const dealId = window.__currentDealId;
+          if (!dealId || !currentUser) return;
+
+          const docType = byId('openSignDocType').value.trim();
+          const name = byId('openSignRecipientName').value.trim();
+          const email = byId('openSignRecipientEmail').value.trim();
+          if (!docType || !name || !email) {
+            showToast('Doc type, name, and email are required.');
+            return;
+          }
+
+          try {
+            const token = await currentUser.getIdToken();
+            const res = await fetch(API_BASE_URL + '/api/opensign/envelopes', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + token,
+              },
+              body: JSON.stringify({
+                docType: docType,
+                recipients: [{ name: name, email: email }],
+                metadata: { origin: 'deal-page', dealId: dealId },
+                dealId: dealId,
+              }),
+            });
+            const json = await res.json().catch(() => ({}));
+            if (!res.ok) {
+              console.error('[Deal] OpenSign quick send failed', json);
+              showToast('Failed to send OpenSign envelope.');
+              return;
+            }
+            if (json.signingUrl) {
+              window.open(json.signingUrl, '_blank', 'noopener,noreferrer');
+            }
+            showToast('OpenSign envelope created.');
+            window.location.reload();
+          } catch (err) {
+            console.error('[Deal] OpenSign quick send error', err);
+            showToast('Failed to send OpenSign envelope.');
+          }
+        });
+      }
+
+      // Lob quick send
+      const lobFormEl = document.getElementById('lobForm');
+      if (lobFormEl) {
+        lobFormEl.addEventListener('submit', async function (evt) {
+          evt.preventDefault();
+          if (currentRole !== 'admin' && currentRole !== 'agent') {
+            showToast('Only admins and agents can send certified letters.');
+            return;
+          }
+          const dealId = window.__currentDealId;
+          if (!dealId || !currentUser) return;
+
+          const templateId = byId('lobTemplateId').value.trim();
+          const name = byId('lobToName').value.trim();
+          const line1 = byId('lobAddress1').value.trim();
+          const city = byId('lobCity').value.trim();
+          const state = byId('lobState').value.trim();
+          const zip = byId('lobZip').value.trim();
+          if (!templateId || !name || !line1 || !city || !state || !zip) {
+            showToast('All address fields and template ID are required.');
+            return;
+          }
+
+          try {
+            const token = await currentUser.getIdToken();
+            const res = await fetch(API_BASE_URL + '/api/lob/letters', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + token,
+              },
+              body: JSON.stringify({
+                templateId: templateId,
+                dealId: dealId,
+                toAddress: {
+                  name: name,
+                  addressLine1: line1,
+                  city: city,
+                  state: state,
+                  zip: zip,
+                },
+              }),
+            });
+            const json = await res.json().catch(() => ({}));
+            if (!res.ok) {
+              console.error('[Deal] Lob quick send failed', json);
+              showToast('Failed to send certified letter.');
+              return;
+            }
+            showToast('Certified letter created.');
+            window.location.reload();
+          } catch (err) {
+            console.error('[Deal] Lob quick send error', err);
+            showToast('Failed to send certified letter.');
           }
         });
       }

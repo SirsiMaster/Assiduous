@@ -597,6 +597,73 @@ func main() {
 				httpapi.JSON(w, http.StatusOK, map[string]any{"document": d})
 			})
 
+			// PATCH /api/deals/{id}/documents/{docId}
+			// Updates document metadata such as status/requiredBy.
+			r.Patch("/{id}/documents/{docId}", func(w http.ResponseWriter, r *http.Request) {
+				uc := auth.FromContext(r.Context())
+				if uc == nil {
+					httpapi.Error(w, http.StatusUnauthorized, "unauthorized", "authentication required")
+					return
+				}
+
+				dealID := chi.URLParam(r, "id")
+				if strings.TrimSpace(dealID) == "" {
+					httpapi.Error(w, http.StatusBadRequest, "invalid_request", "deal id is required")
+					return
+				}
+				docID := chi.URLParam(r, "docId")
+				if strings.TrimSpace(docID) == "" {
+					httpapi.Error(w, http.StatusBadRequest, "invalid_request", "document id is required")
+					return
+				}
+
+				deal, err := deals.GetDeal(r.Context(), cfg.ProjectID, dealID)
+				if err != nil {
+					httpapi.Error(w, http.StatusNotFound, "deal_not_found", "deal not found")
+					return
+				}
+				allowed := uc.Role == "admin" || deal.CreatorUID == uc.UID || deal.ClientUID == uc.UID
+				if !allowed {
+					isPart, err := deals.IsUserParticipant(r.Context(), cfg.ProjectID, dealID, uc.UID)
+					if err != nil {
+						log.Printf("[deals] IsUserParticipant check failed for deal %s, user %s: %v", dealID, uc.UID, err)
+					}
+					if !isPart {
+						httpapi.Error(w, http.StatusForbidden, "forbidden", "insufficient access to this deal")
+						return
+					}
+				}
+
+				var body struct {
+					Status     *string `json:"status,omitempty"`
+					RequiredBy *string `json:"requiredBy,omitempty"`
+				}
+				if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+					httpapi.Error(w, http.StatusBadRequest, "invalid_request", "invalid JSON body")
+					return
+				}
+				updates := make(map[string]any)
+				if body.Status != nil {
+					updates["status"] = *body.Status
+				}
+				if body.RequiredBy != nil {
+					updates["requiredBy"] = *body.RequiredBy
+				}
+				if len(updates) == 0 {
+					httpapi.Error(w, http.StatusBadRequest, "invalid_request", "no updates provided")
+					return
+				}
+
+				d, err := deals.UpdateDealDocument(r.Context(), cfg.ProjectID, dealID, docID, updates)
+				if err != nil {
+					log.Printf("[deals] UpdateDealDocument error for deal %s doc %s: %v", dealID, docID, err)
+					httpapi.Error(w, http.StatusBadRequest, "document_update_failed", err.Error())
+					return
+				}
+
+				httpapi.JSON(w, http.StatusOK, map[string]any{"document": d})
+			})
+
 		// POST /api/deals/{id}/stages
 		// Updates checklist item statuses for a stage. This is primarily called by
 		// the client portal when a user completes intake tasks.
