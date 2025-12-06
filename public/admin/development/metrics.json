@@ -1,11 +1,11 @@
 {
-  "lastUpdated": "2025-12-06T17:19:22.322Z",
+  "lastUpdated": "2025-12-06T21:28:58.628Z",
   "summary": {
     "health": "Good",
     "score": 59,
     "trend": "increasing",
     "alerts": [
-      "✅ UCS implementation complete - 44 pages converted",
+      "✅ UCS implementation complete - 45 pages converted",
       "⚠️ Test coverage is very low",
       "⏰ Timeline warning - -5 days until launch"
     ]
@@ -100,14 +100,14 @@
         "Universal header template",
         "Role-based filtering",
         "Token replacement system",
-        "44 pages converted",
+        "45 pages converted",
         "5,000+ lines of code removed",
         "Complete documentation"
       ],
       "remainingTasks": [],
       "metrics": {
-        "totalPagesConverted": 44,
-        "clientPages": 21,
+        "totalPagesConverted": 45,
+        "clientPages": 22,
         "agentPages": 23,
         "linesRemoved": 5000,
         "componentReuse": "100%",
@@ -152,21 +152,21 @@
     }
   },
   "project": {
-    "totalHours": "350",
-    "avgHoursPerDay": "7.4",
-    "totalCost": 55020,
-    "laborCost": 52500,
-    "toolsCost": 2520,
+    "totalHours": "351",
+    "avgHoursPerDay": "7.5",
+    "totalCost": 55191,
+    "laborCost": 52650,
+    "toolsCost": 2541,
     "monthsElapsed": "3.9",
-    "totalCommits": 1061,
-    "totalFiles": 867,
+    "totalCommits": 1065,
+    "totalFiles": 869,
     "activeDays": 47,
-    "totalDays": 118,
-    "projectAgeDays": 118,
-    "linesAdded": 9847317,
-    "linesDeleted": 9449295,
-    "netLines": 398022,
-    "velocity": "22.6",
+    "totalDays": 119,
+    "projectAgeDays": 119,
+    "linesAdded": 9849992,
+    "linesDeleted": 9449366,
+    "netLines": 400626,
+    "velocity": "22.7",
     "completionPercentage": 59,
     "actualStartDate": "2025-08-10",
     "architecture": {
@@ -177,21 +177,21 @@
   },
   "today": {
     "date": "2025-12-06",
-    "hours": "3.3",
-    "cost": 495,
-    "commits": 10,
+    "hours": "1.7",
+    "cost": 248,
+    "commits": 5,
     "deployments": 0
   },
   "thisWeek": {
-    "hours": "17.5",
-    "cost": 2624,
-    "commits": 53,
+    "hours": "18.2",
+    "cost": 2723,
+    "commits": 55,
     "days": 7
   },
   "thisMonth": {
-    "hours": "73.9",
-    "cost": 11088,
-    "commits": 224
+    "hours": "75.2",
+    "cost": 11286,
+    "commits": 228
   },
   "quality": {
     "testCoverage": {
@@ -224,7 +224,7 @@
       "low": 0,
       "total": 0
     },
-    "lastAudit": "2025-12-06T17:18:54.794Z",
+    "lastAudit": "2025-12-06T21:28:21.966Z",
     "dependencies": {
       "total": 0,
       "outdated": 0,
@@ -312,11 +312,11 @@
     "changelog": true,
     "contributing": false,
     "license": false,
-    "lastUpdate": "2025-12-06 12:17:48 -0500"
+    "lastUpdate": "2025-12-06 15:41:27 -0500"
   },
   "productivity": {
     "velocityTrend": "increasing",
-    "weeklyCommits": 53,
+    "weeklyCommits": 55,
     "contributors": {
       "total": 0,
       "active": 0
@@ -394,6 +394,30 @@
   },
   "recentActivity": [
     {
+      "hash": "a7ab39958132d55a0e35293836dd3e356c489b1b",
+      "message": "feat(deals): add inline document status controls",
+      "author": "SirsiMaster",
+      "date": "2025-12-06 16:00:47 -0500"
+    },
+    {
+      "hash": "3b024cf1a249670c3ecc5fb0095254c55c611283",
+      "message": "feat(deals): add quick opensign and lob flows",
+      "author": "SirsiMaster",
+      "date": "2025-12-06 15:49:10 -0500"
+    },
+    {
+      "hash": "9e9665d997972b04af9dc8acbb6bc7d1c9903059",
+      "message": "feat(deals): add role-gated deal participant and document flows",
+      "author": "SirsiMaster",
+      "date": "2025-12-06 15:41:27 -0500"
+    },
+    {
+      "hash": "bc8e440d580ac051aa3e7c014ef144817d2e2841",
+      "message": "chore(release): Bump version to 0.139.0 [skip ci]",
+      "author": "github-actions[bot]",
+      "date": "2025-12-06 17:18:40 +0000"
+    },
+    {
       "hash": "2d63a0b35d4a52414e004a25cfed3c5516c963a4",
       "message": "feat(deals): document deal graph and finalize ingest workflows",
       "author": "SirsiMaster",
@@ -428,34 +452,10 @@
       "message": "feat(opensign): add envelopes listing endpoint and status ui",
       "author": "SirsiMaster",
       "date": "2025-12-05 13:35:49 -0500"
-    },
-    {
-      "hash": "a59ddf61533364ab7fec4a2991098364bde5b22c",
-      "message": "chore(release): Bump version to 0.136.0 [skip ci]",
-      "author": "github-actions[bot]",
-      "date": "2025-12-05 18:27:41 +0000"
-    },
-    {
-      "hash": "ceebb3875e2198638c418ff07b42e4a933c6f912",
-      "message": "feat(opensign): add envelopes api and sender ui",
-      "author": "SirsiMaster",
-      "date": "2025-12-05 13:26:57 -0500"
-    },
-    {
-      "hash": "5f6159300983180768167592ec41d8b1c0ba3598",
-      "message": "chore(release): Bump version to 0.135.0 [skip ci]",
-      "author": "github-actions[bot]",
-      "date": "2025-12-05 17:50:24 +0000"
-    },
-    {
-      "hash": "bdc9d806fa9f363464f8de20cdc899de978c86a1",
-      "message": "feat(auth): gate lob letters to admin and agent roles",
-      "author": "SirsiMaster",
-      "date": "2025-12-05 12:50:05 -0500"
     }
   ],
   "automation": {
-    "lastRun": "2025-12-06T17:19:22.322Z",
+    "lastRun": "2025-12-06T21:28:58.628Z",
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",

@@ -14,7 +14,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - feat(deals): add inline document status controls
 - feat(deals): add quick opensign and lob flows
 - feat(deals): add role-gated deal participant and document flows
+- test(httpapi): add unit tests for JSON and Error helpers in Go API
 
+### Changed
+- docs(modernization): canonize completion of modernization epic tasks (backend foundation, crypto + DEK, React web shell, Stripe billing + entitlements, Plaid banking, Lob certified mail, OpenSign e-sign, Vertex AI explain, deal graph) in this changelog
 
 ## [0.139.0] - 2025-12-06
 
