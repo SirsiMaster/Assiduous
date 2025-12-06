@@ -301,6 +301,10 @@
         if (addDoc) addDoc.style.display = isStaff ? 'inline-block' : 'none';
         if (sendOpenSign) sendOpenSign.style.display = isStaff ? 'inline-block' : 'none';
         if (sendLob) sendLob.style.display = isStaff ? 'inline-block' : 'none';
+        // Inline document status buttons
+        document.querySelectorAll('.doc-status-btn').forEach(function(btn) {
+          btn.style.display = isStaff ? 'inline-block' : 'none';
+        });
       }
 
       function renderStageStepper(stageKey) {
@@ -522,13 +526,40 @@
             } else {
               docsEl.innerHTML = documents
                 .map(function (d) {
-                  const kind = d.kind || 'document';
-                  const status = d.status || 'pending';
-                  const pillClass = status === 'completed' ? 'deal-pill success' : 'deal-pill muted';
+                  const kind = (d.kind || 'document');
+                  const kindLower = kind.toLowerCase();
+                  const status = (d.status || 'pending');
+                  const statusLower = status.toLowerCase();
+                  const isSuccessStatus = statusLower === 'completed' || statusLower === 'signed' || statusLower === 'mailed';
+                  const pillClass = isSuccessStatus ? 'deal-pill success' : 'deal-pill muted';
+                  const id = d.id || '';
+
+                  let actionLabel = '';
+                  let nextStatus = '';
+                  if (kindLower === 'opensign' && statusLower !== 'completed' && statusLower !== 'signed') {
+                    actionLabel = 'Mark signed';
+                    nextStatus = 'signed';
+                  } else if (kindLower === 'lob_letter' && statusLower !== 'mailed') {
+                    actionLabel = 'Mark mailed';
+                    nextStatus = 'mailed';
+                  } else if (!isSuccessStatus) {
+                    actionLabel = 'Mark complete';
+                    nextStatus = 'completed';
+                  }
+
+                  const actionButton = actionLabel
+                    ? '<button class="doc-status-btn" data-next-status="' + nextStatus + '" style="display:none;font-size:10px;padding:2px 6px;border-radius:999px;border:1px solid var(--border);background:white;cursor:pointer;">' + actionLabel + '</button>'
+                    : '';
+
                   return (
-                    '<div class="deal-list-item">' +
-                    '<div class="deal-list-label">' + kind + '</div>' +
-                    '<span class="' + pillClass + '">' + status.replace('_', ' ') + '</span>' +
+                    '<div class="deal-list-item" data-doc-id="' + id + '" data-doc-kind="' + kindLower + '" data-doc-status="' + statusLower + '">' +
+                      '<div>' +
+                        '<div class="deal-list-label">' + kind + '</div>' +
+                      '</div>' +
+                      '<div style="display:flex;align-items:center;gap:6px;">' +
+                        '<span class="' + pillClass + '">' + status.replace('_', ' ') + '</span>' +
+                        actionButton +
+                      '</div>' +
                     '</div>'
                   );
                 })
@@ -739,6 +770,57 @@
           }
         });
       }
+
+      // Inline document status updates
+      document.addEventListener('click', async function (evt) {
+        const btn = evt.target.closest('.doc-status-btn');
+        if (!btn) return;
+        if (currentRole !== 'admin' && currentRole !== 'agent') {
+          showToast('Only admins and agents can change document status.');
+          return;
+        }
+        const row = btn.closest('.deal-list-item');
+        if (!row) return;
+        const nextStatus = btn.getAttribute('data-next-status');
+        const docId = row.getAttribute('data-doc-id');
+        const dealId = window.__currentDealId;
+        if (!nextStatus || !docId || !dealId || !currentUser) return;
+
+        try {
+          const token = await currentUser.getIdToken();
+          const res = await fetch(
+            API_BASE_URL + '/api/deals/' + encodeURIComponent(dealId) + '/documents/' + encodeURIComponent(docId),
+            {
+              method: 'PATCH',
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + token,
+              },
+              body: JSON.stringify({ status: nextStatus }),
+            }
+          );
+          const json = await res.json().catch(function () { return {}; });
+          if (!res.ok) {
+            console.error('[Deal] document status update failed', json);
+            showToast('Failed to update document status.');
+            return;
+          }
+          // Update UI inline
+          const pill = row.querySelector('.deal-pill');
+          if (pill) {
+            pill.textContent = nextStatus.replace('_', ' ');
+            const lower = nextStatus.toLowerCase();
+            const success = lower === 'completed' || lower === 'signed' || lower === 'mailed';
+            pill.className = success ? 'deal-pill success' : 'deal-pill muted';
+          }
+          row.setAttribute('data-doc-status', nextStatus.toLowerCase());
+          btn.style.display = 'none';
+          showToast('Document status updated.');
+        } catch (err) {
+          console.error('[Deal] document status update error', err);
+          showToast('Failed to update document status.');
+        }
+      });
 
       // OpenSign quick send
       const openSignFormEl = document.getElementById('openSignForm');
