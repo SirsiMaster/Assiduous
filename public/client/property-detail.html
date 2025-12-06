@@ -109,6 +109,9 @@
                     <button class="btn btn-secondary" onclick="window.location.href='/client/micro-flip-calculator.html'">
                         Calculate ROI
                     </button>
+                    <button class="btn btn-primary" id="startDealBtn">
+                        Start Deal
+                    </button>
                 </div>
                 
                 <div class="action-card">
@@ -578,6 +581,52 @@
             thumbnail.classList.add('active');
         }
         
+        async function startDeal() {
+            if (!auth || !auth.currentUser) {
+                alert('Sign in to start a deal.');
+                return;
+            }
+            if (!propertyId) {
+                alert('Missing property id for this deal.');
+                return;
+            }
+            try {
+                const token = await auth.currentUser.getIdToken();
+                const body = {
+                    entrySource: 'property',
+                    propertyId: propertyId,
+                };
+                // Include any existing micro-flip snapshot when available
+                if (currentProperty && currentProperty.microFlipping) {
+                    body.microflipSnapshot = currentProperty.microFlipping;
+                }
+
+                const res = await fetch(`${API_BASE_URL}/api/deals`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${token}`,
+                    },
+                    body: JSON.stringify(body),
+                });
+                const data = await res.json().catch(() => ({}));
+                if (!res.ok) {
+                    const msg = data.message || data.error || res.statusText || 'Failed to start deal';
+                    alert(msg);
+                    return;
+                }
+                const deal = data.deal || data;
+                if (deal && deal.id) {
+                    window.location.href = `/client/deal.html?id=${encodeURIComponent(deal.id)}`;
+                } else {
+                    alert('Deal created but no id was returned.');
+                }
+            } catch (err) {
+                console.error('[PropertyDetail] startDeal error', err);
+                alert(err && err.message ? err.message : 'Failed to start deal');
+            }
+        }
+
         // Toggle save property using new favorites service
         async function toggleSave() {
             if (!currentProperty) return;
@@ -744,6 +793,14 @@
                 event.target.classList.remove('active');
             }
         };
+        
+        // Wire Start Deal button
+        const startDealBtn = document.getElementById('startDealBtn');
+        if (startDealBtn) {
+            startDealBtn.addEventListener('click', function () {
+                startDeal();
+            });
+        }
         
         // Load property on page load
         window.addEventListener('load', loadProperty);

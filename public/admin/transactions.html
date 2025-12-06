@@ -205,6 +205,125 @@
             margin-bottom: var(--space-xl);
         }
 
+        /* Deals Kanban board */
+        .deals-board {
+            margin-bottom: var(--space-xl);
+        }
+
+        .deals-board-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: var(--space-md);
+        }
+
+        .deals-board-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .deals-board-subtitle {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .deals-board-grid {
+            display: grid;
+            grid-template-columns: repeat(7, minmax(180px, 1fr));
+            gap: var(--space-md);
+            overflow-x: auto;
+            padding-bottom: var(--space-sm);
+        }
+
+        .deals-column {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            display: flex;
+            flex-direction: column;
+            max-height: 420px;
+        }
+
+        .deals-column-header {
+            padding: var(--space-sm) var(--space-md);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--gray-50);
+        }
+
+        .deals-column-title {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--text-secondary);
+        }
+
+        .deals-column-count {
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+
+        .deals-column-body {
+            padding: var(--space-sm);
+            overflow-y: auto;
+        }
+
+        .deals-card {
+            background: var(--white);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--gray-100);
+            padding: var(--space-sm) var(--space-md);
+            margin-bottom: var(--space-sm);
+            box-shadow: var(--shadow-xs);
+            cursor: default;
+        }
+
+        .deals-card-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 2px;
+        }
+
+        .deals-card-meta {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .deals-card-tag {
+            display: inline-flex;
+            align-items: center;
+            padding: 2px 8px;
+            border-radius: 999px;
+            font-size: 10px;
+            border: 1px solid var(--border);
+            background: var(--gray-50);
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        .deals-board-empty {
+            font-size: 13px;
+            color: var(--text-secondary);
+            padding: var(--space-md);
+        }
+
+        @media (max-width: 1024px) {
+            .deals-board-grid {
+                grid-template-columns: repeat(4, minmax(180px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .deals-board-grid {
+                grid-template-columns: repeat(3, minmax(180px, 1fr));
+            }
+        }
+
         .stat-card {
             background: var(--white);
             border: 1px solid var(--border);
@@ -421,6 +540,19 @@
                     </div>
                 </div>
 
+                <!-- Deals Kanban board (admin view) -->
+                <section class="deals-board" aria-label="Deal pipeline" id="deals-board-section">
+                    <div class="deals-board-header">
+                        <div>
+                            <h2 class="deals-board-title">Deal pipeline</h2>
+                            <p class="deals-board-subtitle">Grouped by stage from intake through post-close. Admins see all deals.</p>
+                        </div>
+                    </div>
+                    <div id="deals-board" class="deals-board-grid">
+                        <!-- Populated by loadDealsBoard() -->
+                    </div>
+                </section>
+
                 <!-- Filters -->
                 <div class="filters-bar">
                     <div class="filter-group">
@@ -519,11 +651,14 @@
     <!-- Firebase Configuration and Data Loading -->
     <script>
         let db;
+        const DEAL_STAGE_ORDER = ['intake', 'underwriting', 'offer', 'contract', 'preclose', 'close', 'postclose'];
+        const API_BASE_URL = 'https://assiduous-api-9355377564.us-central1.run.app';
 
         // Initialize Firestore once Firebase is ready
         window.addEventListener('firebase-ready', () => {
             db = window.firebaseDb || firebase.firestore();
             loadTransactionsData();
+            initDealsBoard();
         });
         
         // Load transactions data from Firestore
@@ -606,6 +741,111 @@
                 console.error('Error loading transactions data:', error);
                 // Keep existing demo data if load fails
             }
+        }
+
+        // Deals Kanban board helpers
+        function getDealDetailBasePath() {
+            const path = window.location.pathname || '';
+            if (path.indexOf('/public/') === 0) return '/public/client/deal.html';
+            if (path.indexOf('/assiduousflip/') === 0) return '/assiduousflip/client/deal.html';
+            return '/client/deal.html';
+        }
+
+        function renderDealsBoard(deals) {
+            const container = document.getElementById('deals-board');
+            if (!container) return;
+
+            if (!Array.isArray(deals) || deals.length === 0) {
+                container.innerHTML = '<div class="deals-board-empty">No deals yet. New deals will appear here as clients or agents start them.</div>';
+                return;
+            }
+
+            const byStage = {};
+            DEAL_STAGE_ORDER.forEach(key => { byStage[key] = []; });
+
+            deals.forEach(deal => {
+                const stageKey = (deal.stageKey || 'intake').toLowerCase();
+                const bucket = byStage[stageKey] || (byStage[stageKey] = []);
+                bucket.push(deal);
+            });
+
+            const escapeHtml = (str) => String(str || '').replace(/[&<>"']/g, s => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#39;',
+            }[s] || s));
+
+            const detailBase = getDealDetailBasePath();
+
+            const columnHtml = DEAL_STAGE_ORDER.map(stageKey => {
+                const items = byStage[stageKey] || [];
+                const label = stageKey.charAt(0).toUpperCase() + stageKey.slice(1);
+                const body = items
+                    .map(d => {
+                        const id = d.id || '';
+                        const title = d.propertyId ? `Property ${escapeHtml(d.propertyId)}` : `Deal ${escapeHtml(id)}`;
+                        const source = d.entrySource || 'property';
+                        const status = d.stageStatus || 'in_progress';
+                        const href = detailBase + '?id=' + encodeURIComponent(id);
+                        return `
+                            <article class="deals-card" role="button" tabindex="0" onclick="window.location.href='${href}'">
+                                <div class="deals-card-title">${title}</div>
+                                <div class="deals-card-meta">Source: ${escapeHtml(source)} · Status: ${escapeHtml(status)}</div>
+                                <div class="deals-card-tag">ID ${escapeHtml(id)}</div>
+                            </article>
+                        `;
+                    })
+                    .join('');
+
+                return `
+                    <section class="deals-column" aria-label="${label} deals">
+                        <header class="deals-column-header">
+                            <span class="deals-column-title">${label}</span>
+                            <span class="deals-column-count">${items.length}</span>
+                        </header>
+                        <div class="deals-column-body">
+                            ${body || '<div class="deals-board-empty">No deals in this stage</div>'}
+                        </div>
+                    </section>
+                `;
+            }).join('');
+
+            container.innerHTML = columnHtml;
+        }
+
+        async function loadDealsBoard() {
+            const container = document.getElementById('deals-board');
+            if (!container) return;
+
+            const auth = window.firebaseAuth || (window.Firebase && window.Firebase.auth);
+            if (!auth || !auth.currentUser) {
+                container.innerHTML = '<div class="deals-board-empty">Sign in as an admin to view the deal pipeline.</div>';
+                return;
+            }
+
+            try {
+                container.innerHTML = '<div class="deals-board-empty">Loading deals…</div>';
+                const token = await auth.currentUser.getIdToken();
+                const res = await fetch(API_BASE_URL + '/api/deals', {
+                    headers: { Authorization: 'Bearer ' + token },
+                });
+                const json = await res.json().catch(() => ({}));
+                if (!res.ok) {
+                    throw new Error(json.error || json.message || res.statusText || 'Failed to load deals');
+                }
+                const items = Array.isArray(json.deals) ? json.deals : [];
+                renderDealsBoard(items);
+            } catch (err) {
+                console.error('[Transactions] Failed to load deals for board:', err);
+                container.innerHTML = '<div class="deals-board-empty">Unable to load deals right now. Please try again later.</div>';
+            }
+        }
+
+        function initDealsBoard() {
+            // Defer a bit to give auth time to hydrate currentUser.
+            setTimeout(loadDealsBoard, 250);
         }
         
         // Load data when page is ready

@@ -31,6 +31,7 @@ import (
 	"github.com/SirsiMaster/assiduous/backend/pkg/opensign"
 	"github.com/SirsiMaster/assiduous/backend/pkg/plaid"
 	"github.com/SirsiMaster/assiduous/backend/pkg/sqlclient"
+	"github.com/SirsiMaster/assiduous/backend/pkg/deals"
 	"github.com/stripe/stripe-go/v79"
 	"github.com/stripe/stripe-go/v79/webhook"
 )
@@ -367,6 +368,289 @@ func main() {
 		})
 	})
 
+	// Deal graph endpoints
+	r.Route("/api/deals", func(r chi.Router) {
+		// POST /api/deals
+		// Creates a new deal from any entry path (property-led, client-led, seller-led).
+		// For v1 we primarily support property-led entry from the client portal.
+		//
+		// Body (example):
+		// { "entrySource": "property", "propertyId": "mls_123" }
+		//
+		// The creatorUid is taken from the authenticated user.
+			
+			r.Post("/", func(w http.ResponseWriter, r *http.Request) {
+				uc := auth.FromContext(r.Context())
+				if uc == nil {
+					httpapi.Error(w, http.StatusUnauthorized, "unauthorized", "authentication required")
+					return
+				}
+
+				var body deals.CreateDealInput
+				if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+					httpapi.Error(w, http.StatusBadRequest, "invalid_request", "invalid JSON body")
+					return
+				}
+				body.EntrySource = strings.TrimSpace(strings.ToLower(body.EntrySource))
+				if body.EntrySource == "" {
+					body.EntrySource = "property"
+				}
+				// If this is a client-led deal and no explicit clientUid is provided,
+				// default to the current user.
+				if body.EntrySource == "client" && body.ClientUID == "" {
+					body.ClientUID = uc.UID
+				}
+
+				deal, err := deals.CreateDeal(r.Context(), cfg.ProjectID, uc.UID, body)
+				if err != nil {
+					log.Printf("[deals] CreateDeal error for user %s: %v", uc.UID, err)
+					httpapi.Error(w, http.StatusBadRequest, "deal_create_failed", err.Error())
+					return
+				}
+
+				httpapi.JSON(w, http.StatusCreated, map[string]any{"deal": deal})
+			})
+
+		// GET /api/deals
+		// Returns deals created by the current user. Future iterations can expand
+		// to include deals where the user is a participant.
+			r.Get("/", func(w http.ResponseWriter, r *http.Request) {
+				uc := auth.FromContext(r.Context())
+				if uc == nil {
+					httpapi.Error(w, http.StatusUnauthorized, "unauthorized", "authentication required")
+					return
+				}
+
+				var (
+					items []*deals.Deal
+					err   error
+				)
+				if uc.Role == "admin" {
+					items, err = deals.ListAllDeals(r.Context(), cfg.ProjectID)
+				} else {
+					items, err = deals.ListDealsForUser(r.Context(), cfg.ProjectID, uc.UID)
+				}
+				if err != nil {
+					log.Printf("[deals] ListDeals error for user %s (role=%s): %v", uc.UID, uc.Role, err)
+					httpapi.Error(w, http.StatusInternalServerError, "deal_list_failed", "failed to list deals")
+					return
+				}
+				httpapi.JSON(w, http.StatusOK, map[string]any{"deals": items})
+			})
+
+		// GET /api/deals/{id}
+		// Loads a single deal and performs basic access checks: creator, client,
+		// or admin can view.
+			r.Get("/{id}", func(w http.ResponseWriter, r *http.Request) {
+				uc := auth.FromContext(r.Context())
+				if uc == nil {
+					httpapi.Error(w, http.StatusUnauthorized, "unauthorized", "authentication required")
+					return
+				}
+
+				id := chi.URLParam(r, "id")
+				if strings.TrimSpace(id) == "" {
+					httpapi.Error(w, http.StatusBadRequest, "invalid_request", "deal id is required")
+					return
+				}
+
+				deal, err := deals.GetDeal(r.Context(), cfg.ProjectID, id)
+				if err != nil {
+					log.Printf("[deals] GetDeal error for id %s: %v", id, err)
+					httpapi.Error(w, http.StatusNotFound, "deal_not_found", "deal not found")
+					return
+				}
+
+				// Basic access control: creator, client, participants, plus admins.
+				allowed := uc.Role == "admin" || deal.CreatorUID == uc.UID || deal.ClientUID == uc.UID
+				if !allowed {
+					isPart, err := deals.IsUserParticipant(r.Context(), cfg.ProjectID, deal.ID, uc.UID)
+					if err != nil {
+						log.Printf("[deals] IsUserParticipant check failed for deal %s, user %s: %v", deal.ID, uc.UID, err)
+					}
+					if !isPart {
+						httpapi.Error(w, http.StatusForbidden, "forbidden", "insufficient access to this deal")
+						return
+					}
+				}
+
+				// Load associated graph data (stages, participants, documents). These are
+				// best-effort; failures are logged but do not block the core deal.
+				stages, err := deals.ListStagesForDeal(r.Context(), cfg.ProjectID, deal.ID)
+				if err != nil {
+					log.Printf("[deals] ListStagesForDeal error for deal %s: %v", deal.ID, err)
+				}
+				participants, err := deals.ListParticipantsForDeal(r.Context(), cfg.ProjectID, deal.ID)
+				if err != nil {
+					log.Printf("[deals] ListParticipantsForDeal error for deal %s: %v", deal.ID, err)
+				}
+				documents, err := deals.ListDocumentsForDeal(r.Context(), cfg.ProjectID, deal.ID)
+				if err != nil {
+					log.Printf("[deals] ListDocumentsForDeal error for deal %s: %v", deal.ID, err)
+				}
+
+				resp := map[string]any{
+					"deal":        deal,
+					"stages":      stages,
+					"participants": participants,
+					"documents":   documents,
+				}
+				httpapi.JSON(w, http.StatusOK, resp)
+			})
+
+		// POST /api/deals/{id}/participants
+		// Adds or updates a participant for the given deal. For v1 we allow the
+		// deal creator or an admin to manage participants.
+			r.Post("/{id}/participants", func(w http.ResponseWriter, r *http.Request) {
+				uc := auth.FromContext(r.Context())
+				if uc == nil {
+					httpapi.Error(w, http.StatusUnauthorized, "unauthorized", "authentication required")
+					return
+				}
+
+				dealID := chi.URLParam(r, "id")
+				if strings.TrimSpace(dealID) == "" {
+					httpapi.Error(w, http.StatusBadRequest, "invalid_request", "deal id is required")
+					return
+				}
+
+				// Ensure the user has access to the deal first.
+				deal, err := deals.GetDeal(r.Context(), cfg.ProjectID, dealID)
+				if err != nil {
+					httpapi.Error(w, http.StatusNotFound, "deal_not_found", "deal not found")
+					return
+				}
+				allowed := uc.Role == "admin" || deal.CreatorUID == uc.UID || deal.ClientUID == uc.UID
+				if !allowed {
+					isPart, err := deals.IsUserParticipant(r.Context(), cfg.ProjectID, dealID, uc.UID)
+					if err != nil {
+						log.Printf("[deals] IsUserParticipant check failed for deal %s, user %s: %v", dealID, uc.UID, err)
+					}
+					if !isPart {
+						httpapi.Error(w, http.StatusForbidden, "forbidden", "insufficient access to this deal")
+						return
+					}
+				}
+
+				var in deals.Participant
+				if err := json.NewDecoder(r.Body).Decode(&in); err != nil {
+					httpapi.Error(w, http.StatusBadRequest, "invalid_request", "invalid JSON body")
+					return
+				}
+
+				p, err := deals.UpsertParticipant(r.Context(), cfg.ProjectID, dealID, in)
+				if err != nil {
+					log.Printf("[deals] UpsertParticipant error for deal %s: %v", dealID, err)
+					httpapi.Error(w, http.StatusBadRequest, "participant_upsert_failed", err.Error())
+					return
+				}
+
+				httpapi.JSON(w, http.StatusOK, map[string]any{"participant": p})
+			})
+
+		// POST /api/deals/{id}/documents
+		// Attaches a document record (OpenSign envelope, Lob letter, upload, etc.)
+		// to the deal. For v1 we allow creator and admins.
+			r.Post("/{id}/documents", func(w http.ResponseWriter, r *http.Request) {
+				uc := auth.FromContext(r.Context())
+				if uc == nil {
+					httpapi.Error(w, http.StatusUnauthorized, "unauthorized", "authentication required")
+					return
+				}
+
+				dealID := chi.URLParam(r, "id")
+				if strings.TrimSpace(dealID) == "" {
+					httpapi.Error(w, http.StatusBadRequest, "invalid_request", "deal id is required")
+					return
+				}
+
+				deal, err := deals.GetDeal(r.Context(), cfg.ProjectID, dealID)
+				if err != nil {
+					httpapi.Error(w, http.StatusNotFound, "deal_not_found", "deal not found")
+					return
+				}
+				allowed := uc.Role == "admin" || deal.CreatorUID == uc.UID || deal.ClientUID == uc.UID
+				if !allowed {
+					isPart, err := deals.IsUserParticipant(r.Context(), cfg.ProjectID, dealID, uc.UID)
+					if err != nil {
+						log.Printf("[deals] IsUserParticipant check failed for deal %s, user %s: %v", dealID, uc.UID, err)
+					}
+					if !isPart {
+						httpapi.Error(w, http.StatusForbidden, "forbidden", "insufficient access to this deal")
+						return
+					}
+				}
+
+				var in deals.DealDocument
+				if err := json.NewDecoder(r.Body).Decode(&in); err != nil {
+					httpapi.Error(w, http.StatusBadRequest, "invalid_request", "invalid JSON body")
+					return
+				}
+
+				d, err := deals.AddDealDocument(r.Context(), cfg.ProjectID, dealID, in)
+				if err != nil {
+					log.Printf("[deals] AddDealDocument error for deal %s: %v", dealID, err)
+					httpapi.Error(w, http.StatusBadRequest, "document_attach_failed", err.Error())
+					return
+				}
+
+				httpapi.JSON(w, http.StatusOK, map[string]any{"document": d})
+			})
+
+		// POST /api/deals/{id}/stages
+		// Updates checklist item statuses for a stage. This is primarily called by
+		// the client portal when a user completes intake tasks.
+			r.Post("/{id}/stages", func(w http.ResponseWriter, r *http.Request) {
+				uc := auth.FromContext(r.Context())
+				if uc == nil {
+					httpapi.Error(w, http.StatusUnauthorized, "unauthorized", "authentication required")
+					return
+				}
+
+				dealID := chi.URLParam(r, "id")
+				if strings.TrimSpace(dealID) == "" {
+					httpapi.Error(w, http.StatusBadRequest, "invalid_request", "deal id is required")
+					return
+				}
+
+				deal, err := deals.GetDeal(r.Context(), cfg.ProjectID, dealID)
+				if err != nil {
+					httpapi.Error(w, http.StatusNotFound, "deal_not_found", "deal not found")
+					return
+				}
+				if uc.Role != "admin" && deal.CreatorUID != uc.UID && deal.ClientUID != uc.UID {
+					httpapi.Error(w, http.StatusForbidden, "forbidden", "insufficient access to this deal")
+					return
+				}
+
+				var body struct {
+					StageKey string            `json:"stageKey"`
+					Items    map[string]string `json:"items"`
+				}
+				if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+					httpapi.Error(w, http.StatusBadRequest, "invalid_request", "invalid JSON body")
+					return
+				}
+				body.StageKey = strings.TrimSpace(strings.ToLower(body.StageKey))
+				if body.StageKey == "" {
+					body.StageKey = deal.StageKey
+				}
+				if body.StageKey == "" {
+					httpapi.Error(w, http.StatusBadRequest, "invalid_request", "stageKey is required")
+					return
+				}
+
+				stage, err := deals.UpdateStageChecklist(r.Context(), cfg.ProjectID, dealID, body.StageKey, body.Items)
+				if err != nil {
+					log.Printf("[deals] UpdateStageChecklist error for deal %s: %v", dealID, err)
+					httpapi.Error(w, http.StatusBadRequest, "stage_update_failed", err.Error())
+					return
+				}
+
+				httpapi.JSON(w, http.StatusOK, map[string]any{"stage": stage})
+			})
+	})
+
 	// Micro-flip analysis endpoints
 	r.Route("/api/microflip", func(r chi.Router) {
 		// POST /api/microflip/analyze
@@ -492,6 +776,7 @@ func main() {
 				DocType    string           `json:"docType"`
 				Recipients []map[string]any `json:"recipients"`
 				Metadata   map[string]any   `json:"metadata,omitempty"`
+				DealID     string           `json:"dealId,omitempty"`
 			}
 			if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 				httpapi.Error(w, http.StatusBadRequest, "invalid_request", "invalid JSON body")
@@ -512,6 +797,20 @@ func main() {
 				log.Printf("[opensign] CreateEnvelope error: %v", err)
 				httpapi.Error(w, http.StatusInternalServerError, "opensign_error", "failed to create envelope")
 				return
+			}
+
+			// Optionally attach this envelope to a deal as a DealDocument.
+			if req.DealID != "" {
+				if _, derr := deals.AddDealDocument(r.Context(), cfg.ProjectID, req.DealID, deals.DealDocument{
+					Kind:   "opensign",
+					Status: env.Status,
+					Ref: map[string]any{
+						"envelopeId": env.EnvelopeID,
+						"docType":    req.DocType,
+					},
+				}); derr != nil {
+					log.Printf("[deals] failed to attach OpenSign envelope %s to deal %s: %v", env.EnvelopeID, req.DealID, derr)
+				}
 			}
 
 			resp := map[string]any{
@@ -639,6 +938,7 @@ func main() {
 			var req struct {
 				ToAddress  map[string]any `json:"toAddress"`
 				TemplateID string         `json:"templateId"`
+				DealID     string         `json:"dealId,omitempty"`
 			}
 			if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 				httpapi.Error(w, http.StatusBadRequest, "invalid_request", "invalid JSON body")
@@ -659,6 +959,20 @@ func main() {
 				log.Printf("[lob] CreateLetter error: %v", err)
 				httpapi.Error(w, http.StatusInternalServerError, "lob_error", "failed to create letter")
 				return
+			}
+
+			// Optionally attach this letter to a deal as a DealDocument.
+			if req.DealID != "" {
+				if _, derr := deals.AddDealDocument(r.Context(), cfg.ProjectID, req.DealID, deals.DealDocument{
+					Kind:   "lob_letter",
+					Status: "created",
+					Ref: map[string]any{
+						"letterId":   letterID,
+						"templateId": req.TemplateID,
+					},
+				}); derr != nil {
+					log.Printf("[deals] failed to attach Lob letter %s to deal %s: %v", letterID, req.DealID, derr)
+				}
 			}
 
 			httpapi.JSON(w, http.StatusOK, map[string]any{"letterId": letterID})

@@ -523,7 +523,7 @@ https://api.qrserver.com/v1/create-qr-code/
 
 # Deal Graph and Shepherded Workflows
 **Added:** December 6, 2025  
-**Status:** Design Approved – Implementation in Progress
+**Status:** Design Approved – Initial Implementation Complete (v1 graph live in backend + client UI)
 
 ## Overview
 
@@ -681,17 +681,26 @@ All deal graph operations are exposed via the Go API on Cloud Run under `/api/de
 ```text
 POST   /api/deals                    # create deal from any entry path
 GET    /api/deals                    # list deals for current user (role-filtered)
-GET    /api/deals/{id}               # fetch full deal with stages + participants
+GET    /api/deals/{id}               # fetch deal plus stages, participants, documents
 PATCH  /api/deals/{id}               # update core fields (attach property, update stageKey)
-POST   /api/deals/{id}/stages        # transition/update stage & checklist state
-POST   /api/deals/{id}/participants  # add or update participants
+POST   /api/deals/{id}/stages        # update stage checklist item statuses
+POST   /api/deals/{id}/participants  # add or update participants on a deal
 POST   /api/deals/{id}/documents     # attach document references (OpenSign, Lob, uploads)
 ```
 
-Implementation notes:
-- Auth and entitlements are enforced via the existing middleware and `entitlements` helpers.
-- All mutating operations emit `audit_events` for traceability.
-- Stage templates and checklists are **data-driven**, not hard-coded, to allow future PRD-driven changes.
+**v1 Implementation Notes (Dec 2025):**
+- Deal creation seeds a canonical linear stage set (`intake → underwriting → offer → contract → preclose → close → postclose`) into `deals/{id}/stages` with an
+  intake checklist focused on confirming intent, participants, and reviewing micro-flip analysis.
+- `GET /api/deals/{id}` returns a hydrated payload: `{ deal, stages, participants, documents }`, which is consumed directly by the client portal deal overview page.
+- `POST /api/deals/{id}/stages` currently updates checklist item statuses and automatically marks a stage `completed` when all required items are `done`; it also
+  keeps the root `deals/{id}` `stageStatus` field in sync but does not yet auto-advance `stageKey`.
+- `POST /api/deals/{id}/participants` and `/documents` are restricted to the deal creator and admins (plus client when they are the primary party) to match the
+  current portal security model.
+
+Future iterations will:
+- Add data-driven stage templates (`deal_stage_templates`) and richer transition rules.
+- Emit Cloud SQL `audit_events` for every stage transition, participant change, and document completion.
+- Expand role-aware write access (e.g. title company can update closing checklist items, lenders can attach funding documents).
 
 ## UX Principles for Shepherded Deals
 

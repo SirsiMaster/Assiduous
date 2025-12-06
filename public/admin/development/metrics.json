@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-12-05T18:49:37.564Z",
+  "lastUpdated": "2025-12-06T17:19:22.322Z",
   "summary": {
     "health": "Good",
     "score": 59,
@@ -7,7 +7,7 @@
     "alerts": [
       "✅ UCS implementation complete - 44 pages converted",
       "⚠️ Test coverage is very low",
-      "⏰ Timeline warning - -4 days until launch"
+      "⏰ Timeline warning - -5 days until launch"
     ]
   },
   "features": {
@@ -152,21 +152,21 @@
     }
   },
   "project": {
-    "totalHours": "349",
-    "avgHoursPerDay": "7.6",
-    "totalCost": 54848,
-    "laborCost": 52350,
-    "toolsCost": 2498,
-    "monthsElapsed": "3.8",
-    "totalCommits": 1059,
-    "totalFiles": 857,
-    "activeDays": 46,
-    "totalDays": 117,
-    "projectAgeDays": 117,
-    "linesAdded": 9842871,
-    "linesDeleted": 9449226,
-    "netLines": 393645,
-    "velocity": "23.0",
+    "totalHours": "350",
+    "avgHoursPerDay": "7.4",
+    "totalCost": 55020,
+    "laborCost": 52500,
+    "toolsCost": 2520,
+    "monthsElapsed": "3.9",
+    "totalCommits": 1061,
+    "totalFiles": 867,
+    "activeDays": 47,
+    "totalDays": 118,
+    "projectAgeDays": 118,
+    "linesAdded": 9847317,
+    "linesDeleted": 9449295,
+    "netLines": 398022,
+    "velocity": "22.6",
     "completionPercentage": 59,
     "actualStartDate": "2025-08-10",
     "architecture": {
@@ -176,22 +176,22 @@
     }
   },
   "today": {
-    "date": "2025-12-05",
-    "hours": "8.3",
-    "cost": 1238,
-    "commits": 25,
+    "date": "2025-12-06",
+    "hours": "3.3",
+    "cost": 495,
+    "commits": 10,
     "deployments": 0
   },
   "thisWeek": {
-    "hours": "16.8",
-    "cost": 2525,
-    "commits": 51,
+    "hours": "17.5",
+    "cost": 2624,
+    "commits": 53,
     "days": 7
   },
   "thisMonth": {
-    "hours": "89.1",
-    "cost": 13365,
-    "commits": 270
+    "hours": "73.9",
+    "cost": 11088,
+    "commits": 224
   },
   "quality": {
     "testCoverage": {
@@ -224,7 +224,7 @@
       "low": 0,
       "total": 0
     },
-    "lastAudit": "2025-12-05T18:48:58.273Z",
+    "lastAudit": "2025-12-06T17:18:54.794Z",
     "dependencies": {
       "total": 0,
       "outdated": 0,
@@ -312,11 +312,11 @@
     "changelog": true,
     "contributing": false,
     "license": false,
-    "lastUpdate": "2025-12-05 18:36:59 +0000"
+    "lastUpdate": "2025-12-06 12:17:48 -0500"
   },
   "productivity": {
     "velocityTrend": "increasing",
-    "weeklyCommits": 51,
+    "weeklyCommits": 53,
     "contributors": {
       "total": 0,
       "active": 0
@@ -349,7 +349,7 @@
       "projectStart": "2025-08-10",
       "originalLaunch": "2025-11-01",
       "plannedLaunch": "2025-12-01",
-      "daysRemaining": -4,
+      "daysRemaining": -5,
       "onTrack": false,
       "adjustmentReason": "Timeline adjusted for realistic completion based on current velocity"
     },
@@ -393,6 +393,18 @@
     "projectedAnnualCost": 12
   },
   "recentActivity": [
+    {
+      "hash": "2d63a0b35d4a52414e004a25cfed3c5516c963a4",
+      "message": "feat(deals): document deal graph and finalize ingest workflows",
+      "author": "SirsiMaster",
+      "date": "2025-12-06 12:17:48 -0500"
+    },
+    {
+      "hash": "d849edb797322dc92433fe4691de4cd9985f4c3a",
+      "message": "chore(release): Bump version to 0.138.0 [skip ci]",
+      "author": "github-actions[bot]",
+      "date": "2025-12-05 18:48:44 +0000"
+    },
     {
       "hash": "2e075bfc35a076386612a1d1cc60be94bba3298e",
       "message": "feat(ai): add vertex gemini explain endpoint and ui",
@@ -440,22 +452,10 @@
       "message": "feat(auth): gate lob letters to admin and agent roles",
       "author": "SirsiMaster",
       "date": "2025-12-05 12:50:05 -0500"
-    },
-    {
-      "hash": "0e175047c1949f83a67eb8f37949e801cf9f5057",
-      "message": "chore(metrics): refresh metrics after lob deployment",
-      "author": "SirsiMaster",
-      "date": "2025-12-05 11:11:16 -0500"
-    },
-    {
-      "hash": "25d8699be9ff47d2446ada6214c734212323e2c1",
-      "message": "chore(tracking): mark lob integration complete",
-      "author": "SirsiMaster",
-      "date": "2025-12-05 11:10:54 -0500"
     }
   ],
   "automation": {
-    "lastRun": "2025-12-05T18:49:37.564Z",
+    "lastRun": "2025-12-06T17:19:22.322Z",
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",

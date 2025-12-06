@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Deal Overview - Assiduous Client Portal</title>
+
+  <!-- Assiduous Design System -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="../assiduous.css" />
+  <link rel="stylesheet" href="../components/admin-layout.css" />
+
+  <!-- Canonical modular Firebase auth: used by AuthService and auth-guard -->
+  <script type="module">
+    import Firebase, { AuthService } from '../assets/js/firebase-init.js';
+    window.Firebase = Firebase;
+    window.AuthService = AuthService;
+  </script>
+
+  <style>
+    .deal-layout {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-lg);
+    }
+    .deal-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: var(--space-md);
+    }
+    .deal-stage-stepper {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-size: 12px;
+    }
+    .deal-stage-pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--gray-50);
+      color: var(--text-secondary);
+    }
+    .deal-stage-pill.active {
+      background: var(--sky);
+      color: white;
+      border-color: var(--sky);
+    }
+    .deal-stage-pill.completed {
+      background: rgba(16, 185, 129, 0.12);
+      color: #047857;
+      border-color: rgba(16, 185, 129, 0.4);
+    }
+.deal-main-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 2fr) minmax(0, 1.1fr);
+      gap: var(--space-lg);
+      align-items: flex-start;
+    }
+    .deal-card {
+      background: var(--white);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      padding: var(--space-lg);
+    }
+    .deal-card-title {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: var(--space-sm);
+      color: var(--dark);
+    }
+    .deal-next-step {
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+    .deal-meta {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+    .deal-role-banner {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-secondary);
+      margin-top: 4px;
+    }
+    .deal-list {
+      font-size: 13px;
+      color: var(--text-secondary);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .deal-list-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 8px;
+    }
+    .deal-list-label {
+      font-weight: 500;
+      color: var(--dark);
+    }
+    .deal-pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      border: 1px solid var(--border);
+      background: var(--gray-50);
+    }
+    .deal-pill.success {
+      border-color: rgba(16, 185, 129, 0.5);
+      background: rgba(16, 185, 129, 0.08);
+      color: #047857;
+    }
+    .deal-pill.muted {
+      opacity: 0.8;
+    }
+  </style>
+</head>
+<body class="admin-wrapper" data-active="deals">
+  <!-- UCS Sidebar Component -->
+  <aside class="sidebar" data-component="sidebar"></aside>
+
+  <!-- Main Content Area -->
+  <div class="main-content">
+    <!-- UCS Header Component -->
+    <header
+      data-component="header"
+      data-title="Deal Overview"
+      data-subtitle="Track your micro-flip or transaction from intake to close"
+    ></header>
+
+    <div class="dashboard-content">
+      <div class="deal-layout">
+        <div class="deal-header-row">
+          <div>
+            <h1 class="page-title" id="dealTitle">Loading deal…</h1>
+            <p class="page-subtitle" id="dealSubtitle">
+              We’ll guide you step by step. You’ll always see what’s next.
+            </p>
+            <div class="deal-role-banner" id="dealRoleBanner"></div>
+          </div>
+          <div class="deal-stage-stepper" id="dealStageStepper"></div>
+        </div>
+
+        <div class="deal-main-grid">
+          <section class="deal-card" id="dealProgressCard">
+            <div class="deal-card-title">Current stage</div>
+            <div class="deal-next-step" id="dealNextStep">Loading…</div>
+
+            <div class="deal-card-title" style="margin-top: var(--space-md);">Stage checklist</div>
+            <div class="deal-list" id="dealChecklistBody"></div>
+          </section>
+
+          <aside class="deal-card" id="dealMetaCard">
+            <div class="deal-card-title">Deal details</div>
+            <div class="deal-meta" id="dealMetaBody">
+              <!-- Populated by JS -->
+            </div>
+
+            <div class="deal-card-title" style="margin-top: var(--space-md);">People involved</div>
+            <div class="deal-list" id="dealParticipantsBody"></div>
+            <button id="addParticipantButton" style="margin-top: 8px; font-size: 12px; padding: 4px 8px; border-radius: 999px; border: 1px solid var(--border); background: var(--gray-50); cursor: pointer; display: none;">
+              + Add participant
+            </button>
+            <form id="participantForm" style="margin-top: 8px; display: none; font-size: 12px; color: var(--text-secondary);">
+              <input type="hidden" id="participantId" />
+              <div style="display: flex; flex-direction: column; gap: 6px;">
+                <div style="display: flex; gap: 6px;">
+                  <input id="participantName" type="text" placeholder="Name" style="flex: 1; padding: 4px 6px; border-radius: 4px; border: 1px solid var(--border);" />
+                  <input id="participantRole" type="text" placeholder="Role (e.g. agent, lender)" style="flex: 1; padding: 4px 6px; border-radius: 4px; border: 1px solid var(--border);" />
+                </div>
+                <div style="display: flex; gap: 6px;">
+                  <input id="participantEmail" type="email" placeholder="Email (optional)" style="flex: 1; padding: 4px 6px; border-radius: 4px; border: 1px solid var(--border);" />
+                  <input id="participantPhone" type="text" placeholder="Phone (optional)" style="flex: 1; padding: 4px 6px; border-radius: 4px; border: 1px solid var(--border);" />
+                </div>
+                <div style="display: flex; justify-content: flex-end; gap: 6px;">
+                  <button type="button" id="participantCancel" style="font-size: 11px; padding: 4px 8px; border-radius: 999px; border: 1px solid var(--border); background: white; cursor: pointer;">Cancel</button>
+                  <button type="submit" style="font-size: 11px; padding: 4px 10px; border-radius: 999px; border: none; background: var(--sky); color: white; cursor: pointer;">Save</button>
+                </div>
+              </div>
+            </form>
+
+            <div class="deal-card-title" style="margin-top: var(--space-md);">Documents</div>
+            <div class="deal-list" id="dealDocumentsBody"></div>
+            <button id="addDocumentButton" style="margin-top: 8px; font-size: 12px; padding: 4px 8px; border-radius: 999px; border: 1px solid var(--border); background: var(--gray-50); cursor: pointer; display: none;">
+              + Attach document
+            </button>
+            <form id="documentForm" style="margin-top: 8px; display: none; font-size: 12px; color: var(--text-secondary);">
+              <div style="display: flex; flex-direction: column; gap: 6px;">
+                <select id="documentKind" style="padding: 4px 6px; border-radius: 4px; border: 1px solid var(--border);">
+                  <option value="external">External link</option>
+                  <option value="opensign">OpenSign envelope (existing)</option>
+                </select>
+                <input id="documentLabel" type="text" placeholder="Label (e.g. Purchase agreement)" style="padding: 4px 6px; border-radius: 4px; border: 1px solid var(--border);" />
+                <input id="documentPrimary" type="text" placeholder="URL or Envelope ID" style="padding: 4px 6px; border-radius: 4px; border: 1px solid var(--border);" />
+                <input id="documentSecondary" type="text" placeholder="Doc type (for OpenSign, optional)" style="padding: 4px 6px; border-radius: 4px; border: 1px solid var(--border);" />
+                <div style="display: flex; justify-content: flex-end; gap: 6px;">
+                  <button type="button" id="documentCancel" style="font-size: 11px; padding: 4px 8px; border-radius: 999px; border: 1px solid var(--border); background: white; cursor: pointer;">Cancel</button>
+                  <button type="submit" style="font-size: 11px; padding: 4px 10px; border-radius: 999px; border: none; background: var(--sky); color: white; cursor: pointer;">Attach</button>
+                </div>
+              </div>
+            </form>
+          </aside>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- UCS Core Scripts -->
+  <script src="../components/ucs-core.js"></script>
+  <script src="../components/component-registry.js"></script>
+  <script src="../components/auth-guard.js"></script>
+  <script>
+    (function () {
+      const API_BASE_URL = 'https://assiduous-api-9355377564.us-central1.run.app';
+      let currentUser = null;
+      let currentRole = null;
+
+      function byId(id) {
+        return document.getElementById(id);
+      }
+
+      function showToast(message) {
+        try {
+          const div = document.createElement('div');
+          div.style.cssText = '
+            position: fixed;
+            bottom: 16px;
+            right: 16px;
+            background: var(--navy);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 999px;
+            font-size: 12px;
+            box-shadow: var(--shadow-md);
+            z-index: 9999;
+          ';
+          div.textContent = message;
+          document.body.appendChild(div);
+          setTimeout(() => div.remove(), 4000);
+        } catch (e) {
+          console.warn('[Deal] toast failed:', e);
+        }
+      }
+
+      function configureRoleActions(role) {
+        currentRole = role;
+        const isStaff = role === 'admin' || role === 'agent';
+        const addPart = byId('addParticipantButton');
+        const addDoc = byId('addDocumentButton');
+        if (addPart) addPart.style.display = isStaff ? 'inline-block' : 'none';
+        if (addDoc) addDoc.style.display = isStaff ? 'inline-block' : 'none';
+      }
+
+      function renderStageStepper(stageKey) {
+        const steps = [
+          'intake',
+          'underwriting',
+          'offer',
+          'contract',
+          'preclose',
+          'close',
+          'postclose',
+        ];
+        const el = byId('dealStageStepper');
+        if (!el) return;
+        el.innerHTML = steps
+          .map((s) => {
+            let cls = 'deal-stage-pill';
+            if (s === stageKey) {
+              cls += ' active';
+            }
+            return '<span class="' + cls + '">' + s + '</span>';
+          })
+          .join('');
+      }
+
+      function describeNextStep(stageKey) {
+        switch (stageKey) {
+          case 'intake':
+            return 'Confirm who is involved in this deal and your goals. We will collect basic info and prepare you for underwriting.';
+          case 'underwriting':
+            return 'Review the micro-flip analysis, funding, and risk. Once you are comfortable, you can move forward to an offer.';
+          case 'offer':
+            return 'Prepare and send an offer (or LOI). You will review terms and sign documents electronically.';
+          case 'contract':
+            return 'You are under contract. We will guide you through inspections, title, and financing tasks.';
+          case 'preclose':
+            return 'Final checks before closing: confirm funds, documents, and scheduling with title/escrow.';
+          case 'close':
+            return 'Closing day. You will sign final documents and funds will be disbursed.';
+          case 'postclose':
+            return 'Track renovation, resale, or refinance activities after closing.';
+          default:
+            return 'We are tracking this deal. As we learn more about your context, we will surface the next best action here.';
+        }
+      }
+
+      window.addEventListener('firebase-ready', function () {
+        const firebase = window.Firebase || {};
+        const auth = firebase.auth || window.firebaseAuth;
+        if (!auth || typeof auth.onAuthStateChanged !== 'function') {
+          console.error('[Deal] Auth not ready');
+          return;
+        }
+
+        const params = new URLSearchParams(window.location.search);
+        const dealId = params.get('id');
+        window.__currentDealId = dealId;
+        if (!dealId) {
+          byId('dealTitle').textContent = 'Deal not found';
+          byId('dealNextStep').textContent = 'Missing deal id in URL.';
+          return;
+        }
+
+        auth.onAuthStateChanged(async function (user) {
+          if (!user) {
+            byId('dealTitle').textContent = 'Sign in to view your deal';
+            byId('dealNextStep').textContent = 'You must be signed in to view deal details.';
+            return;
+          }
+
+          currentUser = user;
+
+          try {
+            const token = await user.getIdToken();
+            const res = await fetch(API_BASE_URL + '/api/deals/' + encodeURIComponent(dealId), {
+              headers: { Authorization: 'Bearer ' + token },
+            });
+            const data = await res.json().catch(() => ({}));
+            if (!res.ok) {
+              if (res.status === 403) {
+                byId('dealTitle').textContent = 'Access to this deal is restricted';
+                byId('dealNextStep').textContent = 'You are signed in, but you are not a creator, client, or participant on this deal.';
+                return;
+              }
+              if (res.status === 404) {
+                byId('dealTitle').textContent = 'Deal not found';
+                byId('dealNextStep').textContent = 'We could not find a deal with this id. It may have been archived or deleted.';
+                return;
+              }
+              throw new Error(data.message || data.error || res.statusText || 'Failed to load deal');
+            }
+            const deal = data.deal || data;
+            const stages = data.stages || [];
+            const participants = data.participants || [];
+            const documents = data.documents || [];
+            const stageKey = deal.stageKey || 'intake';
+
+            // Role banner (best-effort – use modular AuthService if present)
+            try {
+              if (window.AuthService && typeof window.AuthService.getUserData === 'function') {
+                const result = await window.AuthService.getUserData(user.uid);
+                if (result && result.success && result.data) {
+                  const role = (result.data.role || 'client').toLowerCase();
+                  currentRole = role;
+                  const roleLabel = role.charAt(0).toUpperCase() + role.slice(1);
+                  const banner = byId('dealRoleBanner');
+                  if (banner) {
+                    banner.textContent = 'You are viewing this as ' + roleLabel + '.';
+                  }
+                  configureRoleActions(role);
+                }
+              }
+            } catch (e) {
+              console.warn('[Deal] failed to load user role for banner:', e);
+            }
+
+            byId('dealTitle').textContent = 'Deal ' + deal.id;
+            byId('dealSubtitle').textContent =
+              'Source: ' + (deal.entrySource || 'property') + ' • Stage: ' + stageKey;
+
+            renderStageStepper(stageKey);
+            byId('dealNextStep').textContent = describeNextStep(stageKey);
+
+            const metaEl = byId('dealMetaBody');
+            const lines = [];
+            if (deal.propertyId) {
+              lines.push('<div>Property: <code>' + deal.propertyId + '</code></div>');
+            }
+            if (deal.clientUid) {
+              lines.push('<div>Client: <code>' + deal.clientUid + '</code></div>');
+            }
+            if (deal.entrySource) {
+              lines.push('<div>Entry source: ' + deal.entrySource + '</div>');
+            }
+            if (deal.stageStatus) {
+              lines.push('<div>Stage status: ' + deal.stageStatus + '</div>');
+            }
+            if (deal.createdAt) {
+              lines.push('<div>Created: ' + new Date(deal.createdAt).toLocaleString() + '</div>');
+            }
+            metaEl.innerHTML = lines.join('');
+
+            // Render checklist for current stage if available
+            const checklistEl = byId('dealChecklistBody');
+            const currentStage = stages.find((s) => s.id === stageKey) || null;
+            if (!currentStage || !Array.isArray(currentStage.checklist) || currentStage.checklist.length === 0) {
+              checklistEl.innerHTML = '<div class="deal-list-item"><span>No checklist items for this stage yet.</span></div>';
+            } else {
+              checklistEl.innerHTML = currentStage.checklist
+                .map(function (item) {
+                  const status = item.status || 'todo';
+                  const pillClass = status === 'done' ? 'deal-pill success' : 'deal-pill muted';
+                  const pillLabel = status === 'done' ? 'Done' : status.replace('_', ' ');
+                  const clickable = status !== 'done';
+                  const attrs =
+                    ' data-item-id="' +
+                    item.id +
+                    '" data-stage-key="' +
+                    currentStage.id +
+                    '"' +
+                    (clickable ? ' data-clickable="1"' : '');
+                  return (
+                    '<div class="deal-list-item"' +
+                    attrs +
+                    '>' +
+                    '<div>' +
+                    '<div class="deal-list-label">' +
+                    item.label +
+                    (item.required ? ' *' : '') +
+                    '</div>' +
+                    (item.description ? '<div>' + item.description + '</div>' : '') +
+                    '</div>' +
+                    '<span class="' +
+                    pillClass +
+                    '">' +
+                    pillLabel +
+                    '</span>' +
+                    '</div>'
+                  );
+                })
+                .join('');
+            }
+
+            // Render participants summary
+            const participantsEl = byId('dealParticipantsBody');
+            if (!participants.length) {
+              participantsEl.innerHTML = '<div class="deal-list-item"><span>No participants attached yet.</span></div>';
+            } else {
+              participantsEl.innerHTML = participants
+                .map(function (p) {
+                  const role = p.role || 'participant';
+                  const name = p.name || 'Unnamed';
+                  const email = p.email || '';
+                  const phone = p.phone || '';
+                  const attrs = [
+                    'class="deal-list-item"',
+                    p.id ? 'data-participant-id="' + p.id + '"' : '',
+                    'data-participant-name="' + (name || '') + '"',
+                    'data-participant-role="' + (role || '') + '"',
+                    'data-participant-email="' + (email || '') + '"',
+                    'data-participant-phone="' + (phone || '') + '"',
+                  ].filter(Boolean).join(' ');
+                  return (
+                    '<div ' + attrs + '>' +
+                    '<div>' +
+                    '<div class="deal-list-label">' + name + '</div>' +
+                    '<div>' + role + (email ? ' · ' + email : '') + '</div>' +
+                    '</div>' +
+                    '</div>'
+                  );
+                })
+                .join('');
+            }
+
+            // Render documents summary
+            const docsEl = byId('dealDocumentsBody');
+            if (!documents.length) {
+              docsEl.innerHTML = '<div class="deal-list-item"><span>No documents attached yet.</span></div>';
+            } else {
+              docsEl.innerHTML = documents
+                .map(function (d) {
+                  const kind = d.kind || 'document';
+                  const status = d.status || 'pending';
+                  const pillClass = status === 'completed' ? 'deal-pill success' : 'deal-pill muted';
+                  return (
+                    '<div class="deal-list-item">' +
+                    '<div class="deal-list-label">' + kind + '</div>' +
+                    '<span class="' + pillClass + '">' + status.replace('_', ' ') + '</span>' +
+                    '</div>'
+                  );
+                })
+                .join('');
+            }
+          } catch (err) {
+            console.error('[Deal] load error', err);
+            byId('dealNextStep').textContent = err.message || 'Failed to load deal.';
+          }
+        });
+      });
+
+      // Participant form wiring
+      document.addEventListener('click', function (evt) {
+        const addBtn = evt.target.closest('#addParticipantButton');
+        const cancelBtn = evt.target.closest('#participantCancel');
+        const participantRow = evt.target.closest('#dealParticipantsBody .deal-list-item');
+        const form = byId('participantForm');
+        const idInput = byId('participantId');
+        const nameInput = byId('participantName');
+        const roleInput = byId('participantRole');
+        const emailInput = byId('participantEmail');
+        const phoneInput = byId('participantPhone');
+
+        // Only admin/agent can use these controls
+        if (addBtn) {
+          if (currentRole !== 'admin' && currentRole !== 'agent') return;
+          if (!form) return;
+          idInput.value = '';
+          if (nameInput) nameInput.value = '';
+          if (roleInput) roleInput.value = '';
+          if (emailInput) emailInput.value = '';
+          if (phoneInput) phoneInput.value = '';
+          form.style.display = form.style.display === 'none' || !form.style.display ? 'block' : 'none';
+          return;
+        }
+
+        if (cancelBtn) {
+          if (form) form.style.display = 'none';
+          return;
+        }
+
+        // Click existing participant row to edit
+        if (participantRow && (currentRole === 'admin' || currentRole === 'agent')) {
+          const pid = participantRow.getAttribute('data-participant-id') || '';
+          const name = participantRow.getAttribute('data-participant-name') || '';
+          const role = participantRow.getAttribute('data-participant-role') || '';
+          const email = participantRow.getAttribute('data-participant-email') || '';
+          const phone = participantRow.getAttribute('data-participant-phone') || '';
+          if (idInput) idInput.value = pid;
+          if (nameInput) nameInput.value = name;
+          if (roleInput) roleInput.value = role;
+          if (emailInput) emailInput.value = email;
+          if (phoneInput) phoneInput.value = phone;
+          if (form) form.style.display = 'block';
+          return;
+        }
+
+        // Document attach toggles
+        const addDocBtn = evt.target.closest('#addDocumentButton');
+        const docCancel = evt.target.closest('#documentCancel');
+        const docForm = byId('documentForm');
+        if (addDocBtn) {
+          if (currentRole !== 'admin' && currentRole !== 'agent') return;
+          if (docForm) docForm.style.display = docForm.style.display === 'none' || !docForm.style.display ? 'block' : 'none';
+          return;
+        }
+        if (docCancel) {
+          if (docForm) docForm.style.display = 'none';
+          return;
+        }
+      });
+
+      const participantFormEl = document.getElementById('participantForm');
+      if (participantFormEl) {
+        participantFormEl.addEventListener('submit', async function (evt) {
+          evt.preventDefault();
+          if (currentRole !== 'admin' && currentRole !== 'agent') {
+            showToast('Only admins and agents can edit participants.');
+            return;
+          }
+          const dealId = window.__currentDealId;
+          if (!dealId || !currentUser) return;
+
+          const id = byId('participantId').value.trim();
+          const name = byId('participantName').value.trim();
+          const role = byId('participantRole').value.trim();
+          const email = byId('participantEmail').value.trim();
+          const phone = byId('participantPhone').value.trim();
+          if (!name || !role) {
+            showToast('Name and role are required for a participant.');
+            return;
+          }
+          try {
+            const token = await currentUser.getIdToken();
+            const res = await fetch(
+              API_BASE_URL + '/api/deals/' + encodeURIComponent(dealId) + '/participants',
+              {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  Authorization: 'Bearer ' + token,
+                },
+                body: JSON.stringify({
+                  id: id || undefined,
+                  name,
+                  role,
+                  email: email || undefined,
+                  phone: phone || undefined,
+                }),
+              }
+            );
+            if (!res.ok) {
+              console.error('[Deal] participant upsert failed', await res.text());
+              showToast('Failed to save participant.');
+              return;
+            }
+            showToast('Participant saved.');
+            window.location.reload();
+          } catch (err) {
+            console.error('[Deal] participant submit error', err);
+            showToast('Failed to save participant.');
+          }
+        });
+      }
+
+      const documentFormEl = document.getElementById('documentForm');
+      if (documentFormEl) {
+        documentFormEl.addEventListener('submit', async function (evt) {
+          evt.preventDefault();
+          if (currentRole !== 'admin' && currentRole !== 'agent') {
+            showToast('Only admins and agents can attach documents.');
+            return;
+          }
+          const dealId = window.__currentDealId;
+          if (!dealId || !currentUser) return;
+
+          const kind = byId('documentKind').value;
+          const label = byId('documentLabel').value.trim();
+          const primary = byId('documentPrimary').value.trim();
+          const secondary = byId('documentSecondary').value.trim();
+          if (!label || !primary) {
+            showToast('Label and URL/Envelope ID are required.');
+            return;
+          }
+
+          let payload = { kind: kind, status: 'pending', ref: {} };
+          if (kind === 'external') {
+            payload.status = 'available';
+            payload.ref = { url: primary, label: label };
+          } else if (kind === 'opensign') {
+            payload.status = 'sent';
+            payload.ref = { envelopeId: primary };
+            if (secondary) payload.ref.docType = secondary;
+          }
+
+          try {
+            const token = await currentUser.getIdToken();
+            const res = await fetch(
+              API_BASE_URL + '/api/deals/' + encodeURIComponent(dealId) + '/documents',
+              {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  Authorization: 'Bearer ' + token,
+                },
+                body: JSON.stringify(payload),
+              }
+            );
+            if (!res.ok) {
+              console.error('[Deal] document attach failed', await res.text());
+              showToast('Failed to attach document.');
+              return;
+            }
+            showToast('Document attached.');
+            window.location.reload();
+          } catch (err) {
+            console.error('[Deal] document submit error', err);
+            showToast('Failed to attach document.');
+          }
+        });
+      }
+
+      // Simple handler to mark checklist items as done when clicked.
+      document.addEventListener('click', async function (evt) {
+        const row = evt.target.closest('.deal-list-item[data-clickable="1"]');
+        if (!row) return;
+
+        const dealId = window.__currentDealId;
+        if (!dealId) return;
+
+        const stageKey = row.getAttribute('data-stage-key');
+        const itemId = row.getAttribute('data-item-id');
+        if (!stageKey || !itemId) return;
+
+        try {
+          const firebase = window.Firebase || {};
+          const auth = firebase.auth || window.firebaseAuth;
+          const user = auth && typeof auth.currentUser !== 'undefined' ? auth.currentUser : (auth && auth._currentUser) || null;
+          if (!user) {
+            console.warn('[Deal] cannot update checklist; user not signed in');
+            return;
+          }
+          const token = await user.getIdToken();
+
+          const res = await fetch(
+            API_BASE_URL + '/api/deals/' + encodeURIComponent(dealId) + '/stages',
+            {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + token,
+              },
+              body: JSON.stringify({
+                stageKey: stageKey,
+                items: { [itemId]: 'done' },
+              }),
+            }
+          );
+          if (!res.ok) {
+            console.error('[Deal] failed to update checklist', await res.text());
+            return;
+          }
+
+          // Optimistically update UI: mark pill as success.
+          const pill = row.querySelector('.deal-pill');
+          if (pill) {
+            pill.className = 'deal-pill success';
+            pill.textContent = 'Done';
+          }
+          row.removeAttribute('data-clickable');
+        } catch (err) {
+          console.error('[Deal] checklist click error', err);
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
