@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.139.0] - 2025-12-06
+
+### Added
+- feat(deals): document deal graph and finalize ingest workflows
+
+
 ## [0.138.0] - 2025-12-05
 
 ### Added
@@ -1712,6 +1718,12 @@ accountIds/{accountId} = {
 **Sprint Progress**: Day 4 of 6 (67% target after Day 4 completion)
 
 ## [Unreleased]
+
+
+## [0.139.0] - 2025-12-06
+
+### Added
+- feat(deals): document deal graph and finalize ingest workflows
 
 
 ## [0.138.0] - 2025-12-05
@@ -3656,7 +3668,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.138.0...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.139.0...HEAD
+
+
+## [0.139.0] - 2025-12-06
+
+### Added
+- feat(deals): document deal graph and finalize ingest workflows
 
 
 ## [0.138.0] - 2025-12-05
@@ -5669,3 +5687,4 @@ To generate changelog entries:
 [0.136.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.135.0...v0.136.0
 [0.137.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.136.0...v0.137.0
 [0.138.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.137.0...v0.138.0
+[0.139.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.138.0...v0.139.0
