@@ -9,6 +9,7 @@ import LobLettersList from './components/LobLettersList';
 import OpenSignSender from './components/OpenSignSender';
 import AiExplain from './components/AiExplain';
 import MicroFlipAnalyzer from './components/MicroFlipAnalyzer';
+import PortfolioAnalyzer from './components/PortfolioAnalyzer';
 import { useEntitlements } from './hooks/useEntitlements';
 
 const App: React.FC = () => {
@@ -85,6 +86,7 @@ const App: React.FC = () => {
               <>
                 <AiExplain apiBaseURL={apiBaseURL} />
                 <MicroFlipAnalyzer apiBaseURL={apiBaseURL} />
+                <PortfolioAnalyzer apiBaseURL={apiBaseURL} />
               </>
             )}
           </section>

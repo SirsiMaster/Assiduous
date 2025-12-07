@@ -603,6 +603,20 @@ export const DatabaseService = {
       return { success: false, error: error.message };
     }
   },
+
+  async setUserSearchPreferences(userId, prefs) {
+    try {
+      const prefRef = doc(db, 'users', userId, 'preferences', 'search');
+      await setDoc(prefRef, {
+        ...prefs,
+        updatedAt: serverTimestamp(),
+      });
+      return { success: true };
+    } catch (error) {
+      console.error(`Error setting search preferences for user ${userId}:`, error);
+      return { success: false, error: error.message };
+    }
+  },
 };
 
 /**

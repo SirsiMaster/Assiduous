@@ -407,12 +407,94 @@ Secure digital document storage, management, and execution platform.
 
 #### Features
 - **Smart Contracts:** Blockchain-ready
-- **E-Signatures:** DocuSign integration
+- **E-Signatures:** DocuSign / OpenSign integration
 - **Document AI:** Auto-extraction of key terms
 - **Compliance Tracking:** Regulatory adherence
 - **Audit Trail:** Complete transaction history
 
-### 7. Mobile Applications
+### 7. Micro-Flip Journeys (Buyer / Agent / Seller)
+
+#### Overview
+Micro-flipping is a lightweight, fast-turnover transaction pattern built on top of
+standard residential deals. Assiduous must support complete end-to-end micro-flip
+journeys for three primary personas:
+
+- **Buyer/Investor:** discovers and underwrites deals, secures financing, and executes
+  acquisitions and resales.
+- **Agent:** curates opportunities, shepherds deals through stages, and coordinates
+  documents and communications.
+- **Seller (including FSBO):** receives offers, signs contracts, and coordinates closing
+  tasks.
+
+These journeys are layered on the core deal graph (deals + stages + participants +
+documents) and powered by MLS/FSBO ingest, the micro-flip engine, financial integrations
+(Plaid / Stripe), and fulfillment integrations (Lob / OpenSign).
+
+#### Canonical Lifecycle Stages
+
+All micro-flip journeys must pass through the following canonical stages, represented in
+Firestore as `deals/{dealId}` with subcollections for `stages`, `participants`, and
+`documents`:
+
+1. **Lead & Discovery**
+   - Entry points:
+     - Buyer-driven search (map + radius search in `/client/properties.html`).
+     - Agent-curated opportunities (admin/agent boards).
+     - Seller / FSBO tip (ingested via MLS/FSBO pipeline or manual entry).
+   - Data sources: MLS/FSBO ingest (`/api/listings/ingest/*`), existing property
+     records (`properties` collection).
+
+2. **Underwriting (Micro-Flip Engine)**
+   - Buyer/agent runs initial underwriting via the Go micro-flip engine:
+     - `/api/microflip/analyze` (backed by `microflip.Engine.AnalyzeDeal`).
+     - UI surfaces:
+       - Client portal deal analyzers and calculators.
+       - React web shell `MicroFlipAnalyzer` component.
+   - Outputs: net profit, ROI, cash-on-cash, 70% rule MAO, risk assessment,
+     recommendations.
+
+3. **Financing & Readiness**
+   - Optional Plaid integration to understand buyer liquidity and risk profile:
+     - `/api/plaid/link-token`, `/api/plaid/token-exchange`, `/api/plaid/accounts`.
+   - Stripe subscription entitlements ensure advanced tooling is only available to
+     subscribed users.
+
+4. **Offer & Contract**
+   - Deal graph stages: `offer`, `contract`.
+   - Participants: buyer, seller, listing agent, buyer agent, title/escrow.
+   - Documents:
+     - Offer packages and contracts sent via OpenSign.
+     - Certified mail (Lob letters) for notices where required.
+
+5. **Pre-Close & Close**
+   - Checklist-driven workflows per stage (`preclose`, `close`) ensure:
+     - Inspections, appraisals, and title checks are completed.
+     - Funding and disbursements are scheduled.
+   - All critical documents are tracked in `DealDocument` records with status
+     (draft/sent/signed/mailed/completed).
+
+6. **Renovation & Resale (Post-Close)**
+   - Optional renovation budgeting and progress tracking per deal.
+   - Micro-flip engine can be re-run using updated numbers (actual rehab costs,
+     revised ARV) to validate exit scenarios.
+   - Resale listings re-enter MLS/FSBO ingest and map-based discovery surfaces.
+
+#### Experience Requirements
+
+- Every micro-flip journey must be **shepherded**: buyers, agents, and sellers should
+  always see:
+  - Current stage (pipeline column, stepper, or timeline).
+  - Next required actions (checklists and document status pills).
+  - Key financial metrics (profit, ROI, risk level) from the most recent
+    micro-flip analysis.
+- Deal boards (admin/agent) and the client deal page are the **primary shells** for
+  interacting with micro-flip journeys. React web shell experiences (MicroFlipAnalyzer,
+  AI Explain, financial integrations) may be embedded contextually into these shells.
+- All advanced analytics and automations (Plaid, Lob, OpenSign, AI, micro-flip engine)
+  are gated by the `assiduousRealty` subscription entitlement and must fail closed
+  (`subscription_required`) when entitlements are absent.
+
+### 8. Mobile Applications
 
 #### Platform Support
 - iOS (iPhone, iPad)

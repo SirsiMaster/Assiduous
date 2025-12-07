@@ -20,6 +20,8 @@
         window.Firebase = Firebase;
         window.AuthService = AuthService;
     </script>
+
+    <script src="../assets/js/services/guide-engine.js"></script>
     
     <style>
         /* Page-specific styles */
@@ -271,6 +273,7 @@
         const urlParams = new URLSearchParams(window.location.search);
         const propertyId = urlParams.get('id');
         let currentProperty = null;
+        let currentAnalysis = null;
         let savedProperties = JSON.parse(localStorage.getItem('savedProperties') || '[]');
         
         function formatCurrency(amount) {
@@ -325,6 +328,9 @@
                     return;
                 }
 
+                // Cache full analysis so we can attach it to deal graph snapshots.
+                currentAnalysis = data;
+
                 const inputs = data.inputs || {};
                 const metrics = data.metrics || {};
                 const assessment = data.assessment || {};
@@ -362,8 +368,8 @@
         // Load property details
         async function loadProperty() {
             if (!propertyId) {
-                // Load mock data for demo
-                loadMockProperty();
+                console.warn('[PropertyDetail] No property id in URL.');
+                alert('Property not found. Please return to the properties list.');
                 return;
             }
             
@@ -382,67 +388,13 @@
                         views: currentViews + 1
                     });
                 } else {
-                    loadMockProperty();
+                    console.warn('[PropertyDetail] Property not found for id', propertyId);
+                    alert('Property not found. It may have been removed.');
                 }
             } catch (error) {
                 console.error('Error loading property:', error);
-                loadMockProperty();
+                alert('Unable to load this property right now. Please try again later.');
             }
-        }
-        
-        // Load mock property for demo
-        function loadMockProperty() {
-            currentProperty = {
-                id: 'demo-property',
-                title: '3BR Townhouse in Fishtown - Perfect Flip',
-                address: '2547 Frankford Avenue',
-                city: 'Philadelphia',
-                state: 'PA',
-                zipCode: '19125',
-                neighborhood: 'Fishtown',
-                price: 285000,
-                bedrooms: 3,
-                bathrooms: 2,
-                sqft: 1450,
-                type: 'townhouse',
-                yearBuilt: 1925,
-                description: 'Investor\'s dream in hot Fishtown market! This 3 bedroom townhouse offers tremendous upside potential with cosmetic updates. Original hardwood floors, high ceilings, and great bones. Walking distance to trendy restaurants and nightlife. Perfect for micro-flipping with estimated 25% ROI.',
-                features: ['Hardwood Floors', 'High Ceilings', 'Original Details', 'Private Backyard', 'Near Transit'],
-                images: [
-                    'https://source.unsplash.com/800x600/?townhouse,exterior',
-                    'https://source.unsplash.com/800x600/?livingroom',
-                    'https://source.unsplash.com/800x600/?kitchen',
-                    'https://source.unsplash.com/800x600/?bedroom',
-                    'https://source.unsplash.com/800x600/?bathroom'
-                ],
-                microFlipping: {
-                    afterRepairValue: 385000,
-                    estimatedRepairCost: 35000,
-                    potentialProfit: 65000,
-                    roi: 25,
-                    investmentScore: 87,
-                    repairItems: [
-                        { item: 'Kitchen Update', cost: 12000 },
-                        { item: 'Bathroom Renovation', cost: 8000 },
-                        { item: 'Paint & Flooring', cost: 7000 },
-                        { item: 'Landscaping', cost: 3000 },
-                        { item: 'Fixtures & Hardware', cost: 5000 }
-                    ],
-                    marketDemand: 'High'
-                },
-                views: 234,
-                saves: 18,
-                listingDate: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString(),
-                agentId: 'agent_1',
-                agentName: 'John Davis',
-                parking: 'Street',
-                heating: 'Gas',
-                cooling: 'Central Air',
-                basement: 'Full',
-                taxAmount: 4275
-            };
-            
-            displayProperty(currentProperty);
         }
         
         // Display property details
@@ -596,9 +548,22 @@
                     entrySource: 'property',
                     propertyId: propertyId,
                 };
-                // Include any existing micro-flip snapshot when available
-                if (currentProperty && currentProperty.microFlipping) {
-                    body.microflipSnapshot = currentProperty.microFlipping;
+                // Attach canonical micro-flip snapshot when available so the deal graph
+                // always has a full underwriting payload.
+                if (currentAnalysis) {
+                    body.microflipSnapshot = {
+                        mode: 'single_deal',
+                        source: 'client_property_detail',
+                        propertyId: propertyId,
+                        analysis: currentAnalysis,
+                    };
+                } else if (currentProperty && currentProperty.microFlipping) {
+                    body.microflipSnapshot = {
+                        mode: 'single_deal_legacy',
+                        source: 'client_property_detail',
+                        propertyId: propertyId,
+                        legacy: currentProperty.microFlipping,
+                    };
                 }
 
                 const res = await fetch(`${API_BASE_URL}/api/deals`, {
@@ -804,6 +769,46 @@
         
         // Load property on page load
         window.addEventListener('load', loadProperty);
+
+        // Register guided walkthrough for property detail
+        if (window.AssiduousGuide) {
+            window.AssiduousGuide.register('client-property-detail', {
+                title: 'Property detail walkthrough',
+                steps: [
+                    {
+                        id: 'pd-header',
+                        selector: '.property-details',
+                        title: 'Key facts',
+                        body: 'Review the core facts: beds, baths, square footage, taxes, and property type before underwriting.',
+                    },
+                    {
+                        id: 'pd-gallery',
+                        selector: '.image-gallery',
+                        title: 'Photos and media',
+                        body: 'Use the gallery to visually inspect the property condition and finishes.',
+                    },
+                    {
+                        id: 'pd-microflip',
+                        selector: '#microflip',
+                        title: 'Micro-flip analysis',
+                        body: 'Here we run a certified micro-flip on this property and surface ARV, repairs, profit, and demand.',
+                    },
+                    {
+                        id: 'pd-actions',
+                        selector: '.action-card',
+                        title: 'Primary actions',
+                        body: 'Save, contact the agent, schedule a viewing, or start a structured deal from this panel.',
+                    },
+                ],
+            });
+
+            try {
+                var params = new URLSearchParams(window.location.search || '');
+                if (params.get('guide') === 'client-property-detail') {
+                    window.AssiduousGuide.start('client-property-detail');
+                }
+            } catch (e) {}
+        }
         });
     </script>
 </body>

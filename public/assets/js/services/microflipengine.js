@@ -1,6 +1,23 @@
 /**
- * MicroFlipEngine - Advanced deal analysis for micro-flipping properties
- * Handles all calculations, financing scenarios, and deal comparisons
+ * MicroFlipEngine (UI helper only)
+ * --------------------------------
+ * Historical JS implementation of micro-flip deal math.
+ *
+ * IMPORTANT ARCHITECTURE NOTE
+ * ---------------------------
+ * The authoritative underwriting logic now lives in the Go microflip.Engine
+ * and is exposed via the /api/microflip HTTP endpoints. All real financial
+ * calculations (ROI, profit, cost breakdowns, portfolio metrics) must go
+ * through those endpoints using MicroFlipApiClient.
+ *
+ * This class is retained ONLY for presentation concerns:
+ *   - scoring deals (calculateDealScore)
+ *   - local caching of analyses (saveDeal / getSavedDeals / deleteDeal)
+ *   - formatting helpers (formatCurrency / formatPercent)
+ *
+ * Do NOT use MicroFlipEngine.analyzeDeal or the internal math here as a
+ * source of truth for underwriting. If you need new analytics, add them to
+ * the Go engine and surface them via /api/microflip instead.
  */
 class MicroFlipEngine {
     constructor() {

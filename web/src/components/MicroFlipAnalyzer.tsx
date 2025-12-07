@@ -65,6 +65,13 @@ const MicroFlipAnalyzer: React.FC<Props> = ({ apiBaseURL }) => {
   const [interestRate, setInterestRate] = useState(7);
   const [holdingMonthly, setHoldingMonthly] = useState(1500);
 
+  // Advanced assumptions
+  const [taxRatePct, setTaxRatePct] = useState(1.2); // default 1.2% annual
+  const [insuranceRatePct, setInsuranceRatePct] = useState(0.5); // default 0.5% annual
+  const [hoaMonthly, setHoaMonthly] = useState(0);
+  const [exitCostPct, setExitCostPct] = useState(8); // default 8% of ARV
+  const [showAdvanced, setShowAdvanced] = useState(false);
+
   const [analysis, setAnalysis] = useState<DealAnalysis | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -100,6 +107,10 @@ const MicroFlipAnalyzer: React.FC<Props> = ({ apiBaseURL }) => {
         loanAmount,
         interestRate,
         utilities: holdingMonthly,
+        taxRatePercent: taxRatePct,
+        insuranceRatePercent: insuranceRatePct,
+        hoaMonthly,
+        exitCostPercentOverride: exitCostPct,
       };
 
       const res = await fetch(`${apiBaseURL}/api/microflip/analyze`, {
@@ -215,6 +226,61 @@ const MicroFlipAnalyzer: React.FC<Props> = ({ apiBaseURL }) => {
               />
             </div>
           </div>
+          <button
+            type="button"
+            className="mt-1 text-[10px] text-slate-400 underline"
+            onClick={() => setShowAdvanced((v) => !v)}
+          >
+            {showAdvanced ? 'Hide advanced assumptions' : 'Show advanced assumptions'}
+          </button>
+          {showAdvanced && (
+            <div className="mt-2 space-y-2 rounded-md border border-slate-700 bg-slate-900/80 p-2">
+              <div className="grid grid-cols-2 gap-2">
+                <div>
+                  <label className="block mb-1 text-slate-200 text-[11px]">Property tax rate (annual %)</label>
+                  <input
+                    type="number"
+                    value={taxRatePct}
+                    onChange={(e) => setTaxRatePct(Number(e.target.value) || 0)}
+                    className="w-full rounded-md border border-slate-700 bg-slate-900/60 px-2 py-1 text-slate-100 text-[11px]"
+                  />
+                </div>
+                <div>
+                  <label className="block mb-1 text-slate-200 text-[11px]">Insurance rate (annual %)</label>
+                  <input
+                    type="number"
+                    value={insuranceRatePct}
+                    onChange={(e) => setInsuranceRatePct(Number(e.target.value) || 0)}
+                    className="w-full rounded-md border border-slate-700 bg-slate-900/60 px-2 py-1 text-slate-100 text-[11px]"
+                  />
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-2">
+                <div>
+                  <label className="block mb-1 text-slate-200 text-[11px]">HOA / condo fees (per month)</label>
+                  <input
+                    type="number"
+                    value={hoaMonthly}
+                    onChange={(e) => setHoaMonthly(Number(e.target.value) || 0)}
+                    className="w-full rounded-md border border-slate-700 bg-slate-900/60 px-2 py-1 text-slate-100 text-[11px]"
+                  />
+                </div>
+                <div>
+                  <label className="block mb-1 text-slate-200 text-[11px]">Exit costs override (% of ARV)</label>
+                  <input
+                    type="number"
+                    value={exitCostPct}
+                    onChange={(e) => setExitCostPct(Number(e.target.value) || 0)}
+                    className="w-full rounded-md border border-slate-700 bg-slate-900/60 px-2 py-1 text-slate-100 text-[11px]"
+                  />
+                </div>
+              </div>
+              <p className="text-[10px] text-slate-400">
+                If left blank, the engine uses opinionated defaults (1.2% tax, 0.5% insurance, and
+                8% exit costs). These settings apply only to this analysis.
+              </p>
+            </div>
+          )}
           <div className="grid grid-cols-2 gap-2">
             <div>
               <label className="block mb-1 text-slate-200">Down payment (%)</label>

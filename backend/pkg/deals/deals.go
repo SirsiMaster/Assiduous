@@ -14,6 +14,63 @@ import (
 // Deal represents a single transaction (traditional or micro-flip) in the
 // system. It is intentionally minimal; most workflow-specific data lives in
 // subcollections (stages, participants, documents).
+//
+// MicroflipSnapshot is a flexible blob that captures the underwriting context
+// at deal creation time. It follows a canonical JSON contract so that client
+// and admin portals can render consistent summaries:
+//   Single-deal snapshots (property-led):
+//     {
+//       "mode": "single_deal",
+//       "source": "client_property_detail" | "agent" | ...,
+//       "propertyId": "...",              // optional but recommended
+//       "analysis": {                       // Go microflip.DealAnalysis JSON
+//         "inputs": { ... },
+//         "costs": { ... },
+//         "metrics": { ... },
+//         "assessment": { ... },
+//         "recommendations": [ ... ]
+//       }
+//     }
+//
+//   Backwards-compatible legacy single-deal snapshots may use:
+//     {
+//       "mode": "single_deal_legacy",
+//       "source": "client_property_detail",
+//       "propertyId": "...",
+//       "legacy": { ... } // pre-Go microflip summary shape
+//     }
+//
+//   Multi-asset / portfolio snapshots (e.g. client portfolio analyzer):
+//     {
+//       "mode": "multi_asset",
+//       "source": "client_portfolio" | "agent_portfolio" | ...,
+//       "aggregate": {                 // mirrors microflip.PortfolioMetrics
+//         "totalInvestment": number,
+//         "netProfit": number,
+//         "roi": number,
+//         "cashOnCashReturn": number,
+//         "annualizedROI": number,
+//         "totalCashInvested": number,
+//         "totalAfterRepairValue": number
+//       },
+//       "positions": [                // per-asset summary rows for UI
+//         {
+//           "clientPropertyId": string,     // id from client_properties
+//           "propertyId": string | null,    // id from properties (if known)
+//           "status": string,               // e.g. "active", "sold"
+//           "purchasePrice": number | null,
+//           "currentValue": number | null,
+//           "monthlyIncome": number | null,
+//           "expenses": number | null,
+//           "roi": number | null
+//         },
+//         ...
+//       ],
+//       "deals": [ { "inputs": ..., "metrics": ..., ... } ]
+//     }
+//
+// Callers are encouraged to stick to these shapes so new UIs can safely
+// interpret snapshots without additional migrations.
 type Deal struct {
 	ID              string                 `firestore:"id" json:"id"`
 	EntrySource     string                 `firestore:"entrySource" json:"entrySource"`

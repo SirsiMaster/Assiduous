@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en" data-auth-protect="client,investor">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio - Assiduous Client Portal</title>
+
+    <!-- Assiduous Design System -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fontsource/geist-sans@5.0.6/index.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="../assiduous.css">
+    <link rel="stylesheet" href="../components/admin-layout.css">
+
+    <!-- Canonical modular Firebase auth: used by AuthService and auth-guard -->
+    <script type="module">
+        import Firebase, { AuthService } from '../assets/js/firebase-init.js';
+        window.Firebase = Firebase;
+        window.AuthService = AuthService;
+    </script>
+
+    <style>
+        /* Minimal page-specific styles; lean on design system */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--space-lg);
+            margin-bottom: var(--space-xl);
+        }
+
+        .stat-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: var(--space-lg);
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: var(--space-xs);
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .filters-bar {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: var(--space-lg);
+            margin-bottom: var(--space-xl);
+            display: flex;
+            gap: var(--space-md);
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .filter-select, .filter-input {
+            padding: var(--space-sm) var(--space-md);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            font-size: 14px;
+            background: var(--white);
+        }
+
+        .holdings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: var(--space-lg);
+            margin-bottom: var(--space-2xl);
+        }
+
+        .holding-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            transition: box-shadow 0.15s ease, transform 0.15s ease;
+            cursor: pointer;
+        }
+
+        .holding-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .holding-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background: var(--gray-100);
+        }
+
+        .holding-content {
+            padding: var(--space-md);
+        }
+
+        .holding-header {
+            display: flex;
+            align-items: baseline;
+            gap: var(--space-sm);
+            margin-bottom: var(--space-xs);
+        }
+
+        .holding-address {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-sm);
+        }
+
+        .holding-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-md);
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-sm);
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .badge-status {
+            background: rgba(148, 163, 184, 0.16);
+            color: #475569;
+        }
+
+        .badge-roi-positive {
+            background: rgba(5, 150, 105, 0.1);
+            color: var(--success);
+        }
+
+        .badge-roi-negative {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+        }
+
+        .selection-checkbox {
+            position: absolute;
+            top: var(--space-md);
+            left: var(--space-md);
+            width: 20px;
+            height: 20px;
+        }
+
+        .portfolio-panel {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: var(--space-lg);
+            margin-bottom: var(--space-2xl);
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-md);
+            gap: var(--space-md);
+            flex-wrap: wrap;
+        }
+
+        .panel-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--navy);
+        }
+
+        .assumptions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: var(--space-md);
+            margin-bottom: var(--space-md);
+        }
+
+        .assumptions-grid label {
+            display: block;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+
+        .assumptions-grid input {
+            width: 100%;
+            padding: 6px 10px;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            font-size: 13px;
+        }
+
+        .portfolio-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: var(--space-lg);
+        }
+
+        .metric-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+
+        .metric-value {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--navy);
+        }
+
+        .loading, .empty-state {
+            text-align: center;
+            padding: var(--space-3xl);
+            color: var(--text-secondary);
+        }
+
+        .empty-icon {
+            font-size: 56px;
+            margin-bottom: var(--space-md);
+        }
+
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body class="admin-wrapper" data-active="portfolio">
+    <!-- UCS Sidebar Component -->
+    <aside class="sidebar" data-component="sidebar"></aside>
+
+    <!-- Main Content Area -->
+    <div class="main-content">
+        <!-- UCS Header Component -->
+        <header data-component="header"></header>
+
+        <!-- Dashboard Content -->
+        <div class="dashboard-content">
+            <h1 class="page-title">My Portfolio</h1>
+            <p class="page-subtitle">Track performance of all properties you own or invest in.</p>
+
+            <!-- Statistics Cards -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="portfolioCount">0</div>
+                    <div class="stat-label">Total Holdings</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="portfolioValue">$0</div>
+                    <div class="stat-label">Total Portfolio Value</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="portfolioROI">0%</div>
+                    <div class="stat-label">Average ROI</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="portfolioCashflow">$0</div>
+                    <div class="stat-label">Monthly Cash Flow</div>
+                </div>
+            </div>
+
+            <!-- Filters Bar -->
+            <div class="filters-bar">
+                <select id="statusFilter" class="filter-select">
+                    <option value="">All Statuses</option>
+                    <option value="active">Active</option>
+                    <option value="pending">Pending</option>
+                    <option value="sold">Sold</option>
+                </select>
+                <select id="sortBy" class="filter-select">
+                    <option value="currentValue">Value: High to Low</option>
+                    <option value="roi">ROI: High to Low</option>
+                    <option value="cashflow">Cash Flow: High to Low</option>
+                    <option value="purchaseDate">Newest Acquisitions</option>
+                </select>
+                <button class="btn btn-secondary" id="selectAllBtn">Select Active</button>
+                <button class="btn btn-secondary" id="clearSelectionBtn">Clear Selection</button>
+            </div>
+
+            <!-- Portfolio Analyzer Panel -->
+            <div class="portfolio-panel">
+                <div class="panel-header">
+                    <div>
+                        <div class="panel-title">Micro-Flip Scenario (90-day cash exit)</div>
+                        <p style="font-size: 13px; color: var(--text-secondary); margin-top: 4px;">
+                            Select holdings and run a portfolio-level micro-flip analysis using the canonical engine.
+                        </p>
+                    </div>
+                    <div style="display:flex; gap: var(--space-sm); flex-wrap: wrap;">
+                        <button class="btn btn-primary" id="analyzePortfolioBtn">Analyze Selected</button>
+                        <button class="btn btn-secondary" id="startDealFromPortfolioBtn">Start Deal from Analysis</button>
+                    </div>
+                </div>
+
+                <div class="assumptions-grid">
+                    <div>
+                        <label for="holdingMonths">Holding Period (months)</label>
+                        <input id="holdingMonths" type="number" class="filter-input" min="1" value="3" />
+                    </div>
+                    <div>
+                        <label for="taxRatePercent">Property Tax Rate (%)</label>
+                        <input id="taxRatePercent" type="number" step="0.1" class="filter-input" placeholder="1.2" />
+                    </div>
+                    <div>
+                        <label for="insuranceRatePercent">Insurance Rate (%)</label>
+                        <input id="insuranceRatePercent" type="number" step="0.1" class="filter-input" placeholder="0.5" />
+                    </div>
+                    <div>
+                        <label for="hoaMonthly">HOA / Condo (per month)</label>
+                        <input id="hoaMonthly" type="number" class="filter-input" placeholder="0" />
+                    </div>
+                    <div>
+                        <label for="exitCostPercent">Exit Costs (% of ARV)</label>
+                        <input id="exitCostPercent" type="number" step="0.1" class="filter-input" placeholder="8" />
+                    </div>
+                </div>
+
+                <div id="portfolioAnalysisEmpty" style="font-size:13px; color:var(--text-secondary);">
+                    Run an analysis to see portfolio-level investment metrics.
+                </div>
+
+                <div id="portfolioAnalysis" class="portfolio-metrics" style="display:none;">
+                    <div>
+                        <div class="metric-label">Total Investment</div>
+                        <div class="metric-value" id="metricTotalInvestment">$0</div>
+                    </div>
+                    <div>
+                        <div class="metric-label">Net Profit</div>
+                        <div class="metric-value" id="metricNetProfit">$0</div>
+                    </div>
+                    <div>
+                        <div class="metric-label">Portfolio ROI</div>
+                        <div class="metric-value" id="metricROI">0%</div>
+                    </div>
+                    <div>
+                        <div class="metric-label">Cash-on-Cash</div>
+                        <div class="metric-value" id="metricCashOnCash">0%</div>
+                    </div>
+                    <div>
+                        <div class="metric-label">Annualized ROI</div>
+                        <div class="metric-value" id="metricAnnualizedROI">0%</div>
+                    </div>
+                    <div>
+                        <div class="metric-label">Total ARV</div>
+                        <div class="metric-value" id="metricTotalARV">$0</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Loading / Empty States -->
+            <div id="loading" class="loading">Loading your portfolio…</div>
+            <div id="emptyState" class="empty-state" style="display:none;">
+                <div class="empty-icon">📂</div>
+                <h2 style="font-size:24px; font-weight:600; color:var(--navy); margin-bottom:8px;">No Portfolio Yet</h2>
+                <p style="font-size:16px; color:var(--text-secondary); margin-bottom:16px;">
+                    Once we record properties you own or invest in, they will appear here with live performance metrics.
+                </p>
+                <button class="btn btn-primary" onclick="window.location.href='/client/properties.html'">Browse Properties</button>
+            </div>
+
+            <!-- Holdings Grid -->
+            <div id="holdingsGrid" class="holdings-grid" style="display:none;"></div>
+        </div>
+    </div>
+
+    <!-- UCS Core Scripts -->
+    <script src="../components/ucs-core.js"></script>
+    <script src="../components/component-registry.js"></script>
+    <script src="../components/auth-guard.js"></script>
+    <!-- MicroFlip API Client -->
+    <script src="../assets/js/services/microflip-api-client.js"></script>
+    <script src="../assets/js/services/guide-engine.js"></script>
+
+    <script>
+        (function () {
+            let holdings = [];           // raw client_properties rows
+            let positions = [];          // enriched with property details
+            let displayedPositions = [];
+            let selectedIds = new Set();
+            let lastPortfolioAnalysis = null;
+            let lastSelectedPositions = [];
+
+            function formatCurrency(value) {
+                return new Intl.NumberFormat('en-US', {
+                    style: 'currency',
+                    currency: 'USD',
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0,
+                }).format(value || 0);
+            }
+
+            function formatPercent(value) {
+                if (value === null || value === undefined || isNaN(value)) return '0%';
+                return value.toFixed(1) + '%';
+            }
+
+            function computeDerivedROI(p) {
+                if (typeof p.roi === 'number') return p.roi;
+                const purchase = Number(p.purchasePrice || 0);
+                const current = Number(p.currentValue || 0);
+                if (purchase <= 0 || current <= 0) return null;
+                return ((current - purchase) / purchase) * 100;
+            }
+
+            function computeMonthlyCashflow(p) {
+                const income = Number(p.monthlyIncome || 0);
+                const expenses = Number(p.expenses || 0);
+                return income - expenses;
+            }
+
+            function updateStats() {
+                const scope = displayedPositions;
+                const total = scope.length;
+                const totalValue = scope.reduce((sum, p) => sum + (Number(p.currentValue || 0)), 0);
+                const totalPurchase = scope.reduce((sum, p) => sum + (Number(p.purchasePrice || 0)), 0);
+                const cashflow = scope.reduce((sum, p) => sum + computeMonthlyCashflow(p), 0);
+
+                let roiSum = 0;
+                let roiCount = 0;
+                scope.forEach(p => {
+                    const r = computeDerivedROI(p);
+                    if (r !== null && !isNaN(r)) {
+                        roiSum += r;
+                        roiCount += 1;
+                    }
+                });
+                const avgROI = roiCount > 0 ? roiSum / roiCount : 0;
+
+                document.getElementById('portfolioCount').textContent = total;
+                document.getElementById('portfolioValue').textContent = totalValue > 0 ? formatCurrency(totalValue) : '$0';
+                document.getElementById('portfolioROI').textContent = formatPercent(avgROI);
+                document.getElementById('portfolioCashflow').textContent = formatCurrency(cashflow);
+            }
+
+            function renderHoldings() {
+                const grid = document.getElementById('holdingsGrid');
+                const loading = document.getElementById('loading');
+                const empty = document.getElementById('emptyState');
+
+                loading.style.display = 'none';
+
+                if (!displayedPositions.length) {
+                    grid.style.display = 'none';
+                    empty.style.display = 'block';
+                    updateStats();
+                    return;
+                }
+
+                empty.style.display = 'none';
+                grid.style.display = 'grid';
+
+                grid.innerHTML = displayedPositions.map(p => {
+                    const addressParts = [p.address, p.city, p.state, p.zipCode].filter(Boolean);
+                    const address = addressParts.join(', ');
+                    const priceLabel = formatCurrency(p.currentValue || p.purchasePrice || 0);
+
+                    const roi = computeDerivedROI(p);
+                    let roiBadge = '';
+                    if (roi !== null && !isNaN(roi)) {
+                        const positive = roi >= 0;
+                        const cls = positive ? 'badge badge-roi-positive' : 'badge badge-roi-negative';
+                        roiBadge = `<span class="${cls}">${roi.toFixed(1)}% ROI</span>`;
+                    }
+
+                    const cashflow = computeMonthlyCashflow(p);
+                    const cashflowLabel = formatCurrency(cashflow) + '/mo';
+
+                    const image = p.image || (Array.isArray(p.images) && p.images[0]) || 'https://via.placeholder.com/800x600?text=Property';
+                    const checked = selectedIds.has(p.id) ? 'checked' : '';
+
+                    return `
+                        <div class="holding-card" data-id="${p.id}">
+                            <input type="checkbox" class="selection-checkbox" data-id="${p.id}" ${checked} />
+                            <img src="${image}" alt="Property" class="holding-image" onerror="this.src='https://via.placeholder.com/800x600?text=Property'" />
+                            <div class="holding-content">
+                                <div class="holding-header">
+                                    <div class="property-price">${priceLabel}</div>
+                                    ${roiBadge}
+                                </div>
+                                <div class="holding-address">${address || 'Location pending'}</div>
+                                <div class="holding-meta">
+                                    <span>Purchased: ${p.purchaseDateLabel || '—'}</span>
+                                    <span>Equity: ${formatCurrency((p.currentValue || 0) - (p.purchasePrice || 0))}</span>
+                                    <span>Cash Flow: ${cashflowLabel}</span>
+                                </div>
+                                <div class="holding-meta">
+                                    <span class="badge badge-status">${(p.status || 'active').toUpperCase()}</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+                // Wire selection + click-through
+                grid.querySelectorAll('.selection-checkbox').forEach(cb => {
+                    cb.addEventListener('click', function (e) {
+                        e.stopPropagation();
+                        const id = this.getAttribute('data-id');
+                        if (!id) return;
+                        if (this.checked) selectedIds.add(id); else selectedIds.delete(id);
+                    });
+                });
+
+                grid.querySelectorAll('.holding-card').forEach(card => {
+                    card.addEventListener('click', function (e) {
+                        // If click originated on checkbox, ignore; handled above.
+                        if (e.target && e.target.classList.contains('selection-checkbox')) return;
+                        const id = this.getAttribute('data-id');
+                        const pos = positions.find(p => p.id === id);
+                        if (!pos || !pos.propertyId) return;
+                        window.location.href = `/client/property-detail.html?id=${encodeURIComponent(pos.propertyId)}`;
+                    });
+                });
+
+                updateStats();
+            }
+
+            function applyFiltersAndSort() {
+                const status = document.getElementById('statusFilter').value;
+                const sortBy = document.getElementById('sortBy').value;
+
+                let rows = positions.slice();
+                if (status) {
+                    rows = rows.filter(p => (p.status || '').toLowerCase() === status.toLowerCase());
+                }
+
+                switch (sortBy) {
+                    case 'roi':
+                        rows.sort((a, b) => (computeDerivedROI(b) || 0) - (computeDerivedROI(a) || 0));
+                        break;
+                    case 'cashflow':
+                        rows.sort((a, b) => computeMonthlyCashflow(b) - computeMonthlyCashflow(a));
+                        break;
+                    case 'purchaseDate':
+                        rows.sort((a, b) => {
+                            const da = a.purchaseDate ? new Date(a.purchaseDate).getTime() : 0;
+                            const db = b.purchaseDate ? new Date(b.purchaseDate).getTime() : 0;
+                            return db - da;
+                        });
+                        break;
+                    case 'currentValue':
+                    default:
+                        rows.sort((a, b) => (b.currentValue || 0) - (a.currentValue || 0));
+                        break;
+                }
+
+                displayedPositions = rows;
+                renderHoldings();
+            }
+
+            async function analyzeSelectedPortfolio() {
+                if (!window.MicroFlipApiClient || !window.Firebase || !Firebase.APIService) {
+                    alert('Portfolio analysis is not available right now. Please try again later.');
+                    return;
+                }
+
+                const activeSelection = positions.filter(p => selectedIds.has(p.id));
+                if (!activeSelection.length) {
+                    alert('Select at least one holding to analyze.');
+                    return;
+                }
+
+                const holdingMonths = parseFloat(document.getElementById('holdingMonths').value) || 3;
+                const taxRate = parseFloat(document.getElementById('taxRatePercent').value) || 0;
+                const insRate = parseFloat(document.getElementById('insuranceRatePercent').value) || 0;
+                const hoaMonthly = parseFloat(document.getElementById('hoaMonthly').value) || 0;
+                const exitPct = parseFloat(document.getElementById('exitCostPercent').value) || 0;
+
+                const dealsParams = activeSelection.map(p => {
+                    const purchasePrice = Number(p.purchasePrice || p.currentValue || 0);
+                    const arv = Number(p.currentValue || purchasePrice);
+                    return {
+                        purchasePrice: purchasePrice,
+                        afterRepairValue: arv,
+                        rehabCosts: 0,
+                        holdingMonths: holdingMonths,
+                        downPaymentPercent: 100,
+                        interestRate: 0,
+                        taxRatePercent: taxRate,
+                        insuranceRatePercent: insRate,
+                        hoaMonthly: hoaMonthly,
+                        exitCostPercentOverride: exitPct,
+                    };
+                });
+
+                try {
+                    const analysis = await MicroFlipApiClient.analyzePortfolio(dealsParams);
+                    lastPortfolioAnalysis = analysis || null;
+                    lastSelectedPositions = activeSelection.slice();
+                    renderPortfolioAnalysis(analysis);
+                } catch (err) {
+                    console.error('[Client Portfolio] analyzePortfolio error', err);
+                    alert(err && err.message ? err.message : 'Portfolio analysis failed. You may need an active subscription.');
+                }
+            }
+
+            function renderPortfolioAnalysis(analysis) {
+                if (!analysis || !analysis.metrics) {
+                    document.getElementById('portfolioAnalysis').style.display = 'none';
+                    document.getElementById('portfolioAnalysisEmpty').style.display = 'block';
+                    return;
+                }
+                const m = analysis.metrics;
+                document.getElementById('metricTotalInvestment').textContent = formatCurrency(m.totalInvestment || 0);
+                document.getElementById('metricNetProfit').textContent = formatCurrency(m.netProfit || 0);
+                document.getElementById('metricROI').textContent = formatPercent(m.roi || 0);
+                document.getElementById('metricCashOnCash').textContent = formatPercent(m.cashOnCashReturn || 0);
+                document.getElementById('metricAnnualizedROI').textContent = formatPercent(m.annualizedROI || 0);
+                document.getElementById('metricTotalARV').textContent = formatCurrency(m.totalAfterRepairValue || 0);
+
+                document.getElementById('portfolioAnalysisEmpty').style.display = 'none';
+                document.getElementById('portfolioAnalysis').style.display = 'grid';
+            }
+
+            async function startDealFromPortfolio() {
+                if (!window.Firebase || !Firebase.APIService) {
+                    alert('Deals service is not available right now.');
+                    return;
+                }
+                const firebase = window.Firebase || {};
+                const auth = firebase.auth || window.firebaseAuth;
+                if (!auth || !auth.currentUser) {
+                    alert('Sign in to start a deal from your portfolio.');
+                    return;
+                }
+                if (!lastPortfolioAnalysis || !lastSelectedPositions.length) {
+                    alert('Run a portfolio analysis first, then start a deal.');
+                    return;
+                }
+
+                const snapshot = {
+                    mode: 'multi_asset',
+                    source: 'client_portfolio',
+                    analyzedAt: new Date().toISOString(),
+                    aggregate: lastPortfolioAnalysis.metrics || {},
+                    positions: lastSelectedPositions.map(p => ({
+                        clientPropertyId: p.id,
+                        propertyId: p.propertyId || null,
+                        status: p.status || 'active',
+                        purchasePrice: p.purchasePrice || null,
+                        currentValue: p.currentValue || null,
+                        monthlyIncome: p.monthlyIncome || null,
+                        expenses: p.expenses || null,
+                        roi: computeDerivedROI(p),
+                    })),
+                    deals: lastPortfolioAnalysis.deals || [],
+                };
+
+                try {
+                    const res = await Firebase.APIService.callAPI('/deals', 'POST', {
+                        entrySource: 'client',
+                        clientUid: auth.currentUser.uid,
+                        microflipSnapshot: snapshot,
+                    });
+                    if (!res || !res.success) {
+                        throw new Error(res && res.error ? res.error : 'Failed to start deal');
+                    }
+                    const payload = res.data || {};
+                    const deal = payload.deal || payload;
+                    if (deal && deal.id) {
+                        window.location.href = `/client/deal.html?id=${encodeURIComponent(deal.id)}`;
+                    } else {
+                        alert('Deal created but id was not returned.');
+                    }
+                } catch (err) {
+                    console.error('[Client Portfolio] startDealFromPortfolio error', err);
+                    alert(err && err.message ? err.message : 'Failed to start deal from portfolio');
+                }
+            }
+
+            function wireEvents() {
+                document.getElementById('statusFilter').addEventListener('change', applyFiltersAndSort);
+                document.getElementById('sortBy').addEventListener('change', applyFiltersAndSort);
+                document.getElementById('selectAllBtn').addEventListener('click', function () {
+                    selectedIds.clear();
+                    positions.forEach(p => {
+                        if (!p.status || p.status === 'active') {
+                            selectedIds.add(p.id);
+                        }
+                    });
+                    renderHoldings();
+                });
+                document.getElementById('clearSelectionBtn').addEventListener('click', function () {
+                    selectedIds.clear();
+                    renderHoldings();
+                });
+                document.getElementById('analyzePortfolioBtn').addEventListener('click', analyzeSelectedPortfolio);
+                document.getElementById('startDealFromPortfolioBtn').addEventListener('click', startDealFromPortfolio);
+            }
+
+            async function loadPortfolio() {
+                const loading = document.getElementById('loading');
+                const empty = document.getElementById('emptyState');
+                const grid = document.getElementById('holdingsGrid');
+                loading.style.display = 'block';
+                empty.style.display = 'none';
+                grid.style.display = 'none';
+
+                const firebase = window.Firebase || {};
+                const auth = firebase.auth || window.firebaseAuth;
+                const dbService = firebase.DatabaseService || {};
+
+                if (!auth || !dbService || typeof dbService.getDocuments !== 'function') {
+                    console.error('[Client Portfolio] Firebase not ready; cannot load portfolio.');
+                    loading.style.display = 'none';
+                    empty.style.display = 'block';
+                    return;
+                }
+
+                const user = auth.currentUser;
+                if (!user) {
+                    // auth-guard should normally prevent this, but be defensive
+                    loading.style.display = 'none';
+                    empty.style.display = 'block';
+                    return;
+                }
+
+                try {
+                    // Load client_properties for this user
+                    const docs = await dbService.getDocuments('client_properties', [
+                        { field: 'clientId', operator: '==', value: user.uid },
+                    ], null, null, 'asc');
+                    holdings = Array.isArray(docs) ? docs : [];
+                } catch (err) {
+                    console.error('[Client Portfolio] Failed to load client_properties:', err);
+                    holdings = [];
+                }
+
+                if (!holdings.length) {
+                    loading.style.display = 'none';
+                    empty.style.display = 'block';
+                    updateStats();
+                    return;
+                }
+
+                await enrichWithPropertyDetails(dbService);
+                applyFiltersAndSort();
+            }
+
+            async function enrichWithPropertyDetails(dbService) {
+                const enriched = [];
+                for (const row of holdings) {
+                    let propData = null;
+                    if (row.propertyId && typeof dbService.getProperty === 'function') {
+                        try {
+                            const res = await dbService.getProperty(row.propertyId);
+                            if (res && res.success && res.data) {
+                                propData = res.data;
+                            }
+                        } catch (err) {
+                            console.warn('[Client Portfolio] getProperty failed for', row.propertyId, err);
+                        }
+                    }
+
+                    const purchaseDateLabel = row.purchaseDate
+                        ? new Date(row.purchaseDate.toDate ? row.purchaseDate.toDate() : row.purchaseDate).toLocaleDateString()
+                        : '';
+
+                    const addressObj = (propData && propData.address) || {};
+
+                    enriched.push({
+                        id: row.id,
+                        propertyId: row.propertyId || (propData && propData.id) || null,
+                        status: row.status || 'active',
+                        purchasePrice: Number(row.purchasePrice || 0),
+                        currentValue: Number(row.currentValue || (propData && propData.price) || 0),
+                        monthlyIncome: Number(row.monthlyIncome || 0),
+                        expenses: Number(row.expenses || 0),
+                        roi: typeof row.roi === 'number' ? row.roi : null,
+                        purchaseDate: row.purchaseDate || null,
+                        purchaseDateLabel: purchaseDateLabel,
+                        address: addressObj.street || addressObj.line1 || propData?.address || '',
+                        city: addressObj.city || propData?.city || '',
+                        state: addressObj.state || propData?.state || '',
+                        zipCode: addressObj.zip || addressObj.postalCode || propData?.zipCode || propData?.postalCode || '',
+                        image: propData && Array.isArray(propData.images) && propData.images.length ? propData.images[0] : (propData && propData.image) || '',
+                    });
+                }
+
+                positions = enriched;
+                displayedPositions = enriched.slice();
+                const grid = document.getElementById('holdingsGrid');
+                grid.style.display = 'grid';
+            }
+
+            window.addEventListener('firebase-ready', function () {
+                wireEvents();
+
+                // Register guided walkthrough for portfolio page
+                if (window.AssiduousGuide) {
+                    window.AssiduousGuide.register('client-portfolio', {
+                        title: 'Portfolio analytics walkthrough',
+                        steps: [
+                            {
+                                id: 'pf-stats',
+                                selector: '.stats-grid',
+                                title: 'Portfolio overview',
+                                body: 'These tiles summarize how many holdings you have, total value, average ROI, and monthly cash flow.',
+                            },
+                            {
+                                id: 'pf-filter',
+                                selector: '.filters-bar',
+                                title: 'Filter and sort holdings',
+                                body: 'Filter by status and sort by value, ROI, cash flow, or recency to focus on the right slice of your portfolio.',
+                            },
+                            {
+                                id: 'pf-assumptions',
+                                selector: '.assumptions-grid',
+                                title: 'Scenario assumptions',
+                                body: 'Set a holding period and tweak tax, insurance, HOA, and exit cost assumptions before running a scenario.',
+                            },
+                            {
+                                id: 'pf-analyze',
+                                selector: '#analyzePortfolioBtn',
+                                title: 'Run a portfolio analysis',
+                                body: 'Select one or more holdings, then click this button to run a 90-day cash micro-flip across them.',
+                            },
+                            {
+                                id: 'pf-start-deal',
+                                selector: '#startDealFromPortfolioBtn',
+                                title: 'Start a deal from this scenario',
+                                body: 'When you like the scenario, start a deal and we will attach this exact portfolio underwriting as a snapshot.',
+                            },
+                            {
+                                id: 'pf-grid',
+                                selector: '#holdingsGrid',
+                                title: 'Per-property detail',
+                                body: 'Scroll this grid to see purchase, current value, equity, cash flow, and status for each holding.',
+                            },
+                        ],
+                    });
+
+                    try {
+                        var params = new URLSearchParams(window.location.search || '');
+                        if (params.get('guide') === 'client-portfolio') {
+                            window.AssiduousGuide.start('client-portfolio');
+                        }
+                    } catch (e) {}
+                }
+                const firebase = window.Firebase || {};
+                const auth = firebase.auth || window.firebaseAuth;
+                if (auth && typeof auth.onAuthStateChanged === 'function') {
+                    auth.onAuthStateChanged(function (user) {
+                        if (user) {
+                            loadPortfolio();
+                        }
+                    });
+                } else {
+                    // Fallback: attempt to load once
+                    loadPortfolio();
+                }
+            });
+        })();
+    </script>
+</body>
+</html>

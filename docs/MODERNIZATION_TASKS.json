@@ -82,7 +82,7 @@
     {
       "id": "I-OPENSIGN-001-004",
       "name": "OpenSign e-sign integration (envelopes API + webhooks + UI)",
-      "status": "in_progress",
+      "status": "complete",
       "area": "integrations",
       "codeRefs": [
         "infra/sql/schema.sql:envelopes",
@@ -97,7 +97,7 @@
     {
       "id": "I-AI-001-003",
       "name": "Vertex AI (Gemini) foundation + explain endpoint",
-      "status": "in_progress",
+      "status": "complete",
       "area": "ai",
       "codeRefs": [
         "backend/pkg/ai/ai.go",

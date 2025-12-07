@@ -318,6 +318,7 @@
   <script src="../components/ucs-core.js"></script>
   <script src="../components/component-registry.js"></script>
   <script src="../components/auth-guard.js"></script>
+  <script src="../assets/js/services/guide-engine.js"></script>
  
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
@@ -338,6 +339,38 @@
       var mapInitialized = false;
 
       var propertyService = null;
+
+      function computePreviewMicroflip(price, arv, repairs) {
+        price = typeof price === 'number' ? price : 0;
+        arv = typeof arv === 'number' ? arv : 0;
+        repairs = typeof repairs === 'number' ? repairs : 0;
+        if (!price || !arv) {
+          return { roi: null, profit: null };
+        }
+
+        // Mirror Go engine defaults for a 90-day, cash micro-flip scenario.
+        var holdingDays = 90;
+        var months = holdingDays / 30;
+
+        // Acquisition: purchase + 2.5% closing costs
+        var closingCosts = price * 0.025;
+
+        // Holding: taxes (1.2% annual) + insurance (0.5% annual), utilities omitted for preview
+        var taxCosts = (price * 0.012 / 12) * months;
+        var insuranceCosts = (price * 0.005 / 12) * months;
+        var utilityCosts = 0;
+        var holdingCosts = taxCosts + insuranceCosts + utilityCosts;
+
+        // Exit: 8% of ARV (6% commission + 2% misc), matching Go engine default
+        var exitCosts = arv * 0.08;
+
+        var totalInvestment = price + closingCosts + repairs + holdingCosts;
+        var totalCosts = totalInvestment + exitCosts;
+        var netProfit = arv - totalCosts;
+        var roi = totalInvestment > 0 ? (netProfit / totalInvestment) * 100 : null;
+
+        return { roi: roi, profit: netProfit };
+      }
 
       function normalizeProperty(p) {
         if (!p) return null;
@@ -366,10 +399,10 @@
           p.repairCosts ||
           (p.price && p.price.repair) ||
           Math.round(basePrice * 0.15);
-        var totalInvestment = basePrice + repairs;
-        var holding = arv * 0.1; // 10% holding costs
-        var profit = arv - totalInvestment - holding;
-        var roi = totalInvestment > 0 ? (profit / totalInvestment) * 100 : null;
+
+        var preview = computePreviewMicroflip(basePrice, arv, repairs);
+        var roi = preview.roi;
+        var profit = preview.profit;
 
         var roiBucket = null;
         if (roi != null) {
@@ -743,6 +776,45 @@
 
       // Wait for Firebase + auth and then bootstrap PropertyService
       window.addEventListener('firebase-ready', function () {
+        // Register guided walkthrough for property search
+        if (window.AssiduousGuide) {
+          window.AssiduousGuide.register('client-properties', {
+            title: 'Property search walkthrough',
+            steps: [
+              {
+                id: 'props-filters',
+                selector: '.filters-card',
+                title: 'Search filters',
+                body: 'Start by narrowing results by location, price range, bedrooms, bathrooms, and optional distance from the map center.',
+              },
+              {
+                id: 'props-roi-legend',
+                selector: '.roi-legend',
+                title: 'ROI color legend',
+                body: 'Each property is tagged with a micro-flip ROI band so you can visually spot high, medium, low, or thin deals.',
+              },
+              {
+                id: 'props-map',
+                selector: '#propertiesMap',
+                title: 'Map view with micro-flip callouts',
+                body: 'Use the map to see where deals cluster geographically. Click pins to jump into detail and micro-flip analysis.',
+              },
+              {
+                id: 'props-grid',
+                selector: '#propertiesGrid',
+                title: 'Property cards',
+                body: 'Each card shows price, basics, and a preview ROI badge. Click a card to open full details and run a certified micro-flip.',
+              },
+            ],
+          });
+
+          try {
+            var params = new URLSearchParams(window.location.search || '');
+            if (params.get('guide') === 'client-properties') {
+              window.AssiduousGuide.start('client-properties');
+            }
+          } catch (e) {}
+        }
         var authInstance = (window.Firebase && window.Firebase.auth) || window.firebaseAuth;
         if (!authInstance || typeof authInstance.onAuthStateChanged !== 'function') {
           console.warn('[Client Properties] Auth not ready; rendering anonymous view');

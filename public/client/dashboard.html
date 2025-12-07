@@ -376,6 +376,7 @@
     <script src="../components/ucs-core.js"></script>
     <script src="../components/component-registry.js"></script>
     <script src="../components/auth-guard.js"></script>
+    <script src="../assets/js/services/guide-engine.js"></script>
     <script>
         // Load dashboard stats from localStorage
         document.addEventListener('DOMContentLoaded', () => {
@@ -418,6 +419,47 @@
                     </div>
                 </div>
             `).join('');
+        }
+
+        // Register guided walkthrough for client dashboard
+        if (window.AssiduousGuide) {
+            window.AssiduousGuide.register('client-dashboard', {
+                title: 'Client dashboard walkthrough',
+                steps: [
+                    {
+                        id: 'dash-stats',
+                        selector: '.stats-grid',
+                        title: 'At-a-glance stats',
+                        body: 'These tiles summarize your saved properties, scheduled viewings, messages, and budget in one place.',
+                    },
+                    {
+                        id: 'dash-actions',
+                        selector: '.quick-actions',
+                        title: 'Quick actions',
+                        body: 'Use these cards to jump directly into searching properties, scheduling a viewing, running a flip analysis, or opening messages.',
+                    },
+                    {
+                        id: 'dash-recent',
+                        selector: '#recent-properties',
+                        title: 'Recently viewed properties',
+                        body: 'Your last few viewed properties appear here so you can reopen them quickly and continue your analysis.',
+                    },
+                    {
+                        id: 'dash-saved',
+                        selector: '#saved-properties',
+                        title: 'Saved properties summary',
+                        body: 'A snapshot of your saved properties. Click “View All” to open the full saved properties workspace.',
+                    },
+                ],
+            });
+
+            // Auto-start if requested via ?guide=client-dashboard
+            try {
+                var params = new URLSearchParams(window.location.search || '');
+                if (params.get('guide') === 'client-dashboard') {
+                    window.AssiduousGuide.start('client-dashboard');
+                }
+            } catch (e) {}
         }
     </script>
 </body>

@@ -479,6 +479,30 @@
                             <label class="form-label">Closing Costs (% of sale price)</label>
                             <input type="number" id="closingPercent" class="form-input" value="8" min="0" max="15" step="0.5">
                         </div>
+
+                        <details style="margin-top: var(--space-md);">
+                            <summary style="cursor: pointer; font-size: 13px; color: var(--gray-700);">Advanced assumptions</summary>
+                            <div style="margin-top: var(--space-sm); padding-top: var(--space-sm); border-top: 1px solid var(--border);">
+                                <div class="form-group">
+                                    <label class="form-label">Property Tax Rate (annual %)</label>
+                                    <input type="number" id="taxRate" class="form-input" value="1.2" min="0" max="5" step="0.1">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Insurance Rate (annual %)</label>
+                                    <input type="number" id="insuranceRate" class="form-input" value="0.5" min="0" max="5" step="0.1">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">HOA / Condo Fees (per month)</label>
+                                    <div class="input-prefix">
+                                        <input type="number" id="hoaMonthly" class="form-input" value="0">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Exit Costs Override (% of ARV)</label>
+                                    <input type="number" id="exitCostPercent" class="form-input" value="8" min="0" max="20" step="0.5">
+                                </div>
+                            </div>
+                        </details>
                         
                         <h3 class="section-title" style="margin-top: var(--space-xl); font-size: 16px;">Financing Parameters</h3>
                         
@@ -591,10 +615,13 @@
     <script src="../components/component-registry.js"></script>
     <script src="../components/auth-guard.js"></script>
     <script src="../assets/js/services/microflipengine.js"></script>
+    <script src="../assets/js/services/microflip-api-client.js"></script>
+    <script src="../assets/js/services/guide-engine.js"></script>
     <script>
         // Initialize services
         const microFlipEngine = new MicroFlipEngine();
         let propertyService = null;
+        let microflipApiClient = null;
 
         window.addEventListener('firebase-ready', () => {
             // Lazy-load PropertyService as an ES module so "export" is valid
@@ -605,6 +632,13 @@
                 .catch(err => {
                     console.error('[MicroFlipCalculator] Failed to load PropertyService:', err);
                 });
+
+            // MicroFlip API client is attached to window by microflip-api-client.js
+            if (window.MicroFlipApiClient && typeof window.MicroFlipApiClient.analyzeDeal === 'function') {
+                microflipApiClient = window.MicroFlipApiClient;
+            } else {
+                console.error('[MicroFlipCalculator] MicroFlipApiClient not available');
+            }
         });
         
         // State
@@ -628,6 +662,9 @@
             
             try {
                 // Get REAL properties from Firestore - NO FALLBACK
+                if (!propertyService) {
+                    throw new Error('PropertyService not initialized');
+                }
                 availableProperties = await propertyService.getSavedProperties();
                 
                 if (!availableProperties || availableProperties.length === 0) {
@@ -774,8 +811,8 @@
             document.getElementById('rehabCosts').value = repair;
         }
         
-        // Calculate ROI with new MicroFlipEngine
-        function calculateROI() {
+        // Calculate ROI using canonical Go micro-flip engine via API client
+        async function calculateROI() {
             const purchasePrice = parseFloat(document.getElementById('purchasePrice').value) || 0;
             const arvPrice = parseFloat(document.getElementById('arvPrice').value) || 0;
             const rehabCosts = parseFloat(document.getElementById('rehabCosts').value) || 0;
@@ -783,60 +820,109 @@
             const closingPercent = parseFloat(document.getElementById('closingPercent').value) || 8;
             
             // Get financing parameters
-            const downPayment = parseFloat(document.getElementById('downPayment').value) || 20;
+            const downPaymentPercent = parseFloat(document.getElementById('downPayment').value) || 20;
             const interestRate = parseFloat(document.getElementById('interestRate').value) || 7;
             const loanTerm = parseFloat(document.getElementById('loanTerm').value) || 30;
-            
-            // Build property and financing data for MicroFlipEngine
-            const property = {
-                price: purchasePrice,
-                arv: arvPrice,
-                repairCosts: rehabCosts
-            };
-            
-            const financing = {
-                downPayment: downPayment,
-                interestRate: interestRate,
-                loanTerm: loanTerm,
-                closingCosts: 3  // 3% closing costs
-            };
-            
-            // Run analysis with new engine
-            const analysis = microFlipEngine.analyzeDeal(property, financing);
-            currentAnalysis = analysis;
-            const score = microFlipEngine.calculateDealScore(analysis);
-            
-            // Display results
-            document.getElementById('totalInvestment').textContent = microFlipEngine.formatCurrency(analysis.returns.totalInvestment);
-            document.getElementById('netProfit').textContent = microFlipEngine.formatCurrency(analysis.returns.netProfit);
-            document.getElementById('netProfit').className = analysis.returns.netProfit > 0 ? 'result-value positive' : 'result-value negative';
-            document.getElementById('cashOnCash').textContent = microFlipEngine.formatPercent(analysis.returns.cashOnCash);
-            document.getElementById('annualizedROI').textContent = microFlipEngine.formatPercent(analysis.returns.annualizedROI);
-            document.getElementById('roiValue').textContent = microFlipEngine.formatPercent(analysis.returns.roi);
-            
-            // Rating based on ROI
-            let displayRating = 'Fair Deal';
-            if (analysis.returns.roi >= 30) displayRating = '🔥 Excellent Deal';
-            else if (analysis.returns.roi >= 20) displayRating = '✅ Great Deal';
-            else if (analysis.returns.roi >= 15) displayRating = '👍 Good Deal';
-            else if (analysis.returns.roi >= 10) displayRating = '⚠️ Fair Deal';
-            else displayRating = '❌ Poor Deal';
-            document.getElementById('roiRating').textContent = displayRating;
-            
-            document.getElementById('investmentScore').textContent = `${Math.round(score)}/100`;
-            document.getElementById('scoreFill').style.width = `${score}%`;
-            
-            // Breakdown
-            document.getElementById('breakdownPurchase').textContent = microFlipEngine.formatCurrency(purchasePrice);
-            document.getElementById('breakdownRepairs').textContent = microFlipEngine.formatCurrency(analysis.renovation.totalRenovation);
-            document.getElementById('breakdownHolding').textContent = microFlipEngine.formatCurrency(analysis.holding.totalHolding);
-            document.getElementById('breakdownClosing').textContent = microFlipEngine.formatCurrency(analysis.acquisition.closingCosts);
-            document.getElementById('breakdownTotalInvest').textContent = microFlipEngine.formatCurrency(analysis.returns.totalInvestment);
-            document.getElementById('breakdownARV').textContent = microFlipEngine.formatCurrency(arvPrice);
-            document.getElementById('breakdownSelling').textContent = '-' + microFlipEngine.formatCurrency(analysis.disposition.totalDisposition);
-            const netProceeds = arvPrice - analysis.disposition.totalDisposition;
-            document.getElementById('breakdownProceeds').textContent = microFlipEngine.formatCurrency(netProceeds);
-            document.getElementById('breakdownProfit').textContent = microFlipEngine.formatCurrency(analysis.returns.netProfit);
+            const holdingCostsMonthly = parseFloat(document.getElementById('holdingCosts').value) || 0;
+            const taxRate = parseFloat(document.getElementById('taxRate').value) || 0;
+            const insuranceRate = parseFloat(document.getElementById('insuranceRate').value) || 0;
+            const hoaMonthly = parseFloat(document.getElementById('hoaMonthly').value) || 0;
+            const exitCostPercent = parseFloat(document.getElementById('exitCostPercent').value) || 0;
+
+            const errorBanner = document.getElementById('microflipErrorBanner');
+            if (errorBanner) {
+                errorBanner.style.display = 'none';
+                errorBanner.textContent = '';
+            }
+
+            if (!microflipApiClient) {
+                console.error('[MicroFlipCalculator] MicroFlipApiClient not ready');
+                if (errorBanner) {
+                    errorBanner.style.display = 'block';
+                    errorBanner.textContent = 'Micro-flip engine is not available. Please try again later.';
+                }
+                return;
+            }
+
+            try {
+                const analysisRaw = await microflipApiClient.analyzeDeal({
+                    purchasePrice: purchasePrice,
+                    afterRepairValue: arvPrice,
+                    rehabCosts: rehabCosts,
+                    holdingMonths: holdingMonths,
+                    closingPercent: closingPercent,
+                    // Assume standard 6% agent commission for calculator preview
+                    agentCommissionPercent: 6,
+                    downPaymentPercent: downPaymentPercent,
+                    interestRate: interestRate,
+                    utilitiesMonthly: holdingCostsMonthly,
+                    taxRatePercent: taxRate,
+                    insuranceRatePercent: insuranceRate,
+                    hoaMonthly: hoaMonthly,
+                    exitCostPercentOverride: exitCostPercent,
+                });
+
+                const mapped = microflipApiClient.mapAnalysisForCalculator(analysisRaw);
+                currentAnalysis = analysisRaw;
+
+                const score = microFlipEngine.calculateDealScore({
+                    returns: {
+                        roi: mapped.roi,
+                        netProfit: mapped.netProfit,
+                    },
+                    risk: {
+                        // Map Go risk levels into JS risk score buckets for scoring
+                        score: mapped.assessment && mapped.assessment.riskLevel === 'low' ? 0 : mapped.assessment && mapped.assessment.riskLevel === 'medium' ? 40 : 80,
+                    },
+                    timeline: {
+                        // Approximate months from holding period in days
+                        totalMonths: (analysisRaw.inputs && analysisRaw.inputs.holdingPeriod
+                            ? Math.max(1, Math.round(analysisRaw.inputs.holdingPeriod / 30))
+                            : holdingMonths || 4),
+                    },
+                });
+                
+                // Display results
+                document.getElementById('totalInvestment').textContent = microFlipEngine.formatCurrency(mapped.totalInvestment);
+                document.getElementById('netProfit').textContent = microFlipEngine.formatCurrency(mapped.netProfit);
+                document.getElementById('netProfit').className = mapped.netProfit > 0 ? 'result-value positive' : 'result-value negative';
+                document.getElementById('cashOnCash').textContent = microFlipEngine.formatPercent(mapped.cashOnCash);
+                document.getElementById('annualizedROI').textContent = microFlipEngine.formatPercent(mapped.annualizedROI);
+                document.getElementById('roiValue').textContent = microFlipEngine.formatPercent(mapped.roi);
+                
+                // Rating based on ROI
+                let displayRating = 'Fair Deal';
+                if (mapped.roi >= 30) displayRating = '🔥 Excellent Deal';
+                else if (mapped.roi >= 20) displayRating = '✅ Great Deal';
+                else if (mapped.roi >= 15) displayRating = '👍 Good Deal';
+                else if (mapped.roi >= 10) displayRating = '⚠️ Fair Deal';
+                else displayRating = '❌ Poor Deal';
+                document.getElementById('roiRating').textContent = displayRating;
+                
+                document.getElementById('investmentScore').textContent = `${Math.round(score)}/100`;
+                document.getElementById('scoreFill').style.width = `${score}%`;
+                
+                // Breakdown
+                document.getElementById('breakdownPurchase').textContent = microFlipEngine.formatCurrency(purchasePrice);
+                document.getElementById('breakdownRepairs').textContent = microFlipEngine.formatCurrency(mapped.rehab);
+                document.getElementById('breakdownHolding').textContent = microFlipEngine.formatCurrency(mapped.holdingCosts);
+                document.getElementById('breakdownClosing').textContent = microFlipEngine.formatCurrency(mapped.closingCosts);
+                document.getElementById('breakdownTotalInvest').textContent = microFlipEngine.formatCurrency(mapped.totalInvestment);
+                document.getElementById('breakdownARV').textContent = microFlipEngine.formatCurrency(arvPrice);
+                document.getElementById('breakdownSelling').textContent = '-' + microFlipEngine.formatCurrency(mapped.exitCosts);
+                const netProceeds = arvPrice - mapped.exitCosts;
+                document.getElementById('breakdownProceeds').textContent = microFlipEngine.formatCurrency(netProceeds);
+                document.getElementById('breakdownProfit').textContent = microFlipEngine.formatCurrency(mapped.netProfit);
+            } catch (err) {
+                console.error('[MicroFlipCalculator] calculateROI error', err);
+                if (errorBanner) {
+                    errorBanner.style.display = 'block';
+                    const msg = err && err.message ? err.message : 'Failed to analyze deal.';
+                    errorBanner.textContent = msg;
+                } else {
+                    alert(err && err.message ? err.message : 'Failed to analyze deal.');
+                }
+            }
         }
         
         // Save deal analysis
@@ -864,6 +950,63 @@
         
         window.addEventListener('load', () => {
             calculateROI();
+
+            // Register guided walkthrough for this page
+            if (window.AssiduousGuide) {
+                window.AssiduousGuide.register('client-microflip', {
+                    title: 'Micro-Flip Calculator walkthrough',
+                    steps: [
+                        {
+                            id: 'mf-purchase',
+                            selector: '#purchasePrice',
+                            title: 'Purchase price',
+                            body: 'Start by entering the price you expect to pay for the property. This should match your offer or list price.',
+                        },
+                        {
+                            id: 'mf-arv',
+                            selector: '#arvPrice',
+                            title: 'After Repair Value (ARV)',
+                            body: 'Enter your best estimate of the property value after repairs. This drives your projected profit.',
+                        },
+                        {
+                            id: 'mf-rehab',
+                            selector: '#rehabCosts',
+                            title: 'Rehab / repair costs',
+                            body: 'Estimate total renovation costs, including materials, labor, and contingencies.',
+                        },
+                        {
+                            id: 'mf-holding',
+                            selector: '#holdingMonths',
+                            title: 'Holding period',
+                            body: 'Set how many months you expect to hold the property from purchase to resale.',
+                        },
+                        {
+                            id: 'mf-tax',
+                            selector: '#taxRate',
+                            title: 'Property tax rate',
+                            body: 'Adjust the annual property tax rate if you know the local rate. Otherwise, we use a smart default.',
+                        },
+                        {
+                            id: 'mf-exit',
+                            selector: '#exitCostPercent',
+                            title: 'Exit costs',
+                            body: 'Fine-tune exit costs (commissions + closing) as a percent of ARV. The engine defaults to ~8% if left unchanged.',
+                        },
+                        {
+                            id: 'mf-financing',
+                            selector: '#downPayment',
+                            title: 'Financing assumptions',
+                            body: 'Dial in how much of the purchase is financed versus cash. Down payment and interest rate shape cash-on-cash returns.',
+                        },
+                        {
+                            id: 'mf-run',
+                            selector: '.btn-calculate',
+                            title: 'Run the analysis',
+                            body: 'Click “Calculate Returns” to send these inputs to the certified micro-flip engine and see full underwriting in the panel on the right.',
+                        },
+                    ],
+                });
+            }
         });
     </script>
 </body>

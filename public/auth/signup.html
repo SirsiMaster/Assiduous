@@ -328,9 +328,26 @@
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
-    </style>
+</style>
 </head>
 <body>
+    <script>
+        // Deprecated standalone signup surface.
+        // All new signups should go through the main landing page modal so
+        // they use the canonical AuthService + role routing.
+        (function() {
+            try {
+                var path = window.location.pathname || '';
+                var base = '';
+                if (path.indexOf('/public/') === 0) base = '/public';
+                else if (path.indexOf('/assiduousflip/') === 0) base = '/assiduousflip';
+                var target = base + '/index.html#signup';
+                window.location.replace(target);
+            } catch (e) {
+                // If redirect fails, leave the legacy UI visible as a fallback.
+            }
+        })();
+    </script>
     <div class="auth-container">
         <div class="auth-left">
             <div class="logo">🏠 Assiduous</div>

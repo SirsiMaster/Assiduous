@@ -756,6 +756,41 @@ func main() {
 			analysis := microflipEngine.AnalyzeDeal(in)
 			httpapi.JSON(w, http.StatusOK, analysis)
 		})
+
+		// POST /api/microflip/portfolio
+		// Body: { "deals": [DealInput, ...] }, returns PortfolioAnalysis.
+		r.Post("/portfolio", func(w http.ResponseWriter, r *http.Request) {
+			uc := auth.FromContext(r.Context())
+			if uc == nil {
+				httpapi.Error(w, http.StatusUnauthorized, "unauthorized", "authentication required")
+				return
+			}
+
+			// Enforce active subscription for portfolio-level analysis.
+			if ok, err := entitlements.HasActiveAssiduousSubscription(r.Context(), cfg.ProjectID, uc.UID); err != nil {
+				log.Printf("[microflip] portfolio entitlement check failed for user %s: %v", uc.UID, err)
+				httpapi.Error(w, http.StatusInternalServerError, "entitlement_error", "failed to verify subscription")
+				return
+			} else if !ok {
+				httpapi.Error(w, http.StatusForbidden, "subscription_required", "active subscription required for micro-flip analysis")
+				return
+			}
+
+			var body struct {
+				Deals []microflip.DealInput `json:"deals"`
+			}
+			if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+				httpapi.Error(w, http.StatusBadRequest, "invalid_request", "invalid JSON body")
+				return
+			}
+			if len(body.Deals) == 0 {
+				httpapi.Error(w, http.StatusBadRequest, "invalid_request", "at least one deal is required")
+				return
+			}
+
+			analysis := microflipEngine.AnalyzePortfolio(body.Deals)
+			httpapi.JSON(w, http.StatusOK, analysis)
+		})
 	})
 
 	// AI endpoints (Vertex/Gemini)

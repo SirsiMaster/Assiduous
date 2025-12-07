@@ -277,6 +277,7 @@
             const firebase = window.Firebase || {};
             const db = firebase.db || window.firebaseDb;
             const auth = firebase.auth || window.firebaseAuth;
+            const DatabaseService = firebase.DatabaseService || window.DatabaseService;
 
         
         let currentStep = 1;
@@ -391,31 +392,32 @@
         }
         
         async function saveProfile() {
-            if (auth.currentUser) {
+            if (auth.currentUser && DatabaseService) {
                 try {
-                    await db.collection('users').doc(auth.currentUser.uid).update({
+                    // Update main user document with onboarding metadata
+                    await DatabaseService.updateUserProfile(auth.currentUser.uid, {
                         ...profileData,
                         profileComplete: true,
-                        onboardingCompleted: new Date().toISOString()
+                        onboardingCompleted: new Date().toISOString(),
                     });
-                    
-                    // Also save to preferences subcollection
-                    await db.collection('users').doc(auth.currentUser.uid)
-                        .collection('preferences').doc('search').set({
-                            location: profileData.location,
-                            minBudget: parseInt(profileData.minBudget),
-                            maxBudget: parseInt(profileData.maxBudget),
-                            minBedrooms: parseInt(profileData.minBedrooms) || 0,
-                            minBathrooms: parseInt(profileData.minBathrooms) || 0,
-                            propertyTypes: profileData.propertyTypes,
-                            priorities: profileData.preferences,
-                            updatedAt: new Date().toISOString()
-                        });
-                    
+
+                    // Also persist structured search preferences
+                    await DatabaseService.setUserSearchPreferences(auth.currentUser.uid, {
+                        location: profileData.location,
+                        minBudget: parseInt(profileData.minBudget),
+                        maxBudget: parseInt(profileData.maxBudget),
+                        minBedrooms: parseInt(profileData.minBedrooms) || 0,
+                        minBathrooms: parseInt(profileData.minBathrooms) || 0,
+                        propertyTypes: profileData.propertyTypes,
+                        priorities: profileData.preferences,
+                    });
+
                     console.log('Profile saved successfully');
                 } catch (error) {
-                    console.error('Error saving profile:', error);
+                    console.error('Error saving profile via DatabaseService:', error);
                 }
+            } else if (!DatabaseService) {
+                console.error('DatabaseService not available; skipping Firestore profile save');
             }
             
             // Save to localStorage as well
@@ -450,14 +452,20 @@
             if (!user) {
                 // Redirect to login if not authenticated (relative to /client/)
                 window.location.href = '../auth/login.html';
+            } else if (DatabaseService) {
+                // Check if onboarding is already complete using DatabaseService
+                DatabaseService.getUserData(user.uid)
+                    .then((result) => {
+                        if (result.success && result.data && result.data.profileComplete) {
+                            // Already completed onboarding
+                            window.location.href = 'dashboard.html';
+                        }
+                    })
+                    .catch((error) => {
+                        console.error('Error checking onboarding status:', error);
+                    });
             } else {
-                // Check if onboarding is already complete
-                db.collection('users').doc(user.uid).get().then(doc => {
-                    if (doc.exists && doc.data().profileComplete) {
-                        // Already completed onboarding
-                        window.location.href = 'dashboard.html';
-                    }
-                });
+                console.error('DatabaseService not available; cannot check onboarding status');
             }
         });
         });

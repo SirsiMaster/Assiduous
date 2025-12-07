@@ -126,6 +126,49 @@
     .deal-pill.muted {
       opacity: 0.8;
     }
+    .uw-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: var(--space-md);
+      margin-top: var(--space-sm);
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+    .uw-metric-label {
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-size: 10px;
+      margin-bottom: 2px;
+    }
+    .uw-metric-value {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--dark);
+    }
+    .uw-note {
+      margin-top: 6px;
+      font-size: 11px;
+      color: var(--text-secondary);
+    }
+    .uw-positions-table {
+      width: 100%;
+      margin-top: var(--space-sm);
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+    .uw-positions-table th,
+    .uw-positions-table td {
+      padding: 4px 6px;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+      white-space: nowrap;
+    }
+    .uw-positions-table th {
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-size: 10px;
+      color: var(--text-secondary);
+    }
   </style>
 </head>
 <body class="admin-wrapper" data-active="deals">
@@ -161,6 +204,11 @@
 
             <div class="deal-card-title" style="margin-top: var(--space-md);">Stage checklist</div>
             <div class="deal-list" id="dealChecklistBody"></div>
+
+            <div class="deal-card-title" style="margin-top: var(--space-md);">Underwriting snapshot</div>
+            <div id="dealUnderwritingPanel">
+              <!-- Populated by JS (micro-flip or portfolio snapshot) -->
+            </div>
           </section>
 
           <aside class="deal-card" id="dealMetaCard">
@@ -257,6 +305,7 @@
   <script src="../components/ucs-core.js"></script>
   <script src="../components/component-registry.js"></script>
   <script src="../components/auth-guard.js"></script>
+  <script src="../assets/js/services/guide-engine.js"></script>
   <script>
     (function () {
       const API_BASE_URL = 'https://assiduous-api-9355377564.us-central1.run.app';
@@ -351,6 +400,86 @@
         }
       }
 
+      function renderUnderwritingSnapshot(snapshot) {
+        const container = byId('dealUnderwritingPanel');
+        if (!container) return;
+
+        if (!snapshot || typeof snapshot !== 'object') {
+          container.innerHTML = '<div class="deal-list-item"><span>No underwriting snapshot is attached to this deal yet.</span></div>';
+          return;
+        }
+
+        const mode = (snapshot.mode || 'single_deal').toLowerCase();
+        if (mode === 'multi_asset') {
+          const metrics = snapshot.aggregate || {};
+          const positions = Array.isArray(snapshot.positions) ? snapshot.positions : [];
+
+          let html = '';
+          html += '<div class="uw-grid">';
+          html += '<div><div class="uw-metric-label">Total investment</div><div class="uw-metric-value">' + (metrics.totalInvestment != null ? formatCurrency(metrics.totalInvestment) : '—') + '</div></div>';
+          html += '<div><div class="uw-metric-label">Net profit</div><div class="uw-metric-value">' + (metrics.netProfit != null ? formatCurrency(metrics.netProfit) : '—') + '</div></div>';
+          html += '<div><div class="uw-metric-label">Portfolio ROI</div><div class="uw-metric-value">' + (metrics.roi != null ? (metrics.roi.toFixed(1) + '%') : '—') + '</div></div>';
+          html += '<div><div class="uw-metric-label">Annualized ROI</div><div class="uw-metric-value">' + (metrics.annualizedROI != null ? (metrics.annualizedROI.toFixed(1) + '%') : '—') + '</div></div>';
+          html += '</div>';
+
+          if (positions.length) {
+            html += '<table class="uw-positions-table"><thead><tr>' +
+              '<th>Property</th><th>Status</th><th>Purchase</th><th>Value</th><th>ROI</th>' +
+              '</tr></thead><tbody>';
+            html += positions.map(function (p) {
+              const label = p.propertyId || p.clientPropertyId || 'Holding';
+              const roiVal = (typeof p.roi === 'number') ? (p.roi.toFixed(1) + '%') : '—';
+              return '<tr>' +
+                '<td>' + label + '</td>' +
+                '<td>' + (p.status || 'active') + '</td>' +
+                '<td>' + (p.purchasePrice != null ? formatCurrency(p.purchasePrice) : '—') + '</td>' +
+                '<td>' + (p.currentValue != null ? formatCurrency(p.currentValue) : '—') + '</td>' +
+                '<td>' + roiVal + '</td>' +
+              '</tr>';
+            }).join('');
+            html += '</tbody></table>';
+          }
+
+          html += '<div class="uw-note">This portfolio snapshot was captured at the moment this deal was created so that your multi-asset underwriting is preserved even if assumptions change later.</div>';
+          container.innerHTML = html;
+          return;
+        }
+
+        // Single deal modes
+        const analysis = snapshot.analysis || snapshot.legacy || null;
+        if (!analysis || typeof analysis !== 'object') {
+          container.innerHTML = '<div class="deal-list-item"><span>Underwriting snapshot is attached but not in a recognized format.</span></div>';
+          return;
+        }
+
+        const inputs = analysis.inputs || {};
+        const costs = analysis.costs || {};
+        const metrics = analysis.metrics || {};
+
+        const purchase = inputs.purchasePrice || 0;
+        const arv = inputs.afterRepairValue || 0;
+        const rehab = inputs.rehabCosts || 0;
+        const holdingCosts = costs.holding || 0;
+        const exitCosts = costs.exit || 0;
+        const totalInvestment = metrics.totalInvestment || (purchase + rehab + holdingCosts);
+        const netProfit = metrics.netProfit != null ? metrics.netProfit : (metrics.grossProfit || 0);
+        const roi = metrics.roi || 0;
+        const annualized = metrics.annualizedROI || 0;
+
+        let html = '';
+        html += '<div class="uw-grid">';
+        html += '<div><div class="uw-metric-label">Purchase</div><div class="uw-metric-value">' + formatCurrency(purchase) + '</div></div>';
+        html += '<div><div class="uw-metric-label">ARV</div><div class="uw-metric-value">' + formatCurrency(arv) + '</div></div>';
+        html += '<div><div class="uw-metric-label">Total investment</div><div class="uw-metric-value">' + formatCurrency(totalInvestment) + '</div></div>';
+        html += '<div><div class="uw-metric-label">Net profit</div><div class="uw-metric-value">' + formatCurrency(netProfit) + '</div></div>';
+        html += '<div><div class="uw-metric-label">ROI</div><div class="uw-metric-value">' + roi.toFixed(1) + '%</div></div>';
+        html += '<div><div class="uw-metric-label">Annualized ROI</div><div class="uw-metric-value">' + annualized.toFixed(1) + '%</div></div>';
+        html += '</div>';
+
+        html += '<div class="uw-note">This snapshot freezes the micro-flip underwriting for this property so that your deal history remains consistent even if future runs of the analyzer use different assumptions.</div>';
+        container.innerHTML = html;
+      }
+
       window.addEventListener('firebase-ready', function () {
         const firebase = window.Firebase || {};
         const auth = firebase.auth || window.firebaseAuth;
@@ -401,6 +530,7 @@
             const participants = data.participants || [];
             const documents = data.documents || [];
             const stageKey = deal.stageKey || 'intake';
+            const microflipSnapshot = deal.microflipSnapshot || null;
 
             // Role banner (best-effort – use modular AuthService if present)
             try {
@@ -446,6 +576,9 @@
               lines.push('<div>Created: ' + new Date(deal.createdAt).toLocaleString() + '</div>');
             }
             metaEl.innerHTML = lines.join('');
+
+            // Render underwriting snapshot when present (single- or multi-asset micro-flip)
+            renderUnderwritingSnapshot(microflipSnapshot);
 
             // Render checklist for current stage if available
             const checklistEl = byId('dealChecklistBody');
@@ -570,6 +703,58 @@
             byId('dealNextStep').textContent = err.message || 'Failed to load deal.';
           }
         });
+
+        // Register guided walkthrough for the deal workspace
+        if (window.AssiduousGuide) {
+          window.AssiduousGuide.register('client-deal', {
+            title: 'Deal workspace walkthrough',
+            steps: [
+              {
+                id: 'deal-header',
+                selector: '.deal-header-row',
+                title: 'Deal overview and stage',
+                body: 'Here you can see the deal id, entry source, and which pipeline stage you are currently in.',
+              },
+              {
+                id: 'deal-stepper',
+                selector: '#dealStageStepper',
+                title: 'Stage progression',
+                body: 'The stage pills show where you are in the intake → underwriting → offer → close journey.',
+              },
+              {
+                id: 'deal-checklist',
+                selector: '#dealChecklistBody',
+                title: 'Checklist for this stage',
+                body: 'Each item represents a concrete task for this stage. Click items to mark them done when allowed.',
+              },
+              {
+                id: 'deal-uw',
+                selector: '#dealUnderwritingPanel',
+                title: 'Underwriting snapshot',
+                body: 'This panel freezes the micro-flip or portfolio underwriting that created this deal so your decisions are always auditable.',
+              },
+              {
+                id: 'deal-participants',
+                selector: '#dealParticipantsBody',
+                title: 'People in the deal',
+                body: 'See who is attached as buyer, seller, agent, lender, or other roles. Staff can add or edit participants.',
+              },
+              {
+                id: 'deal-documents',
+                selector: '#dealDocumentsBody',
+                title: 'Documents and signatures',
+                body: 'Track attached documents, OpenSign envelopes, and Lob letters – including their current status.',
+              },
+            ],
+          });
+
+          try {
+            var params = new URLSearchParams(window.location.search || '');
+            if (params.get('guide') === 'client-deal') {
+              window.AssiduousGuide.start('client-deal');
+            }
+          } catch (e) {}
+        }
       });
 
       // Participant form wiring

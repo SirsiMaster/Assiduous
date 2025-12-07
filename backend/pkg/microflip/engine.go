@@ -41,6 +41,14 @@ type DealInput struct {
 	PropertyTaxes float64 `json:"propertyTaxes"` // annual amount
 	Insurance     float64 `json:"insurance"`     // annual amount
 	Utilities     float64 `json:"utilities"`     // monthly amount
+	HOAMonthly    float64 `json:"hoaMonthly"`    // monthly HOA/condo fees
+
+	// Advanced assumption overrides. When provided, the engine derives
+	// PropertyTaxes/Insurance/SellingCosts from these rates instead of using
+	// built-in defaults.
+	TaxRatePercent           float64 `json:"taxRatePercent,omitempty"`
+	InsuranceRatePercent     float64 `json:"insuranceRatePercent,omitempty"`
+	ExitCostPercentOverride  float64 `json:"exitCostPercentOverride,omitempty"`
 }
 
 // CostBreakdown mirrors the JS engine's cost breakdown.
@@ -97,8 +105,28 @@ type DealAnalysis struct {
 	AnalyzedAt      time.Time        `json:"analyzedAt"`
 }
 
+// PortfolioMetrics aggregates financial metrics across multiple deals.
+type PortfolioMetrics struct {
+	TotalInvestment     float64 `json:"totalInvestment"`
+	NetProfit           float64 `json:"netProfit"`
+	ROI                 float64 `json:"roi"`
+	CashOnCashReturn    float64 `json:"cashOnCashReturn"`
+	AnnualizedROI       float64 `json:"annualizedROI"`
+	TotalCashInvested   float64 `json:"totalCashInvested"`
+	TotalAfterRepairVal float64 `json:"totalAfterRepairValue"`
+}
+
+// PortfolioAnalysis represents an aggregated view of multiple deal analyses.
+type PortfolioAnalysis struct {
+	Deals   []DealAnalysis   `json:"deals"`
+	Metrics PortfolioMetrics `json:"metrics"`
+}
+
 // AnalyzeDeal runs a full micro-flip analysis similar to the JS engine.
 func (e *Engine) AnalyzeDeal(in DealInput) DealAnalysis {
+	// Normalize advanced rate-based assumptions into concrete dollar amounts.
+	in = e.normalizeAdvancedAssumptions(in)
+
 	acq := e.calculateAcquisitionCosts(in.PurchasePrice, in.ClosingCosts)
 	holding := e.calculateHoldingCosts(in)
 	// Rehab
@@ -225,8 +253,7 @@ func (e *Engine) calculateHoldingCosts(in DealInput) float64 {
 
 	// HOA placeholder (0 for now)
 	hoaFees := 0.0
-
-	return taxCosts + insuranceCosts + utilityCosts + interestCosts + float64(hoaFees)
+		return taxCosts + insuranceCosts + utilityCosts + interestCosts + float64(hoaFees)
 }
 
 func (e *Engine) calculateExitCosts(arv, sellingCosts float64) float64 {
@@ -235,6 +262,36 @@ func (e *Engine) calculateExitCosts(arv, sellingCosts float64) float64 {
 		return arv * 0.08
 	}
 	return sellingCosts
+}
+
+// normalizeAdvancedAssumptions derives concrete tax, insurance, HOA, and exit
+// cost values from the higher-level rate fields when present. This keeps the
+// public API flexible while centralizing the math here.
+func (e *Engine) normalizeAdvancedAssumptions(in DealInput) DealInput {
+	out := in
+
+	// Property taxes: annual amount from rate if explicit amount not provided.
+	if out.PropertyTaxes <= 0 && out.TaxRatePercent > 0 && out.PurchasePrice > 0 {
+		out.PropertyTaxes = out.PurchasePrice * (out.TaxRatePercent / 100.0)
+	}
+
+	// Insurance: annual amount from rate if explicit amount not provided.
+	if out.Insurance <= 0 && out.InsuranceRatePercent > 0 && out.PurchasePrice > 0 {
+		out.Insurance = out.PurchasePrice * (out.InsuranceRatePercent / 100.0)
+	}
+
+	// HOA fees: monthly; simply ensure non-negative.
+	if out.HOAMonthly < 0 {
+		out.HOAMonthly = 0
+	}
+
+	// Exit costs: override default 8% when an explicit percent is provided and
+	// no absolute sellingCosts has been set.
+	if out.SellingCosts <= 0 && out.ExitCostPercentOverride > 0 && out.AfterRepairValue > 0 {
+		out.SellingCosts = out.AfterRepairValue * (out.ExitCostPercentOverride / 100.0)
+	}
+
+	return out
 }
 
 func (e *Engine) assessViability(netProfit, roi, totalInvestment float64, holdingPeriod int) string {
@@ -394,6 +451,70 @@ func (e *Engine) generateRecommendations(netProfit, roi float64, viability strin
 	}
 
 	return recs
+}
+
+// AnalyzePortfolio evaluates a slice of DealInputs and returns both per-deal
+// analyses and aggregate portfolio metrics. This is intentionally simple for
+// v1 and can be extended with more nuanced risk aggregation over time.
+func (e *Engine) AnalyzePortfolio(inputs []DealInput) PortfolioAnalysis {
+	if len(inputs) == 0 {
+		return PortfolioAnalysis{}
+	}
+
+	analyses := make([]DealAnalysis, 0, len(inputs))
+
+	var totalInvestment float64
+	var totalNetProfit float64
+	var totalCashInvested float64
+	var totalArv float64
+
+	for _, in := range inputs {
+		analysis := e.AnalyzeDeal(in)
+		analyses = append(analyses, analysis)
+
+		totalInvestment += analysis.Metrics.TotalInvestment
+		totalNetProfit += analysis.Metrics.NetProfit
+		totalCashInvested += analysis.Metrics.CashInvested
+		totalArv += analysis.Inputs.AfterRepairValue
+	}
+
+	var portfolioROI float64
+	if totalInvestment > 0 {
+		portfolioROI = (totalNetProfit / totalInvestment) * 100
+	}
+
+	var portfolioCashOnCash float64
+	if totalCashInvested > 0 {
+		portfolioCashOnCash = (totalNetProfit / totalCashInvested) * 100
+	}
+
+	// For annualized ROI we approximate using the average holding period across
+	// deals. This is intentionally conservative and can be refined later.
+	var avgHoldingDays float64
+	for _, a := range analyses {
+		avgHoldingDays += float64(a.Inputs.HoldingPeriod)
+	}
+	avgHoldingDays /= float64(len(analyses))
+
+	var portfolioAnnualized float64
+	if avgHoldingDays > 0 {
+		portfolioAnnualized = (portfolioROI / avgHoldingDays) * 365
+	}
+
+	metrics := PortfolioMetrics{
+		TotalInvestment:     totalInvestment,
+		NetProfit:           totalNetProfit,
+		ROI:                 portfolioROI,
+		CashOnCashReturn:    portfolioCashOnCash,
+		AnnualizedROI:       portfolioAnnualized,
+		TotalCashInvested:   totalCashInvested,
+		TotalAfterRepairVal: totalArv,
+	}
+
+	return PortfolioAnalysis{
+		Deals:   analyses,
+		Metrics: metrics,
+	}
 }
 
 // formatRounded is a tiny helper to avoid importing fmt just for whole-dollar values.

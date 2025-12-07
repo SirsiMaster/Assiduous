@@ -366,6 +366,41 @@
                         <span class="input-addon">%</span>
                     </div>
                 </div>
+
+                <details style="margin-top: var(--space-md);">
+                    <summary style="cursor: pointer; font-size: 13px; color: var(--gray-700);">Advanced assumptions</summary>
+                    <div style="margin-top: var(--space-sm); padding-top: var(--space-sm); border-top: 1px solid var(--border);">
+                        <div class="form-group">
+                            <label class="form-label">Property Tax Rate (annual %)</label>
+                            <div class="input-group">
+                                <input type="number" class="form-input" id="taxRate" placeholder="1.2" value="1.2" min="0" max="5" step="0.1">
+                                <span class="input-addon">%</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Insurance Rate (annual %)</label>
+                            <div class="input-group">
+                                <input type="number" class="form-input" id="insuranceRate" placeholder="0.5" value="0.5" min="0" max="5" step="0.1">
+                                <span class="input-addon">%</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">HOA / Condo Fees (per month)</label>
+                            <div class="input-group">
+                                <span class="input-addon">$</span>
+                                <input type="number" class="form-input" id="hoaMonthly" placeholder="0" value="0">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Exit Costs Override (% of ARV)</label>
+                            <div class="input-group">
+                                <input type="number" class="form-input" id="exitCostPercent" placeholder="8" value="8" min="0" max="20" step="0.5">
+                                <span class="input-addon">%</span>
+                            </div>
+                            <p class="form-help">If left unchanged, the engine uses its default 8% exit cost assumption.</p>
+                        </div>
+                    </div>
+                </details>
             </div>
 
             <!-- Financing -->
@@ -486,14 +521,34 @@
     <script src="../components/ucs-core.js"></script>
     <script src="../components/component-registry.js"></script>
     <script src="../components/auth-guard.js"></script>
-    <!-- Business logic -->
-    <script src="../assets/js/services/microflip-engine.js"></script>
+    <script src="../assets/js/services/microflip-api-client.js"></script>
+    <script src="../assets/js/services/guide-engine.js"></script>
     <script>
-        // Initialize Micro-Flip Engine
-        const microFlipEngine = new MicroFlipEngine();
+        let microflipApiClient = null;
+
+        window.addEventListener('firebase-ready', () => {
+            if (window.MicroFlipApiClient && typeof window.MicroFlipApiClient.analyzeDeal === 'function') {
+                microflipApiClient = window.MicroFlipApiClient;
+            } else {
+                console.error('[DealAnalyzer] MicroFlipApiClient not available');
+            }
+        });
+
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0,
+            }).format(amount || 0);
+        }
+
+        function formatPercent(value) {
+            const v = Number(value) || 0;
+            return `${v.toFixed(1)}%`;
+        }
         
-        function calculateDeal() {
-            // Get input values
+        async function calculateDeal() {
             const purchasePrice = parseFloat(document.getElementById('purchasePrice').value) || 0;
             const arvValue = parseFloat(document.getElementById('arvValue').value) || 0;
             const renovationCost = parseFloat(document.getElementById('renovationCost').value) || 0;
@@ -503,109 +558,183 @@
             const agentCommissionPercent = parseFloat(document.getElementById('agentCommission').value) || 0;
             const downPaymentPercent = parseFloat(document.getElementById('downPayment').value) || 0;
             const interestRate = parseFloat(document.getElementById('interestRate').value) || 0;
+            const taxRate = parseFloat(document.getElementById('taxRate').value) || 0;
+            const insuranceRate = parseFloat(document.getElementById('insuranceRate').value) || 0;
+            const hoaMonthly = parseFloat(document.getElementById('hoaMonthly').value) || 0;
+            const exitCostPercent = parseFloat(document.getElementById('exitCostPercent').value) || 0;
 
-            // Prepare property data for engine
-            const downPaymentAmount = purchasePrice * downPaymentPercent / 100;
-            const loanAmount = purchasePrice - downPaymentAmount;
-            const closingCosts = purchasePrice * closingCostsPercent / 100;
-            const sellingCosts = arvValue * (closingCostsPercent / 100 + agentCommissionPercent / 100);
-            
-            const propertyData = {
-                purchasePrice: purchasePrice,
-                afterRepairValue: arvValue,
-                rehabCosts: renovationCost,
-                holdingPeriod: holdingPeriod * 30, // Convert months to days
-                closingCosts: closingCosts,
-                sellingCosts: sellingCosts,
-                utilities: holdingCosts,
-                financingType: downPaymentPercent < 100 ? 'financed' : 'cash',
-                downPayment: downPaymentAmount,
-                loanAmount: loanAmount,
-                interestRate: interestRate
-            };
-            
-            // Run comprehensive analysis through Micro-Flip Engine
-            const analysis = microFlipEngine.analyzeDeal(propertyData);
-            
-            // Update results with engine calculations
-            document.getElementById('totalInvestment').textContent = microFlipEngine.formatCurrency(analysis.metrics.totalInvestment);
-            document.getElementById('netProfit').textContent = microFlipEngine.formatCurrency(analysis.metrics.netProfit);
-            document.getElementById('roiPercent').textContent = microFlipEngine.formatPercentage(analysis.metrics.roi);
-            document.getElementById('cashOnCash').textContent = microFlipEngine.formatPercentage(analysis.metrics.cashOnCashReturn);
-            
-            // Update breakdown
-            document.getElementById('breakdownARV').textContent = microFlipEngine.formatCurrency(arvValue);
-            document.getElementById('breakdownPurchase').textContent = '-' + microFlipEngine.formatCurrency(purchasePrice);
-            document.getElementById('breakdownRenovation').textContent = '-' + microFlipEngine.formatCurrency(renovationCost);
-            document.getElementById('breakdownHolding').textContent = '-' + microFlipEngine.formatCurrency(analysis.costs.holding);
-            document.getElementById('breakdownClosing').textContent = '-' + microFlipEngine.formatCurrency(analysis.costs.exit);
-            const financingCosts = analysis.costs.total - (analysis.costs.acquisition + analysis.costs.rehab + analysis.costs.holding + analysis.costs.exit);
-            document.getElementById('breakdownFinancing').textContent = '-' + microFlipEngine.formatCurrency(Math.max(0, financingCosts));
-            document.getElementById('breakdownProfit').textContent = microFlipEngine.formatCurrency(analysis.metrics.netProfit);
-            
-            // Color code results
-            document.getElementById('netProfit').className = analysis.metrics.netProfit > 0 ? 'result-value positive' : 'result-value negative';
-            document.getElementById('roiPercent').className = analysis.metrics.roi > 0 ? 'result-value positive' : 'result-value negative';
-            document.getElementById('cashOnCash').className = analysis.metrics.cashOnCashReturn > 0 ? 'result-value positive' : 'result-value negative';
-            
-            // Generate tips from engine recommendations
-            const tips = [];
-            
-            // Add viability-based tips
-            if (analysis.assessment.viability === 'excellent') {
-                tips.push("🔥 Excellent micro-flip opportunity! All metrics exceed targets.");
-            } else if (analysis.assessment.viability === 'good') {
-                tips.push("✅ Good investment opportunity. Meets micro-flipping criteria.");
+            if (!microflipApiClient) {
+                alert('Micro-flip engine is not available. Please try again later.');
+                return;
             }
-            
-            // Add deal quality tips
-            tips.push(`Deal Quality: ${analysis.assessment.dealQuality}`);
-            
-            // Add risk assessment tip
-            tips.push(`Risk Level: ${analysis.assessment.riskLevel.toUpperCase()}`);
-            
-            // Add 70% rule tip
-            if (analysis.assessment.seventyPercentRuleMet) {
-                tips.push("Passes 70% rule - purchase price is within acceptable range.");
+
+            try {
+                const analysis = await microflipApiClient.analyzeDeal({
+                    purchasePrice: purchasePrice,
+                    afterRepairValue: arvValue,
+                    rehabCosts: renovationCost,
+                    holdingMonths: holdingPeriod,
+                    closingPercent: closingCostsPercent,
+                    agentCommissionPercent: agentCommissionPercent,
+                    downPaymentPercent: downPaymentPercent,
+                    interestRate: interestRate,
+                    utilitiesMonthly: holdingCosts,
+                    taxRatePercent: taxRate,
+                    insuranceRatePercent: insuranceRate,
+                    hoaMonthly: hoaMonthly,
+                    exitCostPercentOverride: exitCostPercent,
+                });
+
+                const metrics = (analysis && analysis.metrics) || {};
+                const costs = (analysis && analysis.costs) || {};
+                const assessment = (analysis && analysis.assessment) || {};
+                const recommendations = Array.isArray(analysis && analysis.recommendations)
+                    ? analysis.recommendations
+                    : [];
+
+                // Update headline metrics
+                document.getElementById('totalInvestment').textContent = formatCurrency(metrics.totalInvestment);
+                document.getElementById('netProfit').textContent = formatCurrency(metrics.netProfit);
+                document.getElementById('roiPercent').textContent = formatPercent(metrics.roi);
+                document.getElementById('cashOnCash').textContent = formatPercent(metrics.cashOnCashReturn);
+
+                document.getElementById('netProfit').className =
+                    metrics.netProfit > 0 ? 'result-value positive' : 'result-value negative';
+                document.getElementById('roiPercent').className =
+                    metrics.roi > 0 ? 'result-value positive' : 'result-value negative';
+                document.getElementById('cashOnCash').className =
+                    metrics.cashOnCashReturn > 0 ? 'result-value positive' : 'result-value negative';
+
+                // Breakdown rows
+                document.getElementById('breakdownARV').textContent = formatCurrency(arvValue);
+                document.getElementById('breakdownPurchase').textContent = '-' + formatCurrency(purchasePrice);
+                document.getElementById('breakdownRenovation').textContent = '-' + formatCurrency(renovationCost);
+                document.getElementById('breakdownHolding').textContent =
+                    '-' + formatCurrency(costs.holding || 0);
+                document.getElementById('breakdownClosing').textContent =
+                    '-' + formatCurrency(costs.exit || 0);
+
+                const financingCosts =
+                    (costs.total || 0) -
+                    ((costs.acquisition || 0) + (costs.rehab || 0) + (costs.holding || 0) + (costs.exit || 0));
+                document.getElementById('breakdownFinancing').textContent =
+                    '-' + formatCurrency(Math.max(0, financingCosts));
+                document.getElementById('breakdownProfit').textContent = formatCurrency(metrics.netProfit);
+
+                // Tips and warnings from Go engine assessment + recommendations
+                const tips = [];
+                if (assessment.viability === 'excellent') {
+                    tips.push('🔥 Excellent micro-flip opportunity! All key metrics exceed targets.');
+                } else if (assessment.viability === 'good') {
+                    tips.push('✅ Good investment opportunity. Meets core micro-flipping criteria.');
+                }
+
+                if (assessment.dealQuality) {
+                    tips.push(`Deal Quality: ${assessment.dealQuality}`);
+                }
+                if (assessment.riskLevel) {
+                    tips.push(`Risk Level: ${String(assessment.riskLevel).toUpperCase()}`);
+                }
+                if (assessment.seventyPercentRuleMet) {
+                    tips.push('Passes 70% rule – purchase price is within acceptable range.');
+                }
+
+                recommendations
+                    .filter(rec => rec.type === 'success')
+                    .forEach(rec => {
+                        tips.push(rec.message || 'Positive signal from underwriting.');
+                    });
+
+                const tipsList = document.getElementById('tipsList');
+                tipsList.innerHTML = tips.map(tip => `<li>${tip}</li>`).join('');
+                document.getElementById('tipsSection').style.display = tips.length > 0 ? 'block' : 'none';
+
+                const warningsText = recommendations
+                    .filter(rec => rec.type === 'warning' || rec.type === 'danger' || rec.type === 'caution')
+                    .map(rec => `${rec.message || ''} ${rec.action || ''}`.trim())
+                    .join(' ');
+
+                if (warningsText && warningsText.length > 0) {
+                    document.getElementById('warningText').textContent = warningsText;
+                    document.getElementById('warningSection').style.display = 'block';
+                } else {
+                    document.getElementById('warningSection').style.display = 'none';
+                }
+
+                // Show results
+                document.getElementById('resultsSection').style.display = 'block';
+                document.getElementById('resultsSection').scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'nearest',
+                });
+
+                console.log('[DealAnalyzer] Detailed Analysis:', analysis);
+            } catch (error) {
+                console.error('[DealAnalyzer] calculateDeal error', error);
+                alert(error && error.message ? error.message : 'Failed to analyze deal.');
             }
-            
-            // Add specific recommendations from engine
-            analysis.recommendations
-                .filter(rec => rec.type === 'success')
-                .forEach(rec => tips.push(rec.message));
-            
-            // Display tips
-            const tipsList = document.getElementById('tipsList');
-            tipsList.innerHTML = tips.map(tip => `<li>${tip}</li>`).join('');
-            document.getElementById('tipsSection').style.display = tips.length > 0 ? 'block' : 'none';
-            
-            // Generate warnings from engine recommendations
-            const warnings = analysis.recommendations
-                .filter(rec => rec.type === 'warning' || rec.type === 'danger' || rec.type === 'caution')
-                .map(rec => `${rec.message} ${rec.action}`)
-                .join(' ');
-            
-            // Display warnings
-            if (warnings.length > 0) {
-                document.getElementById('warningText').textContent = warnings;
-                document.getElementById('warningSection').style.display = 'block';
-            } else {
-                document.getElementById('warningSection').style.display = 'none';
-            }
-            
-            // Show results
-            document.getElementById('resultsSection').style.display = 'block';
-            
-            // Scroll to results
-            document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-            
-            // Log detailed analysis for debugging
-            console.log('📊 Detailed Analysis:', analysis);
         }
-        
-        // Calculate on load with default values
+
         window.addEventListener('load', () => {
             calculateDeal();
+
+            // Register guided walkthrough for Deal Analyzer
+            if (window.AssiduousGuide) {
+                window.AssiduousGuide.register('client-deal-analyzer', {
+                    title: 'Deal Analyzer walkthrough',
+                    steps: [
+                        {
+                            id: 'da-purchase',
+                            selector: '#purchasePrice',
+                            title: 'Purchase price',
+                            body: 'Enter the expected purchase price of the property. This is your basis before improvements.',
+                        },
+                        {
+                            id: 'da-arv',
+                            selector: '#arvValue',
+                            title: 'After Repair Value (ARV)',
+                            body: 'Estimate what the property will be worth after renovations. This drives the top of your profit stack.',
+                        },
+                        {
+                            id: 'da-renovation',
+                            selector: '#renovationCost',
+                            title: 'Renovation budget',
+                            body: 'Specify how much you expect to spend on repairs, upgrades, and contingencies.',
+                        },
+                        {
+                            id: 'da-holding',
+                            selector: '#holdingPeriod',
+                            title: 'Holding period and costs',
+                            body: 'Set the project timeline in months and the monthly holding costs (taxes, insurance, utilities, etc.).',
+                        },
+                        {
+                            id: 'da-advanced',
+                            selector: '#taxRate',
+                            title: 'Advanced assumptions',
+                            body: 'Fine-tune tax, insurance, HOA, and exit cost overrides to match your market and funding realities.',
+                        },
+                        {
+                            id: 'da-financing',
+                            selector: '#downPayment',
+                            title: 'Financing',
+                            body: 'Adjust down payment and loan interest. This influences your cash-on-cash return and risk.',
+                        },
+                        {
+                            id: 'da-run',
+                            selector: '.calculate-btn',
+                            title: 'Run the deal analysis',
+                            body: 'Click here to send your scenario to the micro-flip engine and view ROI, cash-on-cash, and a detailed breakdown.',
+                        },
+                    ],
+                });
+
+                try {
+                    var params = new URLSearchParams(window.location.search || '');
+                    if (params.get('guide') === 'client-deal-analyzer') {
+                        window.AssiduousGuide.start('client-deal-analyzer');
+                    }
+                } catch (e) {}
+            }
         });
     </script>
 </body>
