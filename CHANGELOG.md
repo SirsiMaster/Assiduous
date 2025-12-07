@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.140.3] - 2025-12-07
+
+### Fixed
+- fix(client): Resolve onboarding label and stylesheet issues
+
+
 ## [0.140.2] - 2025-12-07
 
 ### Fixed
@@ -1741,6 +1747,12 @@ accountIds/{accountId} = {
 **Sprint Progress**: Day 4 of 6 (67% target after Day 4 completion)
 
 ## [Unreleased]
+
+
+## [0.140.3] - 2025-12-07
+
+### Fixed
+- fix(client): Resolve onboarding label and stylesheet issues
 
 
 ## [0.140.2] - 2025-12-07
@@ -3711,7 +3723,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.140.2...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.140.3...HEAD
+
+
+## [0.140.3] - 2025-12-07
+
+### Fixed
+- fix(client): Resolve onboarding label and stylesheet issues
 
 
 ## [0.140.2] - 2025-12-07
@@ -5754,3 +5772,4 @@ To generate changelog entries:
 [0.140.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.139.0...v0.140.0
 [0.140.1]: https://github.com/SirsiMaster/Assiduous/compare/v0.140.0...v0.140.1
 [0.140.2]: https://github.com/SirsiMaster/Assiduous/compare/v0.140.1...v0.140.2
+[0.140.3]: https://github.com/SirsiMaster/Assiduous/compare/v0.140.2...v0.140.3
