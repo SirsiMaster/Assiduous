@@ -39,11 +39,20 @@ Features:
   <!-- Center Section: Global Search -->
   <div class="topbar-center">
     <div class="global-search">
+      <label class="sr-only" for="globalSearchInput">Global search</label>
       <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <circle cx="11" cy="11" r="8"></circle>
         <path d="m21 21-4.35-4.35"></path>
       </svg>
-      <input type="text" class="global-search-input" data-search-input placeholder="Search across all modules...">
+      <input
+        id="globalSearchInput"
+        name="globalSearch"
+        type="text"
+        class="global-search-input"
+        data-search-input
+        placeholder="Search across all modules..."
+        aria-label="Global search across all modules"
+      >
     </div>
   </div>
 
@@ -131,6 +140,19 @@ Features:
   top: 0;
   z-index: 100;
   box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+/* Visually hidden utility class for accessible labels */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 /* Left Section */
