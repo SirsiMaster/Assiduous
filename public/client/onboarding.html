@@ -450,8 +450,16 @@
         // Check if user is logged in
         auth.onAuthStateChanged((user) => {
             if (!user) {
-                // Redirect to login if not authenticated (relative to /client/)
-                window.location.href = '../auth/login.html';
+                // Redirect to canonical landing login (environment-aware)
+                try {
+                    var path = window.location.pathname || '';
+                    var base = '';
+                    if (path.indexOf('/public/') === 0) base = '/public';
+                    else if (path.indexOf('/assiduousflip/') === 0) base = '/assiduousflip';
+                    window.location.href = base + '/index.html#login';
+                } catch (e) {
+                    window.location.href = '/index.html#login';
+                }
             } else if (DatabaseService) {
                 // Check if onboarding is already complete using DatabaseService
                 DatabaseService.getUserData(user.uid)
