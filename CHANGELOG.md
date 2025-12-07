@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.140.1] - 2025-12-07
+
+### Fixed
+- fix(client): Update onboarding Firestore integration
+
+
 ## [0.140.0] - 2025-12-06
 
 ### Added
@@ -1729,6 +1735,12 @@ accountIds/{accountId} = {
 **Sprint Progress**: Day 4 of 6 (67% target after Day 4 completion)
 
 ## [Unreleased]
+
+
+## [0.140.1] - 2025-12-07
+
+### Fixed
+- fix(client): Update onboarding Firestore integration
 
 
 ## [0.140.0] - 2025-12-06
@@ -3687,7 +3699,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.140.0...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.140.1...HEAD
+
+
+## [0.140.1] - 2025-12-07
+
+### Fixed
+- fix(client): Update onboarding Firestore integration
 
 
 ## [0.140.0] - 2025-12-06
@@ -5716,3 +5734,4 @@ To generate changelog entries:
 [0.138.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.137.0...v0.138.0
 [0.139.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.138.0...v0.139.0
 [0.140.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.139.0...v0.140.0
+[0.140.1]: https://github.com/SirsiMaster/Assiduous/compare/v0.140.0...v0.140.1
