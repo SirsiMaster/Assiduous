@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-12-09T18:55:04.928Z",
+  "lastUpdated": "2025-12-09T19:14:35.314Z",
   "summary": {
     "health": "Good",
     "score": 59,
@@ -152,20 +152,20 @@
     }
   },
   "project": {
-    "totalHours": "356",
+    "totalHours": "357",
     "avgHoursPerDay": "7.1",
-    "totalCost": 55984,
-    "laborCost": 53400,
+    "totalCost": 56134,
+    "laborCost": 53550,
     "toolsCost": 2584,
     "monthsElapsed": "4.0",
-    "totalCommits": 1080,
+    "totalCommits": 1082,
     "totalFiles": 874,
     "activeDays": 50,
     "totalDays": 121,
     "projectAgeDays": 121,
-    "linesAdded": 9854520,
-    "linesDeleted": 9450654,
-    "netLines": 403866,
+    "linesAdded": 9854586,
+    "linesDeleted": 9450699,
+    "netLines": 403887,
     "velocity": "21.6",
     "completionPercentage": 59,
     "actualStartDate": "2025-08-10",
@@ -177,21 +177,21 @@
   },
   "today": {
     "date": "2025-12-09",
-    "hours": "1.7",
-    "cost": 248,
-    "commits": 5,
+    "hours": "2.3",
+    "cost": 347,
+    "commits": 7,
     "deployments": 0
   },
   "thisWeek": {
-    "hours": "23.1",
-    "cost": 3465,
-    "commits": 70,
+    "hours": "23.8",
+    "cost": 3564,
+    "commits": 72,
     "days": 7
   },
   "thisMonth": {
-    "hours": "55.8",
-    "cost": 8366,
-    "commits": 169
+    "hours": "56.4",
+    "cost": 8465,
+    "commits": 171
   },
   "quality": {
     "testCoverage": {
@@ -224,7 +224,7 @@
       "low": 0,
       "total": 0
     },
-    "lastAudit": "2025-12-09T18:54:28.926Z",
+    "lastAudit": "2025-12-09T19:13:58.579Z",
     "dependencies": {
       "total": 0,
       "outdated": 0,
@@ -312,11 +312,11 @@
     "changelog": true,
     "contributing": false,
     "license": false,
-    "lastUpdate": "2025-12-09 02:39:58 +0000"
+    "lastUpdate": "2025-12-09 18:54:18 +0000"
   },
   "productivity": {
     "velocityTrend": "increasing",
-    "weeklyCommits": 70,
+    "weeklyCommits": 72,
     "contributors": {
       "total": 0,
       "active": 0
@@ -394,6 +394,18 @@
   },
   "recentActivity": [
     {
+      "hash": "51825f27af1fdd79e863c96cc5639ee5e2ab1c7a",
+      "message": "fix(agent-leads): align with firebase-ready and disable compat persistence",
+      "author": "SirsiMaster",
+      "date": "2025-12-09 14:12:51 -0500"
+    },
+    {
+      "hash": "0e24cd25ea5fbe1f02d2e2428958a23abc484e32",
+      "message": "chore(release): Bump version to 0.141.2 [skip ci]",
+      "author": "github-actions[bot]",
+      "date": "2025-12-09 18:54:18 +0000"
+    },
+    {
       "hash": "d90750df0c16eccdbe81c168fe47cd49a6a72636",
       "message": "fix(agent-dashboard): Resolve syntax error and harden Firestore init",
       "author": "SirsiMaster",
@@ -440,22 +452,10 @@
       "message": "chore(release): Bump version to 0.140.3 [skip ci]",
       "author": "github-actions[bot]",
       "date": "2025-12-07 22:39:22 +0000"
-    },
-    {
-      "hash": "dfaf1d7531e0d7a342e2be54d7ebbdd1a57ee48d",
-      "message": "fix(client): Resolve onboarding label and stylesheet issues",
-      "author": "SirsiMaster",
-      "date": "2025-12-07 17:38:57 -0500"
-    },
-    {
-      "hash": "dbe889ec16031d148bf908a25383b602384025a6",
-      "message": "chore(release): Bump version to 0.140.2 [skip ci]",
-      "author": "github-actions[bot]",
-      "date": "2025-12-07 22:08:58 +0000"
     }
   ],
   "automation": {
-    "lastRun": "2025-12-09T18:55:04.928Z",
+    "lastRun": "2025-12-09T19:14:35.314Z",
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",

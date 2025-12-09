@@ -672,17 +672,17 @@
 
             function showError(message) {
                 var errorDiv = document.createElement('div');
-                errorDiv.style.cssText = '
-                    position: fixed;
-                    top: 20px;
-                    right: 20px;
-                    background: var(--danger);
-                    color: white;
-                    padding: var(--space-md) var(--space-lg);
-                    border-radius: var(--radius-md);
-                    box-shadow: var(--shadow-lg);
-                    z-index: 9999;
-                ';
+                errorDiv.style.cssText = [
+                    'position: fixed;',
+                    'top: 20px;',
+                    'right: 20px;',
+                    'background: var(--danger);',
+                    'color: white;',
+                    'padding: var(--space-md) var(--space-lg);',
+                    'border-radius: var(--radius-md);',
+                    'box-shadow: var(--shadow-lg);',
+                    'z-index: 9999;'
+                ].join(' ');
                 errorDiv.textContent = message;
                 document.body.appendChild(errorDiv);
 
