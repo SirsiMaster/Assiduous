@@ -78,16 +78,12 @@ function initializeFirebase() {
             window.firebaseAnalytics = analytics;
         }
         
-        // Enable offline persistence for Firestore
-        db.enablePersistence({ synchronizeTabs: true })
-            .then(() => console.log('[Firebase] ✓ Offline persistence enabled'))
-            .catch((err) => {
-                if (err.code == 'failed-precondition') {
-                    console.warn('[Firebase] Multiple tabs open, persistence enabled in first tab only');
-                } else if (err.code == 'unimplemented') {
-                    console.warn('[Firebase] Browser doesn\'t support offline persistence');
-                }
-            });
+        // IMPORTANT: Offline persistence was causing severe hangs and
+        // IndexedDB transaction errors in some browsers. For the agent
+        // portal we prioritize responsiveness over offline cache, so we
+        // rely on the default in-memory cache only.
+        //
+        // DO NOT call db.enablePersistence(...) here.
         
         // Dispatch firebase-ready event for dependent scripts
         window.dispatchEvent(new CustomEvent('firebase-ready', {

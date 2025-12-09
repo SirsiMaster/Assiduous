@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-12-09T02:40:45.948Z",
+  "lastUpdated": "2025-12-09T18:55:04.928Z",
   "summary": {
     "health": "Good",
     "score": 59,
@@ -158,14 +158,14 @@
     "laborCost": 53400,
     "toolsCost": 2584,
     "monthsElapsed": "4.0",
-    "totalCommits": 1078,
+    "totalCommits": 1080,
     "totalFiles": 874,
     "activeDays": 50,
     "totalDays": 121,
     "projectAgeDays": 121,
-    "linesAdded": 9854446,
-    "linesDeleted": 9450601,
-    "netLines": 403845,
+    "linesAdded": 9854520,
+    "linesDeleted": 9450654,
+    "netLines": 403866,
     "velocity": "21.6",
     "completionPercentage": 59,
     "actualStartDate": "2025-08-10",
@@ -177,21 +177,21 @@
   },
   "today": {
     "date": "2025-12-09",
-    "hours": "1.0",
-    "cost": 149,
-    "commits": 3,
+    "hours": "1.7",
+    "cost": 248,
+    "commits": 5,
     "deployments": 0
   },
   "thisWeek": {
-    "hours": "22.4",
-    "cost": 3366,
-    "commits": 68,
+    "hours": "23.1",
+    "cost": 3465,
+    "commits": 70,
     "days": 7
   },
   "thisMonth": {
-    "hours": "56.1",
-    "cost": 8415,
-    "commits": 170
+    "hours": "55.8",
+    "cost": 8366,
+    "commits": 169
   },
   "quality": {
     "testCoverage": {
@@ -224,7 +224,7 @@
       "low": 0,
       "total": 0
     },
-    "lastAudit": "2025-12-09T02:40:09.248Z",
+    "lastAudit": "2025-12-09T18:54:28.926Z",
     "dependencies": {
       "total": 0,
       "outdated": 0,
@@ -312,11 +312,11 @@
     "changelog": true,
     "contributing": false,
     "license": false,
-    "lastUpdate": "2025-12-09 01:29:28 +0000"
+    "lastUpdate": "2025-12-09 02:39:58 +0000"
   },
   "productivity": {
     "velocityTrend": "increasing",
-    "weeklyCommits": 68,
+    "weeklyCommits": 70,
     "contributors": {
       "total": 0,
       "active": 0
@@ -394,6 +394,18 @@
   },
   "recentActivity": [
     {
+      "hash": "d90750df0c16eccdbe81c168fe47cd49a6a72636",
+      "message": "fix(agent-dashboard): Resolve syntax error and harden Firestore init",
+      "author": "SirsiMaster",
+      "date": "2025-12-09 13:50:25 -0500"
+    },
+    {
+      "hash": "640a114cb80fe9962794c73e62dd3af42260577c",
+      "message": "chore(release): Bump version to 0.141.1 [skip ci]",
+      "author": "github-actions[bot]",
+      "date": "2025-12-09 02:39:58 +0000"
+    },
+    {
       "hash": "52468d7e4f1dfb0e8e6848aa897b5ef240e1c1ef",
       "message": "fix(auth): Simplify login and load agent profiles from canonical data",
       "author": "SirsiMaster",
@@ -440,22 +452,10 @@
       "message": "chore(release): Bump version to 0.140.2 [skip ci]",
       "author": "github-actions[bot]",
       "date": "2025-12-07 22:08:58 +0000"
-    },
-    {
-      "hash": "1b0cb3693b3e87de160f78bcfb74a3242d7acc68",
-      "message": "fix(client): Align onboarding and properties with canonical auth & CSP",
-      "author": "SirsiMaster",
-      "date": "2025-12-07 17:08:28 -0500"
-    },
-    {
-      "hash": "701008fcf540a428f23e2781822670b82642ae85",
-      "message": "chore(release): Bump version to 0.140.1 [skip ci]",
-      "author": "github-actions[bot]",
-      "date": "2025-12-07 21:35:49 +0000"
     }
   ],
   "automation": {
-    "lastRun": "2025-12-09T02:40:45.948Z",
+    "lastRun": "2025-12-09T18:55:04.928Z",
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",

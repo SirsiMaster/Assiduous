@@ -489,8 +489,14 @@
         // ==========================================
         
         const LeadManagementService = {
-            db: firebase.firestore(),
-            auth: firebase.auth(),
+            db: null,
+            auth: null,
+
+            init() {
+                // Prefer instances exported by firebase-config when available
+                this.db = window.firebaseDb || (firebase && firebase.firestore());
+                this.auth = window.firebaseAuth || (firebase && firebase.auth());
+            },
             
             /**
              * Get leads for current agent
