@@ -564,20 +564,19 @@
                     var status = (p.status || 'Unknown').toLowerCase();
                     var statusClass = status === 'available' ? 'success' : (status === 'pending' ? 'warning' : 'inactive');
 
-                    row.innerHTML = '
-                        <td>
-                            <div style="font-weight:600;">' + (p.address && p.address.street || 'N/A') + '</div>
-                            <div style="font-size:12px;color:var(--text-secondary);">' +
-                                (p.address && p.address.city || 'Philadelphia') + ', ' +
-                                (p.address && p.address.state || 'PA') + ' ' +
-                                (p.address && p.address.zip || '') +
-                            '</div>
-                        </td>
-                        <td>' + (p.details && p.details.type || 'N/A') + '</td>
-                        <td>$' + ((p.price && p.price.list) || 0).toLocaleString() + '</td>
-                        <td><span class="sirsi-badge sirsi-sm-sm-badge--' + statusClass + '">' + (p.status || 'Unknown') + '</span></td>
-                        <td>' + (p.metrics && p.metrics.views || 0) + '</td>
-                    ';
+                    row.innerHTML =
+                        '<td>' +
+                            '<div style="font-weight:600;">' + (p.address && p.address.street || 'N/A') + '</div>' +
+                            '<div style="font-size:12px;color:var(--text-secondary);">' +
+                                ((p.address && p.address.city) || 'Philadelphia') + ', ' +
+                                ((p.address && p.address.state) || 'PA') + ' ' +
+                                ((p.address && p.address.zip) || '') +
+                            '</div>' +
+                        '</td>' +
+                        '<td>' + (p.details && p.details.type || 'N/A') + '</td>' +
+                        '<td>$' + (((p.price && p.price.list) || 0).toLocaleString()) + '</td>' +
+                        '<td><span class="sirsi-badge sirsi-sm-sm-badge--' + statusClass + '">' + (p.status || 'Unknown') + '</span></td>' +
+                        '<td>' + (p.metrics && p.metrics.views || 0) + '</td>';
 
                     tbody.appendChild(row);
                 });

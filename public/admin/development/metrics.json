@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-12-09T01:30:16.162Z",
+  "lastUpdated": "2025-12-09T02:40:45.948Z",
   "summary": {
     "health": "Good",
     "score": 59,
@@ -152,21 +152,21 @@
     }
   },
   "project": {
-    "totalHours": "355",
-    "avgHoursPerDay": "7.2",
-    "totalCost": 55834,
-    "laborCost": 53250,
+    "totalHours": "356",
+    "avgHoursPerDay": "7.1",
+    "totalCost": 55984,
+    "laborCost": 53400,
     "toolsCost": 2584,
     "monthsElapsed": "4.0",
-    "totalCommits": 1076,
+    "totalCommits": 1078,
     "totalFiles": 874,
-    "activeDays": 49,
+    "activeDays": 50,
     "totalDays": 121,
     "projectAgeDays": 121,
-    "linesAdded": 9854252,
-    "linesDeleted": 9450505,
-    "netLines": 403747,
-    "velocity": "22.0",
+    "linesAdded": 9854446,
+    "linesDeleted": 9450601,
+    "netLines": 403845,
+    "velocity": "21.6",
     "completionPercentage": 59,
     "actualStartDate": "2025-08-10",
     "architecture": {
@@ -177,21 +177,21 @@
   },
   "today": {
     "date": "2025-12-09",
-    "hours": "0.3",
-    "cost": 50,
-    "commits": 1,
+    "hours": "1.0",
+    "cost": 149,
+    "commits": 3,
     "deployments": 0
   },
   "thisWeek": {
-    "hours": "21.8",
-    "cost": 3267,
-    "commits": 66,
+    "hours": "22.4",
+    "cost": 3366,
+    "commits": 68,
     "days": 7
   },
   "thisMonth": {
-    "hours": "55.4",
-    "cost": 8316,
-    "commits": 168
+    "hours": "56.1",
+    "cost": 8415,
+    "commits": 170
   },
   "quality": {
     "testCoverage": {
@@ -224,7 +224,7 @@
       "low": 0,
       "total": 0
     },
-    "lastAudit": "2025-12-09T01:29:40.121Z",
+    "lastAudit": "2025-12-09T02:40:09.248Z",
     "dependencies": {
       "total": 0,
       "outdated": 0,
@@ -312,11 +312,11 @@
     "changelog": true,
     "contributing": false,
     "license": false,
-    "lastUpdate": "2025-12-08 20:28:32 -0500"
+    "lastUpdate": "2025-12-09 01:29:28 +0000"
   },
   "productivity": {
     "velocityTrend": "increasing",
-    "weeklyCommits": 66,
+    "weeklyCommits": 68,
     "contributors": {
       "total": 0,
       "active": 0
@@ -394,6 +394,18 @@
   },
   "recentActivity": [
     {
+      "hash": "52468d7e4f1dfb0e8e6848aa897b5ef240e1c1ef",
+      "message": "fix(auth): Simplify login and load agent profiles from canonical data",
+      "author": "SirsiMaster",
+      "date": "2025-12-08 21:39:02 -0500"
+    },
+    {
+      "hash": "a289ccc3f63157ea5bc113de7fb52f11cc44bd27",
+      "message": "chore(release): Bump version to 0.141.0 [skip ci]",
+      "author": "github-actions[bot]",
+      "date": "2025-12-09 01:29:28 +0000"
+    },
+    {
       "hash": "ead0dd5e5917476991f6fed578adc7ac4dd6bc2f",
       "message": "feat(profiles): Add public QR profile views",
       "author": "SirsiMaster",
@@ -440,22 +452,10 @@
       "message": "chore(release): Bump version to 0.140.1 [skip ci]",
       "author": "github-actions[bot]",
       "date": "2025-12-07 21:35:49 +0000"
-    },
-    {
-      "hash": "806ac260e0b0f509d7d7ebf295268f3ddfc70504",
-      "message": "fix(client): Update onboarding Firestore integration",
-      "author": "SirsiMaster",
-      "date": "2025-12-07 16:35:24 -0500"
-    },
-    {
-      "hash": "88751ab9c2fcb71aaa0041dadf1ca20db04d7a48",
-      "message": "chore(modernization): Canonize epic completion and add httpapi tests",
-      "author": "SirsiMaster",
-      "date": "2025-12-06 18:30:49 -0500"
     }
   ],
   "automation": {
-    "lastRun": "2025-12-09T01:30:16.162Z",
+    "lastRun": "2025-12-09T02:40:45.948Z",
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",

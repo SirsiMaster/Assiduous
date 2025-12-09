@@ -111,6 +111,9 @@ if (typeof window !== 'undefined' && !window.location.hostname.includes('localho
 // we rely on the default in-memory cache to prioritize responsiveness.
 // When we migrate to FirestoreSettings.cache with multi-tab support, we can
 // reintroduce persistence in a more robust way.
+//
+// IMPORTANT: Do NOT enable Firestore offline persistence here; it can block
+// the entire app for 20+ seconds if IndexedDB is slow or locked.
 
 // Set authentication persistence
 setPersistence(auth, browserLocalPersistence).catch(error => {
