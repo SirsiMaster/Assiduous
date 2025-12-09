@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.141.3] - 2025-12-09
+
+### Fixed
+- fix(agent-leads): align with firebase-ready and disable compat persistence
+
+
 ## [0.141.2] - 2025-12-09
 
 ### Fixed
@@ -1771,6 +1777,12 @@ accountIds/{accountId} = {
 **Sprint Progress**: Day 4 of 6 (67% target after Day 4 completion)
 
 ## [Unreleased]
+
+
+## [0.141.3] - 2025-12-09
+
+### Fixed
+- fix(agent-leads): align with firebase-ready and disable compat persistence
 
 
 ## [0.141.2] - 2025-12-09
@@ -3771,7 +3783,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.141.2...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.141.3...HEAD
+
+
+## [0.141.3] - 2025-12-09
+
+### Fixed
+- fix(agent-leads): align with firebase-ready and disable compat persistence
 
 
 ## [0.141.2] - 2025-12-09
@@ -5849,3 +5867,4 @@ To generate changelog entries:
 [0.141.0]: https://github.com/SirsiMaster/Assiduous/compare/v0.140.4...v0.141.0
 [0.141.1]: https://github.com/SirsiMaster/Assiduous/compare/v0.141.0...v0.141.1
 [0.141.2]: https://github.com/SirsiMaster/Assiduous/compare/v0.141.1...v0.141.2
+[0.141.3]: https://github.com/SirsiMaster/Assiduous/compare/v0.141.2...v0.141.3
