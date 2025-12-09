@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+## [0.141.4] - 2025-12-09
+
+### Fixed
+- fix(agent-dashboard): Resolve showError syntax issue
+
+
 ## [0.141.3] - 2025-12-09
 
 ### Fixed
@@ -1777,6 +1783,12 @@ accountIds/{accountId} = {
 **Sprint Progress**: Day 4 of 6 (67% target after Day 4 completion)
 
 ## [Unreleased]
+
+
+## [0.141.4] - 2025-12-09
+
+### Fixed
+- fix(agent-dashboard): Resolve showError syntax issue
 
 
 ## [0.141.3] - 2025-12-09
@@ -3783,7 +3795,13 @@ To generate changelog entries:
 
 ---
 
-[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.141.3...HEAD
+[Unreleased]: https://github.com/SirsiMaster/Assiduous/compare/v0.141.4...HEAD
+
+
+## [0.141.4] - 2025-12-09
+
+### Fixed
+- fix(agent-dashboard): Resolve showError syntax issue
 
 
 ## [0.141.3] - 2025-12-09
@@ -5868,3 +5886,4 @@ To generate changelog entries:
 [0.141.1]: https://github.com/SirsiMaster/Assiduous/compare/v0.141.0...v0.141.1
 [0.141.2]: https://github.com/SirsiMaster/Assiduous/compare/v0.141.1...v0.141.2
 [0.141.3]: https://github.com/SirsiMaster/Assiduous/compare/v0.141.2...v0.141.3
+[0.141.4]: https://github.com/SirsiMaster/Assiduous/compare/v0.141.3...v0.141.4
