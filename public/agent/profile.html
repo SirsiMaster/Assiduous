@@ -260,7 +260,7 @@
       return null;
     }
 
-    window.addEventListener('firebase-ready', () => {
+    function bootstrapAgentProfile() {
       const firebase = window.Firebase || {};
       const auth = firebase.auth || window.firebaseAuth;
       const db = firebase.db || window.firebaseDb;
@@ -269,36 +269,55 @@
       const statusEl = document.getElementById('profileStatus');
       const contentEl = document.getElementById('profileContent');
 
+      // If Firebase / DatabaseService are not ready yet, retry shortly
+      if (!dbService && !(auth || db)) {
+        setTimeout(bootstrapAgentProfile, 200);
+        return;
+      }
+
       async function loadProfile(targetId) {
         if (!targetId) {
+          console.warn('[AgentProfile] No targetId provided');
           statusEl.textContent = 'Profile not found.';
           return;
         }
 
         try {
           let data = null;
+          console.log('[AgentProfile] Loading profile for', targetId);
 
-          // Primary source for QR/public views: sanitized public_profiles doc
+          // Primary source for QR/public views: sanitized public_profiles doc when
+          // a compat-style Firestore instance is available.
           if (db && db.collection) {
             try {
+              console.log('[AgentProfile] Attempting public_profiles read via compat db');
               const snap = await db.collection('public_profiles').doc(targetId).get();
+              console.log('[AgentProfile] public_profiles.exists =', snap.exists);
               if (snap.exists) {
                 data = snap.data();
               }
             } catch (publicErr) {
-              console.warn('Error reading public_profiles doc', publicErr);
+              console.warn('[AgentProfile] Error reading public_profiles doc', publicErr);
             }
+          } else {
+            console.log('[AgentProfile] Compat db.collection not available; skipping public_profiles read');
           }
 
-          // Fallback: use DatabaseService when available (e.g., logged-in sessions)
+          // Fallback: always attempt DatabaseService (works with modular Firestore
+          // and for logged-in sessions inside the agent portal).
           if (!data && dbService && typeof dbService.getUserData === 'function') {
+            console.log('[AgentProfile] Falling back to DatabaseService.getUserData');
             const result = await dbService.getUserData(targetId);
+            console.log('[AgentProfile] DatabaseService result.success =', result && result.success);
             if (result && result.success && result.data) {
               data = result.data;
             }
+          } else if (!data) {
+            console.log('[AgentProfile] DatabaseService unavailable; skipping fallback');
           }
 
           if (!data) {
+            console.warn('[AgentProfile] No data found for profile');
             statusEl.textContent = 'Profile not found.';
             return;
           }
@@ -403,7 +422,13 @@
       } else {
         statusEl.textContent = 'Profile not found.';
       }
-    });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', bootstrapAgentProfile);
+    } else {
+      bootstrapAgentProfile();
+    }
   </script>
 </body>
 </html>

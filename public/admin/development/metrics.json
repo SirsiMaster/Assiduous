@@ -1,13 +1,13 @@
 {
-  "lastUpdated": "2025-12-06T23:33:48.190Z",
+  "lastUpdated": "2025-12-09T01:30:16.162Z",
   "summary": {
     "health": "Good",
     "score": 59,
     "trend": "increasing",
     "alerts": [
-      "✅ UCS implementation complete - 45 pages converted",
+      "✅ UCS implementation complete - 46 pages converted",
       "⚠️ Test coverage is very low",
-      "⏰ Timeline warning - -5 days until launch"
+      "⏰ Timeline warning - -8 days until launch"
     ]
   },
   "features": {
@@ -100,18 +100,18 @@
         "Universal header template",
         "Role-based filtering",
         "Token replacement system",
-        "45 pages converted",
+        "46 pages converted",
         "5,000+ lines of code removed",
         "Complete documentation"
       ],
       "remainingTasks": [],
       "metrics": {
-        "totalPagesConverted": 45,
-        "clientPages": 22,
+        "totalPagesConverted": 46,
+        "clientPages": 23,
         "agentPages": 23,
         "linesRemoved": 5000,
         "componentReuse": "100%",
-        "adoptionRate": "71%"
+        "adoptionRate": "72%"
       }
     },
     "microFlipping": {
@@ -152,46 +152,46 @@
     }
   },
   "project": {
-    "totalHours": "352",
-    "avgHoursPerDay": "7.5",
-    "totalCost": 55341,
-    "laborCost": 52800,
-    "toolsCost": 2541,
-    "monthsElapsed": "3.9",
-    "totalCommits": 1067,
-    "totalFiles": 870,
-    "activeDays": 47,
-    "totalDays": 119,
-    "projectAgeDays": 119,
-    "linesAdded": 9850139,
-    "linesDeleted": 9449424,
-    "netLines": 400715,
-    "velocity": "22.7",
+    "totalHours": "355",
+    "avgHoursPerDay": "7.2",
+    "totalCost": 55834,
+    "laborCost": 53250,
+    "toolsCost": 2584,
+    "monthsElapsed": "4.0",
+    "totalCommits": 1076,
+    "totalFiles": 874,
+    "activeDays": 49,
+    "totalDays": 121,
+    "projectAgeDays": 121,
+    "linesAdded": 9854252,
+    "linesDeleted": 9450505,
+    "netLines": 403747,
+    "velocity": "22.0",
     "completionPercentage": 59,
     "actualStartDate": "2025-08-10",
     "architecture": {
-      "ucsAdoption": "71%",
+      "ucsAdoption": "72%",
       "componentReuse": "100%",
       "codeReduction": 5000
     }
   },
   "today": {
-    "date": "2025-12-06",
-    "hours": "2.3",
-    "cost": 347,
-    "commits": 7,
+    "date": "2025-12-09",
+    "hours": "0.3",
+    "cost": 50,
+    "commits": 1,
     "deployments": 0
   },
   "thisWeek": {
-    "hours": "18.8",
-    "cost": 2822,
-    "commits": 57,
+    "hours": "21.8",
+    "cost": 3267,
+    "commits": 66,
     "days": 7
   },
   "thisMonth": {
-    "hours": "73.6",
-    "cost": 11039,
-    "commits": 223
+    "hours": "55.4",
+    "cost": 8316,
+    "commits": 168
   },
   "quality": {
     "testCoverage": {
@@ -224,7 +224,7 @@
       "low": 0,
       "total": 0
     },
-    "lastAudit": "2025-12-06T23:33:07.860Z",
+    "lastAudit": "2025-12-09T01:29:40.121Z",
     "dependencies": {
       "total": 0,
       "outdated": 0,
@@ -296,9 +296,9 @@
     }
   },
   "documentation": {
-    "markdownFiles": 2788,
-    "jsFilesTotal": 27418,
-    "jsFilesDocumented": 27418,
+    "markdownFiles": 2789,
+    "jsFilesTotal": 27420,
+    "jsFilesDocumented": 27420,
     "coverage": 444,
     "apiEndpoints": {
       "total": 0,
@@ -312,16 +312,16 @@
     "changelog": true,
     "contributing": false,
     "license": false,
-    "lastUpdate": "2025-12-06 18:30:49 -0500"
+    "lastUpdate": "2025-12-08 20:28:32 -0500"
   },
   "productivity": {
     "velocityTrend": "increasing",
-    "weeklyCommits": 57,
+    "weeklyCommits": 66,
     "contributors": {
       "total": 0,
       "active": 0
     },
-    "averageCommitSize": 82,
+    "averageCommitSize": 81,
     "pullRequests": {
       "open": 0,
       "merged": 0,
@@ -349,7 +349,7 @@
       "projectStart": "2025-08-10",
       "originalLaunch": "2025-11-01",
       "plannedLaunch": "2025-12-01",
-      "daysRemaining": -5,
+      "daysRemaining": -8,
       "onTrack": false,
       "adjustmentReason": "Timeline adjusted for realistic completion based on current velocity"
     },
@@ -394,68 +394,68 @@
   },
   "recentActivity": [
     {
+      "hash": "ead0dd5e5917476991f6fed578adc7ac4dd6bc2f",
+      "message": "feat(profiles): Add public QR profile views",
+      "author": "SirsiMaster",
+      "date": "2025-12-08 20:28:32 -0500"
+    },
+    {
+      "hash": "bb61cc2133534e1346687f1009db2c4d4bbf53d7",
+      "message": "chore(release): Bump version to 0.140.4 [skip ci]",
+      "author": "github-actions[bot]",
+      "date": "2025-12-07 22:44:32 +0000"
+    },
+    {
+      "hash": "f30f837f52f4a2e0a6fd0ac7e0384c1cc822d97a",
+      "message": "fix(ui): Add accessible global search field in header",
+      "author": "SirsiMaster",
+      "date": "2025-12-07 17:44:06 -0500"
+    },
+    {
+      "hash": "0b0414e4463abd9b199414e476624a191055407a",
+      "message": "chore(release): Bump version to 0.140.3 [skip ci]",
+      "author": "github-actions[bot]",
+      "date": "2025-12-07 22:39:22 +0000"
+    },
+    {
+      "hash": "dfaf1d7531e0d7a342e2be54d7ebbdd1a57ee48d",
+      "message": "fix(client): Resolve onboarding label and stylesheet issues",
+      "author": "SirsiMaster",
+      "date": "2025-12-07 17:38:57 -0500"
+    },
+    {
+      "hash": "dbe889ec16031d148bf908a25383b602384025a6",
+      "message": "chore(release): Bump version to 0.140.2 [skip ci]",
+      "author": "github-actions[bot]",
+      "date": "2025-12-07 22:08:58 +0000"
+    },
+    {
+      "hash": "1b0cb3693b3e87de160f78bcfb74a3242d7acc68",
+      "message": "fix(client): Align onboarding and properties with canonical auth & CSP",
+      "author": "SirsiMaster",
+      "date": "2025-12-07 17:08:28 -0500"
+    },
+    {
+      "hash": "701008fcf540a428f23e2781822670b82642ae85",
+      "message": "chore(release): Bump version to 0.140.1 [skip ci]",
+      "author": "github-actions[bot]",
+      "date": "2025-12-07 21:35:49 +0000"
+    },
+    {
+      "hash": "806ac260e0b0f509d7d7ebf295268f3ddfc70504",
+      "message": "fix(client): Update onboarding Firestore integration",
+      "author": "SirsiMaster",
+      "date": "2025-12-07 16:35:24 -0500"
+    },
+    {
       "hash": "88751ab9c2fcb71aaa0041dadf1ca20db04d7a48",
       "message": "chore(modernization): Canonize epic completion and add httpapi tests",
       "author": "SirsiMaster",
       "date": "2025-12-06 18:30:49 -0500"
-    },
-    {
-      "hash": "76df166fe8e0d90035c2b44be5f558a1a7032e90",
-      "message": "chore(release): Bump version to 0.140.0 [skip ci]",
-      "author": "github-actions[bot]",
-      "date": "2025-12-06 21:28:07 +0000"
-    },
-    {
-      "hash": "a7ab39958132d55a0e35293836dd3e356c489b1b",
-      "message": "feat(deals): add inline document status controls",
-      "author": "SirsiMaster",
-      "date": "2025-12-06 16:00:47 -0500"
-    },
-    {
-      "hash": "3b024cf1a249670c3ecc5fb0095254c55c611283",
-      "message": "feat(deals): add quick opensign and lob flows",
-      "author": "SirsiMaster",
-      "date": "2025-12-06 15:49:10 -0500"
-    },
-    {
-      "hash": "9e9665d997972b04af9dc8acbb6bc7d1c9903059",
-      "message": "feat(deals): add role-gated deal participant and document flows",
-      "author": "SirsiMaster",
-      "date": "2025-12-06 15:41:27 -0500"
-    },
-    {
-      "hash": "bc8e440d580ac051aa3e7c014ef144817d2e2841",
-      "message": "chore(release): Bump version to 0.139.0 [skip ci]",
-      "author": "github-actions[bot]",
-      "date": "2025-12-06 17:18:40 +0000"
-    },
-    {
-      "hash": "2d63a0b35d4a52414e004a25cfed3c5516c963a4",
-      "message": "feat(deals): document deal graph and finalize ingest workflows",
-      "author": "SirsiMaster",
-      "date": "2025-12-06 12:17:48 -0500"
-    },
-    {
-      "hash": "d849edb797322dc92433fe4691de4cd9985f4c3a",
-      "message": "chore(release): Bump version to 0.138.0 [skip ci]",
-      "author": "github-actions[bot]",
-      "date": "2025-12-05 18:48:44 +0000"
-    },
-    {
-      "hash": "2e075bfc35a076386612a1d1cc60be94bba3298e",
-      "message": "feat(ai): add vertex gemini explain endpoint and ui",
-      "author": "SirsiMaster",
-      "date": "2025-12-05 13:48:03 -0500"
-    },
-    {
-      "hash": "d7be1e8d858ae1c7345f3a9ab0337718b3c5cf77",
-      "message": "chore(release): Bump version to 0.137.0 [skip ci]",
-      "author": "github-actions[bot]",
-      "date": "2025-12-05 18:36:59 +0000"
     }
   ],
   "automation": {
-    "lastRun": "2025-12-06T23:33:48.190Z",
+    "lastRun": "2025-12-09T01:30:16.162Z",
     "gitHookInstalled": true,
     "scriptPath": "/Users/thekryptodragon/Development/assiduous/scripts/update-metrics-enhanced.js",
     "updateFrequency": "On every commit (via git hook)",

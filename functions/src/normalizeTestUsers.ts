@@ -184,6 +184,35 @@ export const normalizeTestUsers = onRequest({
         }
       }
 
+      // Also seed/update the sanitized public_profiles/{uid} document used for
+      // QR-based public profile views. This ensures test accounts always have
+      // a public-facing profile even if triggers were added after creation.
+      if (!dryRun) {
+        const publicProfile = {
+          userId: uid,
+          email: baseProfile.email,
+          role: baseProfile.role,
+          status: baseProfile.status,
+          firstName: baseProfile.firstName,
+          lastName: baseProfile.lastName,
+          displayName: baseProfile.displayName,
+          profile: {
+            bio: "", // can be edited later via app
+            city: "",
+            state: "",
+            zip: "",
+            photoUrl: "",
+            linkedinUrl: "",
+            twitterHandle: "",
+            instagramHandle: "",
+            websiteUrl: "",
+          },
+          updatedAt: now,
+        };
+        await db.collection("public_profiles").doc(uid).set(publicProfile, {merge: true});
+        result.publicProfileSynced = true;
+      }
+
       result.success = true;
     } catch (err: any) {
       logger.error("Failed to normalize test user", {email, error: err.message});

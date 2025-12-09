@@ -2060,6 +2060,41 @@ export const onUserProfileUpdated = onDocumentUpdated(
   }
 );
 
+/**
+ * Maintenance endpoint: seedPublicProfiles
+ *
+ * One-off HTTP function to backfill public_profiles/{userId} docs for all
+ * existing users. This is safe because it only writes sanitized subsets of
+ * user data. Use `?dryRun=true` to preview without writing.
+ */
+export const seedPublicProfiles = onRequest({
+  region: "us-central1",
+  maxInstances: 1,
+}, async (req, res) => {
+  const dryRun = req.query.dryRun === "true" || req.query.dryRun === "1";
+  logger.info("seedPublicProfiles invoked", {dryRun});
+
+  try {
+    const snapshot = await db.collection("users").get();
+    let processed = 0;
+
+    for (const docSnap of snapshot.docs) {
+      const userId = docSnap.id;
+      const data = docSnap.data() || {};
+      const publicProfile = buildPublicProfileFromUser(userId, data);
+      if (!dryRun) {
+        await db.collection("public_profiles").doc(userId).set(publicProfile, {merge: true});
+      }
+      processed++;
+    }
+
+    res.status(200).json({success: true, dryRun, processed});
+  } catch (error: any) {
+    logger.error("seedPublicProfiles failed", {error: error?.message});
+    res.status(500).json({success: false, error: error?.message || "Internal error"});
+  }
+});
+
 // ============================================================================
 // STRIPE WEBHOOK HANDLER & CALLABLE FUNCTIONS
 // ============================================================================
