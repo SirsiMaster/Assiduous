@@ -3,7 +3,8 @@
  * Day 4: Real-time user notifications
  */
 
-const API_BASE = 'https://us-central1-assiduous-prod.cloudfunctions.net/app/api/v1';
+// Notifications now flow through the Go API via Firebase.APIService
+// (Cloud Functions /api proxy), rather than the legacy /app/api/v1 surface.
 
 /**
  * Get authentication token
@@ -30,23 +31,26 @@ async function getAuthToken() {
  */
 export async function getNotifications(options = {}) {
   try {
-    const token = await getAuthToken();
     const params = new URLSearchParams();
-    
     if (options.limit) params.append('limit', options.limit);
     if (options.unreadOnly) params.append('unreadOnly', 'true');
-    
-    const res = await fetch(`${API_BASE}/notifications?${params.toString()}`, {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    });
 
-    if (!res.ok) {
-      throw new Error('Failed to get notifications');
+    if (!window.Firebase || !window.Firebase.APIService) {
+      throw new Error('Notification API not available');
     }
 
-    const { data } = await res.json();
+    const result = await window.Firebase.APIService.callAPI(
+      `/notifications?${params.toString()}`,
+      'GET',
+      null,
+    );
+
+    if (!result || !result.success) {
+      throw new Error(result && result.error ? result.error : 'Failed to get notifications');
+    }
+
+    const payload = result.data || {};
+    const data = payload.data || payload.notifications || [];
     return data;
   } catch (error) {
     console.error('Get notifications error:', error);
@@ -60,19 +64,21 @@ export async function getNotifications(options = {}) {
  */
 export async function markNotificationRead(notificationId) {
   try {
-    const token = await getAuthToken();
-    const res = await fetch(`${API_BASE}/notifications/${notificationId}/read`, {
-      method: 'PUT',
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    });
-
-    if (!res.ok) {
-      throw new Error('Failed to mark notification as read');
+    if (!window.Firebase || !window.Firebase.APIService) {
+      throw new Error('Notification API not available');
     }
 
-    return await res.json();
+    const result = await window.Firebase.APIService.callAPI(
+      `/notifications/${notificationId}/read`,
+      'PUT',
+      {},
+    );
+
+    if (!result || !result.success) {
+      throw new Error(result && result.error ? result.error : 'Failed to mark notification as read');
+    }
+
+    return result.data || { success: true };
   } catch (error) {
     console.error('Mark notification read error:', error);
     throw error;

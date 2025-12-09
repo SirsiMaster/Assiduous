@@ -949,7 +949,12 @@
         }
         
         window.addEventListener('load', () => {
-            calculateROI();
+            // Only auto-run analysis if MicroFlipApiClient is ready; otherwise
+            // wait for the user to click "Calculate Returns" to avoid false
+            // error banners on initial load.
+            if (microflipApiClient && typeof microflipApiClient.analyzeDeal === 'function') {
+                calculateROI();
+            }
 
             // Register guided walkthrough for this page
             if (window.AssiduousGuide) {

@@ -12,6 +12,7 @@ import {beforeUserCreated} from "firebase-functions/v2/identity";
 import {defineSecret} from "firebase-functions/params";
 import * as logger from "firebase-functions/logger";
 import * as admin from "firebase-admin";
+import axios from "axios";
 // Stripe SDK (used in Gen2 API routes)
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const Stripe = require("stripe");
@@ -52,6 +53,11 @@ const db = admin.firestore();
 
 // Set global options
 setGlobalOptions({maxInstances: 10});
+
+// Base URL for Go API (Cloud Run) used for proxying select routes like
+// /microflip and /notifications.
+const goApiBaseURL = process.env.GO_API_BASE_URL || '';
+
 
 // ============================================================================
 // SHARED HELPERS (ID GENERATOR, PORTAL MESSAGES)
@@ -307,6 +313,24 @@ export const api = onRequest(
     // Analytics endpoints
     if (path.startsWith("/analytics")) {
       await handleAnalyticsRoutes(req, res, path, method);
+      return;
+    }
+
+    // Micro-flip underwriting endpoints (proxy to Go API)
+    if (path.startsWith("/microflip")) {
+      await handleMicroflipRoutes(req, res, path, method);
+      return;
+    }
+
+    // Notification endpoints (proxy to Go API)
+    if (path.startsWith("/notifications")) {
+      await handleNotificationRoutes(req, res, path, method);
+      return;
+    }
+
+    // Payment endpoints (Stripe)
+    if (path.startsWith("/microflip")) {
+      await handleMicroflipRoutes(req, res, path, method);
       return;
     }
 
@@ -1138,6 +1162,121 @@ async function handleAnalyticsRoutes(
 }
 
 // ============================================================================
+// MICRO-FLIP ROUTES (PROXY TO GO API)
+// ============================================================================
+
+async function handleMicroflipRoutes(
+  req: any,
+  res: any,
+  path: string,
+  method: string,
+) {
+  try {
+    if (!goApiBaseURL) {
+      logger.error("GO_API_BASE_URL not configured for microflip proxy");
+      res.status(500).json({
+        error: "microflip_api_unconfigured",
+        message: "GO_API_BASE_URL is not configured on Cloud Functions.",
+      });
+      return;
+    }
+
+    // Only allow POST for analyze/portfolio
+    if (
+      method !== "POST" ||
+      (path !== "/microflip/analyze" && path !== "/microflip/portfolio")
+    ) {
+      res.status(404).json({error: "Route not found"});
+      return;
+    }
+
+    const targetURL = `${goApiBaseURL.replace(/\/$/, "")}/api${path}`;
+
+    // Forward body and auth header to Go API
+    const headers: Record<string, string> = {
+      "Content-Type": "application/json",
+    };
+    const authHeader = req.headers.authorization as string | undefined;
+    if (authHeader) {
+      headers["Authorization"] = authHeader;
+    }
+
+    const response = await axios.request({
+      url: targetURL,
+      method,
+      headers,
+      // Body is already parsed JSON from Functions runtime
+      data: req.body || {},
+      // Surface non-2xx responses to caller with original status code
+      validateStatus: () => true,
+    });
+
+    res.status(response.status).json(response.data);
+  } catch (error: any) {
+    logger.error("Microflip proxy error", {
+      message: error?.message,
+      code: error?.code,
+    });
+    res.status(502).json({
+      error: "microflip_proxy_error",
+      message: error?.message || "Failed to reach micro-flip engine",
+    });
+  }
+}
+
+// ============================================================================
+// NOTIFICATION ROUTES (PROXY TO GO API)
+// ============================================================================
+
+async function handleNotificationRoutes(
+  req: any,
+  res: any,
+  path: string,
+  method: string,
+) {
+  try {
+    if (!goApiBaseURL) {
+      logger.error("GO_API_BASE_URL not configured for notification proxy");
+      res.status(500).json({
+        error: "notifications_api_unconfigured",
+        message: "GO_API_BASE_URL is not configured on Cloud Functions.",
+      });
+      return;
+    }
+
+    const targetURL = `${goApiBaseURL.replace(/\/$/, "")}/api${path}`;
+
+    const headers: Record<string, string> = {
+      "Content-Type": "application/json",
+    };
+    const authHeader = req.headers.authorization as string | undefined;
+    if (authHeader) {
+      headers["Authorization"] = authHeader;
+    }
+
+    const response = await axios.request({
+      url: targetURL,
+      method,
+      headers,
+      params: req.query || {},
+      data: req.body || {},
+      validateStatus: () => true,
+    });
+
+    res.status(response.status).json(response.data);
+  } catch (error: any) {
+    logger.error("Notification proxy error", {
+      message: error?.message,
+      code: error?.code,
+    });
+    res.status(502).json({
+      error: "notifications_proxy_error",
+      message: error?.message || "Failed to reach notifications API",
+    });
+  }
+}
+
+// ============================================================================
 // PAYMENT ROUTES (STRIPE)
 // ============================================================================
 
@@ -1803,7 +1942,37 @@ export const onNewUserCreated = beforeUserCreated(async (event) => {
 });
 
 /**
- * Trigger: User profile created - Send welcome email and initialize profile/QR
+ * Helper: build a sanitized public profile document from users/{userId} data.
+ */
+function buildPublicProfileFromUser(userId: string, userData: FirebaseFirestore.DocumentData) {
+  const profile = (userData.profile as any) || {};
+
+  return {
+    userId,
+    email: (userData.email as string) || "",
+    role: (userData.role as string) || "client",
+    status: (userData.status as string) || "active",
+    firstName: (userData.firstName as string) || "",
+    lastName: (userData.lastName as string) || "",
+    displayName: (userData.displayName as string) || (userData.email as string) || "",
+    profile: {
+      bio: (profile.bio as string) || "",
+      city: (profile.city as string) || "",
+      state: (profile.state as string) || "",
+      zip: (profile.zip as string) || "",
+      photoUrl: (profile.photoUrl as string) || "",
+      linkedinUrl: (profile.linkedinUrl as string) || "",
+      twitterHandle: (profile.twitterHandle as string) || "",
+      instagramHandle: (profile.instagramHandle as string) || "",
+      websiteUrl: (profile.websiteUrl as string) || "",
+    },
+    updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+  };
+}
+
+/**
+ * Trigger: User profile created - Send welcome email, initialize profile/QR,
+ * and sync a sanitized copy into public_profiles/{userId} for QR/public views.
  */
 export const onUserProfileCreated = onDocumentCreated(
   {
@@ -1846,6 +2015,14 @@ export const onUserProfileCreated = onDocumentCreated(
     } catch (e: any) {
       logger.error("Failed to auto-generate profile QR on user create", {userId, error: e?.message});
     }
+
+    // Sync public profile snapshot for QR/public view pages
+    try {
+      const publicProfile = buildPublicProfileFromUser(userId, userData);
+      await db.collection("public_profiles").doc(userId).set(publicProfile, {merge: true});
+    } catch (e: any) {
+      logger.error("Failed to sync public profile on user create", {userId, error: e?.message});
+    }
     
     // Send welcome email
     if (userData.email && userData.displayName) {
@@ -1857,6 +2034,28 @@ export const onUserProfileCreated = onDocumentCreated(
       );
     }
     
+    return null;
+  }
+);
+
+/**
+ * Trigger: User profile updated - keep public_profiles/{userId} in sync so
+ * that QR/public pages always show the latest profile info.
+ */
+export const onUserProfileUpdated = onDocumentUpdated(
+  {
+    document: "users/{userId}",
+  },
+  async (event) => {
+    if (!event.data?.after) return null;
+    const userId = event.params.userId;
+    const userData = event.data.after.data();
+    try {
+      const publicProfile = buildPublicProfileFromUser(userId, userData);
+      await db.collection("public_profiles").doc(userId).set(publicProfile, {merge: true});
+    } catch (e: any) {
+      logger.error("Failed to sync public profile on user update", {userId, error: e?.message});
+    }
     return null;
   }
 );
@@ -1957,6 +2156,69 @@ async function generateUserProfileQRInternal(targetUserId: string, regenerate = 
     regenerated: !!regenerate,
   };
 }
+
+/**
+ * getPublicUserProfile (HTTP)
+ *
+ * Returns a sanitized, public-safe view of a user's profile that can be
+ * rendered for unauthenticated viewers (e.g., QR code scans). This function
+ * intentionally whitelists only non-sensitive fields.
+ */
+export const getPublicUserProfile = onRequest({region: "us-central1"}, async (req, res) => {
+  // Basic CORS to allow calls from the hosted web app
+  res.set("Access-Control-Allow-Origin", "*");
+  res.set("Access-Control-Allow-Methods", "GET, OPTIONS");
+  res.set("Access-Control-Allow-Headers", "Content-Type");
+
+  if (req.method === "OPTIONS") {
+    res.status(204).send("");
+    return;
+  }
+
+  const userId = (req.query.id as string | undefined) || (req.query.uid as string | undefined);
+
+  if (!userId) {
+    res.status(400).json({success: false, error: "Missing required query parameter 'id'"});
+    return;
+  }
+
+  try {
+    const snap = await db.collection("users").doc(userId).get();
+    if (!snap.exists) {
+      res.status(404).json({success: false, error: "User not found"});
+      return;
+    }
+
+    const data = snap.data() || {};
+    const profile = (data.profile as any) || {};
+
+    const publicProfile = {
+      id: userId,
+      firstName: (data.firstName as string) || "",
+      lastName: (data.lastName as string) || "",
+      displayName: (data.displayName as string) || "",
+      role: (data.role as string) || "client",
+      email: (data.email as string) || "",
+      phone: (data.phone as string) || "",
+      profile: {
+        bio: (profile.bio as string) || "",
+        city: (profile.city as string) || "",
+        state: (profile.state as string) || "",
+        zip: (profile.zip as string) || "",
+        photoUrl: (profile.photoUrl as string) || "",
+        linkedinUrl: (profile.linkedinUrl as string) || "",
+        twitterHandle: (profile.twitterHandle as string) || "",
+        instagramHandle: (profile.instagramHandle as string) || "",
+        websiteUrl: (profile.websiteUrl as string) || "",
+      },
+    };
+
+    res.json({success: true, data: publicProfile});
+  } catch (error: any) {
+    logger.error("getPublicUserProfile error", {error: error?.message, userId});
+    res.status(500).json({success: false, error: "Internal server error"});
+  }
+});
 
 /**
  * generateUserQR (callable)

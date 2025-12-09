@@ -666,16 +666,36 @@ export const APIService = {
       }
 
       const response = await fetch(`${baseURL}${endpoint}`, options);
-      const result = await response.json();
-
-      if (!response.ok) {
-        throw new Error(result.error || 'API request failed');
+      const text = await response.text();
+      let payload = null;
+      try {
+        payload = text ? JSON.parse(text) : null;
+      } catch (e) {
+        payload = text;
       }
 
-      return { success: true, data: result };
+      if (!response.ok) {
+        const message =
+          (payload && (payload.error || payload.message)) ||
+          `API request failed with status ${response.status}`;
+        const err = new Error(message);
+        if (payload && typeof payload === 'object' && payload.code) {
+          err.code = payload.code;
+        }
+        err.status = response.status;
+        err.payload = payload;
+        throw err;
+      }
+
+      return { success: true, data: payload };
     } catch (error) {
       console.error('API call error:', error);
-      return { success: false, error: error.message };
+      return {
+        success: false,
+        error: error && error.message ? error.message : 'API request failed',
+        code: error && error.code ? error.code : undefined,
+        status: error && typeof error.status === 'number' ? error.status : undefined,
+      };
     }
   },
 

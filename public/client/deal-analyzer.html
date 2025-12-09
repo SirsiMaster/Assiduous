@@ -27,8 +27,8 @@
         .calculator-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: var(--space-xl);
-            margin-bottom: var(--space-xl);
+            gap: var(--space-lg);
+            margin-bottom: var(--space-lg);
         }
 
         @media (max-width: 968px) {
@@ -41,14 +41,14 @@
             background: var(--white);
             border: 1px solid var(--border);
             border-radius: var(--radius-md);
-            padding: var(--space-lg);
+            padding: var(--space-md);
         }
 
         .section-title {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 700;
             color: var(--dark);
-            margin-bottom: var(--space-md);
+            margin-bottom: var(--space-sm);
             display: flex;
             align-items: center;
             gap: var(--space-sm);
@@ -66,7 +66,7 @@
         }
 
         .form-group {
-            margin-bottom: var(--space-md);
+            margin-bottom: var(--space-sm);
         }
 
         .form-label {
@@ -132,7 +132,7 @@
         .results-section {
             background: var(--white);
             border-radius: var(--radius-md);
-            padding: var(--space-lg);
+            padding: var(--space-md);
             color: var(--dark);
         }
 
@@ -177,7 +177,7 @@
             background: var(--gray-50);
             border: 1px solid var(--border);
             border-radius: var(--radius);
-            padding: var(--space-lg);
+            padding: var(--space-md);
         }
 
         .breakdown-title {
@@ -430,13 +430,13 @@
                     </div>
                 </div>
 
-                <button class="calculate-btn" onclick="calculateDeal()">
+                <button class="calculate-btn" onclick="calculateDeal(true)">
                     Calculate Returns
                 </button>
             </div>
 
             <!-- Results -->
-            <div class="calc-section results-section" id="resultsSection" style="display: none;">
+            <div class="calc-section results-section" id="resultsSection">
                 <h2 class="section-title">
                     Investment Analysis Results
                 </h2>
@@ -495,7 +495,7 @@
                 </div>
                 
                 <!-- Tips Section -->
-                <div class="tips-section" id="tipsSection" style="display: none;">
+                <div class="tips-section" id="tipsSection">
             <h3 class="tips-title">
                 <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
@@ -503,15 +503,15 @@
                 Investment Tips
             </h3>
             <ul class="tips-list" id="tipsList">
-                <!-- Tips will be dynamically added here -->
+                <li>Run the analysis to see personalized tips for this scenario.</li>
             </ul>
         </div>
 
                 <!-- Warning Section -->
-                <div class="warning-section" id="warningSection" style="display: none;">
+                <div class="warning-section" id="warningSection">
                     <h3 class="warning-title">⚠️ Risk Warnings</h3>
                     <p class="warning-text" id="warningText">
-                        <!-- Warnings will be dynamically added here -->
+                        Run the analysis to see any risk warnings for this deal.
                     </p>
                 </div>
         </div>
@@ -548,7 +548,7 @@
             return `${v.toFixed(1)}%`;
         }
         
-        async function calculateDeal() {
+        async function calculateDeal(shouldScroll) {
             const purchasePrice = parseFloat(document.getElementById('purchasePrice').value) || 0;
             const arvValue = parseFloat(document.getElementById('arvValue').value) || 0;
             const renovationCost = parseFloat(document.getElementById('renovationCost').value) || 0;
@@ -646,8 +646,10 @@
                     });
 
                 const tipsList = document.getElementById('tipsList');
-                tipsList.innerHTML = tips.map(tip => `<li>${tip}</li>`).join('');
-                document.getElementById('tipsSection').style.display = tips.length > 0 ? 'block' : 'none';
+                tipsList.innerHTML =
+                    tips.length > 0
+                        ? tips.map(tip => `<li>${tip}</li>`).join('')
+                        : '<li>No specific tips yet. Adjust your inputs and run the analysis.</li>';
 
                 const warningsText = recommendations
                     .filter(rec => rec.type === 'warning' || rec.type === 'danger' || rec.type === 'caution')
@@ -656,17 +658,21 @@
 
                 if (warningsText && warningsText.length > 0) {
                     document.getElementById('warningText').textContent = warningsText;
-                    document.getElementById('warningSection').style.display = 'block';
                 } else {
-                    document.getElementById('warningSection').style.display = 'none';
+                    document.getElementById('warningText').textContent =
+                        'No major risk flags were detected for this scenario based on your inputs.';
                 }
 
-                // Show results
-                document.getElementById('resultsSection').style.display = 'block';
-                document.getElementById('resultsSection').scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'nearest',
-                });
+                // Results panel is always visible; we just update its contents.
+
+                // Only scroll when explicitly requested (e.g. button click),
+                // not on initial page load.
+                if (shouldScroll) {
+                    document.getElementById('resultsSection').scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'nearest',
+                    });
+                }
 
                 console.log('[DealAnalyzer] Detailed Analysis:', analysis);
             } catch (error) {
@@ -676,7 +682,8 @@
         }
 
         window.addEventListener('load', () => {
-            calculateDeal();
+            // Do NOT auto-run analysis on load; keep user at the top and let
+            // them trigger the first calculation explicitly via the button.
 
             // Register guided walkthrough for Deal Analyzer
             if (window.AssiduousGuide) {

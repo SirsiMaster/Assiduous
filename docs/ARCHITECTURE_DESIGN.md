@@ -338,7 +338,7 @@ properties/{propertyId}/views/{viewId} {
 ```
 
 #### `generateUserQR`
-**Purpose**: Generate profile QR codes for users across personas (admin/agent/client)  
+**Purpose**: (Legacy) Generate and persist profile QR metadata for users across personas (admin/agent/client)  
 **Trigger**: HTTPS Callable (v2 `onCall` in `functions/src/index.ts`)  
 **Auth**: Required
 
@@ -363,7 +363,7 @@ users/{userId} {
 }
 ```
 
-> Current UI usage: `public/client/my-qr.html` calls this via `CloudFunctionsService.generateUserQR` from `firebase-init.js`. Admin/agent personas can reuse the same callable and URL pattern for their own profile QR pages.
+> Current UI usage (updated): `public/client/my-qr.html`, `public/agent/my-qr.html`, and `public/admin/my-qr.html` now **compute the profile URL in the browser** and render QR codes using the open-source `QRCode.js` library. The `generateUserQR` callable is retained for optional persistence/backfill and analytics, but **is no longer part of the critical render path** for persona QR pages.
 
 ### 2. Frontend Components
 

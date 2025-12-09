@@ -169,7 +169,13 @@ Edit `public/components/sidebar-root.html` and add `data-roles` attribute:
 
 ---
 
-## Project Conventions
+### Project Conventions
+
+### OSS-First Components
+For commodity UI widgets (QR codes, charts, date pickers, sliders, toasts, etc.), always prefer a small, well-maintained
+open-source component over writing a bespoke implementation. Integrate the OSS widget behind the existing UCS/component
+system so it can be reused and themed consistently. Only implement custom rendering logic when we truly need behavior
+that is not covered by a vetted OSS option.
 
 ### Commit Messages
 Follow Conventional Commits specification:

@@ -284,76 +284,118 @@
     <script src="../components/ucs-core.js"></script>
     <script src="../components/component-registry.js"></script>
     <script src="../components/auth-guard.js"></script>
+    <!-- Lightweight client-side QR code generator (MIT licensed) -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
     
     <script>
         let currentUser = null;
         let currentQRData = null;
         let auth;
-        let functionsService;
-        
-        // Initialize auth/functions when Firebase is ready
+
+        // Determine role from data-auth-protect attribute so we don't need
+        // extra round-trips just to figure out which profile URL to use.
+        function getRoleFromPage() {
+            const attr = (document.documentElement.getAttribute('data-auth-protect') || '').toLowerCase();
+            if (attr.includes('admin')) return 'admin';
+            if (attr.includes('agent')) return 'agent';
+            // client page is "client,investor" – map both to client profile
+            return 'client';
+        }
+
+        function buildProfileUrl(user) {
+            const origin = window.location.origin || 'https://assiduous-prod.web.app';
+            const role = getRoleFromPage();
+            return `${origin}/${role}/profile.html?id=${encodeURIComponent(user.uid)}`;
+        }
+
+        function renderQRDisplay() {
+            if (!currentQRData || !currentQRData.profileUrl) return;
+            const qrDisplay = document.getElementById('qrDisplay');
+            const profileUrl = currentQRData.profileUrl;
+
+            document.getElementById('profileUrl').textContent = profileUrl;
+
+            // Clear any previous QR
+            qrDisplay.innerHTML = '';
+            const canvasContainer = document.createElement('div');
+            canvasContainer.id = 'qrCanvas';
+            qrDisplay.appendChild(canvasContainer);
+
+            if (window.QRCode) {
+                new QRCode(canvasContainer, {
+                    text: profileUrl,
+                    width: 300,
+                    height: 300,
+                    correctLevel: QRCode.CorrectLevel.H,
+                });
+            } else {
+                // Fallback: simple link if QR library failed to load
+                canvasContainer.innerHTML = `<a href="${profileUrl}">${profileUrl}</a>`;
+            }
+
+            const caption = document.createElement('p');
+            caption.style.color = 'var(--text-secondary)';
+            caption.style.fontSize = '14px';
+            caption.style.margin = '12px 0 0 0';
+            caption.textContent = 'Scan this code to view my profile';
+            qrDisplay.appendChild(caption);
+        }
+
+        function generateQrForCurrentUser() {
+            if (!currentUser) return;
+            const profileUrl = buildProfileUrl(currentUser);
+
+            currentQRData = {
+                profileUrl,
+            };
+            renderQRDisplay();
+        }
+
+        // Initialize auth when Firebase is ready; generate QR entirely on the
+        // client so the page feels instant and does not depend on Cloud
+        // Functions or Firestore round-trips.
         window.addEventListener('firebase-ready', () => {
             const firebase = window.Firebase || {};
             auth = firebase.auth || window.firebaseAuth;
-            functionsService = firebase.CloudFunctionsService || null;
 
-            // Check authentication
-            auth.onAuthStateChanged(async (user) => {
+            auth.onAuthStateChanged((user) => {
                 if (!user) {
                     window.location.href = '../index.html#login';
                     return;
                 }
-                
                 currentUser = user;
-                await loadUserQR();
+                generateQrForCurrentUser();
             });
         });
-        
-        // Load user QR code
-        async function loadUserQR() {
-            if (!functionsService) {
-                console.warn('Firebase FunctionsService not ready yet.');
-                return;
-            }
-            const qrDisplay = document.getElementById('qrDisplay');
-            
-            try {
-                const response = await functionsService.generateUserQR({ regenerate: false });
-                
-                if (!response || !response.success) {
-                    throw new Error(response?.error || 'Failed to load QR');
-                }
-                
-                currentQRData = response.data;
-                
-                // Update UI
-                document.getElementById('profileUrl').textContent = currentQRData.profileUrl;
-                
-                qrDisplay.innerHTML = `
-                    <img src="${currentQRData.qrCodeUrl}" alt="Profile QR Code" />
-                    <p style="color: var(--text-secondary); font-size: 14px; margin: 0;">
-                        Scan this code to view my profile
-                    </p>
-                `;
-                
-                console.log('✅ Profile QR loaded:', currentQRData);
-                
-            } catch (error) {
-                console.error('❌ Error loading profile QR:', error);
-                qrDisplay.innerHTML = `
-                    <div class="qr-loading" style="color: var(--danger);">
-                        Error loading QR code: ${error.message}
-                    </div>
-                `;
-            }
-        }
         // Download QR code
         function downloadQR() {
             if (!currentQRData) return;
-            
+            const container = document.getElementById('qrCanvas');
+            if (!container) return;
+
+            // Prefer canvas (vector-ish) if available, otherwise fall back to img
+            const canvas = container.querySelector('canvas');
+            const img = container.querySelector('img');
+            let dataUrl = null;
+
+            try {
+                if (canvas && canvas.toDataURL) {
+                    dataUrl = canvas.toDataURL('image/png');
+                } else if (img && img.src) {
+                    dataUrl = img.src;
+                }
+            } catch (e) {
+                console.warn('downloadQR: failed to extract data URL from QR canvas/img', e);
+            }
+
+            if (!dataUrl) {
+                showToast('Unable to download QR image', 'error');
+                return;
+            }
+
             const link = document.createElement('a');
-            link.href = currentQRData.qrCodeUrl;
-            link.download = `${currentUser.displayName || 'My'}-Profile-QR.png`;
+            link.href = dataUrl;
+            link.download = `${(currentUser && (currentUser.displayName || currentUser.email)) || 'My'}-Profile-QR.png`;
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);

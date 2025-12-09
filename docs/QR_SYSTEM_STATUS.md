@@ -41,6 +41,12 @@ Property detail page updates:
 
 ### ✅ Implemented Features
 
+#### Frontend QR Rendering (Canonical)
+- **Profile QR (client/agent/admin)** now uses a **pure client-side generator** based on the open-source `QRCode.js` library (loaded from jsDelivr).
+- The browser deterministically computes the profile URL (e.g., `https://assiduous-prod.web.app/{role}/profile.html?id={uid}`) and renders the QR directly into a `<canvas>` element.
+- Cloud Functions `generateUserQR` and `backfillUserProfiles` remain available for **legacy data hydration and backend analytics only**, not in the hot path for the "My QR" pages.
+- This pattern is the **canonical approach for any future QR or barcode-style rendering**: compute the target URL on the client, render via a lightweight JS library, and only hit the backend when necessary for persistence or attribution.
+
 #### Cloud Functions
 1. **`generatePropertyQR`** (v2 callable in `functions/src/index.ts`, legacy JS retained for back-compat)
    - Generates sequential Assiduous IDs using `generateSequentialId('PROP')`
@@ -83,7 +89,10 @@ Property detail page updates:
    - Supports dry-run and paginated execution
    - Status: Deployed to assiduous-prod and ready for controlled execution
 
-#### Frontend Components
+### Frontend Components
+
+> **Design Rule – OSS-first for widgets/components:**
+> For UI widgets that are industry-commodity (QR codes, charts, date pickers, sliders, etc.), Assiduous **prefers small, well-maintained open-source components** over bespoke implementations. The QR system’s move to `QRCode.js` is the canonical example. When implementing new widgets, first search for a vetted OSS component and integrate it behind our UCS/component system before writing custom rendering logic.
 
 **Property QR Widget** (`public/components/property-qr-widget.html`)
 - Complete UI component with:

@@ -334,13 +334,21 @@ This document provides a comprehensive test plan for the QR Code system across a
 - ✅ "How to Use Your QR Code" section with 4 examples
 - ✅ Usage examples: Email signature, business cards, social media, networking
 
-**Firestore Verification:**
+**Implementation Note (Canonical):**
+The "My QR" pages (client/agent/admin) now render QR codes **entirely in the browser** using the open-source `QRCode.js` library. The page:
+- Restores Firebase Auth
+- Computes `profileUrl = https://assiduous-prod.web.app/{role}/profile.html?id={uid}`
+- Renders the QR into `<canvas>` using `new QRCode(...)`
+
+Cloud Functions `generateUserQR` are not required for this flow and are treated as a legacy/optional persistence layer.
+
+**Optional Firestore Verification (if/when backend persistence is re-enabled):**
 ```javascript
 // users/{clientUserId}
 {
-  profileQRCode: "https://api.qrserver.com/...",
-  profileUrl: "https://assiduous-prod.web.app/profile?uid={clientUserId}",
-  profileQRGeneratedAt: Timestamp
+  profileQRCode: "https://...",           // Optional cached image URL
+  profileUrl: "https://assiduous-prod.web.app/client/profile.html?id={clientUserId}",
+  profileQRGeneratedAt: Timestamp          // Optional
 }
 ```
 

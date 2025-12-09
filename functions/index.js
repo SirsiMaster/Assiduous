@@ -379,6 +379,71 @@ exports.getAgentProperties = functions.https.onCall(async (data, context) => {
 });
 
 // ============================================================================
+// PUBLIC PROFILE API (for QR / anonymous viewers)
+// ============================================================================
+
+/**
+ * getPublicUserProfile (HTTP)
+ *
+ * Returns a sanitized, public-safe view of a user's profile that can be
+ * rendered for unauthenticated viewers (e.g., QR code scans). This function
+ * intentionally whitelists only non-sensitive fields.
+ */
+exports.getPublicUserProfile = functions.https.onRequest(async (req, res) => {
+    res.set('Access-Control-Allow-Origin', '*');
+    res.set('Access-Control-Allow-Methods', 'GET, OPTIONS');
+    res.set('Access-Control-Allow-Headers', 'Content-Type');
+
+    if (req.method === 'OPTIONS') {
+        res.status(204).send('');
+        return;
+    }
+
+    const userId = req.query.id || req.query.uid;
+    if (!userId) {
+        res.status(400).json({ success: false, error: "Missing required query parameter 'id'" });
+        return;
+    }
+
+    try {
+        const snap = await db.collection('users').doc(String(userId)).get();
+        if (!snap.exists) {
+            res.status(404).json({ success: false, error: 'User not found' });
+            return;
+        }
+
+        const data = snap.data() || {};
+        const profile = data.profile || {};
+
+        const publicProfile = {
+            id: String(userId),
+            firstName: data.firstName || '',
+            lastName: data.lastName || '',
+            displayName: data.displayName || '',
+            role: data.role || 'client',
+            email: data.email || '',
+            phone: data.phone || '',
+            profile: {
+                bio: profile.bio || '',
+                city: profile.city || '',
+                state: profile.state || '',
+                zip: profile.zip || '',
+                photoUrl: profile.photoUrl || '',
+                linkedinUrl: profile.linkedinUrl || '',
+                twitterHandle: profile.twitterHandle || '',
+                instagramHandle: profile.instagramHandle || '',
+                websiteUrl: profile.websiteUrl || '',
+            },
+        };
+
+        res.json({ success: true, data: publicProfile });
+    } catch (error) {
+        console.error('getPublicUserProfile error', error);
+        res.status(500).json({ success: false, error: 'Internal server error' });
+    }
+});
+
+// ============================================================================
 // QR CODE & INVITATION SYSTEM
 // ============================================================================
 

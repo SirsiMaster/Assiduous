@@ -374,6 +374,17 @@ service cloud.firestore {
     }
     
     // ============================================================================
+    // PUBLIC PROFILES (SANITIZED QR/VIEW DATA)
+    // ============================================================================
+    
+    match /public_profiles/{userId} {
+      // Read: Anyone can read sanitized public profiles used for QR targets.
+      // All writes are performed by Cloud Functions; block direct client writes.
+      allow read: if true;
+      allow write: if false;
+    }
+    
+    // ============================================================================
     // AGENT-SPECIFIC COLLECTIONS
     // ============================================================================
     

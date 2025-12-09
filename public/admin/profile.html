@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-auth-protect="admin">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -236,27 +236,47 @@
     window.addEventListener('firebase-ready', () => {
       const firebase = window.Firebase || {};
       const auth = firebase.auth || window.firebaseAuth;
+      const db = firebase.db || window.firebaseDb;
       const dbService = window.DatabaseService;
       const requestedId = getQueryParam('id');
+      const statusEl = document.getElementById('profileStatus');
+      const contentEl = document.getElementById('profileContent');
 
-      auth.onAuthStateChanged(async (user) => {
-        const statusEl = document.getElementById('profileStatus');
-        const contentEl = document.getElementById('profileContent');
-
-        if (!user) {
-          statusEl.textContent = 'Please log in to view this profile.';
+      async function loadProfile(targetId) {
+        if (!targetId) {
+          statusEl.textContent = 'Profile not found.';
           return;
         }
 
-        const targetId = requestedId || user.uid;
-        // Admin is allowed to view any profile, but QR will typically point to their own id
+        // Admin is allowed to view any profile, but QR will typically point to a single id
         try {
-          const result = await dbService.getUserData(targetId);
-          if (!result || !result.success || !result.data) {
+          let data = null;
+
+          // Primary source for QR/public views: sanitized public_profiles doc
+          if (db && db.collection) {
+            try {
+              const snap = await db.collection('public_profiles').doc(targetId).get();
+              if (snap.exists) {
+                data = snap.data();
+              }
+            } catch (publicErr) {
+              console.warn('Error reading public_profiles doc', publicErr);
+            }
+          }
+
+          // Fallback: use DatabaseService when available (e.g., logged-in sessions)
+          if (!data && dbService && typeof dbService.getUserData === 'function') {
+            const result = await dbService.getUserData(targetId);
+            if (result && result.success && result.data) {
+              data = result.data;
+            }
+          }
+
+          if (!data) {
             statusEl.textContent = 'Profile not found.';
             return;
           }
-          const data = result.data;
+
           const profile = data.profile || {};
 
           const firstName = data.firstName || '';
@@ -322,7 +342,26 @@
           console.error('Error loading profile:', e);
           statusEl.textContent = 'Error loading profile.';
         }
-      });
+      }
+
+      // If an explicit id is present (QR scan / shared link), load that profile
+      if (requestedId) {
+        loadProfile(requestedId);
+        return;
+      }
+
+      // Fallback: if no id param, use the currently signed-in user when available
+      if (auth && typeof auth.onAuthStateChanged === 'function') {
+        auth.onAuthStateChanged((user) => {
+          if (user) {
+            loadProfile(user.uid);
+          } else {
+            statusEl.textContent = 'Profile not found.';
+          }
+        });
+      } else {
+        statusEl.textContent = 'Profile not found.';
+      }
     });
   </script>
 </body>
