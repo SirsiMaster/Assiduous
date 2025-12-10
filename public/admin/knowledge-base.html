@@ -1,16 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-auth-protect="admin">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
     <title>Knowledge Base - Assiduous Realty Admin</title>
     
-    <!-- Firebase SDK (Compat) -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    <script src="../firebase-config.js"></script>
+    <!-- Canonical modular Firebase bootstrap for portal pages -->
+    <script type="module">
+        import Firebase, { AuthService, DatabaseService } from '../assets/js/firebase-init.js';
+        window.Firebase = Firebase;
+        window.AuthService = AuthService;
+        window.DatabaseService = DatabaseService;
+    </script>
     
     <!-- Assiduous Design System -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1138,11 +1140,11 @@
     </div>
 
     <script>
-        // Firestore reference (initialized via firebase-config.js)
+        // Firestore reference (initialized via firebase-init.js firebase-ready event)
         let db = null;
         let metricsInitialized = false;
 
-        // Initialize Firestore when firebase-config.js signals readiness
+        // Initialize Firestore when firebase-init.js fires the firebase-ready event
         window.addEventListener('firebase-ready', function (event) {
             db = (event.detail && event.detail.db) || window.firebaseDb || null;
 
@@ -1156,7 +1158,7 @@
             }
 
             metricsInitialized = true;
-            console.log('Firebase initialized for Knowledge Base (via firebase-config.js)');
+            console.log('Firebase initialized for Knowledge Base (via firebase-init.js)');
             loadDynamicMetrics();
 
             // Auto-refresh metrics every 30 seconds

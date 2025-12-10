@@ -318,11 +318,13 @@ async function initPropertyQR(propertyId) {
     currentPropertyId = propertyId;
     
     try {
-        // Call Cloud Function to generate/get QR code
-        const generatePropertyQR = firebase.functions().httpsCallable('generatePropertyQR');
-        const result = await generatePropertyQR({ propertyId: propertyId });
+        // Call Cloud Function to generate/get QR code via modular CloudFunctionsService
+        if (!window.CloudFunctionsService || typeof window.CloudFunctionsService.callFunction !== 'function') {
+            throw new Error('CloudFunctionsService is not available. Ensure firebase-init.js has loaded.');
+        }
+        const result = await window.CloudFunctionsService.callFunction('generatePropertyQR', { propertyId: propertyId });
         
-        currentPropertyQRData = result.data;
+        currentPropertyQRData = result;
         
         // Update UI
         document.getElementById('assiduousId').textContent = currentPropertyQRData.assiduousId;
@@ -382,13 +384,15 @@ async function regeneratePropertyQR() {
     btn.textContent = 'Regenerating...';
     
     try {
-        const generatePropertyQR = firebase.functions().httpsCallable('generatePropertyQR');
-        const result = await generatePropertyQR({ 
+        if (!window.CloudFunctionsService || typeof window.CloudFunctionsService.callFunction !== 'function') {
+            throw new Error('CloudFunctionsService is not available. Ensure firebase-init.js has loaded.');
+        }
+        const result = await window.CloudFunctionsService.callFunction('generatePropertyQR', { 
             propertyId: currentPropertyId,
             regenerate: true
         });
         
-        currentPropertyQRData = result.data;
+        currentPropertyQRData = result;
         
         // Update UI
         document.getElementById('assiduousId').textContent = currentPropertyQRData.assiduousId;
@@ -448,8 +452,10 @@ async function shareViaEmail(event) {
     submitBtn.textContent = 'Sending...';
     
     try {
-        const sharePropertyQR = firebase.functions().httpsCallable('sharePropertyQR');
-        await sharePropertyQR({
+        if (!window.CloudFunctionsService || typeof window.CloudFunctionsService.callFunction !== 'function') {
+            throw new Error('CloudFunctionsService is not available. Ensure firebase-init.js has loaded.');
+        }
+        await window.CloudFunctionsService.callFunction('sharePropertyQR', {
             propertyId: currentPropertyId,
             recipientEmail: recipientEmail,
             method: 'email',
@@ -483,8 +489,10 @@ async function shareViaSMS(event) {
     submitBtn.textContent = 'Sending...';
     
     try {
-        const sharePropertyQR = firebase.functions().httpsCallable('sharePropertyQR');
-        await sharePropertyQR({
+        if (!window.CloudFunctionsService || typeof window.CloudFunctionsService.callFunction !== 'function') {
+            throw new Error('CloudFunctionsService is not available. Ensure firebase-init.js has loaded.');
+        }
+        await window.CloudFunctionsService.callFunction('sharePropertyQR', {
             propertyId: currentPropertyId,
             recipientPhone: recipientPhone,
             method: 'sms',

@@ -185,7 +185,6 @@
     <!-- UCS Core Scripts -->
     <script src="../components/ucs-core.js"></script>
     <script src="../components/component-registry.js"></script>
-    <script src="../firebase-config.js"></script>
 
     <!-- Persona-aware header text for Admin Messages -->
     <script>
@@ -342,8 +341,8 @@
         }
 
         window.addEventListener('firebase-ready', function() {
-          var auth = window.firebaseAuth || (window.firebase && firebase.auth && firebase.auth());
-          var db = window.firebaseDb || (window.firebase && firebase.firestore && firebase.firestore());
+          var auth = window.firebaseAuth || (window.Firebase && window.Firebase.auth);
+          var db = window.firebaseDb || (window.Firebase && window.Firebase.db);
           if (!auth || !db) {
             console.error('[Admin Messages] Firebase not ready for inbox view');
             return;

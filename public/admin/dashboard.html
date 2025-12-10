@@ -537,7 +537,15 @@
 
     <!-- Admin Shell Router: soft navigation within the admin persona -->
     <script>
+      // Temporary feature flag: disable admin shell router until all admin pages
+      // are fully wired for SPA-style navigation. When true, the router will
+      // intercept sidebar clicks and swap .dashboard-content in-place.
+      var ENABLE_ADMIN_SHELL_ROUTER = false;
+
       (function() {
+        if (!ENABLE_ADMIN_SHELL_ROUTER) {
+          return;
+        }
         var ROUTES = {
           'dashboard': 'dashboard.html',
           'messages': 'messages.html',

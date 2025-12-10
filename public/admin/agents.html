@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-auth-protect="admin">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,6 +12,14 @@
     
     <link rel="stylesheet" href="../assiduous.css">
     <link rel="stylesheet" href="../components/admin-layout.css">
+
+    <!-- Canonical modular Firebase bootstrap for portal pages -->
+    <script type="module">
+        import Firebase, { AuthService, DatabaseService } from '../assets/js/firebase-init.js';
+        window.Firebase = Firebase;
+        window.AuthService = AuthService;
+        window.DatabaseService = DatabaseService;
+    </script>
     
     <style>
         /* Admin Layout - Consistent across all admin pages */
@@ -249,7 +257,8 @@
             overflow: hidden;
         }
 
-        .btn-mls-sync {
+        .btn-mls-sync,
+        .btn-delete-user {
             padding: 4px 8px;
             border-radius: 999px;
             border: 1px solid var(--border);
@@ -259,8 +268,26 @@
             color: var(--navy);
         }
 
-        .btn-mls-sync:hover {
+        .btn-mls-sync:hover,
+        .btn-delete-user:hover {
             background: var(--gray-100);
+        }
+
+        .user-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-xs);
+            align-items: center;
+        }
+
+        .user-role-select,
+        .user-status-select {
+            padding: 4px 8px;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            font-size: 12px;
+            background: var(--white);
+            color: var(--text-primary);
         }
 
         .table-header {
@@ -429,27 +456,11 @@
                                 <th>Actions</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="agentsTableBody">
                             <tr>
-                                <td>
-                                    <div class="agent-info">
-                                        <div class="agent-avatar">SJ</div>
-                                        <div>
-                                            <div style="font-weight: 500;">Sarah Johnson</div>
-                                            <div style="font-size: 12px; color: var(--text-secondary);">sarah.j@assiduousrealty.com</div>
-                                        </div>
-                                    </div>
+                                <td colspan="10" style="text-align:center; padding: var(--space-xl); color: var(--text-secondary);">
+                                    Loading agents…
                                 </td>
-                                <td>RE-2019-4521</td>
-                                <td>Residential</td>
-                                <td>12</td>
-                                <td>$2.4M</td>
-                                <td>
-                                    <div class="performance-bar">
-                                        <div class="performance-fill" style="width: 92%"></div>
-                                    </div>
-                                </td>
-                                <td><span class="sirsi-badge sirsi-sm-sm-badge--success">Active</span></td>
                             </tr>
                             <tr>
                                 <td>
@@ -563,30 +574,201 @@
         </main>
     </div>
 
+    <script src="../components/ucs-core.js"></script>
+    <script src="../components/component-registry.js"></script>
+    <script src="../components/auth-guard.js"></script>
     <script>
         const API_BASE_URL = 'https://assiduous-api-9355377564.us-central1.run.app';
-
+ 
         // Header Actions for Agents
         const HeaderActions = {
             handleAction: function(action) {
                 switch(action) {
                     case 'addAgent':
-                        // In production, this would open a modal or navigate to add agent form
                         console.log('Opening add agent form...');
-                        alert('Add agent functionality will be implemented in the next phase.');
+                        alert('Add agent functionality will be implemented in a future version.');
                         break;
                     default:
                         console.log('Unknown action:', action);
                 }
             }
         };
+
+        // Load agents from Firestore users collection and wire admin actions
+        async function loadAgentsDirectory() {
+            const tableBody = document.getElementById('agentsTableBody');
+            if (!tableBody || !window.DatabaseService || !window.CloudFunctionsService) return;
+
+            try {
+                const agents = await window.DatabaseService.getDocuments('users', [
+                    { field: 'role', operator: '==', value: 'agent' },
+                ]);
+
+                tableBody.innerHTML = '';
+                if (!agents || !agents.length) {
+                    tableBody.innerHTML = '<tr><td colspan="10" style="text-align:center; padding: var(--space-xl); color: var(--text-secondary);">No agents found.</td></tr>';
+                    return;
+                }
+
+                agents.forEach((agent) => {
+                    const tr = document.createElement('tr');
+                    const name = (agent.displayName || ((agent.firstName || '') + ' ' + (agent.lastName || ''))).trim() || 'Agent';
+                    const email = agent.email || '';
+                    const initials = (name.split(/\s+/).map(p => p[0]).join('') || 'AG').slice(0, 2).toUpperCase();
+                    const role = (agent.role || 'agent').toLowerCase();
+                    const status = (agent.status || 'active').toLowerCase();
+                    const statusClass = status === 'active'
+                      ? 'sirsi-sm-sm-badge--success'
+                      : status === 'pending'
+                        ? 'sirsi-sm-sm-badge--warning'
+                        : 'sirsi-sm-sm-badge--neutral';
+
+                    tr.innerHTML = `
+                        <td>
+                          <div class="agent-info">
+                            <div class="agent-avatar">${initials}</div>
+                            <div>
+                              <div style="font-weight: 500;">${name}</div>
+                              <div style="font-size: 12px; color: var(--text-secondary);">${email}</div>
+                            </div>
+                          </div>
+                        </td>
+                        <td>${agent.licenseNumber || '—'}</td>
+                        <td>${agent.specialization || '—'}</td>
+                        <td>${agent.metrics?.activeListings ?? '—'}</td>
+                        <td>${agent.metrics?.salesYTD ? '$' + Number(agent.metrics.salesYTD).toLocaleString() : '—'}</td>
+                        <td>${agent.mlsBoard || '—'}</td>
+                        <td>${agent.mlsStatus || 'Not configured'}</td>
+                        <td>
+                          <div class="performance-bar">
+                            <div class="performance-fill" style="width: ${(agent.performanceScore ?? 0)}%"></div>
+                          </div>
+                        </td>
+                        <td>
+                          <span
+                            class="sirsi-badge ${statusClass} user-status-pill"
+                            data-user-id="${agent.id}"
+                          >${status}</span>
+                        </td>
+                        <td>
+                          <div class="user-actions">
+                            <select class="user-role-select" data-user-id="${agent.id}">
+                              <option value="admin" ${role === 'admin' ? 'selected' : ''}>Admin</option>
+                              <option value="agent" ${role === 'agent' ? 'selected' : ''}>Agent</option>
+                              <option value="client" ${role === 'client' ? 'selected' : ''}>Client</option>
+                              <option value="investor" ${role === 'investor' ? 'selected' : ''}>Investor</option>
+                            </select>
+                            <select class="user-status-select" data-user-id="${agent.id}">
+                              <option value="active" ${status === 'active' ? 'selected' : ''}>Active</option>
+                              <option value="pending" ${status === 'pending' ? 'selected' : ''}>Pending</option>
+                              <option value="disabled" ${status === 'disabled' ? 'selected' : ''}>Disabled</option>
+                            </select>
+                            <button type="button" class="btn-delete-user" data-agent-id="${agent.id}">Delete</button>
+                          </div>
+                        </td>
+                    `;
+
+                    tableBody.appendChild(tr);
+                });
+
+                // Wire delete buttons
+                tableBody.querySelectorAll('button.btn-delete-user').forEach((btn) => {
+                    btn.addEventListener('click', async (e) => {
+                        const uid = e.currentTarget.getAttribute('data-agent-id');
+                        if (!uid) return;
+                        const row = e.currentTarget.closest('tr');
+                        const confirmed = window.confirm('Delete this agent account? This cannot be undone.');
+                        if (!confirmed) return;
+
+                        e.currentTarget.disabled = true;
+                        e.currentTarget.textContent = 'Deleting…';
+                        try {
+                            const result = await window.CloudFunctionsService.adminDeleteUser(uid);
+                            if (!result || !result.success) {
+                                alert((result && result.error) || 'Failed to delete agent.');
+                                e.currentTarget.disabled = false;
+                                e.currentTarget.textContent = 'Delete';
+                                return;
+                            }
+                            if (row && row.parentNode) row.parentNode.removeChild(row);
+                        } catch (err) {
+                            console.error('adminDeleteUser error:', err);
+                            alert('Unexpected error deleting agent.');
+                            e.currentTarget.disabled = false;
+                            e.currentTarget.textContent = 'Delete';
+                        }
+                    });
+                });
+
+                // Wire role changes
+                tableBody.querySelectorAll('.user-role-select').forEach((select) => {
+                    select.addEventListener('change', async (e) => {
+                        const uid = e.target.getAttribute('data-user-id');
+                        if (!uid) return;
+                        const newRole = e.target.value;
+                        e.target.disabled = true;
+                        try {
+                            const result = await window.DatabaseService.updateUserProfile(uid, { role: newRole });
+                            if (!result || !result.success) {
+                                alert((result && result.error) || 'Failed to update role.');
+                            }
+                        } catch (err) {
+                            console.error('adminUpdateUser role error:', err);
+                            alert('Unexpected error updating role.');
+                        } finally {
+                            e.target.disabled = false;
+                        }
+                    });
+                });
+
+                // Wire status changes
+                tableBody.querySelectorAll('.user-status-select').forEach((select) => {
+                    select.addEventListener('change', async (e) => {
+                        const uid = e.target.getAttribute('data-user-id');
+                        if (!uid) return;
+                        const newStatus = e.target.value;
+                        e.target.disabled = true;
+                        try {
+                            const result = await window.DatabaseService.updateUserProfile(uid, { status: newStatus });
+                            if (!result || !result.success) {
+                                alert((result && result.error) || 'Failed to update status.');
+                            } else {
+                                const pill = tableBody.querySelector(`.user-status-pill[data-user-id="${uid}"]`);
+                                if (pill) {
+                                    pill.textContent = newStatus;
+                                    pill.classList.remove('sirsi-sm-sm-badge--success', 'sirsi-sm-sm-badge--warning', 'sirsi-sm-sm-badge--neutral');
+                                    const cls = newStatus === 'active'
+                                      ? 'sirsi-sm-sm-badge--success'
+                                      : newStatus === 'pending'
+                                        ? 'sirsi-sm-sm-badge--warning'
+                                        : 'sirsi-sm-sm-badge--neutral';
+                                    pill.classList.add(cls);
+                                }
+                            }
+                        } catch (err) {
+                            console.error('adminUpdateUser status error:', err);
+                            alert('Unexpected error updating status.');
+                        } finally {
+                            e.target.disabled = false;
+                        }
+                    });
+                });
+            } catch (err) {
+                console.error('Failed to load agents directory:', err);
+                tableBody.innerHTML = '<tr><td colspan="10" style="text-align:center; padding: var(--space-xl); color: var(--danger);">Failed to load agents. Check console for details.</td></tr>';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.DatabaseService && window.CloudFunctionsService) {
+                loadAgentsDirectory();
+            } else {
+                setTimeout(loadAgentsDirectory, 1000);
+            }
+        });
     </script>
     
-    <!-- Firebase SDK compat + shared config -->
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-    <script src="../firebase-config.js"></script>
+    <!-- Firebase configuration now provided by firebase-init.js (modular) -->
     
     <!-- Firebase Configuration and Data Loading -->
     <script>
@@ -596,7 +778,7 @@
         const agentMLSById = {};
 
         async function getIdTokenOrThrow() {
-            const auth = window.firebaseAuth || (window.firebase && window.firebase.auth && window.firebase.auth());
+            const auth = window.firebaseAuth || (window.Firebase && window.Firebase.auth);
             if (!auth || !auth.currentUser) {
                 throw new Error('You must be signed in as an admin to load MLS data.');
             }
@@ -639,7 +821,11 @@
 
         // Initialize Firestore once Firebase is ready
         window.addEventListener('firebase-ready', () => {
-            db = window.firebaseDb || firebase.firestore();
+            db = window.firebaseDb || (window.Firebase && window.Firebase.db);
+            if (!db) {
+                console.warn('[Admin Agents] Firestore not initialized');
+                return;
+            }
             loadAgentsData();
         });
         

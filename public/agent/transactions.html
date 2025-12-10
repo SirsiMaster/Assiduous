@@ -13,6 +13,14 @@
     <link rel="stylesheet" href="../assiduous.css">
     <link rel="stylesheet" href="../components/admin-layout.css">
     
+    <!-- Canonical modular Firebase bootstrap for portal pages -->
+    <script type="module">
+        import Firebase, { AuthService, DatabaseService } from '../assets/js/firebase-init.js';
+        window.Firebase = Firebase;
+        window.AuthService = AuthService;
+        window.DatabaseService = DatabaseService;
+    </script>
+    
     <style>
         /* Admin Layout - Consistent across all admin pages */
         body {
@@ -522,11 +530,7 @@
         });
     </script>
     
-    <!-- Firebase SDK compat + shared config -->
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-    <script src="../firebase-config.js"></script>
+    <!-- Firebase configuration now provided by firebase-init.js (modular) -->
     
     <!-- Firebase Configuration and Data Loading -->
     <script>
@@ -534,7 +538,11 @@
 
         // Initialize Firestore once Firebase is ready
         window.addEventListener('firebase-ready', () => {
-            db = window.firebaseDb || firebase.firestore();
+            db = window.firebaseDb || (window.Firebase && window.Firebase.db);
+            if (!db) {
+                console.warn('[Agent Transactions] Firestore not initialized');
+                return;
+            }
             loadTransactionsData();
         });
         

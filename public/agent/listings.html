@@ -14,6 +14,14 @@
     <link rel="stylesheet" href="../assiduous.css">
     <link rel="stylesheet" href="../components/admin-layout.css">
     
+    <!-- Canonical modular Firebase bootstrap for portal pages -->
+    <script type="module">
+        import Firebase, { AuthService, DatabaseService } from '../assets/js/firebase-init.js';
+        window.Firebase = Firebase;
+        window.AuthService = AuthService;
+        window.DatabaseService = DatabaseService;
+    </script>
+    
     <style>
 /* Sidebar */
         
@@ -352,9 +360,8 @@
     <!-- UCS Core Scripts -->
     <script src="../components/ucs-core.js"></script>
     <script src="../components/component-registry.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="../components/universal-header.js"></script>
+    <script src="../components/auth-guard.js"></script>
     <script>
         // Ensure button styles are loaded
         (function() {
@@ -482,13 +489,13 @@
         // Highlight active page in sidebar
         document.addEventListener('DOMContentLoaded', function() {
             const currentPath = window.location.pathname;
-            document.querySelectorAll(' else {
+            document.querySelectorAll('.nav-item').forEach(item => {
+                if (item.getAttribute('href') === currentPath) {
+                    item.classList.add('active');
+                } else {
                     item.classList.remove('active');
                 }
             });
-
-            // Initialize property management
-            initPropertyManagement();
         });
 
         // ========================================
@@ -496,8 +503,12 @@
         // ========================================
         
         const AgentPropertyService = {
-            db: firebase.firestore(),
-            auth: firebase.auth(),
+            get db() {
+                return window.firebaseDb || (window.Firebase && window.Firebase.db);
+            },
+            get auth() {
+                return window.firebaseAuth || (window.Firebase && window.Firebase.auth);
+            },
             
             /**
              * Get properties for current agent
@@ -584,12 +595,12 @@
              */
             async updatePropertyStatus(propertyId, newStatus) {
                 try {
-                    await this.db.collection('properties').doc(propertyId).update({
-                        status: newStatus,
-                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-                    });
-                    return true;
-                } catch (error) {
+                        await this.db.collection('properties').doc(propertyId).update({
+                            status: newStatus,
+                            updatedAt: new Date()
+                        });
+                        return true;
+                    } catch (error) {
                     console.error('Error updating property status:', error);
                     return false;
                 }
@@ -728,10 +739,10 @@
         
         async function initPropertyManagement() {
             try {
-                // Check authentication
-                const user = firebase.auth().currentUser;
+                const authInstance = window.firebaseAuth || (window.Firebase && window.Firebase.auth);
+                const user = authInstance && authInstance.currentUser;
                 if (!user) {
-                    window.location.href = '/agent/login.html';
+                    console.warn('[Agent Listings] No authenticated user in initPropertyManagement');
                     return;
                 }
                 
@@ -910,17 +921,27 @@
         document.head.appendChild(style);
         
         // Initialize Firebase and page
-        firebase.auth().onAuthStateChanged(user => {
-            if (!user) {
-                window.location.href = '/agent/login.html';
+        window.addEventListener('firebase-ready', () => {
+            const auth = window.firebaseAuth || (window.Firebase && window.Firebase.auth);
+            if (!auth) {
+                console.warn('[Agent Listings] Auth not ready');
                 return;
             }
-            initPropertyManagement();
+            auth.onAuthStateChanged(user => {
+                if (!user) {
+                    const path = window.location.pathname || '';
+                    let base = '';
+                    if (path.indexOf('/public/') === 0) {
+                        base = '/public';
+                    } else if (path.indexOf('/assiduousflip/') === 0) {
+                        base = '/assiduousflip';
+                    }
+                    window.location.href = base + '/index.html#login';
+                    return;
+                }
+                initPropertyManagement();
+            });
         });
     </script>
-    <script src="../components/universal-header.js"></script>
-    <script src="../firebase-config.js"></script>
-    <script src="../firebase-config.js"></script>
-    <script src="../components/universal-header.js"></script>
 </body>
 </html>

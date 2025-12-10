@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-auth-protect="admin">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -431,12 +431,6 @@
         </div>
     </sirsi-modal>
 
-    <!-- Firebase SDK for QR Widget -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-functions-compat.js"></script>
-    <script src="../firebase-config.js"></script>
-    
     <!-- Load property QR widget once Firebase is ready -->
     <script>
         window.addEventListener('firebase-ready', () => {

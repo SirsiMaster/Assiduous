@@ -829,16 +829,18 @@
         <div id="progressItems"></div>
     </div>
 
-    <!-- Firebase Integration -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
-    <script src="{{BASE_PATH}}firebase-config.js"></script>
+    <!-- Firebase Initialization (modular) -->
     <script src="{{BASE_PATH}}components/universal-header.js"></script>
     <script src="{{BASE_PATH}}components/auth-guard.js"></script>
     
-    <script>
+    <script type="module">
+        import Firebase from "../assets/js/firebase-init.js";
+        void Firebase;
+
+        const firebase = window.firebase;
+        const db = window.db;
+        const auth = window.auth;
+
         // ==========================================
         // FIREBASE DOCUMENT MANAGEMENT SERVICE
         // ==========================================

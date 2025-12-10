@@ -14,6 +14,14 @@
     <link rel="stylesheet" href="../assiduous.css">
     <link rel="stylesheet" href="../components/admin-layout.css">
     
+    <!-- Canonical modular Firebase bootstrap for portal pages -->
+    <script type="module">
+        import Firebase, { AuthService, DatabaseService } from '../assets/js/firebase-init.js';
+        window.Firebase = Firebase;
+        window.AuthService = AuthService;
+        window.DatabaseService = DatabaseService;
+    </script>
+    
     <style>
 /* Sidebar */
         
@@ -397,7 +405,7 @@
     <script src="../components/ucs-core.js"></script>
     <script src="../components/component-registry.js"></script>
     <script src="../components/universal-header.js"></script>
-    <script src="../firebase-config.js"></script>
+    <script src="../components/auth-guard.js"></script>
     <script>
         // Initialize Firebase connection for schedule
         let currentMonth = 10;
@@ -405,10 +413,23 @@
         
         async function loadScheduleData() {
             try {
-                // Check authentication
-                const user = await checkAuth();
+                const auth = window.firebaseAuth || (window.Firebase && window.Firebase.auth);
+                const db = window.firebaseDb || (window.Firebase && window.Firebase.db);
+                if (!auth || !db) {
+                    console.warn('[Agent Schedule] Firebase not ready yet');
+                    return;
+                }
+
+                const user = auth.currentUser;
                 if (!user) {
-                    window.location.href = '/agent/login.html';
+                    const path = window.location.pathname || '';
+                    let base = '';
+                    if (path.indexOf('/public/') === 0) {
+                        base = '/public';
+                    } else if (path.indexOf('/assiduousflip/') === 0) {
+                        base = '/assiduousflip';
+                    }
+                    window.location.href = base + '/index.html#login';
                     return;
                 }
                 
@@ -480,6 +501,10 @@
         
         // Initialize on page load
         document.addEventListener('DOMContentLoaded', function() {
+            loadScheduleData();
+        });
+
+        window.addEventListener('firebase-ready', function() {
             loadScheduleData();
         });
     </script>

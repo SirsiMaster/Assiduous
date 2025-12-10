@@ -224,10 +224,50 @@
             margin-bottom: var(--space-md);
         }
 
-        .status-text.error {
+.status-text.error {
             color: var(--danger);
         }
 
+        .danger-zone {
+            margin-top: var(--space-2xl);
+            padding-top: var(--space-xl);
+            border-top: 1px solid var(--border);
+        }
+
+        .danger-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--danger);
+            margin-bottom: var(--space-sm);
+        }
+
+        .danger-description {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-md);
+        }
+
+        .danger-inline {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-sm);
+            align-items: center;
+        }
+
+        .danger-input {
+            max-width: 180px;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: var(--white);
+            border-color: transparent;
+        }
+
+        .btn-danger:hover:not([disabled]) {
+            background: #b91c1c;
+        }
+ 
         .mls-pill {
             display: inline-flex;
             align-items: center;

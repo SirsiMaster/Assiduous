@@ -14,6 +14,14 @@
     <link rel="stylesheet" href="../assiduous.css">
     <link rel="stylesheet" href="../components/admin-layout.css">
     
+    <!-- Canonical modular Firebase bootstrap for portal pages -->
+    <script type="module">
+        import Firebase, { AuthService, DatabaseService } from '../assets/js/firebase-init.js';
+        window.Firebase = Firebase;
+        window.AuthService = AuthService;
+        window.DatabaseService = DatabaseService;
+    </script>
+    
     <style>
 /* Sidebar */
         
@@ -474,15 +482,8 @@
     <!-- UCS Core Scripts -->
     <script src="../components/ucs-core.js"></script>
     <script src="../components/component-registry.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    <script src="../firebase-config.js"></script>
     <script src="../components/universal-header.js"></script>
+    <script src="../components/auth-guard.js"></script>
     <script>
         // ==========================================
         // FIREBASE LEAD MANAGEMENT SERVICE
@@ -493,9 +494,8 @@
             auth: null,
 
             init() {
-                // Prefer instances exported by firebase-config when available
-                this.db = window.firebaseDb || (firebase && firebase.firestore());
-                this.auth = window.firebaseAuth || (firebase && firebase.auth());
+                this.db = window.firebaseDb || (window.Firebase && window.Firebase.db);
+                this.auth = window.firebaseAuth || (window.Firebase && window.Firebase.auth);
             },
             
             /**
@@ -614,8 +614,8 @@
                 try {
                     await this.db.collection('leads').doc(leadId).update({
                         status: newStatus,
-                        lastContact: firebase.firestore.FieldValue.serverTimestamp(),
-                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                        lastContact: new Date(),
+                        updatedAt: new Date()
                     });
                     return true;
                 } catch (error) {
@@ -899,26 +899,42 @@
         // ==========================================
         
         document.addEventListener('DOMContentLoaded', function() {
-            // Check authentication
-            firebase.auth().onAuthStateChanged(user => {
-                if (!user) {
-                    window.location.href = '/agent/login.html';
+            window.addEventListener('firebase-ready', function() {
+                const auth = window.firebaseAuth || (window.Firebase && window.Firebase.auth);
+                if (!auth) {
+                    console.warn('[Agent Leads] Auth not ready');
                     return;
                 }
-                
-                // Load leads
-                loadLeads();
-                
-                // Attach filter listeners
-                document.querySelectorAll('.sirsi-select').forEach(select => {
-                    select.addEventListener('change', applyFilters);
+
+                LeadManagementService.init();
+
+                auth.onAuthStateChanged(user => {
+                    if (!user) {
+                        const path = window.location.pathname || '';
+                        let base = '';
+                        if (path.indexOf('/public/') === 0) {
+                            base = '/public';
+                        } else if (path.indexOf('/assiduousflip/') === 0) {
+                            base = '/assiduousflip';
+                        }
+                        window.location.href = base + '/index.html#login';
+                        return;
+                    }
+                    
+                    // Load leads
+                    loadLeads();
+                    
+                    // Attach filter listeners
+                    document.querySelectorAll('.sirsi-select').forEach(select => {
+                        select.addEventListener('change', applyFilters);
+                    });
+                    
+                    // Attach export listener
+                    const exportBtn = document.querySelector('.table-header button');
+                    if (exportBtn) {
+                        exportBtn.addEventListener('click', exportLeads);
+                    }
                 });
-                
-                // Attach export listener
-                const exportBtn = document.querySelector('.table-header button');
-                if (exportBtn) {
-                    exportBtn.addEventListener('click', exportLeads);
-                }
             });
         });
     </script>

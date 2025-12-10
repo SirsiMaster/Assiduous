@@ -193,10 +193,7 @@ module.exports = {
     firebase: {
       css: [],
       js: [
-        'https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js',
-        'https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js',
-        'https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js',
-        'firebase-config.js',
+        'assets/js/firebase-init.js',
       ]
     }
   },

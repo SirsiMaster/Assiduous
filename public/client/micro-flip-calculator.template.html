@@ -13,11 +13,7 @@
     <link rel="stylesheet" href="{{BASE_PATH}}assiduous.css">
     <link rel="stylesheet" href="{{BASE_PATH}}components/admin-layout.css">
     
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-    <script src="{{BASE_PATH}}firebase-config.js"></script>
+    <!-- Auth Guard (uses modular Firebase via firebase-init.js) -->
     <script src="{{BASE_PATH}}components/auth-guard.js"></script>
     
     <!-- Services -->
@@ -1026,25 +1022,17 @@
     <!-- Header Component Script -->
     <script src="{{BASE_PATH}}components/universal-header.js"></script>
 
-    <script>
+    <script type="module">
+        import Firebase from "../assets/js/firebase-init.js";
+        void Firebase;
+
+        const firebase = window.firebase;
+        const db = window.db;
+        const auth = window.auth;
+
         // Initialize services
         const microFlipEngine = new MicroFlipEngine();
         const propertyService = new PropertyService();
-        
-        // Initialize Firebase
-        const firebaseConfig = {
-            apiKey: "AIzaSyCzPcEJ0TPKnJtcVT2qymgJrII1p0vAJxs",
-            authDomain: "assiduous-prod.firebaseapp.com",
-            projectId: "assiduous-prod",
-            storageBucket: "assiduous-prod.appspot.com",
-            messagingSenderId: "594472642287",
-            appId: "1:594472642287:web:adf723a456b123c4567890"
-        };
-        
-        if (!firebase.apps.length) {
-            firebase.initializeApp(firebaseConfig);
-        }
-        const db = firebase.firestore();
         
         // State
         let selectedProperty = null;

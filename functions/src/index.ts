@@ -2136,6 +2136,134 @@ export const getSubscriptionStatus = stripeModule.getSubscriptionStatus;
 // export const createApiKey = propertyIngestion.createApiKey;
 
 // ============================================================================
+// ACCOUNT MANAGEMENT (CALLABLE FUNCTIONS)
+// ============================================================================
+
+/**
+ * deleteMyAccount (callable)
+ *
+ * Self-service account deletion for the currently authenticated user.
+ * Deletes the user's Firestore profile (users/{uid} and messages subcollection)
+ * and the Firebase Auth user. Intended to be called from settings pages.
+ */
+export const deleteMyAccount = onCall({region: "us-central1"}, async (request) => {
+  if (!request.auth) {
+    throw new HttpsError("unauthenticated", "User must be authenticated to delete their account.");
+  }
+
+  const uid = request.auth.uid;
+
+  try {
+    // Best-effort delete of Firestore profile and messages
+    const userRef = db.collection("users").doc(uid);
+    const userSnap = await userRef.get();
+
+    if (userSnap.exists) {
+      // Delete messages subcollection best-effort (small fan-out expected per user)
+      try {
+        const messagesSnap = await userRef.collection("messages").get();
+        const batch = db.batch();
+        messagesSnap.forEach((doc) => batch.delete(doc.ref));
+        if (!messagesSnap.empty) {
+          await batch.commit();
+        }
+      } catch (err: any) {
+        logger.warn("deleteMyAccount: failed to delete messages subcollection", {uid, error: err?.message});
+      }
+
+      try {
+        await userRef.delete();
+      } catch (err: any) {
+        logger.warn("deleteMyAccount: failed to delete users/ doc", {uid, error: err?.message});
+      }
+    }
+
+    // Delete Auth user last
+    try {
+      await admin.auth().deleteUser(uid);
+    } catch (err: any) {
+      logger.error("deleteMyAccount: failed to delete Auth user", {uid, error: err?.message});
+      throw new HttpsError("internal", err?.message || "Failed to delete Auth user");
+    }
+
+    logger.info("deleteMyAccount: user deleted", {uid});
+    return {success: true};
+  } catch (error: any) {
+    if (error instanceof HttpsError) {
+      throw error;
+    }
+    logger.error("deleteMyAccount: unexpected error", {uid, error: error?.message});
+    throw new HttpsError("internal", error?.message || "Failed to delete account");
+  }
+});
+
+/**
+ * adminDeleteUser (callable)
+ *
+ * Admin-only deletion of an arbitrary user by uid. Performs the same cleanup
+ * as deleteMyAccount but is authorized via the caller's Firestore role.
+ */
+export const adminDeleteUser = onCall({region: "us-central1"}, async (request) => {
+  if (!request.auth) {
+    throw new HttpsError("unauthenticated", "Admin authentication required");
+  }
+
+  const callerUid = request.auth.uid;
+  const {uid} = (request.data || {}) as {uid?: string};
+
+  if (!uid) {
+    throw new HttpsError("invalid-argument", "Field 'uid' is required");
+  }
+
+  try {
+    // Verify caller is admin via Firestore profile
+    const callerSnap = await db.collection("users").doc(callerUid).get();
+    const callerData = callerSnap.data() || {};
+    if ((callerData.role as string) !== "admin") {
+      throw new HttpsError("permission-denied", "Admin role required to delete users");
+    }
+
+    const userRef = db.collection("users").doc(uid);
+    const userSnap = await userRef.get();
+
+    if (userSnap.exists) {
+      try {
+        const messagesSnap = await userRef.collection("messages").get();
+        const batch = db.batch();
+        messagesSnap.forEach((doc) => batch.delete(doc.ref));
+        if (!messagesSnap.empty) {
+          await batch.commit();
+        }
+      } catch (err: any) {
+        logger.warn("adminDeleteUser: failed to delete messages subcollection", {uid, error: err?.message});
+      }
+
+      try {
+        await userRef.delete();
+      } catch (err: any) {
+        logger.warn("adminDeleteUser: failed to delete users/ doc", {uid, error: err?.message});
+      }
+    }
+
+    try {
+      await admin.auth().deleteUser(uid);
+    } catch (err: any) {
+      logger.error("adminDeleteUser: failed to delete Auth user", {uid, error: err?.message});
+      throw new HttpsError("internal", err?.message || "Failed to delete Auth user");
+    }
+
+    logger.info("adminDeleteUser: user deleted by admin", {targetUid: uid, adminUid: callerUid});
+    return {success: true};
+  } catch (error: any) {
+    if (error instanceof HttpsError) {
+      throw error;
+    }
+    logger.error("adminDeleteUser: unexpected error", {uid, error: error?.message});
+    throw new HttpsError("internal", error?.message || "Failed to delete user");
+  }
+});
+
+// ============================================================================
 // QR CODE FUNCTIONS (USER PROFILE + PROPERTY/REFERRAL)
 // ============================================================================
 

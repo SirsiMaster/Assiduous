@@ -14,11 +14,7 @@
     <link rel="stylesheet" href="{{BASE_PATH}}assiduous.css">
     <link rel="stylesheet" href="{{BASE_PATH}}components/admin-layout.css">
     
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+    <!-- Firebase initialized via modular SDK in page script -->
     
     <style>
         /* Admin Layout - Consistent across all admin pages */
@@ -648,14 +644,15 @@
         </main>
     </div>
 
-    <!-- Firebase Integration -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    <script src="{{BASE_PATH}}firebase-config.js"></script>
+    <!-- Firebase Integration via modular SDK -->
     <script src="{{BASE_PATH}}components/universal-header.js"></script>
     
-    <script>
+    <script type="module">
+        import Firebase from "../assets/js/firebase-init.js";
+        void Firebase;
+
+        const firebase = window.firebase;
+
         // ==========================================
         // FIREBASE LEAD MANAGEMENT SERVICE
         // ==========================================

@@ -1862,11 +1862,18 @@
                             userData.brokerageName = document.getElementById('signupBrokerageName')?.value || '';
                         }
                         
-                        // Register user with AuthService
+                        // Register user with AuthService (modular stack)
                         const result = await window.AuthService.signUp(email, password, userData);
                         
                         if (!result.success) {
-                            throw new Error(result.error || 'Failed to create account');
+                            // Preserve the underlying auth error code so we can show
+                            // friendly messages like "email already in use" instead of
+                            // the raw Firebase error string.
+                            const err = new Error(result.error || 'Failed to create account');
+                            if (result.code) {
+                                err.code = result.code;
+                            }
+                            throw err;
                         }
                         
                         console.log('[Signup] User created successfully:', result.user.uid);
@@ -1890,7 +1897,27 @@
                         
                         // User-friendly error messages
                         if (error.code === 'auth/email-already-in-use') {
-                            errorMessage = 'This email is already registered. Please sign in instead.';
+                            // Try to look up the existing account to show its role/status
+                            try {
+                                if (window.DatabaseService && typeof window.DatabaseService.getDocuments === 'function') {
+                                    const matches = await window.DatabaseService.getDocuments('users', [
+                                        { field: 'email', operator: '==', value: email }
+                                    ]);
+                                    if (matches && matches.length) {
+                                        const existing = matches[0];
+                                        const existingRole = (existing.role || 'client').toLowerCase();
+                                        const existingStatus = (existing.status || 'active').toLowerCase();
+                                        errorMessage = `This email is already registered as a ${existingRole} (${existingStatus}). Please sign in instead. If you need this account converted to an agent, an admin can update your role from the admin portal.`;
+                                    } else {
+                                        errorMessage = 'This email is already registered. Please sign in instead.';
+                                    }
+                                } else {
+                                    errorMessage = 'This email is already registered. Please sign in instead.';
+                                }
+                            } catch (lookupErr) {
+                                console.warn('[Signup] Failed to look up existing user role', lookupErr);
+                                errorMessage = 'This email is already registered. Please sign in instead.';
+                            }
                         } else if (error.code === 'auth/weak-password') {
                             errorMessage = 'Password is too weak. Please use at least 6 characters.';
                         } else if (error.code === 'auth/invalid-email') {

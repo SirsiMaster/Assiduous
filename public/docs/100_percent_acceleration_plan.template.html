@@ -559,7 +559,7 @@ cp public/admin/clients.html public/agent/clients.html
 <br>
 <strong>Hour 1-2: Firebase Auth Setup</strong>
 <code></code>`javascript
-// In firebase-config.js
+// Legacy example (original plan). In the current app, web runtime auth is initialized via public/assets/js/firebase-init.js
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 const app = initializeApp(firebaseConfig);

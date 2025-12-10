@@ -13,10 +13,7 @@
     <link rel="stylesheet" href="{{BASE_PATH}}assiduous.css">
     <link rel="stylesheet" href="{{BASE_PATH}}components/admin-layout.css">
     
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <!-- Firebase initialized via modular SDK in assets/js/firebase-init.js -->
     
     <style>
         /* Page-specific styles using design system variables */
@@ -828,8 +825,11 @@
         </div>
     </div>
     
-    <!-- Firebase Configuration -->
-    <script src="{{BASE_PATH}}firebase-config.js"></script>
+    <!-- Modular Firebase Initialization -->
+    <script type="module">
+        import Firebase from "../assets/js/firebase-init.js";
+        void Firebase;
+    </script>
     
     <!-- Load Header and Auth after Firebase Ready -->
     <script>

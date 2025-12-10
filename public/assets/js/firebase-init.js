@@ -35,6 +35,8 @@ import {
   limit,
   onSnapshot,
   serverTimestamp,
+  increment,
+  arrayUnion,
   enableIndexedDbPersistence,
 } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js';
 import {
@@ -46,6 +48,7 @@ import {
   getStorage,
   ref,
   uploadBytes,
+  uploadBytesResumable,
   getDownloadURL,
   deleteObject,
 } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-storage.js';
@@ -183,7 +186,11 @@ export const AuthService = {
       return { success: true, user, requiresApproval: userData.role === 'agent' };
     } catch (error) {
       console.error('Sign up error:', error);
-      return { success: false, error: error.message };
+      return {
+        success: false,
+        error: error && error.message ? error.message : 'Sign up failed',
+        code: error && error.code ? error.code : undefined,
+      };
     }
   },
 
@@ -637,6 +644,30 @@ export const CloudFunctionsService = {
       return { success: false, error: error.message };
     }
   },
+
+  // Self-service account deletion for the currently authenticated user
+  async deleteMyAccount() {
+    try {
+      const fn = httpsCallable(functions, 'deleteMyAccount');
+      const result = await fn({});
+      return { success: true, data: result.data };
+    } catch (error) {
+      console.error('deleteMyAccount error:', error);
+      return { success: false, error: error.message };
+    }
+  },
+
+  // Admin-only deletion of another user by uid
+  async adminDeleteUser(uid) {
+    try {
+      const fn = httpsCallable(functions, 'adminDeleteUser');
+      const result = await fn({ uid });
+      return { success: true, data: result.data };
+    } catch (error) {
+      console.error('adminDeleteUser error:', error);
+      return { success: false, error: error.message };
+    }
+  },
 };
 
 /**
@@ -787,8 +818,74 @@ try {
   if (!window.firebaseDb) window.firebaseDb = db;
   if (!window.firebaseStorage) window.firebaseStorage = storage;
 
-  // Expose AuthService for guards/pages that expect it on window
+  // Legacy global aliases used by older templates and docs that previously
+  // relied on firebase-config.js to expose `db` and `auth`.
+  if (!window.db) window.db = db;
+  if (!window.auth) window.auth = auth;
+
+  // Minimal firebase.* shim for legacy compat-style code (without loading the
+  // heavy firebase-*-compat SDK bundles). This lets older pages continue to
+  // call firebase.auth() / firebase.firestore() / firebase.storage() while
+  // still using the modular SDK under the hood.
+  if (!window.firebase) {
+    const firebaseShim = {};
+
+    // firebase.firestore()  modular Firestore instance
+    const firestoreFn = () => db;
+    firestoreFn.FieldValue = {
+      serverTimestamp,
+      increment,
+      arrayUnion,
+    };
+    firebaseShim.firestore = firestoreFn;
+
+    // firebase.auth()  modular Auth instance
+    firebaseShim.auth = () => auth;
+
+    // firebase.storage()  thin compat-style wrapper over modular Storage.
+    // Only the subset used by existing templates is implemented (ref().put
+    // with state_changed, delete, getDownloadURL).
+    firebaseShim.storage = () => ({
+      ref(path) {
+        const storageRef = ref(storage, path);
+        return {
+          put(file, metadata) {
+            const uploadTask = uploadBytesResumable
+              ? uploadBytesResumable(storageRef, file, metadata || {})
+              : uploadBytes(storageRef, file, metadata || {});
+
+            return {
+              on(event, next, error, complete) {
+                if (event !== 'state_changed' || !uploadTask.on) {
+                  return;
+                }
+                uploadTask.on('state_changed', next, error, complete);
+              },
+              get snapshot() {
+                return uploadTask.snapshot;
+              },
+            };
+          },
+          async delete() {
+            await deleteObject(storageRef);
+          },
+          async getDownloadURL() {
+            return getDownloadURL(storageRef);
+          },
+        };
+      },
+    });
+
+    // Optional: firebase.functions() shim if ever needed
+    firebaseShim.functions = () => functions;
+
+    window.firebase = firebaseShim;
+  }
+
+  // Expose core services for legacy and widget code
   if (!window.AuthService) window.AuthService = AuthService;
+  if (!window.DatabaseService) window.DatabaseService = DatabaseService;
+  if (!window.CloudFunctionsService) window.CloudFunctionsService = CloudFunctionsService;
 
   // Fire a firebase-ready event for any compat listeners waiting on it
   window.dispatchEvent(new CustomEvent('firebase-ready', {
@@ -800,4 +897,4 @@ try {
 
 // Export for ES modules
 export default Firebase;
-export { app, auth, db, functions, storage, analytics };
+export { app, auth, db, functions, storage, analytics, serverTimestamp, increment, arrayUnion };

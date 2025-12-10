@@ -18,13 +18,7 @@
     <link rel="stylesheet" href="{{BASE_PATH}}components/admin-layout.css">
     <link rel="stylesheet" href="{{BASE_PATH}}assets/css/button-override.css">
     
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics-compat.js"></script>
-    <script src="{{BASE_PATH}}firebase-config.js"></script>
+    <!-- Auth Guard (uses modular Firebase via firebase-init.js) -->
     <script src="{{BASE_PATH}}components/auth-guard.js"></script>
     
     <style>
@@ -562,7 +556,12 @@
     <script src="{{BASE_PATH}}components/universal-header.js"></script>
     
     <!-- Dashboard-specific functionality -->
-    <script>
+    <script type="module">
+        import Firebase from "../assets/js/firebase-init.js";
+        void Firebase;
+
+        const firebase = window.firebase;
+
         // Protect this page - agents only (modal-based auth via compat guard)
         (async function() {
             // Ensure Firebase has initialized

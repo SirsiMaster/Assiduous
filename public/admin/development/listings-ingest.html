@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-auth-protect="admin">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -368,11 +368,14 @@
   </div>
 
   <!-- Firebase / Auth bootstrapping -->
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-  <script src="../../firebase-config.js"></script>
-
+  <!-- Canonical modular Firebase bootstrap for dev tools -->
+  <script type="module">
+    import Firebase, { AuthService, DatabaseService } from '../../assets/js/firebase-init.js';
+    window.Firebase = Firebase;
+    window.AuthService = AuthService;
+    window.DatabaseService = DatabaseService;
+  </script>
+  
   <!-- UCS core (sidebar + header) -->
   <script src="../../components/ucs-core.js"></script>
   <script src="../../components/component-registry.js"></script>
@@ -408,8 +411,8 @@
 
       async function getIdTokenOrThrow() {
         await ensureFirebaseReady();
-        const auth = window.firebaseAuth || firebase.auth();
-        const user = auth.currentUser;
+        const auth = window.firebaseAuth || (window.Firebase && window.Firebase.auth);
+        const user = auth && auth.currentUser;
         if (!user) {
           throw new Error('You must be signed in to run ingest.');
         }
@@ -636,7 +639,7 @@
       async function loadMLSAgents() {
         try {
           await ensureFirebaseReady();
-          db = window.firebaseDb || (window.firebase && window.firebase.firestore && window.firebase.firestore());
+          db = window.firebaseDb || (window.Firebase && window.Firebase.db);
           if (!db) {
             console.warn('[ListingsIngest] Firestore not available for MLS agent defaults');
             return;

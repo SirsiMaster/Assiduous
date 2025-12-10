@@ -14,6 +14,14 @@
     <link rel="stylesheet" href="../assiduous.css">
     <link rel="stylesheet" href="../components/admin-layout.css">
     
+    <!-- Canonical modular Firebase bootstrap for portal pages -->
+    <script type="module">
+        import Firebase, { AuthService, DatabaseService } from '../assets/js/firebase-init.js';
+        window.Firebase = Firebase;
+        window.AuthService = AuthService;
+        window.DatabaseService = DatabaseService;
+    </script>
+    
     <style>
 /* Sidebar */
         
@@ -425,10 +433,7 @@
     <script src="../components/ucs-core.js"></script>
     <script src="../components/component-registry.js"></script>
     <script src="../components/universal-header.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    <script src="../firebase-config.js"></script>
+    <script src="../components/auth-guard.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <script>
         // ==========================================
@@ -436,8 +441,12 @@
         // ==========================================
         
         const CommissionService = {
-            db: firebase.firestore(),
-            auth: firebase.auth(),
+            get db() {
+                return window.firebaseDb || (window.Firebase && window.Firebase.db);
+            },
+            get auth() {
+                return window.firebaseAuth || (window.Firebase && window.Firebase.auth);
+            },
             
             /**
              * Get all commissions for current agent

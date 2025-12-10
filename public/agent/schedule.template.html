@@ -590,9 +590,28 @@
     <!-- Load Component Scripts -->
     <script src="{{BASE_PATH}}components/universal-header.js"></script>
     
-    <!-- Page-specific functionality -->
-    <script src="{{BASE_PATH}}firebase-config.js"></script>
-    <script>
+    <!-- Page-specific functionality (modular Firebase) -->
+    <script type="module">
+        import Firebase from "../assets/js/firebase-init.js";
+        void Firebase;
+
+        const db = window.db;
+        const auth = window.auth;
+
+        async function checkAuth() {
+            return new Promise((resolve) => {
+                if (!auth || typeof auth.onAuthStateChanged !== 'function') {
+                    console.error('[Agent Schedule] Auth not initialized');
+                    resolve(null);
+                    return;
+                }
+                const unsubscribe = auth.onAuthStateChanged((user) => {
+                    if (typeof unsubscribe === 'function') unsubscribe();
+                    resolve(user);
+                });
+            });
+        }
+
         // Initialize Firebase connection for schedule
         let currentMonth = 10;
         let currentYear = 2025;

@@ -968,7 +968,7 @@ firebase deploy --project production --only hosting
 <br>
 <h3>Automatic Environment Detection</h3>
 <br>
-The <code>firebase-config.js</code> file automatically detects the environment based on hostname:
+The <code>firebase-config.js</code> file in the <code>firebase-migration-package/assiduous-build</code> directory automatically detects the environment based on hostname for CI/CD builds (runtime pages use <code>public/assets/js/firebase-init.js</code>):
 <br>
 <code></code>`javascript
 // firebase-migration-package/assiduous-build/assets/js/config/firebase-config.js
@@ -1022,14 +1022,14 @@ if (isProduction()) {
 <br>
 <strong>IMPORTANT:</strong> Each environment uses its own Firebase API keys.
 <br>
-To get API keys for DEV and STAGING:
+To get API keys for DEV and STAGING (for the CI/CD build config only):
 <br>
 1. Go to Firebase Console
 2. Select project (assiduous-dev or assiduous-staging)
 3. Go to Project Settings → General
 4. Under "Your apps" → Web app → Config
 5. Copy the config values
-6. Update <code>firebase-config.js</code> with the correct values
+6. Update <code>firebase-config.js</code> in <code>assiduous-build/assets/js/config</code> with the correct values (runtime continues to use <code>public/assets/js/firebase-init.js</code>)
 <br>
 <strong>Security Note:</strong> API keys for Firebase web apps are safe to commit to GitHub. They are designed to be public and are protected by Firebase Security Rules.
 <br>

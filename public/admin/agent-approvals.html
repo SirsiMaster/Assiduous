@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-auth-protect="admin">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,10 +10,13 @@
     <link rel="stylesheet" href="../assiduous.css">
     <link rel="stylesheet" href="../components/admin-layout.css">
     
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <!-- Canonical modular Firebase bootstrap for portal pages -->
+    <script type="module">
+        import Firebase, { AuthService, DatabaseService } from '../assets/js/firebase-init.js';
+        window.Firebase = Firebase;
+        window.AuthService = AuthService;
+        window.DatabaseService = DatabaseService;
+    </script>
     
     <style>
         .approvals-container {
@@ -431,13 +434,23 @@
     <!-- Load Universal Header -->
     <script src="../components/universal-header.js"></script>
     
-    <!-- Firebase Integration -->
-    <script src="../firebase-config.js"></script>
-    
+    <!-- Firebase Integration via modular firebase-init.js -->
     <script>
-        // Initialize Firebase
-        const db = firebase.firestore();
-        const auth = firebase.auth();
+        let db = null;
+        let auth = null;
+
+        window.addEventListener('firebase-ready', function() {
+            db = window.firebaseDb || (window.Firebase && window.Firebase.db);
+            auth = window.firebaseAuth || (window.Firebase && window.Firebase.auth);
+            if (!db || !auth) {
+                console.error('[Admin Agent Approvals] Firebase not ready');
+                return;
+            }
+
+            // Initial load once Firebase and auth are ready
+            loadApplications('pending');
+            updateStatistics();
+        });
         
         // Load applications
         async function loadApplications(filter = 'pending') {
@@ -563,7 +576,7 @@
             try {
                 await db.collection('users').doc(userId).update({
                     'agentInfo.status': 'approved',
-                    'agentInfo.approvedAt': firebase.firestore.FieldValue.serverTimestamp(),
+                    'agentInfo.approvedAt': new Date(),
                     'agentInfo.approvedBy': auth.currentUser?.uid
                 });
                 
@@ -588,7 +601,7 @@
             try {
                 await db.collection('users').doc(userId).update({
                     'agentInfo.status': 'rejected',
-                    'agentInfo.rejectedAt': firebase.firestore.FieldValue.serverTimestamp(),
+                    'agentInfo.rejectedAt': new Date(),
                     'agentInfo.rejectedBy': auth.currentUser?.uid,
                     'agentInfo.rejectionReason': reason
                 });
@@ -614,7 +627,7 @@
                 await db.collection('users').doc(userId).update({
                     'agentInfo.additionalInfoRequested': true,
                     'agentInfo.infoRequestMessage': message,
-                    'agentInfo.infoRequestedAt': firebase.firestore.FieldValue.serverTimestamp()
+                    'agentInfo.infoRequestedAt': new Date()
                 });
                 
                 console.log('Additional info requested:', userId);
@@ -706,11 +719,10 @@
             });
         });
         
-        // Initialize on page load
+        // Initialize on page load (data loading now triggered from firebase-ready once db/auth are available)
         document.addEventListener('DOMContentLoaded', () => {
             // Rely on global auth-guard / landing AuthService for authentication.
-            // If user reached this page, we assume they are already authenticated.
-            loadApplications('pending');
+            // Firebase-ready handler will trigger initial data load.
         });
         
         // Auto-refresh every 30 seconds

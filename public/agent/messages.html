@@ -15,6 +15,14 @@
     <link rel="stylesheet" href="../assiduous.css">
     <link rel="stylesheet" href="../components/admin-layout.css">
 
+    <!-- Canonical modular Firebase bootstrap for portal pages -->
+    <script type="module">
+        import Firebase, { AuthService, DatabaseService } from '../assets/js/firebase-init.js';
+        window.Firebase = Firebase;
+        window.AuthService = AuthService;
+        window.DatabaseService = DatabaseService;
+    </script>
+
     <style>
         /* Chat-specific styles using design system (mirrors client/messages.html) */
         .messages-container {
@@ -290,7 +298,8 @@
     <!-- UCS Core Scripts -->
     <script src="../components/ucs-core.js"></script>
     <script src="../components/component-registry.js"></script>
-    <script src="../firebase-config.js"></script>
+    <script src="../components/universal-header.js"></script>
+    <script src="../components/auth-guard.js"></script>
 
     <!-- Persona-aware header text for Agent Messages -->
     <script>
@@ -316,26 +325,7 @@
         })();
     </script>
 
-    <!-- Lazy-load header, sidebar, and auth-guard once Firebase is ready -->
-    <script>
-        window.addEventListener('firebase-ready', function() {
-            var headerScript = document.createElement('script');
-            headerScript.src = '../components/universal-header.js';
-            document.head.appendChild(headerScript);
-
-            headerScript.onload = function() {
-                var sidebarScript = document.createElement('script');
-                sidebarScript.src = '../components/sidebar.js';
-                document.head.appendChild(sidebarScript);
-
-                sidebarScript.onload = function() {
-                    var authScript = document.createElement('script');
-                    authScript.src = '../components/auth-guard.js';
-                    document.head.appendChild(authScript);
-                };
-            };
-        });
-    </script>
+    <!-- Sidebar is still mounted via UCS; header + auth-guard loaded above -->
 
     <!-- Shared inbox viewer logic (mirrors client/messages.html, but scoped for current user) -->
     <script>
@@ -352,7 +342,7 @@
         function renderMessages(snapshot) {
           var container = document.getElementById('inbox-root');
           if (!container) return;
-          var docs = snapshot.docs || [];
+          var docs = snapshot && snapshot.docs ? snapshot.docs : [];
           latestDocs = docs;
 
           if (!docs.length) {

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-auth-protect="admin">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -194,11 +194,51 @@
             margin-bottom: var(--space-xs);
         }
 
-        .page-subtitle {
+.page-subtitle {
             font-size: 14px;
             color: var(--text-secondary);
         }
 
+        .danger-zone {
+            margin-top: var(--space-2xl);
+            padding-top: var(--space-xl);
+            border-top: 1px solid var(--border);
+        }
+
+        .danger-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--danger);
+            margin-bottom: var(--space-sm);
+        }
+
+        .danger-description {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-md);
+        }
+
+        .danger-inline {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-sm);
+            align-items: center;
+        }
+
+        .danger-input {
+            max-width: 180px;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: var(--white);
+            border-color: transparent;
+        }
+
+        .btn-danger:hover:not([disabled]) {
+            background: #b91c1c;
+        }
+ 
         /* Settings Layout */
         .settings-layout {
             display: grid;
@@ -409,6 +449,52 @@
     <link rel="stylesheet" href="/assets/css/button-override.css">
     
     <script>
+        async function handleAdminAccountDelete() {
+            const input  = document.getElementById('adminDeleteAccountConfirmInput');
+            const button = document.getElementById('adminDeleteAccountButton');
+            const status = document.getElementById('adminDeleteAccountStatus');
+            if (!input || !button || !status || !window.CloudFunctionsService || !window.AuthService) return;
+
+            if (input.value.trim().toUpperCase() !== 'DELETE') {
+                status.textContent = 'Type DELETE in the box to confirm.';
+                status.style.color = 'var(--danger)';
+                return;
+            }
+
+            button.disabled = true;
+            status.style.color = 'var(--text-secondary)';
+            status.textContent = 'Deleting admin account…';
+
+            try {
+                const result = await window.CloudFunctionsService.deleteMyAccount();
+                if (!result || !result.success) {
+                    status.textContent = (result && result.error) || 'Failed to delete account. Please try again.';
+                    status.style.color = 'var(--danger)';
+                    button.disabled = false;
+                    return;
+                }
+
+                try {
+                    if (window.AuthService && typeof window.AuthService.signOut === 'function') {
+                        await window.AuthService.signOut();
+                    }
+                } catch (e) {}
+                window.location.href = '../index.html?accountDeleted=1';
+            } catch (err) {
+                console.error('Admin delete account error:', err);
+                status.textContent = (err && err.message) || 'Unexpected error deleting account.';
+                status.style.color = 'var(--danger)';
+                button.disabled = false;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const btn = document.getElementById('adminDeleteAccountButton');
+            if (btn) {
+                btn.addEventListener('click', handleAdminAccountDelete);
+            }
+        });
+
         // Ensure button styles are loaded
         (function() {
             const checkButtons = function() {
@@ -572,6 +658,20 @@
                             </div>
                         </section>
 
+                        <!-- Danger zone: self-service admin delete (for internal use only) -->
+                        <section id="danger" class="settings-section">
+                            <h2 class="section-title">Danger zone</h2>
+                            <div class="danger-zone">
+                                <h3 class="danger-title">Delete admin account</h3>
+                                <p class="danger-description">This will permanently delete your admin user account and profile. Use this only for deprovisioning test or temporary admins. This action cannot be undone.</p>
+                                <div class="danger-inline">
+                                    <input id="adminDeleteAccountConfirmInput" class="form-input danger-input" type="text" placeholder="Type DELETE to confirm">
+                                    <button id="adminDeleteAccountButton" class="btn btn-danger" type="button">Delete my admin account</button>
+                                    <span id="adminDeleteAccountStatus" class="form-helper"></span>
+                                </div>
+                            </div>
+                        </section>
+ 
                         <!-- General Settings -->
                         <section id="general-section" class="settings-section">
                             <h2 class="section-title">General Settings</h2>

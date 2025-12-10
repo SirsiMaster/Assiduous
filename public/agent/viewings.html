@@ -14,6 +14,14 @@
     <link rel="stylesheet" href="../assiduous.css">
     <link rel="stylesheet" href="../components/admin-layout.css">
     
+    <!-- Canonical modular Firebase bootstrap for portal pages -->
+    <script type="module">
+        import Firebase, { AuthService, DatabaseService } from '../assets/js/firebase-init.js';
+        window.Firebase = Firebase;
+        window.AuthService = AuthService;
+        window.DatabaseService = DatabaseService;
+    </script>
+    
     <style>
 /* Page-specific styles using design system variables */
         .content-grid {
@@ -465,35 +473,17 @@
     <!-- UCS Core Scripts -->
     <script src="../components/ucs-core.js"></script>
     <script src="../components/component-registry.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-    <script src="../firebase-config.js"></script>
+    <script src="../components/universal-header.js"></script>
+    <script src="../components/auth-guard.js"></script>
     <script>
         window.addEventListener('firebase-ready', function() {
-            const headerScript = document.createElement('script');
-            headerScript.src = '../components/universal-header.js';
-            document.head.appendChild(headerScript);
-            
-            headerScript.onload = function() {
-                // Load sidebar first
-                const sidebarScript = document.createElement('script');
-                sidebarScript.src = '../components/sidebar.js';
-                document.head.appendChild(sidebarScript);
-                
-                // Then auth guard
-                sidebarScript.onload = function() {
-                    const authScript = document.createElement('script');
-                    authScript.src = '../components/auth-guard.js';
-                    document.head.appendChild(authScript);
-                };
-            };
-        });
-    </script>
-    <script>
-        window.addEventListener('firebase-ready', function() {
-            const db = window.db;
-            const auth = window.auth;
+            const db = window.firebaseDb || (window.Firebase && window.Firebase.db);
+            const auth = window.firebaseAuth || (window.Firebase && window.Firebase.auth);
+
+            if (!db || !auth) {
+                console.error('[Agent Viewings] Firebase not initialized');
+                return;
+            }
 
         
         let allViewings = [];

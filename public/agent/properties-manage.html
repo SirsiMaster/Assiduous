@@ -8,6 +8,14 @@
     <link href="https://cdn.jsdelivr.net/npm/@fontsource/geist-sans@5.0.6/index.css" rel="stylesheet">
     <link rel="stylesheet" href="../assiduous.css">
     <link rel="stylesheet" href="../components/admin-layout.css">
+
+    <!-- Canonical modular Firebase bootstrap for portal pages -->
+    <script type="module">
+        import Firebase, { AuthService, DatabaseService } from '../assets/js/firebase-init.js';
+        window.Firebase = Firebase;
+        window.AuthService = AuthService;
+        window.DatabaseService = DatabaseService;
+    </script>
     <style>
         .dashboard-content { padding: var(--space-xl); background: var(--gray-50); }
         .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-xl); }
@@ -241,10 +249,8 @@
 
     <script src="../components/ucs-core.js"></script>
     <script src="../components/component-registry.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-    <script src="../firebase-config.js"></script>
+    <script src="../components/universal-header.js"></script>
+    <script src="../components/auth-guard.js"></script>
     <script>
         let currentUser = null;
         let properties = [];
@@ -254,14 +260,16 @@
         
         function initAuth() {
             try {
-                if (!window.firebase || !firebase.auth) {
-                    console.log('Firebase not ready, waiting...');
+                const auth = window.firebaseAuth || (window.Firebase && window.Firebase.auth);
+                const db = window.firebaseDb || (window.Firebase && window.Firebase.db);
+                if (!auth || !db) {
+                    console.log('[Agent Properties Manage] Firebase not ready, waiting...');
                     setTimeout(initAuth, 100);
                     return;
                 }
                 
-                console.log('Firebase ready, setting up auth listener');
-                firebase.auth().onAuthStateChanged(user => {
+                console.log('[Agent Properties Manage] Firebase ready, setting up auth listener');
+                auth.onAuthStateChanged(user => {
                     console.log('Auth state changed. User:', user ? user.email : 'null');
                     if (user) {
                         currentUser = user;
@@ -290,7 +298,11 @@
 
         async function loadProperties() {
             try {
-                const db = firebase.firestore();
+                const db = window.firebaseDb || (window.Firebase && window.Firebase.db);
+                if (!db || !currentUser) {
+                    console.warn('[Agent Properties Manage] Cannot load properties – missing db or currentUser');
+                    return;
+                }
                 const snapshot = await db.collection('mls_properties')
                     .where('agentId', '==', currentUser.uid)
                     .get();

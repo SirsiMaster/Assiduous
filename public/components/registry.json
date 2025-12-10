@@ -206,13 +206,10 @@
     },
     
     "firebase": {
-      "description": "Firebase SDK for auth and database",
+      "description": "Firebase modular SDK bootstrap (auth, Firestore, storage)",
       "css": [],
       "js": [
-        "https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js",
-        "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js",
-        "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js",
-        "firebase-config.js"
+        "assets/js/firebase-init.js"
       ]
     }
   },

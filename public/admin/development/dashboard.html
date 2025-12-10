@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-auth-protect="admin">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -1034,12 +1034,14 @@
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
-    <!-- Firebase SDK (Compat for existing code) -->
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-    
-    <!-- Firebase Config -->
-    <script src="../../firebase-config.js"></script>
+    <!-- Modular Firebase bootstrap (preferred) -->
+    <script type="module">
+      import Firebase, { AuthService, DatabaseService } from '../../assets/js/firebase-init.js';
+      // Ensure global shims are present for legacy services/components
+      window.Firebase = window.Firebase || Firebase;
+      window.AuthService = window.AuthService || AuthService;
+      window.DatabaseService = window.DatabaseService || DatabaseService;
+    </script>
     
     <!-- Development Metrics Service -->
     <script src="../../assets/js/services/developmentmetricsservice.js"></script>
@@ -1588,10 +1590,12 @@
                     .limit(100)
                     .get();
 
-                const items: any[] = [];
+                const items = [];
                 snapshot.forEach(doc => {
                     const d = doc.data();
-                    const ts: any = d.timestamp?.toDate ? d.timestamp.toDate() : new Date(d.timestamp);
+                    const ts = d.timestamp && typeof d.timestamp.toDate === 'function'
+                        ? d.timestamp.toDate()
+                        : new Date(d.timestamp);
                     items.push({
                         hash: d.hash || doc.id,
                         message: d.message || '',

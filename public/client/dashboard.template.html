@@ -18,11 +18,7 @@
     <link rel="stylesheet" href="{{BASE_PATH}}components/admin-layout.css">
     <link rel="stylesheet" href="{{BASE_PATH}}assets/css/button-override.css">
     
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-    <script src="{{BASE_PATH}}firebase-config.js"></script>
+    <!-- Auth Guard (uses modular Firebase via firebase-init.js) -->
     <script src="{{BASE_PATH}}components/auth-guard.js"></script>
     
     <style>
@@ -875,6 +871,10 @@
                 </div>
             `).join('');
         }
+    </script>
+    <script type="module">
+        import Firebase from "../assets/js/firebase-init.js";
+        void Firebase;
     </script>
 </body>
 </html>
